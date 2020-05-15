@@ -58,13 +58,13 @@ int main(int argc, char *argv[])
     format.setProfile(QSurfaceFormat::CoreProfile);
     widget->setFormat(format); // must be called before the widget or its parent window gets shown
 
-    // Set style
-    QQuickStyle::setStyle("Material");
-    QQmlApplicationEngine engine;
-    engine.load(QUrl("qrc:/styles.qml"));
+    // QML Trial (do not remove now)
+    //QQuickStyle::setStyle("Material");
+    //QQmlApplicationEngine engine;
+    //engine.load(QUrl("qrc:/styles.qml"));
 
     // Start the main window
-    //MainWindow w;
-    //w.show();
+    MainWindow w;
+    w.show();
     return a.exec();
 }
