@@ -84,8 +84,6 @@ public:
     QLabel *GeoA_BathfiletypeLabel;
     QComboBox *GeoA_BathfiletypeOptions;
     QTableWidget *GeoA_InterfaceTable;
-    QPushButton *GeoA_Cancel;
-    QPushButton *GeoA_Accept;
     QCheckBox *GeoA_InterfaceCheck;
     QPushButton *GeoA_InterfacefileBut;
     QToolButton *GeoA_RemPoint;
@@ -96,8 +94,6 @@ public:
     QLabel *GeoB_InterfaceLabel;
     QLabel *GeoBHeading;
     QLabel *GeoB_SimLibLabel;
-    QPushButton *GeoB_Cancel;
-    QPushButton *GeoB_Accept;
     QPushButton *GeoB_InterfacefileBut;
     QCheckBox *GeoB_InterfaceCheck;
     QToolButton *GeoB_RemPoint;
@@ -108,8 +104,6 @@ public:
     QLabel *GeoC_BathfiletypeLabel;
     QPushButton *GeoC_BathfileBut;
     QLabel *GeoC_BathfileLabel;
-    QPushButton *pushButton_19;
-    QPushButton *pushButton_20;
     QWidget *GeoPage_D;
     QLabel *GeoCHeading_2;
     QLabel *FlumeBreadthPic;
@@ -122,26 +116,18 @@ public:
     QLabel *GeoC_BathfileLabel_3;
     QLabel *GeoC_BathfileLabel_4;
     QTableWidget *GeoB_InterfaceTable_2;
-    QPushButton *pushButton_21;
-    QPushButton *pushButton_22;
     QToolButton *GeoB_RemPoint_2;
     QToolButton *GeoB_AddPoint_2;
     QWidget *GeoPage_E;
     QLabel *GeoEHeading;
     QLabel *GeoE_NoticeLabel;
-    QPushButton *pushButton_23;
-    QPushButton *pushButton_24;
     QWidget *BuildingPage_A;
     QLabel *GeoEHeading_2;
     QLabel *GeoE_NoticeLabel_2;
-    QPushButton *pushButton_25;
-    QPushButton *pushButton_26;
     QWidget *BuildingsPage_B;
     QLabel *GeoEHeading_3;
     QLabel *GeoC_BathfileLabel_5;
     QTableWidget *GeoB_InterfaceTable_3;
-    QPushButton *pushButton_29;
-    QPushButton *pushButton_30;
     QToolButton *GeoB_RemPoint_3;
     QToolButton *GeoB_AddPoint_3;
     QWidget *MeshPage;
@@ -154,8 +140,6 @@ public:
     QLabel *GeoC_BathfileLabel_9;
     QLabel *GeoC_BathfiletypeLabel_2;
     QComboBox *GeoC_BathfiletypeOptions_2;
-    QPushButton *pushButton_31;
-    QPushButton *pushButton_32;
     QToolButton *GeoB_RemPoint_4;
     QToolButton *GeoB_AddPoint_4;
     QWidget *MaterialsPage;
@@ -172,8 +156,6 @@ public:
     QTextEdit *B1_TEdit_6;
     QTextEdit *B1_TEdit_7;
     QLabel *B1_Label_7;
-    QPushButton *pushButton_33;
-    QPushButton *pushButton_34;
     QWidget *InitialPage;
     QLabel *label_16;
     QGroupBox *groupBox_3;
@@ -189,8 +171,6 @@ public:
     QGroupBox *groupBox_5;
     QLabel *B1_Label_12;
     QTextEdit *B1_TEdit_12;
-    QPushButton *pushButton_35;
-    QPushButton *pushButton_36;
     QTableWidget *GeoB_InterfaceTable_5;
     QToolButton *GeoB_AddPoint_5;
     QLabel *GeoC_BathfileLabel_10;
@@ -198,8 +178,6 @@ public:
     QWidget *BCPage;
     QLabel *label_12;
     QWidget *page;
-    QPushButton *pushButton_39;
-    QPushButton *pushButton_40;
     QLabel *label_17;
     QWidget *TurbulencePage;
     QLabel *label_13;
@@ -523,60 +501,6 @@ public:
         GeoA_InterfaceTable = new QTableWidget(GeoPage_A);
         GeoA_InterfaceTable->setObjectName(QString::fromUtf8("GeoA_InterfaceTable"));
         GeoA_InterfaceTable->setGeometry(QRect(10, 435, 311, 281));
-        GeoA_Cancel = new QPushButton(GeoPage_A);
-        GeoA_Cancel->setObjectName(QString::fromUtf8("GeoA_Cancel"));
-        GeoA_Cancel->setGeometry(QRect(272, 2, 27, 27));
-        GeoA_Cancel->setAutoFillBackground(false);
-        GeoA_Cancel->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/No-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        GeoA_Cancel->setText(QString::fromUtf8(""));
-        GeoA_Cancel->setIconSize(QSize(28, 28));
-        GeoA_Cancel->setFlat(false);
-        GeoA_Accept = new QPushButton(GeoPage_A);
-        GeoA_Accept->setObjectName(QString::fromUtf8("GeoA_Accept"));
-        GeoA_Accept->setGeometry(QRect(301, 2, 27, 27));
-        GeoA_Accept->setAutoFillBackground(false);
-        GeoA_Accept->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/Yes-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        GeoA_Accept->setText(QString::fromUtf8(""));
-        GeoA_Accept->setIconSize(QSize(28, 28));
-        GeoA_Accept->setFlat(false);
         GeoA_InterfaceCheck = new QCheckBox(GeoPage_A);
         GeoA_InterfaceCheck->setObjectName(QString::fromUtf8("GeoA_InterfaceCheck"));
         GeoA_InterfaceCheck->setEnabled(true);
@@ -605,8 +529,6 @@ public:
         GeoA_InterfaceLabel->raise();
         GeoA_BathfiletypeLabel->raise();
         GeoA_BathfiletypeOptions->raise();
-        GeoA_Cancel->raise();
-        GeoA_Accept->raise();
         GeoA_InterfaceCheck->raise();
         GeoA_RemPoint->raise();
         GeoA_AddPoint->raise();
@@ -634,60 +556,6 @@ public:
         GeoB_SimLibLabel->setObjectName(QString::fromUtf8("GeoB_SimLibLabel"));
         GeoB_SimLibLabel->setGeometry(QRect(10, 50, 256, 21));
         GeoB_SimLibLabel->setFont(font);
-        GeoB_Cancel = new QPushButton(GeoPage_B);
-        GeoB_Cancel->setObjectName(QString::fromUtf8("GeoB_Cancel"));
-        GeoB_Cancel->setGeometry(QRect(272, 2, 27, 27));
-        GeoB_Cancel->setAutoFillBackground(false);
-        GeoB_Cancel->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/No-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        GeoB_Cancel->setText(QString::fromUtf8(""));
-        GeoB_Cancel->setIconSize(QSize(28, 28));
-        GeoB_Cancel->setFlat(false);
-        GeoB_Accept = new QPushButton(GeoPage_B);
-        GeoB_Accept->setObjectName(QString::fromUtf8("GeoB_Accept"));
-        GeoB_Accept->setGeometry(QRect(301, 2, 27, 27));
-        GeoB_Accept->setAutoFillBackground(false);
-        GeoB_Accept->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/Yes-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        GeoB_Accept->setText(QString::fromUtf8(""));
-        GeoB_Accept->setIconSize(QSize(28, 28));
-        GeoB_Accept->setFlat(false);
         GeoB_InterfacefileBut = new QPushButton(GeoPage_B);
         GeoB_InterfacefileBut->setObjectName(QString::fromUtf8("GeoB_InterfacefileBut"));
         GeoB_InterfacefileBut->setGeometry(QRect(5, 175, 271, 71));
@@ -710,8 +578,6 @@ public:
         GeoB_InterfaceLabel->raise();
         GeoBHeading->raise();
         GeoB_SimLibLabel->raise();
-        GeoB_Cancel->raise();
-        GeoB_Accept->raise();
         GeoB_InterfaceCheck->raise();
         GeoB_RemPoint->raise();
         GeoB_AddPoint->raise();
@@ -742,60 +608,6 @@ public:
         GeoC_BathfileLabel->setGeometry(QRect(10, 50, 256, 21));
         GeoC_BathfileLabel->setFont(font);
         GeoC_BathfileLabel->setFocusPolicy(Qt::ClickFocus);
-        pushButton_19 = new QPushButton(GeoPage_C);
-        pushButton_19->setObjectName(QString::fromUtf8("pushButton_19"));
-        pushButton_19->setGeometry(QRect(272, 2, 27, 27));
-        pushButton_19->setAutoFillBackground(false);
-        pushButton_19->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/No-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_19->setText(QString::fromUtf8(""));
-        pushButton_19->setIconSize(QSize(28, 28));
-        pushButton_19->setFlat(false);
-        pushButton_20 = new QPushButton(GeoPage_C);
-        pushButton_20->setObjectName(QString::fromUtf8("pushButton_20"));
-        pushButton_20->setGeometry(QRect(301, 2, 27, 27));
-        pushButton_20->setAutoFillBackground(false);
-        pushButton_20->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/Yes-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_20->setText(QString::fromUtf8(""));
-        pushButton_20->setIconSize(QSize(28, 28));
-        pushButton_20->setFlat(false);
         stackedWidget->addWidget(GeoPage_C);
         GeoPage_D = new QWidget();
         GeoPage_D->setObjectName(QString::fromUtf8("GeoPage_D"));
@@ -863,60 +675,6 @@ public:
         GeoB_InterfaceTable_2 = new QTableWidget(GeoPage_D);
         GeoB_InterfaceTable_2->setObjectName(QString::fromUtf8("GeoB_InterfaceTable_2"));
         GeoB_InterfaceTable_2->setGeometry(QRect(10, 460, 311, 241));
-        pushButton_21 = new QPushButton(GeoPage_D);
-        pushButton_21->setObjectName(QString::fromUtf8("pushButton_21"));
-        pushButton_21->setGeometry(QRect(272, 2, 27, 27));
-        pushButton_21->setAutoFillBackground(false);
-        pushButton_21->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/No-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_21->setText(QString::fromUtf8(""));
-        pushButton_21->setIconSize(QSize(28, 28));
-        pushButton_21->setFlat(false);
-        pushButton_22 = new QPushButton(GeoPage_D);
-        pushButton_22->setObjectName(QString::fromUtf8("pushButton_22"));
-        pushButton_22->setGeometry(QRect(301, 2, 27, 27));
-        pushButton_22->setAutoFillBackground(false);
-        pushButton_22->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/Yes-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_22->setText(QString::fromUtf8(""));
-        pushButton_22->setIconSize(QSize(28, 28));
-        pushButton_22->setFlat(false);
         GeoB_RemPoint_2 = new QToolButton(GeoPage_D);
         GeoB_RemPoint_2->setObjectName(QString::fromUtf8("GeoB_RemPoint_2"));
         GeoB_RemPoint_2->setGeometry(QRect(180, 720, 91, 21));
@@ -937,60 +695,6 @@ public:
         GeoE_NoticeLabel->setFocusPolicy(Qt::ClickFocus);
         GeoE_NoticeLabel->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         GeoE_NoticeLabel->setWordWrap(true);
-        pushButton_23 = new QPushButton(GeoPage_E);
-        pushButton_23->setObjectName(QString::fromUtf8("pushButton_23"));
-        pushButton_23->setGeometry(QRect(272, 2, 27, 27));
-        pushButton_23->setAutoFillBackground(false);
-        pushButton_23->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/No-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_23->setText(QString::fromUtf8(""));
-        pushButton_23->setIconSize(QSize(28, 28));
-        pushButton_23->setFlat(false);
-        pushButton_24 = new QPushButton(GeoPage_E);
-        pushButton_24->setObjectName(QString::fromUtf8("pushButton_24"));
-        pushButton_24->setGeometry(QRect(301, 2, 27, 27));
-        pushButton_24->setAutoFillBackground(false);
-        pushButton_24->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/Yes-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_24->setText(QString::fromUtf8(""));
-        pushButton_24->setIconSize(QSize(28, 28));
-        pushButton_24->setFlat(false);
         stackedWidget->addWidget(GeoPage_E);
         BuildingPage_A = new QWidget();
         BuildingPage_A->setObjectName(QString::fromUtf8("BuildingPage_A"));
@@ -1005,60 +709,6 @@ public:
         GeoE_NoticeLabel_2->setFocusPolicy(Qt::ClickFocus);
         GeoE_NoticeLabel_2->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         GeoE_NoticeLabel_2->setWordWrap(true);
-        pushButton_25 = new QPushButton(BuildingPage_A);
-        pushButton_25->setObjectName(QString::fromUtf8("pushButton_25"));
-        pushButton_25->setGeometry(QRect(272, 2, 27, 27));
-        pushButton_25->setAutoFillBackground(false);
-        pushButton_25->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/No-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_25->setText(QString::fromUtf8(""));
-        pushButton_25->setIconSize(QSize(28, 28));
-        pushButton_25->setFlat(false);
-        pushButton_26 = new QPushButton(BuildingPage_A);
-        pushButton_26->setObjectName(QString::fromUtf8("pushButton_26"));
-        pushButton_26->setGeometry(QRect(301, 2, 27, 27));
-        pushButton_26->setAutoFillBackground(false);
-        pushButton_26->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/Yes-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_26->setText(QString::fromUtf8(""));
-        pushButton_26->setIconSize(QSize(28, 28));
-        pushButton_26->setFlat(false);
         stackedWidget->addWidget(BuildingPage_A);
         BuildingsPage_B = new QWidget();
         BuildingsPage_B->setObjectName(QString::fromUtf8("BuildingsPage_B"));
@@ -1075,60 +725,6 @@ public:
         GeoB_InterfaceTable_3->setObjectName(QString::fromUtf8("GeoB_InterfaceTable_3"));
         GeoB_InterfaceTable_3->setGeometry(QRect(10, 80, 311, 331));
         GeoB_InterfaceTable_3->setFont(font);
-        pushButton_29 = new QPushButton(BuildingsPage_B);
-        pushButton_29->setObjectName(QString::fromUtf8("pushButton_29"));
-        pushButton_29->setGeometry(QRect(272, 2, 27, 27));
-        pushButton_29->setAutoFillBackground(false);
-        pushButton_29->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/No-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_29->setText(QString::fromUtf8(""));
-        pushButton_29->setIconSize(QSize(28, 28));
-        pushButton_29->setFlat(false);
-        pushButton_30 = new QPushButton(BuildingsPage_B);
-        pushButton_30->setObjectName(QString::fromUtf8("pushButton_30"));
-        pushButton_30->setGeometry(QRect(301, 2, 27, 27));
-        pushButton_30->setAutoFillBackground(false);
-        pushButton_30->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/Yes-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_30->setText(QString::fromUtf8(""));
-        pushButton_30->setIconSize(QSize(28, 28));
-        pushButton_30->setFlat(false);
         GeoB_RemPoint_3 = new QToolButton(BuildingsPage_B);
         GeoB_RemPoint_3->setObjectName(QString::fromUtf8("GeoB_RemPoint_3"));
         GeoB_RemPoint_3->setGeometry(QRect(180, 430, 91, 21));
@@ -1218,60 +814,6 @@ public:
         GeoC_BathfiletypeOptions_2->addItem(QString());
         GeoC_BathfiletypeOptions_2->setObjectName(QString::fromUtf8("GeoC_BathfiletypeOptions_2"));
         GeoC_BathfiletypeOptions_2->setGeometry(QRect(5, 80, 321, 32));
-        pushButton_31 = new QPushButton(MeshPage);
-        pushButton_31->setObjectName(QString::fromUtf8("pushButton_31"));
-        pushButton_31->setGeometry(QRect(301, 2, 27, 27));
-        pushButton_31->setAutoFillBackground(false);
-        pushButton_31->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/Yes-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_31->setText(QString::fromUtf8(""));
-        pushButton_31->setIconSize(QSize(28, 28));
-        pushButton_31->setFlat(false);
-        pushButton_32 = new QPushButton(MeshPage);
-        pushButton_32->setObjectName(QString::fromUtf8("pushButton_32"));
-        pushButton_32->setGeometry(QRect(272, 2, 27, 27));
-        pushButton_32->setAutoFillBackground(false);
-        pushButton_32->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/No-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_32->setText(QString::fromUtf8(""));
-        pushButton_32->setIconSize(QSize(28, 28));
-        pushButton_32->setFlat(false);
         GeoB_RemPoint_4 = new QToolButton(MeshPage);
         GeoB_RemPoint_4->setObjectName(QString::fromUtf8("GeoB_RemPoint_4"));
         GeoB_RemPoint_4->setGeometry(QRect(180, 590, 91, 21));
@@ -1358,61 +900,6 @@ public:
         B1_Label_7->setFont(font);
         B1_Label_7->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
         B1_Label_7->setWordWrap(true);
-        pushButton_33 = new QPushButton(MaterialsPage);
-        pushButton_33->setObjectName(QString::fromUtf8("pushButton_33"));
-        pushButton_33->setGeometry(QRect(301, 2, 27, 27));
-        pushButton_33->setAutoFillBackground(false);
-        pushButton_33->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"Material.elevation: 6\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/Yes-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_33->setText(QString::fromUtf8(""));
-        pushButton_33->setIconSize(QSize(28, 28));
-        pushButton_33->setFlat(false);
-        pushButton_34 = new QPushButton(MaterialsPage);
-        pushButton_34->setObjectName(QString::fromUtf8("pushButton_34"));
-        pushButton_34->setGeometry(QRect(272, 2, 27, 27));
-        pushButton_34->setAutoFillBackground(false);
-        pushButton_34->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/No-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_34->setText(QString::fromUtf8(""));
-        pushButton_34->setIconSize(QSize(28, 28));
-        pushButton_34->setFlat(false);
         stackedWidget->addWidget(MaterialsPage);
         InitialPage = new QWidget();
         InitialPage->setObjectName(QString::fromUtf8("InitialPage"));
@@ -1497,61 +984,6 @@ public:
         B1_TEdit_12->setStyleSheet(QString::fromUtf8("QPushButton#SetWorkDirBut { background-color: rgb(255, 255, 255) }"));
         B1_TEdit_12->setTabChangesFocus(true);
         B1_TEdit_12->setAcceptRichText(false);
-        pushButton_35 = new QPushButton(InitialPage);
-        pushButton_35->setObjectName(QString::fromUtf8("pushButton_35"));
-        pushButton_35->setGeometry(QRect(272, 2, 27, 27));
-        pushButton_35->setAutoFillBackground(false);
-        pushButton_35->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/No-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_35->setText(QString::fromUtf8(""));
-        pushButton_35->setIconSize(QSize(28, 28));
-        pushButton_35->setFlat(false);
-        pushButton_36 = new QPushButton(InitialPage);
-        pushButton_36->setObjectName(QString::fromUtf8("pushButton_36"));
-        pushButton_36->setGeometry(QRect(301, 2, 27, 27));
-        pushButton_36->setAutoFillBackground(false);
-        pushButton_36->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"Material.elevation: 6\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/Yes-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_36->setText(QString::fromUtf8(""));
-        pushButton_36->setIconSize(QSize(28, 28));
-        pushButton_36->setFlat(false);
         GeoB_InterfaceTable_5 = new QTableWidget(InitialPage);
         if (GeoB_InterfaceTable_5->columnCount() < 4)
             GeoB_InterfaceTable_5->setColumnCount(4);
@@ -1595,61 +1027,6 @@ public:
         stackedWidget->addWidget(BCPage);
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        pushButton_39 = new QPushButton(page);
-        pushButton_39->setObjectName(QString::fromUtf8("pushButton_39"));
-        pushButton_39->setGeometry(QRect(301, 2, 27, 27));
-        pushButton_39->setAutoFillBackground(false);
-        pushButton_39->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"Material.elevation: 6\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/Yes.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/Yes-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_39->setText(QString::fromUtf8(""));
-        pushButton_39->setIconSize(QSize(28, 28));
-        pushButton_39->setFlat(false);
-        pushButton_40 = new QPushButton(page);
-        pushButton_40->setObjectName(QString::fromUtf8("pushButton_40"));
-        pushButton_40->setGeometry(QRect(272, 2, 27, 27));
-        pushButton_40->setAutoFillBackground(false);
-        pushButton_40->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"    border-width: 0px;                         \n"
-"    padding: 0px 0px;\n"
-"    min-height: 25px;\n"
-"    min-width: 25px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    border-image: url(:/new/res/images/No.png) 25;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    color: lightgray;\n"
-"    border-image: url(:/new/res/images/No-invert.png) 25;\n"
-"    padding-top: 0px;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"\n"
-""));
-        pushButton_40->setText(QString::fromUtf8(""));
-        pushButton_40->setIconSize(QSize(28, 28));
-        pushButton_40->setFlat(false);
         label_17 = new QLabel(page);
         label_17->setObjectName(QString::fromUtf8("label_17"));
         label_17->setGeometry(QRect(10, 10, 141, 16));
@@ -1712,28 +1089,6 @@ public:
         stackedWidget->setCurrentIndex(12);
         ProjAccept->setDefault(true);
         ProjCancel->setDefault(true);
-        GeoA_Cancel->setDefault(true);
-        GeoA_Accept->setDefault(true);
-        GeoB_Cancel->setDefault(true);
-        GeoB_Accept->setDefault(true);
-        pushButton_19->setDefault(true);
-        pushButton_20->setDefault(true);
-        pushButton_21->setDefault(true);
-        pushButton_22->setDefault(true);
-        pushButton_23->setDefault(true);
-        pushButton_24->setDefault(true);
-        pushButton_25->setDefault(true);
-        pushButton_26->setDefault(true);
-        pushButton_29->setDefault(true);
-        pushButton_30->setDefault(true);
-        pushButton_31->setDefault(true);
-        pushButton_32->setDefault(true);
-        pushButton_33->setDefault(true);
-        pushButton_34->setDefault(true);
-        pushButton_35->setDefault(true);
-        pushButton_36->setDefault(true);
-        pushButton_39->setDefault(true);
-        pushButton_40->setDefault(true);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
