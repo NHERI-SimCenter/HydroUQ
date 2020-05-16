@@ -3002,6 +3002,12 @@ QSlider::handle:horizontal {
       <height>80</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="autoFillBackground">
      <bool>true</bool>
     </property>
@@ -3096,7 +3102,7 @@ QSlider::handle:horizontal {
   <customwidget>
    <class>MyOpenGLWidget</class>
    <extends>QWidget</extends>
-   <header location="global">myopenglwidget.h</header>
+   <header>myopenglwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
