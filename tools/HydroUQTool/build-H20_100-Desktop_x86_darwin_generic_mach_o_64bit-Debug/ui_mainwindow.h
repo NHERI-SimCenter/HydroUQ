@@ -29,7 +29,7 @@
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QWidget>
-#include <myopenglwidget.h>
+#include "myopenglwidget.h"
 
 QT_BEGIN_NAMESPACE
 

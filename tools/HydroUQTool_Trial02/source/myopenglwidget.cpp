@@ -201,7 +201,7 @@ void MyOpenGLWidget::defineobject()
     glEnd();
 
 
-    if(flag > 0)
+    if(flag == 0)
     {
         glColor3f(1, 0, 0);
         glBegin(GL_TRIANGLES);
