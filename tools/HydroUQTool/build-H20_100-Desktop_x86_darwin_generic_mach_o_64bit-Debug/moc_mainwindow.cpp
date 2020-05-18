@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../source/mainwindow.h"
+#include "../../HydroUQTool_old/source/mainwindow.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)

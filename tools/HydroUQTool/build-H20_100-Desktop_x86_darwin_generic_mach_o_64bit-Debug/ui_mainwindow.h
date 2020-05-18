@@ -29,7 +29,7 @@
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QWidget>
-#include <myopenglwidget.h>
+#include "myopenglwidget.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -1056,6 +1056,11 @@ public:
         HeaderGroup = new QGroupBox(centralwidget);
         HeaderGroup->setObjectName(QString::fromUtf8("HeaderGroup"));
         HeaderGroup->setGeometry(QRect(10, 10, 1501, 80));
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(HeaderGroup->sizePolicy().hasHeightForWidth());
+        HeaderGroup->setSizePolicy(sizePolicy);
         HeaderGroup->setAutoFillBackground(true);
         HeaderGroup->setAlignment(Qt::AlignCenter);
         HydroLogo = new QLabel(HeaderGroup);

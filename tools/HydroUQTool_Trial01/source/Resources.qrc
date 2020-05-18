@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/new">
+        <file>Images/FrontView.png</file>
+        <file>Images/SideView.png</file>
+        <file>Images/TopView.png</file>
+    </qresource>
+    <qresource prefix="/new/prefix1">
+        <file>Images/SimCenter_H2O_logo.png</file>
+        <file>Images/SimCenterLogo.png</file>
+        <file>Images/NSFLogo.png</file>
+        <file>Images/TopView.png</file>
+        <file>Images/FrontView.png</file>
+        <file>Images/SideView.png</file>
+        <file>Images/FrontView_v2.png</file>
+        <file>Images/SideView_2.png</file>
+        <file>Images/TopView_v2.png</file>
+    </qresource>
+</RCC>

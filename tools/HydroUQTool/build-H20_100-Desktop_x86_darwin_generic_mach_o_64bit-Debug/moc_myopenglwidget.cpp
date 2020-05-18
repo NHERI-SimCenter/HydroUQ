@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../source/myopenglwidget.h"
+#include "../../HydroUQTool_old/source/myopenglwidget.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
