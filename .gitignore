@@ -1,4 +1,3 @@
 
-tools/HydroUQTool/.DS_Store
-
+*.DS_Store
 *.user
