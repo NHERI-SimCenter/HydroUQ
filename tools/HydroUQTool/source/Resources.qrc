@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/FrontView_v2.png</file>
+        <file>images/NSFLogo.png</file>
+        <file>images/SimCenter_H2O_logo.png</file>
+        <file>images/SimCenterLogo.png</file>
+    </qresource>
+</RCC>
