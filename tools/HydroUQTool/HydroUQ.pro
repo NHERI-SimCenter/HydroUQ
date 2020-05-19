@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui 3dcore 3drender 3dinput 3dextras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,20 +17,30 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     bottomframe.cpp \
+    graphicsframe.cpp \
     main.cpp \
     mainwindow.cpp \
+    optionsframe.cpp \
     parameterframe.cpp \
+    qt3dFrame.cpp \
+    scenemodifier.cpp \
     topframe.cpp
 
 HEADERS += \
     bottomframe.h \
+    graphicsframe.h \
     mainwindow.h \
+    optionsframe.h \
     parameterframe.h \
+    qt3dFrame.h \
+    scenemodifier.h \
     topframe.h
 
 FORMS += \
     bottomframe.ui \
+    graphicsframe.ui \
     mainwindow.ui \
+    optionsframe.ui \
     parameterframe.ui \
     topframe.ui
 

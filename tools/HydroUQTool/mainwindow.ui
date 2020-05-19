@@ -51,17 +51,7 @@
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QFrame" name="paraFrame">
-      <property name="frameShape">
-       <enum>QFrame::Box</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Sunken</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QFrame" name="graphicsFrame">
+     <widget class="OptionsFrame" name="paraFrame">
       <property name="frameShape">
        <enum>QFrame::Box</enum>
       </property>
@@ -79,6 +69,9 @@
        <enum>QFrame::Sunken</enum>
       </property>
      </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QT3DFrame" name="Graphics" native="true"/>
     </item>
    </layout>
   </widget>
@@ -111,6 +104,18 @@
    <class>BottomFrame</class>
    <extends>QFrame</extends>
    <header>bottomframe.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OptionsFrame</class>
+   <extends>QFrame</extends>
+   <header>optionsframe.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QT3DFrame</class>
+   <extends>QWidget</extends>
+   <header>qt3dframe.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
