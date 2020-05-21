@@ -12,3 +12,9 @@ ParameterFrame::~ParameterFrame()
 {
     delete ui;
 }
+
+
+void ParameterFrame::on_SimOptions_itemClicked(QTreeWidgetItem *item, int column)
+{
+
+}

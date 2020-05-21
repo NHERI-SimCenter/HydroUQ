@@ -30,7 +30,7 @@
 
 #include <QtGui/QScreen>
 
-#include "qt3dframe.h"
+#include "qt3dFrame.h"
 #include "scenemodifier.h"
 
 QT3DFrame::QT3DFrame(QWidget *parent)
@@ -53,7 +53,7 @@ void QT3DFrame::initUI()
     QHBoxLayout *hLayout = new QHBoxLayout(this);
     QVBoxLayout *vLayout = new QVBoxLayout();
     vLayout->setAlignment(Qt::AlignTop);
-    hLayout->setMargin(0);
+    hLayout->setContentsMargins(0,0,0,0);
     hLayout->addWidget(container, 1);
     hLayout->addLayout(vLayout);
 
