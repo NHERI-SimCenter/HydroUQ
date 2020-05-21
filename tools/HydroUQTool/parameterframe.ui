@@ -39,6 +39,11 @@
    </property>
    <item row="2" column="0">
     <widget class="QLabel" name="Lbl_Descript">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -65,12 +70,78 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QTreeWidget" name="OptionTree">
+    <widget class="QTreeWidget" name="SimOptions">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <column>
       <property name="text">
-       <string notr="true">1</string>
+       <string notr="true">Simulation data</string>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
       </property>
      </column>
+     <item>
+      <property name="text">
+       <string>Project details</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Bathymetry</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Buildings</string>
+       </property>
+      </item>
+     </item>
+     <item>
+      <property name="text">
+       <string>Meshing</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Materials</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Initial conditions</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Boundary conditions</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Solvers</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Basic</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Advanced</string>
+       </property>
+      </item>
+     </item>
+     <item>
+      <property name="text">
+       <string>Post-processing</string>
+      </property>
+     </item>
     </widget>
    </item>
   </layout>

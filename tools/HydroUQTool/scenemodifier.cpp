@@ -7,6 +7,7 @@ SceneModifier::SceneModifier(Qt3DCore::QEntity *rootEntity)
     : m_rootEntity(rootEntity)
 {
 
+    /*
     // Torus shape data
     //! [0]
     m_torus = new Qt3DExtras::QTorusMesh();
@@ -82,13 +83,15 @@ SceneModifier::SceneModifier(Qt3DCore::QEntity *rootEntity)
     m_cylinderEntity->addComponent(cylinderMaterial);
     m_cylinderEntity->addComponent(cylinderTransform);
 
+    */
+
     // Cuboid shape data
     Qt3DExtras::QCuboidMesh *cuboid = new Qt3DExtras::QCuboidMesh();
 
     // CuboidMesh Transform
     Qt3DCore::QTransform *cuboidTransform = new Qt3DCore::QTransform();
     cuboidTransform->setScale(4.0f);
-    cuboidTransform->setTranslation(QVector3D(5.0f, -4.0f, 0.0f));
+    cuboidTransform->setTranslation(QVector3D(0.0f, -4.0f, -1.0f));
 
     Qt3DExtras::QPhongMaterial *cuboidMaterial = new Qt3DExtras::QPhongMaterial();
     cuboidMaterial->setDiffuse(QColor(QRgb(0x665423)));
@@ -98,6 +101,8 @@ SceneModifier::SceneModifier(Qt3DCore::QEntity *rootEntity)
     m_cuboidEntity->addComponent(cuboid);
     m_cuboidEntity->addComponent(cuboidMaterial);
     m_cuboidEntity->addComponent(cuboidTransform);
+
+    /*
 
     // Plane shape data
     Qt3DExtras::QPlaneMesh *planeMesh = new Qt3DExtras::QPlaneMesh();
@@ -139,6 +144,8 @@ SceneModifier::SceneModifier(Qt3DCore::QEntity *rootEntity)
     m_sphereEntity->addComponent(sphereMesh);
     m_sphereEntity->addComponent(sphereMaterial);
     m_sphereEntity->addComponent(sphereTransform);
+
+    */
 }
 
 SceneModifier::~SceneModifier()
