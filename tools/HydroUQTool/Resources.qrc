@@ -5,5 +5,7 @@
         <file>images/SimCenter_H2O_logo.png</file>
         <file>images/SimCenterLogo.png</file>
         <file>images/Logo.png</file>
+        <file>images/SideView_2.png</file>
+        <file>images/TopView_v2.png</file>
     </qresource>
 </RCC>

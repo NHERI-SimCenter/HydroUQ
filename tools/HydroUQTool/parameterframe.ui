@@ -104,6 +104,11 @@
      </item>
      <item>
       <property name="text">
+       <string>Floating bodies</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>Meshing</string>
       </property>
      </item>
