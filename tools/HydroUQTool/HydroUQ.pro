@@ -51,3 +51,4 @@ RESOURCES += \
 
 INCLUDEPATH += \
     dependencies/Eigen
+    dependencies/rapidjson

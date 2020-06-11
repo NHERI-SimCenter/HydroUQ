@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "dependencies/rapidjson/document.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

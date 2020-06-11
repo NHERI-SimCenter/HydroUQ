@@ -15,6 +15,10 @@ public:
     explicit OptionsFrame(QWidget *parent = nullptr);
     ~OptionsFrame();
 
+private slots:
+
+    void on_But_GenFiles_clicked();
+
 private:
     Ui::OptionsFrame *ui;
 };
