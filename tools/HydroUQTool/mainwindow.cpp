@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "optionsframe.h"
-#include "ui_optionsframe.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,4 +11,10 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+// Accessor function to get the toolname
+std::string MainWindow::gettoolname()
+{
+    return toolname;
 }

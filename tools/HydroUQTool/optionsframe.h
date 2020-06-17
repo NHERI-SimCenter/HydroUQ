@@ -2,6 +2,7 @@
 #define OPTIONSFRAME_H
 
 #include <QFrame>
+#include <QDebug>
 
 namespace Ui {
 class OptionsFrame;
@@ -15,9 +16,13 @@ public:
     explicit OptionsFrame(QWidget *parent = nullptr);
     ~OptionsFrame();
 
-private slots:
+public slots:
+    void Listen();
 
+private slots:
     void on_But_GenFiles_clicked();
+
+    void on_But_AA_WDir_clicked();
 
 private:
     Ui::OptionsFrame *ui;

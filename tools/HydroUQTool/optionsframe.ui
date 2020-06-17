@@ -30,9 +30,9 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QStackedWidget" name="stackedWidget">
+    <widget class="QStackedWidget" name="OptionsStack">
      <property name="currentIndex">
-      <number>21</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="AA_ProjSettings">
       <layout class="QVBoxLayout" name="verticalLayout">

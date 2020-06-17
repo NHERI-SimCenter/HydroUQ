@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "dependencies/rapidjson/document.h"
+//#include "dependencies/rapidjson/document.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,8 +16,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    std::string gettoolname();
+
+protected:
+    //std::string toolname = "H20-UQ";
+
 private:
     Ui::MainWindow *ui;
+    std::string toolname = "H20-UQ";
+
 
 };
 #endif // MAINWINDOW_H
