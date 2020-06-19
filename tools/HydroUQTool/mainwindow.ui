@@ -435,7 +435,7 @@
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>22</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="AA_ProjSettings">
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -485,6 +485,12 @@
            </item>
            <item>
             <widget class="QPushButton" name="Btn_AA_WDir">
+             <property name="toolTip">
+              <string>Set the working directory where all files are stored</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="text">
               <string>
 Set working directory (Not set)
@@ -507,7 +513,14 @@ Set working directory (Not set)
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="Led_AA_PName"/>
+            <widget class="QLineEdit" name="Led_AA_PName">
+             <property name="toolTip">
+              <string>Provide a project name.</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLabel" name="Lbl_AA_PDesc">
@@ -530,6 +543,12 @@ Set working directory (Not set)
                <pointsize>14</pointsize>
               </font>
              </property>
+             <property name="toolTip">
+              <string>Add a project description</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="tabChangesFocus">
               <bool>true</bool>
              </property>
@@ -551,6 +570,12 @@ Set working directory (Not set)
            </item>
            <item>
             <widget class="QComboBox" name="CmB_AA_SimType">
+             <property name="toolTip">
+              <string>Choose the type of simulation to be done</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <item>
               <property name="text">
                <string>Choose simulation type</string>
@@ -609,6 +634,12 @@ Set working directory (Not set)
            </item>
            <item>
             <widget class="QComboBox" name="CmB_AA_TurbModel">
+             <property name="toolTip">
+              <string>Choose the turbulence model to be used</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <item>
               <property name="text">
                <string>Laminar</string>
@@ -692,6 +723,12 @@ Set working directory (Not set)
            </item>
            <item>
             <widget class="QPushButton" name="Btn_BA_SelFiles">
+             <property name="toolTip">
+              <string>Select the bathymetric files to be used</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="text">
               <string>
 Select bathymetry files
@@ -700,19 +737,13 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="Lbl_BA_FileType">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bathymetric data file type&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QComboBox" name="CmB_BA_FileType">
+             <property name="toolTip">
+              <string>Select the format of the bathymetric files uploaded</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <item>
               <property name="text">
                <string>Select Bathymetric file type</string>
@@ -753,7 +784,28 @@ Select bathymetry files
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="Btn_BA_UploadSolution">
+             <property name="toolTip">
+              <string>Upload the shallow water solver solution files</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
+             <property name="text">
+              <string>
+Select solution files 
+</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QComboBox" name="Cmb_BA_Solver">
+             <property name="toolTip">
+              <string>Select the shallow water solver used to generate the solutions</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <item>
               <property name="text">
                <string>Select SW solver used</string>
@@ -772,19 +824,13 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="Lbl_BA_SolFormat">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;SW solutions file format&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QComboBox" name="CmB_BA_SolFormat">
+             <property name="toolTip">
+              <string>Select the format of the solutions files uploaded</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <item>
               <property name="text">
                <string>Choose solution file format</string>
@@ -829,6 +875,12 @@ Select bathymetry files
                <pointsize>14</pointsize>
               </font>
              </property>
+             <property name="toolTip">
+              <string>Check this to upload a .csv file with interface points</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="text">
               <string>Upload points file</string>
              </property>
@@ -839,6 +891,12 @@ Select bathymetry files
            </item>
            <item>
             <widget class="QPushButton" name="Btn_BA_UploadFile">
+             <property name="toolTip">
+              <string>Upload the .csv files with interface points</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="text">
               <string>
 Select interface points file 
@@ -848,8 +906,11 @@ Select interface points file
            </item>
            <item>
             <widget class="QStackedWidget" name="SWg_BA_Interface">
+             <property name="toolTip">
+              <string>Add points to the interface on Side 1</string>
+             </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>3</number>
              </property>
              <widget class="QWidget" name="Pg1_BA_Entry">
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -889,13 +950,34 @@ Select interface points file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BA_EntryNx"/>
+                  <widget class="QLineEdit" name="Led_BA_EntryNx">
+                   <property name="toolTip">
+                    <string>Provide X-component of normal pointing into the CFD domain and related to the entry interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BA_EntryNy"/>
+                  <widget class="QLineEdit" name="Led_BA_EntryNy">
+                   <property name="toolTip">
+                    <string>Provide Y-component of normal pointing into the CFD domain and related to the entry interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BA_EntryNz"/>
+                  <widget class="QLineEdit" name="Led_BA_EntryNz">
+                   <property name="toolTip">
+                    <string>Provide Z-component of normal pointing into the CFD domain and related to the entry interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -905,6 +987,12 @@ Select interface points file
                   <font>
                    <pointsize>14</pointsize>
                   </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>Add the points on the entry interface</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
                  </property>
                  <column>
                   <property name="text">
@@ -922,6 +1010,12 @@ Select interface points file
                 <layout class="QHBoxLayout" name="HLY_BA_EntryAddPt">
                  <item>
                   <widget class="QToolButton" name="Btn_BA_EntryAddPt">
+                   <property name="toolTip">
+                    <string>Add points to the entry interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Add point</string>
                    </property>
@@ -929,6 +1023,12 @@ Select interface points file
                  </item>
                  <item>
                   <widget class="QToolButton" name="Btn_BA_EntryRemPt">
+                   <property name="toolTip">
+                    <string>Remove points from the entry interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -976,13 +1076,34 @@ Select interface points file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BA_ExitNx"/>
+                  <widget class="QLineEdit" name="Led_BA_ExitNx">
+                   <property name="toolTip">
+                    <string>Provide X-component of normal pointing into the CFD domain and related to the exit interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BA_ExitNy"/>
+                  <widget class="QLineEdit" name="Led_BA_ExitNy">
+                   <property name="toolTip">
+                    <string>Provide Y-component of normal pointing into the CFD domain and related to the exit interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BA_ExitNz"/>
+                  <widget class="QLineEdit" name="Led_BA_ExitNz">
+                   <property name="toolTip">
+                    <string>Provide Z-component of normal pointing into the CFD domain and related to the exit interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -992,6 +1113,12 @@ Select interface points file
                   <font>
                    <pointsize>14</pointsize>
                   </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>Provide the points on the exit interface</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
                  </property>
                  <column>
                   <property name="text">
@@ -1009,6 +1136,12 @@ Select interface points file
                 <layout class="QHBoxLayout" name="HLY_BA_ExitAddPt">
                  <item>
                   <widget class="QToolButton" name="Btn_BA_ExitAddPt">
+                   <property name="toolTip">
+                    <string>Add points on the exit interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Add point</string>
                    </property>
@@ -1016,6 +1149,12 @@ Select interface points file
                  </item>
                  <item>
                   <widget class="QToolButton" name="Btn_BA_ExitRemPt">
+                   <property name="toolTip">
+                    <string>Remove points on the exit interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -1063,13 +1202,34 @@ Select interface points file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BA_S01Nx"/>
+                  <widget class="QLineEdit" name="Led_BA_S01Nx">
+                   <property name="toolTip">
+                    <string>Provide X-component of normal pointing into the CFD domain and related to the Side 1 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BA_S01Ny"/>
+                  <widget class="QLineEdit" name="Led_BA_S01Ny">
+                   <property name="toolTip">
+                    <string>Provide Y-component of normal pointing into the CFD domain and related to the Side 1 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BA_S01Nz"/>
+                  <widget class="QLineEdit" name="Led_BA_S01Nz">
+                   <property name="toolTip">
+                    <string>Provide Z-component of normal pointing into the CFD domain and related to the Side 1 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -1079,6 +1239,12 @@ Select interface points file
                   <font>
                    <pointsize>14</pointsize>
                   </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>Provide the points on the interface on Side 1</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
                  </property>
                  <column>
                   <property name="text">
@@ -1096,6 +1262,12 @@ Select interface points file
                 <layout class="QHBoxLayout" name="HLY_BA_S01AddPt">
                  <item>
                   <widget class="QToolButton" name="Btn_BA_S01AddPt">
+                   <property name="toolTip">
+                    <string>Add points to the interface on Side 1</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Add point</string>
                    </property>
@@ -1103,6 +1275,12 @@ Select interface points file
                  </item>
                  <item>
                   <widget class="QToolButton" name="Btn_BA_S01RemPt">
+                   <property name="toolTip">
+                    <string>Remove points to the interface on Side 1</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -1150,13 +1328,34 @@ Select interface points file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BA_S02Nx"/>
+                  <widget class="QLineEdit" name="Led_BA_S02Nx">
+                   <property name="toolTip">
+                    <string>Provide X-component of normal pointing into the CFD domain and related to the Side 2 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BA_S02Ny"/>
+                  <widget class="QLineEdit" name="Led_BA_S02Ny">
+                   <property name="toolTip">
+                    <string>Provide Y-component of normal pointing into the CFD domain and related to the Side 2 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BA_S02Nz"/>
+                  <widget class="QLineEdit" name="Led_BA_S02Nz">
+                   <property name="toolTip">
+                    <string>Provide Z-component of normal pointing into the CFD domain and related to the Side 2 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -1166,6 +1365,12 @@ Select interface points file
                   <font>
                    <pointsize>14</pointsize>
                   </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>Provide the points on the interface on Side 2</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
                  </property>
                  <column>
                   <property name="text">
@@ -1183,6 +1388,12 @@ Select interface points file
                 <layout class="QHBoxLayout" name="HLY_BA_S02AddPt">
                  <item>
                   <widget class="QToolButton" name="Btn_BA_S02AddPt">
+                   <property name="toolTip">
+                    <string>Add points to the interface on Side 2</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Add point</string>
                    </property>
@@ -1190,6 +1401,12 @@ Select interface points file
                  </item>
                  <item>
                   <widget class="QToolButton" name="Btn_BA_S02RemPt">
+                   <property name="toolTip">
+                    <string>Remove points to the interface on Side 2</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -1218,6 +1435,12 @@ Select interface points file
              </item>
              <item>
               <widget class="QPushButton" name="Btn_BA_Previous">
+               <property name="toolTip">
+                <string>Move to the previous interface</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton {
     border-image: url(:/images/images/previous.png) 10;
@@ -1247,6 +1470,12 @@ QPushButton:pressed {
              </item>
              <item>
               <widget class="QPushButton" name="Btn_BA_Next">
+               <property name="toolTip">
+                <string>Move to the next interface</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton {
     border-image: url(:/images/images/next.png) 10;
@@ -3459,7 +3688,7 @@ shallow water solvers</string>
            <item>
             <widget class="QStackedWidget" name="SWg_HB_BConditions">
              <property name="currentIndex">
-              <number>3</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="Pg1_HB_North">
               <layout class="QVBoxLayout" name="verticalLayout_33">
@@ -6224,6 +6453,213 @@ Submit to TACC
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>Btn_BA_SelFiles</tabstop>
+  <tabstop>CmB_BA_FileType</tabstop>
+  <tabstop>Cmb_BA_Solver</tabstop>
+  <tabstop>CmB_BA_SolFormat</tabstop>
+  <tabstop>ChB_BA_UploadBox</tabstop>
+  <tabstop>Btn_BA_UploadFile</tabstop>
+  <tabstop>Led_BA_EntryNx</tabstop>
+  <tabstop>Led_BA_EntryNy</tabstop>
+  <tabstop>Led_BA_EntryNz</tabstop>
+  <tabstop>Btn_BA_EntryAddPt</tabstop>
+  <tabstop>Btn_BA_EntryRemPt</tabstop>
+  <tabstop>Tbl_BA_EntryIntePt</tabstop>
+  <tabstop>Btn_BA_Previous</tabstop>
+  <tabstop>Btn_BA_Next</tabstop>
+  <tabstop>Led_BA_ExitNx</tabstop>
+  <tabstop>Led_BA_ExitNy</tabstop>
+  <tabstop>Led_BA_ExitNz</tabstop>
+  <tabstop>Btn_BA_ExitAddPt</tabstop>
+  <tabstop>Btn_BA_ExitRemPt</tabstop>
+  <tabstop>Tbl_BA_ExitInterPt</tabstop>
+  <tabstop>Led_BA_S01Nx</tabstop>
+  <tabstop>Led_BA_S01Ny</tabstop>
+  <tabstop>Led_BA_S01Nz</tabstop>
+  <tabstop>Btn_BA_S01AddPt</tabstop>
+  <tabstop>Btn_BA_S01RemPt</tabstop>
+  <tabstop>Tbl_BA_S01IntePt</tabstop>
+  <tabstop>Led_BA_S02Nx</tabstop>
+  <tabstop>Led_BA_S02Ny</tabstop>
+  <tabstop>Led_BA_S02Nz</tabstop>
+  <tabstop>Btn_BA_S02AddPt</tabstop>
+  <tabstop>Btn_BA_S02RemPt</tabstop>
+  <tabstop>Tbl_BA_S02IntePt</tabstop>
+  <tabstop>CmB_BB_Library</tabstop>
+  <tabstop>ChB_BB_UploadFile</tabstop>
+  <tabstop>Btn_BB_UploadFile</tabstop>
+  <tabstop>Led_BB_Entrynx</tabstop>
+  <tabstop>Led_BB_Entryny</tabstop>
+  <tabstop>Led_BB_Entrynz</tabstop>
+  <tabstop>But_BB_EntryAddPoint</tabstop>
+  <tabstop>But_BB_EntryRemPoint</tabstop>
+  <tabstop>Tbl_BA_EntryIntePt_2</tabstop>
+  <tabstop>Btn_BB_Previous</tabstop>
+  <tabstop>Btn_BB_Next</tabstop>
+  <tabstop>Led_BB_ExitNx</tabstop>
+  <tabstop>Led_BB_ExitNy</tabstop>
+  <tabstop>Led_BB_ExitNz</tabstop>
+  <tabstop>Btn_BB_EntryAddPt</tabstop>
+  <tabstop>Btn_BB_EntryRemPt</tabstop>
+  <tabstop>Tbl_BB_ExitIntePt</tabstop>
+  <tabstop>Lbl_BB_S01Nx</tabstop>
+  <tabstop>Lbl_BB_S01Ny</tabstop>
+  <tabstop>Lbl_BB_S01Nz</tabstop>
+  <tabstop>Btn_BB_S01AddPt</tabstop>
+  <tabstop>Btn_BB_S01RemPt</tabstop>
+  <tabstop>Lbl_BB_S01IntePt</tabstop>
+  <tabstop>Led_BB_S01Nx</tabstop>
+  <tabstop>Led_BB_S01Ny</tabstop>
+  <tabstop>Led_BB_S01Nz</tabstop>
+  <tabstop>Btn_BB_S02AddPt</tabstop>
+  <tabstop>Btn_BB_S02RemPt</tabstop>
+  <tabstop>Tbl_BB_S02IntePt</tabstop>
+  <tabstop>Btn_BC_FileUpload</tabstop>
+  <tabstop>Cmb_BC_BathFileType</tabstop>
+  <tabstop>Led_BD_Depth</tabstop>
+  <tabstop>Led_BD_Breadth</tabstop>
+  <tabstop>Btn_BD_AddSeg</tabstop>
+  <tabstop>HLY_BD_RemSeg</tabstop>
+  <tabstop>Tbl_BD_Segments</tabstop>
+  <tabstop>Btn_CA_AddBuild</tabstop>
+  <tabstop>Btn_CA_RemBuild</tabstop>
+  <tabstop>Tbl_CA_Building</tabstop>
+  <tabstop>Cmb_EAMeshType</tabstop>
+  <tabstop>Btn_EA_UploadMesh</tabstop>
+  <tabstop>HSl_EA_MeshSize</tabstop>
+  <tabstop>Btn_EA_AddRegion</tabstop>
+  <tabstop>Btn_EA_RemRegion</tabstop>
+  <tabstop>Tbl_EA_Regions</tabstop>
+  <tabstop>Led_FA_WaterVisc</tabstop>
+  <tabstop>Led_FA_WaterDensity</tabstop>
+  <tabstop>Led_FA_AirVisc</tabstop>
+  <tabstop>Led_FA_AirDen</tabstop>
+  <tabstop>Led_FA_SurfTen</tabstop>
+  <tabstop>Lbl_GA_Vy</tabstop>
+  <tabstop>Lbl_GA_Vz</tabstop>
+  <tabstop>Lbl_GA_Vx</tabstop>
+  <tabstop>Led_GA_Pressure</tabstop>
+  <tabstop>Led_GA_Alpha</tabstop>
+  <tabstop>Btn_GA_AddRegion</tabstop>
+  <tabstop>Btn_GA_RemRegion</tabstop>
+  <tabstop>Tbl_GA_IniCondTable</tabstop>
+  <tabstop>Cmb_HB_NorthVelBC</tabstop>
+  <tabstop>Btn_HB_NorthUploadFile</tabstop>
+  <tabstop>Cmb_HB_NorthWaveType</tabstop>
+  <tabstop>Led_HB_NorthUx</tabstop>
+  <tabstop>Led_HB_Northy</tabstop>
+  <tabstop>Led_HB_NorthUz</tabstop>
+  <tabstop>Led_HB_NorthOriginX</tabstop>
+  <tabstop>Led_HB_NorthOriginY</tabstop>
+  <tabstop>Led_HB_NorthOriginZ</tabstop>
+  <tabstop>Led_HB_NorthVecX</tabstop>
+  <tabstop>Led_HB_NorthVecY</tabstop>
+  <tabstop>Led_HB_NorthVecZ</tabstop>
+  <tabstop>Cmb_HB_NorthPresBC</tabstop>
+  <tabstop>Led_HB_NorthPres</tabstop>
+  <tabstop>Btn_HB_Previous</tabstop>
+  <tabstop>Btn_HB_Next</tabstop>
+  <tabstop>Cmb_HB_SouthUBC</tabstop>
+  <tabstop>Btn_HB_SouthUploadFile</tabstop>
+  <tabstop>Cmb_HB_SouthWaveType</tabstop>
+  <tabstop>Led_HB_SouthUx</tabstop>
+  <tabstop>Led_HB_SouthUy</tabstop>
+  <tabstop>Led_HB_SouthUz</tabstop>
+  <tabstop>Led_HB_SouthOriginX</tabstop>
+  <tabstop>Led_HB_SouthOriginY</tabstop>
+  <tabstop>Led_HB_SouthOriginZ</tabstop>
+  <tabstop>Led_HB_SouthVecX</tabstop>
+  <tabstop>Led_HB_SouthVecY</tabstop>
+  <tabstop>Led_HB_SouthVecZ</tabstop>
+  <tabstop>Cmb_HB_SouthPreBC</tabstop>
+  <tabstop>Led_HB_SouthPres</tabstop>
+  <tabstop>Cmb_HB_EastUBC</tabstop>
+  <tabstop>Btn_HB_EastUploadFile</tabstop>
+  <tabstop>Cmb_HB_EastWaveType</tabstop>
+  <tabstop>Led_HB_EastUx</tabstop>
+  <tabstop>Led_HB_EastUy</tabstop>
+  <tabstop>Led_HB_EastUz</tabstop>
+  <tabstop>Led_HB_EastOriginX</tabstop>
+  <tabstop>Led_HB_EastOriginY</tabstop>
+  <tabstop>Led_HB_EastOriginZ</tabstop>
+  <tabstop>Led_HB_EastVecX</tabstop>
+  <tabstop>Led_HB_EastVecY</tabstop>
+  <tabstop>Led_HB_EastVecZ</tabstop>
+  <tabstop>Cmb_HB_EastPresBC</tabstop>
+  <tabstop>Led_HB_EastPres</tabstop>
+  <tabstop>Cmb_HB_WestUBC</tabstop>
+  <tabstop>Lbl_HB_WestUploadFile</tabstop>
+  <tabstop>Cmb_HB_WestWaveType</tabstop>
+  <tabstop>Led_HB_WestUx</tabstop>
+  <tabstop>Led_HB_WestUy</tabstop>
+  <tabstop>Led_HB_WestUz</tabstop>
+  <tabstop>Led_HB_WestOriginX</tabstop>
+  <tabstop>Led_HB_WestOriginY</tabstop>
+  <tabstop>Led_HB_WestOriginZ</tabstop>
+  <tabstop>Led_HB_WestVecX</tabstop>
+  <tabstop>Led_HB_WestVecY</tabstop>
+  <tabstop>Led_HB_WestVecZ</tabstop>
+  <tabstop>Cmb_HB_WestPresBC</tabstop>
+  <tabstop>Led_HB_WestPres</tabstop>
+  <tabstop>Cmb_HC_EntryUBC</tabstop>
+  <tabstop>Btn_HC_EntryUploadFile</tabstop>
+  <tabstop>Cmb_HC_EntryWaveType</tabstop>
+  <tabstop>Led_HC_EntryUz</tabstop>
+  <tabstop>Led_HC_EntryUx</tabstop>
+  <tabstop>Led_HC_EntryUy</tabstop>
+  <tabstop>Led_HC_EntryOriginX</tabstop>
+  <tabstop>Led_HC_EntryOriginY</tabstop>
+  <tabstop>Led_HC_EntryOriginZ</tabstop>
+  <tabstop>Led_HC_EntryVecX</tabstop>
+  <tabstop>Led_HC_EntryVecY</tabstop>
+  <tabstop>Led_HC_EntryVecZ</tabstop>
+  <tabstop>Cmb_HC_EntryPresBC</tabstop>
+  <tabstop>Led_HC_EntryPres</tabstop>
+  <tabstop>Btn_HC_Previous</tabstop>
+  <tabstop>Btn_HC_Next</tabstop>
+  <tabstop>Cmb_HC_ExitUBC</tabstop>
+  <tabstop>Btn_HC_ExitUploadFile</tabstop>
+  <tabstop>Cmb_HC_ExitWaveType</tabstop>
+  <tabstop>Led_HC_ExitUx</tabstop>
+  <tabstop>Led_HC_ExitUy</tabstop>
+  <tabstop>Led_HC_ExitUz</tabstop>
+  <tabstop>Led_HC_ExitOriginX</tabstop>
+  <tabstop>Led_HC_ExitOriginY</tabstop>
+  <tabstop>Led_HC_ExitOriginZ</tabstop>
+  <tabstop>Led_HC_ExitVecX</tabstop>
+  <tabstop>Led_HC_ExitVecY</tabstop>
+  <tabstop>Led_HC_ExitVecZ</tabstop>
+  <tabstop>Cmb_HC_ExitPresBC</tabstop>
+  <tabstop>Led_HC_ExitPres</tabstop>
+  <tabstop>Led_IA_Start</tabstop>
+  <tabstop>Led_IA_End</tabstop>
+  <tabstop>Led_IA_DeltaT</tabstop>
+  <tabstop>Led_IA_WriteT</tabstop>
+  <tabstop>ChB_IA_Restart</tabstop>
+  <tabstop>Btn_IA_UploadFiles</tabstop>
+  <tabstop>Cmb_IA_Solver</tabstop>
+  <tabstop>Cmb_IB_Decomp</tabstop>
+  <tabstop>Led_IB_SubdomainsX</tabstop>
+  <tabstop>Led_IB_SubdomainsY</tabstop>
+  <tabstop>Led_IB_SubdomainsZ</tabstop>
+  <tabstop>Led_JA_Jobname</tabstop>
+  <tabstop>Cmb_JA_ServerType</tabstop>
+  <tabstop>Cmb_JA_QType</tabstop>
+  <tabstop>Led_JA_Cores</tabstop>
+  <tabstop>Led_JA_WallTimeHH</tabstop>
+  <tabstop>Led_JA_WallTimeMM</tabstop>
+  <tabstop>Led_JA_WallTimeSS</tabstop>
+  <tabstop>Led_JA_Email</tabstop>
+  <tabstop>Btn_JA_GenFiles</tabstop>
+  <tabstop>Btn_JA_SubTACC</tabstop>
+  <tabstop>SimOptions</tabstop>
+  <tabstop>Btn_AA_WDir</tabstop>
+  <tabstop>Led_AA_PName</tabstop>
+  <tabstop>CmB_AA_SimType</tabstop>
+  <tabstop>CmB_AA_TurbModel</tabstop>
+  <tabstop>Led_AA_PDesc</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
