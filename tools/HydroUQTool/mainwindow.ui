@@ -435,7 +435,7 @@
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>14</number>
+          <number>22</number>
          </property>
          <widget class="QWidget" name="AA_ProjSettings">
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -3459,7 +3459,7 @@ shallow water solvers</string>
            <item>
             <widget class="QStackedWidget" name="SWg_HB_BConditions">
              <property name="currentIndex">
-              <number>1</number>
+              <number>3</number>
              </property>
              <widget class="QWidget" name="Pg1_HB_North">
               <layout class="QVBoxLayout" name="verticalLayout_33">
@@ -3503,7 +3503,7 @@ shallow water solvers</string>
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="Cmb_HB_NorthUBC">
+                <widget class="QComboBox" name="Cmb_HB_NorthVelBC">
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -3552,7 +3552,7 @@ shallow water solvers</string>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="Lbl_HB_NorthUploadFile">
+                <widget class="QPushButton" name="Btn_HB_NorthUploadFile">
                  <property name="text">
                   <string>
 Upload files
@@ -3678,7 +3678,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="Cmb_HB_NorthPreBC">
+                <widget class="QComboBox" name="Cmb_HB_NorthPresBC">
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -3727,7 +3727,7 @@ Upload files
                </item>
               </layout>
              </widget>
-             <widget class="QWidget" name="Pg1_HB_South">
+             <widget class="QWidget" name="Pg2_HB_South">
               <layout class="QVBoxLayout" name="verticalLayout_34">
                <property name="leftMargin">
                 <number>0</number>
@@ -3742,7 +3742,7 @@ Upload files
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_11">
+                <widget class="QLabel" name="Lbl_HB_South">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -3756,7 +3756,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_48">
+                <widget class="QLabel" name="Lbl_HB_SouthVelBC">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -3769,7 +3769,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_15">
+                <widget class="QComboBox" name="Cmb_HB_SouthUBC">
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -3818,7 +3818,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton_31">
+                <widget class="QPushButton" name="Btn_HB_SouthUploadFile">
                  <property name="text">
                   <string>
 Upload files
@@ -3827,7 +3827,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_14">
+                <widget class="QComboBox" name="Cmb_HB_SouthWaveType">
                  <item>
                   <property name="text">
                    <string>Airy</string>
@@ -3856,9 +3856,9 @@ Upload files
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_72">
+                <layout class="QHBoxLayout" name="HLY_HB_SouthU">
                  <item>
-                  <widget class="QLabel" name="label_52">
+                  <widget class="QLabel" name="Lbl_HB_SouthU">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -3870,20 +3870,20 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_93"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthUx"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_94"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthUy"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_95"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthUz"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_71">
+                <layout class="QHBoxLayout" name="HLY_HB_SouthOrigin">
                  <item>
-                  <widget class="QLabel" name="label_51">
+                  <widget class="QLabel" name="Lbl_HB_SouthOrigin">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -3895,20 +3895,20 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_90"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthOriginX"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_91"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthOriginY"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_92"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthOriginZ"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_73">
+                <layout class="QHBoxLayout" name="HLY_HB_SouthVec">
                  <item>
-                  <widget class="QLabel" name="label_53">
+                  <widget class="QLabel" name="Lbl_HB_SouthVec">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -3920,18 +3920,18 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_96"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthVecX"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_97"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthVecY"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_98"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthVecZ"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <widget class="QLabel" name="label_49">
+                <widget class="QLabel" name="Lbl_HB_SouthPresBC">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -3944,7 +3944,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_16">
+                <widget class="QComboBox" name="Cmb_HB_SouthPreBC">
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -3973,9 +3973,9 @@ Upload files
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_70" stretch="1,1">
+                <layout class="QHBoxLayout" name="HLY_HB_SouthPres" stretch="1,1">
                  <item>
-                  <widget class="QLabel" name="label_50">
+                  <widget class="QLabel" name="Lbl_HB_SouthPres">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -3987,13 +3987,13 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_89"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthPres"/>
                  </item>
                 </layout>
                </item>
               </layout>
              </widget>
-             <widget class="QWidget" name="C_East">
+             <widget class="QWidget" name="Pg3_HB_East">
               <layout class="QVBoxLayout" name="verticalLayout_35">
                <property name="leftMargin">
                 <number>0</number>
@@ -4008,7 +4008,7 @@ Upload files
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_12">
+                <widget class="QLabel" name="Lbl_HB_East">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -4022,7 +4022,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_34">
+                <widget class="QLabel" name="Lbl_HB_EastVelBC">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -4035,7 +4035,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_10">
+                <widget class="QComboBox" name="Cmb_HB_EastUBC">
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -4084,7 +4084,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton_29">
+                <widget class="QPushButton" name="Btn_HB_EastUploadFile">
                  <property name="text">
                   <string>
 Upload files
@@ -4093,7 +4093,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_9">
+                <widget class="QComboBox" name="Cmb_HB_EastWaveType">
                  <item>
                   <property name="text">
                    <string>Airy</string>
@@ -4122,9 +4122,9 @@ Upload files
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_57">
+                <layout class="QHBoxLayout" name="HLY_HB_EastU">
                  <item>
-                  <widget class="QLabel" name="label_41">
+                  <widget class="QLabel" name="Lbl_HB_EastU">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -4136,20 +4136,20 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_76"/>
+                  <widget class="QLineEdit" name="Led_HB_EastUx"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_77"/>
+                  <widget class="QLineEdit" name="Led_HB_EastUy"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_78"/>
+                  <widget class="QLineEdit" name="Led_HB_EastUz"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_65">
+                <layout class="QHBoxLayout" name="HLY_HB_EastOrigin">
                  <item>
-                  <widget class="QLabel" name="label_38">
+                  <widget class="QLabel" name="Lbl_HB_EastOrigin">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -4161,20 +4161,20 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_68"/>
+                  <widget class="QLineEdit" name="Led_HB_EastOriginX"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_69"/>
+                  <widget class="QLineEdit" name="Led_HB_EastOriginY"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_72"/>
+                  <widget class="QLineEdit" name="Led_HB_EastOriginZ"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_66">
+                <layout class="QHBoxLayout" name="HLY_HB_EastVec">
                  <item>
-                  <widget class="QLabel" name="label_40">
+                  <widget class="QLabel" name="Lbl_HB_EastVec">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -4186,18 +4186,18 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_73"/>
+                  <widget class="QLineEdit" name="Led_HB_EastVecX"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_74"/>
+                  <widget class="QLineEdit" name="Led_HB_EastVecY"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_75"/>
+                  <widget class="QLineEdit" name="Led_HB_EastVecZ"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <widget class="QLabel" name="label_39">
+                <widget class="QLabel" name="Lbl_HB_EastPresBC">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -4210,7 +4210,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_8">
+                <widget class="QComboBox" name="Cmb_HB_EastPresBC">
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -4239,9 +4239,9 @@ Upload files
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_64" stretch="1,1">
+                <layout class="QHBoxLayout" name="HLY_HB_EastPres" stretch="1,1">
                  <item>
-                  <widget class="QLabel" name="label_37">
+                  <widget class="QLabel" name="Lbl_HB_EastPres">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -4253,13 +4253,13 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_71"/>
+                  <widget class="QLineEdit" name="Led_HB_EastPres"/>
                  </item>
                 </layout>
                </item>
               </layout>
              </widget>
-             <widget class="QWidget" name="D_West">
+             <widget class="QWidget" name="Pg4_HB_West">
               <layout class="QVBoxLayout" name="verticalLayout_36">
                <property name="leftMargin">
                 <number>0</number>
@@ -4274,7 +4274,7 @@ Upload files
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_13">
+                <widget class="QLabel" name="Lbl_HB_West">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -4286,7 +4286,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_32">
+                <widget class="QLabel" name="Lbl_HB_WestVelBC">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -4299,7 +4299,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_5">
+                <widget class="QComboBox" name="Cmb_HB_WestUBC">
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -4348,7 +4348,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton_4">
+                <widget class="QPushButton" name="Lbl_HB_WestUploadFile">
                  <property name="text">
                   <string>
 Upload files
@@ -4357,7 +4357,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_6">
+                <widget class="QComboBox" name="Cmb_HB_WestWaveType">
                  <item>
                   <property name="text">
                    <string>Airy</string>
@@ -4386,9 +4386,9 @@ Upload files
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_7">
+                <layout class="QHBoxLayout" name="HLY_HB_WestU">
                  <item>
-                  <widget class="QLabel" name="label_26">
+                  <widget class="QLabel" name="Lbl_HB_WestU">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -4400,20 +4400,20 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_59"/>
+                  <widget class="QLineEdit" name="Led_HB_WestUx"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_60"/>
+                  <widget class="QLineEdit" name="Led_HB_WestUy"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_61"/>
+                  <widget class="QLineEdit" name="Led_HB_WestUz"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_60">
+                <layout class="QHBoxLayout" name="HLY_HB_WestOrigin">
                  <item>
-                  <widget class="QLabel" name="label_29">
+                  <widget class="QLabel" name="Lbl_HB_WestOrigin">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -4425,20 +4425,20 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_62"/>
+                  <widget class="QLineEdit" name="Led_HB_WestOriginX"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_63"/>
+                  <widget class="QLineEdit" name="Led_HB_WestOriginY"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_64"/>
+                  <widget class="QLineEdit" name="Led_HB_WestOriginZ"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_63">
+                <layout class="QHBoxLayout" name="HLY_HB_WestVec">
                  <item>
-                  <widget class="QLabel" name="label_31">
+                  <widget class="QLabel" name="Lbl_HB_WestVec">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -4450,18 +4450,18 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_65"/>
+                  <widget class="QLineEdit" name="Led_HB_WestVecX"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_66"/>
+                  <widget class="QLineEdit" name="Led_HB_WestVecY"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_67"/>
+                  <widget class="QLineEdit" name="Led_HB_WestVecZ"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <widget class="QLabel" name="label_35">
+                <widget class="QLabel" name="Lbl_HB_WestPresBC">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -4474,7 +4474,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_7">
+                <widget class="QComboBox" name="Cmb_HB_WestPresBC">
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -4503,9 +4503,9 @@ Upload files
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_61" stretch="1,1">
+                <layout class="QHBoxLayout" name="HLY_HB_WestPres" stretch="1,1">
                  <item>
-                  <widget class="QLabel" name="label_36">
+                  <widget class="QLabel" name="Lbl_HB_WestPres">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -4517,7 +4517,7 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_70"/>
+                  <widget class="QLineEdit" name="Led_HB_WestPres"/>
                  </item>
                 </layout>
                </item>
@@ -4643,7 +4643,7 @@ QPushButton:pressed {
             <number>0</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_24">
+            <widget class="QLabel" name="Lbl_HC_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -4658,7 +4658,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="FlumeLengthPic_3">
+            <widget class="QLabel" name="Lbl_HC_FlumePic">
              <property name="font">
               <font>
                <pointsize>48</pointsize>
@@ -4679,11 +4679,11 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <widget class="QStackedWidget" name="stackedWidget_5">
+            <widget class="QStackedWidget" name="SWg_HC_BConditions">
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
-             <widget class="QWidget" name="A_FlumeEntry">
+             <widget class="QWidget" name="Pg1_HC_Entry">
               <layout class="QVBoxLayout" name="verticalLayout_37">
                <property name="leftMargin">
                 <number>0</number>
@@ -4698,7 +4698,7 @@ QPushButton:pressed {
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_14">
+                <widget class="QLabel" name="Lbl_HC_Entry">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -4712,7 +4712,7 @@ QPushButton:pressed {
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_54">
+                <widget class="QLabel" name="Lbl_HC_EntryVelBC">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -4725,7 +4725,7 @@ QPushButton:pressed {
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_17">
+                <widget class="QComboBox" name="Cmb_HC_EntryUBC">
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -4774,7 +4774,7 @@ QPushButton:pressed {
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton_34">
+                <widget class="QPushButton" name="Btn_HC_EntryUploadFile">
                  <property name="text">
                   <string>
 Upload files
@@ -4783,7 +4783,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_18">
+                <widget class="QComboBox" name="Cmb_HC_EntryWaveType">
                  <item>
                   <property name="text">
                    <string>Airy</string>
@@ -4812,9 +4812,9 @@ Upload files
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_75">
+                <layout class="QHBoxLayout" name="HLY_HC_EntryU">
                  <item>
-                  <widget class="QLabel" name="label_55">
+                  <widget class="QLabel" name="Lbl_HC_EntryU">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -4826,20 +4826,20 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_99"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryUz"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_100"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryUx"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_101"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryUy"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_76">
+                <layout class="QHBoxLayout" name="HLY_HC_EntryOrigin">
                  <item>
-                  <widget class="QLabel" name="label_56">
+                  <widget class="QLabel" name="Lbl_HC_EntryOrigin">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -4851,20 +4851,20 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_102"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryOriginX"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_103"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryOriginY"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_104"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryOriginZ"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_77">
+                <layout class="QHBoxLayout" name="HLY_HC_EntryVec">
                  <item>
-                  <widget class="QLabel" name="label_57">
+                  <widget class="QLabel" name="Lbl_HC_EntryVec">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -4876,18 +4876,18 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_105"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryVecX"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_106"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryVecY"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_107"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryVecZ"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <widget class="QLabel" name="label_58">
+                <widget class="QLabel" name="Lbl_HC_EntryPresBC">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -4900,7 +4900,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_19">
+                <widget class="QComboBox" name="Cmb_HC_EntryPresBC">
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -4929,9 +4929,9 @@ Upload files
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_78" stretch="1,1">
+                <layout class="QHBoxLayout" name="HLY_HC_EntryPres" stretch="1,1">
                  <item>
-                  <widget class="QLabel" name="label_59">
+                  <widget class="QLabel" name="Lbl_HC_EntryPres">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -4943,101 +4943,13 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_108"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_54" stretch="0,0,0,0">
-                 <item>
-                  <spacer name="horizontalSpacer_27">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButton_35">
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
-    border-image: url(:/images/images/previous.png) 10;
-    border-width: 0px;                         
-    padding: 0px 0px;
-    min-height: 10px;
-    min-width: 10px;
-}
-
-QPushButton:hover {
-    border-image: url(:/images/images/previous.png) 10;
-}
-
-QPushButton:pressed {
-    color: lightgray;
-    border-image: url(:/images/images/previous-invert.png) 10;
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButton_36">
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
-    border-image: url(:/images/images/next.png) 10;
-    border-width: 0px;                         
-    padding: 0px 0px;
-    min-height: 10px;
-    min-width: 10px;
-}
-
-QPushButton:hover {
-    border-image: url(:/images/images/next.png) 10;
-}
-
-QPushButton:pressed {
-    color: lightgray;
-    border-image: url(:/images/images/next-invert.png) 10;
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_28">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
+                  <widget class="QLineEdit" name="Led_HC_EntryPres"/>
                  </item>
                 </layout>
                </item>
               </layout>
              </widget>
-             <widget class="QWidget" name="B_FlumeExit">
+             <widget class="QWidget" name="Pg2_HC_Exit">
               <layout class="QVBoxLayout" name="verticalLayout_38">
                <property name="leftMargin">
                 <number>0</number>
@@ -5052,7 +4964,7 @@ QPushButton:pressed {
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_15">
+                <widget class="QLabel" name="Lbl_HC_Exit">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -5066,7 +4978,7 @@ QPushButton:pressed {
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_60">
+                <widget class="QLabel" name="Lbl_HC_ExiVelBC">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -5079,7 +4991,7 @@ QPushButton:pressed {
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_20">
+                <widget class="QComboBox" name="Cmb_HC_ExitUBC">
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -5128,7 +5040,7 @@ QPushButton:pressed {
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton_37">
+                <widget class="QPushButton" name="Btn_HC_ExitUploadFile">
                  <property name="text">
                   <string>
 Upload files
@@ -5137,7 +5049,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_21">
+                <widget class="QComboBox" name="Cmb_HC_ExitWaveType">
                  <item>
                   <property name="text">
                    <string>Airy</string>
@@ -5166,9 +5078,9 @@ Upload files
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_79">
+                <layout class="QHBoxLayout" name="HLY_HC_ExitU">
                  <item>
-                  <widget class="QLabel" name="label_61">
+                  <widget class="QLabel" name="Lbl_HC_ExitU">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -5180,20 +5092,20 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_109"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitUx"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_110"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitUy"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_111"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitUz"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_80">
+                <layout class="QHBoxLayout" name="HLY_HC_ExitOrigin">
                  <item>
-                  <widget class="QLabel" name="label_62">
+                  <widget class="QLabel" name="Lbl_HC_ExitOrigin">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -5205,20 +5117,20 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_112"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitOriginX"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_113"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitOriginY"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_114"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitOriginZ"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_81">
+                <layout class="QHBoxLayout" name="HLY_HC_ExitVec">
                  <item>
-                  <widget class="QLabel" name="label_63">
+                  <widget class="QLabel" name="Lbl_HC_ExitVec">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -5230,18 +5142,18 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_115"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitVecX"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_116"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitVecY"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_117"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitVecZ"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <widget class="QLabel" name="label_64">
+                <widget class="QLabel" name="Lbl_HC_ExitPresBC">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -5254,7 +5166,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_22">
+                <widget class="QComboBox" name="Cmb_HC_ExitPresBC">
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -5283,9 +5195,9 @@ Upload files
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_82" stretch="1,1">
+                <layout class="QHBoxLayout" name="HLY_HC_ExitPres" stretch="1,1">
                  <item>
-                  <widget class="QLabel" name="label_65">
+                  <widget class="QLabel" name="Lbl_HC_ExitPres">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -5297,29 +5209,65 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_118"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitPres"/>
                  </item>
                 </layout>
                </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_83" stretch="0,0,0,0">
-                 <item>
-                  <spacer name="horizontalSpacer_29">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButton_38">
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
+              </layout>
+             </widget>
+             <widget class="QWidget" name="Pg3_HC_NotUsed1">
+              <layout class="QVBoxLayout" name="verticalLayout_39">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="Pg3_HC_NotUsed2">
+              <layout class="QVBoxLayout" name="verticalLayout_40">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+              </layout>
+             </widget>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="HLY_HC_Navigation" stretch="0,0,0,0">
+             <item>
+              <spacer name="HSp_HC_Scroll01">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="Btn_HC_Previous">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
     border-image: url(:/images/images/previous.png) 10;
     border-width: 0px;                         
     padding: 0px 0px;
@@ -5339,16 +5287,16 @@ QPushButton:pressed {
 }
 
 </string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButton_39">
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="Btn_HC_Next">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
     border-image: url(:/images/images/next.png) 10;
     border-width: 0px;                         
     padding: 0px 0px;
@@ -5368,739 +5316,29 @@ QPushButton:pressed {
 }
 
 </string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_30">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </widget>
-             <widget class="QWidget" name="C_Notused">
-              <layout class="QVBoxLayout" name="verticalLayout_39">
-               <property name="leftMargin">
-                <number>0</number>
                </property>
-               <property name="topMargin">
-                <number>0</number>
+               <property name="text">
+                <string/>
                </property>
-               <property name="rightMargin">
-                <number>0</number>
+              </widget>
+             </item>
+             <item>
+              <spacer name="HSp_HC_Scroll02">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
                </property>
-               <property name="bottomMargin">
-                <number>0</number>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
                </property>
-               <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_16">
-                 <property name="font">
-                  <font>
-                   <pointsize>14</pointsize>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;East Face&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_66">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>Velocity</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboBox_23">
-                 <item>
-                  <property name="text">
-                   <string>Empty</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Inlet: Constant velocity</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Inlet: Wave input</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Inlet: Time-varying uniform velocity</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Inlet: Time-varying non-uniform velocity</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Outlet: Phase-mean velocity</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Outlet: flowRateOutletVelocity</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Outlet: inletOutlet</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Wall: noSlip</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButton_40">
-                 <property name="text">
-                  <string>
-Upload files
-</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboBox_24">
-                 <item>
-                  <property name="text">
-                   <string>Airy</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Stokes2</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Stokes5</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Solitary</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Custom</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_84">
-                 <item>
-                  <widget class="QLabel" name="label_67">
-                   <property name="font">
-                    <font>
-                     <pointsize>14</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>UMean</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_119"/>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_120"/>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_121"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_85">
-                 <item>
-                  <widget class="QLabel" name="label_68">
-                   <property name="font">
-                    <font>
-                     <pointsize>14</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Origin</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_122"/>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_123"/>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_124"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_86">
-                 <item>
-                  <widget class="QLabel" name="label_69">
-                   <property name="font">
-                    <font>
-                     <pointsize>14</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Direction</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_125"/>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_126"/>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_127"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_70">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>Pressure</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboBox_25">
-                 <item>
-                  <property name="text">
-                   <string>Default choice</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Inlet / Outlet / Wall: Zero gradient</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Inlet: Calculated pressure</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Outlet: Total pressure</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Wall: Fixed flux</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_87" stretch="1,1">
-                 <item>
-                  <widget class="QLabel" name="label_71">
-                   <property name="font">
-                    <font>
-                     <pointsize>14</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Pressure</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_128"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_88" stretch="0,0,0,0">
-                 <item>
-                  <spacer name="horizontalSpacer_31">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButton_41">
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
-    border-image: url(:/images/images/previous.png) 10;
-    border-width: 0px;                         
-    padding: 0px 0px;
-    min-height: 10px;
-    min-width: 10px;
-}
-
-QPushButton:hover {
-    border-image: url(:/images/images/previous.png) 10;
-}
-
-QPushButton:pressed {
-    color: lightgray;
-    border-image: url(:/images/images/previous-invert.png) 10;
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButton_42">
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
-    border-image: url(:/images/images/next.png) 10;
-    border-width: 0px;                         
-    padding: 0px 0px;
-    min-height: 10px;
-    min-width: 10px;
-}
-
-QPushButton:hover {
-    border-image: url(:/images/images/next.png) 10;
-}
-
-QPushButton:pressed {
-    color: lightgray;
-    border-image: url(:/images/images/next-invert.png) 10;
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_32">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </widget>
-             <widget class="QWidget" name="D_Notused2">
-              <layout class="QVBoxLayout" name="verticalLayout_40">
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_17">
-                 <property name="font">
-                  <font>
-                   <pointsize>14</pointsize>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;West Face&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_33">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>Velocity</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboBox_26">
-                 <item>
-                  <property name="text">
-                   <string>Empty</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Inlet: Constant velocity</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Inlet: Wave input</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Inlet: Time-varying uniform velocity</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Inlet: Time-varying non-uniform velocity</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Outlet: Phase-mean velocity</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Outlet: flowRateOutletVelocity</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Outlet: inletOutlet</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Wall: noSlip</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButton_43">
-                 <property name="text">
-                  <string>
-Upload files
-</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboBox_27">
-                 <item>
-                  <property name="text">
-                   <string>Airy</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Stokes2</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Stokes5</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Solitary</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Custom</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_8">
-                 <item>
-                  <widget class="QLabel" name="label_72">
-                   <property name="font">
-                    <font>
-                     <pointsize>14</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>UMean</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_129"/>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_130"/>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_131"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_89">
-                 <item>
-                  <widget class="QLabel" name="label_73">
-                   <property name="font">
-                    <font>
-                     <pointsize>14</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Origin</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_132"/>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_133"/>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_134"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_90">
-                 <item>
-                  <widget class="QLabel" name="label_74">
-                   <property name="font">
-                    <font>
-                     <pointsize>14</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Direction</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_135"/>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_136"/>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_137"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_75">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>Pressure</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboBox_28">
-                 <item>
-                  <property name="text">
-                   <string>Default choice</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Inlet / Outlet / Wall: Zero gradient</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Inlet: Calculated pressure</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Outlet: Total pressure</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Wall: Fixed flux</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_91" stretch="1,1">
-                 <item>
-                  <widget class="QLabel" name="label_76">
-                   <property name="font">
-                    <font>
-                     <pointsize>14</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Pressure</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_138"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_92" stretch="0,0,0,0">
-                 <item>
-                  <spacer name="horizontalSpacer_33">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButton_44">
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
-    border-image: url(:/images/images/previous.png) 10;
-    border-width: 0px;                         
-    padding: 0px 0px;
-    min-height: 10px;
-    min-width: 10px;
-}
-
-QPushButton:hover {
-    border-image: url(:/images/images/previous.png) 10;
-}
-
-QPushButton:pressed {
-    color: lightgray;
-    border-image: url(:/images/images/previous-invert.png) 10;
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButton_45">
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
-    border-image: url(:/images/images/next.png) 10;
-    border-width: 0px;                         
-    padding: 0px 0px;
-    min-height: 10px;
-    min-width: 10px;
-}
-
-QPushButton:hover {
-    border-image: url(:/images/images/next.png) 10;
-}
-
-QPushButton:pressed {
-    color: lightgray;
-    border-image: url(:/images/images/next-invert.png) 10;
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_34">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </widget>
-            </widget>
+              </spacer>
+             </item>
+            </layout>
            </item>
            <item>
-            <spacer name="verticalSpacer_23">
+            <spacer name="VSp_HC_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -6129,7 +5367,7 @@ QPushButton:pressed {
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_23">
+            <widget class="QLabel" name="Lbl_HD_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6144,7 +5382,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoE_NoticeLabel_7">
+            <widget class="QLabel" name="Lbl_HD_Notice">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6165,7 +5403,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_16">
+            <spacer name="VSp_HD_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -6194,7 +5432,7 @@ QPushButton:pressed {
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_25">
+            <widget class="QLabel" name="Lbl_HE_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6209,7 +5447,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoE_NoticeLabel_8">
+            <widget class="QLabel" name="Lbl_HE_Notice">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6230,7 +5468,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_17">
+            <spacer name="VSp_HE_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -6259,7 +5497,7 @@ QPushButton:pressed {
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_27">
+            <widget class="QLabel" name="Lbl_HF_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6274,7 +5512,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoE_NoticeLabel_9">
+            <widget class="QLabel" name="Lbl_HF_Notice">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6295,7 +5533,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_18">
+            <spacer name="VSp_HF_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -6324,7 +5562,7 @@ QPushButton:pressed {
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_28">
+            <widget class="QLabel" name="Lbl_IA_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6339,7 +5577,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_30">
+            <widget class="QLabel" name="Lbl_IA_TimeSettings">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6353,9 +5591,9 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_20" stretch="2,1">
+            <layout class="QHBoxLayout" name="HLY_IA_Start" stretch="2,1">
              <item>
-              <widget class="QLabel" name="B1_Label_13">
+              <widget class="QLabel" name="Lbl_IA_Start">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6374,14 +5612,14 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_41"/>
+              <widget class="QLineEdit" name="Led_IA_Start"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_43" stretch="2,1">
+            <layout class="QHBoxLayout" name="HLY_IA_End" stretch="2,1">
              <item>
-              <widget class="QLabel" name="B1_Label_14">
+              <widget class="QLabel" name="Lbl_IA_End">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6400,14 +5638,14 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_42"/>
+              <widget class="QLineEdit" name="Led_IA_End"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_44" stretch="2,1">
+            <layout class="QHBoxLayout" name="HLY_IA_DeltaT" stretch="2,1">
              <item>
-              <widget class="QLabel" name="B1_Label_15">
+              <widget class="QLabel" name="Lbl_IA_DeltaT">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6426,14 +5664,14 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_43"/>
+              <widget class="QLineEdit" name="Led_IA_DeltaT"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_45" stretch="2,1">
+            <layout class="QHBoxLayout" name="HLY_IA_WriteT" stretch="2,1">
              <item>
-              <widget class="QLabel" name="B1_Label_16">
+              <widget class="QLabel" name="Lbl_IA_WriteT">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6452,12 +5690,12 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_44"/>
+              <widget class="QLineEdit" name="Led_IA_WriteT"/>
              </item>
             </layout>
            </item>
            <item>
-            <widget class="QCheckBox" name="checkBox">
+            <widget class="QCheckBox" name="ChB_IA_Restart">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6469,7 +5707,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_3">
+            <widget class="QPushButton" name="Btn_IA_UploadFiles">
              <property name="text">
               <string>
 Upload Restart Files 
@@ -6478,7 +5716,7 @@ Upload Restart Files
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_78">
+            <widget class="QLabel" name="Lbl_IA_CFDSolver">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6492,7 +5730,7 @@ Upload Restart Files
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="comboBox">
+            <widget class="QComboBox" name="Cmb_IA_Solver">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6516,7 +5754,7 @@ Upload Restart Files
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_20">
+            <spacer name="VSP_IA_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -6545,7 +5783,7 @@ Upload Restart Files
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="Lbl_Heading_SolverAdv">
+            <widget class="QLabel" name="Lbl_IB_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6560,7 +5798,7 @@ Upload Restart Files
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_79">
+            <widget class="QLabel" name="Lbl_IB_Domain">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6574,9 +5812,9 @@ Upload Restart Files
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_50" stretch="0,0">
+            <layout class="QHBoxLayout" name="HLY_IB_Decomp" stretch="0,0">
              <item>
-              <widget class="QLabel" name="B1_Label_20">
+              <widget class="QLabel" name="Lbl_IB_Decomp">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6595,7 +5833,7 @@ Upload Restart Files
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="comboBox_4">
+              <widget class="QComboBox" name="Cmb_IB_Decomp">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6616,9 +5854,9 @@ Upload Restart Files
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_51" stretch="1,1,1,1">
+            <layout class="QHBoxLayout" name="HLY_IB_Subdomains" stretch="1,1,1,1">
              <item>
-              <widget class="QLabel" name="B1_Label_21">
+              <widget class="QLabel" name="Lbl_IB_Subdomains">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6637,163 +5875,18 @@ Upload Restart Files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_50"/>
+              <widget class="QLineEdit" name="Led_IB_SubdomainsX"/>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_51"/>
+              <widget class="QLineEdit" name="Led_IB_SubdomainsY"/>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_52"/>
+              <widget class="QLineEdit" name="Led_IB_SubdomainsZ"/>
              </item>
             </layout>
            </item>
            <item>
-            <widget class="QLabel" name="Lbl_TACCSet_SolverAdv">
-             <property name="font">
-              <font>
-               <pointsize>14</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>TACC Settings</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_46" stretch="0,0">
-             <item>
-              <widget class="QComboBox" name="comboBox_2">
-               <property name="font">
-                <font>
-                 <pointsize>14</pointsize>
-                </font>
-               </property>
-               <item>
-                <property name="text">
-                 <string>KNL</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>SKX</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="comboBox_3">
-               <property name="font">
-                <font>
-                 <pointsize>14</pointsize>
-                </font>
-               </property>
-               <item>
-                <property name="text">
-                 <string>Normal</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Development</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Long</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_47" stretch="2,1">
-             <item>
-              <widget class="QLabel" name="B1_Label_17">
-               <property name="font">
-                <font>
-                 <pointsize>14</pointsize>
-                 <italic>false</italic>
-                </font>
-               </property>
-               <property name="text">
-                <string>Number of cores</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-               </property>
-               <property name="wordWrap">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_45"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_48" stretch="1,1,1,1">
-             <item>
-              <widget class="QLabel" name="B1_Label_18">
-               <property name="font">
-                <font>
-                 <pointsize>14</pointsize>
-                 <italic>false</italic>
-                </font>
-               </property>
-               <property name="text">
-                <string>Wall time</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-               </property>
-               <property name="wordWrap">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_48"/>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_47"/>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_46"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_49" stretch="1,2">
-             <item>
-              <widget class="QLabel" name="B1_Label_19">
-               <property name="font">
-                <font>
-                 <pointsize>14</pointsize>
-                 <italic>false</italic>
-                </font>
-               </property>
-               <property name="text">
-                <string>Email address</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-               </property>
-               <property name="wordWrap">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_49"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_21">
+            <spacer name="VSp_IB_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -6822,7 +5915,7 @@ Upload Restart Files
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="Lbl_SubTACC">
+            <widget class="QLabel" name="Lbl_JA_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -6837,9 +5930,9 @@ Upload Restart Files
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="HL01_TACC" stretch="1,1">
+            <layout class="QHBoxLayout" name="HLY_JA_Jobname" stretch="1,1">
              <item>
-              <widget class="QLabel" name="Lbl_JName_TACC">
+              <widget class="QLabel" name="Lbl_JA_Jobname">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6858,14 +5951,14 @@ Upload Restart Files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Box_JName_TACC"/>
+              <widget class="QLineEdit" name="Led_JA_Jobname"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="HL02_TACC" stretch="0,0">
+            <layout class="QHBoxLayout" name="HLY_JA_Server" stretch="0,0">
              <item>
-              <widget class="QComboBox" name="CmB_Server_TACC">
+              <widget class="QComboBox" name="Cmb_JA_ServerType">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6884,7 +5977,7 @@ Upload Restart Files
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="CmB_Queue_TACC">
+              <widget class="QComboBox" name="Cmb_JA_QType">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6910,9 +6003,9 @@ Upload Restart Files
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="HL03_TACC" stretch="2,1">
+            <layout class="QHBoxLayout" name="HLY_JA_Cores" stretch="2,1">
              <item>
-              <widget class="QLabel" name="Lbl_Cores_TACC">
+              <widget class="QLabel" name="Lbl_JA_Cores">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6931,14 +6024,14 @@ Upload Restart Files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Box_Cores_TACC"/>
+              <widget class="QLineEdit" name="Led_JA_Cores"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="HL04_TACC" stretch="1,1,1,1">
+            <layout class="QHBoxLayout" name="HLY_JA_WallTime" stretch="1,1,1,1">
              <item>
-              <widget class="QLabel" name="Lbl_Walltime_TACC">
+              <widget class="QLabel" name="Lbl_JA_WallTime">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6957,20 +6050,20 @@ Upload Restart Files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Box_Hour_TACC"/>
+              <widget class="QLineEdit" name="Led_JA_WallTimeHH"/>
              </item>
              <item>
-              <widget class="QLineEdit" name="Box_Min_TACC"/>
+              <widget class="QLineEdit" name="Led_JA_WallTimeMM"/>
              </item>
              <item>
-              <widget class="QLineEdit" name="Box_Sec_TACC"/>
+              <widget class="QLineEdit" name="Led_JA_WallTimeSS"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="HL05_TACC" stretch="1,2">
+            <layout class="QHBoxLayout" name="HLY_JA_Email" stretch="1,2">
              <item>
-              <widget class="QLabel" name="Lbl_EmailID_TACC">
+              <widget class="QLabel" name="Lbl_JA_Email">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6989,12 +6082,12 @@ Upload Restart Files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Box_EmailID_TACC"/>
+              <widget class="QLineEdit" name="Led_JA_Email"/>
              </item>
             </layout>
            </item>
            <item>
-            <widget class="QPushButton" name="But_GenFiles">
+            <widget class="QPushButton" name="Btn_JA_GenFiles">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -7008,7 +6101,7 @@ Generate Files
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="But_SubTACC">
+            <widget class="QPushButton" name="Btn_JA_SubTACC">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -7022,7 +6115,7 @@ Submit to TACC
             </widget>
            </item>
            <item>
-            <spacer name="Spc_SubTACC">
+            <spacer name="VSp_JA_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -7051,7 +6144,7 @@ Submit to TACC
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="Lbl_Heading_PostPro">
+            <widget class="QLabel" name="Lbl_KA_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -7066,7 +6159,7 @@ Submit to TACC
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="PostProNotice">
+            <widget class="QLabel" name="Lbl_KA_Notice">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -7087,7 +6180,7 @@ Submit to TACC
             </widget>
            </item>
            <item>
-            <spacer name="VS_PostPro">
+            <spacer name="VSp_KA_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
