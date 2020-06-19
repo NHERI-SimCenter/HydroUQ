@@ -34,75 +34,43 @@
 // Dr. Frank McKenna, CTO of SimCenter, UC Berkeley
 // Prof. Sanjay Govindjee, Director of SimCenter, UC Berkeley
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+//*********************************************************************************
+// In this routines related to all parts of initialization
+//*********************************************************************************
 
 //*********************************************************************************
 // Include user headers
 //*********************************************************************************
-#include "../Eigen/Dense"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 //*********************************************************************************
-// Include library headers
+// Open relevant stack related to the particular item on the parameter tree
 //*********************************************************************************
-#include <QMainWindow>
-#include <QTreeWidget>
-#include <QApplication>
-#include <QFile>
-#include <QFileDialog>
-#include <QDir>
-#include <QDebug>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-
-class MainWindow : public QMainWindow
+void MainWindow::on_SimOptions_itemClicked(QTreeWidgetItem *item, int column)
 {
-    Q_OBJECT
+    // Get the string of hte selected item
+    QString sel = item->text(column);
 
-public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    // Get the index of the simulation type
+    int simtypeindex = ui->CmB_AA_SimType->currentIndex();
 
-    std::string gettoolname();
+    // If selected is Project details
+    if(sel == "Project details")
+    {
+        // Get page index & change stack to it
+        if(ui->OptionsStack->currentIndex() != optionmap(0,simtypeindex))
+            ui->OptionsStack->setCurrentIndex(optionmap(0,simtypeindex));
+    }
 
-protected:
-    //std::string toolname = "H20-UQ";
+    // If selected is Bathymetry
+    else if(sel == "Bathymetry")
+    {
+        // Get page index & change stack to it
+        if(ui->OptionsStack->currentIndex() != optionmap(1,simtypeindex))
+            ui->OptionsStack->setCurrentIndex(optionmap(1,simtypeindex));
 
-private slots:
-
-    // Item tree on left
-    void on_SimOptions_itemClicked(QTreeWidgetItem *item, int column);
-
-    // Project settings
-    void on_Led_AA_PName_editingFinished();
-    void on_Led_AA_PDesc_textChanged();
-    void on_Btn_AA_WDir_clicked();
-
-    // Bathymetry
-    void on_ChB_BA_UploadBox_stateChanged(int arg1);
-    void on_Btn_BA_UploadFile_clicked();
-
-    void on_Btn_BA_S02AddPt_clicked();
-
-    void on_Btn_BA_S02RemPt_clicked();
-
-private:
-
-    // Initialize
-    void initialize();
-
-    // Bathymetry
-    void bathymetrydesc(int simtypeindex);
-
-    Ui::MainWindow *ui;
-    Eigen::MatrixXi optionmap; // Connects parameter tree to options widget
-    std::string toolname = "H20-UQ";
-    QUrl workdirUrl; // Default work directory
-    QStringList bathfilenames; // Bathymetry filenames
-
-
-
-};
-#endif // MAINWINDOW_H
+        // Set the descriptions based on type of bathymetry selected
+        bathymetrydesc(simtypeindex);
+    }
+}

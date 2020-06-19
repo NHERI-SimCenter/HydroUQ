@@ -7,6 +7,7 @@
 
 #include <Qt3DCore/qentity.h>
 #include <Qt3DCore/qtransform.h>
+#include <QtCore/QDebug>
 
 #include <Qt3DExtras/QTorusMesh>
 #include <Qt3DExtras/QConeMesh>

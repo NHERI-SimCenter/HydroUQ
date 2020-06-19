@@ -20,7 +20,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout" rowstretch="1,8,1" columnstretch="2,2,5">
+   <layout class="QGridLayout" name="gridLayout" rowstretch="1,8,1,0" columnstretch="2,2,5">
     <property name="horizontalSpacing">
      <number>6</number>
     </property>
@@ -38,7 +38,7 @@
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,10">
+      <layout class="QHBoxLayout" name="topFrame_outer" stretch="1,10">
        <property name="leftMargin">
         <number>6</number>
        </property>
@@ -98,6 +98,12 @@
           </item>
           <item>
            <widget class="QLabel" name="Lbl_ProjDesc">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="font">
              <font>
               <pointsize>14</pointsize>
@@ -117,7 +123,69 @@
       </layout>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="3" column="0" colspan="3">
+     <widget class="QFrame" name="bottomFrame">
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <layout class="QHBoxLayout" name="bottomFrame_outer">
+       <property name="leftMargin">
+        <number>6</number>
+       </property>
+       <property name="topMargin">
+        <number>6</number>
+       </property>
+       <property name="rightMargin">
+        <number>6</number>
+       </property>
+       <property name="bottomMargin">
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="Lbl_NSFLogo">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/images/NSFLogo.png&quot; height=&quot;75&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::NoTextInteraction</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="Lbl_FundingDecl">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>This work is based on the material supported by the National Science Foundation under grant 1612843</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::NoTextInteraction</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="Lbl_SimCenterLogo">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/images/SimCenterLogo.png&quot; height=&quot;55&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="0" rowspan="2">
      <widget class="QFrame" name="parameterFrame">
       <property name="font">
        <font>
@@ -130,7 +198,7 @@
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="parameterFrame_outer">
        <property name="leftMargin">
         <number>6</number>
        </property>
@@ -145,6 +213,12 @@
        </property>
        <item>
         <widget class="QTreeWidget" name="SimOptions">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
            <pointsize>14</pointsize>
@@ -295,13 +369,20 @@
        </item>
        <item>
         <widget class="QLabel" name="Lbl_Descript">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
            <pointsize>14</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>TextLabel</string>
+          <string>Use this box to setup the project settings: 
+</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -324,7 +405,7 @@
       </layout>
      </widget>
     </item>
-    <item row="1" column="1">
+    <item row="1" column="1" rowspan="2">
      <widget class="QFrame" name="optionsFrame">
       <property name="frameShape">
        <enum>QFrame::Box</enum>
@@ -332,7 +413,7 @@
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_42">
+      <layout class="QVBoxLayout" name="optionsFrame_outer">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -347,8 +428,14 @@
        </property>
        <item>
         <widget class="QStackedWidget" name="OptionsStack">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="currentIndex">
-          <number>22</number>
+          <number>14</number>
          </property>
          <widget class="QWidget" name="AA_ProjSettings">
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -397,10 +484,10 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="But_AA_WDir">
+            <widget class="QPushButton" name="Btn_AA_WDir">
              <property name="text">
               <string>
-Set working directory
+Set working directory (Not set)
 </string>
              </property>
             </widget>
@@ -604,7 +691,7 @@ Set working directory
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="But_BA_SelFiles">
+            <widget class="QPushButton" name="Btn_BA_SelFiles">
              <property name="text">
               <string>
 Select bathymetry files
@@ -751,7 +838,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="But_BA_UploadFile">
+            <widget class="QPushButton" name="Btn_BA_UploadFile">
              <property name="text">
               <string>
 Select interface points file 
@@ -834,14 +921,14 @@ Select interface points file
                <item>
                 <layout class="QHBoxLayout" name="HLY_BA_EntryAddPt">
                  <item>
-                  <widget class="QToolButton" name="But_BA_EntryAddPt">
+                  <widget class="QToolButton" name="Btn_BA_EntryAddPt">
                    <property name="text">
                     <string>Add point</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="But_BA_EntryRemPt">
+                  <widget class="QToolButton" name="Btn_BA_EntryRemPt">
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -921,14 +1008,14 @@ Select interface points file
                <item>
                 <layout class="QHBoxLayout" name="HLY_BA_ExitAddPt">
                  <item>
-                  <widget class="QToolButton" name="But_BA_ExitAddPt">
+                  <widget class="QToolButton" name="Btn_BA_ExitAddPt">
                    <property name="text">
                     <string>Add point</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="But_BA_ExitRemPt">
+                  <widget class="QToolButton" name="Btn_BA_ExitRemPt">
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -953,7 +1040,7 @@ Select interface points file
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="Lbl_BA_Side01H2">
+                <widget class="QLabel" name="Lbl_BA_S01H2">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -967,27 +1054,27 @@ Select interface points file
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_27">
+                <layout class="QHBoxLayout" name="HLY_BA_S01Normal">
                  <item>
-                  <widget class="QLabel" name="label_9">
+                  <widget class="QLabel" name="Lbl_BA_S01Normal">
                    <property name="text">
                     <string>Normal </string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_23"/>
+                  <widget class="QLineEdit" name="Led_BA_S01Nx"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_24"/>
+                  <widget class="QLineEdit" name="Led_BA_S01Ny"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_25"/>
+                  <widget class="QLineEdit" name="Led_BA_S01Nz"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <widget class="QTableWidget" name="Tbl_BA_Side01IntePt">
+                <widget class="QTableWidget" name="Tbl_BA_S01IntePt">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1006,16 +1093,16 @@ Select interface points file
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_26">
+                <layout class="QHBoxLayout" name="HLY_BA_S01AddPt">
                  <item>
-                  <widget class="QToolButton" name="GeoA_AddPoint_3">
+                  <widget class="QToolButton" name="Btn_BA_S01AddPt">
                    <property name="text">
                     <string>Add point</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="GeoA_RemPoint_3">
+                  <widget class="QToolButton" name="Btn_BA_S01RemPt">
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -1040,7 +1127,7 @@ Select interface points file
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_5">
+                <widget class="QLabel" name="Lbl_BA_S02H2">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1054,27 +1141,27 @@ Select interface points file
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_28">
+                <layout class="QHBoxLayout" name="HLY_BA_S02Normal">
                  <item>
-                  <widget class="QLabel" name="label_12">
+                  <widget class="QLabel" name="Lbl_BA_S02Normal">
                    <property name="text">
                     <string>Normal </string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_26"/>
+                  <widget class="QLineEdit" name="Led_BA_S02Nx"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_27"/>
+                  <widget class="QLineEdit" name="Led_BA_S02Ny"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_28"/>
+                  <widget class="QLineEdit" name="Led_BA_S02Nz"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <widget class="QTableWidget" name="GeoA_InterfaceTable_4">
+                <widget class="QTableWidget" name="Tbl_BA_S02IntePt">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1093,16 +1180,16 @@ Select interface points file
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_30">
+                <layout class="QHBoxLayout" name="HLY_BA_S02AddPt">
                  <item>
-                  <widget class="QToolButton" name="GeoA_AddPoint_4">
+                  <widget class="QToolButton" name="Btn_BA_S02AddPt">
                    <property name="text">
                     <string>Add point</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="GeoA_RemPoint_4">
+                  <widget class="QToolButton" name="Btn_BA_S02RemPt">
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -1130,7 +1217,7 @@ Select interface points file
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="But_BA_Previous">
+              <widget class="QPushButton" name="Btn_BA_Previous">
                <property name="styleSheet">
                 <string notr="true">QPushButton {
     border-image: url(:/images/images/previous.png) 10;
@@ -1159,7 +1246,7 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="But_BA_Next">
+              <widget class="QPushButton" name="Btn_BA_Next">
                <property name="styleSheet">
                 <string notr="true">QPushButton {
     border-image: url(:/images/images/next.png) 10;
@@ -1317,7 +1404,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="But_BB_UploadFile">
+            <widget class="QPushButton" name="Btn_BB_UploadFile">
              <property name="text">
               <string>
 Upload longitude-latitude file
@@ -1345,7 +1432,7 @@ Upload longitude-latitude file
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_6">
+                <widget class="QLabel" name="Lbl_BB_EntryH2">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1379,7 +1466,7 @@ Upload longitude-latitude file
                 </layout>
                </item>
                <item>
-                <widget class="QTableWidget" name="GeoA_InterfaceTable_5">
+                <widget class="QTableWidget" name="Tbl_BA_EntryIntePt_2">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1437,7 +1524,7 @@ Upload longitude-latitude file
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_7">
+                <widget class="QLabel" name="Lbl_BB_ExitH2">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1451,27 +1538,27 @@ Upload longitude-latitude file
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_34">
+                <layout class="QHBoxLayout" name="HLY_BB_ExitNormal">
                  <item>
-                  <widget class="QLabel" name="label_14">
+                  <widget class="QLabel" name="Lbl_BB_ExitNormal">
                    <property name="text">
                     <string>Normal </string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_32"/>
+                  <widget class="QLineEdit" name="Led_BB_ExitNx"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_33"/>
+                  <widget class="QLineEdit" name="Led_BB_ExitNy"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_34"/>
+                  <widget class="QLineEdit" name="Led_BB_ExitNz"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <widget class="QTableWidget" name="GeoA_InterfaceTable_6">
+                <widget class="QTableWidget" name="Tbl_BB_ExitIntePt">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1495,16 +1582,16 @@ Upload longitude-latitude file
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_35">
+                <layout class="QHBoxLayout" name="HLY_BB_ExitAddPt">
                  <item>
-                  <widget class="QToolButton" name="GeoA_AddPoint_6">
+                  <widget class="QToolButton" name="Btn_BB_EntryAddPt">
                    <property name="text">
                     <string>Add point</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="GeoA_RemPoint_6">
+                  <widget class="QToolButton" name="Btn_BB_EntryRemPt">
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -1529,7 +1616,7 @@ Upload longitude-latitude file
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_8">
+                <widget class="QLabel" name="Lbl_BB_S01H2">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1543,27 +1630,27 @@ Upload longitude-latitude file
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_37">
+                <layout class="QHBoxLayout" name="HLY_BB_S01Normal">
                  <item>
-                  <widget class="QLabel" name="label_15">
+                  <widget class="QLabel" name="Lbl_BB_S01Normal">
                    <property name="text">
                     <string>Normal </string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_35"/>
+                  <widget class="QLineEdit" name="Lbl_BB_S01Nx"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_36"/>
+                  <widget class="QLineEdit" name="Lbl_BB_S01Ny"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_37"/>
+                  <widget class="QLineEdit" name="Lbl_BB_S01Nz"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <widget class="QTableWidget" name="GeoA_InterfaceTable_7">
+                <widget class="QTableWidget" name="Lbl_BB_S01IntePt">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1587,16 +1674,16 @@ Upload longitude-latitude file
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_38">
+                <layout class="QHBoxLayout" name="HLY_BB_S01AddPt">
                  <item>
-                  <widget class="QToolButton" name="GeoA_AddPoint_7">
+                  <widget class="QToolButton" name="Btn_BB_S01AddPt">
                    <property name="text">
                     <string>Add point</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="GeoA_RemPoint_7">
+                  <widget class="QToolButton" name="Btn_BB_S01RemPt">
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -1621,7 +1708,7 @@ Upload longitude-latitude file
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_9">
+                <widget class="QLabel" name="Lbl_BB_S02H2">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1635,27 +1722,27 @@ Upload longitude-latitude file
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_40">
+                <layout class="QHBoxLayout" name="HLY_BB_S02Normal">
                  <item>
-                  <widget class="QLabel" name="label_18">
+                  <widget class="QLabel" name="Lbl_BB_S02Normal">
                    <property name="text">
                     <string>Normal </string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_38"/>
+                  <widget class="QLineEdit" name="Led_BB_S01Nx"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_39"/>
+                  <widget class="QLineEdit" name="Led_BB_S01Ny"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_40"/>
+                  <widget class="QLineEdit" name="Led_BB_S01Nz"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <widget class="QTableWidget" name="GeoA_InterfaceTable_8">
+                <widget class="QTableWidget" name="Tbl_BB_S02IntePt">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1679,16 +1766,16 @@ Upload longitude-latitude file
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_41">
+                <layout class="QHBoxLayout" name="HLY_BB_S02AddPt">
                  <item>
-                  <widget class="QToolButton" name="GeoA_AddPoint_8">
+                  <widget class="QToolButton" name="Btn_BB_S02AddPt">
                    <property name="text">
                     <string>Add point</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="GeoA_RemPoint_8">
+                  <widget class="QToolButton" name="Btn_BB_S02RemPt">
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -1703,7 +1790,7 @@ Upload longitude-latitude file
            <item>
             <layout class="QHBoxLayout" name="HLY_BB_Scroller" stretch="0,0,0,0">
              <item>
-              <spacer name="horizontalSpacer_9">
+              <spacer name="HSp_BB_Scroll01">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
@@ -1716,7 +1803,7 @@ Upload longitude-latitude file
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_13">
+              <widget class="QPushButton" name="Btn_BB_Previous">
                <property name="styleSheet">
                 <string notr="true">QPushButton {
     border-image: url(:/images/images/previous.png) 10;
@@ -1745,7 +1832,7 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_14">
+              <widget class="QPushButton" name="Btn_BB_Next">
                <property name="styleSheet">
                 <string notr="true">QPushButton {
     border-image: url(:/images/images/next.png) 10;
@@ -1774,7 +1861,7 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <spacer name="horizontalSpacer_10">
+              <spacer name="HSp_BB_Scroll02">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
@@ -1818,7 +1905,7 @@ QPushButton:pressed {
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="GeoCHeading">
+            <widget class="QLabel" name="Lbl_BC_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -1833,7 +1920,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoC_BathfileLabel">
+            <widget class="QLabel" name="Lbl_BC_Bathfile">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -1850,7 +1937,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="GeoC_BathfileBut">
+            <widget class="QPushButton" name="Btn_BC_FileUpload">
              <property name="text">
               <string>
 Select bathymetry files
@@ -1859,7 +1946,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoC_BathfiletypeLabel">
+            <widget class="QLabel" name="Lbl_BC_BathFileType">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -1873,7 +1960,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="GeoC_BathfiletypeOptions">
+            <widget class="QComboBox" name="Cmb_BC_BathFileType">
              <item>
               <property name="text">
                <string>Select Bathymetric file type</string>
@@ -1907,7 +1994,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_4">
+            <spacer name="VSp_BC_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -1936,7 +2023,7 @@ Select bathymetry files
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="GeoCHeading_2">
+            <widget class="QLabel" name="Lbl_BD_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -1953,7 +2040,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoC_BathfileLabel_2">
+            <widget class="QLabel" name="Lbl_BD_SideViewH2">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -1970,7 +2057,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="FlumeLengthPic">
+            <widget class="QLabel" name="Lbl_BD_SideView">
              <property name="font">
               <font>
                <pointsize>48</pointsize>
@@ -1991,9 +2078,9 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1">
+            <layout class="QHBoxLayout" name="HLY_BD_Depth" stretch="1,1">
              <item>
-              <widget class="QLabel" name="B1_Label">
+              <widget class="QLabel" name="Lbl_BD_Depth">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -2013,12 +2100,12 @@ Select bathymetry files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_2"/>
+              <widget class="QLineEdit" name="Led_BD_Depth"/>
              </item>
             </layout>
            </item>
            <item>
-            <widget class="QLabel" name="GeoC_BathfileLabel_3">
+            <widget class="QLabel" name="Lbl_BD_TopViewH2">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2035,7 +2122,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="FlumeBreadthPic">
+            <widget class="QLabel" name="Lbl_BD_TopView">
              <property name="font">
               <font>
                <pointsize>48</pointsize>
@@ -2056,9 +2143,9 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1">
+            <layout class="QHBoxLayout" name="HLY_BD_Breadth" stretch="1,1">
              <item>
-              <widget class="QLabel" name="B1_Label_2">
+              <widget class="QLabel" name="Lbl_BD_Breadth">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -2078,12 +2165,12 @@ Select bathymetry files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_3"/>
+              <widget class="QLineEdit" name="Led_BD_Breadth"/>
              </item>
             </layout>
            </item>
            <item>
-            <widget class="QLabel" name="GeoC_BathfileLabel_4">
+            <widget class="QLabel" name="Lbl_BD_Segments">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2100,7 +2187,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QTableWidget" name="GeoB_InterfaceTable_2">
+            <widget class="QTableWidget" name="Tbl_BD_Segments">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2124,16 +2211,16 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <layout class="QHBoxLayout" name="HLY_BD_AddSeg">
              <item>
-              <widget class="QToolButton" name="GeoB_AddPoint_2">
+              <widget class="QToolButton" name="Btn_BD_AddSeg">
                <property name="text">
                 <string>Add segment</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QToolButton" name="GeoB_RemPoint_2">
+              <widget class="QToolButton" name="HLY_BD_RemSeg">
                <property name="text">
                 <string>Remove segment</string>
                </property>
@@ -2142,7 +2229,7 @@ Select bathymetry files
             </layout>
            </item>
            <item>
-            <spacer name="verticalSpacer_5">
+            <spacer name="VSp_BD_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -2171,7 +2258,7 @@ Select bathymetry files
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="GeoEHeading_4">
+            <widget class="QLabel" name="Lbl_BE_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2188,7 +2275,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoE_NoticeLabel_3">
+            <widget class="QLabel" name="Lbl_BE_Notice">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2209,7 +2296,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_12">
+            <spacer name="VSp_BE_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -2238,7 +2325,7 @@ Select bathymetry files
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="GeoEHeading">
+            <widget class="QLabel" name="Lbl_BF_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2255,7 +2342,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoE_NoticeLabel">
+            <widget class="QLabel" name="Lbl_BF_Notice">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2276,7 +2363,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_6">
+            <spacer name="VSp_BF_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -2305,7 +2392,7 @@ Select bathymetry files
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="GeoEHeading_5">
+            <widget class="QLabel" name="Lbl_BG_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2322,7 +2409,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoE_NoticeLabel_4">
+            <widget class="QLabel" name="Lbl_BG_Notice">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2343,7 +2430,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_13">
+            <spacer name="VSP_BG_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -2372,7 +2459,7 @@ Select bathymetry files
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="GeoEHeading_3">
+            <widget class="QLabel" name="Lbl_CA_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2387,7 +2474,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoC_BathfileLabel_5">
+            <widget class="QLabel" name="Lbl_CA_Building">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2404,7 +2491,7 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <widget class="QTableWidget" name="GeoB_InterfaceTable_3">
+            <widget class="QTableWidget" name="Tbl_CA_Building">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2433,16 +2520,16 @@ Select bathymetry files
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <layout class="QHBoxLayout" name="HLY_CA_AddBuild">
              <item>
-              <widget class="QToolButton" name="GeoB_AddPoint_3">
+              <widget class="QToolButton" name="Btn_CA_AddBuild">
                <property name="text">
                 <string>Add building</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QToolButton" name="GeoB_RemPoint_3">
+              <widget class="QToolButton" name="Btn_CA_RemBuild">
                <property name="text">
                 <string>Remove building</string>
                </property>
@@ -2451,7 +2538,7 @@ Select bathymetry files
             </layout>
            </item>
            <item>
-            <widget class="QLabel" name="label_7">
+            <widget class="QLabel" name="Lbl_CA_Notice">
              <property name="text">
               <string>Building settings are presently not available for this 
 option</string>
@@ -2459,7 +2546,7 @@ option</string>
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_7">
+            <spacer name="VSP_CA_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -2488,7 +2575,7 @@ option</string>
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="GeoEHeading_6">
+            <widget class="QLabel" name="Lbl_DA_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2503,7 +2590,7 @@ option</string>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoE_NoticeLabel_10">
+            <widget class="QLabel" name="Lbl_DA_Notice">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2524,7 +2611,7 @@ option</string>
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_19">
+            <spacer name="VSp_DA_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -2553,7 +2640,7 @@ option</string>
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_11">
+            <widget class="QLabel" name="Lbl_EA_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2568,7 +2655,7 @@ option</string>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoC_BathfiletypeLabel_2">
+            <widget class="QLabel" name="Lbl_EA_MeshType">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2582,7 +2669,7 @@ option</string>
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="GeoC_BathfiletypeOptions_2">
+            <widget class="QComboBox" name="Cmb_EAMeshType">
              <item>
               <property name="text">
                <string>Select mesh type</string>
@@ -2606,7 +2693,7 @@ option</string>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="Btn_EA_UploadMesh">
              <property name="text">
               <string>
 Upload mesh
@@ -2615,7 +2702,7 @@ Upload mesh
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoC_BathfileLabel_6">
+            <widget class="QLabel" name="Lbl_EA_FineH2">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2632,7 +2719,7 @@ Upload mesh
             </widget>
            </item>
            <item>
-            <widget class="QSlider" name="horizontalSlider">
+            <widget class="QSlider" name="HSl_EA_MeshSize">
              <property name="mouseTracking">
               <bool>true</bool>
              </property>
@@ -2676,9 +2763,9 @@ QSlider::handle:horizontal {
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_19">
+            <layout class="QHBoxLayout" name="HLY_EA_MeshFine">
              <item>
-              <widget class="QLabel" name="label_8">
+              <widget class="QLabel" name="Lbl_EA_FineMesh">
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
@@ -2690,7 +2777,7 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_10">
+              <widget class="QLabel" name="Lbl_EA_CoarseMesh">
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
@@ -2707,7 +2794,7 @@ QSlider::handle:horizontal {
             </layout>
            </item>
            <item>
-            <widget class="QLabel" name="GeoC_BathfileLabel_9">
+            <widget class="QLabel" name="Lbl_EA_H2Regions">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2724,7 +2811,7 @@ QSlider::handle:horizontal {
             </widget>
            </item>
            <item>
-            <widget class="QTableWidget" name="GeoB_InterfaceTable_4">
+            <widget class="QTableWidget" name="Tbl_EA_Regions">
              <property name="alternatingRowColors">
               <bool>true</bool>
              </property>
@@ -2770,16 +2857,16 @@ QSlider::handle:horizontal {
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <layout class="QHBoxLayout" name="HLY_EA_AddRegion">
              <item>
-              <widget class="QToolButton" name="GeoB_AddPoint_4">
+              <widget class="QToolButton" name="Btn_EA_AddRegion">
                <property name="text">
                 <string>Add region</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QToolButton" name="GeoB_RemPoint_4">
+              <widget class="QToolButton" name="Btn_EA_RemRegion">
                <property name="text">
                 <string>Remove region</string>
                </property>
@@ -2788,7 +2875,7 @@ QSlider::handle:horizontal {
             </layout>
            </item>
            <item>
-            <spacer name="verticalSpacer_9">
+            <spacer name="VSp_EA_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -2817,7 +2904,7 @@ QSlider::handle:horizontal {
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_13">
+            <widget class="QLabel" name="Lbl_FA_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2832,7 +2919,7 @@ QSlider::handle:horizontal {
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_16">
+            <widget class="QLabel" name="Lbl_FA_Water">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2846,9 +2933,9 @@ QSlider::handle:horizontal {
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="2,1">
+            <layout class="QHBoxLayout" name="HLY_FA_WaterVisc" stretch="2,1">
              <item>
-              <widget class="QLabel" name="B1_Label_5">
+              <widget class="QLabel" name="Lbl_FA_WaterVisc">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -2867,14 +2954,14 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_11"/>
+              <widget class="QLineEdit" name="Led_FA_WaterVisc"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="2,1">
+            <layout class="QHBoxLayout" name="HLY_FA_WaterDen" stretch="2,1">
              <item>
-              <widget class="QLabel" name="B1_Label_8">
+              <widget class="QLabel" name="Lbl_FA_WaterDensity">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -2893,12 +2980,12 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_12"/>
+              <widget class="QLineEdit" name="Led_FA_WaterDensity"/>
              </item>
             </layout>
            </item>
            <item>
-            <widget class="QLabel" name="label_17">
+            <widget class="QLabel" name="Lbl_FA_Air">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2912,9 +2999,9 @@ QSlider::handle:horizontal {
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="2,1">
+            <layout class="QHBoxLayout" name="HLY_FA_AirVisc" stretch="2,1">
              <item>
-              <widget class="QLabel" name="B1_Label_9">
+              <widget class="QLabel" name="Lbl_FA_AirVisc">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -2933,14 +3020,14 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_13"/>
+              <widget class="QLineEdit" name="Led_FA_AirVisc"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="2,1">
+            <layout class="QHBoxLayout" name="HLY_FA_AirDen" stretch="2,1">
              <item>
-              <widget class="QLabel" name="B1_Label_10">
+              <widget class="QLabel" name="Lbl_FA_AirDen">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -2959,12 +3046,12 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_14"/>
+              <widget class="QLineEdit" name="Led_FA_AirDen"/>
              </item>
             </layout>
            </item>
            <item>
-            <widget class="QLabel" name="label_19">
+            <widget class="QLabel" name="Lbl_FA_SurfTen_2">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -2978,9 +3065,9 @@ QSlider::handle:horizontal {
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="2,1">
+            <layout class="QHBoxLayout" name="HLY_FA_SurfTen" stretch="2,1">
              <item>
-              <widget class="QLabel" name="B1_Label_7">
+              <widget class="QLabel" name="Lbl_FA_SurfTen">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -2999,12 +3086,12 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_10"/>
+              <widget class="QLineEdit" name="Led_FA_SurfTen"/>
              </item>
             </layout>
            </item>
            <item>
-            <spacer name="verticalSpacer_10">
+            <spacer name="VSp_FA_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -3033,7 +3120,7 @@ QSlider::handle:horizontal {
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_20">
+            <widget class="QLabel" name="Lbl_GA_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -3048,7 +3135,7 @@ QSlider::handle:horizontal {
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_77">
+            <widget class="QLabel" name="Lbl_GA_Notice">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -3061,9 +3148,9 @@ shallow water solvers</string>
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="0,0,0,0">
+            <layout class="QHBoxLayout" name="HLY_GA_Vel" stretch="0,0,0,0">
              <item>
-              <widget class="QLabel" name="B1_Label_6">
+              <widget class="QLabel" name="Lbl_GA_Vel">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -3083,20 +3170,20 @@ shallow water solvers</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_18"/>
+              <widget class="QLineEdit" name="Lbl_GA_Vy"/>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_19"/>
+              <widget class="QLineEdit" name="Lbl_GA_Vz"/>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_15"/>
+              <widget class="QLineEdit" name="Lbl_GA_Vx"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="2,1">
+            <layout class="QHBoxLayout" name="HLY_GA_Pressure" stretch="2,1">
              <item>
-              <widget class="QLabel" name="B1_Label_11">
+              <widget class="QLabel" name="Lbl_GA_Pressure">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -3116,14 +3203,14 @@ shallow water solvers</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_16"/>
+              <widget class="QLineEdit" name="Led_GA_Pressure"/>
              </item>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_18" stretch="2,1">
+            <layout class="QHBoxLayout" name="HLY_GA_Alpha" stretch="2,1">
              <item>
-              <widget class="QLabel" name="B1_Label_12">
+              <widget class="QLabel" name="Lbl_GA_Alpha">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -3143,12 +3230,12 @@ shallow water solvers</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_17"/>
+              <widget class="QLineEdit" name="Led_GA_Alpha"/>
              </item>
             </layout>
            </item>
            <item>
-            <widget class="QLabel" name="GeoC_BathfileLabel_10">
+            <widget class="QLabel" name="Lbl_GA_Regions">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -3163,7 +3250,7 @@ shallow water solvers</string>
             </widget>
            </item>
            <item>
-            <widget class="QTableWidget" name="GeoB_InterfaceTable_5">
+            <widget class="QTableWidget" name="Tbl_GA_IniCondTable">
              <property name="alternatingRowColors">
               <bool>true</bool>
              </property>
@@ -3222,16 +3309,16 @@ shallow water solvers</string>
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <layout class="QHBoxLayout" name="HLY_GA_AddRegion">
              <item>
-              <widget class="QToolButton" name="GeoB_AddPoint_5">
+              <widget class="QToolButton" name="Btn_GA_AddRegion">
                <property name="text">
                 <string>Add region</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QToolButton" name="GeoB_RemPoint_5">
+              <widget class="QToolButton" name="Btn_GA_RemRegion">
                <property name="text">
                 <string>Remove region</string>
                </property>
@@ -3240,7 +3327,7 @@ shallow water solvers</string>
             </layout>
            </item>
            <item>
-            <spacer name="verticalSpacer_11">
+            <spacer name="VSp_GA_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -3269,7 +3356,7 @@ shallow water solvers</string>
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_21">
+            <widget class="QLabel" name="Lbl_HA_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -3284,7 +3371,7 @@ shallow water solvers</string>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="GeoE_NoticeLabel_5">
+            <widget class="QLabel" name="Lbl_HA_Notice">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -3305,7 +3392,7 @@ shallow water solvers</string>
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer_14">
+            <spacer name="VSp_HA_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -3334,7 +3421,7 @@ shallow water solvers</string>
             <number>0</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_22">
+            <widget class="QLabel" name="Lbl_HB_H1">
              <property name="font">
               <font>
                <pointsize>14</pointsize>
@@ -3349,7 +3436,7 @@ shallow water solvers</string>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="FlumeLengthPic_2">
+            <widget class="QLabel" name="Lbl_HB_Domain">
              <property name="font">
               <font>
                <pointsize>48</pointsize>
@@ -3370,11 +3457,11 @@ shallow water solvers</string>
             </widget>
            </item>
            <item>
-            <widget class="QStackedWidget" name="stackedWidget_4">
+            <widget class="QStackedWidget" name="SWg_HB_BConditions">
              <property name="currentIndex">
-              <number>2</number>
+              <number>1</number>
              </property>
-             <widget class="QWidget" name="A_North">
+             <widget class="QWidget" name="Pg1_HB_North">
               <layout class="QVBoxLayout" name="verticalLayout_33">
                <property name="leftMargin">
                 <number>0</number>
@@ -3389,7 +3476,7 @@ shallow water solvers</string>
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="GeoA_InterfaceLabel_10">
+                <widget class="QLabel" name="Lbl_HB_North">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -3403,7 +3490,7 @@ shallow water solvers</string>
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_42">
+                <widget class="QLabel" name="Lbl_HB_NorthVelBC">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -3416,7 +3503,7 @@ shallow water solvers</string>
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_12">
+                <widget class="QComboBox" name="Cmb_HB_NorthUBC">
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -3465,7 +3552,7 @@ shallow water solvers</string>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton_30">
+                <widget class="QPushButton" name="Lbl_HB_NorthUploadFile">
                  <property name="text">
                   <string>
 Upload files
@@ -3474,7 +3561,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_11">
+                <widget class="QComboBox" name="Cmb_HB_NorthWaveType">
                  <item>
                   <property name="text">
                    <string>Airy</string>
@@ -3503,9 +3590,9 @@ Upload files
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_58">
+                <layout class="QHBoxLayout" name="HLY_HB_NorthU">
                  <item>
-                  <widget class="QLabel" name="label_46">
+                  <widget class="QLabel" name="Lbl_HB_NorthU">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -3517,20 +3604,20 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_83"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthUx"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_84"/>
+                  <widget class="QLineEdit" name="Led_HB_Northy"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_85"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthUz"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_68">
+                <layout class="QHBoxLayout" name="HLY_HB_NorthOrigin">
                  <item>
-                  <widget class="QLabel" name="label_45">
+                  <widget class="QLabel" name="Lbl_HB_NorthOrigin">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -3542,20 +3629,20 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_80"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthOriginX"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_81"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthOriginY"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_82"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthOriginZ"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_69">
+                <layout class="QHBoxLayout" name="HLY_HB_NorthVec">
                  <item>
-                  <widget class="QLabel" name="label_47">
+                  <widget class="QLabel" name="Lbl_HB_NorthVec">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -3567,18 +3654,18 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_86"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthVecX"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_87"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthVecY"/>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_88"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthVecZ"/>
                  </item>
                 </layout>
                </item>
                <item>
-                <widget class="QLabel" name="label_43">
+                <widget class="QLabel" name="Lbl_HB_NorthPresBC">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -3591,7 +3678,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBox_13">
+                <widget class="QComboBox" name="Cmb_HB_NorthPreBC">
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -3620,9 +3707,9 @@ Upload files
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_67" stretch="1,1">
+                <layout class="QHBoxLayout" name="HLY_HB_NorthPres" stretch="1,1">
                  <item>
-                  <widget class="QLabel" name="label_44">
+                  <widget class="QLabel" name="Lbl_HB_NorthPres">
                    <property name="font">
                     <font>
                      <pointsize>14</pointsize>
@@ -3634,13 +3721,13 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_79"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthPres"/>
                  </item>
                 </layout>
                </item>
               </layout>
              </widget>
-             <widget class="QWidget" name="B_South">
+             <widget class="QWidget" name="Pg1_HB_South">
               <layout class="QVBoxLayout" name="verticalLayout_34">
                <property name="leftMargin">
                 <number>0</number>
@@ -4439,9 +4526,9 @@ Upload files
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_62" stretch="0,0,0,0">
+            <layout class="QHBoxLayout" name="HLY_HB_Navigation" stretch="0,0,0,0">
              <item>
-              <spacer name="horizontalSpacer_23">
+              <spacer name="HSp_HB_Scroll01">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
@@ -4454,7 +4541,7 @@ Upload files
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_27">
+              <widget class="QPushButton" name="Btn_HB_Previous">
                <property name="styleSheet">
                 <string notr="true">QPushButton {
     border-image: url(:/images/images/previous.png) 10;
@@ -4483,7 +4570,7 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_28">
+              <widget class="QPushButton" name="Btn_HB_Next">
                <property name="styleSheet">
                 <string notr="true">QPushButton {
     border-image: url(:/images/images/next.png) 10;
@@ -4512,7 +4599,7 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <spacer name="horizontalSpacer_24">
+              <spacer name="HSp_HB_Scroll02">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
@@ -4527,7 +4614,7 @@ QPushButton:pressed {
             </layout>
            </item>
            <item>
-            <spacer name="verticalSpacer_22">
+            <spacer name="VSp_HB_01">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
@@ -7019,69 +7106,7 @@ Submit to TACC
       </layout>
      </widget>
     </item>
-    <item row="2" column="0" colspan="3">
-     <widget class="QFrame" name="bottomFrame">
-      <property name="frameShape">
-       <enum>QFrame::Box</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Sunken</enum>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <property name="leftMargin">
-        <number>6</number>
-       </property>
-       <property name="topMargin">
-        <number>6</number>
-       </property>
-       <property name="rightMargin">
-        <number>6</number>
-       </property>
-       <property name="bottomMargin">
-        <number>6</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="Lbl_NSFLogo">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/images/NSFLogo.png&quot; height=&quot;75&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="textInteractionFlags">
-          <set>Qt::NoTextInteraction</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="Lbl_FundingDecl">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>This work is based on the material supported by the National Science Foundation under grant 1612843</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="textInteractionFlags">
-          <set>Qt::NoTextInteraction</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="Lbl_SimCenterLogo">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/images/SimCenterLogo.png&quot; height=&quot;55&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="1" column="2">
+    <item row="1" column="2" rowspan="2">
      <widget class="QT3DFrame" name="Graphics" native="true"/>
     </item>
    </layout>
