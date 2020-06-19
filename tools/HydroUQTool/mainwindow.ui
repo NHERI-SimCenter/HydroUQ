@@ -435,7 +435,7 @@
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="AA_ProjSettings">
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -907,10 +907,13 @@ Select interface points file
            <item>
             <widget class="QStackedWidget" name="SWg_BA_Interface">
              <property name="toolTip">
-              <string>Add points to the interface on Side 1</string>
+              <string>Interface points for all SW-CFD interfaces</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
              </property>
              <property name="currentIndex">
-              <number>3</number>
+              <number>2</number>
              </property>
              <widget class="QWidget" name="Pg1_BA_Entry">
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -989,7 +992,7 @@ Select interface points file
                   </font>
                  </property>
                  <property name="toolTip">
-                  <string>Add the points on the entry interface</string>
+                  <string>Table of interface points on the entry interface</string>
                  </property>
                  <property name="toolTipDuration">
                   <number>10000</number>
@@ -1115,7 +1118,7 @@ Select interface points file
                   </font>
                  </property>
                  <property name="toolTip">
-                  <string>Provide the points on the exit interface</string>
+                  <string>Table of interface points on the exit interface</string>
                  </property>
                  <property name="toolTipDuration">
                   <number>10000</number>
@@ -1241,7 +1244,7 @@ Select interface points file
                   </font>
                  </property>
                  <property name="toolTip">
-                  <string>Provide the points on the interface on Side 1</string>
+                  <string>Table of interface points on the Side 1 interface</string>
                  </property>
                  <property name="toolTipDuration">
                   <number>10000</number>
@@ -1367,7 +1370,7 @@ Select interface points file
                   </font>
                  </property>
                  <property name="toolTip">
-                  <string>Provide the points on the interface on Side 2</string>
+                  <string>Table of interface points on the Side 2 interface</string>
                  </property>
                  <property name="toolTipDuration">
                   <number>10000</number>
@@ -1578,6 +1581,12 @@ QPushButton:pressed {
            </item>
            <item>
             <widget class="QComboBox" name="CmB_BB_Library">
+             <property name="toolTip">
+              <string>Select one of the pre-existing SW solutions from the SimCenter Library</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <item>
               <property name="text">
                <string>Select pre-existing SW solution</string>
@@ -1624,6 +1633,12 @@ QPushButton:pressed {
                <pointsize>14</pointsize>
               </font>
              </property>
+             <property name="toolTip">
+              <string>Check this if you would like to upload a file instead of using the table</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="text">
               <string>Upload longitude-latitude file</string>
              </property>
@@ -1634,6 +1649,12 @@ QPushButton:pressed {
            </item>
            <item>
             <widget class="QPushButton" name="Btn_BB_UploadFile">
+             <property name="toolTip">
+              <string>Upload a latitude-longitude file to define the interfaces</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="text">
               <string>
 Upload longitude-latitude file
@@ -1643,6 +1664,12 @@ Upload longitude-latitude file
            </item>
            <item>
             <widget class="QStackedWidget" name="SWg_BB_Interface">
+             <property name="toolTip">
+              <string>Interface points for all SW-CFD interfaces</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="currentIndex">
               <number>0</number>
              </property>
@@ -1684,13 +1711,34 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_Entrynx"/>
+                  <widget class="QLineEdit" name="Led_BB_Entrynx">
+                   <property name="toolTip">
+                    <string>Provide X-component of normal pointing into the CFD domain and related to the entry interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_Entryny"/>
+                  <widget class="QLineEdit" name="Led_BB_Entryny">
+                   <property name="toolTip">
+                    <string>Provide Y-component of normal pointing into the CFD domain and related to the entry interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_Entrynz"/>
+                  <widget class="QLineEdit" name="Led_BB_Entrynz">
+                   <property name="toolTip">
+                    <string>Provide Z-component of normal pointing into the CFD domain and related to the entry interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -1700,6 +1748,12 @@ Upload longitude-latitude file
                   <font>
                    <pointsize>14</pointsize>
                   </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>Table of interface points on the entry interface</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
                  </property>
                  <column>
                   <property name="text">
@@ -1722,6 +1776,12 @@ Upload longitude-latitude file
                 <layout class="QHBoxLayout" name="HLY_BB_EntryAddPt">
                  <item>
                   <widget class="QToolButton" name="But_BB_EntryAddPoint">
+                   <property name="toolTip">
+                    <string>Add points to the entry interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Add point</string>
                    </property>
@@ -1729,6 +1789,12 @@ Upload longitude-latitude file
                  </item>
                  <item>
                   <widget class="QToolButton" name="But_BB_EntryRemPoint">
+                   <property name="toolTip">
+                    <string>Remove points to the entry interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -1776,13 +1842,34 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_ExitNx"/>
+                  <widget class="QLineEdit" name="Led_BB_ExitNx">
+                   <property name="toolTip">
+                    <string>Provide X-component of normal pointing into the CFD domain and related to the exit interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_ExitNy"/>
+                  <widget class="QLineEdit" name="Led_BB_ExitNy">
+                   <property name="toolTip">
+                    <string>Provide Y-component of normal pointing into the CFD domain and related to the exit interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_ExitNz"/>
+                  <widget class="QLineEdit" name="Led_BB_ExitNz">
+                   <property name="toolTip">
+                    <string>Provide Z-component of normal pointing into the CFD domain and related to the exit interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -1792,6 +1879,12 @@ Upload longitude-latitude file
                   <font>
                    <pointsize>14</pointsize>
                   </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>Table of interface points on the exit interface</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
                  </property>
                  <column>
                   <property name="text">
@@ -1814,6 +1907,12 @@ Upload longitude-latitude file
                 <layout class="QHBoxLayout" name="HLY_BB_ExitAddPt">
                  <item>
                   <widget class="QToolButton" name="Btn_BB_EntryAddPt">
+                   <property name="toolTip">
+                    <string>Add points to the exit interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Add point</string>
                    </property>
@@ -1821,6 +1920,12 @@ Upload longitude-latitude file
                  </item>
                  <item>
                   <widget class="QToolButton" name="Btn_BB_EntryRemPt">
+                   <property name="toolTip">
+                    <string>Remove points to the exit interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -1868,13 +1973,34 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Lbl_BB_S01Nx"/>
+                  <widget class="QLineEdit" name="Lbl_BB_S01Nx">
+                   <property name="toolTip">
+                    <string>Provide X-component of normal pointing into the CFD domain and related to the Side 1 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Lbl_BB_S01Ny"/>
+                  <widget class="QLineEdit" name="Lbl_BB_S01Ny">
+                   <property name="toolTip">
+                    <string>Provide Y-component of normal pointing into the CFD domain and related to the Side 1 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Lbl_BB_S01Nz"/>
+                  <widget class="QLineEdit" name="Lbl_BB_S01Nz">
+                   <property name="toolTip">
+                    <string>Provide Z-component of normal pointing into the CFD domain and related to the Side 1 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -1884,6 +2010,12 @@ Upload longitude-latitude file
                   <font>
                    <pointsize>14</pointsize>
                   </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>Table of interface points on the Side 1 interface</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
                  </property>
                  <column>
                   <property name="text">
@@ -1906,6 +2038,12 @@ Upload longitude-latitude file
                 <layout class="QHBoxLayout" name="HLY_BB_S01AddPt">
                  <item>
                   <widget class="QToolButton" name="Btn_BB_S01AddPt">
+                   <property name="toolTip">
+                    <string>Add points to the Side 1 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Add point</string>
                    </property>
@@ -1913,6 +2051,12 @@ Upload longitude-latitude file
                  </item>
                  <item>
                   <widget class="QToolButton" name="Btn_BB_S01RemPt">
+                   <property name="toolTip">
+                    <string>Remove points to the Side 1 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -1960,13 +2104,34 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_S01Nx"/>
+                  <widget class="QLineEdit" name="Led_BB_S01Nx">
+                   <property name="toolTip">
+                    <string>Provide X-component of normal pointing into the CFD domain and related to the Side 2 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_S01Ny"/>
+                  <widget class="QLineEdit" name="Led_BB_S01Ny">
+                   <property name="toolTip">
+                    <string>Provide Y-component of normal pointing into the CFD domain and related to the Side 2 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_S01Nz"/>
+                  <widget class="QLineEdit" name="Led_BB_S01Nz">
+                   <property name="toolTip">
+                    <string>Provide Z-component of normal pointing into the CFD domain and related to the Side 2 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -1976,6 +2141,12 @@ Upload longitude-latitude file
                   <font>
                    <pointsize>14</pointsize>
                   </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>Table of interface points on the Side 2 interface</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
                  </property>
                  <column>
                   <property name="text">
@@ -1998,6 +2169,12 @@ Upload longitude-latitude file
                 <layout class="QHBoxLayout" name="HLY_BB_S02AddPt">
                  <item>
                   <widget class="QToolButton" name="Btn_BB_S02AddPt">
+                   <property name="toolTip">
+                    <string>Add points to the Side 2 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Add point</string>
                    </property>
@@ -2005,6 +2182,12 @@ Upload longitude-latitude file
                  </item>
                  <item>
                   <widget class="QToolButton" name="Btn_BB_S02RemPt">
+                   <property name="toolTip">
+                    <string>Remove points to the Side 2 interface</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
                    <property name="text">
                     <string>Remove point</string>
                    </property>
@@ -2167,6 +2350,12 @@ QPushButton:pressed {
            </item>
            <item>
             <widget class="QPushButton" name="Btn_BC_FileUpload">
+             <property name="toolTip">
+              <string>Select the bathymetric files</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="text">
               <string>
 Select bathymetry files
@@ -2190,6 +2379,12 @@ Select bathymetry files
            </item>
            <item>
             <widget class="QComboBox" name="Cmb_BC_BathFileType">
+             <property name="toolTip">
+              <string>Type of bathymetric files</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <item>
               <property name="text">
                <string>Select Bathymetric file type</string>
@@ -2329,7 +2524,14 @@ Select bathymetry files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_BD_Depth"/>
+              <widget class="QLineEdit" name="Led_BD_Depth">
+               <property name="toolTip">
+                <string>Depth of water at the entry of the flume</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -2394,7 +2596,14 @@ Select bathymetry files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_BD_Breadth"/>
+              <widget class="QLineEdit" name="Led_BD_Breadth">
+               <property name="toolTip">
+                <string>Breadth of the flume</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -2422,6 +2631,12 @@ Select bathymetry files
                <pointsize>14</pointsize>
               </font>
              </property>
+             <property name="toolTip">
+              <string>Table of segments along the length of the flume</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <column>
               <property name="text">
                <string>Segment #.</string>
@@ -2443,6 +2658,12 @@ Select bathymetry files
             <layout class="QHBoxLayout" name="HLY_BD_AddSeg">
              <item>
               <widget class="QToolButton" name="Btn_BD_AddSeg">
+               <property name="toolTip">
+                <string>Add segment along the length of the flume</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
                <property name="text">
                 <string>Add segment</string>
                </property>
@@ -2450,6 +2671,12 @@ Select bathymetry files
              </item>
              <item>
               <widget class="QToolButton" name="HLY_BD_RemSeg">
+               <property name="toolTip">
+                <string>Remove segment along the length of the flume</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
                <property name="text">
                 <string>Remove segment</string>
                </property>
@@ -2726,6 +2953,12 @@ Select bathymetry files
                <pointsize>14</pointsize>
               </font>
              </property>
+             <property name="toolTip">
+              <string>Table of building data. Enter lowermost and topmost point</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <column>
               <property name="text">
                <string>#.</string>
@@ -2752,6 +2985,12 @@ Select bathymetry files
             <layout class="QHBoxLayout" name="HLY_CA_AddBuild">
              <item>
               <widget class="QToolButton" name="Btn_CA_AddBuild">
+               <property name="toolTip">
+                <string>Add building data</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
                <property name="text">
                 <string>Add building</string>
                </property>
@@ -2759,6 +2998,12 @@ Select bathymetry files
              </item>
              <item>
               <widget class="QToolButton" name="Btn_CA_RemBuild">
+               <property name="toolTip">
+                <string>Remove building data</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
                <property name="text">
                 <string>Remove building</string>
                </property>
@@ -2899,6 +3144,12 @@ option</string>
            </item>
            <item>
             <widget class="QComboBox" name="Cmb_EAMeshType">
+             <property name="toolTip">
+              <string>Select type of mesh: in-built mesing / upload mesh files</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <item>
               <property name="text">
                <string>Select mesh type</string>
@@ -2923,6 +3174,12 @@ option</string>
            </item>
            <item>
             <widget class="QPushButton" name="Btn_EA_UploadMesh">
+             <property name="toolTip">
+              <string>Upload the mesh files or mesh dictionaries</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="text">
               <string>
 Upload mesh
@@ -2954,6 +3211,12 @@ Upload mesh
              </property>
              <property name="focusPolicy">
               <enum>Qt::WheelFocus</enum>
+             </property>
+             <property name="toolTip">
+              <string>Define the fineness of the mesh</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
              </property>
              <property name="styleSheet">
               <string notr="true">QSlider::groove:horizontal {
@@ -3041,6 +3304,12 @@ QSlider::handle:horizontal {
            </item>
            <item>
             <widget class="QTableWidget" name="Tbl_EA_Regions">
+             <property name="toolTip">
+              <string>Table of regions where mesh needs to be refined</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="alternatingRowColors">
               <bool>true</bool>
              </property>
@@ -3089,6 +3358,12 @@ QSlider::handle:horizontal {
             <layout class="QHBoxLayout" name="HLY_EA_AddRegion">
              <item>
               <widget class="QToolButton" name="Btn_EA_AddRegion">
+               <property name="toolTip">
+                <string>Add regions for mesh refinement</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
                <property name="text">
                 <string>Add region</string>
                </property>
@@ -3096,6 +3371,12 @@ QSlider::handle:horizontal {
              </item>
              <item>
               <widget class="QToolButton" name="Btn_EA_RemRegion">
+               <property name="toolTip">
+                <string>Remove regions for mesh refinement</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
                <property name="text">
                 <string>Remove region</string>
                </property>
@@ -3183,7 +3464,14 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_FA_WaterVisc"/>
+              <widget class="QLineEdit" name="Led_FA_WaterVisc">
+               <property name="toolTip">
+                <string>Kinematic viscosity of water</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -3209,7 +3497,14 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_FA_WaterDensity"/>
+              <widget class="QLineEdit" name="Led_FA_WaterDensity">
+               <property name="toolTip">
+                <string>Density of water</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -3249,7 +3544,14 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_FA_AirVisc"/>
+              <widget class="QLineEdit" name="Led_FA_AirVisc">
+               <property name="toolTip">
+                <string>Kinematic viscosity of air</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -3275,7 +3577,14 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_FA_AirDen"/>
+              <widget class="QLineEdit" name="Led_FA_AirDen">
+               <property name="toolTip">
+                <string>Density of air</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -3315,7 +3624,14 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_FA_SurfTen"/>
+              <widget class="QLineEdit" name="Led_FA_SurfTen">
+               <property name="toolTip">
+                <string>Surface tension between the fluids</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -3399,13 +3715,34 @@ shallow water solvers</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Lbl_GA_Vy"/>
+              <widget class="QLineEdit" name="Lbl_GA_Vy">
+               <property name="toolTip">
+                <string>Initial global velocity along X-direction</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Lbl_GA_Vz"/>
+              <widget class="QLineEdit" name="Lbl_GA_Vz">
+               <property name="toolTip">
+                <string>Initial global velocity along Y-direction</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Lbl_GA_Vx"/>
+              <widget class="QLineEdit" name="Lbl_GA_Vx">
+               <property name="toolTip">
+                <string>Initial global velocity along Z-direction</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -3432,7 +3769,14 @@ shallow water solvers</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_GA_Pressure"/>
+              <widget class="QLineEdit" name="Led_GA_Pressure">
+               <property name="toolTip">
+                <string>Initial global pressure</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -3459,7 +3803,14 @@ shallow water solvers</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_GA_Alpha"/>
+              <widget class="QLineEdit" name="Led_GA_Alpha">
+               <property name="toolTip">
+                <string>Initial global phase parameter</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -3480,6 +3831,12 @@ shallow water solvers</string>
            </item>
            <item>
             <widget class="QTableWidget" name="Tbl_GA_IniCondTable">
+             <property name="toolTip">
+              <string>Regions for initial condition</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="alternatingRowColors">
               <bool>true</bool>
              </property>
@@ -3541,6 +3898,12 @@ shallow water solvers</string>
             <layout class="QHBoxLayout" name="HLY_GA_AddRegion">
              <item>
               <widget class="QToolButton" name="Btn_GA_AddRegion">
+               <property name="toolTip">
+                <string>Add regions for defining initial conditions</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
                <property name="text">
                 <string>Add region</string>
                </property>
@@ -3548,6 +3911,12 @@ shallow water solvers</string>
              </item>
              <item>
               <widget class="QToolButton" name="Btn_GA_RemRegion">
+               <property name="toolTip">
+                <string>Remove regions for defining initial conditions</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
                <property name="text">
                 <string>Remove region</string>
                </property>
@@ -3687,8 +4056,14 @@ shallow water solvers</string>
            </item>
            <item>
             <widget class="QStackedWidget" name="SWg_HB_BConditions">
+             <property name="toolTip">
+              <string>Boundary conditions for all SW-CFD interfaces</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>3</number>
              </property>
              <widget class="QWidget" name="Pg1_HB_North">
               <layout class="QVBoxLayout" name="verticalLayout_33">
@@ -3733,6 +4108,12 @@ shallow water solvers</string>
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HB_NorthVelBC">
+                 <property name="toolTip">
+                  <string>Choose type of velocity boundary condition on North face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -3782,6 +4163,13 @@ shallow water solvers</string>
                </item>
                <item>
                 <widget class="QPushButton" name="Btn_HB_NorthUploadFile">
+                 <property name="toolTip">
+                  <string>Upload files for time-varying velocity boundary conditions on North face
+</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <property name="text">
                   <string>
 Upload files
@@ -3791,6 +4179,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HB_NorthWaveType">
+                 <property name="toolTip">
+                  <string>Types of wave inputs on North face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Airy</string>
@@ -3833,13 +4227,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_NorthUx"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthUx">
+                   <property name="toolTip">
+                    <string>X-component of average velocity of through North face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_Northy"/>
+                  <widget class="QLineEdit" name="Led_HB_Northy">
+                   <property name="toolTip">
+                    <string>Y-component of average velocity of through North face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_NorthUz"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthUz">
+                   <property name="toolTip">
+                    <string>Z-component of average velocity of through North face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -3858,13 +4273,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_NorthOriginX"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthOriginX">
+                   <property name="toolTip">
+                    <string>X-component of origin of wave through North face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_NorthOriginY"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthOriginY">
+                   <property name="toolTip">
+                    <string>Y-component of origin of wave through North face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_NorthOriginZ"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthOriginZ">
+                   <property name="toolTip">
+                    <string>Z-component of origin of wave through North face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -3883,13 +4319,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_NorthVecX"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthVecX">
+                   <property name="toolTip">
+                    <string>X-component of direction vector of wave through North face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_NorthVecY"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthVecY">
+                   <property name="toolTip">
+                    <string>Y-component of direction vector of wave through North face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_NorthVecZ"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthVecZ">
+                   <property name="toolTip">
+                    <string>Z-component of direction vector of wave through North face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -3908,6 +4365,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HB_NorthPresBC">
+                 <property name="toolTip">
+                  <string>Choose type of pressure boundary condition on North face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -3950,7 +4413,14 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_NorthPres"/>
+                  <widget class="QLineEdit" name="Led_HB_NorthPres">
+                   <property name="toolTip">
+                    <string>Value of pressure boundary condition on North face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -3999,6 +4469,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HB_SouthUBC">
+                 <property name="toolTip">
+                  <string>Choose type of velocity boundary condition on South face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -4048,6 +4524,12 @@ Upload files
                </item>
                <item>
                 <widget class="QPushButton" name="Btn_HB_SouthUploadFile">
+                 <property name="toolTip">
+                  <string>Upload files for time-varying velocity boundary conditions on South face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <property name="text">
                   <string>
 Upload files
@@ -4057,6 +4539,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HB_SouthWaveType">
+                 <property name="toolTip">
+                  <string>Types of wave inputs on South face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Airy</string>
@@ -4099,13 +4587,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_SouthUx"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthUx">
+                   <property name="toolTip">
+                    <string>X-component of average velocity of through South face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_SouthUy"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthUy">
+                   <property name="toolTip">
+                    <string>Y-component of average velocity of through South face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_SouthUz"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthUz">
+                   <property name="toolTip">
+                    <string>Z-component of average velocity of through South face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -4124,13 +4633,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_SouthOriginX"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthOriginX">
+                   <property name="toolTip">
+                    <string>X-component of origin of wave through South face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_SouthOriginY"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthOriginY">
+                   <property name="toolTip">
+                    <string>Y-component of origin of wave through South face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_SouthOriginZ"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthOriginZ">
+                   <property name="toolTip">
+                    <string>Z-component of origin of wave through South face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -4149,13 +4679,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_SouthVecX"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthVecX">
+                   <property name="toolTip">
+                    <string>X-component of direction vector of wave through South face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_SouthVecY"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthVecY">
+                   <property name="toolTip">
+                    <string>Y-component of direction vector of wave through South face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_SouthVecZ"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthVecZ">
+                   <property name="toolTip">
+                    <string>Z-component of direction vector of wave through South face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -4174,6 +4725,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HB_SouthPreBC">
+                 <property name="toolTip">
+                  <string>Choose type of pressure boundary condition on South face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -4216,7 +4773,14 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_SouthPres"/>
+                  <widget class="QLineEdit" name="Led_HB_SouthPres">
+                   <property name="toolTip">
+                    <string>Value of pressure boundary condition on South face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -4265,6 +4829,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HB_EastUBC">
+                 <property name="toolTip">
+                  <string>Choose type of velocity boundary condition on East face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -4314,6 +4884,12 @@ Upload files
                </item>
                <item>
                 <widget class="QPushButton" name="Btn_HB_EastUploadFile">
+                 <property name="toolTip">
+                  <string>Upload files for time-varying velocity boundary conditions on East face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <property name="text">
                   <string>
 Upload files
@@ -4323,6 +4899,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HB_EastWaveType">
+                 <property name="toolTip">
+                  <string>Types of wave inputs on East face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Airy</string>
@@ -4365,13 +4947,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_EastUx"/>
+                  <widget class="QLineEdit" name="Led_HB_EastUx">
+                   <property name="toolTip">
+                    <string>X-component of average velocity of through East face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_EastUy"/>
+                  <widget class="QLineEdit" name="Led_HB_EastUy">
+                   <property name="toolTip">
+                    <string>Y-component of average velocity of through East face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_EastUz"/>
+                  <widget class="QLineEdit" name="Led_HB_EastUz">
+                   <property name="toolTip">
+                    <string>Z-component of average velocity of through East face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -4390,13 +4993,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_EastOriginX"/>
+                  <widget class="QLineEdit" name="Led_HB_EastOriginX">
+                   <property name="toolTip">
+                    <string>X-component of origin of wave through East face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_EastOriginY"/>
+                  <widget class="QLineEdit" name="Led_HB_EastOriginY">
+                   <property name="toolTip">
+                    <string>Y-component of origin of wave through East face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_EastOriginZ"/>
+                  <widget class="QLineEdit" name="Led_HB_EastOriginZ">
+                   <property name="toolTip">
+                    <string>Z-component of origin of wave through East face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -4415,13 +5039,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_EastVecX"/>
+                  <widget class="QLineEdit" name="Led_HB_EastVecX">
+                   <property name="toolTip">
+                    <string>X-component of direction vector of wave through East face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_EastVecY"/>
+                  <widget class="QLineEdit" name="Led_HB_EastVecY">
+                   <property name="toolTip">
+                    <string>Y-component of direction vector of wave through East face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_EastVecZ"/>
+                  <widget class="QLineEdit" name="Led_HB_EastVecZ">
+                   <property name="toolTip">
+                    <string>Z-component of direction vector of wave through East face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -4440,6 +5085,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HB_EastPresBC">
+                 <property name="toolTip">
+                  <string>Choose type of pressure boundary condition on East face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -4482,7 +5133,14 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_EastPres"/>
+                  <widget class="QLineEdit" name="Led_HB_EastPres">
+                   <property name="toolTip">
+                    <string>Value of pressure boundary condition on East face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -4529,6 +5187,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HB_WestUBC">
+                 <property name="toolTip">
+                  <string>Choose type of velocity boundary condition on West face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -4578,6 +5242,12 @@ Upload files
                </item>
                <item>
                 <widget class="QPushButton" name="Lbl_HB_WestUploadFile">
+                 <property name="toolTip">
+                  <string>Upload files for time-varying velocity boundary conditions on West face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <property name="text">
                   <string>
 Upload files
@@ -4587,6 +5257,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HB_WestWaveType">
+                 <property name="toolTip">
+                  <string>Types of wave inputs on West face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Airy</string>
@@ -4629,13 +5305,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_WestUx"/>
+                  <widget class="QLineEdit" name="Led_HB_WestUx">
+                   <property name="toolTip">
+                    <string>X-component of average velocity of through West face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_WestUy"/>
+                  <widget class="QLineEdit" name="Led_HB_WestUy">
+                   <property name="toolTip">
+                    <string>Y-component of average velocity of through West face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_WestUz"/>
+                  <widget class="QLineEdit" name="Led_HB_WestUz">
+                   <property name="toolTip">
+                    <string>Z-component of average velocity of through West face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -4654,13 +5351,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_WestOriginX"/>
+                  <widget class="QLineEdit" name="Led_HB_WestOriginX">
+                   <property name="toolTip">
+                    <string>X-component of origin of wave through West face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_WestOriginY"/>
+                  <widget class="QLineEdit" name="Led_HB_WestOriginY">
+                   <property name="toolTip">
+                    <string>Y-component of origin of wave through West face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_WestOriginZ"/>
+                  <widget class="QLineEdit" name="Led_HB_WestOriginZ">
+                   <property name="toolTip">
+                    <string>Z-component of origin of wave through West face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -4679,13 +5397,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_WestVecX"/>
+                  <widget class="QLineEdit" name="Led_HB_WestVecX">
+                   <property name="toolTip">
+                    <string>X-component of direction vector of wave through West face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_WestVecY"/>
+                  <widget class="QLineEdit" name="Led_HB_WestVecY">
+                   <property name="toolTip">
+                    <string>Y-component of direction vector of wave through West face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_WestVecZ"/>
+                  <widget class="QLineEdit" name="Led_HB_WestVecZ">
+                   <property name="toolTip">
+                    <string>Z-component of direction vector of wave through West face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -4704,6 +5443,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HB_WestPresBC">
+                 <property name="toolTip">
+                  <string>Choose type of pressure boundary condition on West face</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -4746,7 +5491,14 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_WestPres"/>
+                  <widget class="QLineEdit" name="Led_HB_WestPres">
+                   <property name="toolTip">
+                    <string>Value of pressure boundary condition on West face</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -4955,6 +5707,12 @@ QPushButton:pressed {
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HC_EntryUBC">
+                 <property name="toolTip">
+                  <string>Choose type of velocity boundary condition on flume entry</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -5004,6 +5762,12 @@ QPushButton:pressed {
                </item>
                <item>
                 <widget class="QPushButton" name="Btn_HC_EntryUploadFile">
+                 <property name="toolTip">
+                  <string>Upload files for time-varying velocity boundary conditions on flume entry</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <property name="text">
                   <string>
 Upload files
@@ -5013,6 +5777,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HC_EntryWaveType">
+                 <property name="toolTip">
+                  <string>Types of wave inputs on flume entry</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Airy</string>
@@ -5055,13 +5825,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_EntryUz"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryUz">
+                   <property name="toolTip">
+                    <string>X-component of average velocity of through flume entry</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_EntryUx"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryUx">
+                   <property name="toolTip">
+                    <string>Y-component of average velocity of through flume entry</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_EntryUy"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryUy">
+                   <property name="toolTip">
+                    <string>Z-component of average velocity of through flume entry</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -5080,13 +5871,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_EntryOriginX"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryOriginX">
+                   <property name="toolTip">
+                    <string>X-component of origin of wave through flume entry</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_EntryOriginY"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryOriginY">
+                   <property name="toolTip">
+                    <string>Y-component of origin of wave through flume entry</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_EntryOriginZ"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryOriginZ">
+                   <property name="toolTip">
+                    <string>Z-component of origin of wave through flume entry</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -5105,13 +5917,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_EntryVecX"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryVecX">
+                   <property name="toolTip">
+                    <string>X-component of direction vector of wave through flume entry</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_EntryVecY"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryVecY">
+                   <property name="toolTip">
+                    <string>Y-component of direction vector of wave through flume entry</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_EntryVecZ"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryVecZ">
+                   <property name="toolTip">
+                    <string>Z-component of direction vector of wave through flume entry</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -5130,6 +5963,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HC_EntryPresBC">
+                 <property name="toolTip">
+                  <string>Choose type of pressure boundary condition on flume entry</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -5172,7 +6011,14 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_EntryPres"/>
+                  <widget class="QLineEdit" name="Led_HC_EntryPres">
+                   <property name="toolTip">
+                    <string>Value of pressure boundary condition on flume entry</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -5221,6 +6067,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HC_ExitUBC">
+                 <property name="toolTip">
+                  <string>Choose type of velocity boundary condition on flume exit</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Empty</string>
@@ -5270,6 +6122,12 @@ Upload files
                </item>
                <item>
                 <widget class="QPushButton" name="Btn_HC_ExitUploadFile">
+                 <property name="toolTip">
+                  <string>Upload files for time-varying velocity boundary conditions on flume exit</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <property name="text">
                   <string>
 Upload files
@@ -5279,6 +6137,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HC_ExitWaveType">
+                 <property name="toolTip">
+                  <string>Types of wave inputs on flume exit</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Airy</string>
@@ -5321,13 +6185,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_ExitUx"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitUx">
+                   <property name="toolTip">
+                    <string>X-component of average velocity of through flume exit</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_ExitUy"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitUy">
+                   <property name="toolTip">
+                    <string>Y-component of average velocity of through flume exit</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_ExitUz"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitUz">
+                   <property name="toolTip">
+                    <string>Z-component of average velocity of through flume exit</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -5346,13 +6231,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_ExitOriginX"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitOriginX">
+                   <property name="toolTip">
+                    <string>X-component of origin of wave through flume exit</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_ExitOriginY"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitOriginY">
+                   <property name="toolTip">
+                    <string>Y-component of origin of wave through flume exit</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_ExitOriginZ"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitOriginZ">
+                   <property name="toolTip">
+                    <string>Z-component of origin of wave through flume exit</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -5371,13 +6277,34 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_ExitVecX"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitVecX">
+                   <property name="toolTip">
+                    <string>X-component of direction vector of wave through flume exit</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_ExitVecY"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitVecY">
+                   <property name="toolTip">
+                    <string>Y-component of direction vector of wave through flume exit</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_ExitVecZ"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitVecZ">
+                   <property name="toolTip">
+                    <string>Z-component of direction vector of wave through flume exit</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -5396,6 +6323,12 @@ Upload files
                </item>
                <item>
                 <widget class="QComboBox" name="Cmb_HC_ExitPresBC">
+                 <property name="toolTip">
+                  <string>Choose type of pressure boundary condition on flume exit</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>10000</number>
+                 </property>
                  <item>
                   <property name="text">
                    <string>Default choice</string>
@@ -5438,7 +6371,14 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HC_ExitPres"/>
+                  <widget class="QLineEdit" name="Led_HC_ExitPres">
+                   <property name="toolTip">
+                    <string>Value of pressure boundary condition on flume exit</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -5841,7 +6781,14 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_IA_Start"/>
+              <widget class="QLineEdit" name="Led_IA_Start">
+               <property name="toolTip">
+                <string>Start time of simulation</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -5867,7 +6814,14 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_IA_End"/>
+              <widget class="QLineEdit" name="Led_IA_End">
+               <property name="toolTip">
+                <string>End time of simulation</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -5893,7 +6847,14 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_IA_DeltaT"/>
+              <widget class="QLineEdit" name="Led_IA_DeltaT">
+               <property name="toolTip">
+                <string>Time interval to be used in simulation</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -5919,7 +6880,14 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_IA_WriteT"/>
+              <widget class="QLineEdit" name="Led_IA_WriteT">
+               <property name="toolTip">
+                <string>How often should output files be written?</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -5930,6 +6898,12 @@ QPushButton:pressed {
                <pointsize>14</pointsize>
               </font>
              </property>
+             <property name="toolTip">
+              <string>Check if the simularion is being restarted</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="text">
               <string>Restart on</string>
              </property>
@@ -5937,6 +6911,12 @@ QPushButton:pressed {
            </item>
            <item>
             <widget class="QPushButton" name="Btn_IA_UploadFiles">
+             <property name="toolTip">
+              <string>Upload files from previous time step</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
+             </property>
              <property name="text">
               <string>
 Upload Restart Files 
@@ -5964,6 +6944,12 @@ Upload Restart Files
               <font>
                <pointsize>14</pointsize>
               </font>
+             </property>
+             <property name="toolTip">
+              <string>CFD solver to be used here</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
              </property>
              <item>
               <property name="text">
@@ -6068,6 +7054,12 @@ Upload Restart Files
                  <pointsize>14</pointsize>
                 </font>
                </property>
+               <property name="toolTip">
+                <string>Type of domain decomposition for parallelization</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
                <item>
                 <property name="text">
                  <string>Simple</string>
@@ -6104,13 +7096,34 @@ Upload Restart Files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_IB_SubdomainsX"/>
+              <widget class="QLineEdit" name="Led_IB_SubdomainsX">
+               <property name="toolTip">
+                <string>Number of domains along x-direction</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_IB_SubdomainsY"/>
+              <widget class="QLineEdit" name="Led_IB_SubdomainsY">
+               <property name="toolTip">
+                <string>Number of domains along y-direction</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_IB_SubdomainsZ"/>
+              <widget class="QLineEdit" name="Led_IB_SubdomainsZ">
+               <property name="toolTip">
+                <string>Number of domains along z-direction</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -6180,7 +7193,11 @@ Upload Restart Files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_JA_Jobname"/>
+              <widget class="QLineEdit" name="Led_JA_Jobname">
+               <property name="toolTip">
+                <string>Jobname for the job on TACC Stampede cluster</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -6192,6 +7209,12 @@ Upload Restart Files
                 <font>
                  <pointsize>14</pointsize>
                 </font>
+               </property>
+               <property name="toolTip">
+                <string>Node type on Stampede2</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
                </property>
                <item>
                 <property name="text">
@@ -6211,6 +7234,12 @@ Upload Restart Files
                 <font>
                  <pointsize>14</pointsize>
                 </font>
+               </property>
+               <property name="toolTip">
+                <string>Queue type on Stampede2</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
                </property>
                <item>
                 <property name="text">
@@ -6253,7 +7282,14 @@ Upload Restart Files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_JA_Cores"/>
+              <widget class="QLineEdit" name="Led_JA_Cores">
+               <property name="toolTip">
+                <string>Number of cores</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -6279,13 +7315,34 @@ Upload Restart Files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_JA_WallTimeHH"/>
+              <widget class="QLineEdit" name="Led_JA_WallTimeHH">
+               <property name="toolTip">
+                <string>Wall time (Hours)</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_JA_WallTimeMM"/>
+              <widget class="QLineEdit" name="Led_JA_WallTimeMM">
+               <property name="toolTip">
+                <string>Wall Time (MM)</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_JA_WallTimeSS"/>
+              <widget class="QLineEdit" name="Led_JA_WallTimeSS">
+               <property name="toolTip">
+                <string>Wall Time (SS)</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -6311,7 +7368,14 @@ Upload Restart Files
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_JA_Email"/>
+              <widget class="QLineEdit" name="Led_JA_Email">
+               <property name="toolTip">
+                <string>Email address to get notice from server</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>10000</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -6321,6 +7385,12 @@ Upload Restart Files
               <font>
                <pointsize>14</pointsize>
               </font>
+             </property>
+             <property name="toolTip">
+              <string>Generate intermediate and solver files</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
              </property>
              <property name="text">
               <string>
@@ -6335,6 +7405,12 @@ Generate Files
               <font>
                <pointsize>14</pointsize>
               </font>
+             </property>
+             <property name="toolTip">
+              <string>Submit job to TACC</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>10000</number>
              </property>
              <property name="text">
               <string>

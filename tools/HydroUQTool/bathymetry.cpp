@@ -64,12 +64,12 @@ void MainWindow::bathymetrydesc(int simtypeindex)
     else if(simtypeindex == 1)
     {
         // Set description box
-        ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("Here, the bathymetry data related to the simulation is initialized."
-                                  "In this case, upload the shallow water solutions and bathymetry data."
-                                  "Additionally provide the information of the interface between "
-                                  "shallow-water and CFD domain either in the form of a table or as "
-                                  "a .csv file");
+        //ui->Lbl_Descript->setWordWrap(true);
+        //ui->Lbl_Descript->setText("Here, the bathymetry data related to the simulation is initialized."
+        //                          "In this case, upload the shallow water solutions and bathymetry data."
+        //                          "Additionally provide the information of the interface between "
+        //                          "shallow-water and CFD domain either in the form of a table or as "
+        //                          "a .csv file");
         // Show hide elements
         ui->Btn_BA_UploadFile->hide();
     }
@@ -77,13 +77,13 @@ void MainWindow::bathymetrydesc(int simtypeindex)
     else if(simtypeindex == 2)
     {
         // Set description box
-        ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("Here, the bathymetry data related to the simulation is initialized."
+        //ui->Lbl_Descript->setWordWrap(true);
+        /*ui->Lbl_Descript->setText("Here, the bathymetry data related to the simulation is initialized."
                                   "Use this case if you do not have pre-existing shallow water solutions. "
                                   "You can choose simulation done on pre-selected subduction zone. "
                                   "Additionally provide the information of the interface between "
                                   "shallow-water and CFD domain either in the form of a table or as "
-                                  "a .csv file");
+                                  "a .csv file");*/
         // Show hide elements
         ui->Btn_BB_UploadFile->hide();
     }

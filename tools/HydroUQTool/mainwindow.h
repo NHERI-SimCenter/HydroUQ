@@ -88,6 +88,8 @@ private slots:
 
     void on_Btn_BA_S02RemPt_clicked();
 
+    void on_OptionsStack_currentChanged(int arg1);
+
 private:
 
     // Initialize
