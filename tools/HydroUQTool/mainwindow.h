@@ -75,6 +75,9 @@ private slots:
     // Item tree on left
     void on_SimOptions_itemClicked(QTreeWidgetItem *item, int column);
 
+    // Options stack
+    void on_OptionsStack_currentChanged(int arg1);
+
     // Project settings
     void on_Led_AA_PName_editingFinished();
     void on_Led_AA_PDesc_textChanged();
@@ -88,21 +91,26 @@ private slots:
 
     void on_Btn_BA_S02RemPt_clicked();
 
-    void on_OptionsStack_currentChanged(int arg1);
+
+
+    void on_ChB_BB_UploadFile_stateChanged(int arg1);
+
+    void on_Btn_BB_UploadFile_clicked();
+
+    void on_Btn_BB_S02AddPt_clicked();
+
+    void on_Btn_BB_S02RemPt_clicked();
 
 private:
 
     // Initialize
     void initialize();
 
-    // Bathymetry
-    void bathymetrydesc(int simtypeindex);
-
     Ui::MainWindow *ui;
     Eigen::MatrixXi optionmap; // Connects parameter tree to options widget
     std::string toolname = "H20-UQ";
     QUrl workdirUrl; // Default work directory
-    QStringList bathfilenames; // Bathymetry filenames
+    QStringList optiontree,bathfilenames; // Bathymetry filenames
 
 
 

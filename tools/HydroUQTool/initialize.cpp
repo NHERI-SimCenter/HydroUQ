@@ -52,6 +52,11 @@ void MainWindow::initialize()
     //Set the stacked widget to zero window
     ui->OptionsStack->setCurrentIndex(0);
 
+    // Initialize the string list from tree options
+    optiontree << "Project details" << "Bathymetry" << "Buildings" << "Floating bodies" << "Meshing";
+    optiontree << "Materials" << "Initial conditions" << "Boundary conditions";
+    optiontree << "Basic" << "Advanced" << "Submit to TACC";
+
     // Set the options for stacked widget
     // Map for options
     optionmap.setZero(12,8);
@@ -175,5 +180,20 @@ void MainWindow::initialize()
     optionmap(11,5) = 22; // CFD using STL
     optionmap(11,6) = 22; // CFD using maps
     optionmap(11,7) = 22; // CFD using surrogate
+
+    // Hide elements
+    ui->Btn_BA_UploadFile->hide();
+    ui->Btn_BB_UploadFile->hide();
+    ui->Btn_EA_UploadMesh->hide();
+    ui->Btn_HB_NorthUploadFile->hide();
+    ui->Btn_HB_SouthUploadFile->hide();
+    ui->Btn_HB_EastUploadFile->hide();
+    ui->Btn_HB_WestUploadFile->hide();
+    ui->Btn_HC_EntryUploadFile->hide();
+    ui->Btn_HC_ExitUploadFile->hide();
+    ui->Btn_IA_UploadFiles->hide();
+
+    // Set pages to one
+    ui->SWg_HB_BConditions->setCurrentIndex(0);
 
 }

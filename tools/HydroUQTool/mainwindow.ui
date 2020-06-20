@@ -89,7 +89,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Undefined Project</string>
+             <string>Untitled Project</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -110,7 +110,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Project description: </string>
+             <string>Project description: Empty</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -435,7 +435,7 @@
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>14</number>
          </property>
          <widget class="QWidget" name="AA_ProjSettings">
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -520,6 +520,9 @@ Set working directory (Not set)
              <property name="toolTipDuration">
               <number>10000</number>
              </property>
+             <property name="placeholderText">
+              <string>Untitled</string>
+             </property>
             </widget>
            </item>
            <item>
@@ -551,6 +554,9 @@ Set working directory (Not set)
              </property>
              <property name="tabChangesFocus">
               <bool>true</bool>
+             </property>
+             <property name="placeholderText">
+              <string>Please add a project description</string>
              </property>
             </widget>
            </item>
@@ -913,7 +919,7 @@ Select interface points file
               <number>10000</number>
              </property>
              <property name="currentIndex">
-              <number>2</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="Pg1_BA_Entry">
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -960,6 +966,12 @@ Select interface points file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -970,6 +982,12 @@ Select interface points file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -979,6 +997,12 @@ Select interface points file
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -1086,6 +1110,12 @@ Select interface points file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>-1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1096,6 +1126,12 @@ Select interface points file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1105,6 +1141,12 @@ Select interface points file
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -1212,6 +1254,12 @@ Select interface points file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1222,6 +1270,12 @@ Select interface points file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>-1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1231,6 +1285,12 @@ Select interface points file
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -1338,6 +1398,12 @@ Select interface points file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1348,6 +1414,12 @@ Select interface points file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1357,6 +1429,12 @@ Select interface points file
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -1671,7 +1749,7 @@ Upload longitude-latitude file
               <number>10000</number>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
              <widget class="QWidget" name="Pg1_BB_Entry">
               <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -1718,6 +1796,12 @@ Upload longitude-latitude file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1728,6 +1812,12 @@ Upload longitude-latitude file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1737,6 +1827,12 @@ Upload longitude-latitude file
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -1849,6 +1945,12 @@ Upload longitude-latitude file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>-1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1859,6 +1961,12 @@ Upload longitude-latitude file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1868,6 +1976,12 @@ Upload longitude-latitude file
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -1980,6 +2094,12 @@ Upload longitude-latitude file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1990,6 +2110,12 @@ Upload longitude-latitude file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1999,6 +2125,12 @@ Upload longitude-latitude file
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -2111,6 +2243,12 @@ Upload longitude-latitude file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -2121,6 +2259,12 @@ Upload longitude-latitude file
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>-1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -2130,6 +2274,12 @@ Upload longitude-latitude file
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -2531,6 +2681,12 @@ Select bathymetry files
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>2</string>
+               </property>
               </widget>
              </item>
             </layout>
@@ -2602,6 +2758,12 @@ Select bathymetry files
                </property>
                <property name="toolTipDuration">
                 <number>10000</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>3.7</string>
                </property>
               </widget>
              </item>
@@ -3471,6 +3633,12 @@ QSlider::handle:horizontal {
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>1.0035e-6</string>
+               </property>
               </widget>
              </item>
             </layout>
@@ -3503,6 +3671,12 @@ QSlider::handle:horizontal {
                </property>
                <property name="toolTipDuration">
                 <number>10000</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>997</string>
                </property>
               </widget>
              </item>
@@ -3551,6 +3725,12 @@ QSlider::handle:horizontal {
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>1.621e-4</string>
+               </property>
               </widget>
              </item>
             </layout>
@@ -3583,6 +3763,12 @@ QSlider::handle:horizontal {
                </property>
                <property name="toolTipDuration">
                 <number>10000</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>1.225</string>
                </property>
               </widget>
              </item>
@@ -3630,6 +3816,12 @@ QSlider::handle:horizontal {
                </property>
                <property name="toolTipDuration">
                 <number>10000</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>72.86</string>
                </property>
               </widget>
              </item>
@@ -3722,6 +3914,12 @@ shallow water solvers</string>
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>0</string>
+               </property>
               </widget>
              </item>
              <item>
@@ -3732,6 +3930,12 @@ shallow water solvers</string>
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>0</string>
+               </property>
               </widget>
              </item>
              <item>
@@ -3741,6 +3945,12 @@ shallow water solvers</string>
                </property>
                <property name="toolTipDuration">
                 <number>10000</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>0</string>
                </property>
               </widget>
              </item>
@@ -3776,6 +3986,12 @@ shallow water solvers</string>
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>0</string>
+               </property>
               </widget>
              </item>
             </layout>
@@ -3809,6 +4025,12 @@ shallow water solvers</string>
                </property>
                <property name="toolTipDuration">
                 <number>10000</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>0</string>
                </property>
               </widget>
              </item>
@@ -4063,7 +4285,7 @@ shallow water solvers</string>
               <number>10000</number>
              </property>
              <property name="currentIndex">
-              <number>3</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="Pg1_HB_North">
               <layout class="QVBoxLayout" name="verticalLayout_33">
@@ -4234,6 +4456,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4244,6 +4472,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4253,6 +4487,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -4280,6 +4520,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4290,6 +4536,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4299,6 +4551,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -4326,6 +4584,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4336,6 +4600,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>-1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4345,6 +4615,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -4419,6 +4695,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -4594,6 +4876,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4604,6 +4892,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4613,6 +4907,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -4640,6 +4940,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4650,6 +4956,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4659,6 +4971,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -4686,6 +5004,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4696,6 +5020,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4705,6 +5035,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -4779,6 +5115,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -4954,6 +5296,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4964,6 +5312,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -4973,6 +5327,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -5000,6 +5360,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5010,6 +5376,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5019,6 +5391,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -5046,6 +5424,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>-1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5056,6 +5440,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5065,6 +5455,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -5139,6 +5535,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -5241,7 +5643,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="Lbl_HB_WestUploadFile">
+                <widget class="QPushButton" name="Btn_HB_WestUploadFile">
                  <property name="toolTip">
                   <string>Upload files for time-varying velocity boundary conditions on West face</string>
                  </property>
@@ -5312,6 +5714,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5322,6 +5730,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5331,6 +5745,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -5358,6 +5778,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5368,6 +5794,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5377,6 +5809,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -5404,6 +5842,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5414,6 +5858,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5423,6 +5873,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -5497,6 +5953,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -5662,7 +6124,7 @@ QPushButton:pressed {
            <item>
             <widget class="QStackedWidget" name="SWg_HC_BConditions">
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="Pg1_HC_Entry">
               <layout class="QVBoxLayout" name="verticalLayout_37">
@@ -5832,6 +6294,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5842,6 +6310,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5851,6 +6325,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -5878,6 +6358,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5888,6 +6374,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5897,6 +6389,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -5924,6 +6422,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5934,6 +6438,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5943,6 +6453,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -6017,6 +6533,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -6192,6 +6714,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -6202,6 +6730,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -6211,6 +6745,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -6238,6 +6778,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -6248,6 +6794,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -6257,6 +6809,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -6284,6 +6842,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>1</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -6294,6 +6858,12 @@ Upload files
                    <property name="toolTipDuration">
                     <number>10000</number>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -6303,6 +6873,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -6377,6 +6953,12 @@ Upload files
                    </property>
                    <property name="toolTipDuration">
                     <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -6788,6 +7370,12 @@ QPushButton:pressed {
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>0</string>
+               </property>
               </widget>
              </item>
             </layout>
@@ -6820,6 +7408,12 @@ QPushButton:pressed {
                </property>
                <property name="toolTipDuration">
                 <number>10000</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>20</string>
                </property>
               </widget>
              </item>
@@ -6854,6 +7448,12 @@ QPushButton:pressed {
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>0.000001</string>
+               </property>
               </widget>
              </item>
             </layout>
@@ -6886,6 +7486,12 @@ QPushButton:pressed {
                </property>
                <property name="toolTipDuration">
                 <number>10000</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>0.001</string>
                </property>
               </widget>
              </item>
@@ -7103,6 +7709,12 @@ Upload Restart Files
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>3</string>
+               </property>
               </widget>
              </item>
              <item>
@@ -7113,6 +7725,12 @@ Upload Restart Files
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>2</string>
+               </property>
               </widget>
              </item>
              <item>
@@ -7122,6 +7740,12 @@ Upload Restart Files
                </property>
                <property name="toolTipDuration">
                 <number>10000</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>1</string>
                </property>
               </widget>
              </item>
@@ -7196,6 +7820,12 @@ Upload Restart Files
               <widget class="QLineEdit" name="Led_JA_Jobname">
                <property name="toolTip">
                 <string>Jobname for the job on TACC Stampede cluster</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>Trial001</string>
                </property>
               </widget>
              </item>
@@ -7289,6 +7919,12 @@ Upload Restart Files
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>6</string>
+               </property>
               </widget>
              </item>
             </layout>
@@ -7322,6 +7958,12 @@ Upload Restart Files
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>48</string>
+               </property>
               </widget>
              </item>
              <item>
@@ -7332,6 +7974,12 @@ Upload Restart Files
                <property name="toolTipDuration">
                 <number>10000</number>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>0</string>
+               </property>
               </widget>
              </item>
              <item>
@@ -7341,6 +7989,12 @@ Upload Restart Files
                </property>
                <property name="toolTipDuration">
                 <number>10000</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>0</string>
                </property>
               </widget>
              </item>
@@ -7374,6 +8028,12 @@ Upload Restart Files
                </property>
                <property name="toolTipDuration">
                 <number>10000</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>my-email@berkeley.edu</string>
                </property>
               </widget>
              </item>
@@ -7665,7 +8325,7 @@ Submit to TACC
   <tabstop>Cmb_HB_EastPresBC</tabstop>
   <tabstop>Led_HB_EastPres</tabstop>
   <tabstop>Cmb_HB_WestUBC</tabstop>
-  <tabstop>Lbl_HB_WestUploadFile</tabstop>
+  <tabstop>Btn_HB_WestUploadFile</tabstop>
   <tabstop>Cmb_HB_WestWaveType</tabstop>
   <tabstop>Led_HB_WestUx</tabstop>
   <tabstop>Led_HB_WestUy</tabstop>

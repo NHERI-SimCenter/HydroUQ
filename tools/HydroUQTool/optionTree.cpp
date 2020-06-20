@@ -55,22 +55,63 @@ void MainWindow::on_SimOptions_itemClicked(QTreeWidgetItem *item, int column)
     // Get the index of the simulation type
     int simtypeindex = ui->CmB_AA_SimType->currentIndex();
 
-    // If selected is Project details
-    if(sel == "Project details")
+    // Change stack to the relevant page index
+    if(optiontree.indexOf(sel) != -1)
     {
-        // Get page index & change stack to it
-        if(ui->OptionsStack->currentIndex() != optionmap(0,simtypeindex))
-            ui->OptionsStack->setCurrentIndex(optionmap(0,simtypeindex));
+        if(ui->OptionsStack->currentIndex() != optionmap(optiontree.indexOf(sel),simtypeindex))
+            ui->OptionsStack->setCurrentIndex(optionmap(optiontree.indexOf(sel),simtypeindex));
     }
 
-    // If selected is Bathymetry
-    else if(sel == "Bathymetry")
+    /*
+    // Hide specific items where and when needed
+    if(optionmap(optiontree.indexOf(sel),simtypeindex) == 1)
     {
-        // Get page index & change stack to it
-        if(ui->OptionsStack->currentIndex() != optionmap(1,simtypeindex))
-            ui->OptionsStack->setCurrentIndex(optionmap(1,simtypeindex));
-
-        // Set the descriptions based on type of bathymetry selected
-        bathymetrydesc(simtypeindex);
+        if(ui->ChB_BA_UploadBox->isChecked())
+        {
+            ui->Btn_BA_UploadFile->show();
+            ui->SWg_BA_Interface->hide();
+            ui->Btn_BA_Previous->hide();
+            ui->Btn_BA_Next->hide();
+        }
+        else
+        {
+            ui->Btn_BA_UploadFile->hide();
+            ui->SWg_BA_Interface->show();
+            ui->Btn_BA_Previous->show();
+            ui->Btn_BA_Next->show();
+        }
     }
+    else if(optiontree.indexOf(sel) == 2)
+    {
+        if(ui->ChB_BB_UploadFile->isChecked())
+        {
+            ui->Btn_BB_UploadFile->show();
+            ui->SWg_BB_Interface->hide();
+            ui->Btn_BB_Previous->hide();
+            ui->Btn_BB_Next->hide();
+        }
+        else
+        {
+            ui->Btn_BB_UploadFile->hide();
+            ui->SWg_BB_Interface->show();
+            ui->Btn_BB_Previous->show();
+            ui->Btn_BB_Next->show();
+        }
+    }*/
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

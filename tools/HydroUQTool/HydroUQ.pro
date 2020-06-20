@@ -21,6 +21,7 @@ SOURCES += \
     initialize.cpp \
     main.cpp \
     mainwindow.cpp \
+    optionStack.cpp \
     optionTree.cpp \
     projsettings.cpp \
     qt3dframe.cpp \

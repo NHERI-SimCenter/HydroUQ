@@ -74,39 +74,6 @@ std::string MainWindow::gettoolname()
 
 
 
-void MainWindow::on_OptionsStack_currentChanged(int arg1)
-{
-
-    if(arg1 == 0) // Project settings
-    {
-        ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("Please set the project settings"
-                                  " before proceeding ahead");
-    }
-    else if(arg1 == 1) // Bathymetry (from SW simulation)
-    {
-        ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("Here, the bathymetry data related to the "
-                                  "simulation is initialized. In this case, upload "
-                                  "the shallow water solutions and bathymetry data. Additionally "
-                                  "provide the information of the interface between "
-                                  "shallow-water and CFD domain either in the form of "
-                                  "a table or as a .csv file");
-    }
-    else if(arg1 == 1) // Bathymetry (from SimLibrary)
-    {
-        ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("Here, the bathymetry data related to the simulation is initialized."
-                                  "Use this case if you do not have pre-existing shallow water solutions. "
-                                  "You can choose simulation done on pre-selected subduction zone. "
-                                  "Additionally provide the information of the interface between "
-                                  "shallow-water and CFD domain either in the form of a table or as "
-                                  "a .csv file");
-    }
-
-    ui->Lbl_Descript->setText("This is new text");
-
-}
 
 
 
