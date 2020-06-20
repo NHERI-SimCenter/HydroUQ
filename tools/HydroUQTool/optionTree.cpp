@@ -34,85 +34,84 @@
 // Dr. Frank McKenna, CTO of SimCenter, UC Berkeley
 // Prof. Sanjay Govindjee, Director of SimCenter, UC Berkeley
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+//*********************************************************************************
+// In this routines related to all parts of initialization
+//*********************************************************************************
 
 //*********************************************************************************
 // Include user headers
 //*********************************************************************************
-#include "../Eigen/Dense"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 //*********************************************************************************
-// Include library headers
+// Open relevant stack related to the particular item on the parameter tree
 //*********************************************************************************
-#include <QMainWindow>
-#include <QTreeWidget>
-#include <QApplication>
-#include <QFile>
-#include <QFileDialog>
-#include <QDir>
-#include <QDebug>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-
-class MainWindow : public QMainWindow
+void MainWindow::on_SimOptions_itemClicked(QTreeWidgetItem *item, int column)
 {
-    Q_OBJECT
+    // Get the string of hte selected item
+    QString sel = item->text(column);
 
-public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    // Get the index of the simulation type
+    int simtypeindex = ui->CmB_AA_SimType->currentIndex();
 
-    std::string gettoolname();
+    // Change stack to the relevant page index
+    if(optiontree.indexOf(sel) != -1)
+    {
+        if(ui->OptionsStack->currentIndex() != optionmap(optiontree.indexOf(sel),simtypeindex))
+            ui->OptionsStack->setCurrentIndex(optionmap(optiontree.indexOf(sel),simtypeindex));
+    }
 
-protected:
-    //std::string toolname = "H20-UQ";
+    /*
+    // Hide specific items where and when needed
+    if(optionmap(optiontree.indexOf(sel),simtypeindex) == 1)
+    {
+        if(ui->ChB_BA_UploadBox->isChecked())
+        {
+            ui->Btn_BA_UploadFile->show();
+            ui->SWg_BA_Interface->hide();
+            ui->Btn_BA_Previous->hide();
+            ui->Btn_BA_Next->hide();
+        }
+        else
+        {
+            ui->Btn_BA_UploadFile->hide();
+            ui->SWg_BA_Interface->show();
+            ui->Btn_BA_Previous->show();
+            ui->Btn_BA_Next->show();
+        }
+    }
+    else if(optiontree.indexOf(sel) == 2)
+    {
+        if(ui->ChB_BB_UploadFile->isChecked())
+        {
+            ui->Btn_BB_UploadFile->show();
+            ui->SWg_BB_Interface->hide();
+            ui->Btn_BB_Previous->hide();
+            ui->Btn_BB_Next->hide();
+        }
+        else
+        {
+            ui->Btn_BB_UploadFile->hide();
+            ui->SWg_BB_Interface->show();
+            ui->Btn_BB_Previous->show();
+            ui->Btn_BB_Next->show();
+        }
+    }*/
 
-private slots:
-
-    // Item tree on left
-    void on_SimOptions_itemClicked(QTreeWidgetItem *item, int column);
-
-    // Options stack
-    void on_OptionsStack_currentChanged(int arg1);
-
-    // Project settings
-    void on_Led_AA_PName_editingFinished();
-    void on_Led_AA_PDesc_textChanged();
-    void on_Btn_AA_WDir_clicked();
-
-    // Bathymetry
-    void on_ChB_BA_UploadBox_stateChanged(int arg1);
-    void on_Btn_BA_UploadFile_clicked();
-
-    void on_Btn_BA_S02AddPt_clicked();
-
-    void on_Btn_BA_S02RemPt_clicked();
-
-
-
-    void on_ChB_BB_UploadFile_stateChanged(int arg1);
-
-    void on_Btn_BB_UploadFile_clicked();
-
-    void on_Btn_BB_S02AddPt_clicked();
-
-    void on_Btn_BB_S02RemPt_clicked();
-
-private:
-
-    // Initialize
-    void initialize();
-
-    Ui::MainWindow *ui;
-    Eigen::MatrixXi optionmap; // Connects parameter tree to options widget
-    std::string toolname = "H20-UQ";
-    QUrl workdirUrl; // Default work directory
-    QStringList optiontree,bathfilenames; // Bathymetry filenames
-
+}
 
 
-};
-#endif // MAINWINDOW_H
+
+
+
+
+
+
+
+
+
+
+
+
+

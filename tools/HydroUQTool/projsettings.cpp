@@ -34,85 +34,51 @@
 // Dr. Frank McKenna, CTO of SimCenter, UC Berkeley
 // Prof. Sanjay Govindjee, Director of SimCenter, UC Berkeley
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+//*********************************************************************************
+// In this routines related to bathymetry are included. For various simulation types
+// Different actions are considered
+//*********************************************************************************
 
 //*********************************************************************************
 // Include user headers
 //*********************************************************************************
-#include "../Eigen/Dense"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 //*********************************************************************************
-// Include library headers
+// When button clicked to get default directory
 //*********************************************************************************
-#include <QMainWindow>
-#include <QTreeWidget>
-#include <QApplication>
-#include <QFile>
-#include <QFileDialog>
-#include <QDir>
-#include <QDebug>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-
-class MainWindow : public QMainWindow
+void MainWindow::on_Btn_AA_WDir_clicked()
 {
-    Q_OBJECT
+    // Open a file dialog and get work directory
+    workdirUrl = QFileDialog::getExistingDirectoryUrl(this, tr("Open Directory"), QUrl("/home/Users"),QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    QString workdir = workdirUrl.toString();
 
-public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    // If the workdir is not empty or not, set the text accordingly
+    if(workdir.isEmpty())
+    {
+        ui->Btn_AA_WDir->setText("\nSet working directory (Not set)\n");
+    }
+    else
+    {
+        ui->Btn_AA_WDir->setText("\nSet working directory (Set)\n");
+    }
+}
 
-    std::string gettoolname();
+//*********************************************************************************
+// Setup the project name
+//*********************************************************************************
+void MainWindow::on_Led_AA_PName_editingFinished()
+{
+    QString data = ui->Led_AA_PName->text();
+    ui->Lbl_ProjTitle->setText(data);
+}
 
-protected:
-    //std::string toolname = "H20-UQ";
-
-private slots:
-
-    // Item tree on left
-    void on_SimOptions_itemClicked(QTreeWidgetItem *item, int column);
-
-    // Options stack
-    void on_OptionsStack_currentChanged(int arg1);
-
-    // Project settings
-    void on_Led_AA_PName_editingFinished();
-    void on_Led_AA_PDesc_textChanged();
-    void on_Btn_AA_WDir_clicked();
-
-    // Bathymetry
-    void on_ChB_BA_UploadBox_stateChanged(int arg1);
-    void on_Btn_BA_UploadFile_clicked();
-
-    void on_Btn_BA_S02AddPt_clicked();
-
-    void on_Btn_BA_S02RemPt_clicked();
-
-
-
-    void on_ChB_BB_UploadFile_stateChanged(int arg1);
-
-    void on_Btn_BB_UploadFile_clicked();
-
-    void on_Btn_BB_S02AddPt_clicked();
-
-    void on_Btn_BB_S02RemPt_clicked();
-
-private:
-
-    // Initialize
-    void initialize();
-
-    Ui::MainWindow *ui;
-    Eigen::MatrixXi optionmap; // Connects parameter tree to options widget
-    std::string toolname = "H20-UQ";
-    QUrl workdirUrl; // Default work directory
-    QStringList optiontree,bathfilenames; // Bathymetry filenames
-
-
-
-};
-#endif // MAINWINDOW_H
+//*********************************************************************************
+// Setup the project description
+//*********************************************************************************
+void MainWindow::on_Led_AA_PDesc_textChanged()
+{
+    QString data = ui->Led_AA_PDesc->toPlainText();
+    ui->Lbl_ProjDesc->setText(data);
+}

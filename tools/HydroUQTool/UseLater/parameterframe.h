@@ -17,9 +17,10 @@ public:
     explicit ParameterFrame(QWidget *parent = nullptr);
     ~ParameterFrame();
 
-private slots:
+signals:
+    void chgpgno();
 
-    // Item clicked on the sim options tree
+private slots:
     void on_SimOptions_itemClicked(QTreeWidgetItem *item, int column);
 
 private:
