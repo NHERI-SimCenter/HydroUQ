@@ -50,18 +50,33 @@
 //*********************************************************************************
 
 //*********************************************************************************
-// Button to upload interface files: With SW solution
+// Button to upload bathymetry files: With SW solution
 //*********************************************************************************
-void MainWindow::on_Btn_BA_UploadFile_clicked()
+void MainWindow::on_Btn_BA_SelFiles_clicked()
 {
     // Open a dialog window to select the files
     // Here one can select multiple files
-    // The selected files are stored in the String list bathfilenames (declared in mainwindow.h)
+    // The selected files are stored in the String list intefilenames (declared in mainwindow.h)
     QFileDialog selectfilesdialog(this);
     selectfilesdialog.setDirectory(workdirUrl.toString());
     selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
     selectfilesdialog.setNameFilter(tr("All files (*.*)"));
     if(selectfilesdialog.exec()) bathfilenames = selectfilesdialog.selectedFiles();
+}
+
+//*********************************************************************************
+// Button to upload shallow-water solution files: With SW solution
+//*********************************************************************************
+void MainWindow::on_Btn_BA_UploadSolution_clicked()
+{
+    // Open a dialog window to select the files
+    // Here one can select multiple files
+    // The selected files are stored in the String list intefilenames (declared in mainwindow.h)
+    QFileDialog selectfilesdialog(this);
+    selectfilesdialog.setDirectory(workdirUrl.toString());
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
+    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    if(selectfilesdialog.exec()) solfilenames = selectfilesdialog.selectedFiles();
 }
 
 //*********************************************************************************
@@ -87,6 +102,115 @@ void MainWindow::on_ChB_BA_UploadBox_stateChanged(int arg1)
 }
 
 //*********************************************************************************
+// Button to upload interface files: With SW solution
+//*********************************************************************************
+void MainWindow::on_Btn_BA_UploadFile_clicked()
+{
+    // Open a dialog window to select the files
+    // Here one can select multiple files
+    // The selected files are stored in the String list intefilenames (declared in mainwindow.h)
+    QFileDialog selectfilesdialog(this);
+    selectfilesdialog.setDirectory(workdirUrl.toString());
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
+    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    if(selectfilesdialog.exec()) intefilenames = selectfilesdialog.selectedFiles();
+}
+
+//*********************************************************************************
+// When page changes: With SW solution
+//*********************************************************************************
+void MainWindow::on_SWg_BA_Interface_currentChanged(int arg1)
+{
+    //int ind = ui->SWg_BA_Interface->currentIndex();
+    //qDebug() << arg1 << ind;
+    if((arg1 > 0) && (arg1 < 3))
+    {
+        ui->Btn_BA_Next->setDisabled(false);
+        ui->Btn_BA_Previous->setDisabled(false);
+    }
+    else if(arg1 == 0)
+    {
+        ui->Btn_BA_Previous->setDisabled(true);
+    }
+    else if(arg1 == 3)
+    {
+        ui->Btn_BA_Next->setDisabled(true);
+    }
+}
+
+//*********************************************************************************
+// Navigation to previous interface: With SW solution
+//*********************************************************************************
+void MainWindow::on_Btn_BA_Previous_clicked()
+{
+    int ind = ui->SWg_BA_Interface->currentIndex();
+    if(ind > 0)
+    {
+        ui->SWg_BA_Interface->setCurrentIndex(ind-1);
+    }
+}
+
+//*********************************************************************************
+// Navigation to next interface: With SW solution
+//*********************************************************************************
+void MainWindow::on_Btn_BA_Next_clicked()
+{
+    int ind = ui->SWg_BA_Interface->currentIndex();
+    if(ind < 3)
+    {
+        ui->SWg_BA_Interface->setCurrentIndex(ind+1);
+    }
+}
+
+//*********************************************************************************
+// Add points to interface of Entry: With SW solution
+//*********************************************************************************
+void MainWindow::on_Btn_BA_EntryAddPt_clicked()
+{
+    ui->Tbl_BA_EntryIntePt->insertRow(ui->Tbl_BA_EntryIntePt->rowCount());
+}
+
+//*********************************************************************************
+// Remove points to interface of Entry: With SW solution
+//*********************************************************************************
+void MainWindow::on_Btn_BA_EntryRemPt_clicked()
+{
+
+}
+
+//*********************************************************************************
+// Add points to interface of Exit: With SW solution
+//*********************************************************************************
+void MainWindow::on_Btn_BA_ExitAddPt_clicked()
+{
+    ui->Tbl_BA_ExitIntePt->insertRow(ui->Tbl_BA_ExitIntePt->rowCount());
+}
+
+//*********************************************************************************
+// Remove points to interface of Exit: With SW solution
+//*********************************************************************************
+void MainWindow::on_Btn_BA_ExitRemPt_clicked()
+{
+
+}
+
+//*********************************************************************************
+// Add points to interface of Side 01: With SW solution
+//*********************************************************************************
+void MainWindow::on_Btn_BA_S01AddPt_clicked()
+{
+    ui->Tbl_BA_S01IntePt->insertRow(ui->Tbl_BA_S01IntePt->rowCount());
+}
+
+//*********************************************************************************
+// Remove points to interface of Side 01: With SW solution
+//*********************************************************************************
+void MainWindow::on_Btn_BA_S01RemPt_clicked()
+{
+
+}
+
+//*********************************************************************************
 // Add points to interface of Side 02: With SW solution
 //*********************************************************************************
 void MainWindow::on_Btn_BA_S02AddPt_clicked()
@@ -99,23 +223,21 @@ void MainWindow::on_Btn_BA_S02AddPt_clicked()
 //*********************************************************************************
 void MainWindow::on_Btn_BA_S02RemPt_clicked()
 {
-    //QModelIndexList indexes = ui->Tbl_BA_S01IntePt->selectionMode().selectedRows();
+    //ui->Tbl_BA_S02IntePt->removeRow();
+    /*QModelIndexList selection = ui->Tbl_BA_S01IntePt->selectionModel()->selectedRows();
+    // Multiple rows can be selected
+    qDebug()<<selection.count();
+    for(int i=0; i< selection.count(); i++)
+    {
+        QModelIndex index = selection.at(i);
+        qDebug() << index.row();
+    }*/
 }
 
+
 //*********************************************************************************
-// Button to upload interface files: With SimCenter Library
+// For widgets related to that where SW solutions from SimCenter library are used
 //*********************************************************************************
-void MainWindow::on_Btn_BB_UploadFile_clicked()
-{
-    // Open a dialog window to select the files
-    // Here one can select multiple files
-    // The selected files are stored in the String list bathfilenames (declared in mainwindow.h)
-    QFileDialog selectfilesdialog(this);
-    selectfilesdialog.setDirectory(workdirUrl.toString());
-    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
-    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
-    if(selectfilesdialog.exec()) bathfilenames = selectfilesdialog.selectedFiles();
-}
 
 //*********************************************************************************
 // For widgets related to that where SimCenter SW library are used
@@ -140,6 +262,113 @@ void MainWindow::on_ChB_BB_UploadFile_stateChanged(int arg1)
 }
 
 //*********************************************************************************
+// Button to upload interface files: With SimCenter Library
+//*********************************************************************************
+void MainWindow::on_Btn_BB_UploadFile_clicked()
+{
+    // Open a dialog window to select the files
+    // Here one can select multiple files
+    // The selected files are stored in the String list bathfilenames (declared in mainwindow.h)
+    QFileDialog selectfilesdialog(this);
+    selectfilesdialog.setDirectory(workdirUrl.toString());
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
+    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    if(selectfilesdialog.exec()) bathfilenames = selectfilesdialog.selectedFiles();
+}
+
+//*********************************************************************************
+// When the stacked widget changes: With SimCenter Library
+//*********************************************************************************
+void MainWindow::on_SWg_BB_Interface_currentChanged(int arg1)
+{
+    if((arg1 > 0) && (arg1 < 3))
+    {
+        ui->Btn_BB_Next->setDisabled(false);
+        ui->Btn_BB_Previous->setDisabled(false);
+    }
+    else if(arg1 == 0)
+    {
+        ui->Btn_BB_Previous->setDisabled(true);
+    }
+    else if(arg1 == 3)
+    {
+        ui->Btn_BB_Next->setDisabled(true);
+    }
+}
+
+//*********************************************************************************
+// Navigation to previous interface: With SW solution
+//*********************************************************************************
+void MainWindow::on_Btn_BB_Previous_clicked()
+{
+    int ind = ui->SWg_BB_Interface->currentIndex();
+    if(ind > 0)
+    {
+        ui->SWg_BB_Interface->setCurrentIndex(ind-1);
+    }
+}
+
+//*********************************************************************************
+// Navigation to next interface: With SW solution
+//*********************************************************************************
+void MainWindow::on_Btn_BB_Next_clicked()
+{
+    int ind = ui->SWg_BB_Interface->currentIndex();
+    if(ind < 3)
+    {
+        ui->SWg_BB_Interface->setCurrentIndex(ind+1);
+    }
+}
+
+//*********************************************************************************
+// Add points to interface of Entry: With SimCenter Library
+//*********************************************************************************
+void MainWindow::on_Btn_BB_EntryAddPt_clicked()
+{
+    ui->Tbl_BB_EntryIntePt->insertRow(ui->Tbl_BB_EntryIntePt->rowCount());
+}
+
+//*********************************************************************************
+// Remove points to interface of Exit: With SimCenter Library
+//*********************************************************************************
+void MainWindow::on_Btn_BB_EntryRemPt_clicked()
+{
+
+}
+
+//*********************************************************************************
+// Add points to interface of Exit: With SimCenter Library
+//*********************************************************************************
+void MainWindow::on_Btn_BB_ExitAddPt_clicked()
+{
+    ui->Tbl_BB_ExitIntePt->insertRow(ui->Tbl_BB_ExitIntePt->rowCount());
+}
+
+//*********************************************************************************
+// Remove points to interface of Exit: With SimCenter Library
+//*********************************************************************************
+void MainWindow::on_Btn_BB_ExitRemPt_clicked()
+{
+
+}
+
+//*********************************************************************************
+// Add points to interface of Side 01: With SimCenter Library
+//*********************************************************************************
+void MainWindow::on_Btn_BB_S01AddPt_clicked()
+{
+    ui->Tbl_BB_S01IntePt->insertRow(ui->Tbl_BB_S01IntePt->rowCount());
+}
+
+//*********************************************************************************
+// Remove points to interface of Side 01: With SimCenter Library
+//*********************************************************************************
+void MainWindow::on_Btn_BB_S01RemPt_clicked()
+{
+
+}
+
+//*********************************************************************************
 // Add points to interface of Side 02: With SimCenter Library
 //*********************************************************************************
 void MainWindow::on_Btn_BB_S02AddPt_clicked()
@@ -151,6 +380,45 @@ void MainWindow::on_Btn_BB_S02AddPt_clicked()
 // Remove points to interface of Side 02: With SimCenter Library
 //*********************************************************************************
 void MainWindow::on_Btn_BB_S02RemPt_clicked()
+{
+
+}
+
+//*********************************************************************************
+// For widgets related to that where only bathymetric files are uploaded
+//*********************************************************************************
+
+//*********************************************************************************
+// Button to upload bathymetric data by user
+//*********************************************************************************
+void MainWindow::on_Btn_BC_FileUpload_clicked()
+{
+    // Open a dialog window to select the files
+    // Here one can select multiple files
+    // The selected files are stored in the String list intefilenames (declared in mainwindow.h)
+    QFileDialog selectfilesdialog(this);
+    selectfilesdialog.setDirectory(workdirUrl.toString());
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
+    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    if(selectfilesdialog.exec()) bathfilenames = selectfilesdialog.selectedFiles();
+}
+
+//*********************************************************************************
+// For widgets related to that where Wave flume is used as bathymetry
+//*********************************************************************************
+
+//*********************************************************************************
+// Button to add segments
+//*********************************************************************************
+void MainWindow::on_Btn_BD_AddSeg_clicked()
+{
+    ui->Tbl_BD_Segments->insertRow(ui->Tbl_BD_Segments->rowCount());
+}
+
+//*********************************************************************************
+// Button to remove segments
+//*********************************************************************************
+void MainWindow::on_Btn_BD_RemSeg_clicked()
 {
 
 }

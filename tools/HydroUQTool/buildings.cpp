@@ -35,49 +35,27 @@
 // Prof. Sanjay Govindjee, Director of SimCenter, UC Berkeley
 
 //*********************************************************************************
-// In this routines related to project settings are considered
-//*********************************************************************************
-
-//*********************************************************************************
 // Include user headers
 //*********************************************************************************
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 //*********************************************************************************
-// When button clicked to get default directory
+// For widgets related to that where buildings
 //*********************************************************************************
-void MainWindow::on_Btn_AA_WDir_clicked()
-{
-    // Open a file dialog and get work directory
-    workdirUrl = QFileDialog::getExistingDirectoryUrl(this, tr("Open Directory"), QUrl("/home/Users"),QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    QString workdir = workdirUrl.toString();
 
-    // If the workdir is not empty or not, set the text accordingly
-    if(workdir.isEmpty())
-    {
-        ui->Btn_AA_WDir->setText("\nSet working directory (Not set)\n");
-    }
-    else
-    {
-        ui->Btn_AA_WDir->setText("\nSet working directory (Set)\n");
-    }
+//*********************************************************************************
+// Button to add buildings
+//*********************************************************************************
+void MainWindow::on_Btn_CA_AddBuild_clicked()
+{
+    ui->Tbl_CA_Building->insertRow(ui->Tbl_CA_Building->rowCount());
 }
 
 //*********************************************************************************
-// Setup the project name
+// Button to remove buildings
 //*********************************************************************************
-void MainWindow::on_Led_AA_PName_editingFinished()
+void MainWindow::on_Btn_CA_RemBuild_clicked()
 {
-    QString data = ui->Led_AA_PName->text();
-    ui->Lbl_ProjTitle->setText(data);
-}
 
-//*********************************************************************************
-// Setup the project description
-//*********************************************************************************
-void MainWindow::on_Led_AA_PDesc_textChanged()
-{
-    QString data = ui->Led_AA_PDesc->toPlainText();
-    ui->Lbl_ProjDesc->setText(data);
 }

@@ -17,15 +17,20 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 SOURCES += \
     bathymetry.cpp \
+    boundCond.cpp \
+    buildings.cpp \
     functionality.cpp \
+    initialCon.cpp \
     initialize.cpp \
     main.cpp \
     mainwindow.cpp \
+    meshing.cpp \
     optionStack.cpp \
     optionTree.cpp \
     projsettings.cpp \
     qt3dframe.cpp \
-    scenemodifier.cpp
+    scenemodifier.cpp \
+    solver.cpp
 
 HEADERS += \
     functionality.h \

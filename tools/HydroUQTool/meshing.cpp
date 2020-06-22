@@ -35,49 +35,69 @@
 // Prof. Sanjay Govindjee, Director of SimCenter, UC Berkeley
 
 //*********************************************************************************
-// In this routines related to project settings are considered
-//*********************************************************************************
-
-//*********************************************************************************
 // Include user headers
 //*********************************************************************************
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 //*********************************************************************************
-// When button clicked to get default directory
+// For widgets related to Meshing
 //*********************************************************************************
-void MainWindow::on_Btn_AA_WDir_clicked()
-{
-    // Open a file dialog and get work directory
-    workdirUrl = QFileDialog::getExistingDirectoryUrl(this, tr("Open Directory"), QUrl("/home/Users"),QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    QString workdir = workdirUrl.toString();
 
-    // If the workdir is not empty or not, set the text accordingly
-    if(workdir.isEmpty())
+//*********************************************************************************
+// When combobox related to type of mesh has been changed
+//*********************************************************************************
+void MainWindow::on_Cmb_EAMeshType_currentIndexChanged(int index)
+{
+    // Hide / Unhide elements based on mesh options
+    if(index == 0) // In-built mesher
     {
-        ui->Btn_AA_WDir->setText("\nSet working directory (Not set)\n");
+        ui->Btn_EA_UploadMesh->hide();
+        ui->Lbl_EA_FineH2->show();
+        ui->HSl_EA_MeshSize->show();
+        ui->Lbl_EA_CoarseMesh->show();
+        ui->Lbl_EA_FineMesh->show();
+        ui->Lbl_EA_H2Regions->show();
+        ui->Tbl_EA_Regions->show();
+        ui->Btn_EA_AddRegion->show();
+        ui->Btn_EA_RemRegion->show();
     }
-    else
+    else // Upload mesh / mesh dictionaries
     {
-        ui->Btn_AA_WDir->setText("\nSet working directory (Set)\n");
+        ui->Btn_EA_UploadMesh->show();
+        ui->Lbl_EA_FineH2->hide();
+        ui->HSl_EA_MeshSize->hide();
+        ui->Lbl_EA_CoarseMesh->hide();
+        ui->Lbl_EA_FineMesh->hide();
+        ui->Lbl_EA_H2Regions->hide();
+        ui->Tbl_EA_Regions->hide();
+        ui->Btn_EA_AddRegion->hide();
+        ui->Btn_EA_RemRegion->hide();
+    }
+
+    // Change name on the button
+    if(index == 1)
+    {
+        ui->Btn_EA_UploadMesh->setText("\nUpload mesh files\n");
+    }
+    else if(index == 2)
+    {
+        ui->Btn_EA_UploadMesh->setText("\nUpload mesh dictionary files\n");
     }
 }
 
 //*********************************************************************************
-// Setup the project name
+// Button to add regions of refinements
 //*********************************************************************************
-void MainWindow::on_Led_AA_PName_editingFinished()
+void MainWindow::on_Btn_EA_AddRegion_clicked()
 {
-    QString data = ui->Led_AA_PName->text();
-    ui->Lbl_ProjTitle->setText(data);
+    ui->Tbl_EA_Regions->insertRow(ui->Tbl_EA_Regions->rowCount());
 }
 
 //*********************************************************************************
-// Setup the project description
+// Button to remove regions of refinements
 //*********************************************************************************
-void MainWindow::on_Led_AA_PDesc_textChanged()
+void MainWindow::on_Btn_EA_RemRegion_clicked()
 {
-    QString data = ui->Led_AA_PDesc->toPlainText();
-    ui->Lbl_ProjDesc->setText(data);
+
 }

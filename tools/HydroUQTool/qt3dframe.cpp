@@ -127,7 +127,7 @@ void QT3DFrame::initUI()
     camController->setCamera(cameraEntity);
 
     // Scenemodifier
-    //SceneModifier *modifier = new SceneModifier(rootEntity);
+    SceneModifier *modifier = new SceneModifier(rootEntity);
 
     // Set root object of the scene
     view->setRootEntity(rootEntity);

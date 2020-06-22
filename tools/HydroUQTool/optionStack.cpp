@@ -144,6 +144,47 @@ void MainWindow::on_OptionsStack_currentChanged(int arg1)
         ui->Lbl_Descript->setText("Initial conditions of the two fluids in consideration are provided here. "
                                   "They include the velocity, pressure and the phase of the fluids. In addition, "
                                   "specific regions can be added with particular conditions.");
+
+        // Show and hide items depending on the type of simulation
+        if((ui->CmB_AA_SimType->currentIndex() == 1) || (ui->CmB_AA_SimType->currentIndex() == 2))
+        {
+            ui->Lbl_GA_Notice->show();
+            ui->Lbl_GA_Vel->hide();
+            ui->Led_GA_Vx->hide();
+            ui->Led_GA_Vy->hide();
+            ui->Led_GA_Vz->hide();
+
+            ui->Lbl_GA_Pressure->hide();
+            ui->Led_GA_Pressure->hide();
+
+            ui->Lbl_GA_Alpha->hide();
+            ui->Led_GA_Alpha->hide();
+
+            ui->Lbl_GA_Regions->hide();
+            ui->Tbl_GA_IniCondTable->hide();
+            ui->Btn_GA_AddRegion->hide();
+            ui->Btn_GA_RemRegion->hide();
+        }
+        else
+        {
+            ui->Lbl_GA_Notice->hide();
+            ui->Lbl_GA_Vel->show();
+            ui->Led_GA_Vx->show();
+            ui->Led_GA_Vy->show();
+            ui->Led_GA_Vz->show();
+
+            ui->Lbl_GA_Pressure->show();
+            ui->Led_GA_Pressure->show();
+
+            ui->Lbl_GA_Alpha->show();
+            ui->Led_GA_Alpha->show();
+
+            ui->Lbl_GA_Regions->show();
+            ui->Tbl_GA_IniCondTable->show();
+            ui->Btn_GA_AddRegion->show();
+            ui->Btn_GA_RemRegion->show();
+        }
+
     }
     else if(arg1 == 13) // BC with SW solutions
     {
