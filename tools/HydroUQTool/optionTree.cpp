@@ -35,7 +35,7 @@
 // Prof. Sanjay Govindjee, Director of SimCenter, UC Berkeley
 
 //*********************************************************************************
-// In this routines related to all parts of initialization
+// In this routines related to all parts of tree on LHS
 //*********************************************************************************
 
 //*********************************************************************************
@@ -61,43 +61,6 @@ void MainWindow::on_SimOptions_itemClicked(QTreeWidgetItem *item, int column)
         if(ui->OptionsStack->currentIndex() != optionmap(optiontree.indexOf(sel),simtypeindex))
             ui->OptionsStack->setCurrentIndex(optionmap(optiontree.indexOf(sel),simtypeindex));
     }
-
-    /*
-    // Hide specific items where and when needed
-    if(optionmap(optiontree.indexOf(sel),simtypeindex) == 1)
-    {
-        if(ui->ChB_BA_UploadBox->isChecked())
-        {
-            ui->Btn_BA_UploadFile->show();
-            ui->SWg_BA_Interface->hide();
-            ui->Btn_BA_Previous->hide();
-            ui->Btn_BA_Next->hide();
-        }
-        else
-        {
-            ui->Btn_BA_UploadFile->hide();
-            ui->SWg_BA_Interface->show();
-            ui->Btn_BA_Previous->show();
-            ui->Btn_BA_Next->show();
-        }
-    }
-    else if(optiontree.indexOf(sel) == 2)
-    {
-        if(ui->ChB_BB_UploadFile->isChecked())
-        {
-            ui->Btn_BB_UploadFile->show();
-            ui->SWg_BB_Interface->hide();
-            ui->Btn_BB_Previous->hide();
-            ui->Btn_BB_Next->hide();
-        }
-        else
-        {
-            ui->Btn_BB_UploadFile->hide();
-            ui->SWg_BB_Interface->show();
-            ui->Btn_BB_Previous->show();
-            ui->Btn_BB_Next->show();
-        }
-    }*/
 
 }
 

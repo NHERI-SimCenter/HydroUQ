@@ -69,17 +69,3 @@ std::string MainWindow::gettoolname()
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-

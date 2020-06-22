@@ -435,7 +435,7 @@
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>14</number>
+          <number>19</number>
          </property>
          <widget class="QWidget" name="AA_ProjSettings">
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -919,7 +919,7 @@ Select interface points file
               <number>10000</number>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
              <widget class="QWidget" name="Pg1_BA_Entry">
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -1153,7 +1153,7 @@ Select interface points file
                 </layout>
                </item>
                <item>
-                <widget class="QTableWidget" name="Tbl_BA_ExitInterPt">
+                <widget class="QTableWidget" name="Tbl_BA_ExitIntePt">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1453,6 +1453,12 @@ Select interface points file
                  <property name="toolTipDuration">
                   <number>10000</number>
                  </property>
+                 <property name="selectionMode">
+                  <enum>QAbstractItemView::SingleSelection</enum>
+                 </property>
+                 <property name="selectionBehavior">
+                  <enum>QAbstractItemView::SelectRows</enum>
+                 </property>
                  <column>
                   <property name="text">
                    <string>Point #.</string>
@@ -1749,7 +1755,7 @@ Upload longitude-latitude file
               <number>10000</number>
              </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="Pg1_BB_Entry">
               <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -1839,7 +1845,7 @@ Upload longitude-latitude file
                 </layout>
                </item>
                <item>
-                <widget class="QTableWidget" name="Tbl_BA_EntryIntePt_2">
+                <widget class="QTableWidget" name="Tbl_BB_EntryIntePt">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -1871,7 +1877,7 @@ Upload longitude-latitude file
                <item>
                 <layout class="QHBoxLayout" name="HLY_BB_EntryAddPt">
                  <item>
-                  <widget class="QToolButton" name="But_BB_EntryAddPoint">
+                  <widget class="QToolButton" name="Btn_BB_EntryAddPt">
                    <property name="toolTip">
                     <string>Add points to the entry interface</string>
                    </property>
@@ -1884,7 +1890,7 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="But_BB_EntryRemPoint">
+                  <widget class="QToolButton" name="Btn_BB_EntryRemPt">
                    <property name="toolTip">
                     <string>Remove points to the entry interface</string>
                    </property>
@@ -2020,7 +2026,7 @@ Upload longitude-latitude file
                <item>
                 <layout class="QHBoxLayout" name="HLY_BB_ExitAddPt">
                  <item>
-                  <widget class="QToolButton" name="Btn_BB_EntryAddPt">
+                  <widget class="QToolButton" name="Btn_BB_ExitAddPt">
                    <property name="toolTip">
                     <string>Add points to the exit interface</string>
                    </property>
@@ -2033,7 +2039,7 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QToolButton" name="Btn_BB_EntryRemPt">
+                  <widget class="QToolButton" name="Btn_BB_ExitRemPt">
                    <property name="toolTip">
                     <string>Remove points to the exit interface</string>
                    </property>
@@ -2137,7 +2143,7 @@ Upload longitude-latitude file
                 </layout>
                </item>
                <item>
-                <widget class="QTableWidget" name="Lbl_BB_S01IntePt">
+                <widget class="QTableWidget" name="Tbl_BB_S01IntePt">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -2832,7 +2838,7 @@ Select bathymetry files
               </widget>
              </item>
              <item>
-              <widget class="QToolButton" name="HLY_BD_RemSeg">
+              <widget class="QToolButton" name="Btn_BD_RemSeg">
                <property name="toolTip">
                 <string>Remove segment along the length of the flume</string>
                </property>
@@ -3312,11 +3318,6 @@ option</string>
              <property name="toolTipDuration">
               <number>10000</number>
              </property>
-             <item>
-              <property name="text">
-               <string>Select mesh type</string>
-              </property>
-             </item>
              <item>
               <property name="text">
                <string>Use Hydro-UQ mesher</string>
@@ -3907,7 +3908,7 @@ shallow water solvers</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Lbl_GA_Vy">
+              <widget class="QLineEdit" name="Led_GA_Vy">
                <property name="toolTip">
                 <string>Initial global velocity along X-direction</string>
                </property>
@@ -3923,7 +3924,7 @@ shallow water solvers</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Lbl_GA_Vz">
+              <widget class="QLineEdit" name="Led_GA_Vz">
                <property name="toolTip">
                 <string>Initial global velocity along Y-direction</string>
                </property>
@@ -3939,7 +3940,7 @@ shallow water solvers</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Lbl_GA_Vx">
+              <widget class="QLineEdit" name="Led_GA_Vx">
                <property name="toolTip">
                 <string>Initial global velocity along Z-direction</string>
                </property>
@@ -4285,7 +4286,7 @@ shallow water solvers</string>
               <number>10000</number>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>3</number>
              </property>
              <widget class="QWidget" name="Pg1_HB_North">
               <layout class="QVBoxLayout" name="verticalLayout_33">
@@ -4465,7 +4466,7 @@ Upload files
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_HB_Northy">
+                  <widget class="QLineEdit" name="Led_HB_NorthUy">
                    <property name="toolTip">
                     <string>Y-component of average velocity of through North face</string>
                    </property>
@@ -4621,6 +4622,38 @@ Upload files
                    </property>
                    <property name="placeholderText">
                     <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="HLY_HB_NorthPara" stretch="1,1">
+                 <item>
+                  <widget class="QLabel" name="Lbl_HB_NorthPara">
+                   <property name="font">
+                    <font>
+                     <pointsize>14</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Length, Amplitude, Phase, Angle</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="Led_HB_NorthPara">
+                   <property name="toolTip">
+                    <string>Length, amplitude, phase and angle of the wave</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0, 0, 0, 0</string>
                    </property>
                   </widget>
                  </item>
@@ -5047,6 +5080,38 @@ Upload files
                 </layout>
                </item>
                <item>
+                <layout class="QHBoxLayout" name="HLY_HB_SouthPara" stretch="1,1">
+                 <item>
+                  <widget class="QLabel" name="Lbl_HB_SouthPara">
+                   <property name="font">
+                    <font>
+                     <pointsize>14</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Length, Amplitude, Phase, Angle</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="Led_HB_SouthPara">
+                   <property name="toolTip">
+                    <string>Length, amplitude, phase and angle of the wave</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0, 0, 0, 0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
                 <widget class="QLabel" name="Lbl_HB_SouthPresBC">
                  <property name="font">
                   <font>
@@ -5461,6 +5526,38 @@ Upload files
                    </property>
                    <property name="placeholderText">
                     <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="HLY_HB_EastPara" stretch="1,1">
+                 <item>
+                  <widget class="QLabel" name="Lbl_HB_EastPara">
+                   <property name="font">
+                    <font>
+                     <pointsize>14</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Length, Amplitude, Phase, Angle</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="Led_HB_EastPara">
+                   <property name="toolTip">
+                    <string>Length, amplitude, phase and angle of the wave</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0, 0, 0, 0</string>
                    </property>
                   </widget>
                  </item>
@@ -5885,6 +5982,38 @@ Upload files
                 </layout>
                </item>
                <item>
+                <layout class="QHBoxLayout" name="HLY_HB_WestPara" stretch="1,1">
+                 <item>
+                  <widget class="QLabel" name="Lbl_HB_WestPara">
+                   <property name="font">
+                    <font>
+                     <pointsize>14</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Length, Amplitude, Phase, Angle</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="Led_HB_WestPara">
+                   <property name="toolTip">
+                    <string>Length, amplitude, phase and angle of the wave</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0, 0, 0, 0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
                 <widget class="QLabel" name="Lbl_HB_WestPresBC">
                  <property name="font">
                   <font>
@@ -6124,7 +6253,7 @@ QPushButton:pressed {
            <item>
             <widget class="QStackedWidget" name="SWg_HC_BConditions">
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
              <widget class="QWidget" name="Pg1_HC_Entry">
               <layout class="QVBoxLayout" name="verticalLayout_37">
@@ -6459,6 +6588,38 @@ Upload files
                    </property>
                    <property name="placeholderText">
                     <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="HLY_HC_EntryPara" stretch="1,1">
+                 <item>
+                  <widget class="QLabel" name="Lbl_HC_EntryPara">
+                   <property name="font">
+                    <font>
+                     <pointsize>14</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Length, Amplitude, Phase, Angle</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="Led_HC_EntryPara">
+                   <property name="toolTip">
+                    <string>Length, amplitude, phase and angle of the wave</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0, 0, 0, 0</string>
                    </property>
                   </widget>
                  </item>
@@ -6879,6 +7040,38 @@ Upload files
                    </property>
                    <property name="placeholderText">
                     <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="HLY_HC_ExitPara" stretch="1,1">
+                 <item>
+                  <widget class="QLabel" name="Lbl_HC_ExitPara">
+                   <property name="font">
+                    <font>
+                     <pointsize>14</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Length, Amplitude, Phase, Angle</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="Led_HC_ExitPara">
+                   <property name="toolTip">
+                    <string>Length, amplitude, phase and angle of the wave</string>
+                   </property>
+                   <property name="toolTipDuration">
+                    <number>10000</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0, 0, 0, 0</string>
                    </property>
                   </widget>
                  </item>
@@ -8209,7 +8402,7 @@ Submit to TACC
   <tabstop>Led_BA_ExitNz</tabstop>
   <tabstop>Btn_BA_ExitAddPt</tabstop>
   <tabstop>Btn_BA_ExitRemPt</tabstop>
-  <tabstop>Tbl_BA_ExitInterPt</tabstop>
+  <tabstop>Tbl_BA_ExitIntePt</tabstop>
   <tabstop>Led_BA_S01Nx</tabstop>
   <tabstop>Led_BA_S01Ny</tabstop>
   <tabstop>Led_BA_S01Nz</tabstop>
@@ -8228,23 +8421,23 @@ Submit to TACC
   <tabstop>Led_BB_Entrynx</tabstop>
   <tabstop>Led_BB_Entryny</tabstop>
   <tabstop>Led_BB_Entrynz</tabstop>
-  <tabstop>But_BB_EntryAddPoint</tabstop>
-  <tabstop>But_BB_EntryRemPoint</tabstop>
-  <tabstop>Tbl_BA_EntryIntePt_2</tabstop>
+  <tabstop>Btn_BB_EntryAddPt</tabstop>
+  <tabstop>Btn_BB_EntryRemPt</tabstop>
+  <tabstop>Tbl_BB_EntryIntePt</tabstop>
   <tabstop>Btn_BB_Previous</tabstop>
   <tabstop>Btn_BB_Next</tabstop>
   <tabstop>Led_BB_ExitNx</tabstop>
   <tabstop>Led_BB_ExitNy</tabstop>
   <tabstop>Led_BB_ExitNz</tabstop>
-  <tabstop>Btn_BB_EntryAddPt</tabstop>
-  <tabstop>Btn_BB_EntryRemPt</tabstop>
+  <tabstop>Btn_BB_ExitAddPt</tabstop>
+  <tabstop>Btn_BB_ExitRemPt</tabstop>
   <tabstop>Tbl_BB_ExitIntePt</tabstop>
   <tabstop>Lbl_BB_S01Nx</tabstop>
   <tabstop>Lbl_BB_S01Ny</tabstop>
   <tabstop>Lbl_BB_S01Nz</tabstop>
   <tabstop>Btn_BB_S01AddPt</tabstop>
   <tabstop>Btn_BB_S01RemPt</tabstop>
-  <tabstop>Lbl_BB_S01IntePt</tabstop>
+  <tabstop>Tbl_BB_S01IntePt</tabstop>
   <tabstop>Led_BB_S01Nx</tabstop>
   <tabstop>Led_BB_S01Ny</tabstop>
   <tabstop>Led_BB_S01Nz</tabstop>
@@ -8256,7 +8449,7 @@ Submit to TACC
   <tabstop>Led_BD_Depth</tabstop>
   <tabstop>Led_BD_Breadth</tabstop>
   <tabstop>Btn_BD_AddSeg</tabstop>
-  <tabstop>HLY_BD_RemSeg</tabstop>
+  <tabstop>Btn_BD_RemSeg</tabstop>
   <tabstop>Tbl_BD_Segments</tabstop>
   <tabstop>Btn_CA_AddBuild</tabstop>
   <tabstop>Btn_CA_RemBuild</tabstop>
@@ -8272,9 +8465,9 @@ Submit to TACC
   <tabstop>Led_FA_AirVisc</tabstop>
   <tabstop>Led_FA_AirDen</tabstop>
   <tabstop>Led_FA_SurfTen</tabstop>
-  <tabstop>Lbl_GA_Vy</tabstop>
-  <tabstop>Lbl_GA_Vz</tabstop>
-  <tabstop>Lbl_GA_Vx</tabstop>
+  <tabstop>Led_GA_Vy</tabstop>
+  <tabstop>Led_GA_Vz</tabstop>
+  <tabstop>Led_GA_Vx</tabstop>
   <tabstop>Led_GA_Pressure</tabstop>
   <tabstop>Led_GA_Alpha</tabstop>
   <tabstop>Btn_GA_AddRegion</tabstop>
@@ -8284,7 +8477,7 @@ Submit to TACC
   <tabstop>Btn_HB_NorthUploadFile</tabstop>
   <tabstop>Cmb_HB_NorthWaveType</tabstop>
   <tabstop>Led_HB_NorthUx</tabstop>
-  <tabstop>Led_HB_Northy</tabstop>
+  <tabstop>Led_HB_NorthUy</tabstop>
   <tabstop>Led_HB_NorthUz</tabstop>
   <tabstop>Led_HB_NorthOriginX</tabstop>
   <tabstop>Led_HB_NorthOriginY</tabstop>

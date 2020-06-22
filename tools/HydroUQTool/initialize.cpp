@@ -183,17 +183,141 @@ void MainWindow::initialize()
 
     // Hide elements
     ui->Btn_BA_UploadFile->hide();
+    ui->Btn_BA_Previous->setDisabled(true);
     ui->Btn_BB_UploadFile->hide();
+    ui->Btn_BB_Previous->setDisabled(true);
     ui->Btn_EA_UploadMesh->hide();
     ui->Btn_HB_NorthUploadFile->hide();
     ui->Btn_HB_SouthUploadFile->hide();
     ui->Btn_HB_EastUploadFile->hide();
     ui->Btn_HB_WestUploadFile->hide();
+    ui->Btn_HB_Previous->setDisabled(true);
     ui->Btn_HC_EntryUploadFile->hide();
     ui->Btn_HC_ExitUploadFile->hide();
+    ui->Btn_HC_Previous->setDisabled(true);
     ui->Btn_IA_UploadFiles->hide();
 
-    // Set pages to one
-    ui->SWg_HB_BConditions->setCurrentIndex(0);
+    // Hide Boundary condition elements (SW solutions)
+    // North
+    ui->Btn_HB_NorthUploadFile->hide();
+    ui->Cmb_HB_NorthWaveType->hide();
+    ui->Lbl_HB_NorthPara->hide();
+    ui->Led_HB_NorthPara->hide();
+    ui->Lbl_HB_NorthU->hide();
+    ui->Led_HB_NorthUx->hide();
+    ui->Led_HB_NorthUy->hide();
+    ui->Led_HB_NorthUz->hide();
+    ui->Lbl_HB_NorthOrigin->hide();
+    ui->Led_HB_NorthOriginX->hide();
+    ui->Led_HB_NorthOriginY->hide();
+    ui->Led_HB_NorthOriginZ->hide();
+    ui->Lbl_HB_NorthVec->hide();
+    ui->Led_HB_NorthVecX->hide();
+    ui->Led_HB_NorthVecY->hide();
+    ui->Led_HB_NorthVecZ->hide();
+    ui->Lbl_HB_NorthPres->hide();
+    ui->Led_HB_NorthPres->hide();
+    // South
+    ui->Btn_HB_SouthUploadFile->hide();
+    ui->Cmb_HB_SouthWaveType->hide();
+    ui->Lbl_HB_SouthPara->hide();
+    ui->Led_HB_SouthPara->hide();
+    ui->Lbl_HB_SouthU->hide();
+    ui->Led_HB_SouthUx->hide();
+    ui->Led_HB_SouthUy->hide();
+    ui->Led_HB_SouthUz->hide();
+    ui->Lbl_HB_SouthOrigin->hide();
+    ui->Led_HB_SouthOriginX->hide();
+    ui->Led_HB_SouthOriginY->hide();
+    ui->Led_HB_SouthOriginZ->hide();
+    ui->Lbl_HB_SouthVec->hide();
+    ui->Led_HB_SouthVecX->hide();
+    ui->Led_HB_SouthVecY->hide();
+    ui->Led_HB_SouthVecZ->hide();
+    ui->Lbl_HB_SouthPres->hide();
+    ui->Led_HB_SouthPres->hide();
+    // East
+    ui->Btn_HB_EastUploadFile->hide();
+    ui->Cmb_HB_EastWaveType->hide();
+    ui->Lbl_HB_EastPara->hide();
+    ui->Led_HB_EastPara->hide();
+    ui->Lbl_HB_EastU->hide();
+    ui->Led_HB_EastUx->hide();
+    ui->Led_HB_EastUy->hide();
+    ui->Led_HB_EastUz->hide();
+    ui->Lbl_HB_EastOrigin->hide();
+    ui->Led_HB_EastOriginX->hide();
+    ui->Led_HB_EastOriginY->hide();
+    ui->Led_HB_EastOriginZ->hide();
+    ui->Lbl_HB_EastVec->hide();
+    ui->Led_HB_EastVecX->hide();
+    ui->Led_HB_EastVecY->hide();
+    ui->Led_HB_EastVecZ->hide();
+    ui->Lbl_HB_EastPres->hide();
+    ui->Led_HB_EastPres->hide();
+    // West
+    ui->Btn_HB_WestUploadFile->hide();
+    ui->Cmb_HB_WestWaveType->hide();
+    ui->Lbl_HB_WestPara->hide();
+    ui->Led_HB_WestPara->hide();
+    ui->Lbl_HB_WestU->hide();
+    ui->Led_HB_WestUx->hide();
+    ui->Led_HB_WestUy->hide();
+    ui->Led_HB_WestUz->hide();
+    ui->Lbl_HB_WestOrigin->hide();
+    ui->Led_HB_WestOriginX->hide();
+    ui->Led_HB_WestOriginY->hide();
+    ui->Led_HB_WestOriginZ->hide();
+    ui->Lbl_HB_WestVec->hide();
+    ui->Led_HB_WestVecX->hide();
+    ui->Led_HB_WestVecY->hide();
+    ui->Led_HB_WestVecZ->hide();
+    ui->Lbl_HB_WestPres->hide();
+    ui->Led_HB_WestPres->hide();
 
+    // Hide Boundary conditions (Flume)
+    // Entry
+    ui->Btn_HC_EntryUploadFile->hide();
+    ui->Cmb_HC_EntryWaveType->hide();
+    ui->Lbl_HC_EntryPara->hide();
+    ui->Led_HC_EntryPara->hide();
+    ui->Lbl_HC_EntryU->hide();
+    ui->Led_HC_EntryUx->hide();
+    ui->Led_HC_EntryUy->hide();
+    ui->Led_HC_EntryUz->hide();
+    ui->Lbl_HC_EntryOrigin->hide();
+    ui->Led_HC_EntryOriginX->hide();
+    ui->Led_HC_EntryOriginY->hide();
+    ui->Led_HC_EntryOriginZ->hide();
+    ui->Lbl_HC_EntryVec->hide();
+    ui->Led_HC_EntryVecX->hide();
+    ui->Led_HC_EntryVecY->hide();
+    ui->Led_HC_EntryVecZ->hide();
+    ui->Lbl_HC_EntryPres->hide();
+    ui->Led_HC_EntryPres->hide();
+    // Exit
+    ui->Btn_HC_ExitUploadFile->hide();
+    ui->Cmb_HC_ExitWaveType->hide();
+    ui->Lbl_HC_ExitPara->hide();
+    ui->Led_HC_ExitPara->hide();
+    ui->Lbl_HC_ExitU->hide();
+    ui->Led_HC_ExitUx->hide();
+    ui->Led_HC_ExitUy->hide();
+    ui->Led_HC_ExitUz->hide();
+    ui->Lbl_HC_ExitOrigin->hide();
+    ui->Led_HC_ExitOriginX->hide();
+    ui->Led_HC_ExitOriginY->hide();
+    ui->Led_HC_ExitOriginZ->hide();
+    ui->Lbl_HC_ExitVec->hide();
+    ui->Led_HC_ExitVecX->hide();
+    ui->Led_HC_ExitVecY->hide();
+    ui->Led_HC_ExitVecZ->hide();
+    ui->Lbl_HC_ExitPres->hide();
+    ui->Led_HC_ExitPres->hide();
+
+    // Set pages to one
+    ui->SWg_BA_Interface->setCurrentIndex(0);
+    ui->SWg_BB_Interface->setCurrentIndex(0);
+    ui->SWg_HB_BConditions->setCurrentIndex(0);
+    ui->SWg_HC_BConditions->setCurrentIndex(0);
 }

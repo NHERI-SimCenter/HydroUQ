@@ -35,49 +35,42 @@
 // Prof. Sanjay Govindjee, Director of SimCenter, UC Berkeley
 
 //*********************************************************************************
-// In this routines related to project settings are considered
-//*********************************************************************************
-
-//*********************************************************************************
 // Include user headers
 //*********************************************************************************
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 //*********************************************************************************
-// When button clicked to get default directory
+// For widgets related to solver settings
 //*********************************************************************************
-void MainWindow::on_Btn_AA_WDir_clicked()
-{
-    // Open a file dialog and get work directory
-    workdirUrl = QFileDialog::getExistingDirectoryUrl(this, tr("Open Directory"), QUrl("/home/Users"),QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    QString workdir = workdirUrl.toString();
 
-    // If the workdir is not empty or not, set the text accordingly
-    if(workdir.isEmpty())
+//*********************************************************************************
+// When checkbox for restart file is used
+//*********************************************************************************
+void MainWindow::on_ChB_IA_Restart_stateChanged(int arg1)
+{
+    // If the item is unchecked
+    if(arg1 == 0)
     {
-        ui->Btn_AA_WDir->setText("\nSet working directory (Not set)\n");
+        ui->Btn_IA_UploadFiles->hide(); // Hide upload button
     }
-    else
+    else // if checked
     {
-        ui->Btn_AA_WDir->setText("\nSet working directory (Set)\n");
+        ui->Btn_IA_UploadFiles->show(); // Show upload button
     }
 }
 
 //*********************************************************************************
-// Setup the project name
+// When upload files button is clicked - restartfiles
 //*********************************************************************************
-void MainWindow::on_Led_AA_PName_editingFinished()
+void MainWindow::on_Btn_IA_UploadFiles_clicked()
 {
-    QString data = ui->Led_AA_PName->text();
-    ui->Lbl_ProjTitle->setText(data);
-}
-
-//*********************************************************************************
-// Setup the project description
-//*********************************************************************************
-void MainWindow::on_Led_AA_PDesc_textChanged()
-{
-    QString data = ui->Led_AA_PDesc->toPlainText();
-    ui->Lbl_ProjDesc->setText(data);
+    // Open a dialog window to select the files
+    // Here one can select multiple files
+    // The selected files are stored in the String list intefilenames (declared in mainwindow.h)
+    QFileDialog selectfilesdialog(this);
+    selectfilesdialog.setDirectory(workdirUrl.toString());
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
+    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    if(selectfilesdialog.exec()) restartfiles = selectfilesdialog.selectedFiles();
 }
