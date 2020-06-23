@@ -87,6 +87,21 @@ void MainWindow::on_Cmb_EAMeshType_currentIndexChanged(int index)
 }
 
 //*********************************************************************************
+// Button to Upload mesh files
+//*********************************************************************************
+void MainWindow::on_Btn_EA_UploadMesh_clicked()
+{
+    // Open a dialog window to select the files
+    // Here one can select multiple files
+    // The selected files are stored in the String list meshfilenames (declared in mainwindow.h)
+    QFileDialog selectfilesdialog(this);
+    selectfilesdialog.setDirectory(workdirUrl.toString());
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
+    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    if(selectfilesdialog.exec()) meshfiles = selectfilesdialog.selectedFiles();
+}
+
+//*********************************************************************************
 // Button to add regions of refinements
 //*********************************************************************************
 void MainWindow::on_Btn_EA_AddRegion_clicked()

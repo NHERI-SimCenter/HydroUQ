@@ -40,7 +40,9 @@
 //*********************************************************************************
 // Include user headers
 //*********************************************************************************
-#include "../Eigen/Dense"
+#include "dependencies/Eigen/Dense"
+#include "dependencies/rapidjson/document.h"
+#include "dependencies/rapidjson/prettywriter.h"
 
 //*********************************************************************************
 // Include library headers
@@ -52,6 +54,11 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <fstream>
+#include <iostream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -65,10 +72,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    std::string gettoolname();
-
 protected:
-    //std::string toolname = "H20-UQ";
+    std::string toolname = "H20-UQ";
+    std::string version = "0.1";
+    std::string developer = "SimCenter, UC Berkeley (USA)";
 
 private slots:
 
@@ -128,6 +135,7 @@ private slots:
 
     // Meshing
     void on_Cmb_EAMeshType_currentIndexChanged(int index);
+    void on_Btn_EA_UploadMesh_clicked();
     void on_Btn_EA_AddRegion_clicked();
     void on_Btn_EA_RemRegion_clicked();
 
@@ -159,8 +167,12 @@ private slots:
 
     // Solver
     void on_ChB_IA_Restart_stateChanged(int arg1);
-
     void on_Btn_IA_UploadFiles_clicked();
+
+    // File generation
+    void on_Btn_JA_GenFiles_clicked();
+    void genJsonRJ();
+    void genJsonQT(QJsonDocument doc);
 
 private:
 
@@ -169,9 +181,8 @@ private:
 
     Ui::MainWindow *ui;
     Eigen::MatrixXi optionmap; // Connects parameter tree to options widget
-    std::string toolname = "H20-UQ";
     QUrl workdirUrl; // Default work directory
-    QStringList optiontree,bathfilenames,solfilenames,intefilenames,restartfiles; // Filenames
+    QStringList optiontree,bathfilenames,solfilenames,intefilenames,restartfiles,meshfiles; // Filenames
 
 
 

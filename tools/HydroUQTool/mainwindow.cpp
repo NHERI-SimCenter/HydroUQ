@@ -60,12 +60,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//*********************************************************************************
-// Accessor function to get the toolname
-//*********************************************************************************
-std::string MainWindow::gettoolname()
-{
-    return toolname;
-}
+
 
 

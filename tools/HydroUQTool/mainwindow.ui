@@ -435,7 +435,7 @@
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>19</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="AA_ProjSettings">
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -752,27 +752,22 @@ Select bathymetry files
              </property>
              <item>
               <property name="text">
-               <string>Select Bathymetric file type</string>
+               <string>SimCenter format bathymetry</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>SimCenter format</string>
+               <string>GeoClaw (Type I) bathymetry</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>GeoClaw (Type I)</string>
+               <string>GeoClaw (Type II) bathymetry</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>GeoClaw (Type II)</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>GeoClaw (Type III)</string>
+               <string>GeoClaw (Type III) bathymetry</string>
               </property>
              </item>
             </widget>
@@ -814,17 +809,12 @@ Select solution files
              </property>
              <item>
               <property name="text">
-               <string>Select SW solver used</string>
+               <string>GeoClaw solver</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>GeoClaw</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>AdCirc</string>
+               <string>AdCirc solver</string>
               </property>
              </item>
             </widget>
@@ -839,22 +829,17 @@ Select solution files
              </property>
              <item>
               <property name="text">
-               <string>Choose solution file format</string>
+               <string>SimCenter solution format</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>SimCenter format</string>
+               <string>GeoClaw solution format</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>GeoClaw format</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>AdCirc format</string>
+               <string>AdCirc solution format</string>
               </property>
              </item>
             </widget>
@@ -919,7 +904,7 @@ Select interface points file
               <number>10000</number>
              </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>2</number>
              </property>
              <widget class="QWidget" name="Pg1_BA_Entry">
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -1023,12 +1008,17 @@ Select interface points file
                  </property>
                  <column>
                   <property name="text">
-                   <string>Point #.</string>
+                   <string>x</string>
                   </property>
                  </column>
                  <column>
                   <property name="text">
-                   <string>(x,y,z)</string>
+                   <string>y</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>z</string>
                   </property>
                  </column>
                 </widget>
@@ -1167,12 +1157,17 @@ Select interface points file
                  </property>
                  <column>
                   <property name="text">
-                   <string>Point #.</string>
+                   <string>x</string>
                   </property>
                  </column>
                  <column>
                   <property name="text">
-                   <string>(x,y,z)</string>
+                   <string>y</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>z</string>
                   </property>
                  </column>
                 </widget>
@@ -1311,12 +1306,17 @@ Select interface points file
                  </property>
                  <column>
                   <property name="text">
-                   <string>Point #.</string>
+                   <string>x</string>
                   </property>
                  </column>
                  <column>
                   <property name="text">
-                   <string>(x,y,z)</string>
+                   <string>y</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>z</string>
                   </property>
                  </column>
                 </widget>
@@ -1461,12 +1461,17 @@ Select interface points file
                  </property>
                  <column>
                   <property name="text">
-                   <string>Point #.</string>
+                   <string>x</string>
                   </property>
                  </column>
                  <column>
                   <property name="text">
-                   <string>(x,y,z)</string>
+                   <string>y</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>z</string>
                   </property>
                  </column>
                 </widget>
@@ -1671,11 +1676,6 @@ QPushButton:pressed {
              <property name="toolTipDuration">
               <number>10000</number>
              </property>
-             <item>
-              <property name="text">
-               <string>Select pre-existing SW solution</string>
-              </property>
-             </item>
              <item>
               <property name="text">
                <string>Cascadia subduction zone</string>
@@ -2543,11 +2543,6 @@ Select bathymetry files
              </property>
              <item>
               <property name="text">
-               <string>Select Bathymetric file type</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
                <string>SimCenter format</string>
               </property>
              </item>
@@ -2805,11 +2800,6 @@ Select bathymetry files
              <property name="toolTipDuration">
               <number>10000</number>
              </property>
-             <column>
-              <property name="text">
-               <string>Segment #.</string>
-              </property>
-             </column>
              <column>
               <property name="text">
                <string>Length (m)</string>
@@ -3127,11 +3117,6 @@ Select bathymetry files
              <property name="toolTipDuration">
               <number>10000</number>
              </property>
-             <column>
-              <property name="text">
-               <string>#.</string>
-              </property>
-             </column>
              <column>
               <property name="text">
                <string>Min (x,y,z)</string>
