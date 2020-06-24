@@ -435,7 +435,7 @@
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>15</number>
          </property>
          <widget class="QWidget" name="AA_ProjSettings">
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1755,7 +1755,7 @@ Upload longitude-latitude file
               <number>10000</number>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>2</number>
              </property>
              <widget class="QWidget" name="Pg1_BB_Entry">
               <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -1795,7 +1795,7 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_Entrynx">
+                  <widget class="QLineEdit" name="Led_BB_EntryNx">
                    <property name="toolTip">
                     <string>Provide X-component of normal pointing into the CFD domain and related to the entry interface</string>
                    </property>
@@ -1811,7 +1811,7 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_Entryny">
+                  <widget class="QLineEdit" name="Led_BB_EntryNy">
                    <property name="toolTip">
                     <string>Provide Y-component of normal pointing into the CFD domain and related to the entry interface</string>
                    </property>
@@ -1827,7 +1827,7 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_Entrynz">
+                  <widget class="QLineEdit" name="Led_BB_EntryNz">
                    <property name="toolTip">
                     <string>Provide Z-component of normal pointing into the CFD domain and related to the entry interface</string>
                    </property>
@@ -1857,11 +1857,6 @@ Upload longitude-latitude file
                  <property name="toolTipDuration">
                   <number>10000</number>
                  </property>
-                 <column>
-                  <property name="text">
-                   <string>Point #.</string>
-                  </property>
-                 </column>
                  <column>
                   <property name="text">
                    <string>Latitude</string>
@@ -2093,7 +2088,7 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Lbl_BB_S01Nx">
+                  <widget class="QLineEdit" name="Led_BB_S01Nx">
                    <property name="toolTip">
                     <string>Provide X-component of normal pointing into the CFD domain and related to the Side 1 interface</string>
                    </property>
@@ -2109,7 +2104,7 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Lbl_BB_S01Ny">
+                  <widget class="QLineEdit" name="Led_BB_S01Ny">
                    <property name="toolTip">
                     <string>Provide Y-component of normal pointing into the CFD domain and related to the Side 1 interface</string>
                    </property>
@@ -2125,7 +2120,7 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Lbl_BB_S01Nz">
+                  <widget class="QLineEdit" name="Led_BB_S01Nz">
                    <property name="toolTip">
                     <string>Provide Z-component of normal pointing into the CFD domain and related to the Side 1 interface</string>
                    </property>
@@ -2242,7 +2237,7 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_S01Nx">
+                  <widget class="QLineEdit" name="Led_BB_S02Nx">
                    <property name="toolTip">
                     <string>Provide X-component of normal pointing into the CFD domain and related to the Side 2 interface</string>
                    </property>
@@ -2258,7 +2253,7 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_S01Ny">
+                  <widget class="QLineEdit" name="Led_BB_S02Ny">
                    <property name="toolTip">
                     <string>Provide Y-component of normal pointing into the CFD domain and related to the Side 2 interface</string>
                    </property>
@@ -2274,7 +2269,7 @@ Upload longitude-latitude file
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="Led_BB_S01Nz">
+                  <widget class="QLineEdit" name="Led_BB_S02Nz">
                    <property name="toolTip">
                     <string>Provide Z-component of normal pointing into the CFD domain and related to the Side 2 interface</string>
                    </property>
@@ -3632,7 +3627,7 @@ QSlider::handle:horizontal {
            <item>
             <layout class="QHBoxLayout" name="HLY_FA_WaterDen" stretch="2,1">
              <item>
-              <widget class="QLabel" name="Lbl_FA_WaterDensity">
+              <widget class="QLabel" name="Lbl_FA_WaterDen">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -3651,7 +3646,7 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_FA_WaterDensity">
+              <widget class="QLineEdit" name="Led_FA_WaterDen">
                <property name="toolTip">
                 <string>Density of water</string>
                </property>
@@ -3893,7 +3888,7 @@ shallow water solvers</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_GA_Vy">
+              <widget class="QLineEdit" name="Led_GA_Vx">
                <property name="toolTip">
                 <string>Initial global velocity along X-direction</string>
                </property>
@@ -3909,7 +3904,7 @@ shallow water solvers</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_GA_Vz">
+              <widget class="QLineEdit" name="Led_GA_Vy">
                <property name="toolTip">
                 <string>Initial global velocity along Y-direction</string>
                </property>
@@ -3925,7 +3920,7 @@ shallow water solvers</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="Led_GA_Vx">
+              <widget class="QLineEdit" name="Led_GA_Vz">
                <property name="toolTip">
                 <string>Initial global velocity along Z-direction</string>
                </property>
@@ -5110,7 +5105,7 @@ Upload files
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="Cmb_HB_SouthPreBC">
+                <widget class="QComboBox" name="Cmb_HB_SouthPresBC">
                  <property name="toolTip">
                   <string>Choose type of pressure boundary condition on South face</string>
                  </property>
@@ -8403,9 +8398,9 @@ Submit to TACC
   <tabstop>CmB_BB_Library</tabstop>
   <tabstop>ChB_BB_UploadFile</tabstop>
   <tabstop>Btn_BB_UploadFile</tabstop>
-  <tabstop>Led_BB_Entrynx</tabstop>
-  <tabstop>Led_BB_Entryny</tabstop>
-  <tabstop>Led_BB_Entrynz</tabstop>
+  <tabstop>Led_BB_EntryNx</tabstop>
+  <tabstop>Led_BB_EntryNy</tabstop>
+  <tabstop>Led_BB_EntryNz</tabstop>
   <tabstop>Btn_BB_EntryAddPt</tabstop>
   <tabstop>Btn_BB_EntryRemPt</tabstop>
   <tabstop>Tbl_BB_EntryIntePt</tabstop>
@@ -8417,15 +8412,15 @@ Submit to TACC
   <tabstop>Btn_BB_ExitAddPt</tabstop>
   <tabstop>Btn_BB_ExitRemPt</tabstop>
   <tabstop>Tbl_BB_ExitIntePt</tabstop>
-  <tabstop>Lbl_BB_S01Nx</tabstop>
-  <tabstop>Lbl_BB_S01Ny</tabstop>
-  <tabstop>Lbl_BB_S01Nz</tabstop>
-  <tabstop>Btn_BB_S01AddPt</tabstop>
-  <tabstop>Btn_BB_S01RemPt</tabstop>
-  <tabstop>Tbl_BB_S01IntePt</tabstop>
   <tabstop>Led_BB_S01Nx</tabstop>
   <tabstop>Led_BB_S01Ny</tabstop>
   <tabstop>Led_BB_S01Nz</tabstop>
+  <tabstop>Btn_BB_S01AddPt</tabstop>
+  <tabstop>Btn_BB_S01RemPt</tabstop>
+  <tabstop>Tbl_BB_S01IntePt</tabstop>
+  <tabstop>Led_BB_S02Nx</tabstop>
+  <tabstop>Led_BB_S02Ny</tabstop>
+  <tabstop>Led_BB_S02Nz</tabstop>
   <tabstop>Btn_BB_S02AddPt</tabstop>
   <tabstop>Btn_BB_S02RemPt</tabstop>
   <tabstop>Tbl_BB_S02IntePt</tabstop>
@@ -8446,13 +8441,13 @@ Submit to TACC
   <tabstop>Btn_EA_RemRegion</tabstop>
   <tabstop>Tbl_EA_Regions</tabstop>
   <tabstop>Led_FA_WaterVisc</tabstop>
-  <tabstop>Led_FA_WaterDensity</tabstop>
+  <tabstop>Led_FA_WaterDen</tabstop>
   <tabstop>Led_FA_AirVisc</tabstop>
   <tabstop>Led_FA_AirDen</tabstop>
   <tabstop>Led_FA_SurfTen</tabstop>
+  <tabstop>Led_GA_Vx</tabstop>
   <tabstop>Led_GA_Vy</tabstop>
   <tabstop>Led_GA_Vz</tabstop>
-  <tabstop>Led_GA_Vx</tabstop>
   <tabstop>Led_GA_Pressure</tabstop>
   <tabstop>Led_GA_Alpha</tabstop>
   <tabstop>Btn_GA_AddRegion</tabstop>
@@ -8486,7 +8481,7 @@ Submit to TACC
   <tabstop>Led_HB_SouthVecX</tabstop>
   <tabstop>Led_HB_SouthVecY</tabstop>
   <tabstop>Led_HB_SouthVecZ</tabstop>
-  <tabstop>Cmb_HB_SouthPreBC</tabstop>
+  <tabstop>Cmb_HB_SouthPresBC</tabstop>
   <tabstop>Led_HB_SouthPres</tabstop>
   <tabstop>Cmb_HB_EastUBC</tabstop>
   <tabstop>Btn_HB_EastUploadFile</tabstop>

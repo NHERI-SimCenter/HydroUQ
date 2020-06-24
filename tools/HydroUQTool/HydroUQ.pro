@@ -19,8 +19,8 @@ SOURCES += \
     bathymetry.cpp \
     boundCond.cpp \
     buildings.cpp \
-    functionality.cpp \
     generateFiles.cpp \
+    geoclaw.cpp \
     initialCon.cpp \
     initialize.cpp \
     main.cpp \
@@ -31,7 +31,8 @@ SOURCES += \
     projsettings.cpp \
     qt3dframe.cpp \
     scenemodifier.cpp \
-    solver.cpp
+    solver.cpp \
+    openfoam.cpp
 
 HEADERS += \
     dependencies/Eigen/Cholesky \
@@ -371,10 +372,11 @@ HEADERS += \
     dependencies/rapidjson/stream.h \
     dependencies/rapidjson/stringbuffer.h \
     dependencies/rapidjson/writer.h \
-    functionality.h \
+    geoclaw.h \
     mainwindow.h \
     qt3dframe.h \
-    scenemodifier.h 
+    scenemodifier.h \
+    openfoam.h
 
 FORMS += \
     mainwindow.ui 

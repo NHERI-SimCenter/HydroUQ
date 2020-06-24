@@ -145,6 +145,10 @@ private slots:
 
     // Boundary conditions - user bathymetry
     void on_SWg_HB_BConditions_currentChanged(int arg1);
+    void on_Btn_HB_NorthUploadFile_clicked();
+    void on_Btn_HB_SouthUploadFile_clicked();
+    void on_Btn_HB_EastUploadFile_clicked();
+    void on_Btn_HB_WestUploadFile_clicked();
     void on_Btn_HB_Previous_clicked();
     void on_Btn_HB_Next_clicked();
     void on_Cmb_HB_NorthVelBC_currentIndexChanged(int index);
@@ -152,12 +156,14 @@ private slots:
     void on_Cmb_HB_EastUBC_currentIndexChanged(int index);
     void on_Cmb_HB_WestUBC_currentIndexChanged(int index);
     void on_Cmb_HB_NorthPresBC_currentIndexChanged(int index);
-    void on_Cmb_HB_SouthPreBC_currentIndexChanged(int index);
+    void on_Cmb_HB_SouthPresBC_currentIndexChanged(int index);
     void on_Cmb_HB_EastPresBC_currentIndexChanged(int index);
     void on_Cmb_HB_WestPresBC_currentIndexChanged(int index);
 
     // Boundary conditions - Wave flume
     void on_SWg_HC_BConditions_currentChanged(int arg1);
+    void on_Btn_HC_EntryUploadFile_clicked();
+    void on_Btn_HC_ExitUploadFile_clicked();
     void on_Btn_HC_Previous_clicked();
     void on_Btn_HC_Next_clicked();
     void on_Cmb_HC_EntryUBC_currentIndexChanged(int index);
@@ -183,7 +189,7 @@ private:
     Eigen::MatrixXi optionmap; // Connects parameter tree to options widget
     QUrl workdirUrl; // Default work directory
     QStringList optiontree,bathfilenames,solfilenames,intefilenames,restartfiles,meshfiles; // Filenames
-
+    QStringList boundfiles01,boundfiles02,boundfiles03,boundfiles04;
 
 
 };

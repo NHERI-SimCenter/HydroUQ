@@ -61,5 +61,32 @@ MainWindow::~MainWindow()
 }
 
 
+void MainWindow::on_Btn_HB_SouthUploadFile_clicked()
+{
 
+}
 
+void MainWindow::on_Btn_HC_EntryUploadFile_clicked()
+{
+
+}
+
+void MainWindow::on_Btn_HB_NorthUploadFile_clicked()
+{
+
+}
+
+void MainWindow::on_Btn_HB_EastUploadFile_clicked()
+{
+
+}
+
+void MainWindow::on_Btn_HB_WestUploadFile_clicked()
+{
+
+}
+
+void MainWindow::on_Btn_HC_ExitUploadFile_clicked()
+{
+
+}
