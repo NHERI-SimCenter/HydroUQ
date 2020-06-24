@@ -310,7 +310,7 @@ void MainWindow::on_Cmb_HB_SouthUBC_currentIndexChanged(int index)
 //*********************************************************************************
 // Combobox for pressure BC: South face
 //*********************************************************************************
-void MainWindow::on_Cmb_HB_SouthPreBC_currentIndexChanged(int index)
+void MainWindow::on_Cmb_HB_SouthPresBC_currentIndexChanged(int index)
 {
     if(index == 1)
     {

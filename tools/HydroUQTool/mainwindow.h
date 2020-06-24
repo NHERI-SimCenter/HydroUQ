@@ -40,7 +40,9 @@
 //*********************************************************************************
 // Include user headers
 //*********************************************************************************
-#include "../Eigen/Dense"
+#include "dependencies/Eigen/Dense"
+#include "dependencies/rapidjson/document.h"
+#include "dependencies/rapidjson/prettywriter.h"
 
 //*********************************************************************************
 // Include library headers
@@ -52,6 +54,11 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <fstream>
+#include <iostream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -65,10 +72,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    std::string gettoolname();
-
 protected:
-    //std::string toolname = "H20-UQ";
+    std::string toolname = "H20-UQ";
+    std::string version = "0.1";
+    std::string developer = "SimCenter, UC Berkeley (USA)";
 
 private slots:
 
@@ -128,6 +135,7 @@ private slots:
 
     // Meshing
     void on_Cmb_EAMeshType_currentIndexChanged(int index);
+    void on_Btn_EA_UploadMesh_clicked();
     void on_Btn_EA_AddRegion_clicked();
     void on_Btn_EA_RemRegion_clicked();
 
@@ -137,6 +145,10 @@ private slots:
 
     // Boundary conditions - user bathymetry
     void on_SWg_HB_BConditions_currentChanged(int arg1);
+    void on_Btn_HB_NorthUploadFile_clicked();
+    void on_Btn_HB_SouthUploadFile_clicked();
+    void on_Btn_HB_EastUploadFile_clicked();
+    void on_Btn_HB_WestUploadFile_clicked();
     void on_Btn_HB_Previous_clicked();
     void on_Btn_HB_Next_clicked();
     void on_Cmb_HB_NorthVelBC_currentIndexChanged(int index);
@@ -144,12 +156,14 @@ private slots:
     void on_Cmb_HB_EastUBC_currentIndexChanged(int index);
     void on_Cmb_HB_WestUBC_currentIndexChanged(int index);
     void on_Cmb_HB_NorthPresBC_currentIndexChanged(int index);
-    void on_Cmb_HB_SouthPreBC_currentIndexChanged(int index);
+    void on_Cmb_HB_SouthPresBC_currentIndexChanged(int index);
     void on_Cmb_HB_EastPresBC_currentIndexChanged(int index);
     void on_Cmb_HB_WestPresBC_currentIndexChanged(int index);
 
     // Boundary conditions - Wave flume
     void on_SWg_HC_BConditions_currentChanged(int arg1);
+    void on_Btn_HC_EntryUploadFile_clicked();
+    void on_Btn_HC_ExitUploadFile_clicked();
     void on_Btn_HC_Previous_clicked();
     void on_Btn_HC_Next_clicked();
     void on_Cmb_HC_EntryUBC_currentIndexChanged(int index);
@@ -159,8 +173,12 @@ private slots:
 
     // Solver
     void on_ChB_IA_Restart_stateChanged(int arg1);
-
     void on_Btn_IA_UploadFiles_clicked();
+
+    // File generation
+    void on_Btn_JA_GenFiles_clicked();
+    void genJsonRJ();
+    void genJsonQT(QJsonDocument doc);
 
 private:
 
@@ -169,10 +187,9 @@ private:
 
     Ui::MainWindow *ui;
     Eigen::MatrixXi optionmap; // Connects parameter tree to options widget
-    std::string toolname = "H20-UQ";
     QUrl workdirUrl; // Default work directory
-    QStringList optiontree,bathfilenames,solfilenames,intefilenames,restartfiles; // Filenames
-
+    QStringList optiontree,bathfilenames,solfilenames,intefilenames,restartfiles,meshfiles; // Filenames
+    QStringList boundfiles01,boundfiles02,boundfiles03,boundfiles04;
 
 
 };
