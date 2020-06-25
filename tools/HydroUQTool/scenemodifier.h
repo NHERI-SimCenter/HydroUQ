@@ -8,6 +8,8 @@
 #include <Qt3DCore/qentity.h>
 #include <Qt3DCore/qtransform.h>
 #include <QtCore/QDebug>
+#include <QObjectPicker>
+#include <Qt3DRender/QMesh>
 
 #include <Qt3DExtras/QTorusMesh>
 #include <Qt3DExtras/QConeMesh>
@@ -32,6 +34,7 @@ public slots:
     void enableCuboid(bool enabled);
     void enablePlane(bool enabled);
     void enableSphere(bool enabled);
+    void enableMesh(bool enabled);
 
 private:
     Qt3DCore::QEntity *m_rootEntity;
@@ -42,6 +45,7 @@ private:
     Qt3DCore::QEntity *m_cuboidEntity;
     Qt3DCore::QEntity *m_planeEntity;
     Qt3DCore::QEntity *m_sphereEntity;
+    Qt3DCore::QEntity *m_meshEntity;
 };
 
 #endif // SCENEMODIFIER_H

@@ -43,6 +43,7 @@
 //*********************************************************************************
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "cfdsolvers/openfoam/openfoam.h"
 
 //*********************************************************************************
 //When generate files button is clicked
@@ -53,11 +54,21 @@ void MainWindow::on_Btn_JA_GenFiles_clicked()
     // Create JSON files using RAPIDJSON
     genJsonRJ();
 
-    // Create JSON files using QJSON
-    //genJsonQT(QJsonDocument doc)
-
     // Create CFD files
-    //genOpenFOAM();
+    if(ui->Cmb_IA_Solver->currentText() == "OpenFOAM")
+    {
+        // Get JSON file name
+        QString pname = ui->Lbl_ProjTitle->text();
+        QString finaldirpath = QDir(workdirUrl.toString()).filePath(pname);
+        QUrl finaldirpathUrl(finaldirpath);
+        finaldirpath = finaldirpathUrl.toLocalFile();
+        QDir fildirs(finaldirpath);
+        QString jsonfilepath = fildirs.filePath(pname+".json");
+
+        // Create an object for openfoam
+        openfoam ofwrite;
+        ofwrite.genopenfoam(finaldirpath,jsonfilepath);
+    }
 
 }
 
@@ -113,6 +124,12 @@ void MainWindow::genJsonRJ()
     writer.String("workdirUrl");
     writer.Key("value");
     writer.String(workdirUrl.toLocalFile().toStdString().c_str());
+    writer.Key("displayName");
+    writer.String("Run directory");
+    writer.Key("internalName");
+    writer.String("notstored");
+    writer.Key("value");
+    writer.String(finaldirpath.toStdString().c_str());
     writer.Key("displayName");
     writer.String("Project name");
     writer.Key("internalName");
@@ -350,6 +367,7 @@ void MainWindow::genJsonRJ()
                 writer.String("CmB_BB_Library");
                 writer.Key("value");
                 writer.String(ui->CmB_BB_Library->currentText().toStdString().c_str());
+                writer.Key("displayname");
                 writer.String("SW-CFD interface type");
                 writer.Key("internalName");
                 writer.String("ChB_BB_UploadFile");

@@ -117,6 +117,23 @@ void MainWindow::on_OptionsStack_currentChanged(int arg1)
                                   "specified by giving the lowermost and the topmost points. "
                                   "At present, the buildings are considered to be of simple cuboid "
                                   "geometry only.");
+        if((ui->CmB_AA_SimType->currentIndex() == 1) || (ui->CmB_AA_SimType->currentIndex() == 2))
+        {
+            ui->Lbl_CA_Notice->show();
+            ui->Lbl_CA_Building->hide();
+            ui->Tbl_CA_Building->hide();
+            ui->Btn_CA_AddBuild->hide();
+            ui->Btn_CA_RemBuild->hide();
+        }
+        else
+        {
+            ui->Lbl_CA_Notice->hide();
+            ui->Lbl_CA_Building->show();
+            ui->Tbl_CA_Building->show();
+            ui->Btn_CA_AddBuild->show();
+            ui->Btn_CA_RemBuild->show();
+        }
+
     }
     else if(arg1 == 9) // Add floating bodies
     {

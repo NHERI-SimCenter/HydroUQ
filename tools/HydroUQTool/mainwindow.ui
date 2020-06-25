@@ -435,7 +435,7 @@
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>15</number>
+          <number>8</number>
          </property>
          <widget class="QWidget" name="AA_ProjSettings">
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -3114,17 +3114,17 @@ Select bathymetry files
              </property>
              <column>
               <property name="text">
+               <string>Type</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
                <string>Min (x,y,z)</string>
               </property>
              </column>
              <column>
               <property name="text">
                <string>Max (x,y,z)</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Height</string>
               </property>
              </column>
             </widget>
