@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Hydro-UQ Project! &mdash; Hydro-UQ 1.0 documentation</title>
+  <title>Water-borne Natural Hazards with Uncertainty Quantification Application &mdash; Hydro-UQ 1.0 documentation</title>
   
 
   
@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -37,7 +37,7 @@
   <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="1. Tsunami" href="tsunami/tsunami.html" /> 
+    <link rel="next" title="1. Acknowledgements" href="userman/acknowledgement.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -88,16 +88,32 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="userman/acknowledgement.html">1. Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/about.html">2. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/install.html">3. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/manual.html">4. Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/errors.html">6. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples.html">7. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/copyright.html">8. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tsunami/tsunami.html">1. Tsunami</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storm/storm.html">2. Storm surge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory/theory.html">3. Theoretical Formulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fvm/fvm.html">4. Finite Volume Method</a></li>
-<li class="toctree-l1"><a class="reference internal" href="geoclaw/geoclaw.html">5. Shallow water solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="openfoam/openfoam.html">6. OpenFOAM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="surrogate/surrogate.html">7. Surrogate Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hydrouq/hydrouq.html">8. Hydro-UQ tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fvm/fvm.html">3. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geoclaw/geoclaw.html">4. Shallow water solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openfoam/openfoam.html">5. OpenFOAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surrogate/surrogate.html">6. Surrogate Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hydrouq/hydrouq.html">7. Hydro-UQ tool</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build/build.html">1. How to build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="verify/verify.html">2. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coding/coding.html">3. Coding style</a></li>
 </ul>
 
             
@@ -143,7 +159,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>Hydro-UQ Project!</li>
+      <li>Water-borne Natural Hazards with Uncertainty Quantification Application</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -162,52 +178,48 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="hydro-uq-project">
-<h1>Hydro-UQ Project!<a class="headerlink" href="#hydro-uq-project" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="water-borne-natural-hazards-with-uncertainty-quantification-application">
+<h1>Water-borne Natural Hazards with Uncertainty Quantification Application<a class="headerlink" href="#water-borne-natural-hazards-with-uncertainty-quantification-application" title="Permalink to this headline">¶</a></h1>
+<p><strong>Ajay B Harish, Frank McKenna</strong></p>
+<p>The Water-borne Natural Hazards with Uncertainty Quantification Application (Hydro-UQ app) is an open-source research application that can be used to predict the response of a building / a community subjected to events like tsunami and storm-surge. The application is focused on quantifying the uncertainties in the predicted response, given the that the uncertainties in models, loads, and analysis. The computations are performed in a workflow application that will run on a high performance computer made available by <a class="reference external" href="https://www.designsafe-ci.org">DesignSafe</a>.</p>
+<p>This document covers the features and capabilities of the alpha version 0.1 of the tool. Users are encouraged to comment on what additional features and capabilities they would like to see in future versions of the application through the <a class="reference external" href="https://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=6.0">Message Board</a>.</p>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">User manual</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tsunami/tsunami.html">1. Tsunami</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tsunami/tsu-intro.html">1.1. Introduction to Tsunami</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tsunami/tsu-measure.html">1.2. Tsunami Measurements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tsunami/tsu-risk.html">1.3. Tsunami Risk Management</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tsunami/tsu-numerics.html">1.4. Modeling Tsunami: Numerical Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/acknowledgement.html">1. Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/about.html">2. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/install.html">3. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/manual.html">4. Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/errors.html">6. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples.html">7. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userman/copyright.html">8. Copyright and License</a></li>
 </ul>
-</li>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Technical manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tsunami/tsunami.html">1. Tsunami</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storm/storm.html">2. Storm surge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory/theory.html">3. Theoretical Formulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fvm/fvm.html">4. Finite Volume Method</a></li>
-<li class="toctree-l1"><a class="reference internal" href="geoclaw/geoclaw.html">5. Shallow water solvers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="geoclaw/geoclaw.html#geoclaw">5.1. GeoClaw</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geoclaw/geoclaw.html#adcirc">5.2. AdCirc</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geoclaw/geoclaw.html#simcenter-formats">5.3. SimCenter formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fvm/fvm.html">3. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geoclaw/geoclaw.html">4. Shallow water solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openfoam/openfoam.html">5. OpenFOAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surrogate/surrogate.html">6. Surrogate Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hydrouq/hydrouq.html">7. Hydro-UQ tool</a></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="openfoam/openfoam.html">6. OpenFOAM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="openfoam/openfoam.html#solvers-in-openfoam">6.1. Solvers in OpenFOAM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="openfoam/openfoam.html#input-file-formats">6.2. Input file formats</a></li>
-<li class="toctree-l2"><a class="reference internal" href="openfoam/openfoam.html#running-openfoam-on-tacc">6.3. Running OpenFOAM on TACC</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="surrogate/surrogate.html">7. Surrogate Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hydrouq/hydrouq.html">8. Hydro-UQ tool</a></li>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build/build.html">1. How to build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="verify/verify.html">2. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coding/coding.html">3. Coding style</a></li>
 </ul>
 </div>
 </div>
-<div class="section" id="license">
-<h1>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h1>
-<p>The Hydro-UQ tool is distributed under the <a class="reference internal" href="license.html#lbllicense"><span class="std std-ref">BSD 3-Clause license</span></a>.</p>
-</div>
-<div class="section" id="acknowledgement">
-<h1>Acknowledgement<a class="headerlink" href="#acknowledgement" title="Permalink to this headline">¶</a></h1>
-<p>This material is based upon work supported by the National Science Foundation under Grant No. 1612843. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the National Science Foundation.</p>
-</div>
-<div class="section" id="developers">
-<h1>Developers<a class="headerlink" href="#developers" title="Permalink to this headline">¶</a></h1>
-<p>Dr. Ajay B Harish, NHERI SimCenter, University of California Berkeley
-(<strong>Email:</strong> <a class="reference external" href="mailto:ajaybh&#37;&#52;&#48;berkeley&#46;edu">ajaybh<span>&#64;</span>berkeley<span>&#46;</span>edu</a>; <strong>Web:</strong> www.ajaybharish.com)</p>
-<p>Dr. Frank Mckenna, NHERI SimCenter, University of California Berkeley
-(<strong>Email:</strong> <a class="reference external" href="mailto:fmk&#37;&#52;&#48;berkeley&#46;edu">fmk<span>&#64;</span>berkeley<span>&#46;</span>edu</a>)</p>
+<div class="section" id="contact">
+<h1>Contact<a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h1>
+<p>Ajay B Harish (<a class="reference external" href="mailto:ajaybh&#37;&#52;&#48;berkeley&#46;edu">ajaybh<span>&#64;</span>berkeley<span>&#46;</span>edu</a>), Frank Mckenna (<a class="reference external" href="mailto:fmk&#37;&#52;&#48;berkeley&#46;edu">fmk<span>&#64;</span>berkeley<span>&#46;</span>edu</a>), NHERI SimCenter, University of California Berkeley</p>
 </div>
 
 

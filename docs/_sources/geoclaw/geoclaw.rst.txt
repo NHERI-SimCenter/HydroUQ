@@ -27,4 +27,10 @@ AdCirc is often used for modeling storm surges.
 SimCenter formats
 --------------------
 
-Development of file standards can help in the sustainable growth of community projects. SimCenter proposes the below formats for storing information related to the shallow water solvers. 
+Development of file standards can help in the sustainable growth of community projects. SimCenter proposes the below formats for storing information related to the shallow water solvers.
+
+.. toctree::
+   :maxdepth: 1
+
+   simcenter-topo
+

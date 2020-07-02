@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -38,7 +38,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Outputs: GeoClaw" href="geoclaw-output.html" />
-    <link rel="prev" title="5. Shallow water solvers" href="geoclaw.html" /> 
+    <link rel="prev" title="4. Shallow water solvers" href="geoclaw.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,14 +89,24 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../userman/acknowledgement.html">1. Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userman/about.html">2. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userman/install.html">3. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userman/manual.html">4. Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userman/errors.html">6. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">7. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../userman/copyright.html">8. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tsunami/tsunami.html">1. Tsunami</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../storm/storm.html">2. Storm surge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../theory/theory.html">3. Theoretical Formulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">4. Finite Volume Method</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="geoclaw.html">5. Shallow water solvers</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="geoclaw.html#geoclaw">5.1. GeoClaw</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">3. Finite Volume Method</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="geoclaw.html">4. Shallow water solvers</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="geoclaw.html#geoclaw">4.1. GeoClaw</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Topography: GeoClaw</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#topo-type-01">Topo type 01</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#topo-type-02">Topo type 02</a></li>
@@ -106,13 +116,19 @@
 <li class="toctree-l3"><a class="reference internal" href="geoclaw-output.html">Outputs: GeoClaw</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="geoclaw.html#adcirc">5.2. AdCirc</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geoclaw.html#simcenter-formats">5.3. SimCenter formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geoclaw.html#adcirc">4.2. AdCirc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geoclaw.html#simcenter-formats">4.3. SimCenter formats</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../openfoam/openfoam.html">6. OpenFOAM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../surrogate/surrogate.html">7. Surrogate Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">8. Hydro-UQ tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openfoam/openfoam.html">5. OpenFOAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../surrogate/surrogate.html">6. Surrogate Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">7. Hydro-UQ tool</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../build/build.html">1. How to build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../verify/verify.html">2. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coding/coding.html">3. Coding style</a></li>
 </ul>
 
             
@@ -158,7 +174,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="geoclaw.html"><span class="section-number">5. </span>Shallow water solvers</a> &raquo;</li>
+          <li><a href="geoclaw.html"><span class="section-number">4. </span>Shallow water solvers</a> &raquo;</li>
         
       <li>Topography: GeoClaw</li>
     

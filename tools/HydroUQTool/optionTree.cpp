@@ -64,17 +64,56 @@ void MainWindow::on_SimOptions_itemClicked(QTreeWidgetItem *item, int column)
 
 }
 
+//*********************************************************************************
+// What happens if we double click on the tree
+//*********************************************************************************
+void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
 
+    QString sel = item->text(column);
+    if((sel == "Create project") && (treeflag == 1))
+    {
+        // Create a dialog to get the project name
+        bool ok;
+        projname = QInputDialog::getText(this, tr("Create new project"),
+                                                tr("Project name"), QLineEdit::Normal,
+                                                QDir::home().dirName(), &ok);
+        if (ok && !projname.isEmpty())
+            ui->Lbl_ProjTitle->setText(projname);
 
+        // Add children
+        //addTreeChild(item, projname);
 
+        // Create project tree
+        QTreeWidgetItem *project = new QTreeWidgetItem(item, QStringList() << projname);
 
+        // Create geometry
+        QTreeWidgetItem *geometry = new QTreeWidgetItem(project, QStringList() << "Geometry");
+        //QTreeWidgetItem *bathymetry = new QTreeWidgetItem(geometry, QStringList() << "Bathymetry");
+        new QTreeWidgetItem(geometry, QStringList() << "Bathymetry");
+        new QTreeWidgetItem(geometry, QStringList() << "SW-CFD interface");
+        new QTreeWidgetItem(geometry, QStringList() << "Buildings");
+        new QTreeWidgetItem(geometry, QStringList() << "Floating bodies");
+        new QTreeWidgetItem(project, QStringList() << "Materials");
+        QTreeWidgetItem *inicondition = new QTreeWidgetItem(project, QStringList() << "Initial condition");
+        new QTreeWidgetItem(inicondition, QStringList() << "Velocity");
+        new QTreeWidgetItem(inicondition, QStringList() << "Pressure");
+        new QTreeWidgetItem(inicondition, QStringList() << "Phase");
+        QTreeWidgetItem *boundarycondition = new QTreeWidgetItem(project, QStringList() << "Boundary condition");
+        new QTreeWidgetItem(boundarycondition, QStringList() << "Velocity");
+        new QTreeWidgetItem(boundarycondition, QStringList() << "Pressure");
+        new QTreeWidgetItem(boundarycondition, QStringList() << "Phase");
+        QTreeWidgetItem *solver = new QTreeWidgetItem(project, QStringList() << "Solvers");
+        new QTreeWidgetItem(solver, QStringList() << "Basic");
+        new QTreeWidgetItem(solver, QStringList() << "Advanced");
+        new QTreeWidgetItem(project, QStringList() << "Create jobs");
+        //QTreeWidgetItem *tacc = new QTreeWidgetItem(project, QStringList() << "Create jobs");
 
-
-
-
-
-
-
-
-
-
+        // For now disable to not allow multiple project creation
+        treeflag = -1;
+    }
+    else if(sel == "Create jobs")
+    {
+        QTreeWidgetItem *jobname = new QTreeWidgetItem(item, QStringList() << "trialjob");
+    }
+}
