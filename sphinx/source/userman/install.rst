@@ -3,4 +3,4 @@
 Installation
 ==================
 
-Steps to install. Coming soon.
+Coming soon.
