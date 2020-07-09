@@ -127,7 +127,7 @@ SceneModifier::SceneModifier(Qt3DCore::QEntity *rootEntity)
     m_cylinderEntity->addComponent(cylinderTransform);
 
     */
-
+/*
     // Cuboid shape data
     Qt3DExtras::QCuboidMesh *cuboid = new Qt3DExtras::QCuboidMesh();
 
@@ -144,6 +144,32 @@ SceneModifier::SceneModifier(Qt3DCore::QEntity *rootEntity)
     m_cuboidEntity->addComponent(cuboid);
     m_cuboidEntity->addComponent(cuboidMaterial);
     m_cuboidEntity->addComponent(cuboidTransform);
+
+
+    // Try object
+    Qt3DCore::QEntity * meshEntity = new Qt3DCore::QEntity();
+    Qt3DRender::QMesh * myMesh = new Qt3DRender::QMesh();
+    myMesh->setSource(QUrl::fromLocalFile("/Users/ajaybh/Desktop/lamp.obj"));
+    meshEntity->addComponent(myMesh);
+*/
+
+    // New code
+    Qt3DRender::QMesh * ModelMesh = new Qt3DRender::QMesh();
+    ModelMesh->setSource(QUrl::fromLocalFile("/Users/ajaybh/Desktop/lamp.obj"));
+    //Model Transform
+    Qt3DExtras::QPhongMaterial *ModelMaterial = new Qt3DExtras::QPhongMaterial();
+    ModelMaterial->setDiffuse(QColor(QRgb(0x665423)));
+
+    Qt3DCore::QTransform *ModelTransform = new Qt3DCore::QTransform();
+    ModelTransform->setScale(1.0f);
+    ModelTransform->setTranslation(QVector3D(0.0f, -4.0f, -1.0f));
+
+    // Model
+    m_cuboidEntity = new Qt3DCore::QEntity(m_rootEntity);
+    m_cuboidEntity->addComponent(ModelMesh);
+    m_cuboidEntity->addComponent(ModelMaterial);
+    m_cuboidEntity->addComponent(ModelTransform);
+
 
     /*
 
@@ -225,4 +251,9 @@ void SceneModifier::enablePlane(bool enabled)
 void SceneModifier::enableSphere(bool enabled)
 {
     m_sphereEntity->setEnabled(enabled);
+}
+
+void SceneModifier::enableMesh(bool enabled)
+{
+    m_meshEntity->setEnabled(enabled);
 }

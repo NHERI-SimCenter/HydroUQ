@@ -20,7 +20,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Hydro-UQ'
-copyright = '2019, SimCenter'
+copyright = '2020, SimCenter'
 author = 'Ajay B Harish'
 html_logo = 'common/SimCenter_H2O_logo.png'
 
@@ -45,6 +45,9 @@ extensions = [
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+# Hide source
+html_show_sourcelink = False
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:

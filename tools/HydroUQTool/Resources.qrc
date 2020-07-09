@@ -13,5 +13,6 @@
         <file>images/previous.png</file>
         <file>images/GenBathyDomain.png</file>
         <file>images/BathyBC.png</file>
+        <file>dependencies/styles/style.qss</file>
     </qresource>
 </RCC>

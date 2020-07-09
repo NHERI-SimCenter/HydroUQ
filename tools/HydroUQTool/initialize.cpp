@@ -51,6 +51,9 @@ void MainWindow::initialize()
 {
     //Set the stacked widget to zero window
     ui->OptionsStack->setCurrentIndex(0);
+    //ui->OptionsStack->setVisible(false);
+    ui->optionsFrame->setVisible(false);
+    treeflag = 1;
 
     // Initialize the string list from tree options
     optiontree << "Project details" << "Bathymetry" << "Buildings" << "Floating bodies" << "Meshing";

@@ -19,20 +19,24 @@ SOURCES += \
     bathymetry.cpp \
     boundCond.cpp \
     buildings.cpp \
+    cfdsolvers/openfoam/zerofiles.cpp \
     generateFiles.cpp \
-    geoclaw.cpp \
+    server/stampede2/stampede2.cpp \
+    swsolvers/geoclaw/geoclaw.cpp \
     initialCon.cpp \
     initialize.cpp \
     main.cpp \
     mainwindow.cpp \
     meshing.cpp \
+    cfdsolvers/openfoam/constantfiles.cpp \
+    cfdsolvers/openfoam/systemfiles.cpp \
     optionStack.cpp \
     optionTree.cpp \
     projsettings.cpp \
     qt3dframe.cpp \
     scenemodifier.cpp \
     solver.cpp \
-    openfoam.cpp
+    cfdsolvers/openfoam/openfoam.cpp
 
 HEADERS += \
     dependencies/Eigen/Cholesky \
@@ -372,11 +376,12 @@ HEADERS += \
     dependencies/rapidjson/stream.h \
     dependencies/rapidjson/stringbuffer.h \
     dependencies/rapidjson/writer.h \
-    geoclaw.h \
+    server/stampede2/stampede2.h \
+    swsolvers/geoclaw/geoclaw.h \
     mainwindow.h \
     qt3dframe.h \
     scenemodifier.h \
-    openfoam.h
+    cfdsolvers/openfoam/openfoam.h
 
 FORMS += \
     mainwindow.ui 

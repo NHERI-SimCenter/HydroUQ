@@ -57,6 +57,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QInputDialog>
 #include <fstream>
 #include <iostream>
 
@@ -180,6 +181,9 @@ private slots:
     void genJsonRJ();
     void genJsonQT(QJsonDocument doc);
 
+    void on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column);
+
+
 private:
 
     // Initialize
@@ -187,6 +191,8 @@ private:
 
     Ui::MainWindow *ui;
     Eigen::MatrixXi optionmap; // Connects parameter tree to options widget
+    int treeflag;
+    QString projname;
     QUrl workdirUrl; // Default work directory
     QStringList optiontree,bathfilenames,solfilenames,intefilenames,restartfiles,meshfiles; // Filenames
     QStringList boundfiles01,boundfiles02,boundfiles03,boundfiles04;
