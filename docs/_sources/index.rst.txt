@@ -6,7 +6,7 @@ Water-borne Natural Hazards with Uncertainty Quantification Application
 
 The Water-borne Natural Hazards with Uncertainty Quantification Application (Hydro-UQ app) is an open-source research application that can be used to predict the response of a building / a community subjected to events like tsunami and storm-surge. The application is focused on quantifying the uncertainties in the predicted response, given the that the uncertainties in models, loads, and analysis. The computations are performed in a workflow application that will run on a high performance computer made available by `DesignSafe <https://www.designsafe-ci.org>`_.
 
-This document covers the features and capabilities of the alpha version 0.1 of the tool. Users are encouraged to comment on what additional features and capabilities they would like to see in future versions of the application through the `Message Board <https://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=6.0>`_.
+This document covers the features and capabilities of the alpha version 0.1 of the tool. Users are encouraged to comment on what additional features and capabilities they would like to see in future versions of the application through the `Message Board <https://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0>`_.
 
 .. toctree::
    :maxdepth: 1
@@ -19,7 +19,7 @@ This document covers the features and capabilities of the alpha version 0.1 of t
    userman/manual
    userman/bestpractices
    userman/errors
-   examples/examples
+   userman/examples/examples
    userman/copyright
 
 .. toctree::
@@ -27,23 +27,22 @@ This document covers the features and capabilities of the alpha version 0.1 of t
    :numbered: 2
    :caption: Technical manual
 
-   tsunami/tsunami
-   storm/storm
-   fvm/fvm
-   geoclaw/geoclaw
-   openfoam/openfoam
-   surrogate/surrogate
-   hydrouq/hydrouq
+   techman/tsunami/tsunami
+   techman/storm/storm
+   techman/fvm/fvm
+   techman/swsolver/swsolver
+   techman/cfdsolver/cfdsolver
+   techman/surrogate/surrogate
+   techman/hydrouq/hydrouq
 
 .. toctree::
    :maxdepth: 1
    :numbered: 2
    :caption: Developer manual
 
-   build/build
-   verify/verify
-   coding/coding
-
+   devman/build/build
+   devman/verify/verify
+   devman/coding/coding
 
 Contact
 =============
