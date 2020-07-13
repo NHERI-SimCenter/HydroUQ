@@ -1,6 +1,0 @@
-.. _lbl-install:
-
-Installation
-==================
-
-Coming soon.
