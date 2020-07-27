@@ -58,6 +58,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QInputDialog>
+#include <QStackedWidget>
 #include <fstream>
 #include <iostream>
 
@@ -146,6 +147,7 @@ private slots:
     void genJsonRJ();
     void genJsonQT(QJsonDocument doc);
 
+    // Click item in the table
     void on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 

@@ -44,15 +44,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-//*********************************************************************************
+//*************************************************************************************
 //Initialize the optionmap that relates the stack to be opened to the simulation type
-//*********************************************************************************
+//*************************************************************************************
 void MainWindow::initialize()
 {
     //Set the stacked widget to zero window
-    ui->OptionsStack->setCurrentIndex(5);
-    //ui->OptionsStack->setVisible(false);
-    //ui->optionsFrame->setVisible(true);
+    ui->OptionsStack->setCurrentIndex(0);
     treeflag = 1;
 
     // Initialize the string list from tree options

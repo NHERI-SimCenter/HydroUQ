@@ -50,7 +50,7 @@
 void MainWindow::on_SimOptions_itemClicked(QTreeWidgetItem *item, int column)
 {
 
-    // Initialize the parent
+    /*// Initialize the parent
     QString parent;
 
     // Get the string of hte selected item
@@ -78,7 +78,10 @@ void MainWindow::on_SimOptions_itemClicked(QTreeWidgetItem *item, int column)
     {
         if(ui->OptionsStack->currentIndex() != optionmap(optiontree.indexOf(parent),simtypeindex))
             ui->OptionsStack->setCurrentIndex(optionmap(optiontree.indexOf(parent),simtypeindex));
-    }
+    }*/
+
+
+
 }
 
 //*********************************************************************************
@@ -126,6 +129,10 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
 
         // For now disable to not allow multiple project creation
         treeflag = -1;
+    }
+    else if(sel == "Boundary conditions")
+    {
+        qDebug() << "Clicked BC";
     }
     else if(sel == "Submit to TACC")
     {
