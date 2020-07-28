@@ -276,7 +276,7 @@
             </sizepolicy>
            </property>
            <property name="currentIndex">
-            <number>12</number>
+            <number>2</number>
            </property>
            <widget class="QWidget" name="AA_ProjSettings">
             <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -4921,7 +4921,7 @@ QPushButton:pressed {
              <item>
               <widget class="QStackedWidget" name="SWg_HC_BConditions">
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <widget class="QWidget" name="Pg1_HC_Entry">
                 <layout class="QVBoxLayout" name="verticalLayout_37">

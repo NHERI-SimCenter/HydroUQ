@@ -58,6 +58,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QInputDialog>
+#include <QStackedWidget>
 #include <fstream>
 #include <iostream>
 
@@ -146,8 +147,14 @@ private slots:
     void genJsonRJ();
     void genJsonQT(QJsonDocument doc);
 
+    // Click item in the table
     void on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
+    void on_Btn_BB_Next_clicked();
+
+    void on_Btn_BB_Previous_clicked();
+
+    void on_SWg_BB_Interface_currentChanged(int arg1);
 
 private:
 
@@ -159,8 +166,13 @@ private:
     int treeflag;
     QString projname;
     QUrl workdirUrl; // Default work directory
+
+    QStringList interfacenames;
+
     QStringList optiontree,bathfilenames,solfilenames,intefilenames,restartfiles,meshfiles; // Filenames
     QStringList boundfiles01,boundfiles02,boundfiles03,boundfiles04;
+
+    int boundaryCount;
 
 
 };

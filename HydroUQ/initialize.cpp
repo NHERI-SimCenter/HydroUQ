@@ -44,115 +44,35 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-//*********************************************************************************
+//*************************************************************************************
 //Initialize the optionmap that relates the stack to be opened to the simulation type
-//*********************************************************************************
+//*************************************************************************************
 void MainWindow::initialize()
 {
     //Set the stacked widget to zero window
-    ui->OptionsStack->setCurrentIndex(5);
-    //ui->OptionsStack->setVisible(false);
-    //ui->optionsFrame->setVisible(true);
+    ui->OptionsStack->setCurrentIndex(0);
     treeflag = 1;
 
     // Initialize the string list from tree options
-    optiontree << "Project details" << "Bathymetry" << "Buildings" << "Floating bodies" << "Meshing";
-    optiontree << "Materials" << "Initial conditions" << "Boundary conditions";
+    optiontree << "Project details" << "Bathymetry" << "SW-CFD interface" << "Buildings" << "Floating bodies";
+    optiontree << "Meshing" << "Materials";
+    optiontree  << "Initial conditions" << "Boundary conditions";
     optiontree << "Basic" << "Advanced" << "Submit to TACC";
 
     // Set the options for stacked widget
     // Map for options
     optionmap.setZero(12,8);
 
-    // Project page
-    optionmap(0,0) = 0; // Select simtype
-    optionmap(0,1) = 0; // CFD to resolve SW (with SW results)
-    optionmap(0,2) = 0; // CFD to resolve SW (simlibrary results)
-    optionmap(0,3) = 0; // CFD using bathymetry data
-    optionmap(0,4) = 0; // CFD of wave flume
-    optionmap(0,5) = 0; // CFD using STL
-    optionmap(0,6) = 0; // CFD using maps
-    optionmap(0,7) = 0; // CFD using surrogate
 
-    // Bathymetry
-    optionmap(1,0) = 0; // Select simtype
-    optionmap(1,1) = 1; // CFD to resolve SW (with SW results)
-    optionmap(1,2) = 2; // CFD to resolve SW (simlibrary results)
-    optionmap(1,3) = 3; // CFD using bathymetry data
-    optionmap(1,4) = 4; // CFD of wave flume
-    optionmap(1,5) = 5; // CFD using STL
-    optionmap(1,6) = 6; // CFD using maps
-    optionmap(1,7) = 7; // CFD using surrogate
-
-    // Buildings
-    optionmap(2,0) = 0; // Select simtype
-    optionmap(2,1) = 8; // CFD to resolve SW (with SW results)
-    optionmap(2,2) = 8; // CFD to resolve SW (simlibrary results)
-    optionmap(2,3) = 8; // CFD using bathymetry data
-    optionmap(2,4) = 8; // CFD of wave flume
-    optionmap(2,5) = 8; // CFD using STL
-    optionmap(2,6) = 8; // CFD using maps
-    optionmap(2,7) = 8; // CFD using surrogate
-
-    // Floating bodies
-    optionmap(3,0) = 0; // Select simtype
-    optionmap(3,1) = 9; // CFD to resolve SW (with SW results)
-    optionmap(3,2) = 9; // CFD to resolve SW (simlibrary results)
-    optionmap(3,3) = 9; // CFD using bathymetry data
-    optionmap(3,4) = 9; // CFD of wave flume
-    optionmap(3,5) = 9; // CFD using STL
-    optionmap(3,6) = 9; // CFD using maps
-    optionmap(3,7) = 9; // CFD using surrogate
-
-    // Meshing
-    optionmap(4,0) = 0; // Select simtype
-    optionmap(4,1) = 10; // CFD to resolve SW (with SW results)
-    optionmap(4,2) = 10; // CFD to resolve SW (simlibrary results)
-    optionmap(4,3) = 10; // CFD using bathymetry data
-    optionmap(4,4) = 10; // CFD of wave flume
-    optionmap(4,5) = 10; // CFD using STL
-    optionmap(4,6) = 10; // CFD using maps
-    optionmap(4,7) = 10; // CFD using surrogate
-
-    // Materials
-    optionmap(5,0) = 0; // Select simtype
-    optionmap(5,1) = 11; // CFD to resolve SW (with SW results)
-    optionmap(5,2) = 11; // CFD to resolve SW (simlibrary results)
-    optionmap(5,3) = 11; // CFD using bathymetry data
-    optionmap(5,4) = 11; // CFD of wave flume
-    optionmap(5,5) = 11; // CFD using STL
-    optionmap(5,6) = 11; // CFD using maps
-    optionmap(5,7) = 11; // CFD using surrogate
-
-    // Initial conditions
-    optionmap(6,0) = 0; // Select simtype
-    optionmap(6,1) = 12; // CFD to resolve SW (with SW results)
-    optionmap(6,2) = 12; // CFD to resolve SW (simlibrary results)
-    optionmap(6,3) = 12; // CFD using bathymetry data
-    optionmap(6,4) = 12; // CFD of wave flume
-    optionmap(6,5) = 12; // CFD using STL
-    optionmap(6,6) = 12; // CFD using maps
-    optionmap(6,7) = 12; // CFD using surrogate
-
-    // Boundary conditions
-    optionmap(7,0) = 0; // Select simtype
-    optionmap(7,1) = 13; // CFD to resolve SW (with SW results)
-    optionmap(7,2) = 13; // CFD to resolve SW (simlibrary results)
-    optionmap(7,3) = 14; // CFD using bathymetry data
-    optionmap(7,4) = 15; // CFD of wave flume
-    optionmap(7,5) = 16; // CFD using STL
-    optionmap(7,6) = 17; // CFD using maps
-    optionmap(7,7) = 18; // CFD using surrogate
-
-    // Basic solver settings
-    optionmap(8,0) = 0; // Select simtype
-    optionmap(8,1) = 19; // CFD to resolve SW (with SW results)
-    optionmap(8,2) = 19; // CFD to resolve SW (simlibrary results)
-    optionmap(8,3) = 19; // CFD using bathymetry data
-    optionmap(8,4) = 19; // CFD of wave flume
-    optionmap(8,5) = 19; // CFD using STL
-    optionmap(8,6) = 19; // CFD using maps
-    optionmap(8,7) = 19; // CFD using surrogate
+    optionmap(0,0) = 0;// Project page
+    optionmap(1,0) = 1; // Bathymetry
+    optionmap(2,0) = 2; // SW-CFD interface
+    optionmap(3,0) = 3; // Buildings
+    optionmap(4,0) = 4; // Floating bodies
+    optionmap(5,0) = 5; // Meshing
+    optionmap(6,0) = 6; // Materials
+    optionmap(7,0) = 7; // Initial conditions
+    optionmap(8,0) = 8; // Boundary conditions
 
     // Advanced solver settings
     optionmap(9,0) = 0; // Select simtype

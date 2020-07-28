@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>InterfaceFrame</class>
+ <widget class="QFrame" name="InterfaceFrame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>567</width>
+    <height>471</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="Lbl_BB_ExitH2">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Exit from CFD Domain&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="HLY_BB_ExitNormal" stretch="1,2,2,2">
+     <item>
+      <widget class="QLabel" name="Lbl_BB_ExitNormal">
+       <property name="text">
+        <string>Normal </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="DSpBx_BB_ExitNx">
+       <property name="minimum">
+        <double>-100.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>100.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>-1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="DSpBx_BB_ExitNy"/>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="DSpBx_BB_ExitNz"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="Tbl_BB_ExitIntePt">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>Table of interface points on the exit interface</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>10000</number>
+     </property>
+     <column>
+      <property name="text">
+       <string>Point #.</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Latitude</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Longitude</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="HLY_BB_ExitAddPt">
+     <item>
+      <widget class="QToolButton" name="Btn_BB_ExitAddPt">
+       <property name="toolTip">
+        <string>Add points to the exit interface</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>10000</number>
+       </property>
+       <property name="text">
+        <string>Add point</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="Btn_BB_ExitRemPt">
+       <property name="toolTip">
+        <string>Remove points to the exit interface</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>10000</number>
+       </property>
+       <property name="text">
+        <string>Remove point</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

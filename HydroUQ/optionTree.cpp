@@ -43,6 +43,7 @@
 //*********************************************************************************
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "interfaceframe.h"
 
 //*********************************************************************************
 // Open relevant stack related to the particular item on the parameter tree
@@ -50,34 +51,25 @@
 void MainWindow::on_SimOptions_itemClicked(QTreeWidgetItem *item, int column)
 {
 
-    // Initialize the parent
-    QString parent;
-
     // Get the string of hte selected item
     QString sel = item->text(column);
 
     // Get the index of the simulation type
     int simtypeindex = ui->CmB_AA_SimType->currentIndex();
 
-    // Get the parent text
-    int root = ui->SimOptions->indexOfTopLevelItem(item);
-    if (root == -1)
+    // If no simulation type is selected go to project page
+    if(simtypeindex == 0)
     {
-        parent = item->parent()->text(column);
+        ui->OptionsStack->setCurrentIndex(0);
     }
-
-    // Change stack to the relevant page index
-    // If there is a page available
-    if(optiontree.indexOf(sel) != -1)
+    else
     {
-        if(ui->OptionsStack->currentIndex() != optionmap(optiontree.indexOf(sel),simtypeindex))
-            ui->OptionsStack->setCurrentIndex(optionmap(optiontree.indexOf(sel),simtypeindex));
-    }
-    // Or if the parent has an allocated page
-    else if(optiontree.indexOf(parent) != -1)
-    {
-        if(ui->OptionsStack->currentIndex() != optionmap(optiontree.indexOf(parent),simtypeindex))
-            ui->OptionsStack->setCurrentIndex(optionmap(optiontree.indexOf(parent),simtypeindex));
+        // If there is a page available
+        if(optiontree.indexOf(sel) != -1)
+        {
+            if(ui->OptionsStack->currentIndex() != optionmap(optiontree.indexOf(sel),0))
+                ui->OptionsStack->setCurrentIndex(optionmap(optiontree.indexOf(sel),0));
+        }
     }
 }
 
@@ -101,6 +93,9 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
         // Create project tree
         QTreeWidgetItem *project = new QTreeWidgetItem(item, QStringList() << projname);
 
+        // Replace the first option in optiontree with Project name
+        optiontree[0] = projname;
+
         // Create geometry
         QTreeWidgetItem *geometry = new QTreeWidgetItem(project, QStringList() << "Geometry");
         //QTreeWidgetItem *bathymetry = new QTreeWidgetItem(geometry, QStringList() << "Bathymetry");
@@ -111,13 +106,13 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
         new QTreeWidgetItem(project, QStringList() << "Meshing");
         new QTreeWidgetItem(project, QStringList() << "Materials");
         QTreeWidgetItem *inicondition = new QTreeWidgetItem(project, QStringList() << "Initial conditions");
-        new QTreeWidgetItem(inicondition, QStringList() << "Velocity");
-        new QTreeWidgetItem(inicondition, QStringList() << "Pressure");
-        new QTreeWidgetItem(inicondition, QStringList() << "Phase");
+        //new QTreeWidgetItem(inicondition, QStringList() << "Velocity (IC)");
+        //new QTreeWidgetItem(inicondition, QStringList() << "Pressure (IC)");
+        //new QTreeWidgetItem(inicondition, QStringList() << "Phase (IC)");
         QTreeWidgetItem *boundarycondition = new QTreeWidgetItem(project, QStringList() << "Boundary conditions");
-        new QTreeWidgetItem(boundarycondition, QStringList() << "Velocity");
-        new QTreeWidgetItem(boundarycondition, QStringList() << "Pressure");
-        new QTreeWidgetItem(boundarycondition, QStringList() << "Phase");
+        //new QTreeWidgetItem(boundarycondition, QStringList() << "Velocity (BC)");
+        //new QTreeWidgetItem(boundarycondition, QStringList() << "Pressure (BC)");
+        //new QTreeWidgetItem(boundarycondition, QStringList() << "Phase (BC)");
         QTreeWidgetItem *solver = new QTreeWidgetItem(project, QStringList() << "Solvers");
         new QTreeWidgetItem(solver, QStringList() << "Basic");
         new QTreeWidgetItem(solver, QStringList() << "Advanced");
@@ -126,6 +121,39 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
 
         // For now disable to not allow multiple project creation
         treeflag = -1;
+    }
+    else if(sel == "SW-CFD interface")
+    {
+
+        bool ok;
+        QString intername = QInputDialog::getText(this, tr("Interface Label"),
+                                                tr("Interface name"), QLineEdit::Normal,
+                                                QDir::home().dirName(), &ok);
+        if (ok && !intername.isEmpty())
+        {
+            int internum = ui->SWg_BB_Interface->count();
+            //ui->SWg_BB_Interface->insertWidget(internum,new InterfaceFrame(intername));
+            ui->SWg_BB_Interface->addWidget(new InterfaceFrame(intername));
+            ui->SWg_BB_Interface->setCurrentIndex(internum);
+
+            qDebug() << "Count is: " << internum-1;
+
+        }
+        else
+        {
+            int internum = ui->SWg_BB_Interface->count();
+            QString temp = intername + QString::number(internum);
+            //ui->SWg_BB_Interface->insertWidget(internum,new InterfaceFrame(intername));
+            ui->SWg_BB_Interface->addWidget(new InterfaceFrame(intername));
+            ui->SWg_BB_Interface->setCurrentIndex(internum);
+            qDebug() << "Count is: " << internum-1;
+        }
+
+
+    }
+    else if(sel == "Boundary conditions")
+    {
+        qDebug() << "Clicked BC";
     }
     else if(sel == "Submit to TACC")
     {

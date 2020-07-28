@@ -21,6 +21,7 @@ SOURCES += \
     buildings.cpp \
     cfdsolvers/openfoam/zerofiles.cpp \
     generateFiles.cpp \
+    interfaceframe.cpp \
     server/stampede2/stampede2.cpp \
     swsolvers/geoclaw/geoclaw.cpp \
     initialCon.cpp \
@@ -376,6 +377,7 @@ HEADERS += \
     dependencies/rapidjson/stream.h \
     dependencies/rapidjson/stringbuffer.h \
     dependencies/rapidjson/writer.h \
+    interfaceframe.h \
     server/stampede2/stampede2.h \
     swsolvers/geoclaw/geoclaw.h \
     mainwindow.h \
@@ -384,6 +386,7 @@ HEADERS += \
     cfdsolvers/openfoam/openfoam.h
 
 FORMS += \
+    interfaceframe.ui \
     mainwindow.ui 
 
 # Default rules for deployment.

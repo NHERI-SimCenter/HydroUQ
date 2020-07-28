@@ -36,6 +36,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "interfaceframe.h"
 
 //*********************************************************************************
 //Initialize the main window
@@ -90,4 +91,52 @@ void MainWindow::on_Btn_HC_ExitUploadFile_clicked()
 
 }
 
+//*********************************************************************************
+// When the next button is clicked: SW-CFD Interface
+//*********************************************************************************
+void MainWindow::on_Btn_BB_Next_clicked()
+{
+    // Get total number of frames
+    int totind = ui->SWg_BB_Interface->count();
+    // Get current frame number
+    int curind = ui->SWg_BB_Interface->currentIndex();
+    // If current index is less than max then change
+    if(curind < totind)
+    {
+        ui->SWg_BB_Interface->setCurrentIndex(curind+1);
+    }
+}
 
+//*********************************************************************************
+// When the previous button is clicked: SW-CFD Interface
+//*********************************************************************************
+void MainWindow::on_Btn_BB_Previous_clicked()
+{
+    // Get current frame number
+    int curind = ui->SWg_BB_Interface->currentIndex();
+    // If current index is less than max then change
+    if(curind > 0)
+    {
+        ui->SWg_BB_Interface->setCurrentIndex(curind-1);
+    }
+}
+
+//*********************************************************************************
+// Activate & deactivate buttons when the stacked widget changes
+//*********************************************************************************
+void MainWindow::on_SWg_BB_Interface_currentChanged(int arg1)
+{
+    if(arg1 == 0)
+    {
+        ui->Btn_BB_Previous->setDisabled(true);
+    }
+    else if(arg1 == ui->SWg_BB_Interface->count())
+    {
+        ui->Btn_BB_Next->setDisabled(true);
+    }
+    else
+    {
+        ui->Btn_BB_Next->setDisabled(false);
+        ui->Btn_BB_Previous->setDisabled(false);
+    }
+}
