@@ -276,7 +276,7 @@
             </sizepolicy>
            </property>
            <property name="currentIndex">
-            <number>9</number>
+            <number>16</number>
            </property>
            <widget class="QWidget" name="AA_ProjSettings">
             <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -6890,6 +6890,7 @@ Submit to TACC
              </item>
             </layout>
            </widget>
+           <widget class="QWidget" name="page"/>
           </widget>
          </item>
         </layout>

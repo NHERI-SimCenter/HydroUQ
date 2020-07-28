@@ -155,13 +155,13 @@ SceneModifier::SceneModifier(Qt3DCore::QEntity *rootEntity)
 
     // New code
     Qt3DRender::QMesh * ModelMesh = new Qt3DRender::QMesh();
-    ModelMesh->setSource(QUrl::fromLocalFile("/Users/ajaybh/Desktop/lamp.obj"));
+    ModelMesh->setSource(QUrl::fromLocalFile("/Users/ajaybh/Desktop/lamp.stl"));
     //Model Transform
     Qt3DExtras::QPhongMaterial *ModelMaterial = new Qt3DExtras::QPhongMaterial();
     ModelMaterial->setDiffuse(QColor(QRgb(0x665423)));
 
     Qt3DCore::QTransform *ModelTransform = new Qt3DCore::QTransform();
-    ModelTransform->setScale(1.0f);
+    ModelTransform->setScale(0.1f);
     ModelTransform->setTranslation(QVector3D(0.0f, -4.0f, -1.0f));
 
     // Model

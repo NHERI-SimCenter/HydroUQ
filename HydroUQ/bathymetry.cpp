@@ -46,11 +46,7 @@
 #include "ui_mainwindow.h"
 
 //*********************************************************************************
-// For widgets related to that where pre-existing SW solutions are used
-//*********************************************************************************
-
-//*********************************************************************************
-// Button to upload bathymetry files: With SW solution
+// Button to upload bathymetry files
 //*********************************************************************************
 void MainWindow::on_Btn_BA_SelFiles_clicked()
 {
@@ -65,7 +61,7 @@ void MainWindow::on_Btn_BA_SelFiles_clicked()
 }
 
 //*********************************************************************************
-// Button to upload shallow-water solution files: With SW solution
+// Button to upload shallow-water solution files
 //*********************************************************************************
 void MainWindow::on_Btn_BA_UploadSolution_clicked()
 {
