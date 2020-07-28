@@ -279,7 +279,7 @@ void MainWindow::genJsonRJ()
                     writer.Key("internalName");
                     writer.String("Tbl_BB_EntryIntePt");
                     writer.Key("value");
-                    writer.StartArray();
+                    /*writer.StartArray();
                     if(ui->Tbl_BB_EntryIntePt->rowCount() > 0)
                     {
                         QString data = "n," + ui->Led_BB_EntryNx->text() +
@@ -294,14 +294,14 @@ void MainWindow::genJsonRJ()
                             writer.String(data.toStdString().c_str());
                         }
                     }
-                    writer.EndArray();
+                    writer.EndArray();*/
                     // Exit interface
                     writer.Key("displayname");
                     writer.String("SW-CFD Exit interface");
                     writer.Key("internalName");
                     writer.String("Tbl_BB_ExitIntePt");
                     writer.Key("value");
-                    writer.StartArray();
+                    /*writer.StartArray();
                     if(ui->Tbl_BB_ExitIntePt->rowCount() > 0)
                     {
                         QString data = "n," + ui->Led_BB_ExitNx->text() +
@@ -316,14 +316,14 @@ void MainWindow::genJsonRJ()
                             writer.String(data.toStdString().c_str());
                         }
                     }
-                    writer.EndArray();
+                    writer.EndArray();*/
                     // Side01 interface
                     writer.Key("displayname");
                     writer.String("SW-CFD Side01 interface");
                     writer.Key("internalName");
                     writer.String("Tbl_BB_S01IntePt");
                     writer.Key("value");
-                    writer.StartArray();
+                    /*writer.StartArray();
                     if(ui->Tbl_BB_S01IntePt->rowCount() > 0)
                     {
                         QString data = "n," + ui->Led_BB_S01Nx->text() +
@@ -338,14 +338,14 @@ void MainWindow::genJsonRJ()
                             writer.String(data.toStdString().c_str());
                         }
                     }
-                    writer.EndArray();
+                    writer.EndArray();*/
                     // Side02 interface
                     writer.Key("displayname");
                     writer.String("SW-CFD Side02 interface");
                     writer.Key("internalName");
                     writer.String("Tbl_BB_S02IntePt");
                     writer.Key("value");
-                    writer.StartArray();
+                    /*writer.StartArray();
                     if(ui->Tbl_BB_S02IntePt->rowCount() > 0)
                     {
                         QString data = "n," + ui->Led_BB_S02Nx->text() +
@@ -360,7 +360,7 @@ void MainWindow::genJsonRJ()
                             writer.String(data.toStdString().c_str());
                         }
                     }
-                    writer.EndArray();
+                    writer.EndArray();*/
                 }
             writer.EndObject();
             writer.EndArray();
