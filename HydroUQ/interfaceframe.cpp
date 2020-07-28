@@ -9,7 +9,8 @@ InterfaceFrame::InterfaceFrame(const QString titleString, QWidget *parent) :
     ui(new Ui::InterfaceFrame)
 {
     ui->setupUi(this);
-    ui->textEdit->setText(titleString);
+    ui->Lbl_BB_ExitH2->setText(titleString);
+
 }
 
 InterfaceFrame::~InterfaceFrame()

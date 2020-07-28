@@ -103,7 +103,6 @@ void MainWindow::on_Btn_BB_Next_clicked()
     // If current index is less than max then change
     if(curind < totind)
     {
-        //qDebug() << "Current index is: " << curind;
         ui->SWg_BB_Interface->setCurrentIndex(curind+1);
     }
 }
@@ -118,11 +117,13 @@ void MainWindow::on_Btn_BB_Previous_clicked()
     // If current index is less than max then change
     if(curind > 0)
     {
-        //qDebug() << "Current index is: " << curind;
         ui->SWg_BB_Interface->setCurrentIndex(curind-1);
     }
 }
 
+//*********************************************************************************
+// Activate & deactivate buttons when the stacked widget changes
+//*********************************************************************************
 void MainWindow::on_SWg_BB_Interface_currentChanged(int arg1)
 {
     if(arg1 == 0)
