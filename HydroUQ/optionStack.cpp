@@ -57,25 +57,25 @@ void MainWindow::on_OptionsStack_currentChanged(int arg1)
         ui->Lbl_Descript->setText("Please set the project settings"
                                   " before proceeding ahead.");
     }
-    else if(arg1 == 1) // Bathymetry (from SW simulation)
+    else if(arg1 == 1) // Bathymetry
     {
         ui->Lbl_Descript->setWordWrap(true);
         ui->Lbl_Descript->setText("Here, the bathymetry data related to the "
                                   "simulation is initialized. In this case, upload "
-                                  "the shallow water solutions and bathymetry data. Additionally "
-                                  "provide the information of the interface between "
-                                  "shallow-water and CFD domain either in the form of "
-                                  "a table or as a .csv file.");
+                                  "the shallow water solutions and bathymetry data.");
     }
-    else if(arg1 == 2) // Bathymetry (from SimLibrary)
+    else if(arg1 == 2) // SW-CFD Interface
     {
         ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("Here, the bathymetry data related to the simulation is initialized."
+        ui->Lbl_Descript->setText("Provide the information of the interface between "
+                                  "shallow-water and CFD domain either in the form of "
+                                  "a table or as a .csv file. Double click to add interfaces.");
+        /*ui->Lbl_Descript->setText("Here, the bathymetry data related to the simulation is initialized."
                                   "Use this case if you do not have pre-existing shallow water solutions. "
                                   "You can choose simulation done on pre-selected subduction zone. "
                                   "Additionally provide the information of the interface between "
                                   "shallow-water and CFD domain either in the form of a table or as "
-                                  "a .csv file.");
+                                  "a .csv file.");*/
     }
     else if(arg1 == 3) // Bathymetry (from bathymetry file)
     {

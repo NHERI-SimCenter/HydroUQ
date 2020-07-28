@@ -43,6 +43,7 @@
 //*********************************************************************************
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "interfaceframe.h"
 
 //*************************************************************************************
 //Initialize the optionmap that relates the stack to be opened to the simulation type
@@ -104,9 +105,13 @@ void MainWindow::initialize()
     optionmap(11,6) = 22; // CFD using maps
     optionmap(11,7) = 22; // CFD using surrogate
 
-    // Hide elements
+    // SW-CFD Interface
     ui->Btn_BB_UploadFile->hide();
     ui->Btn_BB_Previous->setDisabled(true);
+    ui->SWg_BB_Interface->insertWidget(0,new InterfaceFrame("Untitled"));
+    ui->SWg_BB_Interface->setCurrentIndex(0);
+
+    // Other
     ui->Btn_EA_UploadMesh->hide();
     ui->Btn_HB_NorthUploadFile->hide();
     ui->Btn_HB_SouthUploadFile->hide();

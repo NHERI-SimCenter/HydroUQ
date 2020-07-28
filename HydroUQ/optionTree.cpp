@@ -79,7 +79,10 @@ void MainWindow::on_SimOptions_itemClicked(QTreeWidgetItem *item, int column)
 void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
 
+    // Get the item double clicked on
     QString sel = item->text(column);
+
+    // To create an initial tree
     if((sel == "Create project") && (treeflag == 1))
     {
         // Create a dialog to get the project name
@@ -87,8 +90,17 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
         projname = QInputDialog::getText(this, tr("Create new project"),
                                                 tr("Project name"), QLineEdit::Normal,
                                                 QDir::home().dirName(), &ok);
+        // If OK is pressed, set the project name
         if (ok && !projname.isEmpty())
+        {
             ui->Lbl_ProjTitle->setText(projname);
+            ui->Led_AA_PName->setText(projname);
+        }
+        if (projname.isEmpty())
+        {
+            ui->Lbl_ProjTitle->setText("Untitled");
+            ui->Led_AA_PName->setText("Untitled");
+        }
 
         // Create project tree
         QTreeWidgetItem *project = new QTreeWidgetItem(item, QStringList() << projname);
@@ -96,7 +108,7 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
         // Replace the first option in optiontree with Project name
         optiontree[0] = projname;
 
-        // Create geometry
+        // Create the tree
         QTreeWidgetItem *geometry = new QTreeWidgetItem(project, QStringList() << "Geometry");
         //QTreeWidgetItem *bathymetry = new QTreeWidgetItem(geometry, QStringList() << "Bathymetry");
         new QTreeWidgetItem(geometry, QStringList() << "Bathymetry");
@@ -106,13 +118,13 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
         new QTreeWidgetItem(project, QStringList() << "Meshing");
         new QTreeWidgetItem(project, QStringList() << "Materials");
         QTreeWidgetItem *inicondition = new QTreeWidgetItem(project, QStringList() << "Initial conditions");
-        //new QTreeWidgetItem(inicondition, QStringList() << "Velocity (IC)");
-        //new QTreeWidgetItem(inicondition, QStringList() << "Pressure (IC)");
-        //new QTreeWidgetItem(inicondition, QStringList() << "Phase (IC)");
+        new QTreeWidgetItem(inicondition, QStringList() << "Velocity (IC)");
+        new QTreeWidgetItem(inicondition, QStringList() << "Pressure (IC)");
+        new QTreeWidgetItem(inicondition, QStringList() << "Phase (IC)");
         QTreeWidgetItem *boundarycondition = new QTreeWidgetItem(project, QStringList() << "Boundary conditions");
-        //new QTreeWidgetItem(boundarycondition, QStringList() << "Velocity (BC)");
-        //new QTreeWidgetItem(boundarycondition, QStringList() << "Pressure (BC)");
-        //new QTreeWidgetItem(boundarycondition, QStringList() << "Phase (BC)");
+        new QTreeWidgetItem(boundarycondition, QStringList() << "Velocity (BC)");
+        new QTreeWidgetItem(boundarycondition, QStringList() << "Pressure (BC)");
+        new QTreeWidgetItem(boundarycondition, QStringList() << "Phase (BC)");
         QTreeWidgetItem *solver = new QTreeWidgetItem(project, QStringList() << "Solvers");
         new QTreeWidgetItem(solver, QStringList() << "Basic");
         new QTreeWidgetItem(solver, QStringList() << "Advanced");
@@ -122,6 +134,7 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
         // For now disable to not allow multiple project creation
         treeflag = -1;
     }
+    // To create SW-CFD Interface
     else if(sel == "SW-CFD interface")
     {
 
@@ -135,9 +148,6 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
             //ui->SWg_BB_Interface->insertWidget(internum,new InterfaceFrame(intername));
             ui->SWg_BB_Interface->addWidget(new InterfaceFrame(intername));
             ui->SWg_BB_Interface->setCurrentIndex(internum);
-
-            qDebug() << "Count is: " << internum-1;
-
         }
         else
         {
