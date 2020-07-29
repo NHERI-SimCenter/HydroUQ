@@ -276,7 +276,7 @@
             </sizepolicy>
            </property>
            <property name="currentIndex">
-            <number>2</number>
+            <number>3</number>
            </property>
            <widget class="QWidget" name="AA_ProjSettings">
             <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1146,7 +1146,7 @@ QPushButton:pressed {
               <number>6</number>
              </property>
              <item>
-              <widget class="QLabel" name="Lbl_CA_H1">
+              <widget class="QLabel" name="Lbl_DA_H1">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -1161,7 +1161,7 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_CA_Building">
+              <widget class="QLabel" name="Lbl_DA_Building">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -1178,7 +1178,7 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QTableWidget" name="Tbl_CA_Building">
+              <widget class="QTableWidget" name="Tbl_DA_Building">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -1208,9 +1208,9 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="HLY_CA_AddBuild">
+              <layout class="QHBoxLayout" name="HLY_DA_AddBuild">
                <item>
-                <widget class="QToolButton" name="Btn_CA_AddBuild">
+                <widget class="QToolButton" name="Btn_DA_AddBuild">
                  <property name="toolTip">
                   <string>Add building data</string>
                  </property>
@@ -1223,7 +1223,7 @@ QPushButton:pressed {
                 </widget>
                </item>
                <item>
-                <widget class="QToolButton" name="Btn_CA_RemBuild">
+                <widget class="QToolButton" name="Btn_DA_RemBuild">
                  <property name="toolTip">
                   <string>Remove building data</string>
                  </property>
@@ -1238,7 +1238,7 @@ QPushButton:pressed {
               </layout>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_DA_Notice_2">
+              <widget class="QLabel" name="Lbl_DA_Notice">
                <property name="text">
                 <string>Building settings are presently not available for this 
 option</string>
@@ -1246,7 +1246,7 @@ option</string>
               </widget>
              </item>
              <item>
-              <spacer name="VSP_CA_01">
+              <spacer name="VSP_DA_01">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
@@ -1275,7 +1275,7 @@ option</string>
               <number>6</number>
              </property>
              <item>
-              <widget class="QLabel" name="Lbl_DA_H1">
+              <widget class="QLabel" name="Lbl_EA_H1_2">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -1290,7 +1290,7 @@ option</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_DA_Notice">
+              <widget class="QLabel" name="Lbl_EA_Notice">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -6389,9 +6389,9 @@ Submit to TACC
   <tabstop>Btn_CA_UploadFile</tabstop>
   <tabstop>Btn_CA_Previous</tabstop>
   <tabstop>Btn_CA_Next</tabstop>
-  <tabstop>Btn_CA_AddBuild</tabstop>
-  <tabstop>Btn_CA_RemBuild</tabstop>
-  <tabstop>Tbl_CA_Building</tabstop>
+  <tabstop>Btn_DA_AddBuild</tabstop>
+  <tabstop>Btn_DA_RemBuild</tabstop>
+  <tabstop>Tbl_DA_Building</tabstop>
   <tabstop>Cmb_EAMeshType</tabstop>
   <tabstop>Btn_EA_UploadMesh</tabstop>
   <tabstop>HSl_EA_MeshSize</tabstop>

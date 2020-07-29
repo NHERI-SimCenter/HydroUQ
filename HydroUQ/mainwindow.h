@@ -104,8 +104,9 @@ private slots:
     void on_SWg_CA_Interface_currentChanged(int arg1);
 
     // Building
-    void on_Btn_CA_AddBuild_clicked();
-    void on_Btn_CA_RemBuild_clicked();
+    void on_Btn_DA_AddBuild_clicked();
+    void on_Btn_DA_RemBuild_clicked();
+    void buildinghideshow();
 
     // Meshing
     void on_Cmb_EAMeshType_currentIndexChanged(int index);

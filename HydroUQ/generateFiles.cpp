@@ -437,7 +437,7 @@ void MainWindow::genJsonRJ()
             writer.String("CA_BuildingsAdd");
             writer.Key("vars");
             writer.StartArray();
-            writer.StartObject();
+            /*writer.StartObject();
                 if(ui->Tbl_CA_Building->rowCount() > 0)
                 {
                     writer.Key("displayname");
@@ -455,7 +455,7 @@ void MainWindow::genJsonRJ()
                     }
                     writer.EndArray();
                 }
-            writer.EndObject();
+            writer.EndObject();*/
             writer.EndArray();
         }
         else if(pgno == 10) // Meshing
