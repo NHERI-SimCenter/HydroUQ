@@ -437,7 +437,7 @@ void MainWindow::genJsonRJ()
             writer.String("CA_BuildingsAdd");
             writer.Key("vars");
             writer.StartArray();
-            writer.StartObject();
+            /*writer.StartObject();
                 if(ui->Tbl_CA_Building->rowCount() > 0)
                 {
                     writer.Key("displayname");
@@ -455,7 +455,7 @@ void MainWindow::genJsonRJ()
                     }
                     writer.EndArray();
                 }
-            writer.EndObject();
+            writer.EndObject();*/
             writer.EndArray();
         }
         else if(pgno == 10) // Meshing
@@ -530,32 +530,32 @@ void MainWindow::genJsonRJ()
                 writer.String("Kin viscosity of water");
                 writer.Key("internalName");
                 writer.String("Led_FA_WaterVisc");
-                writer.Key("value");
-                writer.String(ui->Led_FA_WaterVisc->text().toStdString().c_str());
+                //writer.Key("value");
+                //writer.String(ui->Led_FA_WaterVisc->text().toStdString().c_str());
                 writer.Key("displayname");
                 writer.String("Density of water");
                 writer.Key("internalName");
                 writer.String("Led_FA_WaterDen");
-                writer.Key("value");
-                writer.String(ui->Led_FA_WaterDen->text().toStdString().c_str());
+                //writer.Key("value");
+                //writer.String(ui->Led_FA_WaterDen->text().toStdString().c_str());
                 writer.Key("displayname");
                 writer.String("Kin viscosity of air");
                 writer.Key("internalName");
                 writer.String("Led_FA_AirVisc");
-                writer.Key("value");
-                writer.String(ui->Led_FA_AirVisc->text().toStdString().c_str());
+                //writer.Key("value");
+                //writer.String(ui->Led_FA_AirVisc->text().toStdString().c_str());
                 writer.Key("displayname");
                 writer.String("Density of air");
                 writer.Key("internalName");
                 writer.String("Led_FA_AirDen");
-                writer.Key("value");
-                writer.String(ui->Led_FA_AirDen->text().toStdString().c_str());
+                //writer.Key("value");
+                //writer.String(ui->Led_FA_AirDen->text().toStdString().c_str());
                 writer.Key("displayname");
                 writer.String("Surface tension");
                 writer.Key("internalName");
                 writer.String("Led_FA_SurfTen");
-                writer.Key("value");
-                writer.String(ui->Led_FA_SurfTen->text().toStdString().c_str());
+                //writer.Key("value");
+                //writer.String(ui->Led_FA_SurfTen->text().toStdString().c_str());
             writer.EndObject();
             writer.EndArray();
         }

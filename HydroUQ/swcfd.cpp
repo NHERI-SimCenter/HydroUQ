@@ -74,6 +74,18 @@ void MainWindow::on_ChB_CA_UploadFile_stateChanged(int arg1)
 }
 
 //*********************************************************************************
+// Button to Upload interface files
+//*********************************************************************************
+void MainWindow::on_Btn_CA_UploadFile_clicked()
+{
+    QFileDialog selectfilesdialog(this);
+    selectfilesdialog.setDirectory(workdirUrl.toString());
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
+    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    if(selectfilesdialog.exec()) intefilenames = selectfilesdialog.selectedFiles();
+}
+
+//*********************************************************************************
 // Activate & deactivate buttons when the stacked widget changes
 //*********************************************************************************
 void MainWindow::on_SWg_CA_Interface_currentChanged(int arg1)
@@ -120,5 +132,67 @@ void MainWindow::on_Btn_CA_Previous_clicked()
     if(curind > 0)
     {
         ui->SWg_CA_Interface->setCurrentIndex(curind-1);
+    }
+}
+
+//*********************************************************************************
+// Hide-Show SW-CFD interface elements
+//*********************************************************************************
+void MainWindow::swcfdhideshow()
+{
+    // If count is zero - hide the buttons
+    if(ui->SWg_CA_Interface->count() == 0)
+    {
+        ui->Btn_CA_Next->hide();
+        ui->Btn_CA_Previous->hide();
+    }
+
+    // Check button
+    if(ui->ChB_CA_UploadFile->isChecked())
+    {
+        // Show the upload box
+        ui->Btn_CA_UploadFile->show();
+
+        // Hide the stacked widget & buttons
+        ui->SWg_CA_Interface->hide();
+        ui->Btn_CA_Next->hide();
+        ui->Btn_CA_Previous->hide();
+
+    }
+    else
+    {
+        // Hide the upload box
+        ui->Btn_CA_UploadFile->hide();
+
+        // Show the stacked widget & buttons
+        ui->SWg_CA_Interface->show();
+        if(ui->SWg_CA_Interface->count() > 0)
+        {
+            ui->Btn_CA_Next->show();
+            ui->Btn_CA_Previous->show();
+        }
+
+    }
+
+    // If the simulation is type of Wave Flume / STL / Maps / Surrogate
+    // Then show only notice & hide rest
+    if( ((ui->CmB_AA_SimType->currentIndex() == 4) || (ui->CmB_AA_SimType->currentIndex() == 5))
+            || ((ui->CmB_AA_SimType->currentIndex() == 6) || (ui->CmB_AA_SimType->currentIndex() == 7)) )
+    {
+        // Show notice
+        ui->Lbl_CA_Notice->show();
+
+        // Hide everything else
+        ui->ChB_CA_UploadFile->hide();
+        ui->Btn_CA_UploadFile->hide();
+        ui->SWg_CA_Interface->hide();
+        ui->Btn_CA_Next->hide();
+        ui->Btn_CA_Previous->hide();
+    }
+    // Else hide notice but show everything
+    else
+    {
+        // Hide notice
+        ui->Lbl_CA_Notice->hide();
     }
 }

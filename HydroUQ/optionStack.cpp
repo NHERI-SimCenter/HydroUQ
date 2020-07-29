@@ -86,17 +86,22 @@ void MainWindow::on_OptionsStack_currentChanged(int arg1)
                                   "specified by giving the lowermost and the topmost points. "
                                   "At present, the buildings are considered to be of simple cuboid "
                                   "geometry only.");
+        // Show and hide elements based on the type of simulation
+        buildinghideshow();
     }
-    else if(arg1 == 4) //
+    else if(arg1 == 4) // Floating bodies
     {
         ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("");
+        ui->Lbl_Descript->setText("We are working to enable this option to add floating bodies."
+                                  " This option is not yet available. Watchout for updates. Exciting days ahead");
     }
-    else if(arg1 == 5) //
+    else if(arg1 == 5) // Meshing
     {
         ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("Use this option if you are using an STL file to run a generic CFD "
-                                  "multiphase simulation.");
+        ui->Lbl_Descript->setText("Setup the mesh either using the in-built meshing tool. "
+                                  "For the in-built tool, five degrees are allowed. In addition, "
+                                  "regional refinements can be specified to refine particular regions. "
+                                  "Alternatively upload the mesh or mesh dictionaries.");
     }
     else if(arg1 == 6) // Bathymetry (from Maps)
     {
@@ -115,28 +120,11 @@ void MainWindow::on_OptionsStack_currentChanged(int arg1)
                                   "specified by giving the lowermost and the topmost points. "
                                   "At present, the buildings are considered to be of simple cuboid "
                                   "geometry only.");
-        if((ui->CmB_AA_SimType->currentIndex() == 1) || (ui->CmB_AA_SimType->currentIndex() == 2))
-        {
-            ui->Lbl_CA_Notice->show();
-            ui->Lbl_CA_Building->hide();
-            ui->Tbl_CA_Building->hide();
-            ui->Btn_CA_AddBuild->hide();
-            ui->Btn_CA_RemBuild->hide();
-        }
-        else
-        {
-            ui->Lbl_CA_Notice->hide();
-            ui->Lbl_CA_Building->show();
-            ui->Tbl_CA_Building->show();
-            ui->Btn_CA_AddBuild->show();
-            ui->Btn_CA_RemBuild->show();
-        }
-
     }
     else if(arg1 == 9) // Add floating bodies
     {
         ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("This option is not yet available. Watchout for updates.");
+        ui->Lbl_Descript->setText("");
     }
     else if(arg1 == 10) // Mesh settings
     {

@@ -47,15 +47,53 @@
 //*********************************************************************************
 // Button to add buildings
 //*********************************************************************************
-void MainWindow::on_Btn_CA_AddBuild_clicked()
+void MainWindow::on_Btn_DA_AddBuild_clicked()
 {
-    ui->Tbl_CA_Building->insertRow(ui->Tbl_CA_Building->rowCount());
+    //ui->Tbl_DA_Building->insertRow(ui->Tbl_DA_Building->rowCount());
+    //ui->Tb
 }
 
 //*********************************************************************************
 // Button to remove buildings
 //*********************************************************************************
-void MainWindow::on_Btn_CA_RemBuild_clicked()
+void MainWindow::on_Btn_DA_RemBuild_clicked()
 {
 
 }
+
+//*********************************************************************************
+// Which elements to show and hide in buildings tab
+//*********************************************************************************
+void MainWindow::buildinghideshow()
+{
+
+    if( ((ui->CmB_AA_SimType->currentIndex() == 1) || (ui->CmB_AA_SimType->currentIndex() == 2)) ||
+            ((ui->CmB_AA_SimType->currentIndex() == 3) || (ui->CmB_AA_SimType->currentIndex() == 4)) )
+    {
+        ui->Lbl_DA_Notice->hide();
+        ui->Lbl_DA_Building->show();
+        ui->Tbl_DA_Building->show();
+        ui->Btn_DA_AddBuild->show();
+        ui->Btn_DA_RemBuild->show();
+    }
+    else if((ui->CmB_AA_SimType->currentIndex() == 5) || (ui->CmB_AA_SimType->currentIndex() == 6))
+    {
+        ui->Lbl_DA_Notice->setText("This option will be coming soon. Keep yourself \nupdated");
+        ui->Lbl_DA_Notice->show();
+        ui->Lbl_DA_Building->hide();
+        ui->Tbl_DA_Building->hide();
+        ui->Btn_DA_AddBuild->hide();
+        ui->Btn_DA_RemBuild->hide();
+    }
+    else if(ui->CmB_AA_SimType->currentIndex() == 7)
+    {
+        ui->Lbl_DA_Notice->setText("This option is coming soon in the beta version. \nWatch out!");
+        ui->Lbl_DA_Notice->show();
+        ui->Lbl_DA_Building->hide();
+        ui->Tbl_DA_Building->hide();
+        ui->Btn_DA_AddBuild->hide();
+        ui->Btn_DA_RemBuild->hide();
+    }
+
+}
+

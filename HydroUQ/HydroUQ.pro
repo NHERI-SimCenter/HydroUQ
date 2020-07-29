@@ -16,7 +16,6 @@ CONFIG += c++11
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    bathyhideshow.cpp \
     bathymetry.cpp \
     boundCond.cpp \
     buildings.cpp \
@@ -25,7 +24,6 @@ SOURCES += \
     interfaceframe.cpp \
     server/stampede2/stampede2.cpp \
     swcfd.cpp \
-    swcfdhideshow.cpp \
     swsolvers/geoclaw/geoclaw.cpp \
     initialCon.cpp \
     initialize.cpp \

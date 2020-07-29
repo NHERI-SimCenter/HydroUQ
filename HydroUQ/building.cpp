@@ -46,41 +46,5 @@
 #include "ui_mainwindow.h"
 
 //*********************************************************************************
-// Hide-Show bathymetry elements
+// Show and hide elements of building based on simulation type
 //*********************************************************************************
-void MainWindow::swcfdhideshow()
-{
-    // If count is zero - hide the buttons
-    if(ui->SWg_CA_Interface->count() == 0)
-    {
-        ui->Btn_CA_Next->hide();
-        ui->Btn_CA_Previous->hide();
-    }
-
-    // Check button
-    if(ui->ChB_CA_UploadFile->isChecked())
-    {
-        // Show the upload box
-        ui->Btn_CA_UploadFile->show();
-
-        // Hide the stacked widget & buttons
-        ui->SWg_CA_Interface->hide();
-        ui->Btn_CA_Next->hide();
-        ui->Btn_CA_Previous->hide();
-
-    }
-    else
-    {
-        // Hide the upload box
-        ui->Btn_CA_UploadFile->hide();
-
-        // Show the stacked widget & buttons
-        ui->SWg_CA_Interface->show();
-        if(ui->SWg_CA_Interface->count() > 0)
-        {
-            ui->Btn_CA_Next->show();
-            ui->Btn_CA_Previous->show();
-        }
-
-    }
-}

@@ -276,7 +276,7 @@
             </sizepolicy>
            </property>
            <property name="currentIndex">
-            <number>2</number>
+            <number>6</number>
            </property>
            <widget class="QWidget" name="AA_ProjSettings">
             <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -970,6 +970,13 @@ Select solution
               </widget>
              </item>
              <item>
+              <widget class="QLabel" name="Lbl_CA_Notice">
+               <property name="text">
+                <string>SW-CFD settings are not available for this option</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QCheckBox" name="ChB_CA_UploadFile">
                <property name="enabled">
                 <bool>true</bool>
@@ -1139,7 +1146,7 @@ QPushButton:pressed {
               <number>6</number>
              </property>
              <item>
-              <widget class="QLabel" name="Lbl_CA_H1">
+              <widget class="QLabel" name="Lbl_DA_H1">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -1154,7 +1161,7 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_CA_Building">
+              <widget class="QLabel" name="Lbl_DA_Building">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -1171,7 +1178,7 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QTableWidget" name="Tbl_CA_Building">
+              <widget class="QTableWidget" name="Tbl_DA_Building">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -1201,9 +1208,9 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="HLY_CA_AddBuild">
+              <layout class="QHBoxLayout" name="HLY_DA_AddBuild">
                <item>
-                <widget class="QToolButton" name="Btn_CA_AddBuild">
+                <widget class="QToolButton" name="Btn_DA_AddBuild">
                  <property name="toolTip">
                   <string>Add building data</string>
                  </property>
@@ -1216,7 +1223,7 @@ QPushButton:pressed {
                 </widget>
                </item>
                <item>
-                <widget class="QToolButton" name="Btn_CA_RemBuild">
+                <widget class="QToolButton" name="Btn_DA_RemBuild">
                  <property name="toolTip">
                   <string>Remove building data</string>
                  </property>
@@ -1231,7 +1238,7 @@ QPushButton:pressed {
               </layout>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_CA_Notice">
+              <widget class="QLabel" name="Lbl_DA_Notice">
                <property name="text">
                 <string>Building settings are presently not available for this 
 option</string>
@@ -1239,7 +1246,7 @@ option</string>
               </widget>
              </item>
              <item>
-              <spacer name="VSP_CA_01">
+              <spacer name="VSP_DA_01">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
@@ -1268,7 +1275,7 @@ option</string>
               <number>6</number>
              </property>
              <item>
-              <widget class="QLabel" name="Lbl_DA_H1">
+              <widget class="QLabel" name="Lbl_EA_H1_2">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -1283,7 +1290,7 @@ option</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_DA_Notice">
+              <widget class="QLabel" name="Lbl_EA_Notice">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -1643,7 +1650,7 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_FA_Water">
+              <widget class="QLabel" name="Lbl_FA_WaterH2">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -1657,7 +1664,7 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="HLY_FA_WaterVisc" stretch="2,1">
+              <layout class="QHBoxLayout" name="HLY_FA_WaterVisc" stretch="4,1,1,1">
                <item>
                 <widget class="QLabel" name="Lbl_FA_WaterVisc">
                  <property name="font">
@@ -1678,25 +1685,48 @@ QSlider::handle:horizontal {
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="Led_FA_WaterVisc">
-                 <property name="toolTip">
-                  <string>Kinematic viscosity of water</string>
+                <widget class="QDoubleSpinBox" name="DSpBx_FA_WaterVisc">
+                 <property name="decimals">
+                  <number>4</number>
                  </property>
-                 <property name="toolTipDuration">
-                  <number>10000</number>
+                 <property name="maximum">
+                  <double>100.000000000000000</double>
                  </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
+                 <property name="singleStep">
+                  <double>0.100000000000000</double>
                  </property>
-                 <property name="placeholderText">
-                  <string>1.0035e-6</string>
+                 <property name="value">
+                  <double>1.003500000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="Lbl_FA_10pb">
+                 <property name="text">
+                  <string>x 10^</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDoubleSpinBox" name="DSpBx_FA_WaterViscExp">
+                 <property name="decimals">
+                  <number>0</number>
+                 </property>
+                 <property name="minimum">
+                  <double>-10.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>10.000000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>-6.000000000000000</double>
                  </property>
                 </widget>
                </item>
               </layout>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="HLY_FA_WaterDen" stretch="2,1">
+              <layout class="QHBoxLayout" name="HLY_FA_WaterDen" stretch="8,9">
                <item>
                 <widget class="QLabel" name="Lbl_FA_WaterDen">
                  <property name="font">
@@ -1717,25 +1747,19 @@ QSlider::handle:horizontal {
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="Led_FA_WaterDen">
-                 <property name="toolTip">
-                  <string>Density of water</string>
+                <widget class="QDoubleSpinBox" name="DSpBx_FA_WaterDen">
+                 <property name="maximum">
+                  <double>10000.000000000000000</double>
                  </property>
-                 <property name="toolTipDuration">
-                  <number>10000</number>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                 <property name="placeholderText">
-                  <string>997</string>
+                 <property name="value">
+                  <double>997.000000000000000</double>
                  </property>
                 </widget>
                </item>
               </layout>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_FA_Air">
+              <widget class="QLabel" name="Lbl_FA_AirH2">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -1749,7 +1773,7 @@ QSlider::handle:horizontal {
               </widget>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="HLY_FA_AirVisc" stretch="2,1">
+              <layout class="QHBoxLayout" name="HLY_FA_AirVisc" stretch="4,1,1,1">
                <item>
                 <widget class="QLabel" name="Lbl_FA_AirVisc">
                  <property name="font">
@@ -1770,25 +1794,45 @@ QSlider::handle:horizontal {
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="Led_FA_AirVisc">
-                 <property name="toolTip">
-                  <string>Kinematic viscosity of air</string>
+                <widget class="QDoubleSpinBox" name="DSpBx_FA_AirVisc">
+                 <property name="decimals">
+                  <number>4</number>
                  </property>
-                 <property name="toolTipDuration">
-                  <number>10000</number>
+                 <property name="maximum">
+                  <double>100.000000000000000</double>
                  </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
+                 <property name="value">
+                  <double>1.620000000000000</double>
                  </property>
-                 <property name="placeholderText">
-                  <string>1.621e-4</string>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="Lbl_FA_10pa">
+                 <property name="text">
+                  <string>x10^</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDoubleSpinBox" name="DSpBx_FA_AirViscExp">
+                 <property name="decimals">
+                  <number>0</number>
+                 </property>
+                 <property name="minimum">
+                  <double>-10.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>10.000000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>-4.000000000000000</double>
                  </property>
                 </widget>
                </item>
               </layout>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="HLY_FA_AirDen" stretch="2,1">
+              <layout class="QHBoxLayout" name="HLY_FA_AirDen" stretch="8,9">
                <item>
                 <widget class="QLabel" name="Lbl_FA_AirDen">
                  <property name="font">
@@ -1809,25 +1853,19 @@ QSlider::handle:horizontal {
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="Led_FA_AirDen">
-                 <property name="toolTip">
-                  <string>Density of air</string>
+                <widget class="QDoubleSpinBox" name="DSpBx_FA_AirDen">
+                 <property name="maximum">
+                  <double>10000.000000000000000</double>
                  </property>
-                 <property name="toolTipDuration">
-                  <number>10000</number>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                 <property name="placeholderText">
-                  <string>1.225</string>
+                 <property name="value">
+                  <double>1.230000000000000</double>
                  </property>
                 </widget>
                </item>
               </layout>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_FA_SurfTen_2">
+              <widget class="QLabel" name="Lbl_FA_SurfTenH2">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -1862,18 +1900,12 @@ QSlider::handle:horizontal {
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="Led_FA_SurfTen">
-                 <property name="toolTip">
-                  <string>Surface tension between the fluids</string>
+                <widget class="QDoubleSpinBox" name="DSpBx_FA_SurfTen">
+                 <property name="maximum">
+                  <double>10000.000000000000000</double>
                  </property>
-                 <property name="toolTipDuration">
-                  <number>10000</number>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                 <property name="placeholderText">
-                  <string>72.86</string>
+                 <property name="value">
+                  <double>72.859999999999999</double>
                  </property>
                 </widget>
                </item>
@@ -6382,20 +6414,15 @@ Submit to TACC
   <tabstop>Btn_CA_UploadFile</tabstop>
   <tabstop>Btn_CA_Previous</tabstop>
   <tabstop>Btn_CA_Next</tabstop>
-  <tabstop>Btn_CA_AddBuild</tabstop>
-  <tabstop>Btn_CA_RemBuild</tabstop>
-  <tabstop>Tbl_CA_Building</tabstop>
+  <tabstop>Btn_DA_AddBuild</tabstop>
+  <tabstop>Btn_DA_RemBuild</tabstop>
+  <tabstop>Tbl_DA_Building</tabstop>
   <tabstop>Cmb_EAMeshType</tabstop>
   <tabstop>Btn_EA_UploadMesh</tabstop>
   <tabstop>HSl_EA_MeshSize</tabstop>
   <tabstop>Btn_EA_AddRegion</tabstop>
   <tabstop>Btn_EA_RemRegion</tabstop>
   <tabstop>Tbl_EA_Regions</tabstop>
-  <tabstop>Led_FA_WaterVisc</tabstop>
-  <tabstop>Led_FA_WaterDen</tabstop>
-  <tabstop>Led_FA_AirVisc</tabstop>
-  <tabstop>Led_FA_AirDen</tabstop>
-  <tabstop>Led_FA_SurfTen</tabstop>
   <tabstop>Led_GA_Vx</tabstop>
   <tabstop>Led_GA_Vy</tabstop>
   <tabstop>Led_GA_Vz</tabstop>
