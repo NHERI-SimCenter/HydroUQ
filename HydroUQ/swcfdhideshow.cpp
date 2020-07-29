@@ -34,61 +34,53 @@
 // Dr. Frank McKenna, CTO of SimCenter, UC Berkeley
 // Prof. Sanjay Govindjee, Director of SimCenter, UC Berkeley
 
+//*********************************************************************************
+// In this routines related to bathymetry are included. For various simulation types
+// Different actions are considered
+//*********************************************************************************
+
+//*********************************************************************************
+// Include user headers
+//*********************************************************************************
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "interfaceframe.h"
 
 //*********************************************************************************
-//Initialize the main window
+// Hide-Show bathymetry elements
 //*********************************************************************************
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+void MainWindow::swcfdhideshow()
 {
-    // Start UI
-    ui->setupUi(this);
+    // If count is zero - hide the buttons
+    if(ui->SWg_CA_Interface->count() == 0)
+    {
+        ui->Btn_CA_Next->hide();
+        ui->Btn_CA_Previous->hide();
+    }
 
-    // Initialize items
-    initialize();
+    // Check button
+    if(ui->ChB_CA_UploadFile->isChecked())
+    {
+        // Show the upload box
+        ui->Btn_CA_UploadFile->show();
 
+        // Hide the stacked widget & buttons
+        ui->SWg_CA_Interface->hide();
+        ui->Btn_CA_Next->hide();
+        ui->Btn_CA_Previous->hide();
+
+    }
+    else
+    {
+        // Hide the upload box
+        ui->Btn_CA_UploadFile->hide();
+
+        // Show the stacked widget & buttons
+        ui->SWg_CA_Interface->show();
+        if(ui->SWg_CA_Interface->count() > 0)
+        {
+            ui->Btn_CA_Next->show();
+            ui->Btn_CA_Previous->show();
+        }
+
+    }
 }
-
-//*********************************************************************************
-//Delete the main window
-//*********************************************************************************
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-void MainWindow::on_Btn_HB_NorthUploadFile_clicked()
-{
-
-}
-
-void MainWindow::on_Btn_HB_SouthUploadFile_clicked()
-{
-
-}
-
-void MainWindow::on_Btn_HB_EastUploadFile_clicked()
-{
-
-}
-
-void MainWindow::on_Btn_HB_WestUploadFile_clicked()
-{
-
-}
-
-void MainWindow::on_Btn_HC_EntryUploadFile_clicked()
-{
-
-}
-
-void MainWindow::on_Btn_HC_ExitUploadFile_clicked()
-{
-
-}
-
-

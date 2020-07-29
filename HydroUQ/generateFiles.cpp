@@ -249,13 +249,13 @@ void MainWindow::genJsonRJ()
                 writer.Key("internalName");
                 writer.String("CmB_BB_Library");
                 writer.Key("value");
-                writer.String(ui->CmB_BB_Library->currentText().toStdString().c_str());
+                writer.String(ui->CmB_BA_Library->currentText().toStdString().c_str());
                 writer.Key("displayname");
                 writer.String("SW-CFD interface type");
                 writer.Key("internalName");
                 writer.String("ChB_BB_UploadFile");
                 writer.Key("value");
-                if(ui->ChB_BB_UploadFile->isChecked())
+                if(ui->ChB_CA_UploadFile->isChecked())
                 {
                     writer.String("Checked");
                     writer.Key("displayname");
@@ -401,27 +401,27 @@ void MainWindow::genJsonRJ()
                 writer.String("Depth of water");
                 writer.Key("internalName");
                 writer.String("Led_BD_Depth");
-                writer.Key("value");
-                writer.String(ui->Led_BD_Depth->text().toStdString().c_str());
+                //writer.Key("value");
+                //writer.String(ui->Led_BD_Depth->text().toStdString().c_str());
                 writer.Key("displayname");
                 writer.String("Breadth of wave flume");
                 writer.Key("internalName");
                 writer.String("Led_BD_Breadth");
-                writer.Key("value");
-                writer.String(ui->Led_BD_Breadth->text().toStdString().c_str());
+                //writer.Key("value");
+                //writer.String(ui->Led_BD_Breadth->text().toStdString().c_str());
                 writer.Key("displayname");
                 writer.String("Segments along flume");
                 writer.Key("internalName");
                 writer.String("Tbl_BD_Segments");
                 writer.Key("value");
                 writer.StartArray();
-                if(ui->Tbl_BD_Segments->rowCount() > 0)
+                if(ui->Tbl_BA_Segments->rowCount() > 0)
                 {
-                    for(int ii=0; ii<ui->Tbl_BD_Segments->rowCount(); ++ii)
+                    for(int ii=0; ii<ui->Tbl_BA_Segments->rowCount(); ++ii)
                     {
                         QString data = QString::number(ii) + 
-                            "," + ui->Tbl_BD_Segments->item(ii,0)->text() +
-                            "," + ui->Tbl_BD_Segments->item(ii,1)->text();
+                            "," + ui->Tbl_BA_Segments->item(ii,0)->text() +
+                            "," + ui->Tbl_BA_Segments->item(ii,1)->text();
                         writer.String(data.toStdString().c_str());
                     }
                 }
