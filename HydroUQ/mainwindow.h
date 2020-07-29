@@ -99,9 +99,11 @@ private slots:
 
     // SW-CFD Interface
     void swcfdhideshow();
+    void on_Btn_CA_UploadFile_clicked();
     void on_Btn_CA_Next_clicked();
     void on_Btn_CA_Previous_clicked();
     void on_SWg_CA_Interface_currentChanged(int arg1);
+    void on_ChB_CA_UploadFile_stateChanged(int arg1);
 
     // Building
     void on_Btn_DA_AddBuild_clicked();
@@ -158,10 +160,6 @@ private slots:
     // Click item in the table
     void on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
-
-
-    void on_ChB_CA_UploadFile_stateChanged(int arg1);
-
 private:
 
     // Initialize
@@ -169,17 +167,14 @@ private:
 
     Ui::MainWindow *ui;
     Eigen::MatrixXi optionmap; // Connects parameter tree to options widget
-    int treeflag;
-    QString projname;
+    int treeflag; // Controls only one project is created
+    QString projname; // Name of project
     QUrl workdirUrl; // Default work directory
+    QStringList interfacenames; //Names of interfaces
+    QStringList optiontree,bathfilenames,solfilenames,intefilenames,meshfiles; // Filenames
 
-    QStringList interfacenames;
-
-    QStringList optiontree,bathfilenames,solfilenames,intefilenames,restartfiles,meshfiles; // Filenames
+    QStringList restartfiles;
     QStringList boundfiles01,boundfiles02,boundfiles03,boundfiles04;
-
-    int boundaryCount;
-
 
 };
 #endif // MAINWINDOW_H

@@ -74,6 +74,18 @@ void MainWindow::on_ChB_CA_UploadFile_stateChanged(int arg1)
 }
 
 //*********************************************************************************
+// Button to Upload interface files
+//*********************************************************************************
+void MainWindow::on_Btn_CA_UploadFile_clicked()
+{
+    QFileDialog selectfilesdialog(this);
+    selectfilesdialog.setDirectory(workdirUrl.toString());
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
+    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    if(selectfilesdialog.exec()) intefilenames = selectfilesdialog.selectedFiles();
+}
+
+//*********************************************************************************
 // Activate & deactivate buttons when the stacked widget changes
 //*********************************************************************************
 void MainWindow::on_SWg_CA_Interface_currentChanged(int arg1)

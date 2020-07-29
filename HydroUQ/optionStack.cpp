@@ -95,11 +95,13 @@ void MainWindow::on_OptionsStack_currentChanged(int arg1)
         ui->Lbl_Descript->setText("We are working to enable this option to add floating bodies."
                                   " This option is not yet available. Watchout for updates. Exciting days ahead");
     }
-    else if(arg1 == 5) //
+    else if(arg1 == 5) // Meshing
     {
         ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("Use this option if you are using an STL file to run a generic CFD "
-                                  "multiphase simulation.");
+        ui->Lbl_Descript->setText("Setup the mesh either using the in-built meshing tool. "
+                                  "For the in-built tool, five degrees are allowed. In addition, "
+                                  "regional refinements can be specified to refine particular regions. "
+                                  "Alternatively upload the mesh or mesh dictionaries.");
     }
     else if(arg1 == 6) // Bathymetry (from Maps)
     {
