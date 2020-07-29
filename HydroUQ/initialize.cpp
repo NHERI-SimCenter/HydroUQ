@@ -74,7 +74,11 @@ void MainWindow::initialize()
     optionmap(6,0) = 6; // Materials
     optionmap(7,0) = 7; // Initial conditions
     optionmap(8,0) = 8; // Boundary conditions
+    optionmap(9,0) = 12; // Solver(basic)
+    optionmap(10,0) = 13; // Solver(advanced)
+    optionmap(11,0) = 14; // Submit to TACC
 
+    /*
     // Advanced solver settings
     optionmap(9,0) = 0; // Select simtype
     optionmap(9,1) = 20; // CFD to resolve SW (with SW results)
@@ -103,7 +107,7 @@ void MainWindow::initialize()
     optionmap(11,4) = 22; // CFD of wave flume
     optionmap(11,5) = 22; // CFD using STL
     optionmap(11,6) = 22; // CFD using maps
-    optionmap(11,7) = 22; // CFD using surrogate
+    optionmap(11,7) = 22; // CFD using surrogate */
 
     // Other
     ui->Btn_EA_UploadMesh->hide();

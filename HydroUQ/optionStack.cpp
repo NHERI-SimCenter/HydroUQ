@@ -103,15 +103,19 @@ void MainWindow::on_OptionsStack_currentChanged(int arg1)
                                   "regional refinements can be specified to refine particular regions. "
                                   "Alternatively upload the mesh or mesh dictionaries.");
     }
-    else if(arg1 == 6) // Bathymetry (from Maps)
+    else if(arg1 == 6) // Materials
     {
         ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("This option is not yet available. Watchout for updates.");
+        ui->Lbl_Descript->setText("The material properties considered for the simulation are the "
+                                  "kinematic viscosity and density of the two fluids. In addition "
+                                  "the surface tension between the fluids is considered.");
     }
-    else if(arg1 == 7) // Bathymetry (from surrogate models)
+    else if(arg1 == 7) // Initial conditions
     {
         ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("This option is not yet available. Watchout for updates.");
+        ui->Lbl_Descript->setText("Initial conditions of the two fluids in consideration are provided here. "
+                                  "They include the velocity, pressure and the phase of the fluids. In addition, "
+                                  "specific regions can be added with particular conditions.");
     }
     else if(arg1 == 8) // Add buildings
     {
@@ -137,9 +141,7 @@ void MainWindow::on_OptionsStack_currentChanged(int arg1)
     else if(arg1 == 11) // Material properties
     {
         ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("The material properties considered for the simulation are the "
-                                  "kinematic viscosity and density of the two fluids. In addition "
-                                  "the surface tension between the fluids is considered.");
+        ui->Lbl_Descript->setText("");
     }
     else if(arg1 == 12) // Initial conditions
     {

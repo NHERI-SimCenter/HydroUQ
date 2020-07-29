@@ -276,7 +276,7 @@
             </sizepolicy>
            </property>
            <property name="currentIndex">
-            <number>6</number>
+            <number>15</number>
            </property>
            <widget class="QWidget" name="AA_ProjSettings">
             <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1260,7 +1260,7 @@ option</string>
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="DA_FloatingBody">
+           <widget class="QWidget" name="EA_FloatingBody">
             <layout class="QVBoxLayout" name="verticalLayout_27">
              <property name="leftMargin">
               <number>6</number>

@@ -71,6 +71,33 @@ void MainWindow::on_SimOptions_itemClicked(QTreeWidgetItem *item, int column)
                 ui->OptionsStack->setCurrentIndex(optionmap(optiontree.indexOf(sel),0));
         }
     }
+
+    // REMOVE LATER (TEMPORARY)
+    if(sel == "Boundary conditions")
+    {
+        if( (simtypeindex == 1) || (simtypeindex == 2) )
+        {
+            ui->OptionsStack->setCurrentIndex(8);
+        }
+        else if(simtypeindex == 3)
+        {
+            ui->OptionsStack->setCurrentIndex(9);
+        }
+        else if(simtypeindex == 4)
+        {
+            ui->OptionsStack->setCurrentIndex(10);
+        }
+        else if( (simtypeindex == 5) || (simtypeindex == 6))
+        {
+            ui->OptionsStack->setCurrentIndex(11);
+        }
+        else if(simtypeindex == 3)
+        {
+            ui->OptionsStack->setCurrentIndex(11);
+        }
+    }
+
+
 }
 
 //*********************************************************************************
