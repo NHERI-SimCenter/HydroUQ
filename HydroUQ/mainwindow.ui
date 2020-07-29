@@ -524,7 +524,7 @@ Set working directory (Not set)
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="BA_Bathy01_Usual">
+           <widget class="QWidget" name="BA_Bathy_Usual">
             <layout class="QVBoxLayout" name="verticalLayout_73">
              <property name="leftMargin">
               <number>6</number>
@@ -569,7 +569,7 @@ Set working directory (Not set)
               </widget>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <layout class="QHBoxLayout" name="HLY_BA_Files">
                <item>
                 <widget class="QPushButton" name="Btn_BA_SelFiles">
                  <property name="toolTip">
@@ -605,7 +605,7 @@ Select solution
               </layout>
              </item>
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_4">
+              <layout class="QVBoxLayout" name="VLY_BA_SCLibrary">
                <item>
                 <widget class="QComboBox" name="CmB_BA_FileType">
                  <property name="toolTip">
@@ -662,7 +662,7 @@ Select solution
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="CmB_BB_Library">
+                <widget class="QComboBox" name="CmB_BA_Library">
                  <property name="toolTip">
                   <string>Select one of the pre-existing SW solutions from the SimCenter Library</string>
                  </property>
@@ -689,7 +689,7 @@ Select solution
               </layout>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_BE_Notice">
+              <widget class="QLabel" name="Lbl_BA_Notice">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -710,7 +710,7 @@ Select solution
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_BD_SideViewH2">
+              <widget class="QLabel" name="Lbl_BA_SideViewH2">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -727,7 +727,7 @@ Select solution
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_BD_SideView">
+              <widget class="QLabel" name="Lbl_BA_SideView">
                <property name="font">
                 <font>
                  <pointsize>48</pointsize>
@@ -748,9 +748,9 @@ Select solution
               </widget>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="HLY_BD_Depth" stretch="2,1">
+              <layout class="QHBoxLayout" name="HLY_BA_Depth" stretch="2,1">
                <item>
-                <widget class="QLabel" name="Lbl_BD_Depth">
+                <widget class="QLabel" name="Lbl_BA_Depth">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -770,25 +770,12 @@ Select solution
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="Led_BD_Depth">
-                 <property name="toolTip">
-                  <string>Depth of water at the entry of the flume</string>
-                 </property>
-                 <property name="toolTipDuration">
-                  <number>10000</number>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                 <property name="placeholderText">
-                  <string>2</string>
-                 </property>
-                </widget>
+                <widget class="QDoubleSpinBox" name="DSpBx_BA_Depth"/>
                </item>
               </layout>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_BD_TopViewH2">
+              <widget class="QLabel" name="Lbl_BA_TopViewH2">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -805,7 +792,7 @@ Select solution
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_BD_TopView">
+              <widget class="QLabel" name="Lbl_BA_TopView">
                <property name="font">
                 <font>
                  <pointsize>48</pointsize>
@@ -826,9 +813,9 @@ Select solution
               </widget>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="HLY_BD_Breadth" stretch="2,1">
+              <layout class="QHBoxLayout" name="HLY_BA_Breadth" stretch="2,1">
                <item>
-                <widget class="QLabel" name="Lbl_BD_Breadth">
+                <widget class="QLabel" name="Lbl_BA_Breadth">
                  <property name="font">
                   <font>
                    <pointsize>14</pointsize>
@@ -848,25 +835,12 @@ Select solution
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="Led_BD_Breadth">
-                 <property name="toolTip">
-                  <string>Breadth of the flume</string>
-                 </property>
-                 <property name="toolTipDuration">
-                  <number>10000</number>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                 <property name="placeholderText">
-                  <string>3.7</string>
-                 </property>
-                </widget>
+                <widget class="QDoubleSpinBox" name="DSpBx_BA_Breadth"/>
                </item>
               </layout>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_BD_Segments">
+              <widget class="QLabel" name="Lbl_BA_Segments">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -883,7 +857,7 @@ Select solution
               </widget>
              </item>
              <item>
-              <widget class="QTableWidget" name="Tbl_BD_Segments">
+              <widget class="QTableWidget" name="Tbl_BA_Segments">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -908,9 +882,9 @@ Select solution
               </widget>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="HLY_BD_AddSeg">
+              <layout class="QHBoxLayout" name="HLY_BA_AddSeg">
                <item>
-                <widget class="QToolButton" name="Btn_BD_AddSeg">
+                <widget class="QToolButton" name="Btn_BA_AddSeg">
                  <property name="toolTip">
                   <string>Add segment along the length of the flume</string>
                  </property>
@@ -923,7 +897,7 @@ Select solution
                 </widget>
                </item>
                <item>
-                <widget class="QToolButton" name="Btn_BD_RemSeg">
+                <widget class="QToolButton" name="Btn_BA_RemSeg">
                  <property name="toolTip">
                   <string>Remove segment along the length of the flume</string>
                  </property>
@@ -938,7 +912,7 @@ Select solution
               </layout>
              </item>
              <item>
-              <spacer name="verticalSpacer">
+              <spacer name="VSp_BA_01">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
@@ -967,7 +941,7 @@ Select solution
               <number>6</number>
              </property>
              <item>
-              <widget class="QLabel" name="Lbl_BB_H1">
+              <widget class="QLabel" name="Lbl_CA_H1_2">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -982,7 +956,7 @@ Select solution
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_BB_Interface">
+              <widget class="QLabel" name="Lbl_CA_Interface">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -996,7 +970,7 @@ Select solution
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="ChB_BB_UploadFile">
+              <widget class="QCheckBox" name="ChB_CA_UploadFile">
                <property name="enabled">
                 <bool>true</bool>
                </property>
@@ -1020,7 +994,7 @@ Select solution
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="Btn_BB_UploadFile">
+              <widget class="QPushButton" name="Btn_CA_UploadFile">
                <property name="toolTip">
                 <string>Upload a latitude-longitude file to define the interfaces</string>
                </property>
@@ -1035,7 +1009,7 @@ Upload interface file
               </widget>
              </item>
              <item>
-              <widget class="QStackedWidget" name="SWg_BB_Interface">
+              <widget class="QStackedWidget" name="SWg_CA_Interface">
                <property name="toolTip">
                 <string>Interface points for all SW-CFD interfaces</string>
                </property>
@@ -1043,15 +1017,14 @@ Upload interface file
                 <number>10000</number>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>-1</number>
                </property>
-               
               </widget>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="HLY_BB_Scroller" stretch="0,0,0,0">
+              <layout class="QHBoxLayout" name="HLY_CA_Scroller" stretch="0,0,0,0">
                <item>
-                <spacer name="HSp_BB_Scroll01">
+                <spacer name="HSp_CA_Scroll01">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
@@ -1064,7 +1037,7 @@ Upload interface file
                 </spacer>
                </item>
                <item>
-                <widget class="QPushButton" name="Btn_BB_Previous">
+                <widget class="QPushButton" name="Btn_CA_Previous">
                  <property name="styleSheet">
                   <string notr="true">QPushButton {
     border-image: url(:/images/images/previous.png) 10;
@@ -1093,7 +1066,7 @@ QPushButton:pressed {
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="Btn_BB_Next">
+                <widget class="QPushButton" name="Btn_CA_Next">
                  <property name="styleSheet">
                   <string notr="true">QPushButton {
     border-image: url(:/images/images/next.png) 10;
@@ -1122,7 +1095,7 @@ QPushButton:pressed {
                 </widget>
                </item>
                <item>
-                <spacer name="HSp_BB_Scroll02">
+                <spacer name="HSp_CA_Scroll02">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
@@ -1137,7 +1110,7 @@ QPushButton:pressed {
               </layout>
              </item>
              <item>
-              <spacer name="VSp_BB_01">
+              <spacer name="VSp_CA_01">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
@@ -6405,10 +6378,10 @@ Submit to TACC
   <tabstop>Btn_BA_SelFiles</tabstop>
   <tabstop>CmB_BA_FileType</tabstop>
   <tabstop>CmB_BA_SolFormat</tabstop>
-  <tabstop>ChB_BB_UploadFile</tabstop>
-  <tabstop>Btn_BB_UploadFile</tabstop>
-  <tabstop>Btn_BB_Previous</tabstop>
-  <tabstop>Btn_BB_Next</tabstop>
+  <tabstop>ChB_CA_UploadFile</tabstop>
+  <tabstop>Btn_CA_UploadFile</tabstop>
+  <tabstop>Btn_CA_Previous</tabstop>
+  <tabstop>Btn_CA_Next</tabstop>
   <tabstop>Btn_CA_AddBuild</tabstop>
   <tabstop>Btn_CA_RemBuild</tabstop>
   <tabstop>Tbl_CA_Building</tabstop>

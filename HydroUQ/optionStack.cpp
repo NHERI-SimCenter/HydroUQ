@@ -59,10 +59,15 @@ void MainWindow::on_OptionsStack_currentChanged(int arg1)
     }
     else if(arg1 == 1) // Bathymetry
     {
+        // Set the description of the description
         ui->Lbl_Descript->setWordWrap(true);
         ui->Lbl_Descript->setText("Here, the bathymetry data related to the "
                                   "simulation is initialized. In this case, upload "
-                                  "the shallow water solutions and bathymetry data.");
+                                  "the shallow water solutions and bathymetry data. You can also choose "
+                                  "from the pre-existing library or using a wave flume or a STL File. "
+                                  "Bathymetry with maps coming soon.");
+        // Show and hide elements based on type of simulation
+        BathyHideShow();
     }
     else if(arg1 == 2) // SW-CFD Interface
     {
@@ -70,31 +75,24 @@ void MainWindow::on_OptionsStack_currentChanged(int arg1)
         ui->Lbl_Descript->setText("Provide the information of the interface between "
                                   "shallow-water and CFD domain either in the form of "
                                   "a table or as a .csv file. Double click to add interfaces.");
-        /*ui->Lbl_Descript->setText("Here, the bathymetry data related to the simulation is initialized."
-                                  "Use this case if you do not have pre-existing shallow water solutions. "
-                                  "You can choose simulation done on pre-selected subduction zone. "
-                                  "Additionally provide the information of the interface between "
-                                  "shallow-water and CFD domain either in the form of a table or as "
-                                  "a .csv file.");*/
+        // Show and hide elements based on type of simulation
+        swcfdhideshow();
+
     }
-    else if(arg1 == 3) // Bathymetry (from bathymetry file)
+    else if(arg1 == 3) // Buildings
     {
         ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("Here, the bathymetry data related to the simulation is initialized."
-                                  "Use this case if your entire domain is used for CFD simulation. "
-                                  "Here, the geometry for the CFD simulation is initialized using the "
-                                  "bathymetry datafiles. At the moment GeoClaw and SimCenter formats "
-                                  "are accepted.");
+        ui->Lbl_Descript->setText("Add buildings in the CFD domain. Buildings are "
+                                  "specified by giving the lowermost and the topmost points. "
+                                  "At present, the buildings are considered to be of simple cuboid "
+                                  "geometry only.");
     }
-    else if(arg1 == 4) // Bathymetry (from Wave flume)
+    else if(arg1 == 4) //
     {
         ui->Lbl_Descript->setWordWrap(true);
-        ui->Lbl_Descript->setText("Here, the CFD simulation is initialized on teh wave flume."
-                                  "Use this case, if your domain can be modeled as a wave flume. "
-                                  "The ramp can be modeled as multiple surfaces of different lengths"
-                                  " and angle of inclinations.");
+        ui->Lbl_Descript->setText("");
     }
-    else if(arg1 == 5) // Bathymetry (from STL files)
+    else if(arg1 == 5) //
     {
         ui->Lbl_Descript->setWordWrap(true);
         ui->Lbl_Descript->setText("Use this option if you are using an STL file to run a generic CFD "

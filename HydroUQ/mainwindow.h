@@ -92,9 +92,16 @@ private slots:
     void on_Led_AA_PDesc_textChanged();
     void on_Btn_AA_WDir_clicked();
 
-    // Bathymetry (SW solutions)
+    // Bathymetry
+    void BathyHideShow();
     void on_Btn_BA_SelFiles_clicked();
     void on_Btn_BA_UploadSolution_clicked();
+
+    // SW-CFD Interface
+    void swcfdhideshow();
+    void on_Btn_CA_Next_clicked();
+    void on_Btn_CA_Previous_clicked();
+    void on_SWg_CA_Interface_currentChanged(int arg1);
 
     // Building
     void on_Btn_CA_AddBuild_clicked();
@@ -150,11 +157,9 @@ private slots:
     // Click item in the table
     void on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
-    void on_Btn_BB_Next_clicked();
 
-    void on_Btn_BB_Previous_clicked();
 
-    void on_SWg_BB_Interface_currentChanged(int arg1);
+    void on_ChB_CA_UploadFile_stateChanged(int arg1);
 
 private:
 

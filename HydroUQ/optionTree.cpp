@@ -137,30 +137,47 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
     // To create SW-CFD Interface
     else if(sel == "SW-CFD interface")
     {
-
+        // Get the name of the interface
         bool ok;
         QString intername = QInputDialog::getText(this, tr("Interface Label"),
                                                 tr("Interface name"), QLineEdit::Normal,
                                                 QDir::home().dirName(), &ok);
+
+        // Once ok is pressed
         if (ok && !intername.isEmpty())
         {
-            int internum = ui->SWg_BB_Interface->count();
-            //ui->SWg_BB_Interface->insertWidget(internum,new InterfaceFrame(intername));
-            ui->SWg_BB_Interface->addWidget(new InterfaceFrame(intername));
-            ui->SWg_BB_Interface->setCurrentIndex(internum);
+            int internum = ui->SWg_CA_Interface->count();
+            ui->SWg_CA_Interface->addWidget(new InterfaceFrame(intername));
+            ui->SWg_CA_Interface->setCurrentIndex(internum);
         }
         else
         {
-            int internum = ui->SWg_BB_Interface->count();
+            int internum = ui->SWg_CA_Interface->count();
             QString temp = intername + QString::number(internum);
-            //ui->SWg_BB_Interface->insertWidget(internum,new InterfaceFrame(intername));
-            ui->SWg_BB_Interface->addWidget(new InterfaceFrame(intername));
-            ui->SWg_BB_Interface->setCurrentIndex(internum);
+            ui->SWg_CA_Interface->addWidget(new InterfaceFrame(intername));
+            ui->SWg_CA_Interface->setCurrentIndex(internum);
             qDebug() << "Count is: " << internum-1;
         }
 
-
+        // If count is zero, then hide the navigation button
+        // If count is one, then show but disable them
+        if(ui->SWg_CA_Interface->count() == 1)
+        {
+            ui->Btn_CA_Previous->show();
+            ui->Btn_CA_Previous->setDisabled(true);
+            ui->Btn_CA_Next->show();
+            ui->Btn_CA_Previous->setDisabled(true);
+        }
+        // If count is greater than one, then enable both
+        else if(ui->SWg_CA_Interface->count() > 1)
+        {
+            ui->Btn_CA_Previous->show();
+            ui->Btn_CA_Previous->setDisabled(false);
+            ui->Btn_CA_Next->show();
+            ui->Btn_CA_Previous->setDisabled(false);
+        }
     }
+    // To create boundary conditions
     else if(sel == "Boundary conditions")
     {
         qDebug() << "Clicked BC";
