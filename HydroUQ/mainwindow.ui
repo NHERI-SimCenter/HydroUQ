@@ -970,6 +970,13 @@ Select solution
               </widget>
              </item>
              <item>
+              <widget class="QLabel" name="Lbl_CA_Notice">
+               <property name="text">
+                <string>SW-CFD settings are not available for this option</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QCheckBox" name="ChB_CA_UploadFile">
                <property name="enabled">
                 <bool>true</bool>
@@ -1231,7 +1238,7 @@ QPushButton:pressed {
               </layout>
              </item>
              <item>
-              <widget class="QLabel" name="Lbl_CA_Notice">
+              <widget class="QLabel" name="Lbl_DA_Notice_2">
                <property name="text">
                 <string>Building settings are presently not available for this 
 option</string>

@@ -83,4 +83,26 @@ void MainWindow::swcfdhideshow()
         }
 
     }
+
+    // If the simulation is type of Wave Flume / STL / Maps / Surrogate
+    // Then show only notice & hide rest
+    if( ((ui->CmB_AA_SimType->currentIndex() == 4) || (ui->CmB_AA_SimType->currentIndex() == 5))
+            || ((ui->CmB_AA_SimType->currentIndex() == 6) || (ui->CmB_AA_SimType->currentIndex() == 7)) )
+    {
+        // Show notice
+        ui->Lbl_CA_Notice->show();
+
+        // Hide everything else
+        ui->ChB_CA_UploadFile->hide();
+        ui->Btn_CA_UploadFile->hide();
+        ui->SWg_CA_Interface->hide();
+        ui->Btn_CA_Next->hide();
+        ui->Btn_CA_Previous->hide();
+    }
+    // Else hide notice but show everything
+    else
+    {
+        // Hide notice
+        ui->Lbl_CA_Notice->hide();
+    }
 }

@@ -105,12 +105,6 @@ void MainWindow::initialize()
     optionmap(11,6) = 22; // CFD using maps
     optionmap(11,7) = 22; // CFD using surrogate
 
-    // SW-CFD Interface
-    //ui->Btn_BB_UploadFile->hide();
-    //ui->Btn_BB_Previous->setDisabled(true);
-    //ui->SWg_BB_Interface->insertWidget(0,new InterfaceFrame("Untitled"));
-    //ui->SWg_BB_Interface->setCurrentIndex(0);
-
     // Other
     ui->Btn_EA_UploadMesh->hide();
     ui->Btn_HB_NorthUploadFile->hide();
@@ -242,7 +236,6 @@ void MainWindow::initialize()
     ui->Led_HC_ExitPres->hide();
 
     // Set pages to one
-    //ui->SWg_BB_Interface->setCurrentIndex(0);
     ui->SWg_HB_BConditions->setCurrentIndex(0);
     ui->SWg_HC_BConditions->setCurrentIndex(0);
 }
