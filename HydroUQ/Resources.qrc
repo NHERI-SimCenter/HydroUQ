@@ -1,20 +1,6 @@
 <RCC>
     <qresource prefix="/images">
-        <file>images/FrontView_v2.png</file>
-        <file>images/NSFLogo.png</file>
-        <file>images/SimCenter_H2O_logo.png</file>
-        <file>images/SimCenterLogo.png</file>
-        <file>images/Logo.png</file>
         <file>images/SideView_2.png</file>
         <file>images/TopView_v2.png</file>
-        <file>images/next-invert.png</file>
-        <file>images/next.png</file>
-        <file>images/previous-invert.png</file>
-        <file>images/previous.png</file>
-        <file>images/GenBathyDomain.png</file>
-        <file>images/BathyBC.png</file>
-    </qresource>
-    <qresource prefix="/style">
-        <file>styles/style.qss</file>
     </qresource>
 </RCC>
