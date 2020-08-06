@@ -115,17 +115,6 @@ void MainWindow::on_pushButton_clicked()
         allData.insert(7, singleData);
     }
 
-    // Search
-    QMap<QString, QString> *singleDataSet = allData.value(0);
-    QString temp = "Simulation type";
-    QString simty = singleDataSet->value(temp);
-    qDebug() << simty;
-    qDebug() << singleDataSet->keys();
-    qDebug() << singleDataSet->values();
-    qDebug() << temp;
-    //qDebug() << allData.value(1)->keys();
-    //qDebug() << allData;
-
     // Show in text window (Just to print out the map)
     // This will later be replaced by writing to JSON
     QString text;
@@ -174,6 +163,20 @@ void MainWindow::refresh_projsettings()
         }
     }
 
+    // Search
+    QMap<QString, QString> *singleDataSet = allData.value(0);
+    QString temp = "Simulation type";
+    QString simty = singleDataSet->value(temp);
+    //qDebug() << simty;
+    simtype = simty.split(" ")[0].toInt();
+    //qDebug() << "Simulation type: " << simtype;
+    //qDebug() << singleDataSet->keys();
+    //qDebug() << singleDataSet->values();
+    //qDebug() << temp;
+    //qDebug() << allData.value(1)->keys();
+    //qDebug() << allData;
+
+    /* Replaced by search
     // Refresh map with project information
     // We primarily need the simulation type
     // I am pretty sure there is a nicer way to do this
@@ -190,7 +193,7 @@ void MainWindow::refresh_projsettings()
                 simtype = oneEntry.mid(21,1).toInt();
             }
         }
-    }
+    }*/
 }
 
 
