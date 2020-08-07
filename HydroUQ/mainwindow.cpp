@@ -51,11 +51,11 @@ void MainWindow::initialize()
     ui->stackedWidget->addWidget(new floatingbds);
     ui->stackedWidget->addWidget(new meshing(0));
     ui->stackedWidget->addWidget(new materials);
-    ui->stackedWidget->addWidget(new initialconAlpha(0)); // Initial velocity (CHange)
-    ui->stackedWidget->addWidget(new initialconAlpha(0)); // Initial pressure (CHange)
+    ui->stackedWidget->addWidget(new initialconVel(0)); // Initial velocity (CHange)
+    ui->stackedWidget->addWidget(new initialconPres(0)); // Initial pressure (CHange)
     ui->stackedWidget->addWidget(new initialconAlpha(0));
-    ui->stackedWidget->addWidget(new initialconAlpha(0)); // Boundary (Velocity)
-    ui->stackedWidget->addWidget(new initialconAlpha(0)); // Boundary (Pressure)
+    ui->stackedWidget->addWidget(new initialconVel(0)); // Boundary (Velocity)
+    ui->stackedWidget->addWidget(new initialconPres(0)); // Boundary (Pressure)
     ui->stackedWidget->addWidget(new initialconAlpha(0)); // Boundary (Alpha)
     ui->stackedWidget->addWidget(new solver);
 
@@ -79,7 +79,6 @@ void MainWindow::clearAllData(void)
 //*********************************************************************************
 void MainWindow::refresh_projsettings()
 {
-
     // Save simtype into oldsimtype
     oldsimtype = simtype;
 
@@ -96,10 +95,13 @@ void MainWindow::refresh_projsettings()
         }
     }
 
-    // Search
+    // Search for simulation type
     QMap<QString, QString> *singleDataSet = allData.value(0);
     QString temp = "Simulation type";
     QString simty = singleDataSet->value(temp);
+
+    // Get new simulation type, if user has changed it intermediately
+    // This can also be same as old simulation type
     simtype = simty.split(" ")[0].toInt();
 
 }
@@ -156,7 +158,19 @@ void MainWindow::on_Btn_Generate_Files_clicked()
         allData.insert(6, singleData);
     }
 
-    // Initial conditions - index 7 / 8 / 9
+    // Initial conditions: velocity - index 7
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->getData(*singleData,simtype))
+    {
+        allData.insert(7, singleData);
+    }
+
+    // Initial conditions: pressure - index 8
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->getData(*singleData,simtype))
+    {
+        allData.insert(8, singleData);
+    }
 
     // Initial conditions: alpha - index 9
     singleData = new QMap<QString,QString>;
@@ -189,7 +203,7 @@ void MainWindow::on_Btn_Generate_Files_clicked()
     ui->textEdit->setPlainText(text);
     ui->textEdit->repaint();
 
-    // Write to JSON file
+    // Write map to JSON file
 
     // Call the OpenFOAM method to read the JSON file
     // Write the OpenFOAM files & folders

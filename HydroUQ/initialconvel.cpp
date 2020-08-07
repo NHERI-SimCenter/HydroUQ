@@ -1,5 +1,6 @@
 #include "initialconvel.h"
 #include "ui_initialconvel.h"
+#include <QDebug>
 
 //*********************************************************************************
 // Initial conditions: Velocity
@@ -82,6 +83,9 @@ bool initialconVel::getData(QMap<QString, QString>& map,int type)
         }
 
     }
+
+    // Change hasData to be true
+    hasData = true;
 
     return hasData;
 }

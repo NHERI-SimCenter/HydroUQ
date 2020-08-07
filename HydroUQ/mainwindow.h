@@ -6,6 +6,7 @@
 #include <QMap>
 #include <QTreeWidget>
 #include <QInputDialog>
+#include <QFile>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

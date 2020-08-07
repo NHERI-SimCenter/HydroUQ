@@ -3,4 +3,8 @@
         <file>images/SideView_2.png</file>
         <file>images/TopView_v2.png</file>
     </qresource>
+    <qresource prefix="/styles">
+        <file>styles/stylesheetMAC.qss</file>
+        <file>styles/stylesheetWIN.qss</file>
+    </qresource>
 </RCC>
