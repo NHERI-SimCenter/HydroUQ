@@ -64,7 +64,13 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_Alpha"/>
+      <widget class="QDoubleSpinBox" name="DSpBx_Alpha">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -98,6 +104,11 @@ the shallow water solvers</string>
    </item>
    <item>
     <widget class="QTableWidget" name="Tbl_IniCondTable">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="toolTip">
       <string>Regions for initial condition</string>
      </property>

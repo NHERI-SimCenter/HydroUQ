@@ -77,13 +77,31 @@ the shallow water solvers</string>
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_Vx"/>
+      <widget class="QDoubleSpinBox" name="DSpBx_Vx">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_Vy"/>
+      <widget class="QDoubleSpinBox" name="DSpBx_Vy">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_Vz"/>
+      <widget class="QDoubleSpinBox" name="DSpBx_Vz">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -104,6 +122,11 @@ the shallow water solvers</string>
    </item>
    <item>
     <widget class="QTableWidget" name="Tbl_IniCondTable">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="toolTip">
       <string>Regions for initial condition</string>
      </property>

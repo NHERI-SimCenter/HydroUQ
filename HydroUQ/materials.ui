@@ -56,8 +56,71 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="HLY_WaterVisc" stretch="4,1,1,1">
-     <item>
+    <layout class="QGridLayout" name="gridLayout" columnstretch="3,1,1,1">
+     <item row="0" column="3">
+      <widget class="QDoubleSpinBox" name="DSpBx_WaterViscExp">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="decimals">
+        <number>0</number>
+       </property>
+       <property name="minimum">
+        <double>-10.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>10.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>-6.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="Lbl_10pb">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>x 10^</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QDoubleSpinBox" name="DSpBx_WaterVisc">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="maximum">
+        <double>100.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.003500000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
       <widget class="QLabel" name="Lbl_WaterVisc">
        <property name="font">
         <font>
@@ -76,50 +139,7 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_WaterVisc">
-       <property name="decimals">
-        <number>4</number>
-       </property>
-       <property name="maximum">
-        <double>100.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>0.100000000000000</double>
-       </property>
-       <property name="value">
-        <double>1.003500000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="Lbl_10pb">
-       <property name="text">
-        <string>x 10^</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_WaterViscExp">
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="minimum">
-        <double>-10.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>10.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>-6.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="HLY_WaterDen" stretch="8,9">
-     <item>
+     <item row="1" column="0">
       <widget class="QLabel" name="Lbl_WaterDen">
        <property name="font">
         <font>
@@ -138,8 +158,16 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="1" colspan="3">
       <widget class="QDoubleSpinBox" name="DSpBx_WaterDen">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
        <property name="maximum">
         <double>10000.000000000000000</double>
        </property>
@@ -165,8 +193,32 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="HLY_AirVisc" stretch="4,1,1,1">
-     <item>
+    <layout class="QGridLayout" name="gridLayout_2" columnstretch="3,1,1,1">
+     <item row="0" column="3">
+      <widget class="QDoubleSpinBox" name="DSpBx_AirViscExp">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="decimals">
+        <number>0</number>
+       </property>
+       <property name="minimum">
+        <double>-10.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>10.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>-4.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
       <widget class="QLabel" name="Lbl_AirVisc">
        <property name="font">
         <font>
@@ -185,8 +237,16 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QDoubleSpinBox" name="DSpBx_AirVisc">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
        <property name="decimals">
         <number>4</number>
        </property>
@@ -198,34 +258,22 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="2">
       <widget class="QLabel" name="Lbl_10pa">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>x10^</string>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_AirViscExp">
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="minimum">
-        <double>-10.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>10.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>-4.000000000000000</double>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="HLY_AirDen" stretch="8,9">
-     <item>
+     <item row="1" column="0">
       <widget class="QLabel" name="Lbl_AirDen">
        <property name="font">
         <font>
@@ -244,8 +292,16 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="1" colspan="3">
       <widget class="QDoubleSpinBox" name="DSpBx_AirDen">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
        <property name="maximum">
         <double>10000.000000000000000</double>
        </property>
@@ -271,8 +327,8 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="HLY_SurfTen" stretch="2,1">
-     <item>
+    <layout class="QGridLayout" name="gridLayout_4" columnstretch="3,0,0">
+     <item row="0" column="0">
       <widget class="QLabel" name="Lbl_SurfTen">
        <property name="font">
         <font>
@@ -291,8 +347,13 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1" colspan="2">
       <widget class="QDoubleSpinBox" name="DSpBx_SurfTen">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="maximum">
         <double>10000.000000000000000</double>
        </property>

@@ -162,6 +162,11 @@
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QPushButton" name="Btn_Generate_Files">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Generate files</string>
            </property>
@@ -169,6 +174,11 @@
          </item>
          <item>
           <widget class="QPushButton" name="Btn_SubTACC">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Submit to TACC</string>
            </property>

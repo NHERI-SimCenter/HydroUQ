@@ -57,6 +57,11 @@
    </item>
    <item>
     <widget class="QComboBox" name="Cmb_MeshType">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="toolTip">
       <string>Select type of mesh: in-built mesing / upload mesh files</string>
      </property>
@@ -96,6 +101,11 @@
    </item>
    <item>
     <widget class="QComboBox" name="Cmb_MeshGen">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="toolTip">
       <string>Select type of mesh: in-built mesing / upload mesh files</string>
      </property>
@@ -170,6 +180,11 @@
    </item>
    <item>
     <widget class="QComboBox" name="Cmb_MeshDict">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="toolTip">
       <string>Select type of mesh: in-built mesing / upload mesh files</string>
      </property>
@@ -190,6 +205,11 @@
    </item>
    <item>
     <widget class="QPushButton" name="Btn_UploadMesh">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="toolTip">
       <string>Upload the mesh files or mesh dictionaries</string>
      </property>
@@ -222,6 +242,11 @@ Upload mesh
    </item>
    <item>
     <widget class="QSlider" name="HSl_MeshSize">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="mouseTracking">
       <bool>true</bool>
      </property>
@@ -320,6 +345,11 @@ QSlider::handle:horizontal {
    </item>
    <item>
     <widget class="QTableWidget" name="Tbl_Regions">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="toolTip">
       <string>Table of regions where mesh needs to be refined</string>
      </property>
