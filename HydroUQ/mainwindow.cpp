@@ -6,6 +6,9 @@
 #include "floatingbds.h"
 #include "meshing.h"
 #include "materials.h"
+#include "initialconvel.h"
+#include "initialconpres.h"
+#include "initialconalpha.h"
 #include "solver.h"
 
 #include <QString>
@@ -48,6 +51,12 @@ void MainWindow::initialize()
     ui->stackedWidget->addWidget(new floatingbds);
     ui->stackedWidget->addWidget(new meshing(0));
     ui->stackedWidget->addWidget(new materials);
+    ui->stackedWidget->addWidget(new initialconAlpha(0)); // Initial velocity (CHange)
+    ui->stackedWidget->addWidget(new initialconAlpha(0)); // Initial pressure (CHange)
+    ui->stackedWidget->addWidget(new initialconAlpha(0));
+    ui->stackedWidget->addWidget(new initialconAlpha(0)); // Boundary (Velocity)
+    ui->stackedWidget->addWidget(new initialconAlpha(0)); // Boundary (Pressure)
+    ui->stackedWidget->addWidget(new initialconAlpha(0)); // Boundary (Alpha)
     ui->stackedWidget->addWidget(new solver);
 
 
@@ -57,11 +66,54 @@ void MainWindow::initialize()
 }
 
 //*********************************************************************************
+// Clear all data
+//*********************************************************************************
+void MainWindow::clearAllData(void)
+{
+    foreach (int key, allData.keys()) { delete allData.value(key); }
+    allData.clear();
+}
+
+//*********************************************************************************
+// Refresh project map and get latest simulation type
+//*********************************************************************************
+void MainWindow::refresh_projsettings()
+{
+
+    // Save simtype into oldsimtype
+    oldsimtype = simtype;
+
+    // Refresh the map to get the project data
+    QMap<QString, QString> *singleData;
+    this->clearAllData();
+    singleData = new QMap<QString,QString>;
+    int numberOfPanes = 1;
+    for (int i=0;i<numberOfPanes;i++) {
+        singleData = new QMap<QString,QString>;
+        if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(i))->getData(*singleData))
+        {
+            allData.insert(i, singleData);
+        }
+    }
+
+    // Search
+    QMap<QString, QString> *singleDataSet = allData.value(0);
+    QString temp = "Simulation type";
+    QString simty = singleDataSet->value(temp);
+    simtype = simty.split(" ")[0].toInt();
+
+}
+
+//*********************************************************************************
 // Read all the pages for data and get data
 // Temporarily writing to a text window - to be replaced by write to JSON
 //*********************************************************************************
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_Btn_Generate_Files_clicked()
 {
+
+    // Get the simulation type
+    refresh_projsettings();
+
     // Get data from project settings - index 0
     QMap<QString, QString> *singleData;
     this->clearAllData();
@@ -106,13 +158,20 @@ void MainWindow::on_pushButton_clicked()
 
     // Initial conditions - index 7 / 8 / 9
 
+    // Initial conditions: alpha - index 9
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->getData(*singleData,simtype))
+    {
+        allData.insert(9, singleData);
+    }
+
     // Boundary conditions - index 10 / 11 / 12
 
     // Solver settings - index 13
     singleData = new QMap<QString,QString>;
-    if (dynamic_cast<solver *>(ui->stackedWidget->widget(7))->getData(*singleData))
+    if (dynamic_cast<solver *>(ui->stackedWidget->widget(13))->getData(*singleData))
     {
-        allData.insert(7, singleData);
+        allData.insert(13, singleData);
     }
 
     // Show in text window (Just to print out the map)
@@ -130,72 +189,12 @@ void MainWindow::on_pushButton_clicked()
     ui->textEdit->setPlainText(text);
     ui->textEdit->repaint();
 
+    // Write to JSON file
+
+    // Call the OpenFOAM method to read the JSON file
+    // Write the OpenFOAM files & folders
+
 }
-
-//*********************************************************************************
-// Clear all data
-//*********************************************************************************
-void MainWindow::clearAllData(void)
-{
-    foreach (int key, allData.keys()) { delete allData.value(key); }
-    allData.clear();
-}
-
-//*********************************************************************************
-// Refresh project map and get latest simulation type
-//*********************************************************************************
-void MainWindow::refresh_projsettings()
-{
-
-    // Save simtype into oldsimtype
-    oldsimtype = simtype;
-
-    // Refresh the map to get the project data
-    QMap<QString, QString> *singleData;
-    this->clearAllData();
-    singleData = new QMap<QString,QString>;
-    int numberOfPanes = 1;
-    for (int i=0;i<numberOfPanes;i++) {
-        singleData = new QMap<QString,QString>;
-        if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(i))->getData(*singleData))
-        {
-            allData.insert(i, singleData);
-        }
-    }
-
-    // Search
-    QMap<QString, QString> *singleDataSet = allData.value(0);
-    QString temp = "Simulation type";
-    QString simty = singleDataSet->value(temp);
-    //qDebug() << simty;
-    simtype = simty.split(" ")[0].toInt();
-    //qDebug() << "Simulation type: " << simtype;
-    //qDebug() << singleDataSet->keys();
-    //qDebug() << singleDataSet->values();
-    //qDebug() << temp;
-    //qDebug() << allData.value(1)->keys();
-    //qDebug() << allData;
-
-    /* Replaced by search
-    // Refresh map with project information
-    // We primarily need the simulation type
-    // I am pretty sure there is a nicer way to do this
-    foreach (int key, allData.keys())
-    {
-        QMap<QString, QString> *singleDataSet = allData.value(key);
-        //singleDataSet->find("Simulation type");
-        foreach (QString varname, singleDataSet->keys())
-        {
-            QString oneEntry = QString("%1: %2 = %3\n").arg(key+1).arg(varname).arg(singleDataSet->value(varname));
-            QString subString = oneEntry.mid(3,15);
-            if(subString == "Simulation type")
-            {
-                simtype = oneEntry.mid(21,1).toInt();
-            }
-        }
-    }*/
-}
-
 
 //*********************************************************************************
 // Tree item double clicked
@@ -311,6 +310,60 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
             }
         }
 
+        // Update Initial conditions - velocity
+        else if(sel == "Initial velocity")
+        {
+            // Check if simulation type is not same as earlier
+            // Then delete and create a new widget
+            if(oldsimtype != simtype)
+            {
+                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(7));
+                ui->stackedWidget->insertWidget(7, new initialconVel(simtype));
+                ui->stackedWidget->setCurrentIndex(7);
+            }
+            // else just set the index to one
+            else
+            {
+                ui->stackedWidget->setCurrentIndex(7);
+            }
+        }
+
+        // Update Initial conditions - Pressure
+        else if(sel == "Initial pressure")
+        {
+            // Check if simulation type is not same as earlier
+            // Then delete and create a new widget
+            if(oldsimtype != simtype)
+            {
+                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(8));
+                ui->stackedWidget->insertWidget(8, new initialconPres(simtype));
+                ui->stackedWidget->setCurrentIndex(8);
+            }
+            // else just set the index to one
+            else
+            {
+                ui->stackedWidget->setCurrentIndex(8);
+            }
+        }
+
+        // Update Initial conditions - Alpha
+        else if(sel == "Initial phase")
+        {
+            // Check if simulation type is not same as earlier
+            // Then delete and create a new widget
+            if(oldsimtype != simtype)
+            {
+                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(9));
+                ui->stackedWidget->insertWidget(9, new initialconAlpha(simtype));
+                ui->stackedWidget->setCurrentIndex(9);
+            }
+            // else just set the index to one
+            else
+            {
+                ui->stackedWidget->setCurrentIndex(9);
+            }
+        }
+
         // Update solvers
         else if(sel == "Solver")
         {
@@ -318,14 +371,14 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
             // Then delete and create a new widget
             if(oldsimtype != simtype)
             {
-                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(7));
-                ui->stackedWidget->insertWidget(7, new solver);
-                ui->stackedWidget->setCurrentIndex(7);
+                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(13));
+                ui->stackedWidget->insertWidget(13, new solver);
+                ui->stackedWidget->setCurrentIndex(13);
             }
             // else just set the index to one
             else
             {
-                ui->stackedWidget->setCurrentIndex(7);
+                ui->stackedWidget->setCurrentIndex(13);
             }
         }
     }
