@@ -53,8 +53,6 @@ bool projectsettings::getData(QMap<QString, QString> & map, int type)
     map.insert("Simulation type",QString::number(ui->CmB_SimType->currentIndex()));
     map.insert("Turbulence model",QString::number(ui->CmB_TurbModel->currentIndex()));
 
-    //map.insert("QString",ui->lineEdit->text());
-    //map.insert("double", ui->doubleSpinBox->textFromValue(ui->doubleSpinBox->value()));
     hasData = true;
 
     return hasData;
@@ -78,20 +76,3 @@ void projectsettings::on_Btn_WDir_clicked()
         ui->Lbl_WorkDir->setText("\n"+workdirUrl.toString()+"\n");
     }
 }
-
-//*********************************************************************************
-// When index of simulation type changes
-//*********************************************************************************
-/*void projectsettings::on_CmB_SimType_currentIndexChanged(int index)
-{
-
-    std::ofstream myfile;
-    myfile.open ("/Users/ajaybh/simtype.txt");
-    myfile << index;
-    myfile.close();
-
-    //MainWindow::simtype = index;
-
-    //simtype = index;
-    //simtype = index;
-}*/
