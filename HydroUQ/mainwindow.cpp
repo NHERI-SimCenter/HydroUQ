@@ -251,37 +251,15 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
         // Update floating bodies
         else if(sel == "Floating bodies")
         {
-            // Check if simulation type is not same as earlier
-            // Then delete and create a new widget
-            if(oldsimtype != simtype)
-            {
-                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(4));
-                ui->stackedWidget->insertWidget(4, new floatingbds);
-                ui->stackedWidget->setCurrentIndex(4);
-            }
-            // else just set the index to one
-            else
-            {
-                ui->stackedWidget->setCurrentIndex(4);
-            }
+            dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(4);
         }
 
         // Update Meshing
         else if(sel == "Meshing")
         {
-            // Check if simulation type is not same as earlier
-            // Then delete and create a new widget
-            if(oldsimtype != simtype)
-            {
-                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(5));
-                ui->stackedWidget->insertWidget(5, new meshing(simtype));
-                ui->stackedWidget->setCurrentIndex(5);
-            }
-            // else just set the index to one
-            else
-            {
-                ui->stackedWidget->setCurrentIndex(5);
-            }
+            dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(5);
         }
 
         // Update Materials

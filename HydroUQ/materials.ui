@@ -56,7 +56,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout" columnstretch="3,1,1,1">
+    <layout class="QGridLayout" name="GLY_Water" columnstretch="3,1,1,1">
      <item row="0" column="3">
       <widget class="QDoubleSpinBox" name="DSpBx_WaterViscExp">
        <property name="font">
@@ -193,7 +193,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_2" columnstretch="3,1,1,1">
+    <layout class="QGridLayout" name="GLY_Air" columnstretch="3,1,1,1">
      <item row="0" column="3">
       <widget class="QDoubleSpinBox" name="DSpBx_AirViscExp">
        <property name="font">
@@ -327,7 +327,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_4" columnstretch="3,0,0">
+    <layout class="QGridLayout" name="GLY_SurfTen" columnstretch="3,0,0">
      <item row="0" column="0">
       <widget class="QLabel" name="Lbl_SurfTen">
        <property name="font">

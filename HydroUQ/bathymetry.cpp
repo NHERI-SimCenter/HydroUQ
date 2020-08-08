@@ -25,7 +25,7 @@ bathymetry::~bathymetry()
 }
 
 //*********************************************************************************
-// Delete segments from flume
+// Refresh data
 //*********************************************************************************
 void bathymetry::refreshData(int type)
 {

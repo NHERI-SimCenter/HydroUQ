@@ -23,7 +23,7 @@ buildings::~buildings()
 }
 
 //*********************************************************************************
-// Delete segments from flume
+// Refresh building settings
 //*********************************************************************************
 void buildings::refreshData(int type)
 {
