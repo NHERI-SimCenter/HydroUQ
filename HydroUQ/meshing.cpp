@@ -37,59 +37,7 @@ void meshing::refreshData(int type)
 void meshing::hideshowelems(int type)
 {
     (void) type;
-    int meshtyindex = ui->Cmb_MeshType->currentIndex();
-
-    // Hide / Unhide elements based on mesh options
-    if(meshtyindex == 0) // In-built mesher
-    {
-        ui->Btn_UploadMesh->hide();
-        ui->Lbl_MeshGen->hide();
-        ui->Cmb_MeshGen->hide();
-        ui->Lbl_MeshDict->hide();
-        ui->Cmb_MeshDict->hide();
-        ui->Lbl_FineH2->show();
-        ui->HSl_MeshSize->show();
-        ui->Lbl_CoarseMesh->show();
-        ui->Lbl_FineMesh->show();
-        ui->Lbl_H2Regions->show();
-        ui->Tbl_Regions->show();
-        ui->Btn_AddRegion->show();
-        ui->Btn_RemRegion->show();
-    }
-    else // Upload mesh / mesh dictionaries
-    {
-        ui->Btn_UploadMesh->show();
-        ui->Lbl_MeshGen->show();
-        ui->Cmb_MeshGen->show();
-        ui->Lbl_MeshDict->show();
-        ui->Cmb_MeshDict->show();
-        ui->Lbl_FineH2->hide();
-        ui->HSl_MeshSize->hide();
-        ui->Lbl_CoarseMesh->hide();
-        ui->Lbl_FineMesh->hide();
-        ui->Lbl_H2Regions->hide();
-        ui->Tbl_Regions->hide();
-        ui->Btn_AddRegion->hide();
-        ui->Btn_RemRegion->hide();
-    }
-
-    // Change name on the button
-    if(meshtyindex == 1)
-    {
-        ui->Btn_UploadMesh->setText("\nUpload mesh files\n");
-        ui->Lbl_MeshGen->show();
-        ui->Cmb_MeshGen->show();
-        ui->Lbl_MeshDict->hide();
-        ui->Cmb_MeshDict->hide();
-    }
-    else if(meshtyindex == 2)
-    {
-        ui->Btn_UploadMesh->setText("\nUpload mesh dictionary files\n");
-        ui->Lbl_MeshGen->hide();
-        ui->Cmb_MeshGen->hide();
-        ui->Lbl_MeshDict->show();
-        ui->Cmb_MeshDict->show();
-    }
+    on_Cmb_MeshType_currentIndexChanged(ui->Cmb_MeshType->currentIndex());
 }
 
 //*********************************************************************************

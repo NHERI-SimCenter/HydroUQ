@@ -198,7 +198,7 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
         // Type of bathymetry
         map.insert("Bathymetry file type",QString::number(ui->CmB_FileType->currentIndex()));
         // Type of solution file
-        map.insert("Bathymetry file type",QString::number(ui->CmB_SolFormat->currentIndex()));
+        map.insert("Solution file type",QString::number(ui->CmB_SolFormat->currentIndex()));
     }
 
     // SimCenter library

@@ -354,6 +354,9 @@
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
        <property name="maximum">
         <double>10000.000000000000000</double>
        </property>

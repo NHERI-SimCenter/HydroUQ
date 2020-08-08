@@ -289,6 +289,9 @@ Select solution
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
     </layout>
@@ -359,6 +362,9 @@ Select solution
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>

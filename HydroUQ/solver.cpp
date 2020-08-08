@@ -38,9 +38,9 @@ void solver::hideshowelems(int type)
 {
     (void) type;
     if(ui->ChB_Restart->isChecked())
-        ui->Btn_UploadFiles->show();
+        on_ChB_Restart_stateChanged(2);
     else
-        ui->Btn_UploadFiles->hide();
+        on_ChB_Restart_stateChanged(-2);
 }
 
 //*********************************************************************************

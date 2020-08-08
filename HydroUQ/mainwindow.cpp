@@ -116,7 +116,7 @@ void MainWindow::on_Btn_Generate_Files_clicked()
     singleData = new QMap<QString,QString>;
     if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->getData(*singleData,simtype))
     {
-        allData.insert(1, singleData);
+        allData.insert(2, singleData);
     }
 
     // Get data from buildings - index 3
