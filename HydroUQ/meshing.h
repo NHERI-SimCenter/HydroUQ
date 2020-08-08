@@ -17,6 +17,7 @@ public:
     explicit meshing(int, QWidget *parent = nullptr);
     ~meshing();
     bool getData(QMap<QString, QString>&,int);
+    void refreshData(int);
 
 private slots:
     void on_Cmb_MeshType_currentIndexChanged(int index);

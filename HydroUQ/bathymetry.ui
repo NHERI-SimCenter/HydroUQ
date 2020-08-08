@@ -60,6 +60,11 @@
     <layout class="QHBoxLayout" name="HLY_Files">
      <item>
       <widget class="QPushButton" name="Btn_UploadFiles">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="toolTip">
         <string>Select the bathymetric files to be used</string>
        </property>
@@ -76,6 +81,11 @@ Select bathymetry
      </item>
      <item>
       <widget class="QPushButton" name="Btn_UploadSolution">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="toolTip">
         <string>Upload the shallow water solver solution files</string>
        </property>
@@ -96,6 +106,11 @@ Select solution
     <layout class="QVBoxLayout" name="VLY_SCLibrary">
      <item>
       <widget class="QComboBox" name="CmB_FileType">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="toolTip">
         <string>Select the format of the bathymetric files uploaded</string>
        </property>
@@ -126,6 +141,11 @@ Select solution
      </item>
      <item>
       <widget class="QComboBox" name="CmB_SolFormat">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="toolTip">
         <string>Select the format of the solutions files uploaded</string>
        </property>
@@ -151,6 +171,11 @@ Select solution
      </item>
      <item>
       <widget class="QComboBox" name="CmB_Library">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
        <property name="toolTip">
         <string>Select one of the pre-existing SW solutions from the SimCenter Library</string>
        </property>
@@ -258,7 +283,13 @@ Select solution
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_Depth"/>
+      <widget class="QDoubleSpinBox" name="DSpBx_Depth">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -323,7 +354,13 @@ Select solution
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_Breadth"/>
+      <widget class="QDoubleSpinBox" name="DSpBx_Breadth">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

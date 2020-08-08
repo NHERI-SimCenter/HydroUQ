@@ -15,6 +15,7 @@ public:
     explicit solver(QWidget *parent = nullptr);
     ~solver();
     bool getData(QMap<QString, QString>&);
+    void refreshData(int);
 
 private slots:
     void on_ChB_Restart_stateChanged(int arg1);

@@ -14,8 +14,10 @@ class floatingbds : public QFrame
 public:
     explicit floatingbds(QWidget *parent = nullptr);
     ~floatingbds();
+    void refreshData(int);
 
 private:
+    void hideshowelems(int);
     Ui::floatingbds *ui;
 };
 

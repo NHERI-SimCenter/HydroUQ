@@ -23,11 +23,23 @@ solver::~solver()
 }
 
 //*********************************************************************************
+// Refresh data
+//*********************************************************************************
+void solver::refreshData(int type)
+{
+    // Initialize to show / hide elements
+    hideshowelems();
+}
+
+//*********************************************************************************
 // Show - hide elements
 //*********************************************************************************
 void solver::hideshowelems()
 {
-    ui->Btn_UploadFiles->hide();
+    if(ui->ChB_Restart->isChecked())
+        ui->Btn_UploadFiles->show();
+    else
+        ui->Btn_UploadFiles->hide();
 }
 
 //*********************************************************************************

@@ -60,6 +60,11 @@
    </item>
    <item>
     <widget class="QPushButton" name="Btn_WDir">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="toolTip">
       <string>Set the working directory where all files are stored</string>
      </property>
@@ -117,6 +122,11 @@ Set working directory
    </item>
    <item>
     <widget class="QLineEdit" name="Led_PName">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="toolTip">
       <string>Provide a project name.</string>
      </property>
@@ -179,6 +189,11 @@ Set working directory
    </item>
    <item>
     <widget class="QComboBox" name="CmB_SimType">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="toolTip">
       <string>Choose the type of simulation to be done</string>
      </property>
@@ -243,6 +258,11 @@ Set working directory
    </item>
    <item>
     <widget class="QComboBox" name="CmB_TurbModel">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="toolTip">
       <string>Choose the turbulence model to be used</string>
      </property>
@@ -272,7 +292,7 @@ Set working directory
     </widget>
    </item>
    <item>
-    <spacer name="VSp_AA_01">
+    <spacer name="VSp">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>

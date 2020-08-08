@@ -20,7 +20,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,1">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,2,5">
     <item>
      <widget class="QFrame" name="parameterFrame">
       <property name="font">
@@ -34,7 +34,7 @@
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
       </property>
-      <layout class="QVBoxLayout" name="parameterFrame_outer">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="leftMargin">
         <number>6</number>
        </property>
@@ -159,11 +159,32 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>Generate files</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="Btn_Generate_Files">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Generate files</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="Btn_SubTACC">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Submit to TACC</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QLabel" name="Lbl_DescriptTitle">
@@ -261,6 +282,18 @@
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout">
+       <property name="leftMargin">
+        <number>6</number>
+       </property>
+       <property name="topMargin">
+        <number>6</number>
+       </property>
+       <property name="rightMargin">
+        <number>6</number>
+       </property>
+       <property name="bottomMargin">
+        <number>6</number>
+       </property>
        <item row="0" column="0">
         <widget class="QTextEdit" name="textEdit"/>
        </item>
@@ -278,8 +311,128 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionOPen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuBoundary">
+    <property name="title">
+     <string>Boundary</string>
+    </property>
+    <widget class="QMenu" name="menuAdd_a_boundary">
+     <property name="title">
+      <string>Add a boundary</string>
+     </property>
+     <addaction name="actionVelocity"/>
+     <addaction name="actionPressure"/>
+     <addaction name="actionPhase"/>
+    </widget>
+    <widget class="QMenu" name="menuRemove_a_boundary">
+     <property name="title">
+      <string>Remove a boundary</string>
+     </property>
+     <addaction name="actionVelocity_2"/>
+     <addaction name="actionPressure_2"/>
+     <addaction name="actionPhase_2"/>
+    </widget>
+    <addaction name="menuAdd_a_boundary"/>
+    <addaction name="menuRemove_a_boundary"/>
+   </widget>
+   <widget class="QMenu" name="menuSW_CFD_Interface">
+    <property name="title">
+     <string>SW-CFD Interface</string>
+    </property>
+    <addaction name="actionAdd_an_interface"/>
+    <addaction name="actionDelete_an_interface"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp"/>
+    <addaction name="actionAbout_Hydro_UQ"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuSW_CFD_Interface"/>
+   <addaction name="menuBoundary"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAdd_an_interface">
+   <property name="text">
+    <string>Add an interface</string>
+   </property>
+  </action>
+  <action name="actionDelete_an_interface">
+   <property name="text">
+    <string>Delete an interface</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionOPen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionAbout_Hydro_UQ">
+   <property name="text">
+    <string>About Hydro-UQ</string>
+   </property>
+  </action>
+  <action name="actionVelocity">
+   <property name="text">
+    <string>Velocity</string>
+   </property>
+  </action>
+  <action name="actionPressure">
+   <property name="text">
+    <string>Pressure</string>
+   </property>
+  </action>
+  <action name="actionPhase">
+   <property name="text">
+    <string>Phase</string>
+   </property>
+  </action>
+  <action name="actionVelocity_2">
+   <property name="text">
+    <string>Velocity</string>
+   </property>
+  </action>
+  <action name="actionPressure_2">
+   <property name="text">
+    <string>Pressure</string>
+   </property>
+  </action>
+  <action name="actionPhase_2">
+   <property name="text">
+    <string>Phase</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

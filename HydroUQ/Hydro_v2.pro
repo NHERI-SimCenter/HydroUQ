@@ -19,6 +19,9 @@ SOURCES += \
     bathymetry.cpp \
     buildings.cpp \
     floatingbds.cpp \
+    initialconalpha.cpp \
+    initialconpres.cpp \
+    initialconvel.cpp \
     main.cpp \
     mainwindow.cpp \
     materials.cpp \
@@ -30,6 +33,9 @@ HEADERS += \
     bathymetry.h \
     buildings.h \
     floatingbds.h \
+    initialconalpha.h \
+    initialconpres.h \
+    initialconvel.h \
     mainwindow.h \
     materials.h \
     meshing.h \
@@ -40,6 +46,9 @@ FORMS += \
     bathymetry.ui \
     buildings.ui \
     floatingbds.ui \
+    initialconalpha.ui \
+    initialconpres.ui \
+    initialconvel.ui \
     mainwindow.ui \
     materials.ui \
     meshing.ui \
