@@ -37,11 +37,18 @@ void swcfdint::refreshData(int type)
 //*********************************************************************************
 void swcfdint::hideshowelems(int type)
 {
-    (void) type;
-    if(ui->ChB_UploadFile->isChecked())
+    if( (type == 1) || (type == 2) )
+    {
+        ui->Lbl_Notice->hide();
+        ui->Lbl_Interface->show();
         ui->Btn_UploadFile->show();
+    }
     else
+    {
+        ui->Lbl_Notice->show();
+        ui->Lbl_Interface->hide();
         ui->Btn_UploadFile->hide();
+    }
 }
 
 //*********************************************************************************
@@ -50,14 +57,16 @@ void swcfdint::hideshowelems(int type)
 bool swcfdint::getData(QMap<QString, QString>& map, int type)
 {
     bool hasData=false;
-    (void) type;
 
-    // Change hasData to be true
-    hasData = true;
+    if( (type == 1) || (type == 2) )
+    {
+        // Write the bathymetry file names
+        map.insert("SW-CFD interface file",interffilenames[0]);
+        hasData = true;
+    }
 
     // Return the bool
     return hasData;
-
 }
 
 //*********************************************************************************
@@ -67,30 +76,12 @@ void swcfdint::on_Btn_UploadFile_clicked()
 {
     // Open a dialog window to select the files
     // Here one can select multiple files
-    // The selected files are stored in the String list intefilenames (declared in mainwindow.h)
+    // The selected files are stored in the String list interfilenames
+    // For now it is limited to one file only
+    // Change ExistingFile to ExistingFiles to allow multiple files
     QFileDialog selectfilesdialog(this);
-    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
-    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    selectfilesdialog.setDirectory(QDir::homePath());
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFile);
+    selectfilesdialog.setNameFilter(tr("All files (*.csv)"));
     if(selectfilesdialog.exec()) interffilenames = selectfilesdialog.selectedFiles();
 }
-
-
-//*********************************************************************************
-// Next button
-//*********************************************************************************
-void swcfdint::on_Btn_Next_clicked()
-{
-
-}
-
-//*********************************************************************************
-// Previous button
-//*********************************************************************************
-void swcfdint::on_Btn_Previous_clicked()
-{
-
-}
-
-
-
-

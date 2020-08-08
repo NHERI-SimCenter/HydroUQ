@@ -83,6 +83,9 @@ the shallow water solvers</string>
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
     </layout>

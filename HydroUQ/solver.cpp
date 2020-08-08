@@ -38,9 +38,9 @@ void solver::hideshowelems(int type)
 {
     (void) type;
     if(ui->ChB_Restart->isChecked())
-        ui->Btn_UploadFiles->show();
+        on_ChB_Restart_stateChanged(2);
     else
-        ui->Btn_UploadFiles->hide();
+        on_ChB_Restart_stateChanged(-2);
 }
 
 //*********************************************************************************
@@ -85,7 +85,7 @@ bool solver::getData(QMap<QString, QString>& map, int type)
 }
 
 //*********************************************************************************
-// Show upload button
+// WHen state of check box is changed
 //*********************************************************************************
 void solver::on_ChB_Restart_stateChanged(int arg1)
 {

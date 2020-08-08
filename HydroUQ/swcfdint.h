@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QFileDialog>
 #include <QDir>
+#include <QDebug>
 
 namespace Ui {
 class swcfdint;
@@ -21,8 +22,6 @@ public:
 
 private slots:
     void on_Btn_UploadFile_clicked();
-    void on_Btn_Next_clicked();
-    void on_Btn_Previous_clicked();
 
 private:
     void hideshowelems(int);

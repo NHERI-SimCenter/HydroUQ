@@ -78,8 +78,8 @@ void MainWindow::refresh_projsettings()
 
     // Search for simulation type
     QMap<QString, QString> *singleDataSet = allData.value(0);
-    QString temp = "Simulation type";
-    QString simty = singleDataSet->value(temp);
+    QString simty = singleDataSet->value("Simulation type");
+    //wdir = singleDataSet->value("Work directory");
 
     // Get new simulation type, if user has changed it intermediately
     // This can also be same as old simulation type
@@ -116,7 +116,7 @@ void MainWindow::on_Btn_Generate_Files_clicked()
     singleData = new QMap<QString,QString>;
     if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->getData(*singleData,simtype))
     {
-        allData.insert(1, singleData);
+        allData.insert(2, singleData);
     }
 
     // Get data from buildings - index 3

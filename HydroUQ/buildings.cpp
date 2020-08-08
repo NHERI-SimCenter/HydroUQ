@@ -36,32 +36,24 @@ void buildings::refreshData(int type)
 //*********************************************************************************
 void buildings::hideshowelems(int type)
 {
+
     if( ((type == 1) || (type == 2)) ||
             ((type == 3) || (type == 4)) )
     {
         ui->Lbl_Notice->hide();
-        ui->Lbl_Building->show();
-        ui->Tbl_Building->show();
-        ui->Btn_AddBuild->show();
-        ui->Btn_RemBuild->show();
+        ui->ChB_Parametric->show();
+        if(ui->ChB_Parametric->isChecked())
+            on_ChB_Parametric_stateChanged(2);
+        else
+            on_ChB_Parametric_stateChanged(-2);
     }
-    else if((type == 5) || (type == 6))
+    else if( ((type == 5) || (type == 6)) || (type == 7))
     {
         ui->Lbl_Notice->setText("This option will be coming soon. Keep yourself \nupdated");
         ui->Lbl_Notice->show();
-        ui->Lbl_Building->hide();
-        ui->Tbl_Building->hide();
-        ui->Btn_AddBuild->hide();
-        ui->Btn_RemBuild->hide();
-    }
-    else if(type == 7)
-    {
-        ui->Lbl_Notice->setText("This option is coming soon in the beta version. \nWatch out!");
-        ui->Lbl_Notice->show();
-        ui->Lbl_Building->hide();
-        ui->Tbl_Building->hide();
-        ui->Btn_AddBuild->hide();
-        ui->Btn_RemBuild->hide();
+        ui->ChB_Parametric->hide();
+        ui->GroupPara->hide();
+        ui->GroupNonpara->hide();
     }
 }
 
@@ -72,6 +64,20 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
 {
     bool hasData=false;
     (void) type; // Variable is unused
+
+    // Info about check box
+    if(ui->ChB_Parametric->isChecked())
+        map.insert("ParametricBuild",QString::number(1));
+    else
+        map.insert("ParametricBuild",QString::number(0));
+
+    // Parametric inputs
+    map.insert("Number of building in X",ui->DSpBx_NumBuildX->textFromValue(ui->DSpBx_NumBuildX->value()));
+    map.insert("Number of building in Y",ui->DSpBx_NumBuildY->textFromValue(ui->DSpBx_NumBuildY->value()));
+    map.insert("Building distance along X",ui->DSpBx_BuildDistX->textFromValue(ui->DSpBx_BuildDistX->value()));
+    map.insert("Building distance along Y",ui->DSpBx_BuildDistY->textFromValue(ui->DSpBx_BuildDistY->value()));
+    map.insert("Distance from coast",ui->DSpBx_CoastDist->textFromValue(ui->DSpBx_CoastDist->value()));
+    map.insert("Building distribution",QString::number(ui->CmB_BuildDist->currentIndex()));
 
     // Write data from the table
     if(ui->Tbl_Building->rowCount() > 0)
@@ -93,6 +99,24 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
 }
 
 //*********************************************************************************
+// Parametric building settings
+//*********************************************************************************
+void buildings::on_ChB_Parametric_stateChanged(int arg1)
+{
+    // Show parametric settings
+    if(arg1 > 0) // Show
+    {
+        ui->GroupPara->show();
+        ui->GroupNonpara->hide();
+    }
+    else // Hide
+    {
+        ui->GroupPara->hide();
+        ui->GroupNonpara->show();
+    }
+}
+
+//*********************************************************************************
 // Add building
 //*********************************************************************************
 void buildings::on_Btn_AddBuild_clicked()
@@ -107,3 +131,5 @@ void buildings::on_Btn_RemBuild_clicked()
 {
 
 }
+
+

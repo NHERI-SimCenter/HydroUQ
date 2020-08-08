@@ -63,30 +63,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="ChB_UploadFile">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Check this if you would like to upload a file instead of using the table</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>10000</number>
-     </property>
-     <property name="text">
-      <string>Upload interface file</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QPushButton" name="Btn_UploadFile">
      <property name="toolTip">
       <string>Upload a latitude-longitude file to define the interfaces</string>
@@ -100,107 +76,6 @@ Upload interface file
 </string>
      </property>
     </widget>
-   </item>
-   <item>
-    <widget class="QStackedWidget" name="SWg_CA_Interface">
-     <property name="toolTip">
-      <string>Interface points for all SW-CFD interfaces</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>10000</number>
-     </property>
-     <property name="currentIndex">
-      <number>-1</number>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="HLY_Scroller" stretch="0,0,0,0">
-     <item>
-      <spacer name="HSp_Left">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="Btn_Previous">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    border-image: url(:/images/images/previous.png) 10;
-    border-width: 0px;                         
-    padding: 0px 0px;
-    min-height: 10px;
-    min-width: 10px;
-}
-
-QPushButton:hover {
-    border-image: url(:/images/images/previous.png) 10;
-}
-
-QPushButton:pressed {
-    color: lightgray;
-    border-image: url(:/images/images/previous-invert.png) 10;
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="Btn_Next">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    border-image: url(:/images/images/next.png) 10;
-    border-width: 0px;                         
-    padding: 0px 0px;
-    min-height: 10px;
-    min-width: 10px;
-}
-
-QPushButton:hover {
-    border-image: url(:/images/images/next.png) 10;
-}
-
-QPushButton:pressed {
-    color: lightgray;
-    border-image: url(:/images/images/next-invert.png) 10;
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="HSp_Right">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
    </item>
    <item>
     <spacer name="VSp">

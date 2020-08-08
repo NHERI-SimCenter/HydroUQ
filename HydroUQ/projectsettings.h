@@ -23,7 +23,6 @@ public:
 
 private slots:
     void on_Btn_WDir_clicked();
-    //void on_CmB_SimType_currentIndexChanged(int index);
 
 private:
     void hideshowelems(int);
