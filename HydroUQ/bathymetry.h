@@ -17,6 +17,7 @@ public:
     explicit bathymetry(int, QWidget *parent = nullptr);
     ~bathymetry();
     bool getData(QMap<QString, QString>&, int);
+    void refreshData(int);
 
 private slots:
     void on_Btn_UploadFiles_clicked();

@@ -23,6 +23,15 @@ buildings::~buildings()
 }
 
 //*********************************************************************************
+// Delete segments from flume
+//*********************************************************************************
+void buildings::refreshData(int type)
+{
+    // Initialize to show / hide elements
+    hideshowelems(type);
+}
+
+//*********************************************************************************
 // Show - hide elements
 //*********************************************************************************
 void buildings::hideshowelems(int type)

@@ -25,6 +25,15 @@ bathymetry::~bathymetry()
 }
 
 //*********************************************************************************
+// Delete segments from flume
+//*********************************************************************************
+void bathymetry::refreshData(int type)
+{
+    // Initialize to show / hide elements
+    hideshowelems(type);
+}
+
+//*********************************************************************************
 // Show - hide elements
 //*********************************************************************************
 void bathymetry::hideshowelems(int type)

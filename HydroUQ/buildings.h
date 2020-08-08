@@ -15,6 +15,7 @@ public:
     explicit buildings(int, QWidget *parent = nullptr);
     ~buildings();
     bool getData(QMap<QString, QString>&,int);
+    void refreshData(int);
 
 private slots:
     void on_Btn_AddBuild_clicked();

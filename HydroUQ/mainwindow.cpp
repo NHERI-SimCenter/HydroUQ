@@ -237,37 +237,15 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
         // Update bathymetry
         else if(sel == "Bathymetry")
         {
-            // Check if simulation type is not same as earlier
-            // Then delete and create a new widget
-            if(oldsimtype != simtype)
-            {
-                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(1));
-                ui->stackedWidget->insertWidget(1, new bathymetry(simtype));
-                ui->stackedWidget->setCurrentIndex(1);
-            }
-            // else just set the index to one
-            else
-            {
-                ui->stackedWidget->setCurrentIndex(1);
-            }
+            dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(1);
         }
 
         // Update buildings
         else if(sel == "Buildings")
         {
-            // Check if simulation type is not same as earlier
-            // Then delete and create a new widget
-            if(oldsimtype != simtype)
-            {
-                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(3));
-                ui->stackedWidget->insertWidget(3, new buildings(simtype));
-                ui->stackedWidget->setCurrentIndex(3);
-            }
-            // else just set the index to one
-            else
-            {
-                ui->stackedWidget->setCurrentIndex(3);
-            }
+            dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(3);
         }
 
         // Update floating bodies
