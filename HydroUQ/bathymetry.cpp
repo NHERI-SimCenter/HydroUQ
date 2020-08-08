@@ -12,7 +12,6 @@ bathymetry::bathymetry(int type, QWidget *parent) :
 
     // Initialize to show / hide elements
     hideshowelems(type);
-
 }
 
 //*********************************************************************************

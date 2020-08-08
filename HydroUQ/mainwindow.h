@@ -32,6 +32,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    //QString getprojdetails();
 
 private slots:
     void on_Btn_Generate_Files_clicked();
@@ -48,5 +49,6 @@ private:
 
     int simtype; // Simulation type
     QStringList optiontree; // Tree widget names
+    QString wdir;
 };
 #endif // MAINWINDOW_H
