@@ -23,6 +23,15 @@ initialconAlpha::~initialconAlpha()
 }
 
 //*********************************************************************************
+// Refresh data
+//*********************************************************************************
+void initialconAlpha::refreshData(int type)
+{
+    // Initialize to show / hide elements
+    hideshowelems(type);
+}
+
+//*********************************************************************************
 // Show - hide elements
 //*********************************************************************************
 void initialconAlpha::hideshowelems(int type)

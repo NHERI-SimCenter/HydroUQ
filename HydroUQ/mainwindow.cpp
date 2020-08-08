@@ -265,79 +265,38 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
         // Update Materials
         else if(sel == "Materials")
         {
-            // Check if simulation type is not same as earlier
-            // Then delete and create a new widget
-            if(oldsimtype != simtype)
-            {
-                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(6));
-                ui->stackedWidget->insertWidget(6, new materials);
-                ui->stackedWidget->setCurrentIndex(6);
-            }
-            // else just set the index to one
-            else
-            {
-                ui->stackedWidget->setCurrentIndex(6);
-            }
+            dynamic_cast<materials *>(ui->stackedWidget->widget(6))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(6);
         }
 
         // Update Initial conditions - velocity
         else if(sel == "Initial velocity")
         {
-            // Check if simulation type is not same as earlier
-            // Then delete and create a new widget
-            if(oldsimtype != simtype)
-            {
-                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(7));
-                ui->stackedWidget->insertWidget(7, new initialconVel(simtype));
-                ui->stackedWidget->setCurrentIndex(7);
-            }
-            // else just set the index to one
-            else
-            {
-                ui->stackedWidget->setCurrentIndex(7);
-            }
+            dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(7);
         }
 
         // Update Initial conditions - Pressure
         else if(sel == "Initial pressure")
         {
-            // Check if simulation type is not same as earlier
-            // Then delete and create a new widget
-            if(oldsimtype != simtype)
-            {
-                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(8));
-                ui->stackedWidget->insertWidget(8, new initialconPres(simtype));
-                ui->stackedWidget->setCurrentIndex(8);
-            }
-            // else just set the index to one
-            else
-            {
-                ui->stackedWidget->setCurrentIndex(8);
-            }
+            dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(8);
         }
 
         // Update Initial conditions - Alpha
         else if(sel == "Initial phase")
         {
-            // Check if simulation type is not same as earlier
-            // Then delete and create a new widget
-            if(oldsimtype != simtype)
-            {
-                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(9));
-                ui->stackedWidget->insertWidget(9, new initialconAlpha(simtype));
-                ui->stackedWidget->setCurrentIndex(9);
-            }
-            // else just set the index to one
-            else
-            {
-                ui->stackedWidget->setCurrentIndex(9);
-            }
+            dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(9);
         }
 
         // Update solvers
         else if(sel == "Solver")
         {
-            // Check if simulation type is not same as earlier
+            dynamic_cast<solver *>(ui->stackedWidget->widget(13))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(13);
+
+            /*// Check if simulation type is not same as earlier
             // Then delete and create a new widget
             if(oldsimtype != simtype)
             {
@@ -349,7 +308,7 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
             else
             {
                 ui->stackedWidget->setCurrentIndex(13);
-            }
+            }*/
         }
     }
 }

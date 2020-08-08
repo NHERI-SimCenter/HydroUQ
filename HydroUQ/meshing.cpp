@@ -227,7 +227,7 @@ void meshing::on_Btn_UploadMesh_clicked()
 //*********************************************************************************
 void meshing::on_Btn_AddRegion_clicked()
 {
-    ui->Tbl_Regions->insertRow(ui->Tbl_Segments->rowCount());
+    ui->Tbl_Regions->insertRow(ui->Tbl_Regions->rowCount());
 }
 
 //*********************************************************************************

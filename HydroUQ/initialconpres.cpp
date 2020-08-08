@@ -23,6 +23,15 @@ initialconPres::~initialconPres()
 }
 
 //*********************************************************************************
+// Refresh data
+//*********************************************************************************
+void initialconPres::refreshData(int type)
+{
+    // Initialize to show / hide elements
+    hideshowelems(type);
+}
+
+//*********************************************************************************
 // Show - hide elements
 //*********************************************************************************
 void initialconPres::hideshowelems(int type)

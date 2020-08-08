@@ -24,6 +24,15 @@ initialconVel::~initialconVel()
 }
 
 //*********************************************************************************
+// Refresh data
+//*********************************************************************************
+void initialconVel::refreshData(int type)
+{
+    // Initialize to show / hide elements
+    hideshowelems(type);
+}
+
+//*********************************************************************************
 // Show - hide elements
 //*********************************************************************************
 void initialconVel::hideshowelems(int type)

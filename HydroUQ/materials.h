@@ -15,6 +15,7 @@ public:
     explicit materials(QWidget *parent = nullptr);
     ~materials();
     bool getData(QMap<QString, QString>&);
+    void refreshData(int);
 
 private:
     Ui::materials *ui;

@@ -15,6 +15,7 @@ public:
     explicit initialconAlpha(int, QWidget *parent = nullptr);
     ~initialconAlpha();
     bool getData(QMap<QString, QString>&, int);
+    void refreshData(int);
 
 private slots:
     void on_Btn_AddRegion_clicked();

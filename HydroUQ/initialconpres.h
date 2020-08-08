@@ -15,6 +15,7 @@ public:
     explicit initialconPres(int, QWidget *parent = nullptr);
     ~initialconPres();
     bool getData(QMap<QString, QString>&, int);
+    void refreshData(int);
 
 private slots:
     void on_Btn_AddRegion_clicked();
