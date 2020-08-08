@@ -96,6 +96,7 @@ bool initialconVel::getData(QMap<QString, QString>& map,int type)
     // Change hasData to be true
     hasData = true;
 
+    // Return hasdata
     return hasData;
 }
 

@@ -27,7 +27,8 @@ SOURCES += \
     materials.cpp \
     meshing.cpp \
     projectsettings.cpp \
-    solver.cpp
+    solver.cpp \
+    swcfdint.cpp
 
 HEADERS += \
     bathymetry.h \
@@ -40,7 +41,8 @@ HEADERS += \
     materials.h \
     meshing.h \
     projectsettings.h \
-    solver.h
+    solver.h \
+    swcfdint.h
 
 FORMS += \
     bathymetry.ui \
@@ -53,7 +55,8 @@ FORMS += \
     materials.ui \
     meshing.ui \
     projectsettings.ui \
-    solver.ui
+    solver.ui \
+    swcfdint.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

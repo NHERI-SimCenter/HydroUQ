@@ -56,87 +56,8 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="HLY_Start" stretch="2,1">
-     <item>
-      <widget class="QLabel" name="Lbl_Start">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-         <italic>false</italic>
-        </font>
-       </property>
-       <property name="text">
-        <string>Start time</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_Start">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="decimals">
-        <number>8</number>
-       </property>
-       <property name="maximum">
-        <double>100000.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="HLY_End" stretch="2,1">
-     <item>
-      <widget class="QLabel" name="Lbl_End">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-         <italic>false</italic>
-        </font>
-       </property>
-       <property name="text">
-        <string>End time</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_End">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="decimals">
-        <number>8</number>
-       </property>
-       <property name="value">
-        <double>20.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="HLY_DeltaT" stretch="2,0">
-     <item>
+    <layout class="QGridLayout" name="GLY01" columnminimumwidth="3,1">
+     <item row="2" column="0">
       <widget class="QLabel" name="Lbl_DeltaT">
        <property name="font">
         <font>
@@ -155,12 +76,89 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="Lbl_Start">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <italic>false</italic>
+        </font>
+       </property>
+       <property name="text">
+        <string>Start time</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QDoubleSpinBox" name="DSpBx_Start">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="decimals">
+        <number>8</number>
+       </property>
+       <property name="maximum">
+        <double>100000.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="Lbl_End">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <italic>false</italic>
+        </font>
+       </property>
+       <property name="text">
+        <string>End time</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QDoubleSpinBox" name="DSpBx_End">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="decimals">
+        <number>8</number>
+       </property>
+       <property name="value">
+        <double>20.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
       <widget class="QDoubleSpinBox" name="DSpBx_DeltaT">
        <property name="font">
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
        <property name="decimals">
         <number>8</number>
@@ -173,11 +171,7 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="HLY_WriteT" stretch="2,1">
-     <item>
+     <item row="3" column="0">
       <widget class="QLabel" name="Lbl_WriteT">
        <property name="font">
         <font>
@@ -196,12 +190,15 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="3" column="1">
       <widget class="QDoubleSpinBox" name="DSpBx_WriteT">
        <property name="font">
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
        <property name="decimals">
         <number>8</number>
@@ -269,8 +266,81 @@ Upload Restart Files
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="HLY_Decomp" stretch="0,0">
-     <item>
+    <layout class="QGridLayout" name="GLY02">
+     <item row="0" column="1">
+      <widget class="QDoubleSpinBox" name="DSpBx_Px">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="decimals">
+        <number>0</number>
+       </property>
+       <property name="value">
+        <double>3.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QDoubleSpinBox" name="DSpBx_Pz">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="decimals">
+        <number>0</number>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="Lbl_Subdomains">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <italic>false</italic>
+        </font>
+       </property>
+       <property name="text">
+        <string>Subdomains</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QDoubleSpinBox" name="DSpBx_Py">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="decimals">
+        <number>0</number>
+       </property>
+       <property name="value">
+        <double>2.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
       <widget class="QLabel" name="Lbl_Decomp">
        <property name="font">
         <font>
@@ -289,7 +359,7 @@ Upload Restart Files
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="1" colspan="3">
       <widget class="QComboBox" name="Cmb_Decomp">
        <property name="font">
         <font>
@@ -312,83 +382,6 @@ Upload Restart Files
          <string>Hierarchial</string>
         </property>
        </item>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="HLY_Subdomains" stretch="1,1,1,1">
-     <item>
-      <widget class="QLabel" name="Lbl_Subdomains">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-         <italic>false</italic>
-        </font>
-       </property>
-       <property name="text">
-        <string>Subdomains</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_Px">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="value">
-        <double>3.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_Py">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="value">
-        <double>2.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_Pz">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="value">
-        <double>1.000000000000000</double>
-       </property>
       </widget>
      </item>
     </layout>

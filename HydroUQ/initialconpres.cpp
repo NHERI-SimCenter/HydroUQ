@@ -85,6 +85,7 @@ bool initialconPres::getData(QMap<QString, QString>& map,int type)
     // Change hasData to be true
     hasData = true;
 
+    // Return the bool
     return hasData;
 }
 

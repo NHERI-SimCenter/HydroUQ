@@ -1,20 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "projectsettings.h"
-#include "bathymetry.h"
-#include "buildings.h"
-#include "floatingbds.h"
-#include "meshing.h"
-#include "materials.h"
-#include "initialconvel.h"
-#include "initialconpres.h"
-#include "initialconalpha.h"
-#include "solver.h"
-
-#include <QString>
-#include <QMap>
-#include <QDebug>
-#include <QTreeWidget>
 
 //*********************************************************************************
 // Main window
@@ -44,21 +29,20 @@ MainWindow::~MainWindow()
 void MainWindow::initialize()
 {
     // Add project page
-    ui->stackedWidget->addWidget(new projectsettings);
-    ui->stackedWidget->addWidget(new bathymetry(0));
-    ui->stackedWidget->addWidget(new projectsettings); // Later change to SW-CFD Interface
-    ui->stackedWidget->addWidget(new buildings(0));
-    ui->stackedWidget->addWidget(new floatingbds);
-    ui->stackedWidget->addWidget(new meshing(0));
-    ui->stackedWidget->addWidget(new materials);
-    ui->stackedWidget->addWidget(new initialconVel(0)); // Initial velocity (CHange)
-    ui->stackedWidget->addWidget(new initialconPres(0)); // Initial pressure (CHange)
-    ui->stackedWidget->addWidget(new initialconAlpha(0));
+    ui->stackedWidget->addWidget(new projectsettings(0)); // Project settings
+    ui->stackedWidget->addWidget(new bathymetry(0)); // Bathymetry
+    ui->stackedWidget->addWidget(new swcfdint(0)); // SW-CFD interface: Check this if working
+    ui->stackedWidget->addWidget(new buildings(0)); // Buildings
+    ui->stackedWidget->addWidget(new floatingbds(0)); // Floating bodies
+    ui->stackedWidget->addWidget(new meshing(0)); // Meshing
+    ui->stackedWidget->addWidget(new materials(0)); // Materials
+    ui->stackedWidget->addWidget(new initialconVel(0)); // Initial velocity
+    ui->stackedWidget->addWidget(new initialconPres(0)); // Initial pressure
+    ui->stackedWidget->addWidget(new initialconAlpha(0)); // Initial alpha
     ui->stackedWidget->addWidget(new initialconVel(0)); // Boundary (Velocity)
     ui->stackedWidget->addWidget(new initialconPres(0)); // Boundary (Pressure)
     ui->stackedWidget->addWidget(new initialconAlpha(0)); // Boundary (Alpha)
-    ui->stackedWidget->addWidget(new solver);
-
+    ui->stackedWidget->addWidget(new solver(0)); // Solver settings
 
     // Set index to zero & simtype to zero
     ui->stackedWidget->setCurrentIndex(0);
@@ -79,9 +63,6 @@ void MainWindow::clearAllData(void)
 //*********************************************************************************
 void MainWindow::refresh_projsettings()
 {
-    // Save simtype into oldsimtype
-    oldsimtype = simtype;
-
     // Refresh the map to get the project data
     QMap<QString, QString> *singleData;
     this->clearAllData();
@@ -89,7 +70,7 @@ void MainWindow::refresh_projsettings()
     int numberOfPanes = 1;
     for (int i=0;i<numberOfPanes;i++) {
         singleData = new QMap<QString,QString>;
-        if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(i))->getData(*singleData))
+        if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(i))->getData(*singleData,simtype))
         {
             allData.insert(i, singleData);
         }
@@ -103,7 +84,6 @@ void MainWindow::refresh_projsettings()
     // Get new simulation type, if user has changed it intermediately
     // This can also be same as old simulation type
     simtype = simty.split(" ")[0].toInt();
-
 }
 
 //*********************************************************************************
@@ -120,7 +100,7 @@ void MainWindow::on_Btn_Generate_Files_clicked()
     QMap<QString, QString> *singleData;
     this->clearAllData();
     singleData = new QMap<QString,QString>;
-    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->getData(*singleData))
+    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->getData(*singleData,simtype))
     {
         allData.insert(0, singleData);
     }
@@ -133,6 +113,11 @@ void MainWindow::on_Btn_Generate_Files_clicked()
     }
 
     // Add SW-CFD Interface - Index 2
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->getData(*singleData,simtype))
+    {
+        allData.insert(1, singleData);
+    }
 
     // Get data from buildings - index 3
     singleData = new QMap<QString,QString>;
@@ -142,7 +127,11 @@ void MainWindow::on_Btn_Generate_Files_clicked()
     }
 
     // Get data from floating bodies - Index 4
-    // At the moment, there is no data and not necessary to use this
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->getData(*singleData,simtype))
+    {
+        allData.insert(4, singleData);
+    }
 
     // Get data from mesh - index 5
     singleData = new QMap<QString,QString>;
@@ -153,7 +142,7 @@ void MainWindow::on_Btn_Generate_Files_clicked()
 
     // Get data from materials - index 6
     singleData = new QMap<QString,QString>;
-    if (dynamic_cast<materials *>(ui->stackedWidget->widget(6))->getData(*singleData))
+    if (dynamic_cast<materials *>(ui->stackedWidget->widget(6))->getData(*singleData,simtype))
     {
         allData.insert(6, singleData);
     }
@@ -183,7 +172,7 @@ void MainWindow::on_Btn_Generate_Files_clicked()
 
     // Solver settings - index 13
     singleData = new QMap<QString,QString>;
-    if (dynamic_cast<solver *>(ui->stackedWidget->widget(13))->getData(*singleData))
+    if (dynamic_cast<solver *>(ui->stackedWidget->widget(13))->getData(*singleData,simtype))
     {
         allData.insert(13, singleData);
     }
@@ -241,6 +230,13 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
             ui->stackedWidget->setCurrentIndex(1);
         }
 
+        // Update sw-cfd interface
+        else if(sel == "SW-CFD interface")
+        {
+            dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(2);
+        }
+
         // Update buildings
         else if(sel == "Buildings")
         {
@@ -295,20 +291,6 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
         {
             dynamic_cast<solver *>(ui->stackedWidget->widget(13))->refreshData(simtype);
             ui->stackedWidget->setCurrentIndex(13);
-
-            /*// Check if simulation type is not same as earlier
-            // Then delete and create a new widget
-            if(oldsimtype != simtype)
-            {
-                ui->stackedWidget->removeWidget(ui->stackedWidget->widget(13));
-                ui->stackedWidget->insertWidget(13, new solver);
-                ui->stackedWidget->setCurrentIndex(13);
-            }
-            // else just set the index to one
-            else
-            {
-                ui->stackedWidget->setCurrentIndex(13);
-            }*/
         }
     }
 }

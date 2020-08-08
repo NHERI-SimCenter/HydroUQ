@@ -4,11 +4,14 @@
 //*********************************************************************************
 // Floating body settings
 //*********************************************************************************
-floatingbds::floatingbds(QWidget *parent) :
+floatingbds::floatingbds(int type, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::floatingbds)
 {
     ui->setupUi(this);
+
+    // Initialize to show / hide elements
+    hideshowelems(type);
 }
 
 //*********************************************************************************
@@ -33,5 +36,19 @@ void floatingbds::refreshData(int type)
 //*********************************************************************************
 void floatingbds::hideshowelems(int type)
 {
+    (void) type;
+}
 
+
+//*********************************************************************************
+// Get data from floating bodies
+//*********************************************************************************
+bool floatingbds::getData(QMap<QString, QString>& map, int type)
+{
+    bool hasData=false;
+    (void) type;
+    (void) map;
+
+    // Return the bool
+    return hasData;
 }

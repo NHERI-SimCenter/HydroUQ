@@ -4,14 +4,14 @@
 //*********************************************************************************
 // Solver settings
 //*********************************************************************************
-solver::solver(QWidget *parent) :
+solver::solver(int type, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::solver)
 {
     ui->setupUi(this);
 
     // Initialize to show / hide elements
-    hideshowelems();
+    hideshowelems(type);
 }
 
 //*********************************************************************************
@@ -28,14 +28,15 @@ solver::~solver()
 void solver::refreshData(int type)
 {
     // Initialize to show / hide elements
-    hideshowelems();
+    hideshowelems(type);
 }
 
 //*********************************************************************************
 // Show - hide elements
 //*********************************************************************************
-void solver::hideshowelems()
+void solver::hideshowelems(int type)
 {
+    (void) type;
     if(ui->ChB_Restart->isChecked())
         ui->Btn_UploadFiles->show();
     else
@@ -45,9 +46,10 @@ void solver::hideshowelems()
 //*********************************************************************************
 // Get data from solvers
 //*********************************************************************************
-bool solver::getData(QMap<QString, QString>& map)
+bool solver::getData(QMap<QString, QString>& map, int type)
 {
     bool hasData=false;
+    (void) type;
 
     // Change hasData to be true
     hasData = true;
@@ -75,6 +77,9 @@ bool solver::getData(QMap<QString, QString>& map)
     // Solver type
     map.insert("Solver choice",QString::number(ui->Cmb_Solver->currentIndex()));
 
+    // Change hasData to be true
+    hasData = true;
+
     // Return the bool
     return hasData;
 }
@@ -89,4 +94,18 @@ void solver::on_ChB_Restart_stateChanged(int arg1)
         ui->Btn_UploadFiles->show();
     else
         ui->Btn_UploadFiles->hide();
+}
+
+//*********************************************************************************
+// Select restart files
+//*********************************************************************************
+void solver::on_Btn_UploadFiles_clicked()
+{
+    // Open a dialog window to select the files
+    // Here one can select multiple files
+    // The selected files are stored in the String list intefilenames (declared in mainwindow.h)
+    QFileDialog selectfilesdialog(this);
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
+    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    if(selectfilesdialog.exec()) restartfilenames = selectfilesdialog.selectedFiles();
 }
