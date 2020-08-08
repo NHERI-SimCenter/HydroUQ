@@ -1,6 +1,5 @@
 #include "bathymetry.h"
 #include "ui_bathymetry.h"
-#include <QDebug>
 
 //*********************************************************************************
 // Bathymetry settings

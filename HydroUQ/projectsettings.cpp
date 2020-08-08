@@ -4,11 +4,14 @@
 //*********************************************************************************
 // Project settings
 //*********************************************************************************
-projectsettings::projectsettings(QWidget *parent) :
+projectsettings::projectsettings(int type, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::projectsettings)
 {
     ui->setupUi(this);
+
+    // Initialize to show / hide elements
+    hideshowelems(type);
 }
 
 //*********************************************************************************
@@ -20,11 +23,29 @@ projectsettings::~projectsettings()
 }
 
 //*********************************************************************************
+// Refresh data
+//*********************************************************************************
+void projectsettings::refreshData(int type)
+{
+    // Initialize to show / hide elements
+    hideshowelems(type);
+}
+
+//*********************************************************************************
+// Show - hide elements
+//*********************************************************************************
+void projectsettings::hideshowelems(int type)
+{
+    (void) type;
+}
+
+//*********************************************************************************
 // Get data from project settings
 //*********************************************************************************
-bool projectsettings::getData(QMap<QString, QString> & map)
+bool projectsettings::getData(QMap<QString, QString> & map, int type)
 {
     bool hasData=false;
+    (void) type;
 
     map.insert("Work directory",ui->Lbl_WorkDir->text());
     map.insert("Project name",ui->Led_PName->text());
@@ -61,7 +82,7 @@ void projectsettings::on_Btn_WDir_clicked()
 //*********************************************************************************
 // When index of simulation type changes
 //*********************************************************************************
-void projectsettings::on_CmB_SimType_currentIndexChanged(int index)
+/*void projectsettings::on_CmB_SimType_currentIndexChanged(int index)
 {
 
     std::ofstream myfile;
@@ -73,4 +94,4 @@ void projectsettings::on_CmB_SimType_currentIndexChanged(int index)
 
     //simtype = index;
     //simtype = index;
-}
+}*/

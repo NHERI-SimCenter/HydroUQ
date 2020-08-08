@@ -12,12 +12,13 @@ class materials : public QFrame
     Q_OBJECT
 
 public:
-    explicit materials(QWidget *parent = nullptr);
+    explicit materials(int, QWidget *parent = nullptr);
     ~materials();
-    bool getData(QMap<QString, QString>&);
+    bool getData(QMap<QString, QString>&,int);
     void refreshData(int);
 
 private:
+    void hideshowelems(int);
     Ui::materials *ui;
 };
 

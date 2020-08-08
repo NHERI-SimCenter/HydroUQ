@@ -16,15 +16,17 @@ class projectsettings : public QFrame
     Q_OBJECT
 
 public:
-    explicit projectsettings(QWidget *parent = nullptr);
+    explicit projectsettings(int, QWidget *parent = nullptr);
     ~projectsettings();
-    bool getData(QMap<QString, QString>&);
+    bool getData(QMap<QString, QString>&,int);
+    void refreshData(int);
 
 private slots:
     void on_Btn_WDir_clicked();
-    void on_CmB_SimType_currentIndexChanged(int index);
+    //void on_CmB_SimType_currentIndexChanged(int index);
 
 private:
+    void hideshowelems(int);
     Ui::projectsettings *ui;
     QUrl workdirUrl; // Defaulty workdirectory
 };

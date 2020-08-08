@@ -12,8 +12,9 @@ class floatingbds : public QFrame
     Q_OBJECT
 
 public:
-    explicit floatingbds(QWidget *parent = nullptr);
+    explicit floatingbds(int, QWidget *parent = nullptr);
     ~floatingbds();
+    bool getData(QMap<QString, QString>&,int);
     void refreshData(int);
 
 private:

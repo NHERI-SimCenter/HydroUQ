@@ -71,6 +71,7 @@ void buildings::hideshowelems(int type)
 bool buildings::getData(QMap<QString, QString>& map,int type)
 {
     bool hasData=false;
+    (void) type; // Variable is unused
 
     // Write data from the table
     if(ui->Tbl_Building->rowCount() > 0)

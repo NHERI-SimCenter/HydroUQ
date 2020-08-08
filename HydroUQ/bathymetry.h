@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QFileDialog>
 #include <QDir>
+#include <QDebug>
 
 namespace Ui {
 class bathymetry;

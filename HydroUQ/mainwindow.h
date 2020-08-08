@@ -1,12 +1,25 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "projectsettings.h"
+#include "swcfdint.h"
+#include "bathymetry.h"
+#include "buildings.h"
+#include "floatingbds.h"
+#include "meshing.h"
+#include "materials.h"
+#include "initialconvel.h"
+#include "initialconpres.h"
+#include "initialconalpha.h"
+#include "solver.h"
+
 #include <QMainWindow>
-#include <QString>
-#include <QMap>
-#include <QTreeWidget>
-#include <QInputDialog>
+#include <QDebug>
 #include <QFile>
+#include <QInputDialog>
+#include <QMap>
+#include <QString>
+#include <QTreeWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,7 +46,7 @@ private:
     QMap<int, QMap<QString, QString>*> allData;
     QMap<QString, QString> allData2;
 
-    int oldsimtype,simtype; // Simulation type
+    int simtype; // Simulation type
     QStringList optiontree; // Tree widget names
 };
 #endif // MAINWINDOW_H

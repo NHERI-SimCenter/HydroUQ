@@ -4,11 +4,14 @@
 //*********************************************************************************
 // Materials settings
 //*********************************************************************************
-materials::materials(QWidget *parent) :
+materials::materials(int type, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::materials)
 {
     ui->setupUi(this);
+
+    // Initialize to show / hide elements
+    hideshowelems(type);
 }
 
 //*********************************************************************************
@@ -25,15 +28,24 @@ materials::~materials()
 void materials::refreshData(int type)
 {
     // Initialize to show / hide elements
-    //hideshowelems(type);
+    hideshowelems(type);
+}
+
+//*********************************************************************************
+// Hide-show elements
+//*********************************************************************************
+void materials::hideshowelems(int type)
+{
+    (void) type;
 }
 
 //*********************************************************************************
 // Get data from meshing
 //*********************************************************************************
-bool materials::getData(QMap<QString, QString>& map)
+bool materials::getData(QMap<QString, QString>& map,int type)
 {
     bool hasData=false;
+    (void) type;
 
     // Add properties of water
     map.insert("Water viscosity",ui->DSpBx_WaterVisc->textFromValue(ui->DSpBx_WaterVisc->value()));

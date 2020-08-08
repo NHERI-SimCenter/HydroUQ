@@ -36,6 +36,7 @@ void meshing::refreshData(int type)
 //*********************************************************************************
 void meshing::hideshowelems(int type)
 {
+    (void) type;
     int meshtyindex = ui->Cmb_MeshType->currentIndex();
 
     // Hide / Unhide elements based on mesh options
@@ -155,6 +156,7 @@ void meshing::on_Cmb_MeshType_currentIndexChanged(int index)
 bool meshing::getData(QMap<QString, QString>& map,int type)
 {
     bool hasData=false;
+    (void) type;
 
     // Get type of meshing
     int index = ui->Cmb_MeshType->currentIndex();
