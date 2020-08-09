@@ -18,6 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     bathymetry.cpp \
     buildings.cpp \
+    cfdsolvers/openfoam/openfoam.cpp \
+    cfdsolvers/openfoam/systemfiles.cpp \
     floatingbds.cpp \
     initialconalpha.cpp \
     initialconpres.cpp \
@@ -28,11 +30,13 @@ SOURCES += \
     meshing.cpp \
     projectsettings.cpp \
     solver.cpp \
-    swcfdint.cpp
+    swcfdint.cpp \
+    swsolvers/geoclaw/geoclaw.cpp
 
 HEADERS += \
     bathymetry.h \
     buildings.h \
+    cfdsolvers/openfoam/openfoam.h \
     floatingbds.h \
     initialconalpha.h \
     initialconpres.h \
@@ -42,7 +46,8 @@ HEADERS += \
     meshing.h \
     projectsettings.h \
     solver.h \
-    swcfdint.h
+    swcfdint.h \
+    swsolvers/geoclaw/geoclaw.h
 
 FORMS += \
     bathymetry.ui \

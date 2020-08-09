@@ -49,10 +49,6 @@ bool projectsettings::getData(QMap<QString, QString> & map, int type)
     (void) type;
 
     map.insert("Work directory",ui->Lbl_WorkDir->text());
-    QString temp = ui->Lbl_WorkDir->text();
-    //temp = temp.remove(QChar('\n'));
-    //temp = temp.remove("file://");
-    //qDebug() << temp;
     map.insert("Project name",ui->Led_PName->text());
     map.insert("Project description",ui->Ted_PDesc->toPlainText());
     map.insert("Simulation type",QString::number(ui->CmB_SimType->currentIndex()));

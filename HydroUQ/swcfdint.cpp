@@ -61,10 +61,12 @@ bool swcfdint::getData(QMap<QString, QString>& map, int type)
     if( (type == 1) || (type == 2) )
     {
         // Write the bathymetry file names
-        map.insert("SW-CFD interface file",interffilenames[0]);
-        hasData = true;
+        if(interffilenames.size() > 0)
+        {
+            map.insert("SW-CFD interface file",interffilenames[0]);
+            hasData = true;
+        }
     }
-
     // Return the bool
     return hasData;
 }
