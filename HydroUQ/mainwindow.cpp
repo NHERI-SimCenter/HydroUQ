@@ -79,7 +79,6 @@ void MainWindow::refresh_projsettings()
     // Search for simulation type
     QMap<QString, QString> *singleDataSet = allData.value(0);
     QString simty = singleDataSet->value("Simulation type");
-    //wdir = singleDataSet->value("Work directory");
 
     // Get new simulation type, if user has changed it intermediately
     // This can also be same as old simulation type
@@ -177,7 +176,7 @@ void MainWindow::on_Btn_Generate_Files_clicked()
         allData.insert(13, singleData);
     }
 
-    // Show in text window (Just to print out the map)
+    /*// Show in text window (Just to print out the map)
     // This will later be replaced by writing to JSON
     QString text;
     foreach (int key, allData.keys())
@@ -190,13 +189,72 @@ void MainWindow::on_Btn_Generate_Files_clicked()
         }
     }
     ui->textEdit->setPlainText(text);
-    ui->textEdit->repaint();
+    ui->textEdit->repaint();*/
 
-    // Write map to JSON file
+    // Get directory and project name for writing JSON file
+    QMap<QString, QString> *singleDataSet = allData.value(0);
+    QString wdir = singleDataSet->value("Work directory");
+    QString pname = singleDataSet->value("Project name");
+
+    // Convert to QJsonObject
+    QVariantMap vmap;
+    vmap.insert("Application name",applicationname);
+    vmap.insert("Application version",applicationversion);
+    foreach (int key, allData.keys())
+    {
+        QMap<QString, QString> *singleDataSet = allData.value(key);
+        foreach (QString varname, singleDataSet->keys())
+        {
+            QString oneEntry = QString("%1: %2 = %3\n").arg(key+1).arg(varname).arg(singleDataSet->value(varname));
+            vmap.insert(varname, singleDataSet->value(varname));
+        }
+    }
+
+    // Create a QJsonDocument from the Variant map
+    QJsonDocument jsondoc = QJsonDocument::fromVariant(vmap);
+
+    // Create a JSON file with this name and write all data to this
+    saveJson(wdir,pname,jsondoc);
 
     // Call the OpenFOAM method to read the JSON file
     // Write the OpenFOAM files & folders
+    // Create an object for openfoam
+    openfoam ofwrite;
+    ofwrite.genopenfoam(wdir,pname);
 
+}
+
+//*********************************************************************************
+// Save JSON file
+//*********************************************************************************
+void MainWindow::saveJson(QString wdir,QString pname, QJsonDocument jsondoc)
+{
+    // Concatenate to get new dir path where files will be written
+    QString finaldirpath = QDir(wdir).filePath(pname);
+    QUrl finaldirpathUrl(finaldirpath);
+
+    // Create a directory if it does not exist
+    // All files to be written to this directory
+    QDir fildirs(finaldirpath);
+    if (!fildirs.exists())
+        fildirs.mkpath(".");
+
+    // Create the JSON file to write to
+    QFile jsonfile(fildirs.filePath(pname+".json"));
+    if(!jsonfile.open(QIODevice::ReadWrite))
+    {
+        //qDebug() << "File open error";
+    }
+    else
+    {
+        //qDebug() <<"File open!";
+    }
+    // Clear the original file content
+    jsonfile.resize(0);
+
+    // Write a json file
+    jsonfile.write(jsondoc.toJson());
+    jsonfile.close();
 }
 
 //*********************************************************************************

@@ -12,11 +12,14 @@
 #include "initialconpres.h"
 #include "initialconalpha.h"
 #include "solver.h"
+#include "cfdsolvers/openfoam/openfoam.h"
 
 #include <QMainWindow>
 #include <QDebug>
 #include <QFile>
 #include <QInputDialog>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMap>
 #include <QString>
 #include <QTreeWidget>
@@ -32,7 +35,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    //QString getprojdetails();
 
 private slots:
     void on_Btn_Generate_Files_clicked();
@@ -42,13 +44,14 @@ private:
     void clearAllData(void);
     void initialize();
     void refresh_projsettings();
+    void saveJson(QString wdir, QString pname, QJsonDocument jsondoc);
 
     Ui::MainWindow *ui;
     QMap<int, QMap<QString, QString>*> allData;
-    QMap<QString, QString> allData2;
 
     int simtype; // Simulation type
     QStringList optiontree; // Tree widget names
-    QString wdir;
+    QString applicationname = "Hydro-UQ";
+    QString applicationversion = "0.9.0 (Alpha)";
 };
 #endif // MAINWINDOW_H
