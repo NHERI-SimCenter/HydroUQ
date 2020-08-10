@@ -20,7 +20,6 @@ public:
 private slots:
     void on_Btn_AddBuild_clicked();
     void on_Btn_RemBuild_clicked();
-
     void on_ChB_Parametric_stateChanged(int arg1);
 
 private:
