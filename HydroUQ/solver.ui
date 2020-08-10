@@ -379,7 +379,7 @@ Upload Restart Files
        </item>
        <item>
         <property name="text">
-         <string>Hierarchial</string>
+         <string>Hierarchical</string>
         </property>
        </item>
       </widget>

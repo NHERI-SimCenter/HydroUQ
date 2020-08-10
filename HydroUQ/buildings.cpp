@@ -67,9 +67,9 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
 
     // Info about check box
     if(ui->ChB_Parametric->isChecked())
-        map.insert("ParametricBuild",QString::number(1));
+        map.insert("Parametric Build",QString::number(1));
     else
-        map.insert("ParametricBuild",QString::number(0));
+        map.insert("Parametric Build",QString::number(0));
 
     // Parametric inputs
     map.insert("Number of building in X",ui->DSpBx_NumBuildX->textFromValue(ui->DSpBx_NumBuildX->value()));
@@ -77,6 +77,9 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
     map.insert("Building distance along X",ui->DSpBx_BuildDistX->textFromValue(ui->DSpBx_BuildDistX->value()));
     map.insert("Building distance along Y",ui->DSpBx_BuildDistY->textFromValue(ui->DSpBx_BuildDistY->value()));
     map.insert("Distance from coast",ui->DSpBx_CoastDist->textFromValue(ui->DSpBx_CoastDist->value()));
+    map.insert("OffsetX for coast",ui->DSpBx_OffsetX->textFromValue(ui->DSpBx_OffsetX->value()));
+    map.insert("OffsetY for coast",ui->DSpBx_OffsetY->textFromValue(ui->DSpBx_OffsetY->value()));
+    map.insert("Building size",ui->DSpBx_BuildSize->textFromValue(ui->DSpBx_BuildSize->value()));
     map.insert("Building distribution",QString::number(ui->CmB_BuildDist->currentIndex()));
 
     // Write data from the table
@@ -87,7 +90,7 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
             QString segdata = ui->Tbl_Building->item(ii,0)->text() +
                     "," + ui->Tbl_Building->item(ii,1)->text() +
                     "," + ui->Tbl_Building->item(ii,1)->text();
-            map.insert("Building"+QString::number(ii),segdata);
+            map.insert("BuildingTable"+QString::number(ii),segdata);
         }
     }
 
