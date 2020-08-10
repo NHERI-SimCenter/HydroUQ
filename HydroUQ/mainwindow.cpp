@@ -39,9 +39,7 @@ void MainWindow::initialize()
     ui->stackedWidget->addWidget(new initialconVel(0)); // Initial velocity
     ui->stackedWidget->addWidget(new initialconPres(0)); // Initial pressure
     ui->stackedWidget->addWidget(new initialconAlpha(0)); // Initial alpha
-    ui->stackedWidget->addWidget(new initialconVel(0)); // Boundary (Velocity)
-    ui->stackedWidget->addWidget(new initialconPres(0)); // Boundary (Pressure)
-    ui->stackedWidget->addWidget(new initialconAlpha(0)); // Boundary (Alpha)
+    ui->stackedWidget->addWidget(new boundary(0)); // Boundary condition
     ui->stackedWidget->addWidget(new solver(0)); // Solver settings
 
     // Set index to zero & simtype to zero
@@ -167,13 +165,18 @@ void MainWindow::on_Btn_Generate_Files_clicked()
         allData.insert(9, singleData);
     }
 
-    // Boundary conditions - index 10 / 11 / 12
-
-    // Solver settings - index 13
+    // Boundary conditions - index 10
     singleData = new QMap<QString,QString>;
-    if (dynamic_cast<solver *>(ui->stackedWidget->widget(13))->getData(*singleData,simtype))
+    if (dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->getData(*singleData,simtype))
     {
-        allData.insert(13, singleData);
+        allData.insert(10, singleData);
+    }
+
+    // Solver settings - index 11
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<solver *>(ui->stackedWidget->widget(11))->getData(*singleData,simtype))
+    {
+        allData.insert(11, singleData);
     }
 
     /*// Show in text window (Just to print out the map)
@@ -344,11 +347,18 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
             ui->stackedWidget->setCurrentIndex(9);
         }
 
+        // Update boundary conditions
+        else if(sel == "Boundary conditions")
+        {
+            dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(10);
+        }
+
         // Update solvers
         else if(sel == "Solver")
         {
-            dynamic_cast<solver *>(ui->stackedWidget->widget(13))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(13);
+            dynamic_cast<solver *>(ui->stackedWidget->widget(11))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(11);
         }
     }
 }

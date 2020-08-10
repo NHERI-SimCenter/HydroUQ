@@ -318,7 +318,7 @@ void openfoam::toposetdictgen(QDir systdirs,QStringList data)
             int bdist = data[8].split(" ")[0].toInt();
             double bs = data[9].split(" ")[0].toDouble();
 
-            qDebug() << nx << ny << dx << dy << dc << Ox << Oy;
+            //qDebug() << nx << ny << dx << dy << dc << Ox << Oy;
 
             Eigen::MatrixXf builddata(nx*ny,6);
             if(bdist == 1) // Simple building configuration

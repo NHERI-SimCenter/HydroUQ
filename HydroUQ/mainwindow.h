@@ -11,6 +11,7 @@
 #include "initialconvel.h"
 #include "initialconpres.h"
 #include "initialconalpha.h"
+#include "boundary.h"
 #include "solver.h"
 #include "cfdsolvers/openfoam/openfoam.h"
 

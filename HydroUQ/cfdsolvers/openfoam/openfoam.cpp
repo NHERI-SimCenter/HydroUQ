@@ -86,7 +86,7 @@ void openfoam::genopenfoam(QString wdir,QString pname)
 
     // Set fields dictionary file
     int simty = json_map["Simulation type"].toString().split(" ")[0].toInt();
-    qDebug() << "Simulation type is: " << simty;
+    //qDebug() << "Simulation type is: " << simty;
     if((simty !=1) || (simty != 2))
     {
         data << json_map["Initial alpha global"].toString();

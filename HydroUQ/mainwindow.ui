@@ -135,21 +135,6 @@
           <property name="text">
            <string>Boundary conditions</string>
           </property>
-          <item>
-           <property name="text">
-            <string>Velocity</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Pressure</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Phase</string>
-           </property>
-          </item>
          </item>
          <item>
           <property name="text">

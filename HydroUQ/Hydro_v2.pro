@@ -17,6 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     bathymetry.cpp \
+    boundary.cpp \
+    boundarydata.cpp \
     buildings.cpp \
     cfdsolvers/openfoam/openfoam.cpp \
     cfdsolvers/openfoam/systemfiles.cpp \
@@ -35,6 +37,8 @@ SOURCES += \
 
 HEADERS += \
     bathymetry.h \
+    boundary.h \
+    boundarydata.h \
     buildings.h \
     cfdsolvers/openfoam/openfoam.h \
     dependencies/Eigen/Cholesky \
@@ -351,6 +355,8 @@ HEADERS += \
 
 FORMS += \
     bathymetry.ui \
+    boundary.ui \
+    boundarydata.ui \
     buildings.ui \
     floatingbds.ui \
     initialconalpha.ui \
