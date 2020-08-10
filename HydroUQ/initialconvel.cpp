@@ -75,8 +75,8 @@ bool initialconVel::getData(QMap<QString, QString>& map,int type)
     {
         // Get global initial velocity
         QString glveldata = ui->DSpBx_Vx->textFromValue(ui->DSpBx_Vx->value()) +
-                "," + ui->DSpBx_Vx->textFromValue(ui->DSpBx_Vx->value()) +
-                "," + ui->DSpBx_Vx->textFromValue(ui->DSpBx_Vx->value());
+                "," + ui->DSpBx_Vy->textFromValue(ui->DSpBx_Vy->value()) +
+                "," + ui->DSpBx_Vz->textFromValue(ui->DSpBx_Vz->value());
         map.insert("Initial velocity global",glveldata);
 
         // Get local initial velocity

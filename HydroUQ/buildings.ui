@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>339</width>
+    <width>357</width>
     <height>923</height>
    </rect>
   </property>
@@ -15,16 +15,16 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <property name="leftMargin">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>6</number>
    </property>
    <item>
     <widget class="QLabel" name="Lbl_H1">
@@ -73,15 +73,21 @@
       </property>
       <item>
        <layout class="QGridLayout" name="GLY_Parametric">
-        <item row="1" column="0">
-         <widget class="QLabel" name="Lbl_NumBuildY">
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="DSpBx_NumBuildY">
           <property name="font">
            <font>
             <pointsize>14</pointsize>
            </font>
           </property>
-          <property name="text">
-           <string>Number of buildings into the coast</string>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="decimals">
+           <number>0</number>
+          </property>
+          <property name="value">
+           <double>2.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -103,21 +109,15 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="DSpBx_NumBuildY">
+        <item row="2" column="0">
+         <widget class="QLabel" name="Lbl_CoastDist">
           <property name="font">
            <font>
             <pointsize>14</pointsize>
            </font>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-          <property name="decimals">
-           <number>0</number>
-          </property>
-          <property name="value">
-           <double>2.000000000000000</double>
+          <property name="text">
+           <string>Distance from coast</string>
           </property>
          </widget>
         </item>
@@ -139,15 +139,36 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="Lbl_BuildDistY">
+        <item row="7" column="1">
+         <widget class="QDoubleSpinBox" name="DSpBx_OffsetY">
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="maximum">
+           <double>100000.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="Lbl_NumBuildY">
           <property name="font">
            <font>
             <pointsize>14</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>Distance between buildings (Front)</string>
+           <string>Number of buildings into the coast</string>
           </property>
          </widget>
         </item>
@@ -169,6 +190,30 @@
           </property>
          </widget>
         </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="Lbl_BuildSize">
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Building size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="Lbl_NumBuildX">
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Number of buildings along the coast</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="1">
          <widget class="QDoubleSpinBox" name="DSpBx_NumBuildX">
           <property name="font">
@@ -187,15 +232,15 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="Lbl_NumBuildX">
+        <item row="4" column="0">
+         <widget class="QLabel" name="Lbl_BuildDistY">
           <property name="font">
            <font>
             <pointsize>14</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>Number of buildings along the coast</string>
+           <string>Distance between buildings (Front)</string>
           </property>
          </widget>
         </item>
@@ -211,15 +256,57 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="Lbl_CoastDist">
+        <item row="5" column="1">
+         <widget class="QDoubleSpinBox" name="DSpBx_BuildSize">
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="maximum">
+           <double>100000.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>2.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QDoubleSpinBox" name="DSpBx_OffsetX">
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="maximum">
+           <double>100000.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" rowspan="2">
+         <widget class="QLabel" name="Lbl_BuildSize_2">
           <property name="font">
            <font>
             <pointsize>14</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>Distance from coast</string>
+           <string>Coordinate of coastline center</string>
           </property>
          </widget>
         </item>
@@ -371,7 +458,7 @@ option</string>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>297</height>
+       <height>236</height>
       </size>
      </property>
     </spacer>

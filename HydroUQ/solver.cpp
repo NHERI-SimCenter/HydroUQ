@@ -68,11 +68,11 @@ bool solver::getData(QMap<QString, QString>& map, int type)
     }
 
     // Decomposition
-    QString decomp = QString::number(ui->Cmb_Decomp->currentIndex()) +
-            "," + ui->DSpBx_Px->textFromValue(ui->DSpBx_Px->value()) +
+    QString decomp = ui->DSpBx_Px->textFromValue(ui->DSpBx_Px->value()) +
             "," + ui->DSpBx_Py->textFromValue(ui->DSpBx_Py->value()) +
             "," + ui->DSpBx_Pz->textFromValue(ui->DSpBx_Pz->value());
     map.insert("Domain decomposition",decomp);
+    map.insert("Decomposition method",ui->Cmb_Decomp->currentText().toLower());
 
     // Solver type
     map.insert("Solver choice",QString::number(ui->Cmb_Solver->currentIndex()));
