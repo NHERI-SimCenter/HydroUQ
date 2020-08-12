@@ -2,6 +2,7 @@
 #define BOUNDARY_H
 
 #include <QDir>
+#include <QDebug>
 #include <QFrame>
 #include <QInputDialog>
 #include <QMessageBox>

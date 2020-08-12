@@ -28,11 +28,109 @@ boundaryData::~boundaryData()
 //*********************************************************************************
 void boundaryData::hideshowelems()
 {
+    // Patch location UI components
+    on_Cmb_PatchLoc_currentIndexChanged(ui->Cmb_PatchLoc->currentIndex());
+
     // Vel UI components
     on_Cmb_UBC_currentIndexChanged(ui->Cmb_UBC->currentIndex());
 
     // Pres UI components
     on_Cmb_PresBC_currentIndexChanged(ui->Cmb_PresBC->currentIndex());
+}
+
+//*********************************************************************************
+// Get data from meshing
+//*********************************************************************************
+bool boundaryData::getData(QMap<QString, QString>& map,int type)
+{
+    bool hasData=false;
+    (void) type;
+
+    // Attach patch name
+    QString patchname = ui->Lbl_H1->text();
+
+    // Add patch location information
+    map.insert("Location type_"+patchname,ui->Cmb_PatchLoc->currentText());
+    if(ui->Cmb_PatchLoc->currentIndex() == 0)
+        map.insert("Patch location",ui->Cmb_PatchStdLoc->currentText());
+    else
+        map.insert("Patch location",ui->Lbl_H1->text());
+
+    // Get velocity information
+    int index = ui->Cmb_UBC->currentIndex();
+    map.insert("Velocity type",ui->Cmb_UBC->currentText());
+    if( ((index == 1) || (index == 5)) || (index == 7) )
+    {
+        QString veldata = ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()) +
+                "," + ui->DSpBx_UMeanY->textFromValue(ui->DSpBx_UMeanY->value()) +
+                "," + ui->DSpBx_UMeanZ->textFromValue(ui->DSpBx_UMeanZ->value());
+        map.insert("Velocity",veldata);
+    }
+    else if(index == 2)
+    {
+        map.insert("Wave type",ui->Cmb_PatchStdLoc->currentText());
+        QString veldata = ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()) +
+                "," + ui->DSpBx_UMeanY->textFromValue(ui->DSpBx_UMeanY->value()) +
+                "," + ui->DSpBx_UMeanZ->textFromValue(ui->DSpBx_UMeanZ->value());
+        map.insert("Mean velocity",veldata);
+        veldata = ui->DSpBx_OX->textFromValue(ui->DSpBx_OX->value()) +
+                "," + ui->DSpBx_OY->textFromValue(ui->DSpBx_OY->value()) +
+                "," + ui->DSpBx_OZ->textFromValue(ui->DSpBx_OZ->value());
+        map.insert("Origin",veldata);
+        veldata = ui->DSpBx_DirnX->textFromValue(ui->DSpBx_DirnX->value()) +
+                "," + ui->DSpBx_DirnY->textFromValue(ui->DSpBx_DirnY->value()) +
+                "," + ui->DSpBx_DirnZ->textFromValue(ui->DSpBx_DirnZ->value());
+        map.insert("Direction",veldata);
+        map.insert("Wave parameters",ui->Led_WavePara->text());
+    }
+    else if ((index == 3) || (index == 4))
+    {
+        // Write the velocity file names
+        for (int ii=0; ii<velfilenames.size(); ++ii)
+        {
+            map.insert("Velocity boundary files"+QString::number(ii),velfilenames[ii]);
+        }
+    }
+    else if(index == 6)
+    {
+        map.insert("Mean flow rate", ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()));
+    }
+
+    // Get pressure information
+    index = ui->Cmb_PresBC->currentIndex();
+    map.insert("Pressure type",ui->Cmb_PresBC->currentText());
+    if( (index == 2) || (index == 3) )
+    {
+        map.insert("Pressure",ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
+    }
+    else if (index == 4)
+    {
+        map.insert("Pressure gradient",ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
+    }
+
+    // Change hasData to be true
+    hasData = true;
+
+    // Return the bool
+    return hasData;
+
+}
+
+//*********************************************************************************
+// Location combobox options
+//*********************************************************************************
+void boundaryData::on_Cmb_PatchLoc_currentIndexChanged(int index)
+{
+    if(index==0)
+    {
+        // Show standard options
+        ui->Cmb_PatchStdLoc->show();
+    }
+    else
+    {
+        // Dont show standard options
+        ui->Cmb_PatchStdLoc->hide();
+    }
 }
 
 //*********************************************************************************
@@ -108,7 +206,6 @@ void boundaryData::on_Cmb_UBC_currentIndexChanged(int index)
         ui->Btn_UploadFile->show();
         ui->Cmb_WaveType->hide();
         ui->Lbl_Umean->hide();
-        //ui->Lbl_Umean->setText("Umean");
         ui->DSpBx_UMeanX->hide();
         ui->DSpBx_UMeanY->hide();
         ui->DSpBx_UMeanZ->hide();
@@ -170,4 +267,18 @@ void boundaryData::on_Cmb_PresBC_currentIndexChanged(int index)
         if((index == 2)||(index==3)) ui->Lbl_Pres->setText("Pressure");
         else if(index == 4) ui->Lbl_Pres->setText("Pressure gradient");
     }
+}
+
+//*********************************************************************************
+// When files are uploaded
+//*********************************************************************************
+void boundaryData::on_Btn_UploadFile_clicked()
+{
+    // Open a dialog window to select the files
+    // Here one can select multiple files
+    // The selected files are stored in the String list intefilenames (declared in mainwindow.h)
+    QFileDialog selectfilesdialog(this);
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
+    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    if(selectfilesdialog.exec()) velfilenames = selectfilesdialog.selectedFiles();
 }
