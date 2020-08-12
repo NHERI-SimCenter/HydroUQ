@@ -74,9 +74,6 @@ bool boundary::getData(QMap<QString, QString>& map,int type)
     {
         if (dynamic_cast<boundaryData *>(ui->SWg_Interface->widget(i))->getData(*singleData,type))
         {
-
-            qDebug() << singleData;
-
             // Loop over the entire map and insert all elements
             foreach(QString varname, singleData->keys())
             {

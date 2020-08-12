@@ -268,19 +268,26 @@
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <property name="leftMargin">
-        <number>6</number>
+        <number>0</number>
        </property>
        <property name="topMargin">
-        <number>6</number>
+        <number>0</number>
        </property>
        <property name="rightMargin">
-        <number>6</number>
+        <number>0</number>
        </property>
        <property name="bottomMargin">
-        <number>6</number>
+        <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QTextEdit" name="textEdit"/>
+        <widget class="QT3DFrame" name="graphicswidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -419,6 +426,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QT3DFrame</class>
+   <extends>QWidget</extends>
+   <header>qt3dframe.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

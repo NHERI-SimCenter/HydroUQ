@@ -1,7 +1,7 @@
 #ifndef BATHYMETRY_H
 #define BATHYMETRY_H
 
-#include "mainwindow.h"
+//#include "mainwindow.h"
 
 #include <QFrame>
 #include <QFileDialog>
