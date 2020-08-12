@@ -101,9 +101,10 @@ bool boundary::getData(QMap<QString, QString>& map,int type)
 void boundary::on_Btn_AddBoundary_clicked()
 {
     bool ok;
+    QString temppname = "UntitledPatch_" + QString::number(ui->SWg_Interface->count());
     QString bpatchname = QInputDialog::getText(this, tr("Add boundary conditions"),
                                             tr("Boundary patch name"), QLineEdit::Normal,
-                                            QDir::home().dirName(), &ok);
+                                            temppname, &ok);
 
     if(ok && !bpatchname.isEmpty())
     {
@@ -118,6 +119,19 @@ void boundary::on_Btn_AddBoundary_clicked()
         msgBox.setInformativeText("A patch name is required to set the boundary!");
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.exec();
+    }
+}
+
+//*********************************************************************************
+// Remove Boundary
+//*********************************************************************************
+void boundary::on_Btn_RemBoundary_clicked()
+{
+    int patchcount = ui->SWg_Interface->count();
+    if(patchcount > 0)
+    {
+        --patchcount;
+        ui->SWg_Interface->removeWidget(ui->SWg_Interface->widget(patchcount));
     }
 }
 
@@ -144,4 +158,6 @@ void boundary::on_Btn_Previous_clicked()
         ui->SWg_Interface->setCurrentIndex(ind-1);
     }
 }
+
+
 

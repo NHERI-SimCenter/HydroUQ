@@ -26,6 +26,8 @@ private slots:
     void on_Btn_Previous_clicked();
     void on_Btn_Next_clicked();
 
+    void on_Btn_RemBoundary_clicked();
+
 private:
     void hideshowelems(int);
     Ui::boundary *ui;
