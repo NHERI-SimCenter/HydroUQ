@@ -122,6 +122,19 @@ void boundary::on_Btn_AddBoundary_clicked()
 }
 
 //*********************************************************************************
+// Remove Boundary
+//*********************************************************************************
+void boundary::on_Btn_RemBoundary_clicked()
+{
+    int patchcount = ui->SWg_Interface->count();
+    if(patchcount > 0)
+    {
+        --patchcount;
+        ui->SWg_Interface->removeWidget(ui->SWg_Interface->widget(patchcount));
+    }
+}
+
+//*********************************************************************************
 // Move to next boundary
 //*********************************************************************************
 void boundary::on_Btn_Next_clicked()
@@ -144,4 +157,6 @@ void boundary::on_Btn_Previous_clicked()
         ui->SWg_Interface->setCurrentIndex(ind-1);
     }
 }
+
+
 
