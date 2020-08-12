@@ -101,9 +101,10 @@ bool boundary::getData(QMap<QString, QString>& map,int type)
 void boundary::on_Btn_AddBoundary_clicked()
 {
     bool ok;
+    QString temppname = "UntitledPatch_" + QString::number(ui->SWg_Interface->count());
     QString bpatchname = QInputDialog::getText(this, tr("Add boundary conditions"),
                                             tr("Boundary patch name"), QLineEdit::Normal,
-                                            QDir::home().dirName(), &ok);
+                                            temppname, &ok);
 
     if(ok && !bpatchname.isEmpty())
     {
