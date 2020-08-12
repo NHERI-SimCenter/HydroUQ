@@ -65,21 +65,34 @@ void boundary::hideshowelems(int type)
 //*********************************************************************************
 bool boundary::getData(QMap<QString, QString>& map,int type)
 {
-    (void) map;
-    (void) type;
+    bool hasData=false;
 
     QMap<QString, QString> *singleData;
+    singleData = new QMap<QString,QString>;
     int numberOfPanes = ui->SWg_Interface->count();
     for (int i=0;i<numberOfPanes;i++)
     {
-        singleData = new QMap<QString,QString>;
-        if(i>0)
+        if (dynamic_cast<boundaryData *>(ui->SWg_Interface->widget(i))->getData(*singleData,type))
         {
-            // Loop over the entire map and insert each key and value
-            //map.insert(singleData);
+
+            qDebug() << singleData;
+
+            // Loop over the entire map and insert all elements
+            foreach(QString varname, singleData->keys())
+            {
+                map.insert(varname,singleData->value(varname));
+            }
+
+            // Clear the QMap
+            singleData->clear();
         }
     }
 
+    // Change hasData to be true
+    hasData = true;
+
+    // Return the bool
+    return hasData;
 }
 
 //*********************************************************************************

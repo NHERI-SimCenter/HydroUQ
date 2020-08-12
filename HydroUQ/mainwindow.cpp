@@ -169,6 +169,9 @@ void MainWindow::on_Btn_Generate_Files_clicked()
     singleData = new QMap<QString,QString>;
     if (dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->getData(*singleData,simtype))
     {
+
+        qDebug() << singleData;
+
         allData.insert(10, singleData);
     }
 
