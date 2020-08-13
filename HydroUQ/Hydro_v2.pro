@@ -16,6 +16,7 @@ CONFIG += c++11
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    H20utilities/h20utilities.cpp \
     bathymetry.cpp \
     boundary.cpp \
     boundarydata.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
     swsolvers/geoclaw/geoclaw.cpp
 
 HEADERS += \
+    H20utilities/h20utilities.h \
     bathymetry.h \
     boundary.h \
     boundarydata.h \
