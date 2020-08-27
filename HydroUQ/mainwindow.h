@@ -29,12 +29,14 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+class AgaveCurl;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(AgaveCurl *, QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
@@ -56,5 +58,6 @@ private:
     QStringList optiontree; // Tree widget names
     QString applicationname = "Hydro-UQ";
     QString applicationversion = "0.9.0 (Alpha)";
+    AgaveCurl *theRemoteService;
 };
 #endif // MAINWINDOW_H
