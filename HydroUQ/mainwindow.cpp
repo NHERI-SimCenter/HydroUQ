@@ -1,11 +1,21 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "tapis/AgaveCurl.h"
+#include <QDir>
+#include <QFileInfo>
+#include <QFile>
+#include <QSettings>
+#include <QUuid>
+#include <ZipUtils.h>
+#include <QStandardPaths>
+
+
 //*********************************************************************************
 // Main window
 //*********************************************************************************
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(AgaveCurl *theRemote, QWidget *parent)
+    : QMainWindow(parent), theRemoteService(theRemote)
     , ui(new Ui::MainWindow)
 {
     // Start the UI
@@ -366,8 +376,274 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
 //*********************************************************************************
 // Submit to TACC
 //*********************************************************************************
+
+int recursiveCopy(const QString &source,
+                  const QString &target)
+{
+
+  QFileInfo sourceInfo(source);
+
+  if (!sourceInfo.isDir()) {
+
+   // std::cerr << "FILE:\n";
+   // std::cerr << "source: " << source.toStdString() << " target: " << target.toStdString() << "\n";
+
+    // if not directory, then a file just copy
+    if (!QFile::copy(source, target))
+      return -1;
+    else
+      return 0;
+
+  } else {
+
+    // don't of course copy from HOME,DESKTOP, DOWNLOADS,
+    /*
+      QStandardPaths::DesktopLocation
+      QStandardPaths::DocumentsLocation
+      QStandardPaths::ApplicationsLocation
+      QStandardPaths::HomeLocation
+      QStandardPaths::DownloadLocation
+    */
+
+    //
+    // source is a directory:
+    //   1. make directory for target
+    //   2. now copy all files and directory in source to target
+    //
+
+    // mkdir target
+    //std::cerr << "DIR: \n";
+    //std::cerr << "source: " << source.toStdString() << " target: " << target.toStdString() << "\n";
+
+    QDir targetDir(target);
+    targetDir.cdUp();
+    if (!targetDir.mkdir(QFileInfo(target).fileName())) {
+      return -1;
+    }
+
+    // get list of all files in source and copy them, by calling this function
+
+    QDir sourceDir(source);
+    std::cerr << "sourceDir path: " << sourceDir.absolutePath().toStdString() << "\n";
+
+    QStringList fileNames = sourceDir.entryList(QDir::Files
+                        | QDir::Dirs
+                        | QDir::NoDotAndDotDot);
+
+    //qDebug() << fileNames;
+
+    foreach (const QString &fileName, fileNames) {
+      std::cerr << "\tcopying: " << fileName.toStdString() << "\n";
+      const QString newSrcFilePath = source + QDir::separator() + fileName;
+      const QString newTgtFilePath = target + QDir::separator() + fileName;
+      if (recursiveCopy(newSrcFilePath, newTgtFilePath) != 0)
+    return -1;
+    }
+  }
+
+  return 0;
+}
+
 void MainWindow::on_Btn_SubTACC_clicked()
 {
+    // Get directory and project name for writing JSON file
+    QMap<QString, QString> *singleDataSet = allData.value(0);
+    QString wdir = singleDataSet->value("Work directory");
+    QString pname = singleDataSet->value("Project name");
+
+    /* not needed
+    openfoam ofwrite;
+    ofwrite.genopenfoam(wdir,pname);
+    */
+
+    qDebug() << "WROTE: " << wdir << pname;
+
+    QString caseDirectory = wdir + QDir::separator() + pname;
+
+
+    int count = 1;
+    QString jobName("OpenFOAM:");
+    QString maxRunTime ("00:01:00");
+    int numNode = 1;
+    int numProcessors = 6;
+    //char *username = NULL;
+   // char *password = NULL;
+
+    char *solver = "olaFlow";
+    char *mesh = "Off";
+
+    //QString caseDirectory(dirName);
+    QDir copyDir(caseDirectory);
+    if (!copyDir.exists()) {
+        qDebug() << "ERROR - no case dir  exists\n";
+        return;
+    }
+
+    QString copyDirPath = copyDir.absolutePath();
+    QString copyDirName = copyDir.dirName();
+
+    //  qDebug() << "dirExists: " << inputFileDir;
+    qDebug() << "absolutePath: " << copyDirPath;
+
+    //
+    // get pointer to QSettings .. we are ging to need some entries
+    //
+
+    QString appName = QCoreApplication::applicationName();
+    QSettings settingsCommon("SimCenter", "Common");
+    QSettings settingsApplication("SimCenter", appName);
+
+    //
+    // get remote workdir and copy all input files there
+    //
+
+    QVariant  remoteWorkdirVariant = settingsApplication.value("remoteWorkDir");
+    QString workingDir;
+    if (remoteWorkdirVariant.isValid()) {
+      workingDir = remoteWorkdirVariant.toString();
+    } else {
+
+      remoteWorkdirVariant = settingsApplication.value("remoteWorkDir");
+      QDir workingDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+      QString remoteWorkDirLocation = workingDir.filePath(QCoreApplication::applicationName() + "/RemoteWorkDir");
+      settingsApplication.setValue("remoteWorkDir", remoteWorkDirLocation);
+      if (remoteWorkdirVariant.isValid()) {
+        workingDir = remoteWorkdirVariant.toString();
+      } else {
+        qDebug() << "Could not create Working dir\n";
+        return;
+      }
+    }
+
+    QDir dirWork(workingDir);
+     if (!dirWork.exists())
+       if (!dirWork.mkpath(workingDir)) {
+         std::cerr << "Could not create Working Dir: " << workingDir.toStdString() << "\n";
+         exit(-1);
+       }
+
+     // create dir with unique name .. using UIUID
+     QUuid uniqueName = QUuid::createUuid();
+     QString strUnique = uniqueName.toString();
+     strUnique = strUnique.mid(1,36);
+
+     QString zipLocation = workingDir + QDir::separator() + strUnique;
+
+     if (!dirWork.mkpath(zipLocation)) {
+
+     }
+
+     QString copyLocation = zipLocation + QDir::separator() + copyDirName;
+     QString originalLocation = copyDirPath;
+
+     //
+     // copy input file and all directories and subdir to new dir
+     //
+
+     std::cerr << "Obtaining Files From: " << originalLocation.toStdString() << "\n";
+     std::cerr << "& Copying files to " << copyLocation.toStdString() << "\n";
+
+     recursiveCopy(originalLocation, copyLocation);
+
+     QString zipFile(zipLocation + QDir::separator() + copyDirName + QString(".zip"));
+     std::cerr << "ZIP FILE: " << zipFile.toStdString() << "\n";
+     std::cerr << "DIR TO ZIP: " << zipLocation.toStdString() << "\n";
+
+
+     //QDir tmpDir(templateDIR);
+     ZipUtils::ZipFolder(QDir(zipLocation), zipFile);
+
+     // remove the copied dir
+     QDir copyLocationDir(copyLocation);
+     if (copyLocationDir.removeRecursively() != true) {
+         qDebug() << "ERROR - could not remove " << copyLocation;
+         return;
+     };
+
+     //
+     // login to designsafe
+     //
+    QString username = "NEEDED";
+    QString password = "NEEDED";
+     std::cerr << "Logging in ..\n";
+     if (theRemoteService->login(username, password) < 0) {
+         qDebug() << "ERROR - could not login ";
+         return;
+     };
+
+     //
+     // upload files
+     //
+
+     QString remoteDir =  theRemoteService->getHomeDirPath() + QString("/") + appName;
+     theRemoteService->mkdir(theRemoteService->getHomeDirPath(), appName);
+
+     std::cerr << "Uploading files .. \n";
+     if (theRemoteService->uploadDirectory(zipLocation, remoteDir) != true)
+       return;
+     std::cerr << "Uploaded files .. \n";
+
+     //
+     // create json job description
+     //
+
+     QJsonObject job;
+     job["name"]=jobName;
+     job["nodeCount"]=numNode; //QString::number(numNode);
+     job["processorsPerNode"]=numProcessors; // QString::number(numNode*numProcessors); // tapis people messed up!
+     // job["processorsOnEachNode"]=QString::number(numProcessors);
+     job["maxRunTime"]=maxRunTime;
+     /* to FIX
+     QVariant  remoteAppNameVariant = settingsApplication.value("remoteTapisApp");
+     QString remoteAppName;
+     if (remoteAppNameVariant.isValid()) {
+       remoteAppName = remoteAppNameVariant.toString();
+     }
+     *************************/
+
+     job["appId"]="simcenter-openfoam_v7-1.0.0";
+     job["memoryPerNode"]= "1GB";
+     job["archive"]=true;
+     job["archivePath"]="";
+     job["archiveSystem"]="designsafe.storage.default";
+
+     QJsonObject parameters;
+
+     parameters["openFoamDir"]=QString(copyDirName);
+     parameters["mesh"]=QString(mesh);
+     parameters["solver"]=QString(solver);
+
+     job["parameters"]=parameters;
+     QJsonObject inputs;
+     inputs["inputDirectory"]=remoteDir + QDir::separator() + strUnique;
+
+     job["inputs"]=inputs;
+
+     qDebug() << job;
+
+     //
+     // start the remote job
+     //
+
+     std::cerr << "Starting Job ... \n";
+
+     QString result =  theRemoteService->startJob(job);
+
+     std::cerr << result.toStdString() << "\n";
+
+     //
+     // now remove the tmp directory
+     // remove the copied dir
+     QDir zipLocationDir(zipLocation);
+     if (zipLocationDir.removeRecursively() != true) {
+         qDebug() << "ERROR - could not remove " << zipLocation;
+         return;
+     };
+
+     // theDirectory.removeRecursively();
+     //
+
+     return;
 
 }
 
