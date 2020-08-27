@@ -364,3 +364,17 @@ void MainWindow::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int colu
         }
     }
 }
+
+//*********************************************************************************
+// Submit to TACC
+//*********************************************************************************
+void MainWindow::on_Btn_SubTACC_clicked()
+{
+
+}
+
+
+
+
+
+
