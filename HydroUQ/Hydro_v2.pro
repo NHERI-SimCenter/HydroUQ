@@ -1,4 +1,4 @@
-QT       += core gui 3dcore 3drender 3dinput 3dextras
+QT       += core gui 3dcore 3drender 3dinput 3dextras charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,6 +14,12 @@ CONFIG += c++11
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+macos:LIBS += /usr/lib/libcurl.dylib
+
+include(../../SimCenterCommon/Common/Common.pri)
+
+
 
 SOURCES += \
     H20utilities/h20utilities.cpp \
@@ -36,7 +42,9 @@ SOURCES += \
     scenemodifier.cpp \
     solver.cpp \
     swcfdint.cpp \
-    swsolvers/geoclaw/geoclaw.cpp
+    swsolvers/geoclaw/geoclaw.cpp \
+    tapis/RemoteService.cpp \
+    tapis/AgaveCurl.cpp
 
 HEADERS += \
     H20utilities/h20utilities.h \
@@ -357,7 +365,9 @@ HEADERS += \
     scenemodifier.h \
     solver.h \
     swcfdint.h \
-    swsolvers/geoclaw/geoclaw.h
+    swsolvers/geoclaw/geoclaw.h \
+    tapis/RemoteService.h \
+    tapis/AgaveCurl.h
 
 FORMS += \
     bathymetry.ui \

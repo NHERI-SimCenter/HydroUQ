@@ -1,10 +1,31 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QCoreApplication>
+#include <GoogleAnalytics.h>
+#include "tapis/AgaveCurl.h"
+
 
 int main(int argc, char *argv[])
 {
+
+    QCoreApplication::setApplicationName("HydroUQ");
+    QCoreApplication::setOrganizationName("SimCenter");
+    QCoreApplication::setApplicationVersion("2.1.0");
+    //GoogleAnalytics::SetTrackingId("UA-126303135-1");
+    GoogleAnalytics::StartSession();
+    GoogleAnalytics::ReportStart();
+
+
     QApplication a(argc, argv);
+
+
+    QString tenant("designsafe");
+    QString storage("agave://designsafe.storage.default/");
+    QString dirName("EE-UQ");
+
+    AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName);
+
 
     // Add styles
     #ifdef Q_OS_WIN
@@ -23,7 +44,9 @@ int main(int argc, char *argv[])
     QString styleSheet = QLatin1String(file.readAll());
     a.setStyleSheet(styleSheet);
 
-    MainWindow w;
+    MainWindow w(theRemoteService);
     w.show();
     return a.exec();
+
+        GoogleAnalytics::EndSession();
 }

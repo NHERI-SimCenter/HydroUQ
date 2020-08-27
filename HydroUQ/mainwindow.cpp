@@ -1,11 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "tapis/RemoteService.h"
+
 //*********************************************************************************
 // Main window
 //*********************************************************************************
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(RemoteService *theRemote, QWidget *parent)
+    : QMainWindow(parent), theRemoteService(theRemote)
     , ui(new Ui::MainWindow)
 {
     // Start the UI

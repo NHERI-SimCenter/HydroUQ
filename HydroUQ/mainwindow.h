@@ -29,12 +29,14 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+class RemoteService;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(RemoteService *, QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
@@ -54,5 +56,6 @@ private:
     QStringList optiontree; // Tree widget names
     QString applicationname = "Hydro-UQ";
     QString applicationversion = "0.9.0 (Alpha)";
+    RemoteService *theRemoteService;
 };
 #endif // MAINWINDOW_H
