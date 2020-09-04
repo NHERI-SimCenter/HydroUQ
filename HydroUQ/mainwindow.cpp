@@ -563,8 +563,8 @@ void MainWindow::on_Btn_SubTACC_clicked()
      //
      // login to designsafe
      //
-    QString username = "NEEDED";
-    QString password = "NEEDED";
+    QString username = "username";
+    QString password = "password";
      std::cerr << "Logging in ..\n";
      if (theRemoteService->login(username, password) < 0) {
          qDebug() << "ERROR - could not login ";
@@ -576,11 +576,15 @@ void MainWindow::on_Btn_SubTACC_clicked()
      //
 
      QString remoteDir =  theRemoteService->getHomeDirPath() + QString("/") + appName;
+     qDebug() << "This is remoteDir: " << remoteDir;
      theRemoteService->mkdir(theRemoteService->getHomeDirPath(), appName);
 
      std::cerr << "Uploading files .. \n";
-     if (theRemoteService->uploadDirectory(zipLocation, remoteDir) != true)
+     if (!theRemoteService->uploadDirectory(zipLocation, remoteDir))
+     {
+       qDebug() << "Some error here: " << remoteDir;
        return;
+     }
      std::cerr << "Uploaded files .. \n";
 
      //
