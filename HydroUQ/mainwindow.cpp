@@ -463,14 +463,14 @@ void MainWindow::on_Btn_SubTACC_clicked()
 
     int count = 1;
     QString jobName("OpenFOAM:");
-    QString maxRunTime ("00:01:00");
+    QString maxRunTime ("10:00:00");
     int numNode = 1;
-    int numProcessors = 6;
+    int numProcessors = 4;
     //char *username = NULL;
    // char *password = NULL;
 
-    char *solver = "olaFlow";
-    char *mesh = "Off";
+    char *solver = "interFoam";
+    char *mesh = "On";
 
     //QString caseDirectory(dirName);
     QDir copyDir(caseDirectory);
@@ -551,7 +551,10 @@ void MainWindow::on_Btn_SubTACC_clicked()
 
 
      //QDir tmpDir(templateDIR);
-     ZipUtils::ZipFolder(QDir(zipLocation), zipFile);
+     QString tempvar = zipLocation + QDir::separator() + copyDirName;
+
+     // CHanged heres
+     ZipUtils::ZipFolder(QDir(copyLocation), zipFile);
 
      // remove the copied dir
      QDir copyLocationDir(copyLocation);
@@ -638,11 +641,11 @@ void MainWindow::on_Btn_SubTACC_clicked()
      //
      // now remove the tmp directory
      // remove the copied dir
-     QDir zipLocationDir(zipLocation);
+     /*QDir zipLocationDir(zipLocation);
      if (zipLocationDir.removeRecursively() != true) {
          qDebug() << "ERROR - could not remove " << zipLocation;
          return;
-     };
+     };*/
 
      // theDirectory.removeRecursively();
      //
