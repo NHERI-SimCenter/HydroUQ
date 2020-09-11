@@ -568,27 +568,27 @@ void MainWindow::on_Btn_SubTACC_clicked()
      //
     QString username = "username";
     QString password = "password";
-     std::cerr << "Logging in ..\n";
-     if (theRemoteService->login(username, password) < 0) {
-         qDebug() << "ERROR - could not login ";
-         return;
-     };
+    qDebug() << "Logging in ..\n";
+    if (theRemoteService->login(username, password) < 0) {
+      qDebug() << "ERROR - could not login ";
+      return;
+    };
 
-     //
-     // upload files
-     //
+    //
+    // upload files
+    //
 
-     QString remoteDir =  theRemoteService->getHomeDirPath() + QString("/") + appName;
-     qDebug() << "This is remoteDir: " << remoteDir;
-     theRemoteService->mkdir(theRemoteService->getHomeDirPath(), appName);
 
-     std::cerr << "Uploading files .. \n";
-     if (!theRemoteService->uploadDirectory(zipLocation, remoteDir))
-     {
-       qDebug() << "Some error here: " << remoteDir;
-       return;
-     }
-     std::cerr << "Uploaded files .. \n";
+    
+    std::cerr << "Uploading files .. \n";
+    QString remoteDir =  theRemoteService->getHomeDirPath() + QString("/") + appName;
+    if (!theRemoteService->uploadDirectory(zipLocation, remoteDir))
+      {
+	qDebug() << "Could not upload directory: " << remoteDir;
+	return;
+      }
+    
+    std::cerr << "Uploaded files .. \n";
 
      //
      // create json job description
