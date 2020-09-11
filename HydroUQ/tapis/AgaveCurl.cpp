@@ -110,6 +110,9 @@ AgaveCurl::AgaveCurl(QString &_tenant, QString &_storage, QString *appDir, QObje
 
 AgaveCurl::~AgaveCurl()
 {
+
+  qDebug() << "FMK - AgaveCurl:: Destructor";
+  
     //
     // clean up, remove temp files, delete QProcess and delete login
     //  - deleted login as never set the widgets parent window
@@ -172,6 +175,9 @@ AgaveCurl::loginCall(QString uname, QString upassword)
 bool
 AgaveCurl::login(QString uname, QString upassword)
 {
+
+  qDebug() << "LOGIN CALLL";
+  
    username = uname;
    password = upassword;
 
@@ -181,38 +187,38 @@ AgaveCurl::login(QString uname, QString upassword)
    curl_slist_free_all(slist1);
    slist1 = NULL;
 
-    //
-    // first try deleting old app, needed if program crashed or old not deleted
-    // before thread was shutdown
-    //
-
-    QString message = QString("Contacting ") + tenant + QString(" to delete any old clients ");
-    emit statusMessage(message);
-
-    QString url = tenantURL + QString("clients/v2/") + appClient;
-    QString user_passwd = username + QString(":") + password;
-
-    curl_easy_setopt(hnd, CURLOPT_URL, url.toStdString().c_str());
-    curl_easy_setopt(hnd, CURLOPT_USERPWD, user_passwd.toStdString().c_str());
-    curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "DELETE");
-
-    if (this->invokeCurl() == false) {
-        return false;
-    }
-
-    //
-    // first try creating a client with username & password
-    // with purpose of getting the two keys: consumerSecret and consumerKey
-    //
-
-    message = QString("Contacting ") + tenant + QString(" to create new client ");
-    emit statusMessage(message);
-
-    url = tenantURL + QString("clients/v2/?pretty=true");
-
-    curl_easy_setopt(hnd, CURLOPT_URL, url.toStdString().c_str());
-    curl_easy_setopt(hnd, CURLOPT_NOPROGRESS, 1L);
-    curl_easy_setopt(hnd, CURLOPT_USERPWD, user_passwd.toStdString().c_str());
+   //
+   // first try deleting old app, needed if program crashed or old not deleted
+   // before thread was shutdown
+   //
+   
+   QString message = QString("Contacting ") + tenant + QString(" to delete any old clients ");
+   emit statusMessage(message);
+   
+   QString url = tenantURL + QString("clients/v2/") + appClient;
+   QString user_passwd = username + QString(":") + password;
+   
+   curl_easy_setopt(hnd, CURLOPT_URL, url.toStdString().c_str());
+   curl_easy_setopt(hnd, CURLOPT_USERPWD, user_passwd.toStdString().c_str());
+   curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "DELETE");
+   
+   if (this->invokeCurl() == false) {
+     return false;
+   }
+   
+   //
+   // first try creating a client with username & password
+   // with purpose of getting the two keys: consumerSecret and consumerKey
+   //
+   
+   message = QString("Contacting ") + tenant + QString(" to create new client ");
+   emit statusMessage(message);
+   
+   url = tenantURL + QString("clients/v2/?pretty=true");
+   
+   curl_easy_setopt(hnd, CURLOPT_URL, url.toStdString().c_str());
+   curl_easy_setopt(hnd, CURLOPT_NOPROGRESS, 1L);
+   curl_easy_setopt(hnd, CURLOPT_USERPWD, user_passwd.toStdString().c_str());
 
     QString postField = QString("clientName=") + appClient + QString("&tier=Unlimited&description=client for app development&callbackUrl=");
     int postFieldLength = postField.length() ; // strlen(postFieldChar);
@@ -260,7 +266,7 @@ AgaveCurl::login(QString uname, QString upassword)
         }
     } else if (val.contains("success")) {
         QJsonDocument doc = QJsonDocument::fromJson(val.toUtf8());
-        QJsonObject jsonObj = doc.object();
+	QJsonObject jsonObj = doc.object();
         if (jsonObj.contains("result")) {
             QJsonObject resultObj =  jsonObj["result"].toObject();
             if (resultObj.contains("consumerKey"))
@@ -323,6 +329,7 @@ AgaveCurl::login(QString uname, QString upassword)
         emit errorMessage("ERROR: Invalid Credentials in OAuth!");
 	return false;
     } else {
+
         QJsonDocument doc = QJsonDocument::fromJson(val.toUtf8());
         QJsonObject jsonObj = doc.object();
         if (jsonObj.contains("access_token")) {
@@ -339,13 +346,14 @@ AgaveCurl::login(QString uname, QString upassword)
 	      if (ok != true) {
 		QString message = QString("WARNING - could not create " ) + appDirName 
 		  + QString("on login, using home dir instead");
-		appDirName = QString(""); // no erase function!
+		appDirName = QString(""); 
+		qDebug() << message;
 		emit statusMessage(message);
 	      } else {
-		emit statusMessage("Login SUCCESS");
+		emit statusMessage("Login SUCCESS .. created directory");
 	      }
 	    } else {
-	      emit statusMessage("Login SUCCESS");
+	      emit statusMessage("Login SUCCESS .. no directory");
 	    }
 
 	    return true;
@@ -572,7 +580,9 @@ bool
 AgaveCurl::mkdir(const QString &remoteName, const QString &remotePath) {
 
   QString message = QString("Contacting ") + tenant + QString(" to create dir ") + remotePath + QString("/") + remoteName;
-    emit statusMessage(message);
+  emit statusMessage(message);
+
+  qDebug() << message;
 
      bool result = false;
 
@@ -589,8 +599,8 @@ AgaveCurl::mkdir(const QString &remoteName, const QString &remotePath) {
       curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "PUT");
 
       if (this->invokeCurl() == false) {
-          return false;
-       }
+	return false;
+      }
 
       //
       // process the results
@@ -624,6 +634,7 @@ AgaveCurl::mkdir(const QString &remoteName, const QString &remotePath) {
              if (theObj.contains("message"))
                  message = theObj["message"].toString();
              emit errorMessage(message);
+	     qDebug() << "AgaveCurl::mkdir error: " << message;
 	     return false;
          } else if (status == "success") {
              return true;
@@ -631,9 +642,11 @@ AgaveCurl::mkdir(const QString &remoteName, const QString &remotePath) {
      } else {
        QJsonDocument doc(theObj);
        QString strJson(doc.toJson(QJsonDocument::Compact));
+       qDebug() << "AgaveCurl:: failed to create remote dir: " << strJson.toStdString().c_str() << "\n";
        emit errorMessage(strJson);
        return false;
      }
+
 
      return result;
 }
