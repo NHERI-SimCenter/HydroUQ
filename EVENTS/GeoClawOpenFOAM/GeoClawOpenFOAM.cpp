@@ -1,7 +1,7 @@
 #include "GeoClawOpenFOAM.h"
 #include "ui_GeoClawOpenFOAM.h"
 
-#include "tapis/AgaveCurl.h"
+#include "AgaveCurl.h"
 #include <QDir>
 #include <QFileInfo>
 #include <QFile>
@@ -58,26 +58,158 @@ void GeoClawOpenFOAM::initialize()
 }
 
 
-bool GeoClawOpenFOAM::outputToJSON(QJsonObject &rvObject)
+bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 {
-  return false;
+  jsonObject["EventClassification"]="Hydro";
+  jsonObject["Application"] = "GeoClawOpenFOAM";
+
+
+    // Get the simulation type
+    refresh_projsettings();
+
+    // Get data from project settings - index 0
+    QMap<QString, QString> *singleData;
+    this->clearAllData();
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->getData(*singleData,simtype))
+    {
+        allData.insert(0, singleData);
+    }
+
+    // Get data from Bathymetry - index 1
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->getData(*singleData,simtype))
+    {
+        allData.insert(1, singleData);
+    }
+
+    // Add SW-CFD Interface - Index 2
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->getData(*singleData,simtype))
+    {
+        allData.insert(2, singleData);
+    }
+
+    // Get data from buildings - index 3
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->getData(*singleData,simtype))
+    {
+        allData.insert(3, singleData);
+    }
+
+    // Get data from floating bodies - Index 4
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->getData(*singleData,simtype))
+    {
+        allData.insert(4, singleData);
+    }
+
+    // Get data from mesh - index 5
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->getData(*singleData,simtype))
+    {
+        allData.insert(5, singleData);
+    }
+
+    // Get data from materials - index 6
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<materials *>(ui->stackedWidget->widget(6))->getData(*singleData,simtype))
+    {
+        allData.insert(6, singleData);
+    }
+
+    // Initial conditions: velocity - index 7
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->getData(*singleData,simtype))
+    {
+        allData.insert(7, singleData);
+    }
+
+    // Initial conditions: pressure - index 8
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->getData(*singleData,simtype))
+    {
+        allData.insert(8, singleData);
+    }
+
+    // Initial conditions: alpha - index 9
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->getData(*singleData,simtype))
+    {
+        allData.insert(9, singleData);
+    }
+
+    // Boundary conditions - index 10
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->getData(*singleData,simtype))
+    {
+        allData.insert(10, singleData);
+    }
+
+    // Solver settings - index 11
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<solver *>(ui->stackedWidget->widget(11))->getData(*singleData,simtype))
+    {
+        allData.insert(11, singleData);
+    }
+
+    /*// Show in text window (Just to print out the map)
+    // This will later be replaced by writing to JSON
+    QString text;
+    foreach (int key, allData.keys())
+    {
+        QMap<QString, QString> *singleDataSet = allData.value(key);
+        foreach (QString varname, singleDataSet->keys())
+        {
+            QString oneEntry = QString("%1: %2 = %3\n").arg(key+1).arg(varname).arg(singleDataSet->value(varname));
+            text.append(oneEntry);
+        }
+    }
+    ui->textEdit->setPlainText(text);
+    ui->textEdit->repaint();*/
+
+    // Get directory and project name for writing JSON file
+    QMap<QString, QString> *singleDataSet = allData.value(0);
+    QString wdir = singleDataSet->value("Work directory");
+    QString pname = singleDataSet->value("Project name");
+
+    // Convert to QJsonObject
+    //    QVariantMap vmap;
+    //vmap.insert("Application name",applicationname);
+    //    vmap.insert("Application version",applicationversion);
+    foreach (int key, allData.keys())
+    {
+        QMap<QString, QString> *singleDataSet = allData.value(key);
+        foreach (QString varname, singleDataSet->keys())
+        {
+	  // QString oneEntry = QString("%1: %2 = %3\n").arg(key+1).arg(varname).arg(singleDataSet->value(varname));
+	  // vmap.insert(varname, singleDataSet->value(varname));
+	    jsonObject[varname] = singleDataSet->value(varname);
+        }
+    }
+  
+  return true;
 }
 
-bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &rvObject)
+bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 {
   return false;
 }
 
 bool
-GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &rvObject)
+GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &jsonObject)
 {
-  return false;
+    jsonObject["EventClassification"]="Hydro";
+    jsonObject["Application"] = "GeoClawOpenFOAM";
+    QJsonObject dataObj;
+    jsonObject["ApplicationData"] = dataObj;
+    return true;  
 }
 
 bool
-GeoClawOpenFOAM::inputAppDataFromJSON(QJsonObject &rvObject)
+GeoClawOpenFOAM::inputAppDataFromJSON(QJsonObject &jsonObject)
 {
-  return false;
+  return true;
 }
 
 bool
