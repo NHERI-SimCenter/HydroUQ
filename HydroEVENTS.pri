@@ -258,97 +258,97 @@ HEADERS += \
     $$PWD/EVENTS/dependencies/Eigen/src/LU/Determinant.h \
     $$PWD/EVENTS/dependencies/Eigen/src/LU/FullPivLU.h \
     $$PWD/EVENTS/dependencies/Eigen/src/LU/InverseImpl.h \
-$$PWD/EVENTS/dependencies/Eigen/src/LU/PartialPivLU.h \
-$$PWD/EVENTS/dependencies/Eigen/src/LU/PartialPivLU_LAPACKE.h \
-$$PWD/EVENTS/dependencies/Eigen/src/LU/arch/Inverse_SSE.h \
-$$PWD/EVENTS/dependencies/Eigen/src/MetisSupport/MetisSupport.h \
-$$PWD/EVENTS/dependencies/Eigen/src/OrderingMethods/Amd.h \
-$$PWD/EVENTS/dependencies/Eigen/src/OrderingMethods/Eigen_Colamd.h \
-$$PWD/EVENTS/dependencies/Eigen/src/OrderingMethods/Ordering.h \
-$$PWD/EVENTS/dependencies/Eigen/src/PaStiXSupport/PaStiXSupport.h \
-$$PWD/EVENTS/dependencies/Eigen/src/PardisoSupport/PardisoSupport.h \
-$$PWD/EVENTS/dependencies/Eigen/src/QR/ColPivHouseholderQR.h \
-$$PWD/EVENTS/dependencies/Eigen/src/QR/ColPivHouseholderQR_LAPACKE.h \
-$$PWD/EVENTS/dependencies/Eigen/src/QR/CompleteOrthogonalDecomposition.h \
-$$PWD/EVENTS/dependencies/Eigen/src/QR/FullPivHouseholderQR.h \
-$$PWD/EVENTS/dependencies/Eigen/src/QR/HouseholderQR.h \
-$$PWD/EVENTS/dependencies/Eigen/src/QR/HouseholderQR_LAPACKE.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SPQRSupport/SuiteSparseQRSupport.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SVD/BDCSVD.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SVD/JacobiSVD.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SVD/JacobiSVD_LAPACKE.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SVD/SVDBase.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SVD/UpperBidiagonalization.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCholesky/SimplicialCholesky.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCholesky/SimplicialCholesky_impl.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/AmbiVector.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/CompressedStorage.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/ConservativeSparseSparseProduct.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/MappedSparseMatrix.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseAssign.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseBlock.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseColEtree.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseCompressedBase.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseCwiseBinaryOp.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseCwiseUnaryOp.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseDenseProduct.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseDiagonalProduct.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseDot.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseFuzzy.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseMap.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseMatrix.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseMatrixBase.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparsePermutation.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseProduct.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseRedux.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseRef.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseSelfAdjointView.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseSolverBase.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseSparseProductWithPruning.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseTranspose.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseTriangularView.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseUtil.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseVector.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseView.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseCore/TriangularSolver.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLUImpl.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_Memory.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_Structs.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_SupernodalMatrix.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_Utils.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_column_bmod.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_column_dfs.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_copy_to_ucol.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_gemm_kernel.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_kernel_bmod.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_panel_bmod.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_panel_dfs.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_pivotL.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_pruneL.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_relax_snode.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SparseQR/SparseQR.h \
-$$PWD/EVENTS/dependencies/Eigen/src/StlSupport/StdDeque.h \
-$$PWD/EVENTS/dependencies/Eigen/src/StlSupport/StdList.h \
-$$PWD/EVENTS/dependencies/Eigen/src/StlSupport/StdVector.h \
-$$PWD/EVENTS/dependencies/Eigen/src/StlSupport/details.h \
-$$PWD/EVENTS/dependencies/Eigen/src/SuperLUSupport/SuperLUSupport.h \
-$$PWD/EVENTS/dependencies/Eigen/src/UmfPackSupport/UmfPackSupport.h \
-$$PWD/EVENTS/dependencies/Eigen/src/misc/Image.h \
-$$PWD/EVENTS/dependencies/Eigen/src/misc/Kernel.h \
-$$PWD/EVENTS/dependencies/Eigen/src/misc/RealSvd2x2.h \
-$$PWD/EVENTS/dependencies/Eigen/src/misc/blas.h \
-$$PWD/EVENTS/dependencies/Eigen/src/misc/lapack.h \
-$$PWD/EVENTS/dependencies/Eigen/src/misc/lapacke.h \
-$$PWD/EVENTS/dependencies/Eigen/src/misc/lapacke_mangling.h \
-$$PWD/EVENTS/dependencies/Eigen/src/plugins/ArrayCwiseBinaryOps.h \
-$$PWD/EVENTS/dependencies/Eigen/src/plugins/ArrayCwiseUnaryOps.h \
-$$PWD/EVENTS/dependencies/Eigen/src/plugins/BlockMethods.h \
-$$PWD/EVENTS/dependencies/Eigen/src/plugins/CommonCwiseBinaryOps.h \
-$$PWD/EVENTS/dependencies/Eigen/src/plugins/CommonCwiseUnaryOps.h \
-$$PWD/EVENTS/dependencies/Eigen/src/plugins/MatrixCwiseBinaryOps.h \
-$$PWD/EVENTS/dependencies/Eigen/src/plugins/MatrixCwiseUnaryOps.h
+    $$PWD/EVENTS/dependencies/Eigen/src/LU/PartialPivLU.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/LU/PartialPivLU_LAPACKE.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/LU/arch/Inverse_SSE.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/MetisSupport/MetisSupport.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/OrderingMethods/Amd.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/OrderingMethods/Eigen_Colamd.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/OrderingMethods/Ordering.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/PaStiXSupport/PaStiXSupport.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/PardisoSupport/PardisoSupport.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/QR/ColPivHouseholderQR.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/QR/ColPivHouseholderQR_LAPACKE.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/QR/CompleteOrthogonalDecomposition.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/QR/FullPivHouseholderQR.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/QR/HouseholderQR.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/QR/HouseholderQR_LAPACKE.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SPQRSupport/SuiteSparseQRSupport.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SVD/BDCSVD.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SVD/JacobiSVD.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SVD/JacobiSVD_LAPACKE.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SVD/SVDBase.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SVD/UpperBidiagonalization.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCholesky/SimplicialCholesky.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCholesky/SimplicialCholesky_impl.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/AmbiVector.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/CompressedStorage.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/ConservativeSparseSparseProduct.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/MappedSparseMatrix.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseAssign.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseBlock.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseColEtree.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseCompressedBase.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseCwiseBinaryOp.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseCwiseUnaryOp.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseDenseProduct.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseDiagonalProduct.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseDot.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseFuzzy.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseMap.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseMatrix.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseMatrixBase.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparsePermutation.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseProduct.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseRedux.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseRef.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseSelfAdjointView.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseSolverBase.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseSparseProductWithPruning.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseTranspose.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseTriangularView.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseUtil.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseVector.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/SparseView.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseCore/TriangularSolver.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLUImpl.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_Memory.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_Structs.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_SupernodalMatrix.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_Utils.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_column_bmod.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_column_dfs.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_copy_to_ucol.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_gemm_kernel.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_kernel_bmod.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_panel_bmod.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_panel_dfs.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_pivotL.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_pruneL.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseLU/SparseLU_relax_snode.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SparseQR/SparseQR.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/StlSupport/StdDeque.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/StlSupport/StdList.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/StlSupport/StdVector.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/StlSupport/details.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/SuperLUSupport/SuperLUSupport.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/UmfPackSupport/UmfPackSupport.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/misc/Image.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/misc/Kernel.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/misc/RealSvd2x2.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/misc/blas.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/misc/lapack.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/misc/lapacke.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/misc/lapacke_mangling.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/plugins/ArrayCwiseBinaryOps.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/plugins/ArrayCwiseUnaryOps.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/plugins/BlockMethods.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/plugins/CommonCwiseBinaryOps.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/plugins/CommonCwiseUnaryOps.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/plugins/MatrixCwiseBinaryOps.h \
+    $$PWD/EVENTS/dependencies/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 
 FORMS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/bathymetry.ui \
@@ -375,7 +375,7 @@ RESOURCES += \
     resources.qrc
 
 INCLUDEPATH += \
-	    $$PWD/EVENTS/dependencies/Eigen
+    $$PWD/EVENTS/dependencies/Eigen
 
 DISTFILES += \
-	  $$PWD/EVENTS/dependencies/Eigen/CMakeLists.txt
+    $$PWD/EVENTS/dependencies/Eigen/CMakeLists.txt
