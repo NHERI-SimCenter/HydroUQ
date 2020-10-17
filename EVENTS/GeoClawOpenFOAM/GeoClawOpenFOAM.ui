@@ -19,7 +19,6 @@
   <property name="windowTitle">
    <string>GeoClawOpenFOAM</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,2,5">
     <item>
      <widget class="QFrame" name="parameterFrame">
@@ -293,7 +292,6 @@
      </widget>
     </item>
    </layout>
-  </widget>
  </widget>
  <customwidgets>
   <customwidget>
