@@ -10,6 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Hydro_UQ
 TEMPLATE = app
+CONFIG+=sdk_no_version_check
 
 DEFINES += _GRAPHICS_Qt3D
 
