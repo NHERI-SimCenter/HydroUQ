@@ -20,12 +20,6 @@
    <string>GeoClawOpenFOAM</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,2,5">
-<<<<<<< Updated upstream
-   <property name="spacing">
-    <number>6</number>
-   </property>
-=======
->>>>>>> Stashed changes
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -258,18 +252,6 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="leftMargin">
-<<<<<<< Updated upstream
-       <number>6</number>
-      </property>
-      <property name="topMargin">
-       <number>6</number>
-      </property>
-      <property name="rightMargin">
-       <number>6</number>
-      </property>
-      <property name="bottomMargin">
-       <number>6</number>
-=======
        <number>0</number>
       </property>
       <property name="topMargin">
@@ -280,7 +262,6 @@
       </property>
       <property name="bottomMargin">
        <number>0</number>
->>>>>>> Stashed changes
       </property>
       <item>
        <widget class="QStackedWidget" name="stackedWidget"/>
