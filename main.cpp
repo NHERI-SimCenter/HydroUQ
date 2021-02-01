@@ -28,7 +28,6 @@ static bool logToFile = false;
 
  // customMessgaeOutput code taken from web:
  // https://stackoverflow.com/questions/4954140/how-to-redirect-qdebug-qwarning-qcritical-etc-output
-
 void customMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     QHash<QtMsgType, QString> msgLevelHash({{QtDebugMsg, "Debug"}, {QtInfoMsg, "Info"}, {QtWarningMsg, "Warning"}, {QtCriticalMsg, "Critical"}, {QtFatalMsg, "Fatal"}});
@@ -44,7 +43,7 @@ void customMessageOutput(QtMsgType type, const QMessageLogContext &context, cons
         QFile outFile(logFilePath);
         outFile.open(QIODevice::WriteOnly | QIODevice::Append);
         QTextStream ts(&outFile);
-        ts << txt << endl;
+        ts << txt << Qt::endl;
         outFile.close();
     } else {
         fprintf(stderr, "%s %s: %s (%s:%u, %s)\n", formattedTimeMsg.constData(), logLevelMsg.constData(), localMsg.constData(), context.file, context.line, context.function);
@@ -66,7 +65,7 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, Version and Google Analytics Tracking Id
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("0.0.3");
+    QCoreApplication::setApplicationVersion("1.0.0");
     //    GoogleAnalytics::SetTrackingId("UA-178848988-1");
     GoogleAnalytics::StartSession();
     GoogleAnalytics::ReportStart();
@@ -116,81 +115,44 @@ int main(int argc, char *argv[])
     QSurfaceFormat::setDefaultFormat(glFormat);
     ***********************************************************************************/
 
-    //
     // regular Qt startup
-    //
-
     QApplication a(argc, argv);
-    //
-    // create a remote interface
-    //
 
+    // create a remote interface
     QString tenant("designsafe");
     QString storage("agave://designsafe.storage.default/");
-    QString dirName("EE-UQ");
-
+    QString dirName("Hydro-UQ");
     AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName);
 
 
-    //
     // create the main window
-    //
-
     WorkflowAppWidget *theInputApp = new WorkflowAppHydroUQ(theRemoteService);
-    MainWindowWorkflowApp w(QString("Hydro-UQ: Response of Building to Wave"), theInputApp, theRemoteService);
+    MainWindowWorkflowApp w(QString("Hydro-UQ: Response during water wave loading"), theInputApp, theRemoteService);
 
-    /*
-    QString textAboutEE_UQ = "\
-            <p> \
-            This is the Earthquake Engineering with Uncertainty Quantification (EE-UQ) application.\
-            <p>\
-            This open-source research application, https://github.com/NHERI-SimCenter/EE-UQ, provides an application \
-        researchers can use to predict the response of a building to earthquake events. The application is focused on \
-        quantifying the uncertainties in the predicted response, given the that the properties of the buildings and the earthquake \
-        events are not known exactly, and that the simulation software and the user make simplifying assumptions in the numerical \
-        modeling of that structure. In the application the user is required to characterize the uncertainties in the input, the \
-        application will after utilizing the selected sampling method, provide information that characterizes the uncertainties in \
-        the response. The computations to make these determinations can be prohibitively expensive. To overcome this impedement the \
-        user has the option to perform the computations on the Stampede2 supercomputer. Stampede2 is located at the Texas Advanced \
-        Computing Center and is made available to the user through NHERI DesignSafe, the cyberinfrastructure provider for the distributed \
-        NSF funded Natural Hazards in Engineering Research Infrastructure, NHERI, facility.\
-        <p>\
-        The computations are performed in a workflow application. That is, the numerical simulations are actually performed by a \
-        number of different applications. The EE-UQ backend software runs these different applications for the user, taking the \
-        outputs from some programs and providing them as inputs to others. The design of the EE-UQ application is such that \
-        researchers are able to modify the backend application to utilize their own application in the workflow computations. \
-        This will ensure researchers are not limited to using the default applications we provide and will be enthused to provide\
-        their own applications for others to use.\
-        <p>\
-        This is Version 2.2.0 of the tool and as such is limited in scope. Researchers are encouraged to comment on what additional \
-        features and applications they would like to see in this application. If you want it, chances are many of your colleagues \
-        also would benefit from it.\
-        <p>";
-
-        w.setAbout(textAboutEE_UQ);
-    */
-
-
-    QString aboutTitle = "About the SimCenter EE-UQ Application"; // this is the title displayed in the on About dialog
-    QString aboutSource = ":/resources/docs/textAboutEEUQ.html";  // this is an HTML file stored under resources
+    // About the application
+    QString aboutTitle = "About the SimCenter Hydro-UQ Application"; // this is the title displayed in the on About dialog
+    QString aboutSource = ":/resources/docs/textAboutHydroUQ.html";  // this is an HTML file stored under resources
     w.setAbout(aboutTitle, aboutSource);
 
-    QString version("Version 2.2.0");
+    // Version
+    QString version("Version 1.0.0");
     w.setVersion(version);
 
-    QString citeText("Frank McKenna, Wael Elhaddad, Michael Gardner, Adam Zsarnoczay, & Charles Wang. (2019, October 8). NHERI-SimCenter/EE-UQ: Version 2.0.0 (Version v2.0.0). Zenodo. http://doi.org/10.5281/zenodo.3475642");
+    // Citation
+    QString citeText("Ajay B Harish, & Frank McKenna. (2020, February 15). NHERI-SimCenter/Hydro-UQ: Version 1.0.0 (Version v1.0.0). Zenodo. http://doi.org/to-be-added");
     w.setCite(citeText);
 
-    QString manualURL("https://nheri-simcenter.github.io/EE-UQ-Documentation/");
+    // Link to repository
+    QString manualURL("https://nheri-simcenter.github.io/HydroUQ/");
     w.setDocumentationURL(manualURL);
 
-    QString messageBoardURL("https://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=6.0");
+    // Link to message board
+    QString messageBoardURL("http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0");
     w.setFeedbackURL(messageBoardURL);
 
     //
     // move remote interface to a thread
     //
-
     QThread *thread = new QThread();
     theRemoteService->moveToThread(thread);
 

@@ -630,13 +630,13 @@ void GeoClawOpenFOAM::on_Btn_SubTACC_clicked()
 
     int count = 1;
     QString jobName("OpenFOAM:");
-    QString maxRunTime ("10:00:00");
+    QString maxRunTime ("48:00:00");
     int numNode = 1;
     int numProcessors = 4;
     //char *username = NULL;
    // char *password = NULL;
 
-    char *solver = "interFoam";
+    char *solver = "olaFlow";
     char *mesh = "On";
 
     //QString caseDirectory(dirName);
