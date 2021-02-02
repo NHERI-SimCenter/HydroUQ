@@ -56,7 +56,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 //#include <AgaveInterface.h>
 #include <QDebug>
 #include <QDir>
-
 #include <QStackedWidget>
 
 extern int getNumParallelTasks();

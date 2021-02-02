@@ -83,6 +83,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     eventSelection->setObjectName("LoadingTypeCombox");
 
     eventSelection->addItem(tr("GeoClaw OpenFOAM"));
+    eventSelection->addItem(tr("Wave Flume Digitwin"));
     //    eventSelection->addItem(tr("Hazard Based Event"));
     // eventSelection->addItem(tr("User Application"));
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);

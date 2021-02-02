@@ -1,7 +1,8 @@
 // Written: fmckenna
-
+// Modified: Ajay B Harish (Feb 2021)
 // Purpose: the typical Qt main for running a QMainWindow
 
+// Include headers
 #include <MainWindowWorkflowApp.h>
 #include <QApplication>
 #include <QFile>
@@ -74,14 +75,11 @@ int main(int argc, char *argv[])
     Q_INIT_RESOURCE(images1);
     Q_INIT_RESOURCE(resources);
 
-    //
-    // set up logging of output messages for user debugging
-    //
-
+    // Set up logging of output messages for user debugging
     logFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
       + QDir::separator() + QCoreApplication::applicationName();
 
-    // make sure tool dir exists in Documentss folder
+    // Make sure tool dir exists in Documentss folder
     QDir dirWork(logFilePath);
     if (!dirWork.exists())
         if (!dirWork.mkpath(logFilePath)) {
@@ -150,21 +148,15 @@ int main(int argc, char *argv[])
     QString messageBoardURL("http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0");
     w.setFeedbackURL(messageBoardURL);
 
-    //
-    // move remote interface to a thread
-    //
+    // Move remote interface to a thread
     QThread *thread = new QThread();
     theRemoteService->moveToThread(thread);
-
     QWidget::connect(thread, SIGNAL(finished()), theRemoteService, SLOT(deleteLater()));
     QWidget::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-
     thread->start();
 
-    //
-    // show the main window, set styles & start the event loop
-    //
 
+    // Show the main window, set styles & start the event loop
     w.show();
     w.statusBar()->showMessage("Ready", 5000);
 
@@ -181,6 +173,7 @@ int main(int argc, char *argv[])
 #endif
 
 
+    // Show error message
     if(file.open(QFile::ReadOnly)) {
         a.setStyleSheet(file.readAll());
         file.close();
@@ -188,17 +181,16 @@ int main(int argc, char *argv[])
         qDebug() << "could not open stylesheet";
     }
 
-
+    // Result of execution
     int res = a.exec();
 
-    //
-    // on done with event loop, logout & stop the thread
-    //
-
+    // On done with event loop, logout & stop the thread
     theRemoteService->logout();
     thread->quit();
 
+    // Close Google Analytics session
     GoogleAnalytics::EndSession();
-    // done
+
+    // Complete
     return res;
 }
