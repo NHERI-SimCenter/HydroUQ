@@ -1,5 +1,3 @@
-// Written: fmckenna
-
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
 All rights reserved.
@@ -37,27 +35,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 // Written: fmckenna
+// Modified: Ajay B Harish (Feb 2021)
 
 #include "HydroEventSelection.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-
 #include <QStackedWidget>
 #include <QComboBox>
 #include <QSpacerItem>
-
 #include <QPushButton>
 #include <QJsonObject>
 #include <QJsonArray>
-
 #include <QLabel>
 #include <QLineEdit>
 #include <QDebug>
 #include <QFileDialog>
 #include <QPushButton>
 #include <sectiontitle.h>
-//#include <InputWidgetEDP.h>
 #include <GeoClawOpenFOAM.h>
 #include <InputWidgetExistingEvent.h>
 
@@ -67,25 +62,26 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 					 QWidget *parent)
     : SimCenterAppWidget(parent), theCurrentEvent(0), theRandomVariablesContainer(theRandomVariableIW)
 {
+    // Create layout
     QVBoxLayout *layout = new QVBoxLayout();
 
-    //
-    // the selection part
-    //
 
+    // The selection of different events
     QHBoxLayout *theSelectionLayout = new QHBoxLayout();
-    //    QLabel *label = new QLabel();
     SectionTitle *label=new SectionTitle();
     label->setMinimumWidth(250);
-    label->setText(QString("Load Generator"));
+    label->setText(QString("Simulation type"));
 
+    // Combobox for different simulation types
     eventSelection = new QComboBox();
     eventSelection->setObjectName("LoadingTypeCombox");
 
+    // Load the different event types
+    eventSelection->addItem(tr("General"));
     eventSelection->addItem(tr("GeoClaw OpenFOAM"));
+//    eventSelection->addItem(tr("SW-OpenFOAM"));
     eventSelection->addItem(tr("Wave Flume Digitwin"));
-    //    eventSelection->addItem(tr("Hazard Based Event"));
-    // eventSelection->addItem(tr("User Application"));
+
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     eventSelection->setItemData(1, "A Seismic event using Seismic Hazard Analysis and Record Selection/Scaling", Qt::ToolTipRole);
 
@@ -173,23 +169,20 @@ HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
 
 void HydroEventSelection::eventSelectionChanged(const QString &arg1)
 {
-    //
     // switch stacked widgets depending on text
     // note type output in json and name in pull down are not the same and hence the ||
-    //
-
-    if (arg1 == "GeoClaw OpenFOAM") {
+    if (arg1 == "GeoClaw OpenFOAM")
+    {
         theStackedWidget->setCurrentIndex(0);
         theCurrentEvent = theGeoClawOpenFOAM;
     }
-
-    else {
-        qDebug() << "ERROR .. HydroEventSelection selection .. type unknown: " << arg1;
+    else
+    {
+        qDebug() << "ERROR: HydroEventSelection selection-type unknown: " << arg1;
     }
 }
 
-bool
-HydroEventSelection::outputAppDataToJSON(QJsonObject &jsonObject)
+bool HydroEventSelection::outputAppDataToJSON(QJsonObject &jsonObject)
 {
     QJsonArray eventArray;
     QJsonObject singleEventData;
