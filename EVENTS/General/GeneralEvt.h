@@ -1,5 +1,5 @@
-#ifndef GEOCLAW_OPENFOAM_H
-#define GEOCLAW_OPENFOAM_H
+#ifndef GENERALEVT_H
+#define GENERALEVT_H
 
 #include "projectsettings.h"
 #include "swcfdint.h"
@@ -30,19 +30,19 @@
 //QT_END_NAMESPACE
 
 namespace Ui {
-  class GeoClawOpenFOAM;
+  class GeneralEvt;
 }
 
 
 class AgaveCurl;
 
-class GeoClawOpenFOAM : public SimCenterAppWidget
+class GeneralEvt : public SimCenterAppWidget
 {
     Q_OBJECT
 
 public:
-  GeoClawOpenFOAM(RandomVariablesContainer *theRV, QWidget *parent = nullptr);
-  ~GeoClawOpenFOAM();
+  GeneralEvt(RandomVariablesContainer *theRV, QWidget *parent = nullptr);
+  ~GeneralEvt();
    
     bool outputToJSON(QJsonObject &rvObject);
     bool inputFromJSON(QJsonObject &rvObject);
@@ -64,13 +64,13 @@ private:
   
     void saveJson(QString wdir, QString pname, QJsonDocument jsondoc);
  
-    Ui::GeoClawOpenFOAM *ui;
+    Ui::GeneralEvt *ui;
     QMap<int, QMap<QString, QString>*> allData;
 
     int simtype; // Simulation type
     QStringList optiontree; // Tree widget names
     QString applicationname = "Hydro-UQ";
-    QString applicationversion = "1.0.0";
+    QString applicationversion = "0.9.0 (Alpha)";
     AgaveCurl *theRemoteService;
 };
-#endif // GEOCLAW_OPENFOAM_H
+#endif // GENERALEVT_H

@@ -53,8 +53,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QFileDialog>
 #include <QPushButton>
 #include <sectiontitle.h>
-#include <GeoClawOpenFOAM.h>
 #include <InputWidgetExistingEvent.h>
+#include <GeoClawOpenFOAM.h>
+//#include <FlumeDigiTwin.h>
 
 
 HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVariableIW,
@@ -82,8 +83,11 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 //    eventSelection->addItem(tr("SW-OpenFOAM"));
     eventSelection->addItem(tr("Wave Flume Digitwin"));
 
+    // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    eventSelection->setItemData(1, "A Seismic event using Seismic Hazard Analysis and Record Selection/Scaling", Qt::ToolTipRole);
+    eventSelection->setItemData(0, "This is a general event from which all other events can be setup", Qt::ToolTipRole);
+    eventSelection->setItemData(1, "Coupling of shallow-water solver (GeoClaw) with CFD (OpenFOAM)", Qt::ToolTipRole);
+    eventSelection->setItemData(2, "Digital twin of Wave Flume (at OSU)", Qt::ToolTipRole);
 
     theSelectionLayout->addWidget(label);
     QSpacerItem *spacer = new QSpacerItem(50,10);
@@ -92,34 +96,29 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     theSelectionLayout->addStretch();
     layout->addLayout(theSelectionLayout);
 
-    //
-    // create the stacked widget
-    //
+    // Create the stacked widget
     theStackedWidget = new QStackedWidget();
 
-    //
     // create the individual load widgets & add to stacked widget
-    //
-
     theGeoClawOpenFOAM = new GeoClawOpenFOAM(theRandomVariablesContainer);
     theStackedWidget->addWidget(theGeoClawOpenFOAM);
+    //theFlumeDigiTwin = new FlumeDigiTwin(theRandomVariablesContainer);
+    //theStackedWidget->addWidget(theFlumeDigiTwin);
 
+    // Setup the Layout
     layout->addWidget(theStackedWidget);
     layout->setMargin(0);
     this->setLayout(layout);
     theCurrentEvent=theGeoClawOpenFOAM;
 
-    //
-    // connect signal and slots
-    //
-
+    // Connect signal and slots
     connect(eventSelection, SIGNAL(currentIndexChanged(QString)), this, SLOT(eventSelectionChanged(QString)));
-
     connect(theGeoClawOpenFOAM, &SimCenterAppWidget::sendErrorMessage, this, [this](QString message) {emit sendErrorMessage(message);});
     connect(theGeoClawOpenFOAM, &SimCenterAppWidget::sendFatalMessage, this, [this](QString message) {emit sendFatalMessage(message);});
     connect(theGeoClawOpenFOAM, &SimCenterAppWidget::sendStatusMessage, this, [this](QString message) {emit sendStatusMessage(message);});
 
 }
+
 
 HydroEventSelection::~HydroEventSelection()
 {
@@ -127,8 +126,8 @@ HydroEventSelection::~HydroEventSelection()
 }
 
 
-bool
-HydroEventSelection::outputToJSON(QJsonObject &jsonObject)
+// Output data to JSON
+bool HydroEventSelection::outputToJSON(QJsonObject &jsonObject)
 {
     QJsonArray eventArray;
     QJsonObject singleEventData;
@@ -140,8 +139,8 @@ HydroEventSelection::outputToJSON(QJsonObject &jsonObject)
 }
 
 
-bool
-HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
+// Input data from JSON
+bool HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
 
     QString type;
     QJsonObject theEvent;
@@ -167,6 +166,7 @@ HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
     return false;
 }
 
+// If Event selection is changed
 void HydroEventSelection::eventSelectionChanged(const QString &arg1)
 {
     // switch stacked widgets depending on text
@@ -193,8 +193,7 @@ bool HydroEventSelection::outputAppDataToJSON(QJsonObject &jsonObject)
 }
 
 
-bool
-HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
+bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
 {
     QJsonObject theEvent;
     QString type;
@@ -257,8 +256,7 @@ HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
     }
 }
 
-bool
-HydroEventSelection::copyFiles(QString &destDir) {
+bool HydroEventSelection::copyFiles(QString &destDir) {
 
     if (theCurrentEvent != 0) {
         return  theCurrentEvent->copyFiles(destDir);
