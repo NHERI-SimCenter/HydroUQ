@@ -63,9 +63,11 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 					 QWidget *parent)
     : SimCenterAppWidget(parent), theCurrentEvent(0), theRandomVariablesContainer(theRandomVariableIW)
 {
+    // Unused variables
+    (void) generalInfoWidget;
+
     // Create layout
     QVBoxLayout *layout = new QVBoxLayout();
-
 
     // The selection of different events
     QHBoxLayout *theSelectionLayout = new QHBoxLayout();
@@ -79,9 +81,8 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 
     // Load the different event types
     eventSelection->addItem(tr("General"));
-    eventSelection->addItem(tr("GeoClaw OpenFOAM"));
-//    eventSelection->addItem(tr("SW-OpenFOAM"));
-    eventSelection->addItem(tr("Wave Flume Digitwin"));
+    //eventSelection->addItem(tr("GeoClaw OpenFOAM"));
+    //eventSelection->addItem(tr("Wave Flume Digitwin"));
 
     // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -171,7 +172,8 @@ void HydroEventSelection::eventSelectionChanged(const QString &arg1)
 {
     // switch stacked widgets depending on text
     // note type output in json and name in pull down are not the same and hence the ||
-    if (arg1 == "GeoClaw OpenFOAM")
+    //if (arg1 == "GeoClaw OpenFOAM")
+    if (arg1 == "General")
     {
         theStackedWidget->setCurrentIndex(0);
         theCurrentEvent = theGeoClawOpenFOAM;
@@ -200,7 +202,6 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
     QString subtype;
 
     // from Events get the single event
-
     if (jsonObject.contains("Events")) {
         QJsonArray theEvents = jsonObject["Events"].toArray();
         QJsonValue theValue = theEvents.at(0);
@@ -251,9 +252,12 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
     eventSelection->setCurrentIndex(index);
 
     // invoke inputAppDataFromJSON on new type
-    if (theCurrentEvent != 0 && !theEvent.isEmpty()) {
+    if (theCurrentEvent != 0 && !theEvent.isEmpty())
+    {
         return theCurrentEvent->inputAppDataFromJSON(theEvent);
     }
+
+    return true;
 }
 
 bool HydroEventSelection::copyFiles(QString &destDir) {

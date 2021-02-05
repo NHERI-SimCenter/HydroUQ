@@ -21,6 +21,9 @@ GeoClawOpenFOAM::GeoClawOpenFOAM(RandomVariablesContainer *theRV, QWidget *paren
     // Start the UI
     ui->setupUi(this);
 
+    // Suppress unused parameters
+    (void)theRV;
+
     // Initialize the UI
     initialize();
 }
@@ -193,11 +196,11 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 
 bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 {
-  return false;
+    (void) jsonObject;
+    return false;
 }
 
-bool
-GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &jsonObject)
+bool GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &jsonObject)
 {
     jsonObject["EventClassification"]="Hydro";
     jsonObject["Application"] = "GeoClawOpenFOAM";
@@ -206,20 +209,20 @@ GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &jsonObject)
     return true;  
 }
 
-bool
-GeoClawOpenFOAM::inputAppDataFromJSON(QJsonObject &jsonObject)
+bool GeoClawOpenFOAM::inputAppDataFromJSON(QJsonObject &jsonObject)
 {
-  return true;
+    (void) jsonObject;
+    return true;
 }
 
-bool
-GeoClawOpenFOAM::copyFiles(QString &dirName)
+bool GeoClawOpenFOAM::copyFiles(QString &dirName)
 {
-  return false;
+    (void) dirName;
+    return false;
 }
 
-void
-GeoClawOpenFOAM::errorMessage(QString message){
+void GeoClawOpenFOAM::errorMessage(QString message)
+{
     emit sendErrorMessage(message);
 }
 
@@ -627,8 +630,7 @@ void GeoClawOpenFOAM::on_Btn_SubTACC_clicked()
 
     QString caseDirectory = wdir + QDir::separator() + pname;
 
-
-    int count = 1;
+    //int count = 1;
     QString jobName("OpenFOAM:");
     QString maxRunTime ("48:00:00");
     int numNode = 1;
@@ -736,17 +738,15 @@ void GeoClawOpenFOAM::on_Btn_SubTACC_clicked()
     QString username = "username";
     QString password = "password";
     qDebug() << "Logging in ..\n";
-    if (theRemoteService->login(username, password) < 0) {
-      qDebug() << "ERROR - could not login ";
-      return;
+    if ((theRemoteService->login(username, password)) < 0)
+    {
+        qDebug() << "ERROR - could not login ";
+        return;
     };
 
     //
     // upload files
     //
-
-
-    
     std::cerr << "Uploading files .. \n";
     QString remoteDir =  theRemoteService->getHomeDirPath() + QString("/") + appName;
     if (!theRemoteService->uploadDirectory(zipLocation, remoteDir))
