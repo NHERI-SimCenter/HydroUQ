@@ -25,7 +25,6 @@ win32 {
     }
 }
 
-#macos:LIBS += /usr/lib/libcurl.dylib
 macos:LIBS += /usr/local/Cellar/curl/7.73.0_1/lib/libcurl.dylib
 win32:LIBS += C:\Users\SimCenter\libCurl-7.59.0/lib/libcurl.lib
 linux:LIBS += /usr/lib/x86_64-linux-gnu/libcurl.so
