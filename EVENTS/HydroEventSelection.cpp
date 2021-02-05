@@ -1,5 +1,3 @@
-// Written: fmckenna
-
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
 All rights reserved.
@@ -37,29 +35,27 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 // Written: fmckenna
+// Modified: Ajay B Harish (Feb 2021)
 
 #include "HydroEventSelection.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-
 #include <QStackedWidget>
 #include <QComboBox>
 #include <QSpacerItem>
-
 #include <QPushButton>
 #include <QJsonObject>
 #include <QJsonArray>
-
 #include <QLabel>
 #include <QLineEdit>
 #include <QDebug>
 #include <QFileDialog>
 #include <QPushButton>
 #include <sectiontitle.h>
-//#include <InputWidgetEDP.h>
-#include <GeoClawOpenFOAM.h>
 #include <InputWidgetExistingEvent.h>
+#include <GeoClawOpenFOAM.h>
+//#include <FlumeDigiTwin.h>
 
 
 HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVariableIW,
@@ -67,26 +63,32 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 					 QWidget *parent)
     : SimCenterAppWidget(parent), theCurrentEvent(0), theRandomVariablesContainer(theRandomVariableIW)
 {
+    // Unused variables
+    (void) generalInfoWidget;
+
+    // Create layout
     QVBoxLayout *layout = new QVBoxLayout();
 
-    //
-    // the selection part
-    //
-
+    // The selection of different events
     QHBoxLayout *theSelectionLayout = new QHBoxLayout();
-    //    QLabel *label = new QLabel();
     SectionTitle *label=new SectionTitle();
     label->setMinimumWidth(250);
-    label->setText(QString("Load Generator"));
+    label->setText(QString("Simulation type"));
 
+    // Combobox for different simulation types
     eventSelection = new QComboBox();
     eventSelection->setObjectName("LoadingTypeCombox");
 
-    eventSelection->addItem(tr("GeoClaw OpenFOAM"));
-    //    eventSelection->addItem(tr("Hazard Based Event"));
-    // eventSelection->addItem(tr("User Application"));
+    // Load the different event types
+    eventSelection->addItem(tr("General"));
+    //eventSelection->addItem(tr("GeoClaw OpenFOAM"));
+    //eventSelection->addItem(tr("Wave Flume Digitwin"));
+
+    // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    eventSelection->setItemData(1, "A Seismic event using Seismic Hazard Analysis and Record Selection/Scaling", Qt::ToolTipRole);
+    eventSelection->setItemData(0, "This is a general event from which all other events can be setup", Qt::ToolTipRole);
+    eventSelection->setItemData(1, "Coupling of shallow-water solver (GeoClaw) with CFD (OpenFOAM)", Qt::ToolTipRole);
+    eventSelection->setItemData(2, "Digital twin of Wave Flume (at OSU)", Qt::ToolTipRole);
 
     theSelectionLayout->addWidget(label);
     QSpacerItem *spacer = new QSpacerItem(50,10);
@@ -95,34 +97,29 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     theSelectionLayout->addStretch();
     layout->addLayout(theSelectionLayout);
 
-    //
-    // create the stacked widget
-    //
+    // Create the stacked widget
     theStackedWidget = new QStackedWidget();
 
-    //
     // create the individual load widgets & add to stacked widget
-    //
-
     theGeoClawOpenFOAM = new GeoClawOpenFOAM(theRandomVariablesContainer);
     theStackedWidget->addWidget(theGeoClawOpenFOAM);
+    //theFlumeDigiTwin = new FlumeDigiTwin(theRandomVariablesContainer);
+    //theStackedWidget->addWidget(theFlumeDigiTwin);
 
+    // Setup the Layout
     layout->addWidget(theStackedWidget);
     layout->setMargin(0);
     this->setLayout(layout);
     theCurrentEvent=theGeoClawOpenFOAM;
 
-    //
-    // connect signal and slots
-    //
-
+    // Connect signal and slots
     connect(eventSelection, SIGNAL(currentIndexChanged(QString)), this, SLOT(eventSelectionChanged(QString)));
-
     connect(theGeoClawOpenFOAM, &SimCenterAppWidget::sendErrorMessage, this, [this](QString message) {emit sendErrorMessage(message);});
     connect(theGeoClawOpenFOAM, &SimCenterAppWidget::sendFatalMessage, this, [this](QString message) {emit sendFatalMessage(message);});
     connect(theGeoClawOpenFOAM, &SimCenterAppWidget::sendStatusMessage, this, [this](QString message) {emit sendStatusMessage(message);});
 
 }
+
 
 HydroEventSelection::~HydroEventSelection()
 {
@@ -130,8 +127,8 @@ HydroEventSelection::~HydroEventSelection()
 }
 
 
-bool
-HydroEventSelection::outputToJSON(QJsonObject &jsonObject)
+// Output data to JSON
+bool HydroEventSelection::outputToJSON(QJsonObject &jsonObject)
 {
     QJsonArray eventArray;
     QJsonObject singleEventData;
@@ -143,8 +140,8 @@ HydroEventSelection::outputToJSON(QJsonObject &jsonObject)
 }
 
 
-bool
-HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
+// Input data from JSON
+bool HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
 
     QString type;
     QJsonObject theEvent;
@@ -170,25 +167,24 @@ HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
     return false;
 }
 
+// If Event selection is changed
 void HydroEventSelection::eventSelectionChanged(const QString &arg1)
 {
-    //
     // switch stacked widgets depending on text
     // note type output in json and name in pull down are not the same and hence the ||
-    //
-
-    if (arg1 == "GeoClaw OpenFOAM") {
+    //if (arg1 == "GeoClaw OpenFOAM")
+    if (arg1 == "General")
+    {
         theStackedWidget->setCurrentIndex(0);
         theCurrentEvent = theGeoClawOpenFOAM;
     }
-
-    else {
-        qDebug() << "ERROR .. HydroEventSelection selection .. type unknown: " << arg1;
+    else
+    {
+        qDebug() << "ERROR: HydroEventSelection selection-type unknown: " << arg1;
     }
 }
 
-bool
-HydroEventSelection::outputAppDataToJSON(QJsonObject &jsonObject)
+bool HydroEventSelection::outputAppDataToJSON(QJsonObject &jsonObject)
 {
     QJsonArray eventArray;
     QJsonObject singleEventData;
@@ -199,15 +195,13 @@ HydroEventSelection::outputAppDataToJSON(QJsonObject &jsonObject)
 }
 
 
-bool
-HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
+bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
 {
     QJsonObject theEvent;
     QString type;
     QString subtype;
 
     // from Events get the single event
-
     if (jsonObject.contains("Events")) {
         QJsonArray theEvents = jsonObject["Events"].toArray();
         QJsonValue theValue = theEvents.at(0);
@@ -258,13 +252,15 @@ HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
     eventSelection->setCurrentIndex(index);
 
     // invoke inputAppDataFromJSON on new type
-    if (theCurrentEvent != 0 && !theEvent.isEmpty()) {
+    if (theCurrentEvent != 0 && !theEvent.isEmpty())
+    {
         return theCurrentEvent->inputAppDataFromJSON(theEvent);
     }
+
+    return true;
 }
 
-bool
-HydroEventSelection::copyFiles(QString &destDir) {
+bool HydroEventSelection::copyFiles(QString &destDir) {
 
     if (theCurrentEvent != 0) {
         return  theCurrentEvent->copyFiles(destDir);

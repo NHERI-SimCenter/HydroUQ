@@ -1,8 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/NHERI-EEUQ-Icon.icns</file>
-        <file>icons/NHERI-EEUQ-Icon.ico</file>
-        <file>icons/NHERI-EEUQ-Icon.png</file>
-        <file>resources/docs/textAboutEEUQ.html</file>
+        <file>icons/NHERI-HydroUQ-Icon.icns</file>
+        <file>resources/docs/textAboutHydroUQ.html</file>
+        <file>icons/NHERI-HydroUQ-Icon.png</file>
+        <file>icons/NHERI-HydroUQ-Icon.ico</file>
     </qresource>
 </RCC>

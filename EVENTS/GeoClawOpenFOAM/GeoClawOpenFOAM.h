@@ -70,7 +70,7 @@ private:
     int simtype; // Simulation type
     QStringList optiontree; // Tree widget names
     QString applicationname = "Hydro-UQ";
-    QString applicationversion = "0.9.0 (Alpha)";
+    QString applicationversion = "1.0.0";
     AgaveCurl *theRemoteService;
 };
 #endif // GEOCLAW_OPENFOAM_H

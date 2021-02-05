@@ -18,15 +18,15 @@ VERSION=0.0.3
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 win32 {
-    RC_ICONS = icons/NHERI-EEUQ-Icon.ico
+    RC_ICONS = icons/NHERI-HydroUQ-Icon.ico
 } else {
     mac {
-    ICON = icons/NHERI-EEUQ-Icon.icns
+    ICON = icons/NHERI-HydroUQ-Icon.icns
     }
 }
 
 #macos:LIBS += /usr/lib/libcurl.dylib
-macos:LIBS += /Users/ajaybh/Desktop/libcurl.dylib
+macos:LIBS += /usr/local/Cellar/curl/7.73.0_1/lib/libcurl.dylib
 win32:LIBS += C:\Users\SimCenter\libCurl-7.59.0/lib/libcurl.lib
 linux:LIBS += /usr/lib/x86_64-linux-gnu/libcurl.so
 
@@ -52,7 +52,7 @@ RESOURCES += \
     $$PWD/styles.qrc
 
 DISTFILES += \
-    resources/docs/textAboutEEUQ.html
+    resources/docs/textAboutHydroUQ.html
 
 #FORMS    += mainwindow.ui
 

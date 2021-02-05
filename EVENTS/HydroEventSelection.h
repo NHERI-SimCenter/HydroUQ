@@ -77,6 +77,7 @@ private:
 
    //   SimCenterAppWidget *theSHA_MotionWidget;
    SimCenterAppWidget *theGeoClawOpenFOAM;
+   SimCenterAppWidget *theFlumeDigiTwin;
 
    RandomVariablesContainer *theRandomVariablesContainer;
 };

@@ -1,8 +1,7 @@
-
 INCLUDEPATH += $$PWD/EVENTS
 INCLUDEPATH += $$PWD/EVENTS/GeoClawOpenFOAM
 
-    
+
 SOURCES += \
     $$PWD/EVENTS/HydroEventSelection.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/GeoClawOpenFOAM.cpp \
@@ -25,8 +24,6 @@ SOURCES += \
     $$PWD/EVENTS/GeoClawOpenFOAM/solver.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/swcfdint.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/swsolvers/geoclaw/geoclaw.cpp
-
-
 
 HEADERS += \
     $$PWD/EVENTS/HydroEventSelection.h \
