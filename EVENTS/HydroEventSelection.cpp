@@ -55,7 +55,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <sectiontitle.h>
 #include <InputWidgetExistingEvent.h>
 #include <GeoClawOpenFOAM.h>
-//#include <FlumeDigiTwin.h>
 
 
 HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVariableIW,
