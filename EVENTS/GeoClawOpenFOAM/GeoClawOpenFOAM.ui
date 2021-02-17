@@ -158,6 +158,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QPushButton" name="Btn_Generate_Files">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="font">
            <font>
             <pointsize>14</pointsize>
@@ -170,6 +173,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="Btn_SubTACC">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="font">
            <font>
             <pointsize>14</pointsize>

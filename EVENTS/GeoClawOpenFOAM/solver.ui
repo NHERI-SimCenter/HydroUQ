@@ -14,18 +14,6 @@
    <string>Frame</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="leftMargin">
-    <number>6</number>
-   </property>
-   <property name="topMargin">
-    <number>6</number>
-   </property>
-   <property name="rightMargin">
-    <number>6</number>
-   </property>
-   <property name="bottomMargin">
-    <number>6</number>
-   </property>
    <item>
     <widget class="QLabel" name="Lbl_H1">
      <property name="font">
@@ -415,12 +403,12 @@ Upload Restart Files
      </property>
      <item>
       <property name="text">
-       <string>OpenFOAM</string>
+       <string>OlaFlow</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>OlaFOAM</string>
+       <string>OpenFOAM</string>
       </property>
      </item>
      <item>
@@ -428,6 +416,26 @@ Upload Restart Files
        <string>Custom solver</string>
       </property>
      </item>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="Btn_PrepareSolverFiles">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>Upload files from previous time step</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>10000</number>
+     </property>
+     <property name="text">
+      <string>
+Prepare files for solver 
+</string>
+     </property>
     </widget>
    </item>
    <item>
