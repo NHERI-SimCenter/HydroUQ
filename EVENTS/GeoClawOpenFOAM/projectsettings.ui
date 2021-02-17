@@ -281,11 +281,6 @@ Set working directory
      </item>
      <item>
       <property name="text">
-       <string>k-Omega</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
        <string>k-Omega SST</string>
       </property>
      </item>

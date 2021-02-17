@@ -179,6 +179,7 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
     // Shallow water bathymetry files
     if(((type == 1) || (type == 2)) || (type == 3))
     {
+        map.insert("Bathymetry file number",QString::number(bathfilenames.size()));
         // Write the bathymetry file names
         for (int ii=0; ii<bathfilenames.size(); ++ii)
         {
@@ -189,6 +190,7 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
     // Shallow water solutions
     if(type == 1)
     {
+        map.insert("Solution files number",QString::number(solfilenames.size()));
         // Write the solution file names
         for (int ii=0; ii<solfilenames.size(); ++ii)
         {

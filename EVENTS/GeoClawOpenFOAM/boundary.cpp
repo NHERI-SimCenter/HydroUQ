@@ -37,26 +37,34 @@ void boundary::refreshData(int type)
 //*********************************************************************************
 void boundary::hideshowelems(int type)
 {
-    //(void) type;
+    (void) type;
+    ui->Lbl_Notice->hide();
+    ui->SWg_Interface->show();
+    ui->Btn_AddBoundary->show();
+    ui->Btn_RemBoundary->show();
+    ui->Btn_Next->show();
+    ui->Btn_Previous->show();
     //on_Cmb_MeshType_currentIndexChanged(ui->Cmb_MeshType->currentIndex());
-    if((type == 1) || (type == 2))
-    {
-        ui->Lbl_Notice->show();
-        ui->SWg_Interface->hide();
-        ui->Btn_AddBoundary->hide();
-        ui->Btn_RemBoundary->hide();
-        ui->Btn_Next->hide();
-        ui->Btn_Previous->hide();
-    }
-    else
-    {
-        ui->Lbl_Notice->hide();
-        ui->SWg_Interface->show();
-        ui->Btn_AddBoundary->show();
-        ui->Btn_RemBoundary->show();
-        ui->Btn_Next->show();
-        ui->Btn_Previous->show();
-    }
+//    if((type == 1) || (type == 2))
+//    {
+//        ui->Lbl_Notice->show();
+//        ui->SWg_Interface->hide();
+//        ui->Btn_AddBoundary->hide();
+//        ui->Btn_RemBoundary->hide();
+//        ui->Btn_Next->hide();
+//        ui->Btn_Previous->hide();
+//    }
+//    else
+//    {
+//        ui->Lbl_Notice->hide();
+//        ui->SWg_Interface->show();
+//        ui->Btn_AddBoundary->show();
+//        ui->Btn_RemBoundary->show();
+//        ui->Btn_Next->show();
+//        ui->Btn_Previous->show();
+//    }
+
+
 
 }
 
@@ -70,6 +78,7 @@ bool boundary::getData(QMap<QString, QString>& map,int type)
     QMap<QString, QString> *singleData;
     singleData = new QMap<QString,QString>;
     int numberOfPanes = ui->SWg_Interface->count();
+    map.insert("Number of boundaries",QString::number(numberOfPanes));
     for (int i=0;i<numberOfPanes;i++)
     {
         if (dynamic_cast<boundaryData *>(ui->SWg_Interface->widget(i))->getData(*singleData,type))
