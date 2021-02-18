@@ -24,6 +24,16 @@ unzip templatedir.zip
 #rm templatedir.zip
 #cd ..
 
+#Unzip utils
+cd utils
+unzip '*.zip'
+rm *.zip
+cd ..
+
+#Add utils to PATH
+export PATH=$PATH:$PWD/utils
+chmod +x utils/*
+
 # Set the BIM file path to use
 export BIM=${inputDirectory}/templatedir/Dakota.json
 echo $BIM
