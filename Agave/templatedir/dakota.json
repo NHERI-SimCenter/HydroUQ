@@ -1,0 +1,165 @@
+{
+    "Applications": {
+        "EDP": {
+            "Application": "StandardEarthquakeEDP",
+            "ApplicationData": {
+            }
+        },
+        "Events": [
+            {
+                "Application": "GeoClawOpenFOAM",
+                "ApplicationData": {
+                },
+                "EventClassification": "Hydro"
+            }
+        ],
+        "Modeling": {
+            "Application": "MDOF_BuildingModel",
+            "ApplicationData": {
+            }
+        },
+        "Simulation": {
+            "Application": "OpenSees-Simulation",
+            "ApplicationData": {
+            }
+        },
+        "UQ": {
+            "Application": "Dakota-UQ1",
+            "ApplicationData": {
+            }
+        }
+    },
+    "EDP": {
+        "type": "StandardEarthquakeEDP"
+    },
+    "Events": [
+        {
+            "Air density": "1.23",
+            "Air viscosity": "1.6200",
+            "Air viscosity exponent": "-4",
+            "Application": "GeoClawOpenFOAM",
+            "Bathymetry file number": "0",
+            "Bathymetry file type": "0",
+            "Building distance along X": "2.00",
+            "Building distance along Y": "2.00",
+            "Building distribution": "0",
+            "Building size": "2.00",
+            "Decomposition method": "simple",
+            "Distance from coast": "2.00",
+            "Domain decomposition": "3,2,1",
+            "End time": "20.00000000",
+            "EventClassification": "Hydro",
+            "Initial alpha global": "0.00",
+            "Initial pressure global": "0.00",
+            "Initial velocity global": "0.00,0.00,0.00",
+            "Mesh size": "1",
+            "Mesh type": "0",
+            "Number of boundaries": "0",
+            "Number of building in X": "2",
+            "Number of building in Y": "2",
+            "OffsetX for coast": "0.00",
+            "OffsetY for coast": "0.00",
+            "Parametric Build": "0",
+            "Project description": "",
+            "Project name": "Trial",
+            "Simulation type": "1",
+            "Solution file type": "0",
+            "Solution files number": "0",
+            "Solver choice": "0",
+            "Start time": "0.00000000",
+            "Surface tension": "72.86",
+            "Time interval": "0.00000100",
+            "Turbulence model": "0",
+            "Water density": "997.00",
+            "Water viscosity": "1.0035",
+            "Water viscosity exponent": "-6",
+            "Work directory": "<html><head/><body><p>None specified</p></body></html>",
+            "Write interval": "0.00100000"
+        }
+    ],
+    "GeneralInformation": {
+        "depth": 360,
+        "height": 144,
+        "location": {
+            "latitude": 37.8715,
+            "longitude": -122.273
+        },
+        "name": "",
+        "planArea": 129600,
+        "stories": 1,
+        "units": {
+            "force": "kips",
+            "length": "in",
+            "temperature": "C",
+            "time": "sec"
+        },
+        "width": 360
+    },
+    "Simulation": {
+        "Application": "OpenSees-Simulation",
+        "algorithm": "Newton",
+        "analysis": "Transient -numSubLevels 2 -numSubSteps 10",
+        "convergenceTest": "NormUnbalance 1.0e-2 10",
+        "dampingModel": "Rayleigh Damping",
+        "dampingRatio": 0.02,
+        "dampingRatioModal": 0.02,
+        "firstMode": 1,
+        "integration": "Newmark 0.5 0.25",
+        "modalRayleighTangentRatio": 0,
+        "numModesModal": 1,
+        "rayleighTangent": "Initial",
+        "secondMode": 0,
+        "solver": "Umfpack"
+    },
+    "StructuralInformation": {
+        "Bx": 0.1,
+        "By": 0.1,
+        "Fyx": 1000000,
+        "Fyy": 1000000,
+        "Krz": 10000000000,
+        "Kx": 100,
+        "Ky": 100,
+        "ModelData": [
+            {
+                "Fyx": 1000000,
+                "Fyy": 1000000,
+                "Ktheta": 10000000000,
+                "bx": 0.1,
+                "by": 0.1,
+                "height": 144,
+                "kx": 100,
+                "ky": 100,
+                "weight": 144
+            }
+        ],
+        "height": 144,
+        "massX": 0,
+        "massY": 0,
+        "numStories": 1,
+        "randomVar": [
+        ],
+        "responseX": 0,
+        "responseY": 0,
+        "type": "MDOF_BuildingModel",
+        "weight": 144
+    },
+    "UQ_Method": {
+        "samplingMethodData": {
+            "keepSamples": true,
+            "method": "LHS",
+            "samples": 20,
+            "seed": 470
+        },
+        "uqEngine": "Dakota",
+        "uqType": "Forward Propagation"
+    },
+    "WorkflowType": "Building Simulation",
+    "localAppDir": "/Users/ajaybangaloreharish/Tresors/UCBerkeley/SCTools/SimCenterBackendApplications",
+    "randomVariables": [
+    ],
+    "remoteAppDir": "/home1/00477/tg457427/SimCenterBackendApplications/v2.3.0",
+    "remoteAppWorkingDir": "/home1/00477/tg457427/SimCenterBackendApplications/v2.3.0",
+    "runDir": "/Users/ajaybangaloreharish/Documents/HydroUQ/RemoteWorkDir/tmp.SimCenter",
+    "runType": "runningRemote",
+    "workingDir": "/Users/ajaybangaloreharish/Documents/HydroUQ/RemoteWorkDir"
+}

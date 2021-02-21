@@ -1,46 +1,47 @@
 # NHERI SimCenter Hydro-UQ Backend v 1.0.0
 
 # What is this doing?
-#set -x
-#${AGAVE_JOB_CALLBACK_RUNNING}
+set -x
+${AGAVE_JOB_CALLBACK_RUNNING}
 
-pause() {
-	read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
-}
+#pause() {
+#	read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
+#}
 
 # Temporarily defining variables here
-inputDirectory="/work/07231/ajaybh/stampede2/trywrapper01"
-EVENTAPP="GeoClawOpenFOAM"
+#inputDirectory="/work/07231/ajaybh/stampede2/trywrapper01"
+#EVENTAPP="GeoClawOpenFOAM"
 
 # Change to input directory
 cd "${inputDirectory}"
 pwd
 ls -al
-
 echo ${inputDirectory}
 
 # unzip template dir
 unzip templatedir.zip
-#rm templatedir.zip
-#cd ..
+rm templatedir.zip
+cd ..
+echo "Templatedir unzipped"
 
 #Unzip utils
 cd utils
 unzip '*.zip'
 rm *.zip
 cd ..
+echo "utils unzipped"
 
 #Add utils to PATH
 export PATH=$PATH:$PWD/utils
 chmod +x utils/*
 
 # Set the BIM file path to use
-export BIM=${inputDirectory}/templatedir/Dakota.json
+export BIM=${inputDirectory}/templatedir/dakota.json
 echo $BIM
 
 echo "Extracting EVENT app using jq"
 #Extracting the first event app
-#EVENTAPP=$(jq -r .Events[0].type $BIM)
+EVENTAPP=$(jq -r .Events[0].Application $BIM)
 echo "Event application detected is $EVENTAPP"
 echo $EVENTAPP
 
@@ -64,12 +65,15 @@ if [[ $EVENTAPP == "GeoClawOpenFOAM" ]]; then
 	export PATH=$PATH:${FOAM_USER_APPBIN}
 	export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${FOAM_USER_LIBBIN}
 	echo "olafoam paths loaded"
+	echo "Testing successfully complete"
 
 elif [[ $EVENTAPP == "Preprocess" ]]; then
 	echo "Event is pre-processing"
 elif [[ $EVENTAPP == "Postprocess" ]]; then
 	echo "Event is post-processing"
 fi
+
+
 
 # # Get the type of meshing
 # meshing=$(jq -r .Events[0].meshing $BIM)
