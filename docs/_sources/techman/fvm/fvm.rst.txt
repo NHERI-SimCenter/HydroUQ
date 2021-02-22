@@ -3,7 +3,64 @@
 Finite Volume Method
 =====================
 
-Similar to other numerical methods, the Finite Volume Method (FVM) transforms a set of partial differential equations (PDE) into a system of linear algebraic equations. The discretization procedure used in the FVM involves two steps, namely
+Similar to other numerical methods, the Finite Volume Method (FVM) transforms a set of partial differential equations (PDE) into a system of linear algebraic equations. Using this method the governing PDE is satisfied over finite-sized control volumes, rather than at points as in other PDE discretization techniques. The Finite Difference Method (FDM) and the Finite Element Method (FEM) have been traditionally used to operate on PDEs. However, simulation of fluid flow problems and transport phenomena using FVM has garnered wide acceptance through high flexibility it offers as a discretization method. Also, FVM is able to capture the physics and the conservation principles important for fluid flow modeling, such as the integral property of the governing equations, and the characteristics of the terms it discretizes in every finite volume cell. Another advantage that FVM provides is the simplicity of co-ordinate analysis. The discretization can be carried out directly in the physical domain without having to transform the actual co-ordinate system to the isoparametric system.
+
+Why FVM?
+------------
+This section covers why FVM is preferred over FEM or FDM. FVM is straightforward tool that can be implemented on non uniform/unstructured grid, different from FDM, that requires a specific type of grid, i.e; structured mesh. Also, in FDM, it is not possible to define derivatives across discontinuities. In contrast, when FVM is employed, the governing PDE is not solved directly as will be discussed in the upcoming section. Rather, it is first integrated over the control volume, then approximated and solved. Furthermore, since no cell center is located at the boundary, the boundary conditions cannot be satisfied directly in FDM. 
+
+To understand the difference between FVM and FEM, let us look at a flux balance equation, which forms the basis for the mathematical modeling of flows
+
+.. math::
+    \frac{\partial u}{\partial t}+\nabla.\Gamma = F\hspace{2mm} \text{in $\Omega$}
+
+where, :math:`u` denotes the conserved physical quantity, such as momentum or mass, and :math:`\Gamma` denotes the flux of that quantity; for example, the momentum flowing across a control surface per unit area and per unit time. FEM start by formulating an integral equation, i.e. weak form, where the equations are weighted with test functions, :math:`\varphi` , and averaging is done by integrating over the model domain,
+
+.. math::
+    \int_{\Omega}\frac{\partial u}{\partial t}\varphi dV + \int_{\Omega}(\nabla.\Gamma)\varphi dV = \int_{\Omega}F\varphi dV
+
+On applying the divergence theorem to :math:`\Gamma\varphi`, we get,
+
+.. math::
+    \int_{\Omega}\nabla.(\Gamma\varphi)dV = \int_{\partial\Omega}(\Gamma\varphi).\textbf{n} \ dS
+
+Here, :math:`\partial\Omega` denotes the boundary of the domain :math:`\Omega`  and :math:`\textbf{n}` denotes the normal vector to the domain boundary. Integration by parts of the left-hand side in the equation above gives,
+
+.. math::
+    \int_{\Omega}\nabla.(\Gamma\varphi)dV = \int_{\Omega}(\nabla.\Gamma)\varphi dV+\int_{\Omega}\Gamma.\nabla\varphi \ dV
+
+and from the applicaiton of Divergence theorem we have,
+
+.. math::
+    \int_{\Omega}(\nabla.\Gamma)\varphi dV + \int_{\Omega}\Gamma.\nabla\varphi dV = \int_{\partial\Omega}(\Gamma\varphi).\textbf{n} \ dS
+
+Now, we can substitute this back into second term of the earlier integral equation. This is done to include the flux boundary conditions in the integral equations. Down the road, in the numerical implementation, this also leads to the advantage that the flux vector does not have to be differentiable. It results in the equations used as the starting point in finite element methods, i.e. the weak form as
+
+.. math::
+   \int_{\Omega}\frac{\partial u}{\partial t}\varphi dV - \int_{\Omega}\Gamma.\nabla\varphi dV + \int_{\partial\Omega}\Gamma.\textbf{n}\varphi dS = \int_{\Omega}F\varphi dV
+
+The third term integrates the flux of :math:`u`,:math:`\Gamma`, over the boundary of the domain :math:`\partial\Omega:math:`.  One special case is for :math:`\varphi` interpolation is the case of an example function, :math:`\varphi= 11`. The previous equation then yields:
+
+.. math::
+    \int_{\Omega}\frac{\partial u}{\partial t}dV + \int_{\partial\Omega}\Gamma.\textbf{n}dS = \int_{\Omega}F\hspace{1mm} \ dV
+
+This relation is used as the starting point for finite volume methods. Thus far, there is no difference between FEM and FVM in terms of the starting integral form.
+
+The primary difference is found in the discretization of the starting integral equations. Consider the figure shown below.
+
+.. figure:: images/FEM_vs_FVM.png
+    :width: 600px
+    :align: center
+    :alt: alternate text
+    :figclass: align-center
+
+    Tsunami map across the world and color coded to the destructiveness of the earthquake and tsunami (Source: `NOAA, Natural Hazards Viewer <https://maps.ngdc.noaa.gov/viewers/hazards>`_)
+
+
+
+Discretization
+------------------
+The discretization procedure used in the FVM involves two steps, namely
 
 * The integration of the PDE's and their transformation into a form of the balance equations over a single element. This process involves modification of the integrals, both surface and volume, into discrete algebraic relations over elements. 
 
@@ -11,7 +68,13 @@ Similar to other numerical methods, the Finite Volume Method (FVM) transforms a 
 
 In tihs technical manual, we will give a brief overview of both the procedures. A more detailed technical outlook can be found in the literature, [MoMaDa2016]_ .
 
-Semi-discretized equations
+General overview
+^^^^^^^^^^^^^^^^^^^
+FVM revolves around conservation of quantities such as mass, momentum and energy, typically associated with fluid mechanics problems. Since this method is based on applying conservation principles over each control volume, global conservation of each quantity is already ensured. One of the first objectives of FVM is discretization or dividing the physical domain into a finite number of small control volumes or cells. There is no restriction on the shape of the control volume although it is necessary that the resulting volume is convex and the faces that make up the control volume should be planar (3D) and bounded by straight edges (2D). All data about the control variables are stored at the centroid of each control volume and extra boundary nodes are often added for convenience. 
+
+
+
+Numerical integration
 -----------------------------
 
 The conservation equation for any given general scalar variable :math:`\phi` can be given as
@@ -109,7 +172,7 @@ When the two fluids are considered immiscible, then they are considered as on ef
 
 * Viscosity: :math:`\mu = \mu_{\ell} \gamma + \mu_{g} \left(1-\gamma\right)`
 
-where :math:`(\cdot)_{\ell}` and :math:`(\cdot)_{g}` are the properties of the liquid and gas phase, respectively.However, in the case of flows with high-density ratios, it is possible that the conservation of phase fraction is not conserved. Violation of the phase conservation can lead to inaccurate phase distribution, surface curvature and thus corresponding pressure gradients across the free surface. However, unfortunately, it is not straight-forward to assure the conservativeness of the phase. It is not easy to determine the contributions of the velocity of each phase on the interface.
+where :math:`(\cdot)_{\ell}` and :math:`(\cdot)_{g}` are the properties of the liquid and gas phase, respectively. However, in the case of flows with high-density ratios, it is possible that the conservation of phase fraction is not conserved. Violation of the phase conservation can lead to inaccurate phase distribution, surface curvature and thus corresponding pressure gradients across the free surface. However, unfortunately, it is not straight-forward to assure the conservativeness of the phase. It is not easy to determine the contributions of the velocity of each phase on the interface. Thus, the interface layer is smeared over a few grid cells and sensitive to grid resolution.
 
 
 

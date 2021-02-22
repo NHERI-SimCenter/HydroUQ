@@ -16,7 +16,7 @@ This document covers the features and capabilities of the alpha version 0.1 of t
    userman/acknowledgement
    userman/about
    userman/install
-   userman/manual
+   userman/releasenotes
    userman/bestpractices
    userman/errors
    userman/examples/examples

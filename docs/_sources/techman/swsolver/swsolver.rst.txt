@@ -8,14 +8,16 @@ There are several shallow water solvers available. In this work, we have focused
 GeoClaw
 -----------
 
-GeoClaw is a part of Clawpacky that was originally developed in 1994 by Prof. Randall LeVeque and co-workers. More information can be found on the website of `Clawpack <https://www.clawpack.org>`_. It is used quite often for tsunami modeling.
+GeoClaw is a part of Clawpacky that was originally developed in 1994 by Prof. Randall LeVeque and co-workers. It is available as a part of the clawpack package that uses finite volume methods for to solve linear and nonlinear hyperbolic systems. It employs high-resolution Godunov0type methods with limiters in a general framework applicable to wave-related problems and thus often used for tsunami modeling. More information can be found on the website of `Clawpack <https://www.clawpack.org>`_.
 
-In this documentation, we will discuss aspects of particular importance to the Hydro-UQ platform that includes the format of the GeoClaw files.
+In this documentation, we will discuss aspects of particular importance to the Hydro-UQ platform that includes the input and output formats of the GeoClaw files. The Hydro-UQ tool allows the users to upload their own GeoClaw input files. 
 
 .. toctree::
    :maxdepth: 1
 
+   geoclaw-theory
    geoclaw-topo
+   geoclaw-runtime
    geoclaw-output
 
 

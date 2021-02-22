@@ -1,44 +1,47 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Topography: SimCenter &mdash; Hydro-UQ 1.0 documentation</title>
   
 
   
-  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+
   
   
 
   
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="5. CFD Solvers" href="../cfdsolver/cfdsolver.html" />
-    <link rel="prev" title="Outputs: GeoClaw" href="geoclaw-output.html" /> 
+    <link rel="prev" title="Outputs" href="geoclaw-output.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -82,6 +85,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -94,7 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../userman/acknowledgement.html">1. Acknowledgements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/about.html">2. About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/install.html">3. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../userman/manual.html">4. Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/releasenotes.html">4. Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/bestpractices.html">5. Best Practices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/errors.html">6. Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/examples/examples.html">7. Examples</a></li>
@@ -132,6 +136,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -166,11 +171,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="swsolver.html"><span class="section-number">4. </span>Shallow Water Solvers</a> &raquo;</li>
         
@@ -179,7 +186,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -206,7 +213,7 @@ xn yn zn
 </div>
 <div class="align-center figure" id="id1">
 <a class="reference internal image-reference" href="../../_images/Topo01.png"><img alt="alternate text" src="../../_images/Topo01.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-text">Ordering of points as recorded in the files of type 01.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4.3.1 </span><span class="caption-text">Ordering of points as recorded in the files of type 01.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <p>The points are ordered as illustrated in the above figure. The points start from the North-west part of the domain and progress east across the rows and later down.</p>
 <div class="section" id="topo-type-02">
@@ -231,7 +238,7 @@ z2
 </ul>
 <div class="align-center figure" id="id2">
 <a class="reference internal image-reference" href="../../_images/Topo02.png"><img alt="alternate text" src="../../_images/Topo02.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-text">Ordering of points as recorded in the files of type 02.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4.3.2 </span><span class="caption-text">Ordering of points as recorded in the files of type 02.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 <p>The points are ordered as illustrated in the above figure and is similar as that defined for the <em>topo type 01</em> but here only the <span class="math notranslate nohighlight">\((z)\)</span> values are stored in the file. The points start from the North-west part of the domain and progress east across the rows and later down.</p>
 </div>
@@ -247,20 +254,25 @@ z2
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, SimCenter
+        &#169; Copyright 2020, SimCenter.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -268,7 +280,6 @@ z2
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

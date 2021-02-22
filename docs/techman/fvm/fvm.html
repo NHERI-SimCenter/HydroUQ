@@ -1,40 +1,43 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>3. Finite Volume Method &mdash; Hydro-UQ 1.0 documentation</title>
   
 
   
-  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+
   
   
 
   
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="4. Shallow Water Solvers" href="../swsolver/swsolver.html" />
@@ -82,6 +85,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -94,7 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../userman/acknowledgement.html">1. Acknowledgements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/about.html">2. About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/install.html">3. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../userman/manual.html">4. Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/releasenotes.html">4. Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/bestpractices.html">5. Best Practices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/errors.html">6. Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/examples/examples.html">7. Examples</a></li>
@@ -105,16 +109,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../tsunami/tsunami.html">1. Tsunami</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../storm/storm.html">2. Storm Surge</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">3. Finite Volume Method</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#semi-discretized-equations">3.1. Semi-discretized equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#boundary-conditions">3.2. Boundary conditions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#mesh-topology">3.3. Mesh topology</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#volume-of-fluid-method">3.4. Volume of fluid method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#why-fvm">3.1. Why FVM?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#discretization">3.2. Discretization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general-overview">General overview</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#numerical-integration">3.3. Numerical integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#boundary-conditions">3.4. Boundary conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mesh-topology">3.5. Mesh topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#volume-of-fluid-method">3.6. Volume of fluid method</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#philosophy-of-vof-method">Philosophy of VOF method</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#mathematical-formulation">Mathematical formulation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#points-to-note">Points to note</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#references">3.5. References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">3.7. References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../swsolver/swsolver.html">4. Shallow Water Solvers</a></li>
@@ -132,6 +141,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -166,18 +176,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li><span class="section-number">3. </span>Finite Volume Method</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -191,14 +203,53 @@
             
   <div class="section" id="finite-volume-method">
 <span id="lbl-fvm"></span><h1><span class="section-number">3. </span>Finite Volume Method<a class="headerlink" href="#finite-volume-method" title="Permalink to this headline">¶</a></h1>
-<p>Similar to other numerical methods, the Finite Volume Method (FVM) transforms a set of partial differential equations (PDE) into a system of linear algebraic equations. The discretization procedure used in the FVM involves two steps, namely</p>
+<p>Similar to other numerical methods, the Finite Volume Method (FVM) transforms a set of partial differential equations (PDE) into a system of linear algebraic equations. Using this method the governing PDE is satisfied over finite-sized control volumes, rather than at points as in other PDE discretization techniques. The Finite Difference Method (FDM) and the Finite Element Method (FEM) have been traditionally used to operate on PDEs. However, simulation of fluid flow problems and transport phenomena using FVM has garnered wide acceptance through high flexibility it offers as a discretization method. Also, FVM is able to capture the physics and the conservation principles important for fluid flow modeling, such as the integral property of the governing equations, and the characteristics of the terms it discretizes in every finite volume cell. Another advantage that FVM provides is the simplicity of co-ordinate analysis. The discretization can be carried out directly in the physical domain without having to transform the actual co-ordinate system to the isoparametric system.</p>
+<div class="section" id="why-fvm">
+<h2><span class="section-number">3.1. </span>Why FVM?<a class="headerlink" href="#why-fvm" title="Permalink to this headline">¶</a></h2>
+<p>This section covers why FVM is preferred over FEM or FDM. FVM is straightforward tool that can be implemented on non uniform/unstructured grid, different from FDM, that requires a specific type of grid, i.e; structured mesh. Also, in FDM, it is not possible to define derivatives across discontinuities. In contrast, when FVM is employed, the governing PDE is not solved directly as will be discussed in the upcoming section. Rather, it is first integrated over the control volume, then approximated and solved. Furthermore, since no cell center is located at the boundary, the boundary conditions cannot be satisfied directly in FDM.</p>
+<p>To understand the difference between FVM and FEM, let us look at a flux balance equation, which forms the basis for the mathematical modeling of flows</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial u}{\partial t}+\nabla.\Gamma = F\hspace{2mm} \text{in $\Omega$}\]</div>
+<p>where, <span class="math notranslate nohighlight">\(u\)</span> denotes the conserved physical quantity, such as momentum or mass, and <span class="math notranslate nohighlight">\(\Gamma\)</span> denotes the flux of that quantity; for example, the momentum flowing across a control surface per unit area and per unit time. FEM start by formulating an integral equation, i.e. weak form, where the equations are weighted with test functions, <span class="math notranslate nohighlight">\(\varphi\)</span> , and averaging is done by integrating over the model domain,</p>
+<div class="math notranslate nohighlight">
+\[\int_{\Omega}\frac{\partial u}{\partial t}\varphi dV + \int_{\Omega}(\nabla.\Gamma)\varphi dV = \int_{\Omega}F\varphi dV\]</div>
+<p>On applying the divergence theorem to <span class="math notranslate nohighlight">\(\Gamma\varphi\)</span>, we get,</p>
+<div class="math notranslate nohighlight">
+\[\int_{\Omega}\nabla.(\Gamma\varphi)dV = \int_{\partial\Omega}(\Gamma\varphi).\textbf{n} \ dS\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(\partial\Omega\)</span> denotes the boundary of the domain <span class="math notranslate nohighlight">\(\Omega\)</span>  and <span class="math notranslate nohighlight">\(\textbf{n}\)</span> denotes the normal vector to the domain boundary. Integration by parts of the left-hand side in the equation above gives,</p>
+<div class="math notranslate nohighlight">
+\[\int_{\Omega}\nabla.(\Gamma\varphi)dV = \int_{\Omega}(\nabla.\Gamma)\varphi dV+\int_{\Omega}\Gamma.\nabla\varphi \ dV\]</div>
+<p>and from the applicaiton of Divergence theorem we have,</p>
+<div class="math notranslate nohighlight">
+\[\int_{\Omega}(\nabla.\Gamma)\varphi dV + \int_{\Omega}\Gamma.\nabla\varphi dV = \int_{\partial\Omega}(\Gamma\varphi).\textbf{n} \ dS\]</div>
+<p>Now, we can substitute this back into second term of the earlier integral equation. This is done to include the flux boundary conditions in the integral equations. Down the road, in the numerical implementation, this also leads to the advantage that the flux vector does not have to be differentiable. It results in the equations used as the starting point in finite element methods, i.e. the weak form as</p>
+<div class="math notranslate nohighlight">
+\[\int_{\Omega}\frac{\partial u}{\partial t}\varphi dV - \int_{\Omega}\Gamma.\nabla\varphi dV + \int_{\partial\Omega}\Gamma.\textbf{n}\varphi dS = \int_{\Omega}F\varphi dV\]</div>
+<p>The third term integrates the flux of <span class="math notranslate nohighlight">\(u\)</span>,:math:<cite>Gamma</cite>, over the boundary of the domain <span class="math notranslate nohighlight">\(\partial\Omega:math:\)</span>.  One special case is for <span class="math notranslate nohighlight">\(\varphi\)</span> interpolation is the case of an example function, <span class="math notranslate nohighlight">\(\varphi= 11\)</span>. The previous equation then yields:</p>
+<div class="math notranslate nohighlight">
+\[\int_{\Omega}\frac{\partial u}{\partial t}dV + \int_{\partial\Omega}\Gamma.\textbf{n}dS = \int_{\Omega}F\hspace{1mm} \ dV\]</div>
+<p>This relation is used as the starting point for finite volume methods. Thus far, there is no difference between FEM and FVM in terms of the starting integral form.</p>
+<p>The primary difference is found in the discretization of the starting integral equations. Consider the figure shown below.</p>
+<div class="align-center figure" id="id4">
+<a class="reference internal image-reference" href="../../_images/FEM_vs_FVM.png"><img alt="alternate text" src="../../_images/FEM_vs_FVM.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 3.1.1 </span><span class="caption-text">Tsunami map across the world and color coded to the destructiveness of the earthquake and tsunami (Source: <a class="reference external" href="https://maps.ngdc.noaa.gov/viewers/hazards">NOAA, Natural Hazards Viewer</a>)</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="discretization">
+<h2><span class="section-number">3.2. </span>Discretization<a class="headerlink" href="#discretization" title="Permalink to this headline">¶</a></h2>
+<p>The discretization procedure used in the FVM involves two steps, namely</p>
 <ul class="simple">
 <li><p>The integration of the PDE’s and their transformation into a form of the balance equations over a single element. This process involves modification of the integrals, both surface and volume, into discrete algebraic relations over elements.</p></li>
 <li><p>In the second step, interpolation profiles are chosen to approximate the value of variables inside the element. Further on, these interpolation profiles are used to related the cell values to the surface values.</p></li>
 </ul>
 <p>In tihs technical manual, we will give a brief overview of both the procedures. A more detailed technical outlook can be found in the literature, <a class="reference internal" href="#momada2016" id="id1"><span>[MoMaDa2016]</span></a> .</p>
-<div class="section" id="semi-discretized-equations">
-<h2><span class="section-number">3.1. </span>Semi-discretized equations<a class="headerlink" href="#semi-discretized-equations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="general-overview">
+<h3>General overview<a class="headerlink" href="#general-overview" title="Permalink to this headline">¶</a></h3>
+<p>FVM revolves around conservation of quantities such as mass, momentum and energy, typically associated with fluid mechanics problems. Since this method is based on applying conservation principles over each control volume, global conservation of each quantity is already ensured. One of the first objectives of FVM is discretization or dividing the physical domain into a finite number of small control volumes or cells. There is no restriction on the shape of the control volume although it is necessary that the resulting volume is convex and the faces that make up the control volume should be planar (3D) and bounded by straight edges (2D). All data about the control variables are stored at the centroid of each control volume and extra boundary nodes are often added for convenience.</p>
+</div>
+</div>
+<div class="section" id="numerical-integration">
+<h2><span class="section-number">3.3. </span>Numerical integration<a class="headerlink" href="#numerical-integration" title="Permalink to this headline">¶</a></h2>
 <p>The conservation equation for any given general scalar variable <span class="math notranslate nohighlight">\(\phi\)</span> can be given as</p>
 <div class="math notranslate nohighlight">
 \[\underbrace{\frac{\partial \left( \rho \phi \right)}{\partial t}}_{\text{Transient term}} + \underbrace{\nabla \cdot \left( \rho \mathbf{v} \phi \right)}_{\text{Convective term}} = \underbrace{\nabla \cdot \left( \Gamma^{\phi} \nabla\phi \right)}_{\text{Diffusion term}} + \underbrace{Q^{\phi}}_{\text{Source term}}\]</div>
@@ -228,13 +279,13 @@
 <p>Once the PDE’s have been converted to a summation form above, it is necessary to express the face and volume fluxes in terms of the values of the variable at the neighboring cell centers or in otherwods, we need to linearize the fluxes.</p>
 </div>
 <div class="section" id="boundary-conditions">
-<h2><span class="section-number">3.2. </span>Boundary conditions<a class="headerlink" href="#boundary-conditions" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.4. </span>Boundary conditions<a class="headerlink" href="#boundary-conditions" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="mesh-topology">
-<h2><span class="section-number">3.3. </span>Mesh topology<a class="headerlink" href="#mesh-topology" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.5. </span>Mesh topology<a class="headerlink" href="#mesh-topology" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="volume-of-fluid-method">
-<h2><span class="section-number">3.4. </span>Volume of fluid method<a class="headerlink" href="#volume-of-fluid-method" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.6. </span>Volume of fluid method<a class="headerlink" href="#volume-of-fluid-method" title="Permalink to this headline">¶</a></h2>
 <p>Volume of Fluid (VOF) was orignially presented by <a class="reference internal" href="#hini1981" id="id2"><span>[HiNi1981]</span></a>  and is used extensively in modeling of multiphase flows. In our simulation of tsunami / storm-surge, we are working with water and air. However, VOF method is not restricted to two fluids but can also be used in the case of multiple fluids.</p>
 <p>The VOF method is a numerical technique commonly used to track the free surface formed by the fluid-to-fluid interface. While, by itself, it is not a standalone flow solver, it only tracks and shape and evolution of the surface. It is solved in conjunction with the motion of the flow, described in the earlier sections.</p>
 <div class="section" id="philosophy-of-vof-method">
@@ -262,7 +313,7 @@
 <li><p>Density: <span class="math notranslate nohighlight">\(\rho = \rho_{\ell} \gamma + \rho_{g} \left(1-\gamma\right)\)</span></p></li>
 <li><p>Viscosity: <span class="math notranslate nohighlight">\(\mu = \mu_{\ell} \gamma + \mu_{g} \left(1-\gamma\right)\)</span></p></li>
 </ul>
-<p>where <span class="math notranslate nohighlight">\((\cdot)_{\ell}\)</span> and <span class="math notranslate nohighlight">\((\cdot)_{g}\)</span> are the properties of the liquid and gas phase, respectively.However, in the case of flows with high-density ratios, it is possible that the conservation of phase fraction is not conserved. Violation of the phase conservation can lead to inaccurate phase distribution, surface curvature and thus corresponding pressure gradients across the free surface. However, unfortunately, it is not straight-forward to assure the conservativeness of the phase. It is not easy to determine the contributions of the velocity of each phase on the interface.</p>
+<p>where <span class="math notranslate nohighlight">\((\cdot)_{\ell}\)</span> and <span class="math notranslate nohighlight">\((\cdot)_{g}\)</span> are the properties of the liquid and gas phase, respectively. However, in the case of flows with high-density ratios, it is possible that the conservation of phase fraction is not conserved. Violation of the phase conservation can lead to inaccurate phase distribution, surface curvature and thus corresponding pressure gradients across the free surface. However, unfortunately, it is not straight-forward to assure the conservativeness of the phase. It is not easy to determine the contributions of the velocity of each phase on the interface. Thus, the interface layer is smeared over a few grid cells and sensitive to grid resolution.</p>
 <p>Thus, improper calculation of the surface curvature.</p>
 </div>
 <div class="section" id="points-to-note">
@@ -273,7 +324,7 @@
 </div>
 </div>
 <div class="section" id="references">
-<h2><span class="section-number">3.5. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.7. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <dl class="citation">
 <dt class="label" id="momada2016"><span class="brackets"><a class="fn-backref" href="#id1">MoMaDa2016</a></span></dt>
 <dd><ol class="upperalpha simple" start="6">
@@ -302,20 +353,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, SimCenter
+        &#169; Copyright 2020, SimCenter.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -323,7 +379,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

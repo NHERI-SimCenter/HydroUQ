@@ -1,44 +1,47 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Topography: GeoClaw &mdash; Hydro-UQ 1.0 documentation</title>
+  <title>Topography &mdash; Hydro-UQ 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+
+  
   
 
   
   
-  
+
   
 
   
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Outputs: GeoClaw" href="geoclaw-output.html" />
-    <link rel="prev" title="4. Shallow Water Solvers" href="swsolver.html" /> 
+    <link rel="next" title="Run-time parameters" href="geoclaw-runtime.html" />
+    <link rel="prev" title="Theory" href="geoclaw-theory.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -82,6 +85,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -94,7 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../userman/acknowledgement.html">1. Acknowledgements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/about.html">2. About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/install.html">3. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../userman/manual.html">4. Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/releasenotes.html">4. Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/bestpractices.html">5. Best Practices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/errors.html">6. Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/examples/examples.html">7. Examples</a></li>
@@ -107,13 +111,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">3. Finite Volume Method</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="swsolver.html">4. Shallow Water Solvers</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="swsolver.html#geoclaw">4.1. GeoClaw</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Topography: GeoClaw</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#topo-type-01">Topo type 01</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#topo-type-02">Topo type 02</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#topo-type-03">Topo type 03</a></li>
+<li class="toctree-l3"><a class="reference internal" href="geoclaw-theory.html">Theory</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Topography</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bathymetry">Bathymetry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fault-geometry">Fault geometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fault-motion">Fault motion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generate-topo-files">Generate topo files</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="geoclaw-output.html">Outputs: GeoClaw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="geoclaw-runtime.html">Run-time parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="geoclaw-output.html">Outputs</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="swsolver.html#adcirc">4.2. AdCirc</a></li>
@@ -134,6 +141,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -168,20 +176,22 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="swsolver.html"><span class="section-number">4. </span>Shallow Water Solvers</a> &raquo;</li>
         
-      <li>Topography: GeoClaw</li>
+      <li>Topography</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -193,29 +203,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="topography-geoclaw">
-<span id="lbl-geoclawtopo"></span><h1>Topography: GeoClaw<a class="headerlink" href="#topography-geoclaw" title="Permalink to this headline">¶</a></h1>
-<p>One of the primary inputs from GeoClaw includes the bathymetric data. The topography is assumed as a value of <span class="math notranslate nohighlight">\(z\)</span> (relative to a particular reference level) at each point <span class="math notranslate nohighlight">\((x,y)\)</span>. Most often the water surface is considered as <span class="math notranslate nohighlight">\(z=0\)</span> for reference. In addition, GeoClaw recognizes only uniformly spaced rectangular topography grids.</p>
-<p>It should also be noted here that GeoClaw allows for multiple files to be input for the topography. A bilinear interpolation is used to stitch the files to obtain the domain for the simulation. In regions of intersections, the best available information is used. This is further used to obtain a single top value related to the cell and used in the computations for solving the shallow water equations.</p>
-<p>There are four formats supported by GeoClaw and SimCenter presently supports three of these formats as inputs to the Hydro-UQ tool. These formats are highlighted below.</p>
+  <div class="section" id="topography">
+<span id="lbl-geoclawtopo"></span><h1>Topography<a class="headerlink" href="#topography" title="Permalink to this headline">¶</a></h1>
+<p>There are three aspects to specifying the geometry in GeoClaw: (a) Bathymetry of the ocean floor and topography of the coastal area (b) Location and size of the fault of interest for tsunami simulation (c) Displacement of the fault.</p>
+<div class="section" id="bathymetry">
+<h2>Bathymetry<a class="headerlink" href="#bathymetry" title="Permalink to this headline">¶</a></h2>
+<p>We will start by considering the specification of the bathymetric/topographic data. The bathymetry is assumed as a value of <span class="math notranslate nohighlight">\(z\)</span> (relative to a particular reference level) at each point <span class="math notranslate nohighlight">\((x,y)\)</span>. Most often the water surface is considered as <span class="math notranslate nohighlight">\(z=0\)</span> for reference. In addition, GeoClaw recognizes only uniformly spaced rectangular bathymetry grids.</p>
+<p>It should also be noted here that GeoClaw allows for multiple files to be input for the bathymetry. A bilinear interpolation is used to stitch the files to obtain the domain for the simulation. In regions of intersections, the best available information is used. This is further used to obtain a single top value related to the cell and used in the computations for solving the shallow water equations.</p>
+<p>There are four formats supported by GeoClaw and SimCenter presently supports three of these formats as inputs to the Hydro-UQ tool. These formats are discussed below:</p>
 <div class="section" id="topo-type-01">
-<h2>Topo type 01<a class="headerlink" href="#topo-type-01" title="Permalink to this headline">¶</a></h2>
-<p>The first format, known as <em>topotype = 1</em> stores the <span class="math notranslate nohighlight">\((x,y,z)\)</span> points of all the points in the domain. The size and spacing of the grid is thus obtained from the data. The files is generally as below</p>
+<h3>Topo type 01<a class="headerlink" href="#topo-type-01" title="Permalink to this headline">¶</a></h3>
+<p>The first format, known as <code class="docutils literal notranslate"><span class="pre">topotype</span> <span class="pre">=</span> <span class="pre">1</span></code> stores the <span class="math notranslate nohighlight">\((x,y,z)\)</span> points of all the points in the domain. The <span class="math notranslate nohighlight">\((x,y)\)</span> represent the latitude and longitude while the <span class="math notranslate nohighlight">\(z\)</span> represents the depth at the particular location. The size and spacing of the grid is thus obtained from the data directly. Each row, progressing from upper left corner (NW) and moving eastward. The next subsequent lines move southward. The files, generally, have the below format:</p>
 <div class="highlight-latex notranslate"><div class="highlight"><pre><span></span>x1 y1 z1
 x2 y2 z2
 ...
 xn yn zn
 </pre></div>
 </div>
-<div class="align-center figure" id="id1">
+<div class="align-center figure" id="id2">
 <a class="reference internal image-reference" href="../../_images/Topo01.png"><img alt="alternate text" src="../../_images/Topo01.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-text">Ordering of points as recorded in the files of type 01.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4.1.1 </span><span class="caption-text">Ordering of points as recorded in the files of type 01.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 <p>The points are ordered as illustrated in the above figure. The points start from the North-west part of the domain and progress east across the rows and later down.</p>
 </div>
 <div class="section" id="topo-type-02">
-<h2>Topo type 02<a class="headerlink" href="#topo-type-02" title="Permalink to this headline">¶</a></h2>
-<p>The second format, known as <em>topotype = 2</em> is slightly more compact and stores only the <span class="math notranslate nohighlight">\((z)\)</span> value of all the points in the domain. Other data related to the relative <span class="math notranslate nohighlight">\((x,y)\)</span> points are derived from the header information. The information includes</p>
+<h3>Topo type 02<a class="headerlink" href="#topo-type-02" title="Permalink to this headline">¶</a></h3>
+<p>The second format, known as <code class="docutils literal notranslate"><span class="pre">topotype</span> <span class="pre">=</span> <span class="pre">2</span></code> is slightly more compact and stores only the <span class="math notranslate nohighlight">\((z)\)</span> value of all the points in the domain. It uses the fact that GeoClaw requires a regular and rectangular grid. The data related to the <span class="math notranslate nohighlight">\((x,y)\)</span> points (i.e. latitude and longitude) are derived from this header information given in the first six lines. The header information includes</p>
 <div class="highlight-latex notranslate"><div class="highlight"><pre><span></span>value   mx
 value   my
 value   xlower / xllcenter / xllcorner
@@ -227,22 +240,183 @@ z2
 ...
 </pre></div>
 </div>
-<p>Here <em>mx</em> and <em>my</em> represent the number of points in the <em>x-</em> and <em>y-</em> directions. <em>cellsize</em> represent the size of the cellsize. It is possible to have two values for the cell size, i.e. <em>dx</em> and <em>dy</em>. If there is a value of depth is not known at a particular point <span class="math notranslate nohighlight">\((x,y)\)</span> on the grid, then the value specified at <em>nodataval</em> is given.</p>
+<p>Here <code class="docutils literal notranslate"><span class="pre">mx</span></code> and <code class="docutils literal notranslate"><span class="pre">my</span></code> represent the number of points in the <em>x-</em> and <em>y-</em> directions; <em>cellsize</em> represent the size of the cell. All cells in the grid are of the same size and specified by either one value or by two values, i.e. <em>dx</em> and <em>dy</em> both. If there is a point <span class="math notranslate nohighlight">\((x,y)\)</span> on the grid, where the value of depth is not known, then the value specified using the value given as <code class="docutils literal notranslate"><span class="pre">nodataval</span></code>.</p>
 <p>However, there are two aspects that can lead to ambiguity in reading the files, namely</p>
 <ul class="simple">
 <li><p>The order of <em>value</em> and <em>label</em> can be in any order. Either it can be <em>value</em> followed by <em>label</em> or otherwise.</p></li>
-<li><p>The third and fourth lines can either represent the value of the lower left corner specified with labels <em>xlower, ylower</em> or <em>xllcorner, yllcorner</em>. This is the lower left corner of the SW-most cell. Alternatively, it can also specify the center of this SW-most cell and represented by the labels <em>xllcenter, yllcenter</em></p></li>
+<li><p>The third and fourth lines can either represent the value of the lower left corner, i.e. <code class="docutils literal notranslate"><span class="pre">xlower</span></code> and <code class="docutils literal notranslate"><span class="pre">ylower</span></code> or value of the lower left corner of the SW-most cell, i.e. <code class="docutils literal notranslate"><span class="pre">xllcorner</span></code> and <code class="docutils literal notranslate"><span class="pre">yllcorner</span></code>. Alternatively, it can also specify the center of this SW-most cell and represented by the labels <code class="docutils literal notranslate"><span class="pre">xllcenter</span></code> and <code class="docutils literal notranslate"><span class="pre">yllcenter</span></code></p></li>
 </ul>
-<div class="align-center figure" id="id2">
+<div class="align-center figure" id="id3">
 <a class="reference internal image-reference" href="../../_images/Topo02.png"><img alt="alternate text" src="../../_images/Topo02.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-text">Ordering of points as recorded in the files of type 02.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4.1.2 </span><span class="caption-text">Ordering of points as recorded in the files of type 02.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-<p>The points are ordered as illustrated in the above figure and is similar as that defined for the <em>topo type 01</em> but here only the <span class="math notranslate nohighlight">\((z)\)</span> values are stored in the file. The points start from the North-west part of the domain and progress east across the rows and later down.</p>
+<p>The points are ordered as illustrated in the above figure and is similar as that defined for the <code class="docutils literal notranslate"><span class="pre">topo</span> <span class="pre">type</span> <span class="pre">01</span></code> but here only the <span class="math notranslate nohighlight">\((z)\)</span> values are stored in the file. The points start from the North-west part of the domain and progress east across the rows and later down. The file has a total of <code class="docutils literal notranslate"><span class="pre">mx*my</span></code> number of lines in the file.</p>
+<p>An example file will be as shown below</p>
+<div class="highlight-latex notranslate"><div class="highlight"><pre><span></span>2      mx
+2      my
+0      xlower
+-10    ylower
+10     cellsize
+9999   nodataval
+-100
+-200
+-400
+-250
+</pre></div>
+</div>
 </div>
 <div class="section" id="topo-type-03">
-<h2>Topo type 03<a class="headerlink" href="#topo-type-03" title="Permalink to this headline">¶</a></h2>
-<p>The third format, known as <em>topotype = 3</em> is same as the <a class="reference external" href="http://resources.esri.com/help/9.3/arcgisengine/java/GP_ToolRef/spatial_analyst_tools/esri_ascii_raster_format.htm">ESRI ASCII Raster format</a> .</p>
-<p>The first six lines with the header for type 03 is same as for type 02. This is followed by <em>my</em> lines. Each of these lines contain <em>mx</em> values of <span class="math notranslate nohighlight">\(z_i\)</span> .</p>
+<h3>Topo type 03<a class="headerlink" href="#topo-type-03" title="Permalink to this headline">¶</a></h3>
+<p>The third format, known as <code class="docutils literal notranslate"><span class="pre">topotype</span> <span class="pre">=</span> <span class="pre">3</span></code> is same as the <a class="reference external" href="http://resources.esri.com/help/9.3/arcgisengine/java/GP_ToolRef/spatial_analyst_tools/esri_ascii_raster_format.htm">ESRI ASCII Raster format</a> .</p>
+<p>The first six lines with the header for type 03 is same as for type 02. This is followed by <em>my</em> lines. Each of these lines contain <em>mx</em> values of <span class="math notranslate nohighlight">\(z_i\)</span> . This implies that the first line is the north-most line going from west to east and the last line is the south-most line going from west to east. The topo example file from type 2 can be written for type 03 and is given as below:</p>
+<div class="highlight-latex notranslate"><div class="highlight"><pre><span></span>2      mx
+2      my
+0      xlower
+-10    ylower
+10     cellsize
+9999   nodataval
+-100 -200
+-400 -250
+</pre></div>
+</div>
+</div>
+<div class="section" id="download-topo-files">
+<h3>Download topo files<a class="headerlink" href="#download-topo-files" title="Permalink to this headline">¶</a></h3>
+<p>Alternatively, there are several online databases that are available to download topography files for tsunami modeling. Some of these are given on the <a class="reference external" href="https://www.clawpack.org/tsunamidata.html#tsunamidata">Clawpack website</a>. This is achieved by downloading the file into the scratch folder using the <code class="docutils literal notranslate"><span class="pre">maketopo.py</span></code> file as</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">clawpack.geoclaw</span> <span class="kn">import</span> <span class="n">topotools</span>
+<span class="n">topo_fname</span> <span class="o">=</span> <span class="s1">&#39;Name-of-topo.asc&#39;</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://depts.washington.edu/clawpack/geoclaw/topo/etopo/&#39;</span> <span class="o">+</span> <span class="n">topo_fname</span>
+<span class="n">clawpack</span><span class="o">.</span><span class="n">clawutil</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get_remote_file</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">scratch_dir</span><span class="p">,</span>
+        <span class="n">file_name</span><span class="o">=</span><span class="n">topo_fname</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="note">
+<h3>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>In types 2 and 3, the values and labels are interchangeable. However, the order of lines is important.</p></li>
+<li><p>It is possible to automatically invert the <em>z</em>-values. This can be achieved by specifying the value of <code class="docutils literal notranslate"><span class="pre">topotype</span></code> as -1, -2 or -3.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="fault-geometry">
+<h2>Fault geometry<a class="headerlink" href="#fault-geometry" title="Permalink to this headline">¶</a></h2>
+<p>In order to simulate a scenario, an earthquake source needs to be specified. This is often given in terms of the slip of a fault plane or sub-faults that make up the single plane. This fault geometry is specified using parameters in the <code class="docutils literal notranslate"><span class="pre">maketopo.py</span></code> file as given below</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">usgs_subfault</span> <span class="o">=</span> <span class="n">dtopotools</span><span class="o">.</span><span class="n">SubFault</span><span class="p">()</span>
+<span class="n">usgs_subfault</span><span class="o">.</span><span class="n">strike</span> <span class="o">=</span> <span class="mf">16.</span>
+<span class="n">usgs_subfault</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="mf">450.e3</span>
+<span class="n">usgs_subfault</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">100.e3</span>
+<span class="n">usgs_subfault</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="mf">35.e3</span>
+<span class="n">usgs_subfault</span><span class="o">.</span><span class="n">slip</span> <span class="o">=</span> <span class="mf">15.</span>
+<span class="n">usgs_subfault</span><span class="o">.</span><span class="n">rake</span> <span class="o">=</span> <span class="mf">104.</span>
+<span class="n">usgs_subfault</span><span class="o">.</span><span class="n">dip</span> <span class="o">=</span> <span class="mf">14.</span>
+<span class="n">usgs_subfault</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="o">-</span><span class="mf">72.668</span>
+<span class="n">usgs_subfault</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="o">-</span><span class="mf">35.826</span>
+<span class="n">usgs_subfault</span><span class="o">.</span><span class="n">coordinate_specification</span> <span class="o">=</span> <span class="s2">&quot;top center&quot;</span>
+</pre></div>
+</div>
+<p>Some of the important parameters for a single sub-fault are as shown in the figure below.</p>
+<div class="align-center figure" id="id4">
+<a class="reference internal image-reference" href="../../_images/FaultParameters.png"><img alt="alternate text" src="../../_images/FaultParameters.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 4.1.3 </span><span class="caption-text">Definition sketch of fault plane dimension and geometry (<strong>Source:</strong>  E. Gica, M. H. Teng, P. L.-F. Liu and V. Titov, “Sensitivity analysis of source parameters for earthquake-generated distant tsunamis,” Journal of waterway, port, coastal and ocean engineering, vol. 133, pp. 429 - 441 (2007))</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<p>Each of the fault parameters are discussed, in detail, below.</p>
+<div class="section" id="fault-strike">
+<h3>Fault strike<a class="headerlink" href="#fault-strike" title="Permalink to this headline">¶</a></h3>
+<p>The fault strike angle for a single sub-fault is specified using the command <code class="docutils literal notranslate"><span class="pre">subfault_name.strike</span></code> and is pitorially depicted in the below figure.</p>
+<div class="align-center figure" id="id5">
+<a class="reference internal image-reference" href="../../_images/StrikeAngle.png"><img alt="alternate text" src="../../_images/StrikeAngle.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 4.1.4 </span><span class="caption-text">Pictorial illustration of the strike angle (<strong>Source:</strong>  <a class="reference external" href="http://schultz.physics.ucdavis.edu/research/fixing_faults.html">http://schultz.physics.ucdavis.edu/research/fixing_faults.html</a>)</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+<p>In general, the strike line of a fault is a line representing the intersection of the feature with a horizontal plane. Here, this strike angle represents the slip direction of the fault and is measured clockwise from the north direction as shown in the above figure. This is generally between 0 - 360 degrees.</p>
+</div>
+<div class="section" id="fault-dip">
+<h3>Fault dip<a class="headerlink" href="#fault-dip" title="Permalink to this headline">¶</a></h3>
+<p>The dip of the sub-fault is specified using the command <code class="docutils literal notranslate"><span class="pre">subfault_name.dip</span></code>. This represents the steepest angle of descent of the fault relative to a horizontal plane, and is given by the number (<span class="math notranslate nohighlight">\(0 - 90^o\)</span>) as well as a letter (N,S,E,W) with rough direction in which the bed is dipping downwards.</p>
+<p>One commonly used technique is to consider the strike so the dip is <span class="math notranslate nohighlight">\(90^o\)</span> to the right of the strike, in which case the redundant letter following the dip angle is omitted (right hand rule, or RHR). The map symbol is a short line attached and at right angles to the strike symbol pointing in the direction which the planar surface is dipping down. The angle of dip is included without the degree sign as, for example, <code class="docutils literal notranslate"><span class="pre">subfault_name.dip</span> <span class="pre">=</span> <span class="pre">14</span></code>. This is specified is between 0 - 90 degrees positive.</p>
+</div>
+<div class="section" id="fault-rake">
+<h3>Fault rake<a class="headerlink" href="#fault-rake" title="Permalink to this headline">¶</a></h3>
+<p>The block below the fault plane is known as the Footwall while the one above is known as the Hangingwall. The rake angle represents the angle between the slip direction of the hangingwall block from the dip vector, as measured in the fault plane. This is specified, for example, as <code class="docutils literal notranslate"><span class="pre">subfault_name.rake</span> <span class="pre">=</span> <span class="pre">104</span></code>. This is generally between - 180 to 180 degrees.</p>
+</div>
+<div class="section" id="fault-dimensions-and-slip">
+<h3>Fault dimensions and slip<a class="headerlink" href="#fault-dimensions-and-slip" title="Permalink to this headline">¶</a></h3>
+<p>The other dimensions of the sub-fault that needs to be specified include the length (<code class="docutils literal notranslate"><span class="pre">subfault_name.length</span></code>), width (<code class="docutils literal notranslate"><span class="pre">subfault_name.width</span></code>) and depth (<code class="docutils literal notranslate"><span class="pre">subfault_name.depth</span></code>) of the fault. This is often specified in meters or kilometers. Another important aspect is the slip of the fault given as <code class="docutils literal notranslate"><span class="pre">subfault_name.slip</span></code> and this represents the magnitube of slip along the rake. The slip is often specified in cm or m.</p>
+</div>
+<div class="section" id="fault-location">
+<h3>Fault location<a class="headerlink" href="#fault-location" title="Permalink to this headline">¶</a></h3>
+<p>The sub-fault location is specified in terms of latitude (<code class="docutils literal notranslate"><span class="pre">subfault_name.latitude</span></code>) and longitude (<code class="docutils literal notranslate"><span class="pre">subfault_name.longitude</span></code>) of a point on the fault plane. The location is also specified by the label <code class="docutils literal notranslate"><span class="pre">subfault.coordinate_specification</span></code> and the options include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bottom</span> <span class="pre">center</span></code>: (longitude,latitude) and depth specified at bottom center</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">top</span> <span class="pre">center</span></code>: (longitude,latitude) and depth specified at top center</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">centroid</span></code>: (longitude,latitude) and depth specified at the centroid of the fault plane</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">noaa</span> <span class="pre">sift</span></code>: (longitude,latitude) specified at the bottom center while the depth is specified at top, This mixed convention is used by the NOAA SIFT database</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">top</span> <span class="pre">upstrike</span> <span class="pre">corner</span></code>: (longitude,latitude) and depth is specified at the corner of fault that is both updip and upstrike.</p></li>
+</ul>
+</div>
+<div class="section" id="combining-sub-faults">
+<h3>Combining sub-faults<a class="headerlink" href="#combining-sub-faults" title="Permalink to this headline">¶</a></h3>
+<p>Once the above set of parameters have been specified for each sub-fault, they are combined to form the list that represents the fault of interest. This is achieved as below</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fault</span> <span class="o">=</span> <span class="n">dtopotools</span><span class="o">.</span><span class="n">Fault</span><span class="p">()</span>
+<span class="n">fault</span><span class="o">.</span><span class="n">subfaults</span> <span class="o">=</span> <span class="p">[</span><span class="n">subfault</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>Note<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>It is possible that the rupture is time-dependent (of also known as kinematic). In such a case, the <code class="docutils literal notranslate"><span class="pre">rupture_time</span></code> and <code class="docutils literal notranslate"><span class="pre">rise_time</span></code> also need to be specified for each sub-fault.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="fault-motion">
+<h2>Fault motion<a class="headerlink" href="#fault-motion" title="Permalink to this headline">¶</a></h2>
+<p>The Okada model is generally used by GeoClaw to specify the fault plane slip into the seafloor deformation. The information is used to create a <code class="docutils literal notranslate"><span class="pre">dtopo</span></code> file needed for GeoClaw. The Okada model assumes that the seafloor is flat and the earth is a homogeneous elastic material. Since the fault slip parameters are not often known very accurately even for historical earthquakes, on can assume that this is a reasonable enough model to account for seafloor deformation in tsunami modeling.</p>
+<p>The Okada model uses a Poisson ratio of 0.25 and is based on the solution derived over an elastic half-space. For more information on the Okada model, please refer to Y. Okada, “Surface deformation due to shear and tensile faults in a half-space,” Bullein of the Seismological Society of America, vol. 75, pp. 1135 - 1154 (1985).</p>
+<p>The slip of a fault plane, i.e. displacement of the topography, is specified through the <code class="docutils literal notranslate"><span class="pre">dtopo</span></code> files. These files are presented in two formats.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">dtopotype</span> <span class="pre">=</span> <span class="pre">1</span></code>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The header and file structure is similar to the topo files with <code class="docutils literal notranslate"><span class="pre">topotype</span> <span class="pre">=</span> <span class="pre">1</span></code></p></li>
+<li><p>Each line has four quantities: <code class="docutils literal notranslate"><span class="pre">t</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">dz</span></code></p></li>
+<li><p>This assumes a regular rectangular grid where the displacement <code class="docutils literal notranslate"><span class="pre">dz</span></code> is specified at each time <code class="docutils literal notranslate"><span class="pre">t</span></code> and each spatial point <code class="docutils literal notranslate"><span class="pre">(x,y)</span></code></p></li>
+<li><p>The file contains <span class="math notranslate nohighlight">\(mx*my*mt\)</span> lines if <span class="math notranslate nohighlight">\(mt\)</span> different times are specified for an <span class="math notranslate nohighlight">\(mx*my\)</span> grid</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dtopotype</span> <span class="pre">=</span> <span class="pre">3</span></code>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The header and file structure is similar to the topo files with <code class="docutils literal notranslate"><span class="pre">topotype</span> <span class="pre">=</span> <span class="pre">3</span></code></p></li>
+<li><p>The header has lines with <code class="docutils literal notranslate"><span class="pre">mx</span></code>, <code class="docutils literal notranslate"><span class="pre">my</span></code>, <code class="docutils literal notranslate"><span class="pre">mt</span></code>, <code class="docutils literal notranslate"><span class="pre">xlower</span></code>, <code class="docutils literal notranslate"><span class="pre">ylower</span></code>, <code class="docutils literal notranslate"><span class="pre">t0</span></code>, <code class="docutils literal notranslate"><span class="pre">dx</span></code>, <code class="docutils literal notranslate"><span class="pre">dy</span></code> and <code class="docutils literal notranslate"><span class="pre">dt</span></code></p></li>
+<li><p>The file should have <code class="docutils literal notranslate"><span class="pre">mt</span></code> sets of <code class="docutils literal notranslate"><span class="pre">my</span></code> lines with each line containing <code class="docutils literal notranslate"><span class="pre">mx</span></code> values of <code class="docutils literal notranslate"><span class="pre">dz</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>As in the Chile example on the <code class="docutils literal notranslate"><span class="pre">Clawpack</span></code> website, it can also be generated automatically using the <code class="docutils literal notranslate"><span class="pre">maketopo.py</span></code> as given below</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">77</span><span class="p">,</span> <span class="o">-</span><span class="mi">67</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.</span><span class="p">]</span>
+
+<span class="n">fault</span><span class="o">.</span><span class="n">create_dtopography</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">times</span><span class="p">)</span>
+<span class="n">dtopo</span> <span class="o">=</span> <span class="n">fault</span><span class="o">.</span><span class="n">dtopo</span>
+<span class="n">dtopo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dtopo_fname</span><span class="p">,</span> <span class="n">dtopo_type</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-topo-files">
+<h2>Generate topo files<a class="headerlink" href="#generate-topo-files" title="Permalink to this headline">¶</a></h2>
+<p>The bathymetry files can be generated using python-based utilities in the <code class="docutils literal notranslate"><span class="pre">Clawpack</span></code> library. In this regard, a python script (<code class="docutils literal notranslate"><span class="pre">maketopo.py</span></code>) is used to create the topography and also set the fault parameters.</p>
+<p>To start with it is essential to set an environment variable <code class="docutils literal notranslate"><span class="pre">CLAW</span></code> pointing to the location of clawpack. Once the variable has been set, the <code class="docutils literal notranslate"><span class="pre">topo</span></code> file can be generated using</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">make</span> <span class="n">topo</span>
+</pre></div>
+</div>
+<p>or alternatively as</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">python</span> <span class="n">maketopo</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -251,20 +425,25 @@ z2
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, SimCenter
+        &#169; Copyright 2020, SimCenter.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -272,7 +451,6 @@ z2
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
