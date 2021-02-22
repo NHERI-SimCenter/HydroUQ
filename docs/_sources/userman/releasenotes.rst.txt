@@ -1,6 +1,6 @@
-.. _lbl-manual:
+.. _lbl-release:
 
-Manual
+Release Notes
 ==================
 
 Coming soon.

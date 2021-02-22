@@ -1,43 +1,45 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>4. Shallow Water Solvers &mdash; Hydro-UQ 1.0 documentation</title>
   
 
   
-  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+
   
   
 
   
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Topography: GeoClaw" href="geoclaw-topo.html" />
+    <link rel="next" title="Theory" href="geoclaw-theory.html" />
     <link rel="prev" title="3. Finite Volume Method" href="../fvm/fvm.html" /> 
 </head>
 
@@ -82,6 +84,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -94,7 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../userman/acknowledgement.html">1. Acknowledgements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/about.html">2. About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/install.html">3. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../userman/manual.html">4. Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/releasenotes.html">4. Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/bestpractices.html">5. Best Practices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/errors.html">6. Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../userman/examples/examples.html">7. Examples</a></li>
@@ -107,8 +110,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">3. Finite Volume Method</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">4. Shallow Water Solvers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#geoclaw">4.1. GeoClaw</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="geoclaw-topo.html">Topography: GeoClaw</a></li>
-<li class="toctree-l3"><a class="reference internal" href="geoclaw-output.html">Outputs: GeoClaw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="geoclaw-theory.html">Theory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="geoclaw-topo.html">Topography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="geoclaw-runtime.html">Run-time parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="geoclaw-output.html">Outputs</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#adcirc">4.2. AdCirc</a></li>
@@ -132,6 +137,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -166,18 +172,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li><span class="section-number">4. </span>Shallow Water Solvers</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -194,12 +202,14 @@
 <p>There are several shallow water solvers available. In this work, we have focused on two of the primary ones of interest to the community: GeoClaw and AdCirc.</p>
 <div class="section" id="geoclaw">
 <h2><span class="section-number">4.1. </span>GeoClaw<a class="headerlink" href="#geoclaw" title="Permalink to this headline">¶</a></h2>
-<p>GeoClaw is a part of Clawpacky that was originally developed in 1994 by Prof. Randall LeVeque and co-workers. More information can be found on the website of <a class="reference external" href="https://www.clawpack.org">Clawpack</a>. It is used quite often for tsunami modeling.</p>
-<p>In this documentation, we will discuss aspects of particular importance to the Hydro-UQ platform that includes the format of the GeoClaw files.</p>
+<p>GeoClaw is a part of Clawpacky that was originally developed in 1994 by Prof. Randall LeVeque and co-workers. It is available as a part of the clawpack package that uses finite volume methods for to solve linear and nonlinear hyperbolic systems. It employs high-resolution Godunov0type methods with limiters in a general framework applicable to wave-related problems and thus often used for tsunami modeling. More information can be found on the website of <a class="reference external" href="https://www.clawpack.org">Clawpack</a>.</p>
+<p>In this documentation, we will discuss aspects of particular importance to the Hydro-UQ platform that includes the input and output formats of the GeoClaw files. The Hydro-UQ tool allows the users to upload their own GeoClaw input files.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="geoclaw-topo.html">Topography: GeoClaw</a></li>
-<li class="toctree-l1"><a class="reference internal" href="geoclaw-output.html">Outputs: GeoClaw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geoclaw-theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geoclaw-topo.html">Topography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geoclaw-runtime.html">Run-time parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geoclaw-output.html">Outputs</a></li>
 </ul>
 </div>
 </div>
@@ -223,20 +233,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, SimCenter
+        &#169; Copyright 2020, SimCenter.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -244,7 +259,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

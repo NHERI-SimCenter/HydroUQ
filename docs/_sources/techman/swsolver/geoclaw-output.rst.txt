@@ -1,6 +1,6 @@
 .. _lbl-geoclawoutput:
 
-Outputs: GeoClaw
+Outputs
 =======================
 
 Outputs of Geoclaw
