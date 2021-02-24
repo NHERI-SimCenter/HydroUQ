@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>4. Shallow Water Solvers &mdash; Hydro-UQ 1.0 documentation</title>
+  <title>3. Shallow Water Solvers &mdash; Hydro-UQ 1.0 documentation</title>
   
 
   
@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Theory" href="geoclaw-theory.html" />
-    <link rel="prev" title="3. Finite Volume Method" href="../fvm/fvm.html" /> 
+    <link rel="prev" title="2. Finite Volume Method" href="../fvm/fvm.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -105,33 +105,40 @@
 </ul>
 <p class="caption"><span class="caption-text">Technical manual</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../tsunami/tsunami.html">1. Tsunami</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../storm/storm.html">2. Storm Surge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">3. Finite Volume Method</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Shallow Water Solvers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#geoclaw">4.1. GeoClaw</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Shallow Water Solvers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#geoclaw">3.1. GeoClaw</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="geoclaw-theory.html">Theory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="geoclaw-topo.html">Topography</a></li>
 <li class="toctree-l3"><a class="reference internal" href="geoclaw-runtime.html">Run-time parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="geoclaw-output.html">Outputs</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#adcirc">4.2. AdCirc</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#simcenter-formats">4.3. SimCenter formats</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adcirc">3.2. AdCirc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#simcenter-formats">3.3. SimCenter formats</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="simcenter-topo.html">Topography: SimCenter</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../cfdsolver/cfdsolver.html">5. CFD Solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../surrogate/surrogate.html">6. Surrogate Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">7. Hydro-UQ Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UQ/uqengine.html">5. Uncertainity quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">6. Hydro-UQ Tool</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developer manual</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/build/build.html">1. How to Build?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/verify/verify.html">2. Verification of Hydro-UQ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/coding/coding.html">3. Coding Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/coding.html">4. Coding Style</a></li>
 </ul>
 
             
@@ -180,7 +187,7 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li><span class="section-number">4. </span>Shallow Water Solvers</li>
+      <li><span class="section-number">3. </span>Shallow Water Solvers</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -198,10 +205,10 @@
            <div itemprop="articleBody">
             
   <div class="section" id="shallow-water-solvers">
-<span id="lbl-geoclaw"></span><h1><span class="section-number">4. </span>Shallow Water Solvers<a class="headerlink" href="#shallow-water-solvers" title="Permalink to this headline">¶</a></h1>
+<span id="lbl-geoclaw"></span><h1><span class="section-number">3. </span>Shallow Water Solvers<a class="headerlink" href="#shallow-water-solvers" title="Permalink to this headline">¶</a></h1>
 <p>There are several shallow water solvers available. In this work, we have focused on two of the primary ones of interest to the community: GeoClaw and AdCirc.</p>
 <div class="section" id="geoclaw">
-<h2><span class="section-number">4.1. </span>GeoClaw<a class="headerlink" href="#geoclaw" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.1. </span>GeoClaw<a class="headerlink" href="#geoclaw" title="Permalink to this headline">¶</a></h2>
 <p>GeoClaw is a part of Clawpacky that was originally developed in 1994 by Prof. Randall LeVeque and co-workers. It is available as a part of the clawpack package that uses finite volume methods for to solve linear and nonlinear hyperbolic systems. It employs high-resolution Godunov0type methods with limiters in a general framework applicable to wave-related problems and thus often used for tsunami modeling. More information can be found on the website of <a class="reference external" href="https://www.clawpack.org">Clawpack</a>.</p>
 <p>In this documentation, we will discuss aspects of particular importance to the Hydro-UQ platform that includes the input and output formats of the GeoClaw files. The Hydro-UQ tool allows the users to upload their own GeoClaw input files.</p>
 <div class="toctree-wrapper compound">
@@ -214,11 +221,11 @@
 </div>
 </div>
 <div class="section" id="adcirc">
-<h2><span class="section-number">4.2. </span>AdCirc<a class="headerlink" href="#adcirc" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2. </span>AdCirc<a class="headerlink" href="#adcirc" title="Permalink to this headline">¶</a></h2>
 <p>AdCirc is often used for modeling storm surges.</p>
 </div>
 <div class="section" id="simcenter-formats">
-<h2><span class="section-number">4.3. </span>SimCenter formats<a class="headerlink" href="#simcenter-formats" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3. </span>SimCenter formats<a class="headerlink" href="#simcenter-formats" title="Permalink to this headline">¶</a></h2>
 <p>Development of file standards can help in the sustainable growth of community projects. SimCenter proposes the below formats for storing information related to the shallow water solvers.</p>
 <div class="toctree-wrapper compound">
 <ul>

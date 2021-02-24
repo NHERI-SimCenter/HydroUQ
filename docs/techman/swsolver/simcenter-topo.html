@@ -40,7 +40,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="5. CFD Solvers" href="../cfdsolver/cfdsolver.html" />
+    <link rel="next" title="4. CFD Solvers" href="../cfdsolver/cfdsolver.html" />
     <link rel="prev" title="Outputs" href="geoclaw-output.html" /> 
 </head>
 
@@ -106,13 +106,12 @@
 </ul>
 <p class="caption"><span class="caption-text">Technical manual</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../tsunami/tsunami.html">1. Tsunami</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../storm/storm.html">2. Storm Surge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">3. Finite Volume Method</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="swsolver.html">4. Shallow Water Solvers</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="swsolver.html#geoclaw">4.1. GeoClaw</a></li>
-<li class="toctree-l2"><a class="reference internal" href="swsolver.html#adcirc">4.2. AdCirc</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="swsolver.html#simcenter-formats">4.3. SimCenter formats</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="swsolver.html">3. Shallow Water Solvers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="swsolver.html#geoclaw">3.1. GeoClaw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swsolver.html#adcirc">3.2. AdCirc</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="swsolver.html#simcenter-formats">3.3. SimCenter formats</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Topography: SimCenter</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#topo-type-02">Topo type 02</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#topo-type-03">Topo type 03</a></li>
@@ -122,15 +121,23 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../cfdsolver/cfdsolver.html">5. CFD Solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../surrogate/surrogate.html">6. Surrogate Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">7. Hydro-UQ Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UQ/uqengine.html">5. Uncertainity quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">6. Hydro-UQ Tool</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developer manual</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/build/build.html">1. How to Build?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/verify/verify.html">2. Verification of Hydro-UQ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/coding/coding.html">3. Coding Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/coding.html">4. Coding Style</a></li>
 </ul>
 
             
@@ -179,7 +186,7 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="swsolver.html"><span class="section-number">4. </span>Shallow Water Solvers</a> &raquo;</li>
+          <li><a href="swsolver.html"><span class="section-number">3. </span>Shallow Water Solvers</a> &raquo;</li>
         
       <li>Topography: SimCenter</li>
     
@@ -213,7 +220,7 @@ xn yn zn
 </div>
 <div class="align-center figure" id="id1">
 <a class="reference internal image-reference" href="../../_images/Topo01.png"><img alt="alternate text" src="../../_images/Topo01.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 4.3.1 </span><span class="caption-text">Ordering of points as recorded in the files of type 01.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.3.1 </span><span class="caption-text">Ordering of points as recorded in the files of type 01.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <p>The points are ordered as illustrated in the above figure. The points start from the North-west part of the domain and progress east across the rows and later down.</p>
 <div class="section" id="topo-type-02">
@@ -238,7 +245,7 @@ z2
 </ul>
 <div class="align-center figure" id="id2">
 <a class="reference internal image-reference" href="../../_images/Topo02.png"><img alt="alternate text" src="../../_images/Topo02.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 4.3.2 </span><span class="caption-text">Ordering of points as recorded in the files of type 02.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.3.2 </span><span class="caption-text">Ordering of points as recorded in the files of type 02.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 <p>The points are ordered as illustrated in the above figure and is similar as that defined for the <em>topo type 01</em> but here only the <span class="math notranslate nohighlight">\((z)\)</span> values are stored in the file. The points start from the North-west part of the domain and progress east across the rows and later down.</p>
 </div>

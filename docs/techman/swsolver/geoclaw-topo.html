@@ -106,11 +106,10 @@
 </ul>
 <p class="caption"><span class="caption-text">Technical manual</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../tsunami/tsunami.html">1. Tsunami</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../storm/storm.html">2. Storm Surge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">3. Finite Volume Method</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="swsolver.html">4. Shallow Water Solvers</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="swsolver.html#geoclaw">4.1. GeoClaw</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="swsolver.html">3. Shallow Water Solvers</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="swsolver.html#geoclaw">3.1. GeoClaw</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="geoclaw-theory.html">Theory</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Topography</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#bathymetry">Bathymetry</a></li>
@@ -123,19 +122,27 @@
 <li class="toctree-l3"><a class="reference internal" href="geoclaw-output.html">Outputs</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="swsolver.html#adcirc">4.2. AdCirc</a></li>
-<li class="toctree-l2"><a class="reference internal" href="swsolver.html#simcenter-formats">4.3. SimCenter formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swsolver.html#adcirc">3.2. AdCirc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swsolver.html#simcenter-formats">3.3. SimCenter formats</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../cfdsolver/cfdsolver.html">5. CFD Solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../surrogate/surrogate.html">6. Surrogate Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">7. Hydro-UQ Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UQ/uqengine.html">5. Uncertainity quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">6. Hydro-UQ Tool</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developer manual</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/build/build.html">1. How to Build?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/verify/verify.html">2. Verification of Hydro-UQ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/coding/coding.html">3. Coding Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/coding.html">4. Coding Style</a></li>
 </ul>
 
             
@@ -184,7 +191,7 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="swsolver.html"><span class="section-number">4. </span>Shallow Water Solvers</a> &raquo;</li>
+          <li><a href="swsolver.html"><span class="section-number">3. </span>Shallow Water Solvers</a> &raquo;</li>
         
       <li>Topography</li>
     
@@ -222,7 +229,7 @@ xn yn zn
 </div>
 <div class="align-center figure" id="id2">
 <a class="reference internal image-reference" href="../../_images/Topo01.png"><img alt="alternate text" src="../../_images/Topo01.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 4.1.1 </span><span class="caption-text">Ordering of points as recorded in the files of type 01.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.1.1 </span><span class="caption-text">Ordering of points as recorded in the files of type 01.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 <p>The points are ordered as illustrated in the above figure. The points start from the North-west part of the domain and progress east across the rows and later down.</p>
 </div>
@@ -248,7 +255,7 @@ z2
 </ul>
 <div class="align-center figure" id="id3">
 <a class="reference internal image-reference" href="../../_images/Topo02.png"><img alt="alternate text" src="../../_images/Topo02.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 4.1.2 </span><span class="caption-text">Ordering of points as recorded in the files of type 02.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.1.2 </span><span class="caption-text">Ordering of points as recorded in the files of type 02.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 <p>The points are ordered as illustrated in the above figure and is similar as that defined for the <code class="docutils literal notranslate"><span class="pre">topo</span> <span class="pre">type</span> <span class="pre">01</span></code> but here only the <span class="math notranslate nohighlight">\((z)\)</span> values are stored in the file. The points start from the North-west part of the domain and progress east across the rows and later down. The file has a total of <code class="docutils literal notranslate"><span class="pre">mx*my</span></code> number of lines in the file.</p>
 <p>An example file will be as shown below</p>
@@ -318,7 +325,7 @@ z2
 <p>Some of the important parameters for a single sub-fault are as shown in the figure below.</p>
 <div class="align-center figure" id="id4">
 <a class="reference internal image-reference" href="../../_images/FaultParameters.png"><img alt="alternate text" src="../../_images/FaultParameters.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 4.1.3 </span><span class="caption-text">Definition sketch of fault plane dimension and geometry (<strong>Source:</strong>  E. Gica, M. H. Teng, P. L.-F. Liu and V. Titov, “Sensitivity analysis of source parameters for earthquake-generated distant tsunamis,” Journal of waterway, port, coastal and ocean engineering, vol. 133, pp. 429 - 441 (2007))</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.1.3 </span><span class="caption-text">Definition sketch of fault plane dimension and geometry (<strong>Source:</strong>  E. Gica, M. H. Teng, P. L.-F. Liu and V. Titov, “Sensitivity analysis of source parameters for earthquake-generated distant tsunamis,” Journal of waterway, port, coastal and ocean engineering, vol. 133, pp. 429 - 441 (2007))</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 <p>Each of the fault parameters are discussed, in detail, below.</p>
 <div class="section" id="fault-strike">
@@ -326,7 +333,7 @@ z2
 <p>The fault strike angle for a single sub-fault is specified using the command <code class="docutils literal notranslate"><span class="pre">subfault_name.strike</span></code> and is pitorially depicted in the below figure.</p>
 <div class="align-center figure" id="id5">
 <a class="reference internal image-reference" href="../../_images/StrikeAngle.png"><img alt="alternate text" src="../../_images/StrikeAngle.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 4.1.4 </span><span class="caption-text">Pictorial illustration of the strike angle (<strong>Source:</strong>  <a class="reference external" href="http://schultz.physics.ucdavis.edu/research/fixing_faults.html">http://schultz.physics.ucdavis.edu/research/fixing_faults.html</a>)</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.1.4 </span><span class="caption-text">Pictorial illustration of the strike angle (<strong>Source:</strong>  <a class="reference external" href="http://schultz.physics.ucdavis.edu/research/fixing_faults.html">http://schultz.physics.ucdavis.edu/research/fixing_faults.html</a>)</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 <p>In general, the strike line of a fault is a line representing the intersection of the feature with a horizontal plane. Here, this strike angle represents the slip direction of the fault and is measured clockwise from the north direction as shown in the above figure. This is generally between 0 - 360 degrees.</p>
 </div>
