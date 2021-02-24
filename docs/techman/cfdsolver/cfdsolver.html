@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>5. CFD Solvers &mdash; Hydro-UQ 1.0 documentation</title>
+  <title>4. CFD Solvers &mdash; Hydro-UQ 1.0 documentation</title>
   
 
   
@@ -105,33 +105,40 @@
 </ul>
 <p class="caption"><span class="caption-text">Technical manual</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../tsunami/tsunami.html">1. Tsunami</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../storm/storm.html">2. Storm Surge</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">3. Finite Volume Method</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../swsolver/swsolver.html">4. Shallow Water Solvers</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">5. CFD Solvers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#solvers-in-openfoam">5.1. Solvers in OpenFOAM</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. CFD Solvers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#solvers-in-openfoam">4.1. Solvers in OpenFOAM</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#solver-descriptions">Solver descriptions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#input-file-formats">5.2. Input file formats</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#input-file-formats">4.2. Input file formats</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="OF-inputfolder01.html">Input folder 01: system folder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="OF-inputfolder02.html">Input folder 02: constant folder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="OF-inputfolder03.html">Input folder 03: time / 0 folder</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#mesh-topology">5.3. Mesh topology</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#running-openfoam-on-tacc">5.4. Running OpenFOAM on TACC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mesh-topology">4.3. Mesh topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-openfoam-on-tacc">4.4. Running OpenFOAM on TACC</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../surrogate/surrogate.html">6. Surrogate Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">7. Hydro-UQ Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UQ/uqengine.html">5. Uncertainity quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">6. Hydro-UQ Tool</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developer manual</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/build/build.html">1. How to Build?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/verify/verify.html">2. Verification of Hydro-UQ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/coding/coding.html">3. Coding Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/coding.html">4. Coding Style</a></li>
 </ul>
 
             
@@ -180,7 +187,7 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li><span class="section-number">5. </span>CFD Solvers</li>
+      <li><span class="section-number">4. </span>CFD Solvers</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -198,10 +205,10 @@
            <div itemprop="articleBody">
             
   <div class="section" id="cfd-solvers">
-<span id="lbl-openfoam"></span><h1><span class="section-number">5. </span>CFD Solvers<a class="headerlink" href="#cfd-solvers" title="Permalink to this headline">¶</a></h1>
+<span id="lbl-openfoam"></span><h1><span class="section-number">4. </span>CFD Solvers<a class="headerlink" href="#cfd-solvers" title="Permalink to this headline">¶</a></h1>
 <p>In this section, we will discuss OpenFOAM and various aspects related to it.</p>
 <div class="section" id="solvers-in-openfoam">
-<h2><span class="section-number">5.1. </span>Solvers in OpenFOAM<a class="headerlink" href="#solvers-in-openfoam" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1. </span>Solvers in OpenFOAM<a class="headerlink" href="#solvers-in-openfoam" title="Permalink to this headline">¶</a></h2>
 <p>Unlike other commercial solvers, OpenFOAM is not just one solver but more like a collection of solvers. It has separate solver for each genre of problem and this decision is made by the user. The solvers available in the OpenFOAM version, in the folder <code class="docutils literal notranslate"><span class="pre">$FOAM_SOLVERS</span></code>,  can be found using the command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">app</span>
 </pre></div>
@@ -219,7 +226,7 @@
 </div>
 </div>
 <div class="section" id="input-file-formats">
-<h2><span class="section-number">5.2. </span>Input file formats<a class="headerlink" href="#input-file-formats" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2. </span>Input file formats<a class="headerlink" href="#input-file-formats" title="Permalink to this headline">¶</a></h2>
 <p>The first important aspect is to understand the input file structure. The input file is in the form of three directories / folders, namely (a) <code class="docutils literal notranslate"><span class="pre">time</span></code> or <code class="docutils literal notranslate"><span class="pre">0</span></code> (b) <code class="docutils literal notranslate"><span class="pre">system</span></code> (c) <code class="docutils literal notranslate"><span class="pre">constant</span></code></p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -230,11 +237,11 @@
 </div>
 </div>
 <div class="section" id="mesh-topology">
-<h2><span class="section-number">5.3. </span>Mesh topology<a class="headerlink" href="#mesh-topology" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.3. </span>Mesh topology<a class="headerlink" href="#mesh-topology" title="Permalink to this headline">¶</a></h2>
 <p>Mesh topology in openFOAM.</p>
 </div>
 <div class="section" id="running-openfoam-on-tacc">
-<h2><span class="section-number">5.4. </span>Running OpenFOAM on TACC<a class="headerlink" href="#running-openfoam-on-tacc" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4. </span>Running OpenFOAM on TACC<a class="headerlink" href="#running-openfoam-on-tacc" title="Permalink to this headline">¶</a></h2>
 <p>The OpenFOAM jobs can either be run in parallel or in serial. Most often, CFD jobs require significant computational power and anything realistic needs to be run in parallel.</p>
 </div>
 </div>

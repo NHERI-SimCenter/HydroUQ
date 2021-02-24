@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>1. Water-borne Natural Hazards &mdash; Hydro-UQ 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Tsunami events" href="tsu-intro.html" />
+    <link rel="prev" title="8. Copyright and License" href="../../userman/copyright.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F2F2F2" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/SimCenter_H2O_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/acknowledgement.html">1. Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/about.html">2. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/install.html">3. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/releasenotes.html">4. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/errors.html">6. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/examples/examples.html">7. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/copyright.html">8. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Water-borne Natural Hazards</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tsunami">1.1. Tsunami</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tsu-intro.html">Tsunami events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsu-measure.html">Tsunami Measurements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsu-risk.html">Tsunami Risk Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsu-numerics.html">Modeling Tsunami: Numerical Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#storm-surge">1.2. Storm Surge</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-jersey-coastal-risk">New Jersey coastal risk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#chesapeake-bay-coastal-risk">Chesapeake bay coastal risk</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UQ/uqengine.html">5. Uncertainity quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">6. Hydro-UQ Tool</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/coding.html">4. Coding Style</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Hydro-UQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><span class="section-number">1. </span>Water-borne Natural Hazards</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="water-borne-natural-hazards">
+<span id="lbl-water"></span><h1><span class="section-number">1. </span>Water-borne Natural Hazards<a class="headerlink" href="#water-borne-natural-hazards" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="tsunami">
+<h2><span class="section-number">1.1. </span>Tsunami<a class="headerlink" href="#tsunami" title="Permalink to this headline">¶</a></h2>
+<p>The term <em>tsunami</em> is derived from two Japanese words, namely “tsu” (meaning harbor) and “nami” (meaning wave). Some of the original literature described them as tidal waves or seismic sea waves. Tsunamis are usually created by disturbances in the crust of the Earth. The resulting uplifting of the water surface over a large area forms a train of the long-period waves. These waves generated from tsunamis have huge wavelengths. In contrast to wind-generated waves, where the periods are about one minute, the periods are of the order of one hour and more.</p>
+<p>Once generated, these tsunami waves travel across the ocean basin to cause great destruction at locations far from the source. Owing to their destructive nature, it is imporant to comprehend the mechanisms of their generation, propagation and predict the extent of flooding/effect of wave forces in the coastal areas that are potential to tsunamis. In these areas susceptible to tsunamis, it is imperative to build resilient structures and communities.</p>
+<p>This documentation compiles some of the basic ideas and information about tsunami events and modeling efforts.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tsu-intro.html">Tsunami events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tsu-measure.html">Tsunami Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tsu-risk.html">Tsunami Risk Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tsu-numerics.html">Modeling Tsunami: Numerical Methods</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="storm-surge">
+<h2><span class="section-number">1.2. </span>Storm Surge<a class="headerlink" href="#storm-surge" title="Permalink to this headline">¶</a></h2>
+<p>Storm surge can be defined as the abnormal rise of water generated by a storm, over and above the predicted astronomical tides. Flooding from storm surge depends on several factors, including track, intensity, size, and forward speed of the hurricane and the characteristics of the coastline where it comes ashore or passes nearby. The below screenshot is obtained from the map generated by the US Environmental Protection Agency (EPA). It shows the storm surge inundation map obtained from the SLOSH numerical model. It shows the vulnerable points on the Eastern US coast that are significantly vulnerable to inundation heights of up to 9 feet.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="../../_images/StormInundation.png"><img alt="Storm surge inundation in eastern seaboard of USA" src="../../_images/StormInundation.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1.2.1 </span><span class="caption-text">This map displays the results from SLOSH (Sea, Lake, and Overland Surges from Hurricanes) model. SLOSH is a numerical model used by NWS (National Weather Service) to compute storm surge. (Source: <a class="reference external" href="https://www.arcgis.com/apps/MapSeries/index.html?appid=852ca645500d419e8c6761b923380663">Storm surge inundation map by EPA</a>.)</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="new-jersey-coastal-risk">
+<h3>New Jersey coastal risk<a class="headerlink" href="#new-jersey-coastal-risk" title="Permalink to this headline">¶</a></h3>
+<p>New Jersey (NJ) has about 1792 miles of coastline covering 17 / 21 counties in the state. This accounts to approximately 80% of the state’s population and caters to almost $400B in annual economic outputs. The changes in sea level and increase in hurricane activity has significantly increased the coast’s exposure to storm surges in the past four decades. Below figure shows the change in mean sea level in Atlantic city, which is almost 16 inches since 1912 and 6 inches since 1980.</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="../../_images/SeaLevelAtCity.png"><img alt="Changes in mean sea level in Atlantic city" src="../../_images/SeaLevelAtCity.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1.2.2 </span><span class="caption-text">Mean sea level in inches w.r.t  1912 in Atlantic city. (Source: National Oceanic and Atmospheric Administration (NOAA))</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>This increase in sea levels not only increases the risk of tidal flooding but also storm-related flooding that occurs during hurricanes and coastal storms. For example, during hurricane Sandy in 2012, the storm tide measured as much as 8.9 feet while the inundation in Monmouth and Middlesex counties were up to 9 feet deep. The surge in 2012 flooded an area of almost 27 square miles greater than in 1880. A recent report by the <a class="reference external" href="https://rhg.com/research/new-jersey-flooding-hurricanes-costs-climatechange/">Rhodium group</a> estimated the NJ’s hurricane flood risk and how it may change through 2050. They employed various techniques including a GeoClaw model to estimate the hurricane-related flood risk.</p>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="../../_images/FloodHomesNJ.png"><img alt="Changes in houses in NJ coast facing flood risk" src="../../_images/FloodHomesNJ.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1.2.3 </span><span class="caption-text">Increase in the number of buildings that are subject to flood risk of once in 30 years. The undertainity is due to changes in human activity and sea levels (Source: <a class="reference external" href="https://rhg.com/research/new-jersey-flooding-hurricanes-costs-climatechange/">Rhodium group report</a>)</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="chesapeake-bay-coastal-risk">
+<h3>Chesapeake bay coastal risk<a class="headerlink" href="#chesapeake-bay-coastal-risk" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, SimCenter.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

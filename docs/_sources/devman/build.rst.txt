@@ -1,0 +1,82 @@
+.. _lbl-build:
+
+How to Build?
+==================
+
+To build the tool, follow the following instructions:
+
+Setup the Development Environment
+------------------------------------
+
+1. Install a modern C++ compiler that is compliant with modern C++ standards (preferably C++17).
+2. Install the `Qt framework <https://www.qt.io/download>`_. Qt is free for open source developers. Qt version 5.10 or later is required and version 5.12 or later is recommended.
+3. Install `CMake <https://cmake.org/download/>`_ build tools. CMake version 3.15 or later is preferred.
+4. Install `Conan <https://docs.conan.io/en/latest/installation.html>`_ package manager, version 1.25 or later is preferred.
+5. Add Conan `SimCenter <https://bintray.com/nheri-simcenter/simcenter>`_ and `BinCrafters <https://bintray.com/bincrafters/public-conan>`_ repositories to the Conan remotes. You can add these remotes using the following commands in the terminal:
+
+``conan remote add simcenter https://api.bintray.com/conan/nheri-simcenter/simcenter``
+
+``conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan``
+
+Obtain the Source Code
+------------------------
+
+1. Clone the Hydro-UQ repository from `Hydro-UQ Github page <https://github.com/NHERI-SimCenter/HydroUQ>`_. You can do that by using your preferred Git client/GUI or by using the git clone command in the terminal.
+2. Clone the following repositories for the dependencies: 
+
+    * `SimCenterCommon repository <https://github.com/NHERI-SimCenter/SimCenterCommon>`_
+
+You will need to clone each dependency from its GitHub repository and place it in the same parent directory where the Hydro-UQ repository was cloned (note: not inside the Hydro-UQ directory itself, but directory above it, i.e. SimCenterCommon and Hydro-UQ directories both exist in the same parent directory).
+
+Build the Backend
+--------------------
+
+SimCenterBackendApplications contains a number of applications written in C++, C and Python that are needed by all SimCenter User Interfaces. To build the backend you will need to follow tht follwoting steps:
+
+1. Clone the SimCenterBackendApplications repository.
+2. Build SimCenterBackendApplications using the following steps:
+    
+    a. Create a build directory for the build output, this can be done in the terminal using the command ``mkdir build``
+
+    b. Install the backend dependencies using Conan. You can do that by going to the build output directory and running the command:
+
+    ``conan install .. --build missing``
+
+    This will install all the dependencies and will build dependencies from their source code as needed.
+
+    c. Run CMake configuration this can be done using the command ``cmake ..``. Depending on your build environment, especially if you have multiple compiler, you may need to select a specific CMake generator. For instance on Window using Visual Studio 2017, you can configure CMake as follows:
+
+    ``cmake .. -G Visual Studio 15 2017 Win64``
+
+    d. Build the release version of the backend, this can be done using the generated build system. For instance, on Unix based systems when using make files this can be achieved using the command ``make`` or ``make release``. When using an IDE like Visual Studio on Window or XCode on Mac, the generated project can opened in the IDE and used to build the code. In addition, this can also be done from the terminal using CMake the command:
+
+    ``cmake --build . --config Release``
+
+3. Install the backend applications to a local folder. This can be done by building the ``install target``. When using make on Unix based system. This can also be from IDE (e.g.) by selecting the install target or project and building it. In addition, this can be done from the terminal using the command:
+
+``cmake --build . --target install`` or ``cmake --install`` if you have CMake 3.15 or later. If building and installation were successful you should find a folder called ``applications`` in the repository with all the applications inside of it.
+
+Build the User Interface
+---------------------------
+
+Build using the Qt Creator (Recommended)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. Start Qt Creator, then open the WE-UQ.pro file located in the WE-UQ directory that was downloaded in the previous steps.
+2. Setup the development kit in Qt Creator. This is usually done by selecting the Qt version, compiler and configuration and following the onscreen dialog.
+3. Build the application and run it in Qt Creator IDE by using the **Run** button. This can be done using the keyboard shortcut ``F5`` to build and start the tool.
+
+Build using the terminal
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. First, create a build output directory. This can be done in the terminal using the command ``mkdir build``.
+2. Go into the build output directory and run QMake to Configure the project and create make files. This can be done by using the command:
+
+``qmake ../WE-UQ.pro``
+
+3. Build the project by using the command ``make`` on Unix like systems. On Windows, you can either use ``nmake`` or ``jom`` to build in parallel. Once built, you can now run the tool executable.
+
+Set the User Interface Preferences
+--------------------------------------
+
+Once built, Open the Hydro-UQ tool, then click on ``file -> preferences`` and set the applications directory entry to point to the applications folder that the build process created for ``BackendApplications``.

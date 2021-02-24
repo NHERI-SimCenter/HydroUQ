@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>3. Finite Volume Method &mdash; Hydro-UQ 1.0 documentation</title>
+  <title>2. Finite Volume Method &mdash; Hydro-UQ 1.0 documentation</title>
   
 
   
@@ -40,8 +40,8 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4. Shallow Water Solvers" href="../swsolver/swsolver.html" />
-    <link rel="prev" title="2. Storm Surge" href="../storm/storm.html" /> 
+    <link rel="next" title="3. Shallow Water Solvers" href="../swsolver/swsolver.html" />
+    <link rel="prev" title="Modeling Tsunami: Numerical Methods" href="../hazards/tsu-numerics.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -106,36 +106,43 @@
 </ul>
 <p class="caption"><span class="caption-text">Technical manual</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../tsunami/tsunami.html">1. Tsunami</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../storm/storm.html">2. Storm Surge</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Finite Volume Method</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#why-fvm">3.1. Why FVM?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#discretization">3.2. Discretization</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Finite Volume Method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#why-fvm">2.1. Why FVM?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#discretization">2.2. Discretization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#general-overview">General overview</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#numerical-integration">3.3. Numerical integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#boundary-conditions">3.4. Boundary conditions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#mesh-topology">3.5. Mesh topology</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#volume-of-fluid-method">3.6. Volume of fluid method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#numerical-integration">2.3. Numerical integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#boundary-conditions">2.4. Boundary conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mesh-topology">2.5. Mesh topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#volume-of-fluid-method">2.6. Volume of fluid method</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#philosophy-of-vof-method">Philosophy of VOF method</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#mathematical-formulation">Mathematical formulation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#points-to-note">Points to note</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#references">3.7. References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">2.7. References</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../swsolver/swsolver.html">4. Shallow Water Solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cfdsolver/cfdsolver.html">5. CFD Solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../surrogate/surrogate.html">6. Surrogate Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">7. Hydro-UQ Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UQ/uqengine.html">5. Uncertainity quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hydrouq/hydrouq.html">6. Hydro-UQ Tool</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developer manual</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/build/build.html">1. How to Build?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/verify/verify.html">2. Verification of Hydro-UQ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../devman/coding/coding.html">3. Coding Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/coding.html">4. Coding Style</a></li>
 </ul>
 
             
@@ -184,7 +191,7 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li><span class="section-number">3. </span>Finite Volume Method</li>
+      <li><span class="section-number">2. </span>Finite Volume Method</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -202,10 +209,10 @@
            <div itemprop="articleBody">
             
   <div class="section" id="finite-volume-method">
-<span id="lbl-fvm"></span><h1><span class="section-number">3. </span>Finite Volume Method<a class="headerlink" href="#finite-volume-method" title="Permalink to this headline">¶</a></h1>
+<span id="lbl-fvm"></span><h1><span class="section-number">2. </span>Finite Volume Method<a class="headerlink" href="#finite-volume-method" title="Permalink to this headline">¶</a></h1>
 <p>Similar to other numerical methods, the Finite Volume Method (FVM) transforms a set of partial differential equations (PDE) into a system of linear algebraic equations. Using this method the governing PDE is satisfied over finite-sized control volumes, rather than at points as in other PDE discretization techniques. The Finite Difference Method (FDM) and the Finite Element Method (FEM) have been traditionally used to operate on PDEs. However, simulation of fluid flow problems and transport phenomena using FVM has garnered wide acceptance through high flexibility it offers as a discretization method. Also, FVM is able to capture the physics and the conservation principles important for fluid flow modeling, such as the integral property of the governing equations, and the characteristics of the terms it discretizes in every finite volume cell. Another advantage that FVM provides is the simplicity of co-ordinate analysis. The discretization can be carried out directly in the physical domain without having to transform the actual co-ordinate system to the isoparametric system.</p>
 <div class="section" id="why-fvm">
-<h2><span class="section-number">3.1. </span>Why FVM?<a class="headerlink" href="#why-fvm" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.1. </span>Why FVM?<a class="headerlink" href="#why-fvm" title="Permalink to this headline">¶</a></h2>
 <p>This section covers why FVM is preferred over FEM or FDM. FVM is straightforward tool that can be implemented on non uniform/unstructured grid, different from FDM, that requires a specific type of grid, i.e; structured mesh. Also, in FDM, it is not possible to define derivatives across discontinuities. In contrast, when FVM is employed, the governing PDE is not solved directly as will be discussed in the upcoming section. Rather, it is first integrated over the control volume, then approximated and solved. Furthermore, since no cell center is located at the boundary, the boundary conditions cannot be satisfied directly in FDM.</p>
 <p>To understand the difference between FVM and FEM, let us look at a flux balance equation, which forms the basis for the mathematical modeling of flows</p>
 <div class="math notranslate nohighlight">
@@ -232,11 +239,11 @@
 <p>The primary difference is found in the discretization of the starting integral equations. Consider the figure shown below.</p>
 <div class="align-center figure" id="id4">
 <a class="reference internal image-reference" href="../../_images/FEM_vs_FVM.png"><img alt="alternate text" src="../../_images/FEM_vs_FVM.png" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.1.1 </span><span class="caption-text">Tsunami map across the world and color coded to the destructiveness of the earthquake and tsunami (Source: <a class="reference external" href="https://maps.ngdc.noaa.gov/viewers/hazards">NOAA, Natural Hazards Viewer</a>)</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 2.1.1 </span><span class="caption-text">Tsunami map across the world and color coded to the destructiveness of the earthquake and tsunami (Source: <a class="reference external" href="https://maps.ngdc.noaa.gov/viewers/hazards">NOAA, Natural Hazards Viewer</a>)</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="discretization">
-<h2><span class="section-number">3.2. </span>Discretization<a class="headerlink" href="#discretization" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.2. </span>Discretization<a class="headerlink" href="#discretization" title="Permalink to this headline">¶</a></h2>
 <p>The discretization procedure used in the FVM involves two steps, namely</p>
 <ul class="simple">
 <li><p>The integration of the PDE’s and their transformation into a form of the balance equations over a single element. This process involves modification of the integrals, both surface and volume, into discrete algebraic relations over elements.</p></li>
@@ -249,7 +256,7 @@
 </div>
 </div>
 <div class="section" id="numerical-integration">
-<h2><span class="section-number">3.3. </span>Numerical integration<a class="headerlink" href="#numerical-integration" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.3. </span>Numerical integration<a class="headerlink" href="#numerical-integration" title="Permalink to this headline">¶</a></h2>
 <p>The conservation equation for any given general scalar variable <span class="math notranslate nohighlight">\(\phi\)</span> can be given as</p>
 <div class="math notranslate nohighlight">
 \[\underbrace{\frac{\partial \left( \rho \phi \right)}{\partial t}}_{\text{Transient term}} + \underbrace{\nabla \cdot \left( \rho \mathbf{v} \phi \right)}_{\text{Convective term}} = \underbrace{\nabla \cdot \left( \Gamma^{\phi} \nabla\phi \right)}_{\text{Diffusion term}} + \underbrace{Q^{\phi}}_{\text{Source term}}\]</div>
@@ -279,13 +286,13 @@
 <p>Once the PDE’s have been converted to a summation form above, it is necessary to express the face and volume fluxes in terms of the values of the variable at the neighboring cell centers or in otherwods, we need to linearize the fluxes.</p>
 </div>
 <div class="section" id="boundary-conditions">
-<h2><span class="section-number">3.4. </span>Boundary conditions<a class="headerlink" href="#boundary-conditions" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.4. </span>Boundary conditions<a class="headerlink" href="#boundary-conditions" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="mesh-topology">
-<h2><span class="section-number">3.5. </span>Mesh topology<a class="headerlink" href="#mesh-topology" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.5. </span>Mesh topology<a class="headerlink" href="#mesh-topology" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="volume-of-fluid-method">
-<h2><span class="section-number">3.6. </span>Volume of fluid method<a class="headerlink" href="#volume-of-fluid-method" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.6. </span>Volume of fluid method<a class="headerlink" href="#volume-of-fluid-method" title="Permalink to this headline">¶</a></h2>
 <p>Volume of Fluid (VOF) was orignially presented by <a class="reference internal" href="#hini1981" id="id2"><span>[HiNi1981]</span></a>  and is used extensively in modeling of multiphase flows. In our simulation of tsunami / storm-surge, we are working with water and air. However, VOF method is not restricted to two fluids but can also be used in the case of multiple fluids.</p>
 <p>The VOF method is a numerical technique commonly used to track the free surface formed by the fluid-to-fluid interface. While, by itself, it is not a standalone flow solver, it only tracks and shape and evolution of the surface. It is solved in conjunction with the motion of the flow, described in the earlier sections.</p>
 <div class="section" id="philosophy-of-vof-method">
@@ -324,7 +331,7 @@
 </div>
 </div>
 <div class="section" id="references">
-<h2><span class="section-number">3.7. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.7. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <dl class="citation">
 <dt class="label" id="momada2016"><span class="brackets"><a class="fn-backref" href="#id1">MoMaDa2016</a></span></dt>
 <dd><ol class="upperalpha simple" start="6">
