@@ -52,10 +52,8 @@ public:
 				    
 private slots:
    void errorMessage(QString message);  
-    void on_Btn_Generate_Files_clicked();
     void on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column);
-
-    void on_Btn_SubTACC_clicked();
+//    void on_Btn_SubTACC_clicked();
 
 private:
     void clearAllData(void);
