@@ -16,7 +16,7 @@ SceneModifier::SceneModifier(Qt3DCore::QEntity *rootEntity)
 
     // New code
     Qt3DRender::QMesh * ModelMesh = new Qt3DRender::QMesh();
-    ModelMesh->setSource(QUrl::fromLocalFile("/Users/ajaybh/Desktop/lamp.stl"));
+    //ModelMesh->setSource(QUrl::fromLocalFile("/Users/ajaybh/Desktop/lamp.stl"));
 
     //Model Transform
     Qt3DExtras::QPhongMaterial *ModelMaterial = new Qt3DExtras::QPhongMaterial();

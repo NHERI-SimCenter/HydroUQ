@@ -217,8 +217,22 @@ bool GeoClawOpenFOAM::inputAppDataFromJSON(QJsonObject &jsonObject)
 
 bool GeoClawOpenFOAM::copyFiles(QString &dirName)
 {
-    (void) dirName;
-    return false;
+    //(void) dirName;
+    qDebug() << "The directory to which we are copying is " << dirName << "\n";
+    qDebug() << "The directory to which we are copying is " << dirName << "\n";
+    qDebug() << "The directory to which we are copying is " << dirName << "\n";
+    qDebug() << "The directory to which we are copying is " << dirName << "\n";
+    qDebug() << "The directory to which we are copying is " << dirName << "\n";
+    qDebug() << "The directory to which we are copying is " << dirName << "\n";
+    qDebug() << "The directory to which we are copying is " << dirName << "\n";
+    qDebug() << "The directory to which we are copying is " << dirName << "\n";
+
+    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->copyFiles(dirName))
+    {
+        qDebug() << "Files copied to: " << dirName << "\n";
+    }
+
+    return true;
 }
 
 void GeoClawOpenFOAM::errorMessage(QString message)
