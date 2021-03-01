@@ -1,7 +1,8 @@
 .. _lbl-about:
 
+*********************
 About
-=========
+*********************
 
 Hydro-UQ is an open-source research application available at `Hydro-UQ Github page <https://github.com/NHERI-SimCenter/HydroUQ>`_, and released under a **BSD Clause 2** license. The Hydro-UQ app is used to predict the response of a building and/or community(ies) subjected to water-borne hazard events. The application aims to help researchers to:
 
@@ -13,7 +14,7 @@ Hydro-UQ is an open-source research application available at `Hydro-UQ Github pa
 * Use surrogate models to quantify uncertainity 
 * Use forward UQ to develop lightning quick CFD solutions
 
-.. figure:: images/Hydro_UQ_01.png
+.. figure:: figures/Hydro_UQ_01.png
     :width: 400px
     :align: center
     :alt: alternate text

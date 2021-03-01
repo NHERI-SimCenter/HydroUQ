@@ -62,7 +62,7 @@ Build the User Interface
 Build using the Qt Creator (Recommended)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Start Qt Creator, then open the WE-UQ.pro file located in the WE-UQ directory that was downloaded in the previous steps.
+1. Start Qt Creator, then open the Hydro-UQ.pro file located in the Hydro-UQ directory that was downloaded in the previous steps.
 2. Setup the development kit in Qt Creator. This is usually done by selecting the Qt version, compiler and configuration and following the onscreen dialog.
 3. Build the application and run it in Qt Creator IDE by using the **Run** button. This can be done using the keyboard shortcut ``F5`` to build and start the tool.
 
@@ -72,7 +72,7 @@ Build using the terminal
 1. First, create a build output directory. This can be done in the terminal using the command ``mkdir build``.
 2. Go into the build output directory and run QMake to Configure the project and create make files. This can be done by using the command:
 
-``qmake ../WE-UQ.pro``
+``qmake ../Hydro-UQ.pro``
 
 3. Build the project by using the command ``make`` on Unix like systems. On Windows, you can either use ``nmake`` or ``jom`` to build in parallel. Once built, you can now run the tool executable.
 

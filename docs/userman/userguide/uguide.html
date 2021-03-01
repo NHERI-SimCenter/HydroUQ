@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>4. User Guide &mdash; Hydro-UQ 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.1. UQ: Uncertainty Quantification (Coming soon)" href="UQ.html" />
+    <link rel="prev" title="3. Installation" href="../install.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F2F2F2" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/SimCenter_H2O_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User manual</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgement.html">1. Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">2. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">3. Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="UQ.html">4.1. UQ: Uncertainty Quantification (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GI.html">4.2. GI: General Information (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SIM.html">4.3. SIM: Structural Model (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EVT.html">4.4. EVT: Hydro Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FEM.html">4.5. FEM: Finite Element Method (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EDP.html">4.6. EDP: Demand Parameters (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RV.html">4.7. RV: Random Variables (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RES.html">4.8. RES: Results (Coming soon)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../errors.html">5. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">6. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bestpractices.html">7. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes.html">8. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../featurereq.html">9. Bugs &amp; Feature Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../copyright.html">10. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../techman/hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../techman/fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../techman/UQ/uqengine.html">5. Uncertainity quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../techman/hydrouq/hydrouq.html">6. Hydro-UQ Tool</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/coding.html">4. Coding Style</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Hydro-UQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><span class="section-number">4. </span>User Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="user-guide">
+<span id="lbl-uguide"></span><h1><span class="section-number">4. </span>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
+<p>The Hydro-UQ app, as will be discussed in <a class="reference internal" href="../../devman/softarchi.html#lbl-softarchi"><span class="std std-ref">Software Architecture</span></a>, is an hazard event application. In addition to the hazard event, the workflow also includes other aspects, like UQ and FEM engine. Each of these workflow elements can involve multiple different backend applications. Once the Hydro-UQ app is started, the user is presented with the user interface shown in <a class="reference internal" href="#primarygui"><span class="std std-numref">Fig. 4.1</span></a>. It is in this UI where the user selects the applications to run in a workflow, inputs the necessary parameters for each of these applications, starts the workflow either locally or remotely, and finally views the simulation results. The main window of the UI is divided into several separate areas. Each of these areas are discussed in the upcoming sections.</p>
+<div class="align-center figure" id="id1">
+<span id="primarygui"></span><img alt="../../_images/PrimaryGUI.png" src="../../_images/PrimaryGUI.png" />
+<p class="caption"><span class="caption-number">Fig. 4.1 </span><span class="caption-text">The Hydro-UQ app user interface</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<ol class="arabic simple">
+<li><p>Login Button:</p></li>
+</ol>
+<p>The <strong>Login</strong> button is at the top right of the user interface. Before the user can launch any jobs on DesignSafe, they must first login to DesignSafe using their DesignSafe login and password. Pressing the login button will open up the login window for users to enter this information. Users can register for an account on the <a class="reference external" href="https://www.designsafe-ci.org/account/register">DesignSafe-CI</a> website.</p>
+<ol class="arabic simple" start="2">
+<li><p>Action Buttons:</p></li>
+</ol>
+<p>The action buttons consists of possible action button. This includes:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li><p><strong>RUN</strong>: This button is used to setup and run the jobs locally on the user’s computer. However, presently, the Hydro-UQ application does not facilitate local runs. This will be made available in the coming versions.</p></li>
+<li><p><strong>RUN at DesignSafe</strong>: Process the information, and send to DesignSafe. The simulation will be run there on a supercomputer, and results will be stored in the user’s DesignSafe jobs folder.</p></li>
+<li><p><strong>GET from DesignSafe</strong>: Obtain the list of jobs for the user from DesignSafe and select a job to download from that list.</p></li>
+<li><p><strong>Exit</strong>: Exit the application.</p></li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>Message Area:</p></li>
+</ol>
+<p>The message area is located in the top center of the UI and displays status and error messages for a running background application.</p>
+<ol class="arabic simple" start="4">
+<li><p>Input Panel Selection:</p></li>
+</ol>
+<p>The ribbon on the left side provides the user with a selection of buttons to choose from (e.g. <strong>UQ</strong>, <strong>EVT</strong>, <strong>RV</strong>, <strong>FEM</strong>, <strong>RES</strong>). Selecting any of these buttons will change what is displayed in the central input panel. Each panel, with exception of <strong>RV</strong> panel,  will present the user with an option for which application to choose for that part of the workflow, and will then present the users for inputs for that application. Of particular interest here is the <strong>EVT</strong> where all flow-parameters are assigned. At present, the other inputs have not been integrated into the Hydro-UQ application. More information will be provided as and when the other inputs are integrated.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="UQ.html">4.1. UQ: Uncertainty Quantification (Coming soon)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GI.html">4.2. GI: General Information (Coming soon)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SIM.html">4.3. SIM: Structural Model (Coming soon)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EVT.html">4.4. EVT: Hydro Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FEM.html">4.5. FEM: Finite Element Method (Coming soon)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EDP.html">4.6. EDP: Demand Parameters (Coming soon)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RV.html">4.7. RV: Random Variables (Coming soon)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RES.html">4.8. RES: Results (Coming soon)</a></li>
+</ul>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Event Parameter Panel:</p></li>
+</ol>
+<p>The input panel is the large central area of the UI where the user provides input for the application chosen and where they can view the results. For example, if the user had selected <strong>RV</strong> in the input panel selection, it is in this panel that the user would provide details on the distributions associated with each random variable. In the following sections each of the panels that is presented to the user when the buttons in the input panel selection are reviewed:</p>
+<ol class="arabic simple" start="6">
+<li><p>Graphics Window:</p></li>
+</ol>
+<p>The graphics window will be added into the upcoming versions. This is meant to show various geometric entities related to the Hydro-event.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020-2025, SimCenter.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>
