@@ -483,6 +483,8 @@ def main():
     flog.write('%d.%d (%s): HydroUQ dictionary decomposeParDict created.\n' % (logID,logsubID,datetime.datetime.now()))
     # fvSolution, blockMesh, snappyHexMesh
     # setFields (initial), topoSetDict (buildings)
+    # Importing different meshes
+    
 
     # CONSTANT DIRECTORY
     # Write the transportProperties file

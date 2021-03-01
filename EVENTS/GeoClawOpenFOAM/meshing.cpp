@@ -51,8 +51,8 @@ void meshing::on_Cmb_MeshType_currentIndexChanged(int index)
         ui->Btn_UploadMesh->hide();
         ui->Lbl_MeshGen->hide();
         ui->Cmb_MeshGen->hide();
-        ui->Lbl_MeshDict->hide();
-        ui->Cmb_MeshDict->hide();
+        //ui->cBoxblockMesh->hide();
+        //ui->cBoxsnappyHex->hide();
         ui->Lbl_FineH2->show();
         ui->HSl_MeshSize->show();
         ui->Lbl_CoarseMesh->show();
@@ -67,8 +67,8 @@ void meshing::on_Cmb_MeshType_currentIndexChanged(int index)
         ui->Btn_UploadMesh->show();
         ui->Lbl_MeshGen->show();
         ui->Cmb_MeshGen->show();
-        ui->Lbl_MeshDict->show();
-        ui->Cmb_MeshDict->show();
+        //ui->cBoxblockMesh->hide();
+        //ui->cBoxsnappyHex->hide();
         ui->Lbl_FineH2->hide();
         ui->HSl_MeshSize->hide();
         ui->Lbl_CoarseMesh->hide();
@@ -85,16 +85,14 @@ void meshing::on_Cmb_MeshType_currentIndexChanged(int index)
         ui->Btn_UploadMesh->setText("\nUpload mesh files\n");
         ui->Lbl_MeshGen->show();
         ui->Cmb_MeshGen->show();
-        ui->Lbl_MeshDict->hide();
-        ui->Cmb_MeshDict->hide();
     }
     else if(index == 2)
     {
         ui->Btn_UploadMesh->setText("\nUpload mesh dictionary files\n");
         ui->Lbl_MeshGen->hide();
         ui->Cmb_MeshGen->hide();
-        ui->Lbl_MeshDict->show();
-        ui->Cmb_MeshDict->show();
+        //ui->cBoxblockMesh->show();
+        //ui->cBoxsnappyHex->show();
     }
 }
 
@@ -110,13 +108,13 @@ bool meshing::getData(QMap<QString, QString>& map,int type)
     int index = ui->Cmb_MeshType->currentIndex();
 
     // Insert mesh type
-    map.insert("Mesh type",QString::number(ui->Cmb_MeshType->currentIndex()));
+    map.insert("MeshType",QString::number(ui->Cmb_MeshType->currentIndex()));
 
     // If internal meshing
-    if(index == 0)
+    if(index == 0) // Our own meshing
     {
         // Fineness of mesh to be generated
-        map.insert("Mesh size",QString::number(ui->HSl_MeshSize->value()));
+        map.insert("MeshSize",QString::number(ui->HSl_MeshSize->value()));
         // Write data from the table
         if(ui->Tbl_Regions->rowCount() > 0)
         {
@@ -129,25 +127,31 @@ bool meshing::getData(QMap<QString, QString>& map,int type)
             }
         }
     }
-    else if(index == 2)
+    else if(index == 1) // Mesh from other software
     {
+        //Mesh generating software
+        map.insert("MeshSoftware",QString::number(ui->Cmb_MeshGen->currentIndex()));
+        // Write only the first mesh file
+        map.insert("MeshFile",meshfilenames[0]);
+        // Number of mesh files
+        //map.insert("NumMeshfiles",QString::number(meshfilenames.size()));
         // Write the mesh file names
-        for (int ii=0; ii<meshfilenames.size(); ++ii)
-        {
-            map.insert("Mesh files"+QString::number(ii),meshfilenames[ii]);
-        }
-        //Mesh generating software
-        map.insert("Meshing software",QString::number(ui->Cmb_MeshGen->currentIndex()));
+        //for (int ii=0; ii<meshfilenames.size(); ++ii)
+        //{
+        //    map.insert("Meshfiles"+QString::number(ii),meshfilenames[ii]);
+        //}
     }
-    else if(index == 3)
+    else if(index == 2) // Get the mesh dict
     {
-        // Write the mesh dictionaries
-        for (int ii=0; ii<meshfilenames.size(); ++ii)
-        {
-            map.insert("Mesh dictionaries"+QString::number(ii),meshfilenames[ii]);
-        }
-        //Mesh generating software
-        map.insert("Solver",QString::number(ui->Cmb_MeshDict->currentIndex()));
+//        // Number of mesh files
+//        map.insert("NumMeshDicts",QString::number(meshfilenames.size()));
+//        // Write the mesh dictionaries
+//        for (int ii=0; ii<meshfilenames.size(); ++ii)
+//        {
+//            map.insert("MeshDict"+QString::number(ii),meshfilenames[ii]);
+//        }
+//        //Mesh generating software
+//        //map.insert("Solver",QString::number(ui->Cmb_MeshDict->currentIndex()));
     }
 
 

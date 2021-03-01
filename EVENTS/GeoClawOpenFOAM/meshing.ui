@@ -129,76 +129,12 @@
      </item>
      <item>
       <property name="text">
-       <string>File STAR-CCM</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Mesh STAR-CDPROSTAR</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Mesh STAR-CD SAMMA</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
        <string>GAMBIT mesh .neu</string>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Gmsh file .msh</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Netgen mesh</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Tetgen .ele, .node and .face meshes</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="Lbl_MeshDict">
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Solver for mesh dictionaries&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QComboBox" name="Cmb_MeshDict">
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Select type of mesh: in-built mesing / upload mesh files</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>10000</number>
-     </property>
-     <item>
-      <property name="text">
-       <string>OpenFOAM</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>OlaFlow</string>
       </property>
      </item>
     </widget>
