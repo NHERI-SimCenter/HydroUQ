@@ -279,3 +279,19 @@ void bathymetry::on_Btn_RemSeg_clicked()
 {
 
 }
+
+//*********************************************************************************
+// Copyfiles
+//*********************************************************************************
+bool bathymetry::copyFiles(QString dirName)
+{
+    qDebug() << bathfilenames;
+    for (int ii=0; ii<bathfilenames.size(); ++ii)
+    {
+        QFile::copy(bathfilenames[ii], dirName);
+    }
+
+
+    //(void) dirName;
+    return true;
+}

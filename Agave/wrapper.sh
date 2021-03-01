@@ -67,6 +67,68 @@ if [[ $EVENTAPP == "GeoClawOpenFOAM" ]]; then
 	echo "olafoam paths loaded"
 	echo "Testing successfully complete"
 
+	# Meshing with OpenFOAM (or conversion)
+	MESHTYPE=$(jq -r .Events[0].MeshType $BIM)
+	if [[ $MESHTYPE == "0" ]]; then
+		# Log in the event
+		echo "Hydro-UQ mesher is being used"
+		# Run blockmesh and snappyHexMesh
+		# This is default for hydromesher
+		blockMesh > blockMesh.log
+		snappyHexMesh > snappyHexMesh.log
+		# Log in the event
+		echo "blockMesh and snappyHexMesh complete"
+	elif [[ $MESHTYPE == "1" ]]; then
+		# Log in the event
+		echo "Mesh being imported from other software"
+		# Get which software
+		MESHSOFT=$(jq -r .Events[0].MeshSoftware $BIM)
+		# Get the file name
+		MESHSOFTFILE=$(jq -r .Events[0].MeshFile $BIM)
+		# Create the mesh files using the mesh
+		# that have been imported from other softwares
+		if [[ $MESHSOFT == "0" ]]; then
+			fluentMeshToFoam $MESHSOFTFILE > fluentMeshToFoam.log
+		elif [[ $MESHSOFT == "1" ]]; then
+			ideasToFoam $MESHSOFTFILE > ideasToFoam.log
+		elif [[ $MESHSOFT == "2" ]]; then
+			cfx4ToFoam $MESHSOFTFILE > cfx4ToFoam.log
+		elif [[ $MESHSOFT == "3" ]]; then
+			gambitToFoam $MESHSOFTFILE > gambitToFoam.log
+		elif [[ $MESHSOFT == "4" ]]; then
+			gmshToFoam $MESHSOFTFILE > gmshToFoam.log
+		fi
+		# Log in the event
+		echo "Mesh import complete"
+	elif [[ $MESHTYPE == "2" ]]; then
+		# Log in the event
+		echo "Mesh being read from dictionaries"
+		# Check what dictionary files are uploaded
+		blockmeshfile=blockMeshDict
+		snappymeshfile=snappyHexMeshDict
+		if [[ -f "$blockmeshfile" ]]; then
+			# Copy the files to system folder
+			mv blockMeshDict system/blockMeshDict
+			# Run the command
+			blockMesh > blockMesh.log
+			# Log in the event
+			echo "blockMesh complete"
+			# Check if snappy needed
+			if [[ -f "$snappymeshfile" ]]; then
+				# Copy the files to system folder
+				mv snappyHexMeshDict system/snappyHexMeshDict
+				# Run the command
+				snappyHexMesh > snappyHexMesh.log
+				# Log in the event
+				echo "snappyHexMesh complete"
+			fi
+		else
+			# Provide an error message
+			echo "Error: Could not find blockMeshDict"
+		fi
+	fi
+
+
 elif [[ $EVENTAPP == "Preprocess" ]]; then
 	echo "Event is pre-processing"
 elif [[ $EVENTAPP == "Postprocess" ]]; then

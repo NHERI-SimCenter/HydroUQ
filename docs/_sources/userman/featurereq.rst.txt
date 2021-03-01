@@ -1,0 +1,7 @@
+.. _lbl-featurereq:
+
+***************************
+Bugs & Feature Requests
+***************************
+
+Coming soon.

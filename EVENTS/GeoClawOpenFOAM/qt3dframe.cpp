@@ -44,7 +44,7 @@ QT3DFrame::QT3DFrame(QWidget *parent)
 void QT3DFrame::initUI()
 {
     Qt3DExtras::Qt3DWindow *view = new Qt3DExtras::Qt3DWindow();
-    view->defaultFrameGraph()->setClearColor(QColor(QRgb(0x4d4d4f)));
+    view->defaultFrameGraph()->setClearColor(QColor(QRgb(0xffffff)));
     QWidget *container = QWidget::createWindowContainer(view);
     QSize screenSize = view->screen()->size();
     container->setMinimumSize(QSize(200, 100));
