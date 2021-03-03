@@ -33,8 +33,8 @@ This document covers the features and capabilities of the ``version 1.0`` of the
    techman/fvm/fvm
    techman/swsolver/swsolver
    techman/cfdsolver/cfdsolver
+   techman/swcfdcoupling/swcfdcoupling
    techman/UQ/uqengine
-   techman/hydrouq/hydrouq
 
 .. toctree::
    :maxdepth: 1
