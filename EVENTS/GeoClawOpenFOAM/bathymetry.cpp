@@ -1,5 +1,6 @@
 #include "bathymetry.h"
 #include "ui_bathymetry.h"
+#include <QFileInfo>
 
 //*********************************************************************************
 // Bathymetry settings
@@ -277,7 +278,7 @@ void bathymetry::on_Btn_AddSeg_clicked()
 //*********************************************************************************
 void bathymetry::on_Btn_RemSeg_clicked()
 {
-
+    ui->Tbl_Segments->removeRow(ui->Tbl_Segments->currentRow());
 }
 
 //*********************************************************************************
@@ -285,10 +286,18 @@ void bathymetry::on_Btn_RemSeg_clicked()
 //*********************************************************************************
 bool bathymetry::copyFiles(QString dirName)
 {
+
+
     qDebug() << bathfilenames;
+
     for (int ii=0; ii<bathfilenames.size(); ++ii)
     {
-        QFile::copy(bathfilenames[ii], dirName);
+        QFile fileToCopy(bathfilenames[ii]);
+        //QFile::copy(bathfilenames[ii], dirName);
+        QFileInfo fileInfo(bathfilenames[ii]);
+        QString theFile = fileInfo.fileName();
+        //QString thePath = fileInfo.path();
+        fileToCopy.copy(dirName + QDir::separator() + theFile);
     }
 
 

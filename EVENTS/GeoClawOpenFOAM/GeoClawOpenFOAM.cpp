@@ -1,6 +1,5 @@
 #include "GeoClawOpenFOAM.h"
 #include "ui_GeoClawOpenFOAM.h"
-
 #include "AgaveCurl.h"
 #include <QDir>
 #include <QFileInfo>
@@ -60,12 +59,13 @@ void GeoClawOpenFOAM::initialize()
     simtype = 0;
 }
 
-
+//*********************************************************************************
+// Output to JSON
+//*********************************************************************************
 bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 {
-  jsonObject["EventClassification"]="Hydro";
-  jsonObject["Application"] = "GeoClawOpenFOAM";
-
+    jsonObject["EventClassification"]="Hydro";
+    jsonObject["Application"] = "GeoClawOpenFOAM";
 
     // Get the simulation type
     refresh_projsettings();
@@ -194,39 +194,41 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
   return true;
 }
 
+//*********************************************************************************
+// Use JSON file to update all elements in the GUI
+//*********************************************************************************
 bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 {
     (void) jsonObject;
     return false;
 }
 
+//*********************************************************************************
+// Output app Data to JSON file
+//*********************************************************************************
 bool GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &jsonObject)
 {
-    jsonObject["EventClassification"]="Hydro";
-    jsonObject["Application"] = "GeoClawOpenFOAM";
+    jsonObject["EventClassification"]="Hydro"; // Event is Hydro
+    jsonObject["Application"] = "GeoClawOpenFOAM"; // Event inHydro
     QJsonObject dataObj;
-    jsonObject["ApplicationData"] = dataObj;
+    jsonObject["ApplicationData"] = dataObj; // All application data
     return true;  
 }
 
+//*********************************************************************************
+// Read app data from JSON file
+//*********************************************************************************
 bool GeoClawOpenFOAM::inputAppDataFromJSON(QJsonObject &jsonObject)
 {
     (void) jsonObject;
     return true;
 }
 
+//*********************************************************************************
+// Copy files
+//*********************************************************************************
 bool GeoClawOpenFOAM::copyFiles(QString &dirName)
 {
-    //(void) dirName;
-    qDebug() << "The directory to which we are copying is " << dirName << "\n";
-    qDebug() << "The directory to which we are copying is " << dirName << "\n";
-    qDebug() << "The directory to which we are copying is " << dirName << "\n";
-    qDebug() << "The directory to which we are copying is " << dirName << "\n";
-    qDebug() << "The directory to which we are copying is " << dirName << "\n";
-    qDebug() << "The directory to which we are copying is " << dirName << "\n";
-    qDebug() << "The directory to which we are copying is " << dirName << "\n";
-    qDebug() << "The directory to which we are copying is " << dirName << "\n";
-
     if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->copyFiles(dirName))
     {
         qDebug() << "Files copied to: " << dirName << "\n";
@@ -235,6 +237,9 @@ bool GeoClawOpenFOAM::copyFiles(QString &dirName)
     return true;
 }
 
+//*********************************************************************************
+// Send error message
+//*********************************************************************************
 void GeoClawOpenFOAM::errorMessage(QString message)
 {
     emit sendErrorMessage(message);

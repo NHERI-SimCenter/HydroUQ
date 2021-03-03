@@ -39,7 +39,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4.5. FEM: Finite Element Method (Coming soon)" href="FEM.html" />
+    <link rel="next" title="Project settings" href="Project.html" />
     <link rel="prev" title="4.3. SIM: Structural Model (Coming soon)" href="SIM.html" /> 
 </head>
 
@@ -95,9 +95,13 @@
 <li class="toctree-l2"><a class="reference internal" href="GI.html">4.2. GI: General Information (Coming soon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SIM.html">4.3. SIM: Structural Model (Coming soon)</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. EVT: Hydro Events</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#project-settings">Project settings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#meshing">Meshing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#materials">Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Project.html">Project settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Geometry.html">Geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Meshing.html">Meshing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Materials.html">Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Initial.html">Initial conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Boundary.html">Boundary conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Solver.html">Solver</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="FEM.html">4.5. FEM: Finite Element Method (Coming soon)</a></li>
@@ -119,8 +123,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../techman/fvm/fvm.html">2. Finite Volume Method</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../techman/UQ/uqengine.html">5. Uncertainity quantification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../techman/hydrouq/hydrouq.html">6. Hydro-UQ Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../techman/swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../techman/UQ/uqengine.html">6. Uncertainity quantification</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Researcher manual</span></p>
 <ul>
@@ -204,16 +208,25 @@
             
   <div class="section" id="evt-hydro-events">
 <span id="lbl-evthydro"></span><h1><span class="section-number">4.4. </span>EVT: Hydro Events<a class="headerlink" href="#evt-hydro-events" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="project-settings">
-<h2>Project settings<a class="headerlink" href="#project-settings" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Hydro</span> <span class="pre">EVT</span></code> is used to setup the flow parameters related to the water-borne hazard event. This can either be a coupling between the shallow-water and CFD solver or using a CFD solver alone. The steps of the setup process for the event has been kept nearly similar to that often used in Finite Element Method to make it easier for researchers from structural engineering background to easily use the app. This includes <code class="docutils literal notranslate"><span class="pre">project</span> <span class="pre">settings</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">geometry</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">meshing</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">materials</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">initial</span> <span class="pre">conditions</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">boundary</span> <span class="pre">conditions</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">solver</span> <span class="pre">settings</span></code>. These steps are available through a tree-structure as shown in <a class="reference internal" href="#evtsettings"><span class="std std-numref">Fig. 4.4.1</span></a>.</p>
+<div class="align-center figure" id="id1">
+<span id="evtsettings"></span><img alt="../../_images/HydroSteps.png" src="../../_images/HydroSteps.png" />
+<p class="caption"><span class="caption-number">Fig. 4.4.1 </span><span class="caption-text">The steps involved in setup of the <code class="docutils literal notranslate"><span class="pre">Hydro</span></code> event</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-<div class="section" id="meshing">
-<h2>Meshing<a class="headerlink" href="#meshing" title="Permalink to this headline">¶</a></h2>
+<p>Each of the above steps in the setup process differs depending on the type of simulation considered. They will be outlined in detail below:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Project.html">Project settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Geometry.html">Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Meshing.html">Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Materials.html">Materials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Initial.html">Initial conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Boundary.html">Boundary conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Solver.html">Solver</a></li>
+</ul>
 </div>
-<div class="section" id="materials">
-<h2>Materials<a class="headerlink" href="#materials" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
+<p>A walk-through video of the <code class="docutils literal notranslate"><span class="pre">Hydro</span> <span class="pre">EVT</span></code> is given below</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/MjYCiFtdCdw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 
            </div>

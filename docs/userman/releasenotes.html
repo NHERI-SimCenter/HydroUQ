@@ -94,7 +94,18 @@
 <li class="toctree-l1"><a class="reference internal" href="errors.html">5. Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples.html">6. Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bestpractices.html">7. Best Practices</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">8. Release Notes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">8. Release Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-0">8.1. Version 1.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-1-0-1">Version 1.0.1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-1-0-2">Version 1.0.2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-1-0-3">Version 1.0.3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-1-0-4">Version 1.0.4</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-1-0-5">Version 1.0.5</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="featurereq.html">9. Bugs &amp; Feature Requests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="copyright.html">10. Copyright and License</a></li>
 </ul>
@@ -104,8 +115,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../techman/fvm/fvm.html">2. Finite Volume Method</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../techman/UQ/uqengine.html">5. Uncertainity quantification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../techman/hydrouq/hydrouq.html">6. Hydro-UQ Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../techman/swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../techman/UQ/uqengine.html">6. Uncertainity quantification</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Researcher manual</span></p>
 <ul>
@@ -187,7 +198,110 @@
             
   <div class="section" id="release-notes">
 <span id="lbl-release"></span><h1><span class="section-number">8. </span>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
-<p>Coming soon.</p>
+<div class="section" id="version-1-0">
+<h2><span class="section-number">8.1. </span>Version 1.0<a class="headerlink" href="#version-1-0" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="version-1-0-0">
+<h3>Version 1.0.0<a class="headerlink" href="#version-1-0-0" title="Permalink to this headline">¶</a></h3>
+<p><strong>Release date:</strong> Mar 31st, 2021</p>
+<ol class="arabic simple">
+<li><p>Supports run on DesignSafe only. Local run on user’s desktop is not supported.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Hydro-UQ</span> <span class="pre">v1.0.0</span></code> currently only supports SI (m, kg, s, K) units.</p></li>
+<li><p>Supports two-phase isothermal flows only. Water and air are considered as the two primary phases. However, this can be modified in the material properties to accommodate any other alternative two-phases instead.</p></li>
+<li><dl class="simple">
+<dt><strong>Simulation types</strong>:</dt><dd><ol class="loweralpha simple">
+<li><p>CFD to resolve SW (Using SW results), CFD using bathymetry data, CFD of wave flume are supported.</p></li>
+<li><p>CFD to resolve SW (Using SimCenter library), CFD with STL geometry, with maps and surrogate solver are currently not supported in <code class="docutils literal notranslate"><span class="pre">v1.0.0</span></code></p></li>
+<li><p>For simulation type with SW-CFD coupling, <code class="docutils literal notranslate"><span class="pre">v1.0.0</span></code> considers one point on the interface. However, more flexibility will be made available in the future versions.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Geometry</strong>:</dt><dd><ol class="loweralpha simple">
+<li><p>Geometry can be imported as Bathymetry files (GeoClaw format - type 1 / 2 / 3). Wave flume geometry is generated using the in-build Hydro-Flume digital twin tool. Import of geometry in STL file format is not supported in <code class="docutils literal notranslate"><span class="pre">v1.0.0</span></code></p></li>
+<li><p>Shallow-water to CFD interface can be imported as a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file only.</p></li>
+<li><p>Buildings of rectangular / square shapes are supported in <code class="docutils literal notranslate"><span class="pre">v1.0.0</span></code>. These can be provided in the table or can be generated parametrically. Importing buildings as a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file is not currently supported in <code class="docutils literal notranslate"><span class="pre">v1.0.0</span></code> but will be added to upcoming versions. More complicated shapes will be added in the upcoming versions.</p></li>
+<li><p>Floating bodies are not supported in <code class="docutils literal notranslate"><span class="pre">v1.0.0</span></code>. Support will be added in upcoming versions.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Meshing</strong>:</dt><dd><ol class="loweralpha simple">
+<li><p>Supports blockMesh and snappyHexMesh for internal meshing</p></li>
+<li><p>Suports import for the following mesh formats: Ansys Fluent (.msh), Ansys I-DEAS (.ans), CFX mesh (.geo), GAMBIT mesh (.neu), Gmsh mesh (.msh)</p></li>
+<li><p>Supports import of OpenFOAM / OlaFlow mesh dictionaries, namely the blockMeshDict and snappyHexMeshDict</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Materials</strong>:</dt><dd><ol class="loweralpha simple">
+<li><p>Supports Newtonian materials only.</p></li>
+<li><p>Supports kinematic viscosity and density of the two phases in addition to the surface-tension between the fluids.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Initial conditions</strong>:</dt><dd><ol class="loweralpha simple">
+<li><p>For CFD simulations that resolve the shallow-water solutions, the initial conditions are derived from the shallow-water solutions.</p></li>
+<li><p>For all other simulation types, the user-specified initial conditions include velocity, pressure and phase.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Boundary conditions</strong>:</dt><dd><ol class="loweralpha simple">
+<li><p>The boundary conditions can be selected based using standard or mesh-based. Here standard patches include (entry / exit / inlet / outlet / left / right. Mesh-based is based on patch names provided in the STL / mesh-dictionary files used to define the geometry / mesh.</p></li>
+<li><p>Standard velocity</p></li>
+<li><p>Wave maker input conditions are supported for input velocity</p></li>
+<li><p>Outlet velocity conditions supported are</p></li>
+<li><p><strong>TO BE COMPLETED</strong></p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Domain decomposition</strong>:</dt><dd><ol class="loweralpha simple">
+<li><p>Allows simple and hierarchial decomposition techniques from OpenFOAM.</p></li>
+<li><p>Can set start and end times for simulation</p></li>
+<li><p>Can set time interval and the write intervals</p></li>
+<li><p>Restarting facility is supported</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Turbulence</strong>:</dt><dd><ol class="loweralpha simple">
+<li><p>Presently only RANS is supported for turbulence modeling. LES will be added to the upcoming versions.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+<div class="section" id="version-1-0-1">
+<h3>Version 1.0.1<a class="headerlink" href="#version-1-0-1" title="Permalink to this headline">¶</a></h3>
+<p><strong>Release date:</strong> Apr 30th, 2021</p>
+</div>
+<div class="section" id="version-1-0-2">
+<h3>Version 1.0.2<a class="headerlink" href="#version-1-0-2" title="Permalink to this headline">¶</a></h3>
+<p><strong>Release date:</strong> May 31st, 2021</p>
+</div>
+<div class="section" id="version-1-0-3">
+<h3>Version 1.0.3<a class="headerlink" href="#version-1-0-3" title="Permalink to this headline">¶</a></h3>
+<p><strong>Release date:</strong> Jun 30th, 2021</p>
+</div>
+<div class="section" id="version-1-0-4">
+<h3>Version 1.0.4<a class="headerlink" href="#version-1-0-4" title="Permalink to this headline">¶</a></h3>
+<p><strong>Release date:</strong> Jul 31st, 2021</p>
+</div>
+<div class="section" id="version-1-0-5">
+<h3>Version 1.0.5<a class="headerlink" href="#version-1-0-5" title="Permalink to this headline">¶</a></h3>
+<p><strong>Release date:</strong> Aug 31st, 2021</p>
+</div>
+</div>
 </div>
 
 

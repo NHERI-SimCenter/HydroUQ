@@ -189,5 +189,5 @@ void meshing::on_Btn_AddRegion_clicked()
 //*********************************************************************************
 void meshing::on_Btn_RemRegion_clicked()
 {
-
+    ui->Tbl_Regions->removeRow(ui->Tbl_Regions->currentRow());
 }
