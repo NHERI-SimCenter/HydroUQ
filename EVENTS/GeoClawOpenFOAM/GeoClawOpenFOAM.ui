@@ -152,6 +152,11 @@
           <string>Solver</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Post-processing</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>

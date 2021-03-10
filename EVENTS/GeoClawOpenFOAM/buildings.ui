@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>357</width>
+    <width>362</width>
     <height>923</height>
    </rect>
   </property>
@@ -51,6 +51,30 @@
      <property name="text">
       <string>Use parametric building settings</string>
      </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="CmB_BuildData">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <item>
+      <property name="text">
+       <string>Manually add building data</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Parameterized building data</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Extract building data from LIDAR</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>

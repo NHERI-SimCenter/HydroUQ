@@ -23,7 +23,8 @@ SOURCES += \
     $$PWD/EVENTS/GeoClawOpenFOAM/scenemodifier.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/solver.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/swcfdint.cpp \
-    $$PWD/EVENTS/GeoClawOpenFOAM/swsolvers/geoclaw/geoclaw.cpp
+    $$PWD/EVENTS/GeoClawOpenFOAM/swsolvers/geoclaw/geoclaw.cpp \
+    $$PWD/EVENTS/GeoClawOpenFOAM/postprocess.cpp
 
 HEADERS += \
     $$PWD/EVENTS/HydroEventSelection.h \
@@ -46,6 +47,7 @@ HEADERS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/swcfdint.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/swsolvers/geoclaw/geoclaw.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/cfdsolvers/openfoam/openfoam.h \
+    $$PWD/EVENTS/GeoClawOpenFOAM/postprocess.h \
     $$PWD/EVENTS/dependencies/Eigen/Cholesky \
     $$PWD/EVENTS/dependencies/Eigen/CholmodSupport \
     $$PWD/EVENTS/dependencies/Eigen/Core \
@@ -361,7 +363,8 @@ FORMS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/meshing.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/projectsettings.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/solver.ui \
-    $$PWD/EVENTS/GeoClawOpenFOAM/swcfdint.ui
+    $$PWD/EVENTS/GeoClawOpenFOAM/swcfdint.ui \
+    $$PWD/EVENTS/GeoClawOpenFOAM/postprocess.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

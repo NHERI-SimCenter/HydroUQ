@@ -44,27 +44,68 @@ void bathymetry::hideshowelems(int type)
         ui->Lbl_H1->setText("<b>WAVE FLUME SETTINGS</b>");
 
         // Show wave flume
-        ui->Lbl_SideViewH2->show();
-        ui->Lbl_SideView->show();
-        ui->Lbl_Depth->show();
-        ui->DSpBx_Depth->show();
-        ui->Lbl_TopViewH2->show();
-        ui->Lbl_TopView->show();
-        ui->Lbl_Breadth->show();
-        ui->DSpBx_Breadth->show();
-        ui->Lbl_Segments->show();
-        ui->Tbl_Segments->show();
-        ui->Btn_AddSeg->show();
-        ui->Btn_RemSeg->show();
+        ui->CmB_FlumeGeoType->show();
+        if(ui->CmB_FlumeGeoType->currentIndex() == 0) // Provide coordinates
+        {
+            ui->Btn_UploadFiles->hide();
+            ui->Lbl_SideViewH2->show();
+            ui->Lbl_SideView->show();
+            ui->Lbl_Depth->show();
+            ui->DSpBx_Depth->show();
+            ui->Lbl_TopViewH2->show();
+            ui->Lbl_TopView->show();
+            ui->Lbl_Breadth->show();
+            ui->DSpBx_Breadth->show();
+            ui->Lbl_Segments->show();
+            ui->Tbl_Segments->show();
+            ui->Btn_AddSeg->show();
+            ui->Btn_RemSeg->show();
+        }
+        else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // Upload LIDAR data
+        {
+            ui->Btn_UploadFiles->show();
+            ui->Btn_UploadFiles->setText("Upload LIDAR scan");
+            ui->Lbl_SideViewH2->show();
+            ui->Lbl_SideView->show();
+            ui->Lbl_Depth->show();
+            ui->DSpBx_Depth->show();
+            ui->Lbl_TopViewH2->show();
+            ui->Lbl_TopView->show();
+            ui->Lbl_Breadth->show();
+            ui->DSpBx_Breadth->show();
+            ui->Lbl_Segments->show();
+            ui->Tbl_Segments->show();
+            ui->Btn_AddSeg->show();
+            ui->Btn_RemSeg->show();
+        }
+        else if(ui->CmB_FlumeGeoType->currentIndex() == 2) // Standard OSU flume
+        {
+            ui->Btn_UploadFiles->hide();
+            ui->Lbl_SideViewH2->hide();
+            ui->Lbl_SideView->hide();
+            ui->Lbl_Depth->hide();
+            ui->DSpBx_Depth->hide();
+            ui->Lbl_TopViewH2->hide();
+            ui->Lbl_TopView->hide();
+            ui->Lbl_Breadth->hide();
+            ui->DSpBx_Breadth->hide();
+            ui->Lbl_Segments->hide();
+            ui->Tbl_Segments->hide();
+            ui->Btn_AddSeg->hide();
+            ui->Btn_RemSeg->hide();
+        }
 
         // Hide all other elements
         ui->Lbl_SelFiles->hide();
-        ui->Btn_UploadFiles->hide();
         ui->Btn_UploadSolution->hide();
         ui->CmB_FileType->hide();
         ui->CmB_SolFormat->hide();
         ui->CmB_Library->hide();
         ui->Lbl_Notice->hide();
+        ui->ChkBx_DefSett->hide();
+        ui->DSpBx_MinTime->hide();
+        ui->DSpBx_MaxTime->hide();
+        ui->Lbl_Timesteps->hide();
     }
     else
     {
@@ -130,6 +171,7 @@ void bathymetry::hideshowelems(int type)
     {
         // Set the heading
         ui->Lbl_H1->setText("<b>BATHYMETRY AND SW SOLUTIONS</b>");
+        ui->Btn_UploadFiles->setText("Select bathymetry files");
 
         // Show bathy items
         ui->Btn_UploadFiles->show();
@@ -144,6 +186,7 @@ void bathymetry::hideshowelems(int type)
     {
         // Set the heading
         ui->Lbl_H1->setText("<b>BATHYMETRY AND SW LIBRRAY</b>");
+        ui->Btn_UploadFiles->setText("Select bathymetry files");
 
         // Show library items
         ui->CmB_Library->show();
@@ -158,6 +201,7 @@ void bathymetry::hideshowelems(int type)
     {
         // Set the heading
         ui->Lbl_H1->setText("<b>BATHYMETRY FILE SETTINGS</b>");
+        ui->Btn_UploadFiles->setText("Select bathymetry files");
 
         // Show bathy items
         ui->Btn_UploadFiles->show();
@@ -303,4 +347,73 @@ bool bathymetry::copyFiles(QString dirName)
 
     //(void) dirName;
     return true;
+}
+
+//*********************************************************************************
+// Index of flume geometry box changed
+//*********************************************************************************
+void bathymetry::on_CmB_FlumeGeoType_currentIndexChanged(int index)
+{
+    if(ui->CmB_FlumeGeoType->currentIndex() == 0) // Provide coordinates
+    {
+        ui->Btn_UploadFiles->hide();
+        ui->Lbl_SideViewH2->show();
+        ui->Lbl_SideView->show();
+        ui->Lbl_Depth->show();
+        ui->DSpBx_Depth->show();
+        ui->Lbl_TopViewH2->show();
+        ui->Lbl_TopView->show();
+        ui->Lbl_Breadth->show();
+        ui->DSpBx_Breadth->show();
+        ui->Lbl_Segments->show();
+        ui->Tbl_Segments->show();
+        ui->Btn_AddSeg->show();
+        ui->Btn_RemSeg->show();
+    }
+    else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // Upload LIDAR data
+    {
+        ui->Btn_UploadFiles->show();
+        ui->Btn_UploadFiles->setText("\nUpload LIDAR scan\n");
+        ui->Lbl_SideViewH2->hide();
+        ui->Lbl_SideView->hide();
+        ui->Lbl_Depth->hide();
+        ui->DSpBx_Depth->hide();
+        ui->Lbl_TopViewH2->hide();
+        ui->Lbl_TopView->hide();
+        ui->Lbl_Breadth->hide();
+        ui->DSpBx_Breadth->hide();
+        ui->Lbl_Segments->hide();
+        ui->Tbl_Segments->hide();
+        ui->Btn_AddSeg->hide();
+        ui->Btn_RemSeg->hide();
+    }
+    else if(ui->CmB_FlumeGeoType->currentIndex() == 2) // Standard OSU flume
+    {
+        ui->Btn_UploadFiles->hide();
+        ui->Lbl_SideViewH2->hide();
+        ui->Lbl_SideView->hide();
+        ui->Lbl_Depth->hide();
+        ui->DSpBx_Depth->hide();
+        ui->Lbl_TopViewH2->hide();
+        ui->Lbl_TopView->hide();
+        ui->Lbl_Breadth->hide();
+        ui->DSpBx_Breadth->hide();
+        ui->Lbl_Segments->hide();
+        ui->Tbl_Segments->hide();
+        ui->Btn_AddSeg->hide();
+        ui->Btn_RemSeg->hide();
+    }
+
+    // Hide all other elements
+    ui->Lbl_SelFiles->hide();
+    ui->Btn_UploadSolution->hide();
+    ui->CmB_FileType->hide();
+    ui->CmB_SolFormat->hide();
+    ui->CmB_Library->hide();
+    ui->Lbl_Notice->hide();
+    ui->ChkBx_DefSett->hide();
+    ui->DSpBx_MinTime->hide();
+    ui->DSpBx_MaxTime->hide();
+    ui->Lbl_Timesteps->hide();
+
 }

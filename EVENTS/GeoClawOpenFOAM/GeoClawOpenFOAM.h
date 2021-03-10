@@ -14,6 +14,7 @@
 #include "boundary.h"
 #include "solver.h"
 #include "cfdsolvers/openfoam/openfoam.h"
+#include "postprocess.h"
 
 #include <SimCenterAppWidget.h>
 #include <QDebug>

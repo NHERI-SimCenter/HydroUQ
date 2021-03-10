@@ -29,6 +29,9 @@ void buildings::refreshData(int type)
 {
     // Initialize to show / hide elements
     hideshowelems(type);
+    // Clean this up
+    ui->ChB_Parametric->hide();
+
 }
 
 //*********************************************************************************
@@ -36,6 +39,8 @@ void buildings::refreshData(int type)
 //*********************************************************************************
 void buildings::hideshowelems(int type)
 {
+    // Clean this up
+    ui->ChB_Parametric->hide();
 
     if( ((type == 1) || (type == 2)) ||
             ((type == 3) || (type == 4)) )
@@ -132,7 +137,36 @@ void buildings::on_Btn_AddBuild_clicked()
 //*********************************************************************************
 void buildings::on_Btn_RemBuild_clicked()
 {
-
+    ui->Tbl_Building->removeRow(ui->Tbl_Building->currentRow());
 }
 
 
+//*********************************************************************************
+// Combo box for building data
+//*********************************************************************************
+void buildings::on_CmB_BuildData_currentIndexChanged(int index)
+{
+    if(ui->CmB_BuildData->currentIndex() == 0) // Manual using table
+    {
+        ui->GroupPara->hide();
+        ui->GroupNonpara->show();
+        ui->Tbl_Building->setHorizontalHeaderItem(0,new QTableWidgetItem("Type"));
+        ui->Btn_AddBuild->setText("Add building");
+        ui->Btn_RemBuild->setText("Remove building");
+        ui->Lbl_Building->setText("Building table");
+    }
+    else if(ui->CmB_BuildData->currentIndex() == 1) // Parametric
+    {
+        ui->GroupPara->show();
+        ui->GroupNonpara->hide();
+    }
+    else if(ui->CmB_BuildData->currentIndex() == 2) // LIDAR data
+    {
+        ui->GroupPara->hide();
+        ui->GroupNonpara->show();
+        ui->Tbl_Building->setHorizontalHeaderItem(0,new QTableWidgetItem("Region no"));
+        ui->Btn_AddBuild->setText("Add region");
+        ui->Btn_RemBuild->setText("Remove region");
+        ui->Lbl_Building->setText("Regions to scan");
+    }
+}
