@@ -30,6 +30,8 @@ private slots:
     void on_Btn_RemSeg_clicked();
 
 
+    void on_CmB_FlumeGeoType_currentIndexChanged(int index);
+
 private:
     void hideshowelems(int);
     Ui::bathymetry *ui;

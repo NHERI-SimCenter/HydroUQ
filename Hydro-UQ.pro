@@ -38,7 +38,7 @@ include(../SimCenterCommon/RandomVariables/RandomVariables.pri)
 include(../SimCenterCommon/InputSheetBM/InputSheetBM.pri)
 include(./HydroEvents.pri)
 
-SOURCES += main.cpp \
+SOURCES += main.cpp \   
     WorkflowAppHydroUQ.cpp \
     RunWidget.cpp
 
@@ -57,6 +57,7 @@ DISTFILES += \
 
 #RESOURCES += \
 #    schema.qrc
+
 
 
 

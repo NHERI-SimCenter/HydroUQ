@@ -53,6 +53,7 @@ void GeoClawOpenFOAM::initialize()
     ui->stackedWidget->addWidget(new initialconAlpha(0)); // Initial alpha
     ui->stackedWidget->addWidget(new boundary(0)); // Boundary condition
     ui->stackedWidget->addWidget(new solver(0)); // Solver settings
+    ui->stackedWidget->addWidget(new postprocess(0)); //postprocessing
 
     // Set index to zero & simtype to zero
     ui->stackedWidget->setCurrentIndex(0);
@@ -414,6 +415,13 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
         {
             dynamic_cast<solver *>(ui->stackedWidget->widget(11))->refreshData(simtype);
             ui->stackedWidget->setCurrentIndex(11);
+        }
+
+        // Postprocessing
+        else if(sel == "Post-processing")
+        {
+            dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->refreshData(simtype);
+            ui->stackedWidget->setCurrentIndex(12);
         }
     }
 }

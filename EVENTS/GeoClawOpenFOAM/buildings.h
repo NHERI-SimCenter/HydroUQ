@@ -22,6 +22,8 @@ private slots:
     void on_Btn_RemBuild_clicked();
     void on_ChB_Parametric_stateChanged(int arg1);
 
+    void on_CmB_BuildData_currentIndexChanged(int index);
+
 private:
     void hideshowelems(int);
     Ui::buildings *ui;
