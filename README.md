@@ -43,3 +43,8 @@ Hydro-UQ is released as an open-source research application under a [BSD 3-Claus
 ### Acknowledgement
 
 This material is based upon work supported by the National Science Foundation under Grant No. 1612843.
+
+### Contact
+
+NHERI-SimCenter nheri-simcenter@berkeley.edu
+
