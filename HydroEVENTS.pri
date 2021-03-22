@@ -3,6 +3,7 @@ INCLUDEPATH += $$PWD/EVENTS/GeoClawOpenFOAM
 
 
 SOURCES += \
+    $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.cpp \
     $$PWD/EVENTS/HydroEventSelection.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/GeoClawOpenFOAM.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/H20utilities/h20utilities.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
     $$PWD/EVENTS/GeoClawOpenFOAM/postprocess.cpp
 
 HEADERS += \
+    $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.h \
     $$PWD/EVENTS/HydroEventSelection.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/H20utilities/h20utilities.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/bathymetry.h \

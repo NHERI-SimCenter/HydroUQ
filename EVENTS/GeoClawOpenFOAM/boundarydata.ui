@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>428</width>
+    <width>429</width>
     <height>800</height>
    </rect>
   </property>
@@ -201,6 +201,11 @@
        <string>Wall: noSlip</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>Moving wall</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>
@@ -222,6 +227,40 @@ Upload files
 </string>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="HLY_Sampling" stretch="0,0">
+     <item>
+      <widget class="QLabel" name="Lbl_Sampling">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Sampling rate</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="DSpBx_Sampling">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="minimum">
+        <double>-1000000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>10000000.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QComboBox" name="Cmb_WaveType">

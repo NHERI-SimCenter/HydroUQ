@@ -56,6 +56,8 @@ private slots:
     void on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column);
 //    void on_Btn_SubTACC_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     void clearAllData(void);
     void initialize();

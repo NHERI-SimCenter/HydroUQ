@@ -157,38 +157,13 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(11, singleData);
     }
 
-    /*// Show in text window (Just to print out the map)
-    // This will later be replaced by writing to JSON
-    QString text;
+    // Add all objects to the json object
     foreach (int key, allData.keys())
     {
         QMap<QString, QString> *singleDataSet = allData.value(key);
         foreach (QString varname, singleDataSet->keys())
         {
-            QString oneEntry = QString("%1: %2 = %3\n").arg(key+1).arg(varname).arg(singleDataSet->value(varname));
-            text.append(oneEntry);
-        }
-    }
-    ui->textEdit->setPlainText(text);
-    ui->textEdit->repaint();*/
-
-    // Get directory and project name for writing JSON file
-    QMap<QString, QString> *singleDataSet = allData.value(0);
-    QString wdir = singleDataSet->value("Work directory");
-    QString pname = singleDataSet->value("Project name");
-
-    // Convert to QJsonObject
-    //    QVariantMap vmap;
-    //vmap.insert("Application name",applicationname);
-    //    vmap.insert("Application version",applicationversion);
-    foreach (int key, allData.keys())
-    {
-        QMap<QString, QString> *singleDataSet = allData.value(key);
-        foreach (QString varname, singleDataSet->keys())
-        {
-	  // QString oneEntry = QString("%1: %2 = %3\n").arg(key+1).arg(varname).arg(singleDataSet->value(varname));
-	  // vmap.insert(varname, singleDataSet->value(varname));
-	    jsonObject[varname] = singleDataSet->value(varname);
+            jsonObject[varname] = singleDataSet->value(varname);
         }
     }
   
@@ -196,7 +171,7 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 }
 
 //*********************************************************************************
-// Use JSON file to update all elements in the GUI
+// Use JSON file to update all elements in the GUI (Need to add this)
 //*********************************************************************************
 bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 {
@@ -217,7 +192,7 @@ bool GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &jsonObject)
 }
 
 //*********************************************************************************
-// Read app data from JSON file
+// Read app data from JSON file (Need to add)
 //*********************************************************************************
 bool GeoClawOpenFOAM::inputAppDataFromJSON(QJsonObject &jsonObject)
 {
@@ -230,11 +205,11 @@ bool GeoClawOpenFOAM::inputAppDataFromJSON(QJsonObject &jsonObject)
 //*********************************************************************************
 bool GeoClawOpenFOAM::copyFiles(QString &dirName)
 {
-    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->copyFiles(dirName))
-    {
-        qDebug() << "Files copied to: " << dirName << "\n";
-    }
 
+    // Copy bathymetry and solution files
+    dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->copyFiles(dirName,simtype);
+
+    // Return
     return true;
 }
 
@@ -426,11 +401,32 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
     }
 }
 
+//*********************************************************************************
+// Temporary button
+//*********************************************************************************
+void GeoClawOpenFOAM::on_pushButton_clicked()
+{
 
+//    QMap<QString, QString> *singleData;
+//    this->clearAllData();
+//    singleData = new QMap<QString,QString>;
+//    // Get data from Bathymetry - index 1
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->getData(*singleData,simtype))
+//    {
+//        allData.insert(1, singleData);
+//    }
 
-
-
-
-
-
-
+    //qDebug() << allData;
+    // Create the file and add the segments
+    // Create and open a text file
+//    QString filename = "FlSegmentData.txt";
+//    QFile file(filename);
+//    QFileInfo fi(file);
+//    qDebug() << fi.absolutePath() << " fn=" << fi.fileName();
+//    if (file.open(QIODevice::ReadWrite))
+//    {
+//        QTextStream stream(&file);
+//        stream << "something" << Qt::endl;
+//    }
+}
