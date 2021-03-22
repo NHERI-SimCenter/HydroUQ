@@ -243,29 +243,48 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
     // get each of the main widgets to output themselves
     //
 
+    bool result = true;
     QJsonObject apps;
 
     QJsonObject jsonObjGenInfo;
-    theGI->outputToJSON(jsonObjGenInfo);
+    result = theGI->outputToJSON(jsonObjGenInfo);
+    if (result == false) {
+        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        return false;
+    }
     jsonObjectTop["GeneralInformation"] = jsonObjGenInfo;
 
     QJsonObject jsonObjStructural;
-    theSIM->outputToJSON(jsonObjStructural);
-
+    result = theSIM->outputToJSON(jsonObjStructural);
+    if (result == false) {
+        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        return false;
+    }
     jsonObjectTop["StructuralInformation"] = jsonObjStructural;
     QJsonObject appsSIM;
-    theSIM->outputAppDataToJSON(appsSIM);
-
+    result = theSIM->outputAppDataToJSON(appsSIM);
+    if (result == false) {
+        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        return false;
+    }
     apps["Modeling"]=appsSIM;
 
     theRVs->outputToJSON(jsonObjectTop);
 
     QJsonObject jsonObjectEDP;
-    theEDP_Selection->outputToJSON(jsonObjectEDP);
+    result = theEDP_Selection->outputToJSON(jsonObjectEDP);
+    if (result == false) {
+        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        return false;
+    }
     jsonObjectTop["EDP"] = jsonObjectEDP;
 
     QJsonObject appsEDP;
-    theEDP_Selection->outputAppDataToJSON(appsEDP);
+    result = theEDP_Selection->outputAppDataToJSON(appsEDP);
+    if (result == false) {
+        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        return false;
+    }
     apps["EDP"]=appsEDP;
 
     /*
@@ -274,22 +293,49 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
     jsonObjectTop["UQ_Method"] = jsonObjectUQ;
     */
 
-    theUQ_Selection->outputAppDataToJSON(apps);
-    theUQ_Selection->outputToJSON(jsonObjectTop);
+    result = theUQ_Selection->outputAppDataToJSON(apps);
+    if (result == false) {
+        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        return false;
+    }
+    result = theUQ_Selection->outputToJSON(jsonObjectTop);
+    if (result == false) {
+        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        return false;
+    }
 
-    theAnalysisSelection->outputAppDataToJSON(apps);
-    theAnalysisSelection->outputToJSON(jsonObjectTop);
+    result = theAnalysisSelection->outputAppDataToJSON(apps);
+    if (result == false) {
+        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        return false;
+    }
+    result = theAnalysisSelection->outputToJSON(jsonObjectTop);
+    if (result == false) {
+        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        return false;
+    }
 
    // NOTE: Events treated differently, due to array nature of objects
-    theEventSelection->outputToJSON(jsonObjectTop);
-    theEventSelection->outputAppDataToJSON(apps);
+    result = theEventSelection->outputToJSON(jsonObjectTop);
+    if (result == false) {
+        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        return false;
+    }
+    result = theEventSelection->outputAppDataToJSON(apps);
+    if (result == false) {
+        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        return false;
+    }
 
-    theRunWidget->outputToJSON(jsonObjectTop);
+    result = theRunWidget->outputToJSON(jsonObjectTop);
+    if (result == false) {
+        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        return false;
+    }
 
     jsonObjectTop["Applications"]=apps;
 
     //theRunLocalWidget->outputToJSON(jsonObjectTop);
-
     return true;
 }
 
@@ -545,7 +591,8 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
         return;
     }
     QJsonObject json;
-    this->outputToJSON(json);
+    if (this->outputToJSON(json) == false)
+        return;
 
     json["runDir"]=tmpDirectory;
     json["WorkflowType"]="Building Simulation";
@@ -557,7 +604,6 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
 
 
     statusMessage("SetUp Done .. Now starting application");
-
     emit setUpForApplicationRunDone(tmpDirectory, inputFile);
 }
 
