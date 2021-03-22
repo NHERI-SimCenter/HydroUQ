@@ -48,7 +48,6 @@ bool projectsettings::getData(QMap<QString, QString> & map, int type)
     bool hasData=false;
     (void) type;
 
-    map.insert("Work directory",ui->Lbl_WorkDir->text());
     map.insert("Project name",ui->Led_PName->text());
     map.insert("Project description",ui->Ted_PDesc->toPlainText());
     map.insert("Simulation type",QString::number(ui->CmB_SimType->currentIndex()));
@@ -57,23 +56,4 @@ bool projectsettings::getData(QMap<QString, QString> & map, int type)
     hasData = true;
 
     return hasData;
-}
-
-//*********************************************************************************
-// Setting project directory
-//*********************************************************************************
-void projectsettings::on_Btn_WDir_clicked()
-{
-    workdirUrl = QFileDialog::getExistingDirectoryUrl(this, tr("Open Directory"), QUrl("/home/Users"),QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    QString workdir = workdirUrl.toString();
-
-    // If the workdir is not empty or not, set the text accordingly
-    if(workdir.isEmpty())
-    {
-        ui->Lbl_WorkDir->setText("\nSet working directory\n");
-    }
-    else
-    {
-        ui->Lbl_WorkDir->setText(workdirUrl.toLocalFile());
-    }
 }

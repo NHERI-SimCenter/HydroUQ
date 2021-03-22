@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>364</width>
-    <height>1180</height>
+    <width>373</width>
+    <height>1204</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -102,10 +102,7 @@
         <number>10000</number>
        </property>
        <property name="text">
-        <string>
-Select bathymetry 
- files
-</string>
+        <string>Select bathymetry files</string>
        </property>
       </widget>
      </item>
@@ -123,10 +120,7 @@ Select bathymetry
         <number>10000</number>
        </property>
        <property name="text">
-        <string>
-Select solution 
- files 
-</string>
+        <string>Select solution files</string>
        </property>
       </widget>
      </item>
@@ -214,96 +208,9 @@ Select solution
        </property>
        <item>
         <property name="text">
-         <string>Cascadia subduction zone</string>
+         <string>To be coming soon</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>Alaska-Aleutian subduction zone</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Kermadec-Tonga subduction zone</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QLabel" name="Lbl_Timesteps">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
-         </property>
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Timesteps to upload&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="DSpBx_MinTime">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="decimals">
-          <number>0</number>
-         </property>
-         <property name="minimum">
-          <double>1.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>10000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="DSpBx_MaxTime">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="decimals">
-          <number>0</number>
-         </property>
-         <property name="minimum">
-          <double>1.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>10000.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="ChkBx_DefSett">
-       <property name="text">
-        <string>Override default settings</string>
-       </property>
       </widget>
      </item>
     </layout>
@@ -330,44 +237,6 @@ Select solution
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="Lbl_SideViewH2">
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::ClickFocus</enum>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Side view of flume&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="Lbl_SideView">
-     <property name="font">
-      <font>
-       <pointsize>48</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/images/SideView_2.png&quot; width=&quot;265&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QLabel" name="Lbl_TopViewH2">
      <property name="font">
       <font>
@@ -383,42 +252,6 @@ Select solution
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Top view of flume&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="HLY_Depth" stretch="2,1">
-     <item>
-      <widget class="QLabel" name="Lbl_Depth">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Depth of water</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_Depth">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
    <item>
     <widget class="QLabel" name="Lbl_TopView">
@@ -473,6 +306,9 @@ Select solution
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
       </widget>
      </item>
     </layout>
@@ -510,11 +346,6 @@ Select solution
      <column>
       <property name="text">
        <string>X</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Y</string>
       </property>
      </column>
      <column>

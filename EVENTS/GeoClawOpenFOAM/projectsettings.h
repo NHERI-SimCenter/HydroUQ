@@ -22,7 +22,6 @@ public:
     void refreshData(int);
 
 private slots:
-    void on_Btn_WDir_clicked();
 
 private:
     void hideshowelems(int);

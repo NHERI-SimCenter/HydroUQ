@@ -138,6 +138,10 @@ void boundaryData::on_Cmb_PatchLoc_currentIndexChanged(int index)
 //*********************************************************************************
 void boundaryData::on_Cmb_UBC_currentIndexChanged(int index)
 {
+
+    ui->Lbl_Sampling->hide();
+    ui->DSpBx_Sampling->hide();
+
     if(index == 0)
     {
         ui->Btn_UploadFile->hide();
@@ -247,6 +251,12 @@ void boundaryData::on_Cmb_UBC_currentIndexChanged(int index)
         ui->DSpBx_DirnZ->hide();
         ui->Lbl_WavePara->hide();
         ui->Led_WavePara->hide();
+    }
+    else if(index == 9) // Moving wall
+    {
+        ui->Btn_UploadFile->show();
+        ui->Lbl_Sampling->show();
+        ui->DSpBx_Sampling->show();
     }
 }
 

@@ -1,6 +1,5 @@
 #include "bathymetry.h"
 #include "ui_bathymetry.h"
-#include <QFileInfo>
 
 //*********************************************************************************
 // Bathymetry settings
@@ -48,10 +47,6 @@ void bathymetry::hideshowelems(int type)
         if(ui->CmB_FlumeGeoType->currentIndex() == 0) // Provide coordinates
         {
             ui->Btn_UploadFiles->hide();
-            ui->Lbl_SideViewH2->show();
-            ui->Lbl_SideView->show();
-            ui->Lbl_Depth->show();
-            ui->DSpBx_Depth->show();
             ui->Lbl_TopViewH2->show();
             ui->Lbl_TopView->show();
             ui->Lbl_Breadth->show();
@@ -64,27 +59,21 @@ void bathymetry::hideshowelems(int type)
         else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // Upload LIDAR data
         {
             ui->Btn_UploadFiles->show();
-            ui->Btn_UploadFiles->setText("Upload LIDAR scan");
-            ui->Lbl_SideViewH2->show();
-            ui->Lbl_SideView->show();
-            ui->Lbl_Depth->show();
-            ui->DSpBx_Depth->show();
-            ui->Lbl_TopViewH2->show();
-            ui->Lbl_TopView->show();
-            ui->Lbl_Breadth->show();
-            ui->DSpBx_Breadth->show();
-            ui->Lbl_Segments->show();
-            ui->Tbl_Segments->show();
-            ui->Btn_AddSeg->show();
-            ui->Btn_RemSeg->show();
+            //ui->Btn_UploadFiles->setText("Upload LIDAR scan");
+            ui->Btn_UploadFiles->setText("Coming soon");
+            ui->Btn_UploadFiles->setEnabled(false);
+            ui->Lbl_TopViewH2->hide();
+            ui->Lbl_TopView->hide();
+            ui->Lbl_Breadth->hide();
+            ui->DSpBx_Breadth->hide();
+            ui->Lbl_Segments->hide();
+            ui->Tbl_Segments->hide();
+            ui->Btn_AddSeg->hide();
+            ui->Btn_RemSeg->hide();
         }
         else if(ui->CmB_FlumeGeoType->currentIndex() == 2) // Standard OSU flume
         {
             ui->Btn_UploadFiles->hide();
-            ui->Lbl_SideViewH2->hide();
-            ui->Lbl_SideView->hide();
-            ui->Lbl_Depth->hide();
-            ui->DSpBx_Depth->hide();
             ui->Lbl_TopViewH2->hide();
             ui->Lbl_TopView->hide();
             ui->Lbl_Breadth->hide();
@@ -102,18 +91,11 @@ void bathymetry::hideshowelems(int type)
         ui->CmB_SolFormat->hide();
         ui->CmB_Library->hide();
         ui->Lbl_Notice->hide();
-        ui->ChkBx_DefSett->hide();
-        ui->DSpBx_MinTime->hide();
-        ui->DSpBx_MaxTime->hide();
-        ui->Lbl_Timesteps->hide();
     }
     else
     {
         // Hide wave flume
-        ui->Lbl_SideViewH2->hide();
-        ui->Lbl_SideView->hide();
-        ui->Lbl_Depth->hide();
-        ui->DSpBx_Depth->hide();
+        ui->CmB_FlumeGeoType->hide();
         ui->Lbl_TopViewH2->hide();
         ui->Lbl_TopView->hide();
         ui->Lbl_Breadth->hide();
@@ -212,6 +194,14 @@ void bathymetry::hideshowelems(int type)
         ui->CmB_SolFormat->hide();
         ui->CmB_Library->hide();
     }
+    /*else if(type == 5) // STL file
+    {
+        // Set the heading
+        ui->Lbl_H1->setText("<b>STL FILE UPLOAD</b>");
+        ui->Btn_UploadFiles->show();
+        ui->Btn_UploadFiles->setText("Select STL files");
+        ui->Lbl_Notice->setText("Check documentation to prepare files correctly.");
+    }*/
 }
 
 //*********************************************************************************
@@ -222,54 +212,108 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
     bool hasData=false;
 
     // Shallow water bathymetry files
-    if(((type == 1) || (type == 2)) || (type == 3))
+    if((type == 1) || (type == 3))
     {
-        map.insert("Bathymetry file number",QString::number(bathfilenames.size()));
-        // Write the bathymetry file names
-        for (int ii=0; ii<bathfilenames.size(); ++ii)
+        if(bathfilenames.size() > 0)
         {
-            map.insert("Bathymetry file"+QString::number(ii),bathfilenames[ii]);
+            // Type of bathymetry
+            map.insert("BathymetryFileType",QString::number(ui->CmB_FileType->currentIndex()));
+            // Number of bathymetry files
+            map.insert("NumBathymetryFiles",QString::number(bathfilenames.size()));
+            // Write the bathymetry file names
+            for (int ii=0; ii<bathfilenames.size(); ++ii)
+            {
+                QFile f(bathfilenames[ii]);
+                QFileInfo fileInfo(f.fileName());
+                QString filename(fileInfo.fileName());
+                map.insert("BathymetryFile"+QString::number(ii),filename);
+            }
+        }
+        else
+        {
+            error.criterrormessage("Bathymetry files not provided!");
         }
     }
 
     // Shallow water solutions
     if(type == 1)
     {
-        map.insert("Solution files number",QString::number(solfilenames.size()));
-        // Write the solution file names
-        for (int ii=0; ii<solfilenames.size(); ++ii)
+        if(solfilenames.size() > 0)
         {
-            map.insert("SW solution file"+QString::number(ii),solfilenames[ii]);
+            map.insert("NumSolutionFiles",QString::number(solfilenames.size()));
+            // Write the solution file names
+            for (int ii=0; ii<solfilenames.size(); ++ii)
+            {
+                QFile f(solfilenames[ii]);
+                QFileInfo fileInfo(f.fileName());
+                QString filename(fileInfo.fileName());
+                map.insert("SWSolutionFile"+QString::number(ii),filename);
+            }
+            // Type of solution file
+            map.insert("SolutionFileType",QString::number(ui->CmB_SolFormat->currentIndex()));
         }
-        // Type of bathymetry
-        map.insert("Bathymetry file type",QString::number(ui->CmB_FileType->currentIndex()));
-        // Type of solution file
-        map.insert("Solution file type",QString::number(ui->CmB_SolFormat->currentIndex()));
-    }
-
-    // SimCenter library
-    if(type == 2)
-        map.insert("SimCenter Library",QString::number(ui->CmB_Library->currentIndex()));
-
-    // Only bathymetry
-    if(type == 3)
-    {
-        // Type of bathymetry
-        map.insert("Bathymetry file type",QString::number(ui->CmB_FileType->currentIndex()));
+        else
+        {
+            error.criterrormessage("Solution files not provided!");
+        }
     }
 
     // Wave flume
     if(type == 4)
     {
-        map.insert("Flume water depth",ui->DSpBx_Depth->textFromValue(ui->DSpBx_Depth->value()));
-        map.insert("Flume water depth",ui->DSpBx_Breadth->textFromValue(ui->DSpBx_Breadth->value()));
-        if(ui->Tbl_Segments->rowCount() > 0)
+        // Add flume info type to the map
+        map.insert("FlumeInfoType",QString::number(ui->CmB_FlumeGeoType->currentIndex()));
+
+        // If coordinates are specified
+        if(ui->CmB_FlumeGeoType->currentIndex() == 0)
         {
-            for(int ii=0;ii<ui->Tbl_Segments->rowCount(); ++ii)
+            // Add flume breadth
+            if(abs(ui->DSpBx_Breadth->value()) < 0.000001)
             {
-                QString segdata = ui->Tbl_Segments->item(ii,0)->text() +
-                        "," + ui->Tbl_Segments->item(ii,1)->text();
-                map.insert("Flume segment"+QString::number(ii),segdata);
+                error.warnerrormessage("Flume breadth almost zero!");
+                map.insert("FlumeBreadth",ui->DSpBx_Breadth->textFromValue(ui->DSpBx_Breadth->value()));
+            }
+
+            // Create the file and add the segments
+            if(ui->Tbl_Segments->rowCount() > 0)
+            {
+                // Create and open a text file
+                QString filename = "FlumeData.txt";
+                QFile file(filename);
+                if (file.open(QIODevice::WriteOnly))
+                {
+                    QTextStream stream(&file);
+                    for(int ii=0;ii<ui->Tbl_Segments->rowCount(); ++ii)
+                    {
+                        QString segdata = ui->Tbl_Segments->item(ii,0)->text() +
+                                "," + ui->Tbl_Segments->item(ii,1)->text();
+                        stream << segdata << Qt::endl;
+                    }
+                }
+                file.close();
+            }
+            else
+            {
+                error.criterrormessage("Flume outline coordinates not provided!");
+            }
+        }
+        else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // LIDAR data
+        {
+            if(bathfilenames.size() > 0)
+            {
+                map.insert("NumLIDARFiles",QString::number(bathfilenames.size()));
+                // Write the LIDAR file names
+                for (int ii=0; ii<bathfilenames.size(); ++ii)
+                {
+                    QFile f(bathfilenames[ii]);
+                    QFileInfo fileInfo(f.fileName());
+                    QString filename(fileInfo.fileName());
+                    map.insert("LIDARFile"+QString::number(ii),filename);
+                }
+            }
+            else
+            {
+                error.criterrormessage("LIDAR files not provided!");
             }
         }
     }
@@ -328,24 +372,56 @@ void bathymetry::on_Btn_RemSeg_clicked()
 //*********************************************************************************
 // Copyfiles
 //*********************************************************************************
-bool bathymetry::copyFiles(QString dirName)
+bool bathymetry::copyFiles(QString dirName,int type)
 {
 
-
-    qDebug() << bathfilenames;
-
-    for (int ii=0; ii<bathfilenames.size(); ++ii)
+    // SW + CFD or CFD with bath
+    if( (type == 1) || (type == 3) )
     {
-        QFile fileToCopy(bathfilenames[ii]);
-        //QFile::copy(bathfilenames[ii], dirName);
-        QFileInfo fileInfo(bathfilenames[ii]);
-        QString theFile = fileInfo.fileName();
-        //QString thePath = fileInfo.path();
-        fileToCopy.copy(dirName + QDir::separator() + theFile);
+        // Copy the bathymetry files
+        for (int ii=0; ii<bathfilenames.size(); ++ii)
+        {
+            QFile fileToCopy(bathfilenames[ii]);
+            QFileInfo fileInfo(bathfilenames[ii]);
+            QString theFile = fileInfo.fileName();
+            fileToCopy.copy(dirName + QDir::separator() + theFile);
+        }
+        if(type == 1) // If SW + CFD
+        {
+            // Copy the solution files
+            for (int ii=0; ii<solfilenames.size(); ++ii)
+            {
+                QFile fileToCopy(solfilenames[ii]);
+                QFileInfo fileInfo(solfilenames[ii]);
+                QString theFile = fileInfo.fileName();
+                fileToCopy.copy(dirName + QDir::separator() + theFile);
+            }
+        }
+    }
+    else if(type == 4) // CFD with Flume
+    {
+        if(ui->CmB_FlumeGeoType->currentIndex() == 0) // Coordinates
+        {
+            // Copy the segment coordinates file
+            QFile fileToCopy("FlumeData.txt");
+            QFileInfo fileInfo(fileToCopy);
+            QString theFile = fileInfo.fileName();
+            fileToCopy.copy(dirName + QDir::separator() + theFile);
+        }
+        else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // LIDAR data
+        {
+            // Copy the LIDAR files
+            for (int ii=0; ii<bathfilenames.size(); ++ii)
+            {
+                QFile fileToCopy(bathfilenames[ii]);
+                QFileInfo fileInfo(bathfilenames[ii]);
+                QString theFile = fileInfo.fileName();
+                fileToCopy.copy(dirName + QDir::separator() + theFile);
+            }
+        }
     }
 
-
-    //(void) dirName;
+    // Return true
     return true;
 }
 
@@ -357,10 +433,6 @@ void bathymetry::on_CmB_FlumeGeoType_currentIndexChanged(int index)
     if(ui->CmB_FlumeGeoType->currentIndex() == 0) // Provide coordinates
     {
         ui->Btn_UploadFiles->hide();
-        ui->Lbl_SideViewH2->show();
-        ui->Lbl_SideView->show();
-        ui->Lbl_Depth->show();
-        ui->DSpBx_Depth->show();
         ui->Lbl_TopViewH2->show();
         ui->Lbl_TopView->show();
         ui->Lbl_Breadth->show();
@@ -373,11 +445,9 @@ void bathymetry::on_CmB_FlumeGeoType_currentIndexChanged(int index)
     else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // Upload LIDAR data
     {
         ui->Btn_UploadFiles->show();
-        ui->Btn_UploadFiles->setText("\nUpload LIDAR scan\n");
-        ui->Lbl_SideViewH2->hide();
-        ui->Lbl_SideView->hide();
-        ui->Lbl_Depth->hide();
-        ui->DSpBx_Depth->hide();
+        //ui->Btn_UploadFiles->setText("\nUpload LIDAR scan\n");
+        ui->Btn_UploadFiles->setText("Coming soon");
+        ui->Btn_UploadFiles->setEnabled(false);
         ui->Lbl_TopViewH2->hide();
         ui->Lbl_TopView->hide();
         ui->Lbl_Breadth->hide();
@@ -390,10 +460,6 @@ void bathymetry::on_CmB_FlumeGeoType_currentIndexChanged(int index)
     else if(ui->CmB_FlumeGeoType->currentIndex() == 2) // Standard OSU flume
     {
         ui->Btn_UploadFiles->hide();
-        ui->Lbl_SideViewH2->hide();
-        ui->Lbl_SideView->hide();
-        ui->Lbl_Depth->hide();
-        ui->DSpBx_Depth->hide();
         ui->Lbl_TopViewH2->hide();
         ui->Lbl_TopView->hide();
         ui->Lbl_Breadth->hide();
@@ -411,9 +477,8 @@ void bathymetry::on_CmB_FlumeGeoType_currentIndexChanged(int index)
     ui->CmB_SolFormat->hide();
     ui->CmB_Library->hide();
     ui->Lbl_Notice->hide();
-    ui->ChkBx_DefSett->hide();
-    ui->DSpBx_MinTime->hide();
-    ui->DSpBx_MaxTime->hide();
-    ui->Lbl_Timesteps->hide();
+
+    // Unused variables
+    (void) index;
 
 }
