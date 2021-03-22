@@ -67,6 +67,7 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 {
     jsonObject["EventClassification"]="Hydro";
     jsonObject["Application"] = "GeoClawOpenFOAM";
+    bool isitready = true;
 
     // Get the simulation type
     refresh_projsettings();
@@ -85,6 +86,10 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
     if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->getData(*singleData,simtype))
     {
         allData.insert(1, singleData);
+    }
+    else
+    {
+        isitready = false;
     }
 
     // Add SW-CFD Interface - Index 2
@@ -167,7 +172,9 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         }
     }
   
-  return true;
+    return isitready;
+    //return true;
+//    return false;
 }
 
 //*********************************************************************************

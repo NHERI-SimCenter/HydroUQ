@@ -209,7 +209,7 @@ void bathymetry::hideshowelems(int type)
 //*********************************************************************************
 bool bathymetry::getData(QMap<QString, QString>& map,int type)
 {
-    bool hasData=false;
+    bool hasData=true;
 
     // Shallow water bathymetry files
     if((type == 1) || (type == 3))
@@ -232,6 +232,7 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
         else
         {
             error.criterrormessage("Bathymetry files not provided!");
+            hasData=false;
         }
     }
 
@@ -255,6 +256,7 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
         else
         {
             error.criterrormessage("Solution files not provided!");
+            hasData=false;
         }
     }
 
@@ -295,6 +297,7 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
             else
             {
                 error.criterrormessage("Flume outline coordinates not provided!");
+                hasData=false;
             }
         }
         else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // LIDAR data
@@ -314,12 +317,17 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
             else
             {
                 error.criterrormessage("LIDAR files not provided!");
+                hasData=false;
             }
         }
     }
 
-    // Change hasData to be true
-    hasData = true;
+    // CFD with STL / Maps / Surrogate models
+    if( (type == 2 || type == 5) || (type == 6 || type == 7) )
+    {
+        error.criterrormessage("This simulation type is not yet supported!");
+        hasData=false;
+    }
 
     // Return the bool
     return hasData;
@@ -337,6 +345,10 @@ void bathymetry::on_Btn_UploadFiles_clicked()
     selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
     selectfilesdialog.setNameFilter(tr("All files (*.*)"));
     if(selectfilesdialog.exec()) bathfilenames = selectfilesdialog.selectedFiles();
+    if(bathfilenames.size() == 0)
+    {
+        error.warnerrormessage("No files selected!");
+    }
 }
 
 //*********************************************************************************
@@ -351,6 +363,10 @@ void bathymetry::on_Btn_UploadSolution_clicked()
     selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
     selectfilesdialog.setNameFilter(tr("All files (*.*)"));
     if(selectfilesdialog.exec()) solfilenames = selectfilesdialog.selectedFiles();
+    if(solfilenames.size() == 0)
+    {
+        error.warnerrormessage("No files selected!");
+    }
 }
 
 //*********************************************************************************
