@@ -167,7 +167,8 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         }
     }
   
-  return true;
+    return true;
+//    return false;
 }
 
 //*********************************************************************************
