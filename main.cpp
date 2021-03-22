@@ -93,7 +93,8 @@ int main(int argc, char *argv[])
     QFile debugFile(logFilePath);
     debugFile.remove();
 
-    QByteArray envVar = qgetenv("QTDIR");       //  check if the app is run in Qt Creator
+    //  check if the app is run in Qt Creator
+    QByteArray envVar = qgetenv("QTDIR");
 
     if (envVar.isEmpty())
         logToFile = true;
@@ -137,7 +138,7 @@ int main(int argc, char *argv[])
     w.setVersion(version);
 
     // Citation
-    QString citeText("Ajay B Harish, & Frank McKenna. (2020, February 15). NHERI-SimCenter/Hydro-UQ: Version 1.0.0 (Version v1.0.0). Zenodo. http://doi.org/to-be-added");
+    QString citeText("Ajay B Harish, & Frank McKenna. (2021, March 31). NHERI-SimCenter/Hydro-UQ: Version 1.0.0 (Version v1.0.0). Zenodo. http://doi.org/to-be-added");
     w.setCite(citeText);
 
     // Link to repository

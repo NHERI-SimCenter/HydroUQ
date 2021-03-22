@@ -42,7 +42,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "RunWidget.h"
 #include <Application.h>
-
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGridLayout>
@@ -52,7 +51,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QJsonObject>
 #include <QStandardPaths>
 #include <QCoreApplication>
-
 //#include <AgaveInterface.h>
 #include <QDebug>
 #include <QDir>
