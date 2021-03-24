@@ -211,53 +211,59 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
 {
     bool hasData=true;
 
+    // Add the gravity direction
+    int gravity = 0;
+    if(ui->CmB_Grav01->currentIndex() == 0)
+    {
+        if(ui->CmB_Grav02->currentIndex() == 0)
+            gravity = 11;
+        else if(ui->CmB_Grav02->currentIndex() == 1)
+            gravity = 12;
+        else if(ui->CmB_Grav02->currentIndex() == 2)
+            gravity = 13;
+    }
+    else if(ui->CmB_Grav01->currentIndex() == 1)
+    {
+        if(ui->CmB_Grav02->currentIndex() == 0)
+            gravity = 21;
+        else if(ui->CmB_Grav02->currentIndex() == 1)
+            gravity = 22;
+        else if(ui->CmB_Grav02->currentIndex() == 2)
+            gravity = 23;
+    }
+    map.insert("Gravity",QString::number(gravity));
+
     // Shallow water bathymetry files
     if((type == 1) || (type == 3))
     {
-        if(bathfilenames.size() > 0)
+        // Type of bathymetry
+        map.insert("BathymetryFileType",QString::number(ui->CmB_FileType->currentIndex()));
+        // Number of bathymetry files
+        map.insert("NumBathymetryFiles",QString::number(bathfilenames.size()));
+        // Write the bathymetry file names
+        for (int ii=0; ii<bathfilenames.size(); ++ii)
         {
-            // Type of bathymetry
-            map.insert("BathymetryFileType",QString::number(ui->CmB_FileType->currentIndex()));
-            // Number of bathymetry files
-            map.insert("NumBathymetryFiles",QString::number(bathfilenames.size()));
-            // Write the bathymetry file names
-            for (int ii=0; ii<bathfilenames.size(); ++ii)
-            {
-                QFile f(bathfilenames[ii]);
-                QFileInfo fileInfo(f.fileName());
-                QString filename(fileInfo.fileName());
-                map.insert("BathymetryFile"+QString::number(ii),filename);
-            }
-        }
-        else
-        {
-            error.criterrormessage("Bathymetry files not provided!");
-            hasData=false;
+            QFile f(bathfilenames[ii]);
+            QFileInfo fileInfo(f.fileName());
+            QString filename(fileInfo.fileName());
+            map.insert("BathymetryFile"+QString::number(ii),filename);
         }
     }
 
     // Shallow water solutions
     if(type == 1)
     {
-        if(solfilenames.size() > 0)
+        map.insert("NumSolutionFiles",QString::number(solfilenames.size()));
+        // Write the solution file names
+        for (int ii=0; ii<solfilenames.size(); ++ii)
         {
-            map.insert("NumSolutionFiles",QString::number(solfilenames.size()));
-            // Write the solution file names
-            for (int ii=0; ii<solfilenames.size(); ++ii)
-            {
-                QFile f(solfilenames[ii]);
-                QFileInfo fileInfo(f.fileName());
-                QString filename(fileInfo.fileName());
-                map.insert("SWSolutionFile"+QString::number(ii),filename);
-            }
-            // Type of solution file
-            map.insert("SolutionFileType",QString::number(ui->CmB_SolFormat->currentIndex()));
+            QFile f(solfilenames[ii]);
+            QFileInfo fileInfo(f.fileName());
+            QString filename(fileInfo.fileName());
+            map.insert("SWSolutionFile"+QString::number(ii),filename);
         }
-        else
-        {
-            error.criterrormessage("Solution files not provided!");
-            hasData=false;
-        }
+        // Type of solution file
+        map.insert("SolutionFileType",QString::number(ui->CmB_SolFormat->currentIndex()));
     }
 
     // Wave flume
@@ -277,47 +283,32 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
             }
 
             // Create the file and add the segments
-            if(ui->Tbl_Segments->rowCount() > 0)
+            // Create and open a text file
+            QString filename = "FlumeData.txt";
+            QFile file(filename);
+            if (file.open(QIODevice::WriteOnly))
             {
-                // Create and open a text file
-                QString filename = "FlumeData.txt";
-                QFile file(filename);
-                if (file.open(QIODevice::WriteOnly))
+                QTextStream stream(&file);
+                for(int ii=0;ii<ui->Tbl_Segments->rowCount(); ++ii)
                 {
-                    QTextStream stream(&file);
-                    for(int ii=0;ii<ui->Tbl_Segments->rowCount(); ++ii)
-                    {
-                        QString segdata = ui->Tbl_Segments->item(ii,0)->text() +
-                                "," + ui->Tbl_Segments->item(ii,1)->text();
-                        stream << segdata << Qt::endl;
-                    }
+                    QString segdata = ui->Tbl_Segments->item(ii,0)->text() +
+                            "," + ui->Tbl_Segments->item(ii,1)->text();
+                    stream << segdata << Qt::endl;
                 }
-                file.close();
             }
-            else
-            {
-                error.criterrormessage("Flume outline coordinates not provided!");
-                hasData=false;
-            }
+            file.close();
+
         }
         else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // LIDAR data
         {
-            if(bathfilenames.size() > 0)
+            map.insert("NumLIDARFiles",QString::number(bathfilenames.size()));
+            // Write the LIDAR file names
+            for (int ii=0; ii<bathfilenames.size(); ++ii)
             {
-                map.insert("NumLIDARFiles",QString::number(bathfilenames.size()));
-                // Write the LIDAR file names
-                for (int ii=0; ii<bathfilenames.size(); ++ii)
-                {
-                    QFile f(bathfilenames[ii]);
-                    QFileInfo fileInfo(f.fileName());
-                    QString filename(fileInfo.fileName());
-                    map.insert("LIDARFile"+QString::number(ii),filename);
-                }
-            }
-            else
-            {
-                error.criterrormessage("LIDAR files not provided!");
-                hasData=false;
+                QFile f(bathfilenames[ii]);
+                QFileInfo fileInfo(f.fileName());
+                QString filename(fileInfo.fileName());
+                map.insert("LIDARFile"+QString::number(ii),filename);
             }
         }
     }

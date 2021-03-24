@@ -50,15 +50,15 @@ bool boundaryData::getData(QMap<QString, QString>& map,int type)
     QString patchname = ui->Lbl_H1->text();
 
     // Add patch location information
-    map.insert("Location type_"+patchname,ui->Cmb_PatchLoc->currentText());
+    map.insert("LocationType_"+patchname,ui->Cmb_PatchLoc->currentText());
     if(ui->Cmb_PatchLoc->currentIndex() == 0)
-        map.insert("Patch location",ui->Cmb_PatchStdLoc->currentText());
+        map.insert("PatchLocation",ui->Cmb_PatchStdLoc->currentText());
     else
-        map.insert("Patch location",ui->Lbl_H1->text());
+        map.insert("PatchLocation",ui->Lbl_H1->text());
 
     // Get velocity information
     int index = ui->Cmb_UBC->currentIndex();
-    map.insert("Velocity type",ui->Cmb_UBC->currentText());
+    map.insert("VelocityType",ui->Cmb_UBC->currentText());
     if( ((index == 1) || (index == 5)) || (index == 7) )
     {
         QString veldata = ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()) +
@@ -68,11 +68,11 @@ bool boundaryData::getData(QMap<QString, QString>& map,int type)
     }
     else if(index == 2)
     {
-        map.insert("Wave type",ui->Cmb_PatchStdLoc->currentText());
+        map.insert("WaveType",ui->Cmb_PatchStdLoc->currentText());
         QString veldata = ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()) +
                 "," + ui->DSpBx_UMeanY->textFromValue(ui->DSpBx_UMeanY->value()) +
                 "," + ui->DSpBx_UMeanZ->textFromValue(ui->DSpBx_UMeanZ->value());
-        map.insert("Mean velocity",veldata);
+        map.insert("MeanVelocity",veldata);
         veldata = ui->DSpBx_OX->textFromValue(ui->DSpBx_OX->value()) +
                 "," + ui->DSpBx_OY->textFromValue(ui->DSpBx_OY->value()) +
                 "," + ui->DSpBx_OZ->textFromValue(ui->DSpBx_OZ->value());
@@ -81,31 +81,31 @@ bool boundaryData::getData(QMap<QString, QString>& map,int type)
                 "," + ui->DSpBx_DirnY->textFromValue(ui->DSpBx_DirnY->value()) +
                 "," + ui->DSpBx_DirnZ->textFromValue(ui->DSpBx_DirnZ->value());
         map.insert("Direction",veldata);
-        map.insert("Wave parameters",ui->Led_WavePara->text());
+        map.insert("WaveParameters",ui->Led_WavePara->text());
     }
     else if ((index == 3) || (index == 4))
     {
         // Write the velocity file names
         for (int ii=0; ii<velfilenames.size(); ++ii)
         {
-            map.insert("Velocity boundary files"+QString::number(ii),velfilenames[ii]);
+            map.insert("VelocityBoundaryFiles"+QString::number(ii),velfilenames[ii]);
         }
     }
     else if(index == 6)
     {
-        map.insert("Mean flow rate", ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()));
+        map.insert("MeanFlowRate", ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()));
     }
 
     // Get pressure information
     index = ui->Cmb_PresBC->currentIndex();
-    map.insert("Pressure type",ui->Cmb_PresBC->currentText());
+    map.insert("PressureType",ui->Cmb_PresBC->currentText());
     if( (index == 2) || (index == 3) )
     {
         map.insert("Pressure",ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
     }
     else if (index == 4)
     {
-        map.insert("Pressure gradient",ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
+        map.insert("PressureGradient",ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
     }
 
     // Change hasData to be true

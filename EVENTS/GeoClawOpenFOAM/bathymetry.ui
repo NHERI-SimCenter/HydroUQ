@@ -127,7 +127,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="VLY_SCLibrary">
+    <layout class="QVBoxLayout" name="VLY_Gravity">
      <item>
       <widget class="QComboBox" name="CmB_FileType">
        <property name="font">
@@ -192,6 +192,58 @@
         </property>
        </item>
       </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="HLY_Gravity">
+       <property name="spacing">
+        <number>-1</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="Lbl_Gravity">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Gravity direction</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="CmB_Grav01">
+         <item>
+          <property name="text">
+           <string>+</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>-</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="CmB_Grav02">
+         <item>
+          <property name="text">
+           <string>X</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QComboBox" name="CmB_Library">

@@ -408,34 +408,9 @@ Upload Restart Files
      </item>
      <item>
       <property name="text">
-       <string>OpenFOAM</string>
+       <string>More coming soon</string>
       </property>
      </item>
-     <item>
-      <property name="text">
-       <string>Custom solver</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="Btn_PrepareSolverFiles">
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Upload files from previous time step</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>10000</number>
-     </property>
-     <property name="text">
-      <string>
-Prepare files for solver 
-</string>
-     </property>
     </widget>
    </item>
    <item>

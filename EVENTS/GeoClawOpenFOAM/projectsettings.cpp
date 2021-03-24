@@ -48,10 +48,10 @@ bool projectsettings::getData(QMap<QString, QString> & map, int type)
     bool hasData=false;
     (void) type;
 
-    map.insert("Project name",ui->Led_PName->text());
-    map.insert("Project description",ui->Ted_PDesc->toPlainText());
-    map.insert("Simulation type",QString::number(ui->CmB_SimType->currentIndex()));
-    map.insert("Turbulence model",QString::number(ui->CmB_TurbModel->currentIndex()));
+    map.insert("ProjectName",ui->Led_PName->text());
+    map.insert("ProjectDescription",ui->Ted_PDesc->toPlainText());
+    map.insert("SimulationType",QString::number(ui->CmB_SimType->currentIndex()));
+    map.insert("TurbulenceModel",QString::number(ui->CmB_TurbModel->currentIndex()));
 
     hasData = true;
 
