@@ -1,0 +1,3815 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Earthquake Assessment &mdash; Hydro-UQ  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
+<style media="screen">.vega-actions a {margin-right: 5px;}</style>
+<link href="../../../../_static/css/bootstrap.css" rel="stylesheet">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F2F2F2" >
+          
+<a href="https://simcenter.designsafe-ci.org/" style="margin-bottom: 0px;">
+  <img src="../../../../_static/img/SimCenter-Only.png" class="logo" alt="Org-Logo" />
+</a>
+<hr style="margin: 0px;">
+
+  <a href="../../../../hydro.html">
+
+
+
+  
+  <img src="../../../../_static/Hydro-Logo.png" class="logo" alt="Logo"/>
+
+</a>
+
+
+  
+  
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/about.html">1. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/ack.html">1. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/license.html">2. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/install.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/userguide/uguide.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/errors.html">3. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/examples/examples.html">4. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/releasenotes.html">6. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/featurereq.html">7. Bugs &amp; Feature Requests</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/UQ/uqengine.html">6. Uncertainity quantification</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/coding.html">4. Coding Style</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../hydro.html">Hydro-UQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Earthquake Assessment</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/common/developer_manual/examples/desktop/eqAssessment.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="earthquake-assessment">
+<span id="lbleqassessment"></span><h1>Earthquake Assessment<a class="headerlink" href="#earthquake-assessment" title="Permalink to this headline">¶</a></h1>
+<p>This example is a small-scale regional earthquake risk assessment which performs response simulation and damage/loss estimation for a group of 20 buildings. The buildings are modeled as elastic-perfectly plastic single-degree-of-freedom (SDOF) systems defined by three input model parameters: the weight <code class="docutils literal notranslate"><span class="pre">W</span></code>, yield strength <code class="docutils literal notranslate"><span class="pre">f_yield</span></code>, and fundamental period <code class="docutils literal notranslate"><span class="pre">T1</span></code>. The buildings are distributed in space in a 4x5 grid, within a 3x3 grid of event sites. At each event site, 5 ground motion records of similar intensity are assigned.</p>
+<div class="align-center figure">
+<img alt="../../../../_images/regionalearthquakeexample.png" src="../../../../_images/regionalearthquakeexample.png" />
+</div>
+<div class="section" id="inputs">
+<h2>Inputs<a class="headerlink" href="#inputs" title="Permalink to this headline">¶</a></h2>
+<p>The example input files can be downloaded here: <a class="reference download internal" download="" href="../../../../_downloads/9d1170da0a9ec0e257f8cfcbae5c671f/example_eq.zip"><code class="xref download docutils literal notranslate"><span class="pre">example_eq.zip</span></code></a>. For more information about required input files, refer to <a class="reference internal" href="../../architecture/desktop/file-types/Inputs.html#lbluserdefinputs"><span class="std std-ref">Inputs</span></a>.</p>
+<ol class="arabic simple">
+<li><p><strong>Configuration file</strong>: The configuration file specifies all simulation settings, including the application types, input file names, units, and type of outputs.</p></li>
+</ol>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="s2">&quot;rWHALE_&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Author&quot;</span><span class="p">:</span> <span class="s2">&quot;Adam Zsarnóczay&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;WorkflowType&quot;</span><span class="p">:</span> <span class="s2">&quot;Parametric Study&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;runDir&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;localAppDir&quot;</span><span class="p">:</span> <span class="s2">&quot;C:/rWHALE/&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;force&quot;</span><span class="p">:</span> <span class="s2">&quot;kips&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="s2">&quot;sec&quot;</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;EDP&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;DM&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;DV&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;every_realization&quot;</span><span class="p">:</span> <span class="n">false</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;Applications&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;Building&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;CSV_to_BIM&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;Min&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Max&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;buildingSourceFile&quot;</span><span class="p">:</span><span class="s2">&quot;input_params.csv&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;RegionalMapping&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;NearestNeighborEvents&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;filenameEVENTgrid&quot;</span><span class="p">:</span> <span class="s2">&quot;records/EventGrid.csv&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;samples&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s2">&quot;neighbors&quot;</span><span class="p">:</span> <span class="mi">4</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Events&quot;</span><span class="p">:</span> <span class="p">[{</span>
+      <span class="s2">&quot;EventClassification&quot;</span><span class="p">:</span> <span class="s2">&quot;Earthquake&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;SimCenterEvent&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;pathEventData&quot;</span><span class="p">:</span> <span class="s2">&quot;records/&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}],</span>
+    <span class="s2">&quot;Modeling&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenSeesPyInput&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;mainScript&quot;</span><span class="p">:</span> <span class="s2">&quot;cantilever.py&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;modelPath&quot;</span><span class="p">:</span> <span class="s2">&quot;model/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ndm&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;dofMap&quot;</span><span class="p">:</span> <span class="s2">&quot;1,2,3&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;EDP&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;UserDefinedEDP_R&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;EDPspecs&quot;</span><span class="p">:</span> <span class="s2">&quot;EDP_specs.json&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Simulation&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s2">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenSeesPy-Simulation&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;UQ&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s2">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;Dakota-UQ&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;LHS&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;samples&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+          <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;UQ&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;concurrency&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+          <span class="s2">&quot;keepSamples&quot;</span><span class="p">:</span> <span class="n">true</span>
+       <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;DL&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;pelicun&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;DL_Method&quot;</span><span class="p">:</span> <span class="s2">&quot;HAZUS MH EQ&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Realizations&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+                <span class="s2">&quot;detailed_results&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+                <span class="s2">&quot;log_file&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+                <span class="s2">&quot;coupled_EDP&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+                <span class="s2">&quot;event_time&quot;</span><span class="p">:</span> <span class="s2">&quot;off&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ground_failure&quot;</span><span class="p">:</span> <span class="n">false</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<ol class="arabic simple" start="2">
+<li><p><strong>Building Application</strong>: This example uses the <a class="reference internal" href="../../architecture/desktop/applications/buildingApps.html#lblbuildingapp"><span class="std std-ref">CSV_to_BIM</span></a> building application. In the configuration file, the Max and Min parameters are set to run the full set of 20 buildings, and the name of the building source file is provided as “input_params.csv”. In the <a class="reference internal" href="../../architecture/desktop/file-types/Inputs.html#lbluserdefinputs"><span class="std std-ref">building source file</span></a>, input parameters for (a) the response simulation (weight <code class="docutils literal notranslate"><span class="pre">W</span></code>, yield strength <code class="docutils literal notranslate"><span class="pre">f_yield</span></code>, and fundamental period <code class="docutils literal notranslate"><span class="pre">T1</span></code>) and for (b) the DL assessment (e.g., <code class="docutils literal notranslate"><span class="pre">NumberofStories</span></code>, <code class="docutils literal notranslate"><span class="pre">YearBuilt</span></code>, <code class="docutils literal notranslate"><span class="pre">OccupancyClass</span></code>, <code class="docutils literal notranslate"><span class="pre">StructureType</span></code>, <code class="docutils literal notranslate"><span class="pre">PlanArea</span></code>, <code class="docutils literal notranslate"><span class="pre">ReplacementCost</span></code>) are specified.</p></li>
+</ol>
+<p><strong>Building source file:</strong></p>
+<table class="docutils align-center" id="id1">
+<caption><span class="caption-text">input_params.csv</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>id</p></th>
+<th class="head"><p>Latitude</p></th>
+<th class="head"><p>Longitude</p></th>
+<th class="head"><p>NumberofStories</p></th>
+<th class="head"><p>YearBuilt</p></th>
+<th class="head"><p>OccupancyClass</p></th>
+<th class="head"><p>StructureType</p></th>
+<th class="head"><p>PlanArea</p></th>
+<th class="head"><p>ReplacementCost</p></th>
+<th class="head"><p>W</p></th>
+<th class="head"><p>f_yield</p></th>
+<th class="head"><p>T1</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>37.422</p></td>
+<td><p>-122.182</p></td>
+<td><p>1</p></td>
+<td><p>1957</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1293.253476</p></td>
+<td><p>1</p></td>
+<td><p>55.25</p></td>
+<td><p>118.75</p></td>
+<td><p>0.29375</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>37.422</p></td>
+<td><p>-122.18575</p></td>
+<td><p>1</p></td>
+<td><p>1927</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2568.835761</p></td>
+<td><p>1</p></td>
+<td><p>86.75</p></td>
+<td><p>148.75</p></td>
+<td><p>0.15625</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>37.422</p></td>
+<td><p>-122.1895</p></td>
+<td><p>1</p></td>
+<td><p>2020</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1127.07738</p></td>
+<td><p>1</p></td>
+<td><p>114.75</p></td>
+<td><p>123.75</p></td>
+<td><p>0.39375</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>37.422</p></td>
+<td><p>-122.19325</p></td>
+<td><p>1</p></td>
+<td><p>1951</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2085.809768</p></td>
+<td><p>1</p></td>
+<td><p>107.75</p></td>
+<td><p>126.25</p></td>
+<td><p>0.24375</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>37.422</p></td>
+<td><p>-122.197</p></td>
+<td><p>1</p></td>
+<td><p>1960</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1481.567067</p></td>
+<td><p>1</p></td>
+<td><p>76.25</p></td>
+<td><p>101.25</p></td>
+<td><p>0.30625</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>37.42366667</p></td>
+<td><p>-122.182</p></td>
+<td><p>1</p></td>
+<td><p>1986</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1240.719532</p></td>
+<td><p>1</p></td>
+<td><p>90.25</p></td>
+<td><p>116.25</p></td>
+<td><p>0.21875</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>37.42366667</p></td>
+<td><p>-122.18575</p></td>
+<td><p>1</p></td>
+<td><p>1984</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2437.970509</p></td>
+<td><p>1</p></td>
+<td><p>93.75</p></td>
+<td><p>141.25</p></td>
+<td><p>0.35625</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>37.42366667</p></td>
+<td><p>-122.1895</p></td>
+<td><p>1</p></td>
+<td><p>1983</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2668.60615</p></td>
+<td><p>1</p></td>
+<td><p>111.25</p></td>
+<td><p>133.75</p></td>
+<td><p>0.36875</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>37.42366667</p></td>
+<td><p>-122.19325</p></td>
+<td><p>1</p></td>
+<td><p>1957</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1553.47035</p></td>
+<td><p>1</p></td>
+<td><p>104.25</p></td>
+<td><p>108.75</p></td>
+<td><p>0.19375</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>37.42366667</p></td>
+<td><p>-122.197</p></td>
+<td><p>1</p></td>
+<td><p>1984</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1625.164708</p></td>
+<td><p>1</p></td>
+<td><p>58.75</p></td>
+<td><p>106.25</p></td>
+<td><p>0.23125</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>37.42533333</p></td>
+<td><p>-122.182</p></td>
+<td><p>1</p></td>
+<td><p>2018</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1787.865419</p></td>
+<td><p>1</p></td>
+<td><p>62.25</p></td>
+<td><p>143.75</p></td>
+<td><p>0.34375</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>37.42533333</p></td>
+<td><p>-122.18575</p></td>
+<td><p>1</p></td>
+<td><p>2018</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1821.174819</p></td>
+<td><p>1</p></td>
+<td><p>65.75</p></td>
+<td><p>138.75</p></td>
+<td><p>0.20625</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>37.42533333</p></td>
+<td><p>-122.1895</p></td>
+<td><p>1</p></td>
+<td><p>1930</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1624.532488</p></td>
+<td><p>1</p></td>
+<td><p>69.25</p></td>
+<td><p>146.25</p></td>
+<td><p>0.31875</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>37.42533333</p></td>
+<td><p>-122.19325</p></td>
+<td><p>1</p></td>
+<td><p>1922</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1134.673241</p></td>
+<td><p>1</p></td>
+<td><p>79.75</p></td>
+<td><p>103.75</p></td>
+<td><p>0.25625</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>37.42533333</p></td>
+<td><p>-122.197</p></td>
+<td><p>1</p></td>
+<td><p>1947</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1625.097354</p></td>
+<td><p>1</p></td>
+<td><p>51.75</p></td>
+<td><p>128.75</p></td>
+<td><p>0.16875</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>37.427</p></td>
+<td><p>-122.182</p></td>
+<td><p>1</p></td>
+<td><p>1969</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2289.96328</p></td>
+<td><p>1</p></td>
+<td><p>83.25</p></td>
+<td><p>131.25</p></td>
+<td><p>0.33125</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>37.427</p></td>
+<td><p>-122.18575</p></td>
+<td><p>1</p></td>
+<td><p>2006</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2288.360712</p></td>
+<td><p>1</p></td>
+<td><p>100.75</p></td>
+<td><p>136.25</p></td>
+<td><p>0.38125</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>37.427</p></td>
+<td><p>-122.1895</p></td>
+<td><p>1</p></td>
+<td><p>1959</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2291.605647</p></td>
+<td><p>1</p></td>
+<td><p>97.25</p></td>
+<td><p>111.25</p></td>
+<td><p>0.18125</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>37.427</p></td>
+<td><p>-122.19325</p></td>
+<td><p>1</p></td>
+<td><p>1979</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2770.811412</p></td>
+<td><p>1</p></td>
+<td><p>72.75</p></td>
+<td><p>113.75</p></td>
+<td><p>0.26875</p></td>
+</tr>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>37.427</p></td>
+<td><p>-122.197</p></td>
+<td><p>1</p></td>
+<td><p>1976</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2088.450773</p></td>
+<td><p>1</p></td>
+<td><p>118.25</p></td>
+<td><p>121.25</p></td>
+<td><p>0.28125</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="3">
+<li><p><strong>Regional Mapping Application</strong>: This example uses the <a class="reference internal" href="../../architecture/desktop/applications/regionalMapApps.html#lblregionalmapapp"><span class="std std-ref">NearestNeighborEvents</span></a> regional mapping application. From the parameters set in the configuration file, the algorithm is set to randomly select 5 samples of ground motion records from the 4 nearest neighbors for each building asset.</p></li>
+</ol>
+<div class="align-center figure">
+<img alt="../../../../_images/regionalearthquakeexample_annot.png" src="../../../../_images/regionalearthquakeexample_annot.png" />
+</div>
+<ol class="arabic simple" start="4">
+<li><p><strong>Event Application</strong>: This example uses the <a class="reference internal" href="../../architecture/desktop/applications/eventApps.html#lbleventapp"><span class="std std-ref">SimCenterEvents</span></a> event application. It takes as input the EventGrid.csv, event files with the ground motion intensity measures, and the site files which specify the five ground motions assigned to each event site.</p></li>
+</ol>
+<p><strong>Event grid file:</strong></p>
+<table class="docutils align-center" id="id2">
+<caption><span class="caption-text">EventGrid.csv</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>sta</p></th>
+<th class="head"><p>lon</p></th>
+<th class="head"><p>lat</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>site0.csv</p></td>
+<td><p>-122.18</p></td>
+<td><p>37.42</p></td>
+</tr>
+<tr class="row-odd"><td><p>site1.csv</p></td>
+<td><p>-122.19</p></td>
+<td><p>37.42</p></td>
+</tr>
+<tr class="row-even"><td><p>site2.csv</p></td>
+<td><p>-122.2</p></td>
+<td><p>37.42</p></td>
+</tr>
+<tr class="row-odd"><td><p>site3.csv</p></td>
+<td><p>-122.18</p></td>
+<td><p>37.425</p></td>
+</tr>
+<tr class="row-even"><td><p>site4.csv</p></td>
+<td><p>-122.19</p></td>
+<td><p>37.425</p></td>
+</tr>
+<tr class="row-odd"><td><p>site5.csv</p></td>
+<td><p>-122.2</p></td>
+<td><p>37.425</p></td>
+</tr>
+<tr class="row-even"><td><p>site6.csv</p></td>
+<td><p>-122.18</p></td>
+<td><p>37.43</p></td>
+</tr>
+<tr class="row-odd"><td><p>site7.csv</p></td>
+<td><p>-122.19</p></td>
+<td><p>37.43</p></td>
+</tr>
+<tr class="row-even"><td><p>site8.csv</p></td>
+<td><p>-122.2</p></td>
+<td><p>37.43</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Site file:</strong></p>
+<table class="docutils align-center" id="id3">
+<caption><span class="caption-text">site0.csv</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>GM_file</p></th>
+<th class="head"><p>factor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RSN251</p></td>
+<td><p>4.683735054680426</p></td>
+</tr>
+<tr class="row-odd"><td><p>RSN564</p></td>
+<td><p>1.2243750794265975</p></td>
+</tr>
+<tr class="row-even"><td><p>RSN692</p></td>
+<td><p>0.8188602253372889</p></td>
+</tr>
+<tr class="row-odd"><td><p>RSN626</p></td>
+<td><p>1.252450834874058</p></td>
+</tr>
+<tr class="row-even"><td><p>RSN244</p></td>
+<td><p>4.634837258912294</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="5">
+<li><p><strong>Modeling Application</strong>: This example uses the <a class="reference internal" href="../../architecture/desktop/applications/modelingApps.html#lblmodelingapp"><span class="std std-ref">OpenSeesPyInput</span></a> modeling application. The buildings are modeled as elastic-perfectly plastic single-degree-of-freedom (SDOF) systems defined by three input model parameters: the weight <code class="docutils literal notranslate"><span class="pre">W</span></code>, yield strength <code class="docutils literal notranslate"><span class="pre">f_yield</span></code>, and fundamental period <code class="docutils literal notranslate"><span class="pre">T1</span></code>. Functions are included which record the peak response as EDPs for each of the EDP types specified in the EDP_specs.json file.</p></li>
+</ol>
+<p><strong>Model file:</strong></p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">  1</span>
+<span class="normal">  2</span>
+<span class="normal">  3</span>
+<span class="normal">  4</span>
+<span class="normal">  5</span>
+<span class="normal">  6</span>
+<span class="normal">  7</span>
+<span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">openseespy.opensees</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="sd">&#39;&#39;&#39; FUNCTION: build_model ------------------------------------------------------</span>
+<span class="sd">Generates OpenSeesPy model of an elastic-perfectly plastic SDOF system and runs</span>
+<span class="sd">gravity analysis.</span>
+<span class="sd">Inputs: in model_params</span>
+<span class="sd">	W - weight of structure</span>
+<span class="sd">	f_yield - yield stiffness</span>
+<span class="sd">	T1 - fundamental period</span>
+<span class="sd">Outputs:</span>
+
+<span class="sd">-----------------------------------------------------------------------------&#39;&#39;&#39;</span>
+
+<span class="k">def</span> <span class="nf">build_model</span><span class="p">(</span><span class="n">model_params</span><span class="p">):</span>
+
+	<span class="n">G</span> <span class="o">=</span> <span class="mf">386.1</span>
+	<span class="n">W</span> <span class="o">=</span> <span class="n">model_params</span><span class="p">[</span><span class="s2">&quot;W&quot;</span><span class="p">]</span>
+	<span class="n">f_yield</span> <span class="o">=</span> <span class="n">model_params</span><span class="p">[</span><span class="s2">&quot;f_yield&quot;</span><span class="p">]</span>
+	<span class="n">T1</span> <span class="o">=</span> <span class="n">model_params</span><span class="p">[</span><span class="s2">&quot;T1&quot;</span><span class="p">]</span>
+	<span class="n">m</span> <span class="o">=</span> <span class="n">W</span> <span class="o">/</span> <span class="n">G</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;m: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+
+	<span class="c1"># set model dimensions and deg of freedom</span>
+	<span class="n">model</span><span class="p">(</span><span class="s1">&#39;basic&#39;</span><span class="p">,</span> <span class="s1">&#39;-ndm&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;-ndf&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+
+	<span class="c1"># define nodes</span>
+	<span class="n">base_node_tag</span> <span class="o">=</span> <span class="mi">10000</span>
+	<span class="n">top_node_tag</span> <span class="o">=</span> <span class="mi">10001</span>
+	<span class="n">height</span> <span class="o">=</span> <span class="mf">240.</span> <span class="c1"># in</span>
+	<span class="n">node</span><span class="p">(</span><span class="n">base_node_tag</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+	<span class="n">node</span><span class="p">(</span><span class="n">top_node_tag</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+
+	<span class="c1"># define fixities</span>
+	<span class="n">fix</span><span class="p">(</span><span class="n">base_node_tag</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+	<span class="n">fix</span><span class="p">(</span><span class="n">top_node_tag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+	<span class="c1"># define bilinear (elastic-perfectly plastic) material</span>
+	<span class="n">material_tag</span> <span class="o">=</span> <span class="mi">100</span>
+	<span class="n">stiffmat</span> <span class="o">=</span> <span class="mi">110</span>
+	<span class="n">K</span> <span class="o">=</span> <span class="n">m</span> <span class="o">/</span> <span class="p">(</span><span class="n">T1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;K: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">K</span><span class="p">))</span>
+	<span class="n">uniaxialMaterial</span><span class="p">(</span><span class="s1">&#39;Steel01&#39;</span><span class="p">,</span> <span class="n">material_tag</span><span class="p">,</span> <span class="n">f_yield</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">)</span>
+	<span class="n">uniaxialMaterial</span><span class="p">(</span><span class="s1">&#39;Elastic&#39;</span><span class="p">,</span> <span class="n">stiffmat</span><span class="p">,</span> <span class="mf">1.e9</span><span class="p">)</span>
+
+	<span class="c1"># define element</span>
+	<span class="n">element_tag</span> <span class="o">=</span> <span class="mi">1000</span>
+	<span class="n">element</span><span class="p">(</span><span class="s1">&#39;twoNodeLink&#39;</span><span class="p">,</span> <span class="n">element_tag</span><span class="p">,</span> <span class="n">base_node_tag</span><span class="p">,</span> <span class="n">top_node_tag</span><span class="p">,</span> <span class="s1">&#39;-mat&#39;</span><span class="p">,</span> <span class="n">stiffmat</span><span class="p">,</span> <span class="n">material_tag</span><span class="p">,</span> <span class="n">material_tag</span><span class="p">,</span> <span class="s1">&#39;-dir&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;-orient&#39;</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="s1">&#39;-doRayleigh&#39;</span><span class="p">)</span>
+
+	<span class="c1"># define mass</span>
+	<span class="n">mass</span><span class="p">(</span><span class="n">top_node_tag</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+
+	<span class="c1"># define gravity loads</span>
+	<span class="c1"># W = m * 386.01 # g</span>
+	<span class="n">timeSeries</span><span class="p">(</span><span class="s1">&#39;Linear&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+	<span class="n">pattern</span><span class="p">(</span><span class="s1">&#39;Plain&#39;</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+	<span class="n">load</span><span class="p">(</span><span class="n">top_node_tag</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="n">W</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+
+	<span class="c1"># define damping based on first eigenmode</span>
+	<span class="n">damp_ratio</span> <span class="o">=</span> <span class="mf">0.05</span>
+	<span class="n">angular_freq</span> <span class="o">=</span> <span class="n">eigen</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mf">0.5</span>
+	<span class="n">beta_k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">damp_ratio</span> <span class="o">/</span> <span class="n">angular_freq</span>
+	<span class="n">rayleigh</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">beta_k</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+
+	<span class="c1"># run gravity analysis</span>
+	<span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-8</span>                          <span class="c1"># convergence tolerance for test</span>
+	<span class="nb">iter</span> <span class="o">=</span> <span class="mi">100</span>                          <span class="c1"># max number of iterations</span>
+	<span class="n">nstep</span> <span class="o">=</span> <span class="mi">100</span>               		    <span class="c1"># apply gravity loads in 10 steps</span>
+	<span class="n">incr</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">nstep</span>          			<span class="c1"># first load increment</span>
+
+	<span class="c1"># analysis settings</span>
+	<span class="n">constraints</span><span class="p">(</span><span class="s1">&#39;Transformation&#39;</span><span class="p">)</span>       <span class="c1"># enforce boundary conditions using transformation constraint handler</span>
+	<span class="n">numberer</span><span class="p">(</span><span class="s1">&#39;RCM&#39;</span><span class="p">)</span>			            <span class="c1"># renumbers dof&#39;s to minimize band-width (optimization)</span>
+	<span class="n">system</span><span class="p">(</span><span class="s1">&#39;BandGeneral&#39;</span><span class="p">)</span>		        <span class="c1"># stores system of equations as 1D array of size bandwidth x number of unknowns</span>
+	<span class="n">test</span><span class="p">(</span><span class="s1">&#39;EnergyIncr&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="nb">iter</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>    <span class="c1"># tests for convergence using dot product of solution vector and norm of right-hand side of matrix equation</span>
+	<span class="n">algorithm</span><span class="p">(</span><span class="s1">&#39;Newton&#39;</span><span class="p">)</span>                 <span class="c1"># use Newton&#39;s solution algorithm: updates tangent stiffness at every iteration</span>
+	<span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;LoadControl&#39;</span><span class="p">,</span> <span class="n">incr</span><span class="p">)</span>     <span class="c1"># determine the next time step for an analysis # apply gravity in 10 steps</span>
+	<span class="n">analysis</span><span class="p">(</span><span class="s1">&#39;Static&#39;</span><span class="p">)</span>		            <span class="c1"># define type of analysis, static or transient</span>
+	<span class="n">analyze</span><span class="p">(</span><span class="n">nstep</span><span class="p">)</span>	          			<span class="c1"># perform gravity analysis</span>
+
+	<span class="c1"># after gravity analysis, change time and tolerance for the dynamic analysis</span>
+	<span class="n">loadConst</span><span class="p">(</span><span class="s1">&#39;-time&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+
+
+
+
+
+<span class="c1"># FUNCTION: PeakDriftRecorder --------------------------------------------------</span>
+<span class="c1"># saves envelope of interstory drift ratio for each story at one analysis step</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+<span class="k">def</span> <span class="nf">PeakDriftRecorder</span><span class="p">(</span><span class="n">EDP_specs</span><span class="p">,</span> <span class="n">envDict</span><span class="p">):</span>
+    <span class="c1"># inputs:</span>
+    <span class="c1"># EDP_specs = dictionary of EDP type, location, direction</span>
+    <span class="c1"># envDict = dictionary of envelope values</span>
+
+
+    <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">EDP_specs</span><span class="p">[</span><span class="s1">&#39;PID&#39;</span><span class="p">]:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">dof</span> <span class="ow">in</span> <span class="n">EDP_specs</span><span class="p">[</span><span class="s1">&#39;PID&#39;</span><span class="p">][</span><span class="n">loc</span><span class="p">]:</span>
+            <span class="n">storynodes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">EDP_specs</span><span class="p">[</span><span class="s1">&#39;PID&#39;</span><span class="p">][</span><span class="n">loc</span><span class="p">][</span><span class="n">dof</span><span class="p">]]</span>
+            <span class="c1"># print(&quot;computing drifts for nodes: {}&quot;.format(storynodes))</span>
+            <span class="n">story_height</span> <span class="o">=</span> <span class="n">nodeCoord</span><span class="p">(</span><span class="n">storynodes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">nodeCoord</span><span class="p">(</span><span class="n">storynodes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">3</span><span class="p">)</span>
+            <span class="c1"># compute drift</span>
+            <span class="n">topDisp</span> <span class="o">=</span> <span class="n">nodeDisp</span><span class="p">(</span><span class="n">storynodes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">dof</span><span class="p">)</span>
+            <span class="n">botDisp</span> <span class="o">=</span> <span class="n">nodeDisp</span><span class="p">(</span><span class="n">storynodes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">dof</span><span class="p">)</span>
+            <span class="n">new_drift</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="n">topDisp</span><span class="o">-</span><span class="n">botDisp</span><span class="p">)</span><span class="o">/</span><span class="n">story_height</span><span class="p">)</span>
+            <span class="c1"># update dictionary</span>
+            <span class="n">curr_drift</span> <span class="o">=</span> <span class="n">envDict</span><span class="p">[</span><span class="s1">&#39;PID&#39;</span><span class="p">][</span><span class="n">loc</span><span class="p">][</span><span class="n">pos</span><span class="p">]</span>
+            <span class="n">new_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">new_drift</span><span class="p">,</span> <span class="n">curr_drift</span><span class="p">)</span>
+            <span class="n">envDict</span><span class="p">[</span><span class="s1">&#39;PID&#39;</span><span class="p">][</span><span class="n">loc</span><span class="p">][</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_max</span>
+            <span class="n">pos</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">envDict</span>
+
+
+
+<span class="c1"># FUNCTION: AccelHistoryRecorder -----------------------------------------------</span>
+<span class="c1"># saves time history of relative floor acceleration for each story at one analysis step</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+<span class="k">def</span> <span class="nf">AccelHistoryRecorder</span><span class="p">(</span><span class="n">EDP_specs</span><span class="p">,</span> <span class="n">histDict</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+    <span class="c1"># inputs:</span>
+    <span class="c1"># histDict = dictionary of time histories</span>
+    <span class="c1"># recorderNodes = list of nodes where EDP is recorded</span>
+    <span class="c1"># count = current count in the time history</span>
+
+    <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">EDP_specs</span><span class="p">[</span><span class="s1">&#39;PFA&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">dof</span> <span class="ow">in</span> <span class="n">EDP_specs</span><span class="p">[</span><span class="s1">&#39;PFA&#39;</span><span class="p">][</span><span class="n">loc</span><span class="p">]:</span>
+            <span class="n">storynode</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">EDP_specs</span><span class="p">[</span><span class="s1">&#39;PFA&#39;</span><span class="p">][</span><span class="n">loc</span><span class="p">][</span><span class="n">dof</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="c1"># obtain acceleration</span>
+            <span class="n">new_acc</span> <span class="o">=</span> <span class="n">nodeAccel</span><span class="p">(</span><span class="n">storynode</span><span class="p">,</span> <span class="n">dof</span><span class="p">)</span>
+            <span class="n">histDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">loc</span><span class="p">][</span><span class="n">dof</span><span class="p">][</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_acc</span>
+
+
+    <span class="k">return</span> <span class="n">histDict</span>
+
+
+
+<span class="c1"># FUNCTION: RunDynamicAnalysis -------------------------------------------------</span>
+<span class="c1"># performs dynamic analysis and records EDPs in dictionary</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+<span class="k">def</span> <span class="nf">RunDynamicAnalysis</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span><span class="nb">iter</span><span class="p">,</span><span class="n">dt</span><span class="p">,</span><span class="n">driftLimit</span><span class="p">,</span><span class="n">EDP_specs</span><span class="p">,</span><span class="n">subSteps</span><span class="p">,</span><span class="n">GMX</span><span class="p">,</span><span class="n">GMZ</span><span class="p">):</span>
+    <span class="c1"># inputs:</span>
+    <span class="c1"># tol = tolerance criteria to check for convergence</span>
+    <span class="c1"># iter = max number of iterations to check</span>
+    <span class="c1"># dt = time increment for analysis</span>
+    <span class="c1"># driftLimit = percent interstory drift limit indicating collapse</span>
+    <span class="c1"># recorderNodes = vector of node labels used to check global drifts and record EDPs</span>
+    <span class="c1"># subSteps = number of subdivisions in cases of ill convergence</span>
+    <span class="c1"># GMX = list of GM acceleration ordinates in X direction</span>
+    <span class="c1"># GMZ = list of GM acceleration ordinates in Z direction</span>
+
+    <span class="c1"># pad shorter record with zeros (free vibration) such that two horizontal records are the same length</span>
+    <span class="n">nsteps</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">GMX</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">GMZ</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">GMX</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">nsteps</span><span class="p">:</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">nsteps</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">GMX</span><span class="p">)</span>
+        <span class="n">GMX</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">diff</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">GMZ</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">nsteps</span><span class="p">:</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">nsteps</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">GMZ</span><span class="p">)</span>
+        <span class="n">GMZ</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">diff</span><span class="p">))</span>
+
+
+    <span class="c1"># generate time array from recording</span>
+    <span class="n">time_record</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nsteps</span><span class="o">*</span><span class="n">dt</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="n">nsteps</span><span class="p">,</span><span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># initialize dictionary of envelope EDPs</span>
+    <span class="n">envelopeDict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">edp</span> <span class="ow">in</span> <span class="n">EDP_specs</span><span class="p">:</span>
+        <span class="n">envelopeDict</span><span class="p">[</span><span class="n">edp</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">EDP_specs</span><span class="p">[</span><span class="n">edp</span><span class="p">]:</span>
+            <span class="n">numdof</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">EDP_specs</span><span class="p">[</span><span class="n">edp</span><span class="p">][</span><span class="n">loc</span><span class="p">])</span>
+            <span class="n">envelopeDict</span><span class="p">[</span><span class="n">edp</span><span class="p">][</span><span class="n">loc</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">numdof</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">envelopeDict</span><span class="p">)</span>
+
+    <span class="c1"># initialize dictionary of time history EDPs</span>
+    <span class="n">historyDict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;accel&#39;</span><span class="p">:{}}</span>
+    <span class="n">time_analysis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nsteps</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">EDP_specs</span><span class="p">[</span><span class="s1">&#39;PFA&#39;</span><span class="p">]:</span>
+        <span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">loc</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">dof</span> <span class="ow">in</span> <span class="n">EDP_specs</span><span class="p">[</span><span class="s1">&#39;PFA&#39;</span><span class="p">][</span><span class="n">loc</span><span class="p">]:</span>
+            <span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">loc</span><span class="p">][</span><span class="n">dof</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nsteps</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="c1"># number of diaphragm levels</span>
+    <span class="n">levels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">EDP_specs</span><span class="p">[</span><span class="s1">&#39;PFA&#39;</span><span class="p">])</span>
+    <span class="n">CODnodes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">EDP_specs</span><span class="p">[</span><span class="s1">&#39;PFA&#39;</span><span class="p">]:</span>
+        <span class="n">CODnodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">EDP_specs</span><span class="p">[</span><span class="s1">&#39;PFA&#39;</span><span class="p">][</span><span class="n">loc</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">CODnodes</span><span class="p">)</span>
+
+
+    <span class="n">constraints</span><span class="p">(</span><span class="s1">&#39;Transformation&#39;</span><span class="p">)</span>            <span class="c1"># handles boundary conditions based on transformation equation method</span>
+    <span class="n">numberer</span><span class="p">(</span><span class="s1">&#39;RCM&#39;</span><span class="p">)</span>                          <span class="c1"># renumber dof&#39;s to minimize band-width (optimization)</span>
+    <span class="n">system</span><span class="p">(</span><span class="s1">&#39;UmfPack&#39;</span><span class="p">)</span>                        <span class="c1"># constructs sparse system of equations using UmfPack solver</span>
+    <span class="n">test</span><span class="p">(</span><span class="s1">&#39;NormDispIncr&#39;</span><span class="p">,</span><span class="n">tol</span><span class="p">,</span><span class="nb">iter</span><span class="p">)</span>            <span class="c1"># tests for convergence using norm of left-hand side of matrix equation</span>
+    <span class="n">algorithm</span><span class="p">(</span><span class="s1">&#39;NewtonLineSearch&#39;</span><span class="p">)</span>            <span class="c1"># use Newton&#39;s solution algorithm: updates tangent stiffness at every iteration</span>
+    <span class="n">integrator</span><span class="p">(</span><span class="s1">&#39;Newmark&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>         <span class="c1"># Newmark average acceleration method for numerical integration</span>
+    <span class="n">analysis</span><span class="p">(</span><span class="s1">&#39;Transient&#39;</span><span class="p">)</span>                    <span class="c1"># define type of analysis: time-dependent</span>
+
+    <span class="c1"># initialize variables</span>
+    <span class="n">maxDiv</span> <span class="o">=</span> <span class="mi">1024</span>
+    <span class="n">minDiv</span> <span class="o">=</span> <span class="n">subSteps</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">breaker</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">maxDrift</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">while</span> <span class="n">step</span><span class="o">&lt;</span><span class="n">nsteps</span> <span class="ow">and</span> <span class="n">ok</span><span class="o">==</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">breaker</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">step</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># take 1 step</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">div</span> <span class="o">=</span> <span class="n">minDiv</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="n">maxDiv</span>
+        <span class="k">while</span> <span class="n">div</span><span class="o">&lt;=</span><span class="n">maxDiv</span> <span class="ow">and</span> <span class="n">length</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">breaker</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">stepSize</span> <span class="o">=</span> <span class="n">dt</span><span class="o">/</span><span class="n">div</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="n">analyze</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">stepSize</span><span class="p">)</span>               <span class="c1"># perform analysis for one increment; will return 0 if no convergence issues</span>
+            <span class="k">if</span> <span class="n">ok</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">length</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="n">maxDiv</span><span class="o">/</span><span class="n">div</span>
+                <span class="c1"># check if drift limits are satisfied</span>
+                <span class="n">level</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">while</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="n">levels</span><span class="p">:</span>
+                    <span class="n">story_height</span> <span class="o">=</span> <span class="n">nodeCoord</span><span class="p">(</span><span class="n">CODnodes</span><span class="p">[</span><span class="n">level</span><span class="p">],</span><span class="mi">3</span><span class="p">)</span><span class="o">-</span><span class="n">nodeCoord</span><span class="p">(</span><span class="n">CODnodes</span><span class="p">[</span><span class="n">level</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mi">3</span><span class="p">)</span>
+                    <span class="c1"># check X direction drifts (direction 1)</span>
+                    <span class="n">topDisp</span> <span class="o">=</span> <span class="n">nodeDisp</span><span class="p">(</span><span class="n">CODnodes</span><span class="p">[</span><span class="n">level</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">botDisp</span> <span class="o">=</span> <span class="n">nodeDisp</span><span class="p">(</span><span class="n">CODnodes</span><span class="p">[</span><span class="n">level</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">deltaDisp</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">topDisp</span><span class="o">-</span><span class="n">botDisp</span><span class="p">)</span>
+                    <span class="n">drift</span> <span class="o">=</span> <span class="n">deltaDisp</span><span class="o">/</span><span class="n">story_height</span>
+                    <span class="k">if</span> <span class="n">drift</span> <span class="o">&gt;=</span> <span class="n">driftLimit</span><span class="p">:</span>
+                        <span class="n">breaker</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="c1"># check Y direction drifts (direction 2)</span>
+                    <span class="n">topDisp</span> <span class="o">=</span> <span class="n">nodeDisp</span><span class="p">(</span><span class="n">CODnodes</span><span class="p">[</span><span class="n">level</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="n">botDisp</span> <span class="o">=</span> <span class="n">nodeDisp</span><span class="p">(</span><span class="n">CODnodes</span><span class="p">[</span><span class="n">level</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="n">deltaDisp</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">topDisp</span><span class="o">-</span><span class="n">botDisp</span><span class="p">)</span>
+                    <span class="n">drift</span> <span class="o">=</span> <span class="n">deltaDisp</span><span class="o">/</span><span class="n">story_height</span>
+                    <span class="k">if</span> <span class="n">drift</span> <span class="o">&gt;=</span> <span class="n">driftLimit</span><span class="p">:</span>
+                        <span class="n">breaker</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="c1"># move on to check next level</span>
+                    <span class="n">level</span> <span class="o">=</span> <span class="n">level</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="c1"># save parameter values in recording dictionaries at every step</span>
+                <span class="n">time_analysis</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_analysis</span><span class="p">[</span><span class="n">count</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">stepSize</span>
+                <span class="n">envelopeDict</span> <span class="o">=</span> <span class="n">PeakDriftRecorder</span><span class="p">(</span><span class="n">EDP_specs</span><span class="p">,</span> <span class="n">envelopeDict</span><span class="p">)</span>
+                <span class="n">historyDict</span> <span class="o">=</span> <span class="n">AccelHistoryRecorder</span><span class="p">(</span><span class="n">EDP_specs</span><span class="p">,</span> <span class="n">historyDict</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># if ok != 0</span>
+                <span class="n">div</span> <span class="o">=</span> <span class="n">div</span><span class="o">*</span><span class="mi">2</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of increments increased to &quot;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">div</span><span class="p">))</span>
+    <span class="c1"># end analysis once drift limit has been reached</span>
+    <span class="k">if</span> <span class="n">breaker</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Collapse drift has been reached&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of analysis steps completed: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">count</span><span class="p">))</span>
+
+    <span class="c1"># remove extra zeros from time history</span>
+    <span class="n">time_analysis</span> <span class="o">=</span> <span class="n">time_analysis</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_analysis</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="c1"># remove extra zeros from accel time history, add GM to obtain absolute acceleration, and record envelope value</span>
+    <span class="n">GMX_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">time_analysis</span><span class="p">,</span> <span class="n">time_record</span><span class="p">,</span> <span class="n">GMX</span><span class="p">)</span>
+    <span class="n">GMZ_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">time_analysis</span><span class="p">,</span> <span class="n">time_record</span><span class="p">,</span> <span class="n">GMZ</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">levels</span><span class="p">):</span>
+        <span class="c1"># X direction</span>
+        <span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">level</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">level</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">level</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">level</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">GMX_interp</span>
+        <span class="n">envelopeDict</span><span class="p">[</span><span class="s1">&#39;PFA&#39;</span><span class="p">][</span><span class="n">level</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">level</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="c1"># Z direction</span>
+        <span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">level</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">level</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">level</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">level</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="n">GMZ_interp</span>
+        <span class="n">envelopeDict</span><span class="p">[</span><span class="s1">&#39;PFA&#39;</span><span class="p">][</span><span class="n">level</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">historyDict</span><span class="p">[</span><span class="s1">&#39;accel&#39;</span><span class="p">][</span><span class="n">level</span><span class="p">][</span><span class="mi">2</span><span class="p">]))</span>
+
+
+    <span class="k">return</span> <span class="n">envelopeDict</span>
+
+
+
+<span class="c1"># MAIN: run_analysis -----------------------------------------------------------</span>
+<span class="c1"># runs dynamic analysis for single event and returns dictionary of envelope EDPs</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+<span class="k">def</span> <span class="nf">run_analysis</span><span class="p">(</span><span class="n">GM_dt</span><span class="p">,</span> <span class="n">GM_npts</span><span class="p">,</span> <span class="n">TS_List</span><span class="p">,</span> <span class="n">EDP_specs</span><span class="p">):</span>
+    <span class="c1"># inputs:</span>
+    <span class="c1"># GM_dt = time step of GM record</span>
+    <span class="c1"># GM_npts = number of steps in GM record</span>
+    <span class="c1"># TS_List = 1x2 list where first component is a list of GMX acceleration points, second component is a list of GMZ acceleration points (scaled and multipled by G)</span>
+    <span class="n">GMX_points</span> <span class="o">=</span> <span class="n">TS_List</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">GMZ_points</span> <span class="o">=</span> <span class="n">TS_List</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># print(EDP_specs)</span>
+
+    <span class="n">wipeAnalysis</span><span class="p">()</span>
+
+
+    <span class="c1"># define parameters for dynamic analysis</span>
+    <span class="n">driftLimit</span> <span class="o">=</span> <span class="mf">0.20</span>   <span class="c1"># %</span>
+    <span class="n">toler</span> <span class="o">=</span> <span class="mf">1.e-08</span>
+    <span class="n">maxiter</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">subSteps</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="n">envdata</span> <span class="o">=</span> <span class="n">RunDynamicAnalysis</span><span class="p">(</span><span class="n">toler</span><span class="p">,</span><span class="n">maxiter</span><span class="p">,</span><span class="n">GM_dt</span><span class="p">,</span><span class="n">driftLimit</span><span class="p">,</span><span class="n">EDP_specs</span><span class="p">,</span><span class="n">subSteps</span><span class="p">,</span><span class="n">GMX_points</span><span class="p">,</span><span class="n">GMZ_points</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">envdata</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">envdata</span>
+</pre></div>
+</td></tr></table></div>
+<ol class="arabic simple" start="6">
+<li><p><strong>EDP Application</strong>: This example uses the <a class="reference internal" href="../../architecture/desktop/applications/EDPApps.html#lbledpapp"><span class="std std-ref">UserDefinedEDP</span></a> EDP application. Custom EDPs are specified in the EDP specifications file. The EDP types are peak interstory drift (PID) and peak floor acceleration (PFA), recorded at the base and top node of the structural model in two horizontal directions (1,2).</p></li>
+</ol>
+<p><strong>EDP specifications file:</strong></p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;locations&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="mi">10000</span><span class="p">,</span>
+            <span class="mi">10001</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;EDP_types&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;PID&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="mi">1</span><span class="p">,</span>
+                <span class="mi">2</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;PFA&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="mi">1</span><span class="p">,</span>
+                <span class="mi">2</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<ol class="arabic simple" start="7">
+<li><p><strong>Simulation Application</strong>: This example uses the <a class="reference internal" href="../../architecture/desktop/applications/simulationApps.html#lblsimulationapp"><span class="std std-ref">OpenSeesPySimulation</span></a> simulation application, which corresponds to the <strong>OpenSeesPyInput</strong> modeling application. It reads the <code class="docutils literal notranslate"><span class="pre">build_model</span></code> and <code class="docutils literal notranslate"><span class="pre">run_analysis</span></code> functions from the model file to perform the response simulation.</p></li>
+<li><p><strong>UQ Application</strong>: This example uses the <a class="reference internal" href="../../architecture/desktop/applications/UQApps.html#lbluqapp"><span class="std std-ref">Dakota-UQ</span></a> UQ application to run the response simulation. In the configuration file, the number of samples specified for the UQ application should match the number of ground motion samples per building asset specified for the RegionalMapping application.</p></li>
+<li><p><strong>DL Application</strong>: This example uses the <a class="reference internal" href="../../architecture/desktop/applications/DLApps.html#lbldlapp"><span class="std std-ref">pelicun</span></a> DL application. From the <a class="reference internal" href="../../architecture/desktop/file-types/Inputs.html#lbluserdefinputs"><span class="std std-ref">building source file</span></a>, since the DL method selected is “HAZUS MH EQ”, damage/loss estimation is performed using the HAZUS loss assessment method based on earthquake EDPs produced from the response simulation.</p></li>
+</ol>
+</div>
+<div class="section" id="run-workflow">
+<h2>Run Workflow<a class="headerlink" href="#run-workflow" title="Permalink to this headline">¶</a></h2>
+<p>The workflow can be executed by uploading the appropriate files to <a class="reference internal" href="../../architecture/desktop/run-manually/runRemote.html#lblrunremote"><span class="std std-ref">DesignSafe</span></a>, or by running the example on your <a class="reference internal" href="../../architecture/desktop/run-manually/runLocal.html#lblrunlocal"><span class="std std-ref">local desktop</span></a>, using the following <em>initialization command</em> in the terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="s2">&quot;C:/rWHALE/applications/Workflow/R2D_workflow.py&quot;</span> <span class="s2">&quot;C:/rWHALE/cantilever_example/rWHALE_config_eq.json&quot;</span> <span class="o">--</span><span class="n">registry</span> <span class="s2">&quot;C:/rWHALE/applications/Workflow/WorkflowApplications.json&quot;</span> <span class="o">--</span><span class="n">referenceDir</span> <span class="s2">&quot;C:/rWHALE/cantilever_example/input_data/&quot;</span> <span class="o">-</span><span class="n">w</span> <span class="s2">&quot;C:/rWHALE/cantilever_example/results&quot;</span>
+</pre></div>
+</div>
+<p>This command locates the backend applications in the folder “applications”, and the input files in a directory “cantilever_example”. Please ensure that the paths in the command appropriately identify the locations of the files in your directory.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>applications
+cantilever_example
+├── rWHALE_config_eq.json              # configuration file
+└── input_data
+    ├── model
+        ├── cantilever.py           # model file
+    ├── records
+        ├── EventGrid.csv           # event grid file
+        ├── RSN30.json              # event IM files
+        ├── RSN63.json
+        .
+        .
+        .
+        ├── site0.csv               # site files
+        ├── site1.csv
+        .
+        .
+        .
+        └── site8.csv
+    ├── EDPspecs.json               # EDP specifications file
+    └── input_params.csv            # building source file
+</pre></div>
+</div>
+</div>
+<div class="section" id="outputs">
+<h2>Outputs<a class="headerlink" href="#outputs" title="Permalink to this headline">¶</a></h2>
+<p>The example output files can be downloaded here: <a class="reference download internal" download="" href="../../../../_downloads/d6cbb7f7e871d08dfebeb4dd03de42a5/output_data_eq.zip"><code class="xref download docutils literal notranslate"><span class="pre">output_data_eq.zip</span></code></a>. For more information about the output files produced, refer to <a class="reference internal" href="../../architecture/desktop/file-types/Outputs.html#lbloutputs"><span class="std std-ref">Outputs</span></a>.</p>
+<ol class="arabic simple">
+<li><p><strong>EDP_1-19.csv</strong>: reports statistics on the EDP results from simulating 5 ground motions for each building asset. The statistics reported are the median and lognormal standard deviation of peak interstory drift (PID) and peak floor acceleration (PFA) in two directions.</p></li>
+</ol>
+<table class="docutils align-center" id="id4">
+<caption><span class="caption-text">EDP_1-19.csv</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>type</p></th>
+<th class="head"><p>PFA</p></th>
+<th class="head"><p>PFA</p></th>
+<th class="head"><p>PFA</p></th>
+<th class="head"><p>PFA</p></th>
+<th class="head"><p>PFA</p></th>
+<th class="head"><p>PFA</p></th>
+<th class="head"><p>PFA</p></th>
+<th class="head"><p>PFA</p></th>
+<th class="head"><p>PID</p></th>
+<th class="head"><p>PID</p></th>
+<th class="head"><p>PID</p></th>
+<th class="head"><p>PID</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>loc</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>dir</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>stat</p></td>
+<td><p>median</p></td>
+<td><p>beta</p></td>
+<td><p>median</p></td>
+<td><p>beta</p></td>
+<td><p>median</p></td>
+<td><p>beta</p></td>
+<td><p>median</p></td>
+<td><p>beta</p></td>
+<td><p>median</p></td>
+<td><p>beta</p></td>
+<td><p>median</p></td>
+<td><p>beta</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>141.097</p></td>
+<td><p>0.199749331936861</p></td>
+<td><p>136.972</p></td>
+<td><p>0.26159704860592325</p></td>
+<td><p>412.267</p></td>
+<td><p>0.3689067092818622</p></td>
+<td><p>271.872</p></td>
+<td><p>0.4675055669073214</p></td>
+<td><p>0.00105633</p></td>
+<td><p>0.4186167860756997</p></td>
+<td><p>0.0006980389999999999</p></td>
+<td><p>0.5784022941837268</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>131.247</p></td>
+<td><p>0.4175448180418805</p></td>
+<td><p>155.204</p></td>
+<td><p>0.20283668507914568</p></td>
+<td><p>176.59</p></td>
+<td><p>0.4337498687956456</p></td>
+<td><p>157.04</p></td>
+<td><p>0.2691536257751124</p></td>
+<td><p>0.00287297</p></td>
+<td><p>0.4355512490436657</p></td>
+<td><p>0.00255504</p></td>
+<td><p>0.2712436832366108</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>144.195</p></td>
+<td><p>0.3556909851130682</p></td>
+<td><p>138.769</p></td>
+<td><p>0.14200186407081142</p></td>
+<td><p>446.805</p></td>
+<td><p>0.37406788320556</p></td>
+<td><p>317.6</p></td>
+<td><p>0.232094515864188</p></td>
+<td><p>0.00278474</p></td>
+<td><p>0.42430956257276864</p></td>
+<td><p>0.00198152</p></td>
+<td><p>0.3651330947055237</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>141.43</p></td>
+<td><p>0.2621121131463965</p></td>
+<td><p>149.726</p></td>
+<td><p>0.13936603018873167</p></td>
+<td><p>252.456</p></td>
+<td><p>0.20223535336029075</p></td>
+<td><p>358.745</p></td>
+<td><p>0.4682999285137096</p></td>
+<td><p>0.00248399</p></td>
+<td><p>0.20078394541079414</p></td>
+<td><p>0.00353105</p></td>
+<td><p>0.4664649292002271</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>127.76799999999999</p></td>
+<td><p>0.1933699100399082</p></td>
+<td><p>162.64700000000005</p></td>
+<td><p>0.22228311460245634</p></td>
+<td><p>373.093</p></td>
+<td><p>0.2695036478790295</p></td>
+<td><p>361.592</p></td>
+<td><p>0.21513981161420967</p></td>
+<td><p>0.0018780000000000001</p></td>
+<td><p>0.2699071050235337</p></td>
+<td><p>0.00181748</p></td>
+<td><p>0.2155059270390112</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>182.01400000000004</p></td>
+<td><p>0.1878891925155105</p></td>
+<td><p>160.911</p></td>
+<td><p>0.19737203237767328</p></td>
+<td><p>292.335</p></td>
+<td><p>0.48771266468706703</p></td>
+<td><p>292.813</p></td>
+<td><p>0.2930718377890685</p></td>
+<td><p>0.00389908</p></td>
+<td><p>0.4877100061602449</p></td>
+<td><p>0.00390263</p></td>
+<td><p>0.2931719410768729</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>130.996</p></td>
+<td><p>0.3926228335954007</p></td>
+<td><p>145.494</p></td>
+<td><p>0.09229922720084753</p></td>
+<td><p>267.488</p></td>
+<td><p>0.237269603979</p></td>
+<td><p>146.707</p></td>
+<td><p>0.3405650974061709</p></td>
+<td><p>0.00382051</p></td>
+<td><p>0.2371602524305522</p></td>
+<td><p>0.00209569</p></td>
+<td><p>0.3414405710280442</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>130.996</p></td>
+<td><p>0.3926228335954007</p></td>
+<td><p>145.494</p></td>
+<td><p>0.09229922720084753</p></td>
+<td><p>416.75300000000004</p></td>
+<td><p>0.12180918060252133</p></td>
+<td><p>417.148</p></td>
+<td><p>0.07443597424038638</p></td>
+<td><p>0.00205192</p></td>
+<td><p>0.3104238725586141</p></td>
+<td><p>0.00182858</p></td>
+<td><p>0.13467088219923146</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>143.016</p></td>
+<td><p>0.24358377366199915</p></td>
+<td><p>163.14200000000002</p></td>
+<td><p>0.2019342858851748</p></td>
+<td><p>405.908</p></td>
+<td><p>0.35204871925623343</p></td>
+<td><p>322.71</p></td>
+<td><p>0.08340885973141009</p></td>
+<td><p>0.00227816</p></td>
+<td><p>0.3537066848027953</p></td>
+<td><p>0.00181325</p></td>
+<td><p>0.083987554229959</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>183.49</p></td>
+<td><p>0.18755333115184367</p></td>
+<td><p>160.376</p></td>
+<td><p>0.13276066086178542</p></td>
+<td><p>488.46</p></td>
+<td><p>0.23272021112520425</p></td>
+<td><p>346.295</p></td>
+<td><p>0.38094421218731933</p></td>
+<td><p>0.00606391</p></td>
+<td><p>0.2332570737380188</p></td>
+<td><p>0.00429183</p></td>
+<td><p>0.3818933891243802</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>146.18</p></td>
+<td><p>0.18278485835299355</p></td>
+<td><p>160.911</p></td>
+<td><p>0.1991058705931532</p></td>
+<td><p>331.755</p></td>
+<td><p>0.2799965748805636</p></td>
+<td><p>484.579</p></td>
+<td><p>0.32562150845640137</p></td>
+<td><p>0.0014824999999999999</p></td>
+<td><p>0.2803097978527769</p></td>
+<td><p>0.0021631</p></td>
+<td><p>0.3249379345839239</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>130.996</p></td>
+<td><p>0.3926228335954007</p></td>
+<td><p>145.494</p></td>
+<td><p>0.09229922720084753</p></td>
+<td><p>254.428</p></td>
+<td><p>0.28072218931094045</p></td>
+<td><p>288.997</p></td>
+<td><p>0.3930704970844931</p></td>
+<td><p>0.00271677</p></td>
+<td><p>0.2812514879339413</p></td>
+<td><p>0.0030816</p></td>
+<td><p>0.3928937764199453</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>143.016</p></td>
+<td><p>0.3786819120652951</p></td>
+<td><p>175.497</p></td>
+<td><p>0.12506807756500646</p></td>
+<td><p>289.259</p></td>
+<td><p>0.12209314196371647</p></td>
+<td><p>311.926</p></td>
+<td><p>0.2268268415312083</p></td>
+<td><p>0.00199303</p></td>
+<td><p>0.12220673894617105</p></td>
+<td><p>0.00215043</p></td>
+<td><p>0.2271012433659633</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>143.016</p></td>
+<td><p>0.3895371771421967</p></td>
+<td><p>131.827</p></td>
+<td><p>0.2150120977551468</p></td>
+<td><p>425.28600000000006</p></td>
+<td><p>0.18182010821614525</p></td>
+<td><p>473.92900000000003</p></td>
+<td><p>0.1144372496639498</p></td>
+<td><p>0.0012720000000000001</p></td>
+<td><p>0.1819342336642664</p></td>
+<td><p>0.00141906</p></td>
+<td><p>0.11431467535648035</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>182.01400000000004</p></td>
+<td><p>0.3608990379206519</p></td>
+<td><p>147.194</p></td>
+<td><p>0.2253981063223195</p></td>
+<td><p>389.17800000000005</p></td>
+<td><p>0.3543220031783357</p></td>
+<td><p>428.847</p></td>
+<td><p>0.3687617252701749</p></td>
+<td><p>0.00448564</p></td>
+<td><p>0.3545767941681689</p></td>
+<td><p>0.00494268</p></td>
+<td><p>0.3692013703541936</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>157.774</p></td>
+<td><p>0.3836750491797111</p></td>
+<td><p>130.084</p></td>
+<td><p>0.19764143187735794</p></td>
+<td><p>287.992</p></td>
+<td><p>0.5030060338225658</p></td>
+<td><p>378.276</p></td>
+<td><p>0.4394897070740103</p></td>
+<td><p>0.00439757</p></td>
+<td><p>0.5081468202869077</p></td>
+<td><p>0.005776399999999999</p></td>
+<td><p>0.43938961960039613</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>131.71</p></td>
+<td><p>0.3920062442871513</p></td>
+<td><p>150.631</p></td>
+<td><p>0.09242281539618902</p></td>
+<td><p>455.541</p></td>
+<td><p>0.13776975495264546</p></td>
+<td><p>454.36</p></td>
+<td><p>0.2490103895868422</p></td>
+<td><p>0.00176016</p></td>
+<td><p>0.2861092987848653</p></td>
+<td><p>0.00161805</p></td>
+<td><p>0.26566745390451</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>143.016</p></td>
+<td><p>0.4079243417920144</p></td>
+<td><p>160.911</p></td>
+<td><p>0.14065793137491145</p></td>
+<td><p>297.425</p></td>
+<td><p>0.22852660788272866</p></td>
+<td><p>307.39</p></td>
+<td><p>0.25192434465967034</p></td>
+<td><p>0.00225423</p></td>
+<td><p>0.2287664511405949</p></td>
+<td><p>0.00233144</p></td>
+<td><p>0.2520961518809855</p></td>
+</tr>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>137.914</p></td>
+<td><p>0.4224669047258293</p></td>
+<td><p>131.827</p></td>
+<td><p>0.2054938432485909</p></td>
+<td><p>249.41099999999997</p></td>
+<td><p>0.2679721569521585</p></td>
+<td><p>409.027</p></td>
+<td><p>0.2668373210824858</p></td>
+<td><p>0.0020721</p></td>
+<td><p>0.28311021269960546</p></td>
+<td><p>0.00360748</p></td>
+<td><p>0.31569408537266186</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="2">
+<li><p><strong>DM_1-19.csv</strong>: reports collapse probability and damage state probability for each building asset.</p></li>
+</ol>
+<table class="docutils align-center" id="id5">
+<caption><span class="caption-text">DM_1-19.csv</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>Collapse</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+<th class="head"><p>DS likelihood</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>comp_type</p></td>
+<td><p>probability</p></td>
+<td><p>S</p></td>
+<td><p>S</p></td>
+<td><p>S</p></td>
+<td><p>S</p></td>
+<td><p>S</p></td>
+<td><p>S</p></td>
+<td><p>NS</p></td>
+<td><p>NS</p></td>
+<td><p>NS</p></td>
+<td><p>NS</p></td>
+<td><p>NS</p></td>
+<td><p>NSA</p></td>
+<td><p>NSA</p></td>
+<td><p>NSA</p></td>
+<td><p>NSA</p></td>
+<td><p>NSA</p></td>
+<td><p>NSD</p></td>
+<td><p>NSD</p></td>
+<td><p>NSD</p></td>
+<td><p>NSD</p></td>
+<td><p>NSD</p></td>
+</tr>
+<tr class="row-odd"><td><p>DSG_DS</p></td>
+<td></td>
+<td><p>0</p></td>
+<td><p>1_1</p></td>
+<td><p>2_1</p></td>
+<td><p>3_1</p></td>
+<td><p>4_1</p></td>
+<td><p>4_2</p></td>
+<td><p>0</p></td>
+<td><p>1_1</p></td>
+<td><p>2_1</p></td>
+<td><p>3_1</p></td>
+<td><p>4_1</p></td>
+<td><p>0</p></td>
+<td><p>1_1</p></td>
+<td><p>2_1</p></td>
+<td><p>3_1</p></td>
+<td><p>4_1</p></td>
+<td><p>0</p></td>
+<td><p>1_1</p></td>
+<td><p>2_1</p></td>
+<td><p>3_1</p></td>
+<td><p>4_1</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0.0</p></td>
+<td><p>1.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>1.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.20000000000000007</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.20000000000000007</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.8</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>0.0</p></td>
+<td><p>1.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.8</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.20000000000000007</p></td>
+<td><p>0.6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.20000000000000007</p></td>
+<td><p>0.6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.8</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>0.0</p></td>
+<td><p>1.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.6000000000000001</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.6000000000000001</p></td>
+<td><p>0.2</p></td>
+<td><p>0.8</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>0.0</p></td>
+<td><p>0.8</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.8</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.8</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>0.0</p></td>
+<td><p>1.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>1.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>0.0</p></td>
+<td><p>1.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>13</p></td>
+<td><p>0.0</p></td>
+<td><p>0.8</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>1.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>0.0</p></td>
+<td><p>0.8</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>1.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>15</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.6</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>17</p></td>
+<td><p>0.0</p></td>
+<td><p>1.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>1.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>18</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.20000000000000007</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>19</p></td>
+<td><p>0.0</p></td>
+<td><p>0.8</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
+<td><p>0.2</p></td>
+<td><p>0.0</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="2">
+<li><p><strong>DV_1-19.csv</strong>: reports decision variable estimates (repair cost, repair time, injuries) for each building asset.</p></li>
+</ol>
+<table class="docutils align-center" id="id6">
+<caption><span class="caption-text">DV_1-19.csv</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+<col style="width: 2%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>DV</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Impractical</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Cost</p></th>
+<th class="head"><p>Repair Time</p></th>
+<th class="head"><p>Repair Time</p></th>
+<th class="head"><p>Repair Time</p></th>
+<th class="head"><p>Repair Time</p></th>
+<th class="head"><p>Repair Time</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+<th class="head"><p>Injuries</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>comp_type</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>probability</p></td>
+<td><p>S</p></td>
+<td><p>S</p></td>
+<td><p>S</p></td>
+<td><p>S</p></td>
+<td><p>S</p></td>
+<td><p>S</p></td>
+<td><p>NS</p></td>
+<td><p>NS</p></td>
+<td><p>NS</p></td>
+<td><p>NS</p></td>
+<td><p>NS</p></td>
+<td><p>NSA</p></td>
+<td><p>NSA</p></td>
+<td><p>NSA</p></td>
+<td><p>NSA</p></td>
+<td><p>NSA</p></td>
+<td><p>NSD</p></td>
+<td><p>NSD</p></td>
+<td><p>NSD</p></td>
+<td><p>NSD</p></td>
+<td><p>NSD</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>sev1</p></td>
+<td><p>sev1</p></td>
+<td><p>sev1</p></td>
+<td><p>sev1</p></td>
+<td><p>sev1</p></td>
+<td><p>sev2</p></td>
+<td><p>sev2</p></td>
+<td><p>sev2</p></td>
+<td><p>sev2</p></td>
+<td><p>sev2</p></td>
+<td><p>sev3</p></td>
+<td><p>sev3</p></td>
+<td><p>sev3</p></td>
+<td><p>sev3</p></td>
+<td><p>sev3</p></td>
+<td><p>sev4</p></td>
+<td><p>sev4</p></td>
+<td><p>sev4</p></td>
+<td><p>sev4</p></td>
+<td><p>sev4</p></td>
+</tr>
+<tr class="row-odd"><td><p>DSG_DS</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>aggregate</p></td>
+<td><p>1_1</p></td>
+<td><p>2_1</p></td>
+<td><p>3_1</p></td>
+<td><p>4_1</p></td>
+<td><p>4_2</p></td>
+<td><p>aggregate</p></td>
+<td><p>1_1</p></td>
+<td><p>2_1</p></td>
+<td><p>3_1</p></td>
+<td><p>4_1</p></td>
+<td><p>aggregate</p></td>
+<td><p>1_1</p></td>
+<td><p>2_1</p></td>
+<td><p>3_1</p></td>
+<td><p>4_1</p></td>
+<td><p>aggregate</p></td>
+<td><p>1_1</p></td>
+<td><p>2_1</p></td>
+<td><p>3_1</p></td>
+<td><p>4_1</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+<td><p>aggregate</p></td>
+</tr>
+<tr class="row-even"><td><p>stat</p></td>
+<td><p>mean</p></td>
+<td><p>std</p></td>
+<td><p>10%</p></td>
+<td><p>median</p></td>
+<td><p>90%</p></td>
+<td></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>mean</p></td>
+<td><p>std</p></td>
+<td><p>10%</p></td>
+<td><p>median</p></td>
+<td><p>90%</p></td>
+<td><p>mean</p></td>
+<td><p>std</p></td>
+<td><p>10%</p></td>
+<td><p>median</p></td>
+<td><p>90%</p></td>
+<td><p>mean</p></td>
+<td><p>std</p></td>
+<td><p>10%</p></td>
+<td><p>median</p></td>
+<td><p>90%</p></td>
+<td><p>mean</p></td>
+<td><p>std</p></td>
+<td><p>10%</p></td>
+<td><p>median</p></td>
+<td><p>90%</p></td>
+<td><p>mean</p></td>
+<td><p>std</p></td>
+<td><p>10%</p></td>
+<td><p>median</p></td>
+<td><p>90%</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0.0766</p></td>
+<td><p>0.098587220267132</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.1916</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.0766</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.0766</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>0.06790000000000003</p></td>
+<td><p>0.10501438591926347</p></td>
+<td><p>0.0034500000000000004</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.17692500000000005</p></td>
+<td><p>0.0</p></td>
+<td><p>0.00145</p></td>
+<td><p>0.003625</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.06645000000000001</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td></td>
+<td><p>0.27325</p></td>
+<td><p>0.06500000000000003</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td></td>
+<td><p>0.266</p></td>
+<td><p>0.00145</p></td>
+<td><p>0.007249999999999999</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.58</p></td>
+<td><p>0.7103520254071216</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>1.45</p></td>
+<td><p>0.000145</p></td>
+<td><p>0.00017758800635178038</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0003625</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>0.12327500000000002</p></td>
+<td><p>0.12416358665083738</p></td>
+<td><p>0.015975000000000003</p></td>
+<td><p>0.030625000000000006</p></td>
+<td><p>0.27542500000000003</p></td>
+<td><p>0.0</p></td>
+<td><p>0.002175</p></td>
+<td><p>0.003625</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.1211</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td></td>
+<td><p>0.27325</p></td>
+<td><p>0.1182</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td></td>
+<td><p>0.266</p></td>
+<td><p>0.0029</p></td>
+<td><p>0.007249999999999999</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.8699999999999999</p></td>
+<td><p>0.7103520254071216</p></td>
+<td><p>0.0</p></td>
+<td><p>1.45</p></td>
+<td><p>1.45</p></td>
+<td><p>0.0002175</p></td>
+<td><p>0.00017758800635178038</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0003625</p></td>
+<td><p>0.0003625</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>0.0911</p></td>
+<td><p>0.10353626780022544</p></td>
+<td><p>0.010075</p></td>
+<td><p>0.030625000000000006</p></td>
+<td><p>0.2177</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0029</p></td>
+<td><p>0.004833333333333333</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.0882</p></td>
+<td><p>0.008625</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.1235</p></td>
+<td><p>0.27325</p></td>
+<td><p>0.07660000000000003</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.0116</p></td>
+<td><p>0.007249999999999999</p></td>
+<td><p>0.0435</p></td>
+<td></td>
+<td></td>
+<td><p>1.16</p></td>
+<td><p>1.085080642164443</p></td>
+<td><p>0.0</p></td>
+<td><p>1.45</p></td>
+<td><p>2.3200000000000003</p></td>
+<td><p>0.00029</p></td>
+<td><p>0.00027127016054111073</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0003625</p></td>
+<td><p>0.00058</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>0.08865</p></td>
+<td><p>0.09427295476434376</p></td>
+<td><p>0.0079</p></td>
+<td><p>0.08</p></td>
+<td><p>0.1916</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.08865</p></td>
+<td><p>0.008625</p></td>
+<td></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.08720000000000001</p></td>
+<td><p>0.005</p></td>
+<td></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.00145</p></td>
+<td><p>0.007249999999999999</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>0.036050000000000006</p></td>
+<td><p>0.032783246483531814</p></td>
+<td><p>0.0107</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.07195000000000001</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0029</p></td>
+<td><p>0.004833333333333333</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.03315</p></td>
+<td><p>0.01225</p></td>
+<td><p>0.051166666666666666</p></td>
+<td></td>
+<td></td>
+<td><p>0.0172</p></td>
+<td><p>0.005</p></td>
+<td><p>0.02700000000000001</p></td>
+<td></td>
+<td></td>
+<td><p>0.01595</p></td>
+<td><p>0.007249999999999999</p></td>
+<td><p>0.0725</p></td>
+<td></td>
+<td></td>
+<td><p>1.16</p></td>
+<td><p>1.085080642164443</p></td>
+<td><p>0.0</p></td>
+<td><p>1.45</p></td>
+<td><p>2.3200000000000003</p></td>
+<td><p>0.00029</p></td>
+<td><p>0.00027127016054111073</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0003625</p></td>
+<td><p>0.00058</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>0.050275</p></td>
+<td><p>0.04010723126818904</p></td>
+<td><p>0.010075</p></td>
+<td><p>0.03425</p></td>
+<td><p>0.09885</p></td>
+<td><p>0.0</p></td>
+<td><p>0.003625</p></td>
+<td><p>0.006041666666666666</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.04665</p></td>
+<td><p>0.008625</p></td>
+<td><p>0.03425</p></td>
+<td><p>0.090875</p></td>
+<td></td>
+<td><p>0.0394</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td></td>
+<td><p>0.007249999999999999</p></td>
+<td><p>0.0090625</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>1.45</p></td>
+<td><p>1.2969194269498778</p></td>
+<td><p>0.0</p></td>
+<td><p>1.45</p></td>
+<td><p>2.9</p></td>
+<td><p>0.0003625</p></td>
+<td><p>0.0003242298567374695</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0003625</p></td>
+<td><p>0.000725</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>0.10805</p></td>
+<td><p>0.08188229356826786</p></td>
+<td><p>0.048200000000000014</p></td>
+<td><p>0.08</p></td>
+<td><p>0.1945</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.10805</p></td>
+<td></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08241666666666668</p></td>
+<td><p>0.266</p></td>
+<td><p>0.1066</p></td>
+<td></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.00145</p></td>
+<td><p>0.007249999999999999</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>0.029125000000000005</p></td>
+<td><p>0.01298075498574717</p></td>
+<td><p>0.013800000000000005</p></td>
+<td><p>0.03425</p></td>
+<td><p>0.04005</p></td>
+<td><p>0.0</p></td>
+<td><p>0.000725</p></td>
+<td><p>0.003625</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.0284</p></td>
+<td><p>0.005</p></td>
+<td><p>0.03425</p></td>
+<td></td>
+<td></td>
+<td><p>0.0226</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td></td>
+<td></td>
+<td><p>0.0058</p></td>
+<td><p>0.009666666666666664</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.29</p></td>
+<td><p>0.5800000000000001</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.8700000000000001</p></td>
+<td><p>7.25e-05</p></td>
+<td><p>0.000145</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.00021750000000000006</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>0.151325</p></td>
+<td><p>0.12904455625868144</p></td>
+<td><p>0.032075000000000006</p></td>
+<td><p>0.08</p></td>
+<td><p>0.3124</p></td>
+<td><p>0.0</p></td>
+<td><p>0.002175</p></td>
+<td><p>0.0054375</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.14915</p></td>
+<td></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td><p>0.305875</p></td>
+<td><p>0.1332</p></td>
+<td></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.01595</p></td>
+<td><p>0.007249999999999999</p></td>
+<td><p>0.0725</p></td>
+<td></td>
+<td></td>
+<td><p>0.8699999999999999</p></td>
+<td><p>1.16</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>2.3200000000000003</p></td>
+<td><p>0.0002175</p></td>
+<td><p>0.00028999999999999995</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.00058</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>0.0438</p></td>
+<td><p>0.030629397643440526</p></td>
+<td><p>0.013800000000000005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.0438</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td></td>
+<td><p>0.0438</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td></td>
+<td><p>0.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>0.054000000000000006</p></td>
+<td><p>0.028037474921968283</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.0415</p></td>
+<td><p>0.0887</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.054000000000000006</p></td>
+<td></td>
+<td><p>0.03183333333333333</p></td>
+<td><p>0.08725</p></td>
+<td></td>
+<td><p>0.0482</p></td>
+<td></td>
+<td><p>0.02700000000000001</p></td>
+<td><p>0.08</p></td>
+<td></td>
+<td><p>0.0058</p></td>
+<td><p>0.0145</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>0.014525</p></td>
+<td><p>0.010271440989461995</p></td>
+<td><p>0.005</p></td>
+<td><p>0.008625</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.0</p></td>
+<td><p>0.000725</p></td>
+<td><p>0.003625</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.013800000000000002</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td></td>
+<td></td>
+<td><p>0.013800000000000002</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td></td>
+<td></td>
+<td><p>0.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.29</p></td>
+<td><p>0.58</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.8700000000000001</p></td>
+<td><p>7.25e-05</p></td>
+<td><p>0.000145</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.00021750000000000006</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>0.144525</p></td>
+<td><p>0.1011896857392096</p></td>
+<td><p>0.048200000000000014</p></td>
+<td><p>0.083625</p></td>
+<td><p>0.266</p></td>
+<td><p>0.0</p></td>
+<td><p>0.000725</p></td>
+<td><p>0.003625</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.1438</p></td>
+<td></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.1438</p></td>
+<td></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.29</p></td>
+<td><p>0.5800000000000001</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.8700000000000001</p></td>
+<td><p>7.25e-05</p></td>
+<td><p>0.000145</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.00021750000000000006</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>0.09845</p></td>
+<td><p>0.09682686223357648</p></td>
+<td><p>0.028450000000000007</p></td>
+<td><p>0.06687499999999999</p></td>
+<td><p>0.20465000000000005</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0029</p></td>
+<td><p>0.004833333333333333</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.09555</p></td>
+<td></td>
+<td><p>0.03908333333333333</p></td>
+<td><p>0.08</p></td>
+<td><p>0.2805</p></td>
+<td><p>0.0854</p></td>
+<td></td>
+<td><p>0.02700000000000001</p></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.01015</p></td>
+<td><p>0.0145</p></td>
+<td><p>0.03625</p></td>
+<td></td>
+<td></td>
+<td><p>1.16</p></td>
+<td><p>1.085080642164443</p></td>
+<td><p>0.0</p></td>
+<td><p>1.45</p></td>
+<td><p>2.3200000000000003</p></td>
+<td><p>0.00029</p></td>
+<td><p>0.00027127016054111073</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0003625</p></td>
+<td><p>0.00058</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>0.091425</p></td>
+<td><p>0.04704609441813421</p></td>
+<td><p>0.039325</p></td>
+<td><p>0.0945</p></td>
+<td><p>0.14525</p></td>
+<td><p>0.0</p></td>
+<td><p>0.003625</p></td>
+<td><p>0.006041666666666666</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.08779999999999999</p></td>
+<td></td>
+<td><p>0.037875000000000006</p></td>
+<td><p>0.12108333333333332</p></td>
+<td></td>
+<td><p>0.05880000000000001</p></td>
+<td></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td></td>
+<td><p>0.029000000000000005</p></td>
+<td><p>0.009666666666666664</p></td>
+<td><p>0.058</p></td>
+<td></td>
+<td></td>
+<td><p>1.45</p></td>
+<td><p>1.2969194269498778</p></td>
+<td><p>0.0</p></td>
+<td><p>1.45</p></td>
+<td><p>2.9</p></td>
+<td><p>0.0003625</p></td>
+<td><p>0.0003242298567374695</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0003625</p></td>
+<td><p>0.000725</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>0.1544</p></td>
+<td><p>0.09112101843153424</p></td>
+<td><p>0.08</p></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.1544</p></td>
+<td></td>
+<td></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.1544</p></td>
+<td></td>
+<td></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.0</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>0.086475</p></td>
+<td><p>0.0933870440692926</p></td>
+<td><p>0.0165</p></td>
+<td><p>0.045125</p></td>
+<td><p>0.1945</p></td>
+<td><p>0.0</p></td>
+<td><p>0.002175</p></td>
+<td><p>0.0054375</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.08430000000000001</p></td>
+<td><p>0.017</p></td>
+<td><p>0.0415</p></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.07560000000000001</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td><p>0.266</p></td>
+<td><p>0.0087</p></td>
+<td><p>0.0145</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.8699999999999999</p></td>
+<td><p>1.16</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>2.3200000000000003</p></td>
+<td><p>0.0002175</p></td>
+<td><p>0.00028999999999999995</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.00058</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>0.027750000000000004</p></td>
+<td><p>0.02810827280357155</p></td>
+<td><p>0.0059</p></td>
+<td><p>0.01225</p></td>
+<td><p>0.06170000000000001</p></td>
+<td><p>0.0</p></td>
+<td><p>0.00145</p></td>
+<td><p>0.007249999999999999</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.0263</p></td>
+<td><p>0.00816666666666667</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td></td>
+<td><p>0.0234</p></td>
+<td><p>0.005</p></td>
+<td><p>0.027000000000000003</p></td>
+<td><p>0.08</p></td>
+<td></td>
+<td><p>0.0029</p></td>
+<td><p>0.007249999999999999</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>0.58</p></td>
+<td><p>1.16</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>1.7400000000000002</p></td>
+<td><p>0.000145</p></td>
+<td><p>0.00029</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0004350000000000001</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, The Regents of the University of California.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '...', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+    
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+<script>
+    /*
+    let selectedFilters = [];
+    const images  = document.getElementsByClassName("gallery-item");
+    const filters = [...document.querySelectorAll('.filter select')];
+    const toggles = [...document.querySelectorAll('.filter input')];
+
+    var show = function (elem) {
+        elem.style.display = 'block';
+    };
+    var hide = function (elem) {
+        elem.style.display = 'none';
+    };
+    var toggleFilter =  function(el,elid) {
+        const filter = document.getElementById(elid);
+        filter.disabled = !el.checked;
+       
+        if ("createEvent" in document) {
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            filter.dispatchEvent(evt);
+        }
+        else
+            filter.fireEvent("change");
+    };
+    
+    for (const filter of filters) {
+        filter.addEventListener('change', function(event) {
+            selectedFilters = filters.map(filter => filter.disabled ? '' : filter.value).filter(Boolean);
+            console.log(selectedFilters);
+            for (const image of images) {
+                if (selectedFilters.every(filter => image.classList.contains(filter))) {
+                    show(image);
+                }
+                else {hide(image)};
+            };
+        })
+    };
+    */
+</script>
+
+
+</body>
+</html>

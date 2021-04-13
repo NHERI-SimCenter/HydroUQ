@@ -55,27 +55,27 @@ bool solver::getData(QMap<QString, QString>& map, int type)
     hasData = true;
 
     // Get the times
-    map.insert("Start time",ui->DSpBx_Start->textFromValue(ui->DSpBx_Start->value()));
-    map.insert("End time",ui->DSpBx_End->textFromValue(ui->DSpBx_End->value()));
-    map.insert("Time interval",ui->DSpBx_DeltaT->textFromValue(ui->DSpBx_DeltaT->value()));
-    map.insert("Write interval",ui->DSpBx_WriteT->textFromValue(ui->DSpBx_WriteT->value()));
+    map.insert("StartTime",ui->DSpBx_Start->textFromValue(ui->DSpBx_Start->value()));
+    map.insert("EndTime",ui->DSpBx_End->textFromValue(ui->DSpBx_End->value()));
+    map.insert("TimeInterval",ui->DSpBx_DeltaT->textFromValue(ui->DSpBx_DeltaT->value()));
+    map.insert("WriteInterval",ui->DSpBx_WriteT->textFromValue(ui->DSpBx_WriteT->value()));
 
     // Restart files
     // Write the mesh file names
     for (int ii=0; ii<restartfilenames.size(); ++ii)
     {
-        map.insert("Restart files"+QString::number(ii),restartfilenames[ii]);
+        map.insert("RestartFiles"+QString::number(ii),restartfilenames[ii]);
     }
 
     // Decomposition
     QString decomp = ui->DSpBx_Px->textFromValue(ui->DSpBx_Px->value()) +
             "," + ui->DSpBx_Py->textFromValue(ui->DSpBx_Py->value()) +
             "," + ui->DSpBx_Pz->textFromValue(ui->DSpBx_Pz->value());
-    map.insert("Domain decomposition",decomp);
-    map.insert("Decomposition method",ui->Cmb_Decomp->currentText().toLower());
+    map.insert("DomainDecomposition",decomp);
+    map.insert("DecompositionMethod",ui->Cmb_Decomp->currentText().toLower());
 
     // Solver type
-    map.insert("Solver choice",QString::number(ui->Cmb_Solver->currentIndex()));
+    map.insert("SolverChoice",QString::number(ui->Cmb_Solver->currentIndex()));
 
     // Change hasData to be true
     hasData = true;
@@ -109,3 +109,4 @@ void solver::on_Btn_UploadFiles_clicked()
     selectfilesdialog.setNameFilter(tr("All files (*.*)"));
     if(selectfilesdialog.exec()) restartfilenames = selectfilesdialog.selectedFiles();
 }
+

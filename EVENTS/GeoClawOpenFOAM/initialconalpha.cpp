@@ -66,9 +66,10 @@ bool initialconAlpha::getData(QMap<QString, QString>& map,int type)
     bool hasData = false;
 
     // If not dealing with SW-solutions
-    if((type != 1) || (type != 2))
+    //if((type != 1) || (type != 2))
+    if(type > 2)
     {
-        map.insert("Initial alpha global",ui->DSpBx_Alpha->textFromValue(ui->DSpBx_Alpha->value()));
+        map.insert("InitialAlphaGlobal",ui->DSpBx_Alpha->textFromValue(ui->DSpBx_Alpha->value()));
         if(ui->Tbl_IniCondTable->rowCount() > 0)
         {
             for(int ii=0;ii<ui->Tbl_IniCondTable->rowCount(); ++ii)
@@ -76,10 +77,9 @@ bool initialconAlpha::getData(QMap<QString, QString>& map,int type)
                 QString alphadata = ui->Tbl_IniCondTable->item(ii,0)->text() +
                         "," + ui->Tbl_IniCondTable->item(ii,1)->text() +
                         "," + ui->Tbl_IniCondTable->item(ii,2)->text();
-                map.insert("Initial alpha local"+QString::number(ii),alphadata);
+                map.insert("InitialAlphaLocal"+QString::number(ii),alphadata);
             }
         }
-
     }
 
     // Change hasData to be true

@@ -78,7 +78,7 @@ bool boundary::getData(QMap<QString, QString>& map,int type)
     QMap<QString, QString> *singleData;
     singleData = new QMap<QString,QString>;
     int numberOfPanes = ui->SWg_Interface->count();
-    map.insert("Number of boundaries",QString::number(numberOfPanes));
+    map.insert("NumberOfBoundaries",QString::number(numberOfPanes));
     for (int i=0;i<numberOfPanes;i++)
     {
         if (dynamic_cast<boundaryData *>(ui->SWg_Interface->widget(i))->getData(*singleData,type))

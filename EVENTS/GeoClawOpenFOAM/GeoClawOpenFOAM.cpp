@@ -19,6 +19,7 @@ GeoClawOpenFOAM::GeoClawOpenFOAM(RandomVariablesContainer *theRV, QWidget *paren
 {
     // Start the UI
     ui->setupUi(this);
+    ui->pushButton->setVisible(false);
 
     // Suppress unused parameters
     (void)theRV;
@@ -258,7 +259,7 @@ void GeoClawOpenFOAM::refresh_projsettings()
 
     // Search for simulation type
     QMap<QString, QString> *singleDataSet = allData.value(0);
-    QString simty = singleDataSet->value("Simulation type");
+    QString simty = singleDataSet->value("SimulationType");
 
     // Get new simulation type, if user has changed it intermediately
     // This can also be same as old simulation type

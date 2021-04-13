@@ -66,9 +66,10 @@ bool initialconPres::getData(QMap<QString, QString>& map,int type)
     bool hasData = false;
 
     // If not dealing with SW-solutions
-    if((type != 1) || (type != 2))
+    //if((type != 1) || (type != 2))
+    if(type > 2)
     {
-        map.insert("Initial pressure global",ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
+        map.insert("InitialPressureGlobal",ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
         if(ui->Tbl_IniCondTable->rowCount() > 0)
         {
             for(int ii=0;ii<ui->Tbl_IniCondTable->rowCount(); ++ii)
@@ -76,10 +77,9 @@ bool initialconPres::getData(QMap<QString, QString>& map,int type)
                 QString presdata = ui->Tbl_IniCondTable->item(ii,0)->text() +
                         "," + ui->Tbl_IniCondTable->item(ii,1)->text() +
                         "," + ui->Tbl_IniCondTable->item(ii,2)->text();
-                map.insert("Initial pressure local"+QString::number(ii),presdata);
+                map.insert("InitialPressureLocal"+QString::number(ii),presdata);
             }
         }
-
     }
 
     // Change hasData to be true

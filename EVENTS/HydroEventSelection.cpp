@@ -56,7 +56,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <InputWidgetExistingEvent.h>
 #include <GeoClawOpenFOAM.h>
 
-
 HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVariableIW,
 					 GeneralInformationWidget* generalInfoWidget,
 					 QWidget *parent)
@@ -86,8 +85,8 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     eventSelection->setItemData(0, "This is a general event from which all other events can be setup", Qt::ToolTipRole);
-    eventSelection->setItemData(1, "Coupling of shallow-water solver (GeoClaw) with CFD (OpenFOAM)", Qt::ToolTipRole);
-    eventSelection->setItemData(2, "Digital twin of Wave Flume (at OSU)", Qt::ToolTipRole);
+    //eventSelection->setItemData(1, "Coupling of shallow-water solver (GeoClaw) with CFD (OpenFOAM)", Qt::ToolTipRole);
+    //eventSelection->setItemData(2, "Digital twin of Wave Flume (at OSU)", Qt::ToolTipRole);
 
     theSelectionLayout->addWidget(label);
     QSpacerItem *spacer = new QSpacerItem(50,10);

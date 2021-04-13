@@ -1,0 +1,393 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>C4 Model of Software Architecture &mdash; Hydro-UQ  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
+<style media="screen">.vega-actions a {margin-right: 5px;}</style>
+<link href="../../../../_static/css/bootstrap.css" rel="stylesheet">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F2F2F2" >
+          
+<a href="https://simcenter.designsafe-ci.org/" style="margin-bottom: 0px;">
+  <img src="../../../../_static/img/SimCenter-Only.png" class="logo" alt="Org-Logo" />
+</a>
+<hr style="margin: 0px;">
+
+  <a href="../../../../hydro.html">
+
+
+
+  
+  <img src="../../../../_static/Hydro-Logo.png" class="logo" alt="Logo"/>
+
+</a>
+
+
+  
+  
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/about.html">1. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/ack.html">1. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/license.html">2. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/install.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/userguide/uguide.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/errors.html">3. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/examples/examples.html">4. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/releasenotes.html">6. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/featurereq.html">7. Bugs &amp; Feature Requests</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/UQ/uqengine.html">6. Uncertainity quantification</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/coding.html">4. Coding Style</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../hydro.html">Hydro-UQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>C4 Model of Software Architecture</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/common/developer_manual/architecture/desktop/c4model.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="c4-model-of-software-architecture">
+<span id="lblc4model"></span><h1>C4 Model of Software Architecture<a class="headerlink" href="#c4-model-of-software-architecture" title="Permalink to this headline">¶</a></h1>
+<p>The SimCenter workflow systems are aimed at facilitating the use, reuse and extension of common workflows encountered in NHE by a broad range of natural hazards engineering researchers with varying levels of software skills. In order to encourage this use and adoption, this chapter presents the software architecture for the SimCenter framework and Hydro app using the <a class="reference external" href="https://c4model.com">C4 model</a>. The C4 model is graphical approach for documenting software architecture through diagrams that describe and communicate the software architecture at different levels of abstraction. It is a top-down approach which starts at a high level (level 1) showing how a user would interact with the software and drills down through three more levels, with level 4 containing the typical UML diagrams. The choice of the <strong>C4</strong> model was made to provide NHE researchers with a diverse range of software architecture knowledge an understanding of the software architecture behind SimCenter applications that fits their skill level. The four levels:</p>
+<div class="section" id="level-1-context-diagram">
+<h2>Level 1: Context Diagram<a class="headerlink" href="#level-1-context-diagram" title="Permalink to this headline">¶</a></h2>
+<p>A Level 1 diagram in <code class="xref std std-numref docutils literal notranslate"><span class="pre">figContext</span></code> shows the system context for the SimCenter applications, i.e. how it fits in the world. In the diagram:
+- the SimCenter computational applications (EE-UQ, WE-UQ, PBE, R2D) are shown in the center surrounded by the user and the systems it interacts with.
+- input data for the SimCenter applications can be obtained either from NHERI datasets accessible on the DesignSafe <a class="reference external" href="https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/">Data Depot</a>, shown to the right, or from web-based databases, shown to the left.
+- the SimCenter applications can then be run in conjunction with open-source software applications (such as Dakota, FEAP, OpenSees, Python, OpenFOAM, etc.) either on a local desktop, shown below, or using HPC resources on <a class="reference external" href="https://designsafe-ci.org">DesignSafe</a>, shown to the right.</p>
+<div class="align-center figure" id="figcontext">
+<a class="reference internal image-reference" href="../../../../_images/context1.png"><img alt="../../../../_images/context1.png" src="../../../../_images/context1.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">System context diagram for SimCenter applications.</span><a class="headerlink" href="#figcontext" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="level-2-container-diagram">
+<h2>Level 2: Container Diagram<a class="headerlink" href="#level-2-container-diagram" title="Permalink to this headline">¶</a></h2>
+<p>A Level 2 diagram in <code class="xref std std-numref docutils literal notranslate"><span class="pre">figContainer</span></code> demonstrates how the SimCenter applications are broken into high-level containers (applications, databases, etc.). Each of the SimCenter applications broken into two components: A front-end UI and a back-end application that runs the workflow. The front-end is a desktop application written using the cross-platform <a class="reference external" href="https://www.qt.io/product/framework">Qt framework</a>. The back-end is an application that processes the input from the front-end, which comes in the form of a JSON file, creates a workflow and runs it. The workflow applications, written in Python, C, or C++, utilize existing applications were possible and run on either the local desktop machine or on a HPC utilizing resources made available to NHE community through DesignSafe.</p>
+<div class="align-center figure" id="figcontainer">
+<a class="reference internal image-reference" href="../../../../_images/container1.png"><img alt="../../../../_images/container1.png" src="../../../../_images/container1.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">System container diagram for SimCenter applications.</span><a class="headerlink" href="#figcontainer" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="level-3-component-diagram">
+<h2>Level 3: Component Diagram<a class="headerlink" href="#level-3-component-diagram" title="Permalink to this headline">¶</a></h2>
+<p>Two level 3 diagrams are now presented which break up the two containers into the major building blocks or components in C4 terminology. In <code class="xref std std-numref docutils literal notranslate"><span class="pre">figComponentFront</span></code> the component diagram for the front end UI is presented. It outlines the interaction between the user and the individual graphical elements (widgets) of the UI. Given the analogy of a jigsaw puzzle, the user selects which piece of the jigsaw puzzle they are working on in the component selection widget. The widget for the jigsaw piece will then be displayed on the desktop. The user for each jigsaw piece then selects which application to run for that piece, and for the chosen application, they provide the inputs. When the inputs are all provided, the user can select to run the simulations locally or remotely. For jobs that run remotely, the user can download and review previously run simulations. As seen the widgets may subsequently interact with web services through HTTPS requests, or with DesignSafe utilizing TAPIS Restful API through the RemoteService container.</p>
+<div class="align-center figure" id="figcomponentfront">
+<a class="reference internal image-reference" href="../../../../_images/componentFront1.png"><img alt="../../../../_images/componentFront1.png" src="../../../../_images/componentFront1.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Component diagram for front end UI.</span><a class="headerlink" href="#figcomponentfront" title="Permalink to this image">¶</a></p>
+</div>
+<p>The component diagram for the backend application shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">figComponentBack</span></code>, shows that the backend is made up of a number of component applications. The application <code class="docutils literal notranslate"><span class="pre">femUQ.py</span></code> is the application that parses the input from the front end, sets up the workflow by creating a <code class="docutils literal notranslate"><span class="pre">workflow_driver</span></code> script and then launches the UQ engine. Which UQ Engine and which applications to run in the workflow, is determined from the data passed from the UI and information contained in a file, <code class="docutils literal notranslate"><span class="pre">WorkflowApplication.json</span></code>. The <code class="docutils literal notranslate"><span class="pre">WorkflowApplication.json</span></code> file is a file that maps the applications specified in the output from the UI with a specific application contained on the users local machine or at the remote HPC resource, as such it allow the researchers to modify the applications that may be run in the workflow w/o the need to recompile the application. Once the <code class="docutils literal notranslate"><span class="pre">workflow_driver</span></code> file is created, control is passed to a UQ engine, which repeatedly runs the <code class="docutils literal notranslate"><span class="pre">workflow_driver</span></code> to generate the results. In running the workflow some of the applications will invoke applications not developed to meet the API. For such applications pre- and post-processors are provided. The figure shows the backend application running locally or remotely on a HPC at DesignSafe.</p>
+<div class="align-center figure" id="figcomponentback">
+<a class="reference internal image-reference" href="../../../../_images/componentBack1.png"><img alt="../../../../_images/componentBack1.png" src="../../../../_images/componentBack1.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Component diagram for Backend Application.</span><a class="headerlink" href="#figcomponentback" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="level-4-code-diagram">
+<h2>Level 4: Code Diagram<a class="headerlink" href="#level-4-code-diagram" title="Permalink to this headline">¶</a></h2>
+<p>To facilitate the development of the different SimCenter applications and to encourage their reuse and extension by other NHE researchers, the SimCenter is providing the NHE community with a software framework for building such applications. From this framework the SimCenter is building the applications, of which Hydro app is but one, that it releases. These individual applications are built from the components of the framework. The components of the SimCenter are grouped, as shown in  figure below, into the following components:</p>
+<ol class="arabic simple">
+<li><p><strong>Cloud</strong>: applications/libraries for communicating with remote web services to launch and monitor applications on HPC resources and to upload and download files from the filesystems of such resources.</p></li>
+<li><p><strong>UQ</strong>: applications for performing sampling, sensitivity, reliability and optimization methods.</p></li>
+<li><p><strong>SAM</strong>: applications for creating a finite element model of the building asset.</p></li>
+<li><p><strong>EVENT</strong>: applications for creating loads on the building asset given a natural hazard event.</p></li>
+<li><p><strong>FEM</strong>: application for determining the response parameter of the building asset given applied loads.</p></li>
+<li><p><strong>DL</strong>: application to determine the damage &amp; loss to the building asset given the event.</p></li>
+<li><p><strong>EDP</strong>: application to determine the response parameter given the event, building asset, and damage and loss application.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">femUQ.py</span></code> is the backend application for the EE-UQ, WE-UQ, Hydro-UQ, and the PBE applications. For R2D the backend application is <code class="docutils literal notranslate"><span class="pre">R2D_Workflow.py</span></code>.</p>
+</div>
+<p>The interaction between the frontend and the backend is best understood by looking at the sequence of events that occurs when the user presses the <code class="docutils literal notranslate"><span class="pre">Run</span></code> button. As shown in the figure below, the UI application will first perform a number of steps:</p>
+<ol class="arabic simple">
+<li><p>It will create a temporary directory in the Documents folder named <code class="docutils literal notranslate"><span class="pre">tmp.SimCenter</span></code>, and inside <code class="docutils literal notranslate"><span class="pre">tmp.SimCenter</span></code> will create another dircetory <code class="docutils literal notranslate"><span class="pre">templatedir</span></code>.</p></li>
+<li><p>It will then run through all the currently selected widgets and on each invoke the <code class="docutils literal notranslate"><span class="pre">copyFiles()</span></code> method, telling these widgets to copy all files that will be needed during the workflow to the <code class="docutils literal notranslate"><span class="pre">templatedir</span></code> directory.</p></li>
+<li><p>It will then create a JSON file and will run through the currenly selected widgets and on each invoke the methods <code class="docutils literal notranslate"><span class="pre">outputToJSON()</span></code> and <code class="docutils literal notranslate"><span class="pre">outputAppDataToJSON</span></code>, these telling the application to augment the JSOIN file with the inputs the user has provided in the widget and also the name of the widget.</p></li>
+<li><p>The UI will now start the backend application and will spin until the backend application returns with a completion signal.</p></li>
+</ol>
+<p>Now that the UI has handed over to the backend application, the backend application will perform the following:</p>
+<ol class="arabic simple" start="5">
+<li><p>Open the output file from the UI and parse it to obtain the name of the application to run and the arguments to run the application with. Open up another file, the <code class="docutils literal notranslate"><span class="pre">WorkflowApplications.json</span></code> file, contained with the application, to determine given the application name the full path to the executable to be invoked. It will the create in <code class="docutils literal notranslate"><span class="pre">templatedir</span></code> a file named <code class="docutils literal notranslate"><span class="pre">workflow_driver</span></code>. This file is a script file that when run by the UQ engine will generate a file named <code class="docutils literal notranslate"><span class="pre">results.out</span></code>. <code class="docutils literal notranslate"><span class="pre">results.out</span></code> when the <code class="docutils literal notranslate"><span class="pre">workflow_driver</span></code> script has completed will contain a single line of space separated values, one value for each EDP.</p></li>
+<li><p>It will invoke each of the applications with supplied arguments and an additional command line argument, <code class="docutils literal notranslate"><span class="pre">--getRV</span></code>, to inform the application to process the input file, and to create any additional random variables and input files needed before the workflow runs.</p></li>
+<li><p>It will then launch the UQengine. The UQ engine, is typically a pre- and post- processor to an existing UQ engine.</p></li>
+<li><p>The pre-processor takes the json input file and creates an input file needed by the actual UQ engine.</p></li>
+<li><p>The preprocessor will launch the UQ application. This application will typically run the <code class="docutils literal notranslate"><span class="pre">workflow_driver</span></code> many times, passing as input to the workflow a file <code class="docutils literal notranslate"><span class="pre">\params</span></code> and obtaining as output from the <code class="docutils literal notranslate"><span class="pre">workflow_driver</span></code> a file <code class="docutils literal notranslate"><span class="pre">results.out</span></code>.</p></li>
+<li><p>When done the engine will output its results.</p></li>
+<li><p>The UQengine will notify the UQpreprocessor that it is done.</p></li>
+<li><p>The UQpreprocessor will notify the femUQ application that it is done.</p></li>
+<li><p>The femUQ application will notify the UI that it is done.</p></li>
+<li><p>The UI will read in the reuslts and present them to the user.</p></li>
+</ol>
+<div class="align-center figure" id="figsequencelocal">
+<a class="reference internal image-reference" href="../../../../_images/sequenceLocal.png"><img alt="../../../../_images/sequenceLocal.png" src="../../../../_images/sequenceLocal.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Sequence diagram showing what happens when a workflow runs locally.</span><a class="headerlink" href="#figsequencelocal" title="Permalink to this image">¶</a></p>
+</div>
+<p>That is for the case where the computations are performed on the local computer. When the somputations are performed remotely the steps are different. The first 8 steps are the same. But now the UQwrapper will not start the UQ engine. Instead, control is returned to the UI. The UI will, as shown in the following: (111) Compress the temporary folder. (12) Send the compressed folder to the remote HPC, shown in the figure DesignSafe. (13) Start an application to perform the computations. All the remote data transfer and application invocation is down through a cloud service, in the figure presented the <a class="reference external" href="https://tapis-project.org/">TACC tapis</a> interface is being used and provides SimCenter users with access to the TACC HPC resources through DesignSafe portal.</p>
+<div class="align-center figure" id="figsequenceremote">
+<a class="reference internal image-reference" href="../../../../_images/sequenceRemote.png"><img alt="../../../../_images/sequenceRemote.png" src="../../../../_images/sequenceRemote.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Sequence diagram showing what happens when a workflow runs remotely.</span><a class="headerlink" href="#figsequenceremote" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, The Regents of the University of California.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '...', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+    
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+<script>
+    /*
+    let selectedFilters = [];
+    const images  = document.getElementsByClassName("gallery-item");
+    const filters = [...document.querySelectorAll('.filter select')];
+    const toggles = [...document.querySelectorAll('.filter input')];
+
+    var show = function (elem) {
+        elem.style.display = 'block';
+    };
+    var hide = function (elem) {
+        elem.style.display = 'none';
+    };
+    var toggleFilter =  function(el,elid) {
+        const filter = document.getElementById(elid);
+        filter.disabled = !el.checked;
+       
+        if ("createEvent" in document) {
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            filter.dispatchEvent(evt);
+        }
+        else
+            filter.fireEvent("change");
+    };
+    
+    for (const filter of filters) {
+        filter.addEventListener('change', function(event) {
+            selectedFilters = filters.map(filter => filter.disabled ? '' : filter.value).filter(Boolean);
+            console.log(selectedFilters);
+            for (const image of images) {
+                if (selectedFilters.every(filter => image.classList.contains(filter))) {
+                    show(image);
+                }
+                else {hide(image)};
+            };
+        })
+    };
+    */
+</script>
+
+
+</body>
+</html>

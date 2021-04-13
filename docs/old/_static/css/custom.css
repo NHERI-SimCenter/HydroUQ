@@ -1,0 +1,11 @@
+div.wy-side-scroll{
+	background:#353131;
+}
+
+span.caption-text{
+	color: #cb463f;
+}
+
+td{
+	white-space: normal !important;
+}

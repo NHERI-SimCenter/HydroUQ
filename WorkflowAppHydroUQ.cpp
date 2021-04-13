@@ -201,15 +201,12 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("EDP"), theEDP_Selection);
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
-
     theComponentSelection->displayComponent("UQ");
 
     // access a web page which will increment the usage count for this tool
     manager = new QNetworkAccessManager(this);
-
     connect(manager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(replyFinished(QNetworkReply*)));
-
     manager->get(QNetworkRequest(QUrl("http://opensees.berkeley.edu/OpenSees/developer/eeuq/use.php")));
 
 
@@ -249,7 +246,7 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
     QJsonObject jsonObjGenInfo;
     result = theGI->outputToJSON(jsonObjGenInfo);
     if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputToJSON");
         return false;
     }
     jsonObjectTop["GeneralInformation"] = jsonObjGenInfo;
@@ -340,8 +337,8 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
 }
 
 
-void
-WorkflowAppHydroUQ::processResults(QString dakotaOut, QString dakotaTab, QString inputFile){
+void WorkflowAppHydroUQ::processResults(QString dakotaOut, QString dakotaTab, QString inputFile)
+{
 
 
   //
@@ -401,7 +398,7 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
             emit errorMessage("HydroUQ: failed to read GeneralInformation");
         }
     } else {
-        emit errorMessage("HydroUQ: failed to find GeneralInformation");
+        emit errorMessage("HydroUQ: failed to find General Information");
         return false;
     }
 
