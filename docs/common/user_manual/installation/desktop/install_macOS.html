@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>1.2. Install on macOS 10 &mdash; Hydro-UQ  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
+<style media="screen">.vega-actions a {margin-right: 5px;}</style>
+<link href="../../../../_static/css/bootstrap.css" rel="stylesheet">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F2F2F2" >
+          
+<a href="https://simcenter.designsafe-ci.org/" style="margin-bottom: 0px;">
+  <img src="../../../../_static/img/SimCenter-Only.png" class="logo" alt="Org-Logo" />
+</a>
+<hr style="margin: 0px;">
+
+  <a href="../../../../hydro.html">
+
+
+
+  
+  <img src="../../../../_static/Hydro-Logo.png" class="logo" alt="Logo"/>
+
+</a>
+
+
+  
+  
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/about.html">1. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/ack.html">1. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/license.html">2. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/install.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/userguide/uguide.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/errors.html">3. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/examples/examples.html">4. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/releasenotes.html">6. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/featurereq.html">7. Bugs &amp; Feature Requests</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/UQ/uqengine.html">6. Uncertainity quantification</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/coding.html">4. Coding Style</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../hydro.html">Hydro-UQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><span class="section-number">1.2. </span>Install on macOS 10</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/common/user_manual/installation/desktop/install_macOS.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="install-on-macos-10">
+<span id="lblinstallmac"></span><h1><span class="section-number">1.2. </span>Install on macOS 10<a class="headerlink" href="#install-on-macos-10" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="install-python-3-8">
+<h2><span class="section-number">1.2.1. </span>Install Python 3.8<a class="headerlink" href="#install-python-3-8" title="Permalink to this headline">¶</a></h2>
+<p>The Mac comes with Python pre-installed, but the default Python is the outdated version 2.7. Since January 1st, 2020 no new bug reports, fixes, or changes have been made to Python 2, and Python 2 is officially no longer supported. SimCenter tools require Python 3.8.
+If you have not yet installed Python, we recommend installing Python 3.8 from <a class="reference external" href="https://www.python.org/downloads/release/python-386/">Python.org</a>, using the
+<strong>macOS 64-bit installer</strong>. The installer will place a python3 executable in your <strong>PATH</strong>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The latest version of Python is 3.9.1. Certain Python modules required by SimCenter applications fail under Python 3.9 in the pip install process detailed below. If you already have Python 3.9, we recommend installing a Python 3.8 as well that you will use only for the SimCenter applications.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ol class="arabic simple">
+<li><p>We use the python.org installation over others, due to it’s simplicity of installation.</p></li>
+<li><p>The current Python installer leaves two script files in the Python directory at the end of the installation. You need to execute both script files to get Python set up correctly so that it can be invoked from the terminal. To execute the files, double click on them. The two files, shown in the image below, are: <code class="docutils literal notranslate"><span class="pre">Update</span> <span class="pre">Shell</span> <span class="pre">Profile.command.sh</span></code> and <code class="docutils literal notranslate"><span class="pre">Install</span> <span class="pre">CertificateCommand.sh</span></code>.</p></li>
+</ol>
+<div class="align-center figure" id="id1">
+<img alt="../../../../_images/pythonInstallShell.png" src="../../../../_images/pythonInstallShell.png" />
+<p class="caption"><span class="caption-text">Python: Folder Displayed at Conclusion of Install</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<p>Once Python is installed, you need to extend it by installing a few additional packages. To facilitate this phase of the installation, we created a <strong>nheri_simcenter</strong> python package that automatically installs all other dependencies. Start a Terminal window and type the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3 install nheri_simcenter --upgrade
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can use the spotlight app (magnifying glass at the top right corner of the desktop) to start a Terminal window. Start the spotlight app and type in terminal. The Terminal application should appear as the top hit.</p>
+</div>
+<p>Make sure you see a message that confirms the successful installation of the nheri-simcenter package before proceeding to the next step.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you forget to invoke the <code class="docutils literal notranslate"><span class="pre">UpdateShellProfile.command.sh</span></code> script at the end of the install, you can always edit the correct shell file later to update the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable to point to the Python application.</p>
+<p>On Linux systems, the shell is the program that takes commands from the keyboard that you enter in the terminal window and passes them to the operating system to perform by invoking applications and passing data between applications. In the good old days, it was the only interface available to the user, i.e., there was no such thing as Finder! There are a number of shell programs that can be installed and made available to you. The most popular is the <strong>bash</strong> shell, the up and coming one is the <strong>Z</strong> shell. Power MacOS users will write shell scripts to do many many useful things. By default the applications that the shell program will invoke are limited to applications in a few specific directories that are defined in the users <code class="docutils literal notranslate"><span class="pre">PATH</span></code>. Users can modify this path by editing files that the shell program will read from everytime the program is started.</p>
+<p>When the frontend application is running the computations it is actually running a backend application using the shell program. As a consequence the shell program must be made aware of the locations of  some of the external applications that you have installed as <strong>OpenSees</strong> and <strong>Dakota</strong> do not provide installers that automatically do this when they are installed. Other applications, like <strong>Tcl</strong> provide scripts that you invoke to do it. In short you have to edit the file appropriate to the shell you are using.</p>
+<p>To find which shell program you are using when you issue commands inside the terminal window, type the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>env <span class="p">|</span> grep SHELL
+</pre></div>
+</div>
+<p>If the result is <code class="docutils literal notranslate"><span class="pre">/bin/bash</span></code> you will need to edit the <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> file or the <code class="docutils literal notranslate"><span class="pre">bash_profile</span></code> file. If the result is <code class="docutils literal notranslate"><span class="pre">/bin/zsh</span></code> you will need to edit the <code class="docutils literal notranslate"><span class="pre">.zshrc</span></code> or <code class="docutils literal notranslate"><span class="pre">.zprofile</span></code>. Typically, the <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> or the <code class="docutils literal notranslate"><span class="pre">.zprofile</span></code> file is the one to edit as by design these will invoke the <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> or <code class="docutils literal notranslate"><span class="pre">.zshrc</span></code> file. If in doubt, look for these files in your home directory and see which of these other installers have modified.</p>
+</div>
+</div>
+<div class="section" id="download-the-application">
+<h2><span class="section-number">1.2.3. </span>Download the Application<a class="headerlink" href="#download-the-application" title="Permalink to this headline">¶</a></h2>
+<p>To download the Hydro app, first navigate to the <a href="#id14"><span class="problematic" id="id15">`Hydro Download (Coming soon)`_</span></a> page. As shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">figDownload-Hydro</span></code>, to get to the download page, you need to click on the link <strong>Download app and User Manual</strong> in the application page. The download page contains a list of downloadable files and directories.</p>
+<p>Click on the file with a name ending with <strong>Mac_Download.dmg</strong> to download the Hydro app. In the pop-up window, click on the <strong>Download</strong> button in the bottom right corner. After the download completed, open the dmg file and copy the Hydro app application to a location in your filesystem.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We suggest copying the application to your Desktop. After copying the application, you can move the dmg file to the trash or eject it.</p>
+</div>
+</div>
+<div class="section" id="test-the-installation">
+<h2><span class="section-number">1.2.4. </span>Test the Installation<a class="headerlink" href="#test-the-installation" title="Permalink to this headline">¶</a></h2>
+<p>Once the installation procedure has been completed, it is a good practice to run some basic checks. Navigate to the location where you placed the application and open it by running the Hydro.exe executable. You should see the user interface shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">figUI-Hydro</span></code>. The installation can be tested by running the example problem <span class="xref std std-ref">(Under development)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>SimCenter apps are codesigned and notarized, but because they are not downloaded from the operating system’s app store, they may not be recognized as such. As a consequence, depending on your security settings, when you start a SimCenter app for the first time, your operating system may bring up a dialog box indicating it is unsafe. If this dialog should appear, hit the cancel button. Restart the app by right clicking on it and selecting open.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When the Hydro app is running, open the File/Preferences and make sure that python3 appears under <strong>External Applications:Python</strong>. If you used older versions of SimCenter tools this was not the default.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, The Regents of the University of California.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '...', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+    
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+<script>
+    /*
+    let selectedFilters = [];
+    const images  = document.getElementsByClassName("gallery-item");
+    const filters = [...document.querySelectorAll('.filter select')];
+    const toggles = [...document.querySelectorAll('.filter input')];
+
+    var show = function (elem) {
+        elem.style.display = 'block';
+    };
+    var hide = function (elem) {
+        elem.style.display = 'none';
+    };
+    var toggleFilter =  function(el,elid) {
+        const filter = document.getElementById(elid);
+        filter.disabled = !el.checked;
+       
+        if ("createEvent" in document) {
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            filter.dispatchEvent(evt);
+        }
+        else
+            filter.fireEvent("change");
+    };
+    
+    for (const filter of filters) {
+        filter.addEventListener('change', function(event) {
+            selectedFilters = filters.map(filter => filter.disabled ? '' : filter.value).filter(Boolean);
+            console.log(selectedFilters);
+            for (const image of images) {
+                if (selectedFilters.every(filter => image.classList.contains(filter))) {
+                    show(image);
+                }
+                else {hide(image)};
+            };
+        })
+    };
+    */
+</script>
+
+
+</body>
+</html>

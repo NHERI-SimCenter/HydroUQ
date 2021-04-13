@@ -1,0 +1,391 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Damping Options &mdash; Hydro-UQ  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+        <script src="../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+        <script src="../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
+<style media="screen">.vega-actions a {margin-right: 5px;}</style>
+<link href="../../../_static/css/bootstrap.css" rel="stylesheet">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F2F2F2" >
+          
+<a href="https://simcenter.designsafe-ci.org/" style="margin-bottom: 0px;">
+  <img src="../../../_static/img/SimCenter-Only.png" class="logo" alt="Org-Logo" />
+</a>
+<hr style="margin: 0px;">
+
+  <a href="../../../hydro.html">
+
+
+
+  
+  <img src="../../../_static/Hydro-Logo.png" class="logo" alt="Logo"/>
+
+</a>
+
+
+  
+  
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/about.html">1. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../front-matter/ack.html">1. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../front-matter/license.html">2. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/install.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/userguide/uguide.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/errors.html">3. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/examples/examples.html">4. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/releasenotes.html">6. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/featurereq.html">7. Bugs &amp; Feature Requests</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/techman/hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/techman/fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/techman/swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/techman/UQ/uqengine.html">6. Uncertainity quantification</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/devman/coding.html">4. Coding Style</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../hydro.html">Hydro-UQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Damping Options</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/common/technical_manual/desktop/damping.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="damping-options">
+<span id="lbldamping"></span><h1>Damping Options<a class="headerlink" href="#damping-options" title="Permalink to this headline">¶</a></h1>
+<p>The standard equations that are solved in the nonlinear analysis of structures subjected to dynamic forces are:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-damping-0">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-damping-0" title="Permalink to this equation">¶</a></span>\[M \ddot{U}(t) + C \dot{U}(t)  + Fs(U(t)) = P(t)\]</div>
+<p>where <span class="math notranslate nohighlight">\(U(t), \dot{U}(t), \ddot{U}(t)\)</span> are the vectors of displacements, velocities, and accelerations for the degrees of freedom, <span class="math notranslate nohighlight">\(M\)</span> and <span class="math notranslate nohighlight">\(C\)</span> are the mass and damping matrices, respectively, and the vector <span class="math notranslate nohighlight">\(Fs(U)\)</span> represents the nonlinear relation between resisting forces and deformations, which includes both material and geometric nonlinearities, and <span class="math notranslate nohighlight">\(P(t)\)</span> the time-varying applied load due to the event of interest.</p>
+<p>Energy is dissipated by the structure as it deforms, which is why it to come to rest when the force is removed. The <span class="math notranslate nohighlight">\(Fs(U(t))\)</span> term captures the <strong>hysteretic</strong> energy dissipated through the nonlinear behavior of the structural members. The <span class="math notranslate nohighlight">\(C \dot{U}(t)\)</span> term, the <strong>viscous</strong> damping term, attempts to capture energy dissipated through other  mechanisms present in the structure, e.g. thermal effects from repeated elastic straining of structural materials, repeated straining of nonstructural elements—partition walls, mechanical equipment, fire proofing, and so on—friction at steel connections, opening and closing of microcracks in concrete, friction between the structure itself and nonstructural elements, and other mechanisms, some of which are even difficult to identify. Damping for such is often quantified in terms of <strong>modal</strong> damping ratios, and are typically of the order of 1% (steel buildings) to 5% (concrete buildings). These the values have been obtained from field testing and system identification, albeit they have mostly been obtained from buildings undergoing low levels of vibration.</p>
+<p>It is the formulation of the <span class="math notranslate nohighlight">\(C\)</span> matrix that is of interest here. There are two damping options presented to the user as inputs to the <span class="xref std std-ref">FEM</span> panel: 1) Rayleigh Damping Options and 2) Modal Damping options. This is a brief overview of the theory behind both.</p>
+<div class="section" id="rayleigh-damping">
+<h2>Rayleigh Damping<a class="headerlink" href="#rayleigh-damping" title="Permalink to this headline">¶</a></h2>
+<p>A classical damping matrix can be assembled as a linear combination of the mass and stiffness matrices:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-damping-1">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-damping-1" title="Permalink to this equation">¶</a></span>\[C = a_0 M + a_1 K\]</div>
+<p>is known as <strong>Rayleigh damping</strong> , is the most common—almost pervasive—model in nonlinear analysis of structures. The damping ratio for the nth mode of such a system is</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-damping-2">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-damping-2" title="Permalink to this equation">¶</a></span>\[\zeta_n = \frac{a_0}{2}\frac{1}{\omega_n} + \frac{a_1}{2}\omega_n\]</div>
+<p>The coefficients <span class="math notranslate nohighlight">\(a_0\)</span> and <span class="math notranslate nohighlight">\(a_1\)</span> are typically determined by specifying the damping ratios at one or two modes <span class="math notranslate nohighlight">\(\zeta_1\)</span> and <span class="math notranslate nohighlight">\(\zeta_2\)</span>. There are a number of options:</p>
+<ol class="arabic">
+<li><p><strong>Mass Proportional Damping</strong>, <span class="math notranslate nohighlight">\(C = a_0 M\)</span></p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-damping-3">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-damping-3" title="Permalink to this equation">¶</a></span>\[ \begin{align}\begin{aligned}\zeta_n = \frac{a_0}{2}\frac{1}{\omega_n}\\a_0 = 2 \zeta_n \omega_n\end{aligned}\end{align} \]</div>
+<p>In mass proportional damping, the damping matrix is inversely proportional to the natural frequency. The coefficient is chosen to represent the period at a single mode, modes with a higher frequency will have less damping, and modes with a smaller frequency will have more damping.</p>
+</li>
+<li><p><strong>Stiffness Proportional Damping</strong>, <span class="math notranslate nohighlight">\(C = a_1 K\)</span></p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-damping-4">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-damping-4" title="Permalink to this equation">¶</a></span>\[ \begin{align}\begin{aligned}\zeta_n = \frac{a_1}{2}\omega_n\\a_1 = \frac{2 * \zeta_n}{\omega_n}\end{aligned}\end{align} \]</div>
+<p>In stiffness proportional damping, the damping is proportional to the natural frequency, increasing linearly as the natural frequency increases. The coefficient is again chosen to represent the period at a single mode, modes with a higher frequency will have more damping, and modes with a smaller frequency will have less damping.</p>
+</li>
+<li><p><strong>Traditional Rayleigh Damping</strong>, <span class="math notranslate nohighlight">\(C = a_0 M + a_1 K\)</span></p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-damping-5">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-damping-5" title="Permalink to this equation">¶</a></span>\[\zeta_n = \frac{a_0}{2}\frac{1}{\omega_n} + \frac{a_1}{2}\omega_n\]</div>
+<p>Two coefficients are determined by the user specifying the damping at two different modes given by <span class="math notranslate nohighlight">\(\omega_i\)</span> and <span class="math notranslate nohighlight">\(\omega_j\)</span> <a class="reference internal" href="#rayleigh45" id="id1"><span>[Rayleigh45]</span></a>:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-damping-6">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-damping-6" title="Permalink to this equation">¶</a></span>\[\begin{split}\frac{1}{2} \begin{bmatrix}
+         1/\omega_i &amp; \omega_i \\
+      1/\omega_j &amp; \omega_j \\
+      \end{bmatrix}
+      \begin{bmatrix}
+      a_0 \\
+      a_1
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+      \zeta_i \\
+      \zeta_j
+      \end{bmatrix}\end{split}\]</div>
+<p>as the damping at these two modes is usually specified to be the same, i.e. <span class="math notranslate nohighlight">\(\zeta_i = \zeta_j = \zeta\)</span>, this matrix equation can  be solved for <span class="math notranslate nohighlight">\(a_0\)</span> and <span class="math notranslate nohighlight">\(a_1\)</span></p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-damping-7">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-damping-7" title="Permalink to this equation">¶</a></span>\[a_0 = \zeta \frac{2 \omega_i \omega_j}{w_i + w_j} ; a_1 = \zeta \frac{2}{w_i + w_j}\]</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the tool the user has the option of specifying which of the stiffness matrices (the current linearized stiffness matrix or the initial tangent stiffness matrix). Opinion in the literature is divided, the default is set to the initial stiffness as the possible inclusion of negative damping (should the descending branch of yield curve be reached), the possibility of including zero damping (should elastic perfectly plastic materials yield), and the very fact that the damping is tied to the hysteretic behavior given why it is included in the first place, makes little physical sense.</p>
+<p>Different approaches are of course possible, e.g. where user explicitly models damping. These must be specified by the user in the optional analysis script they provide.</p>
+</div>
+</div>
+<div class="section" id="modal-damping">
+<h2>Modal Damping<a class="headerlink" href="#modal-damping" title="Permalink to this headline">¶</a></h2>
+<p>In modal damping the eigenvectors <span class="math notranslate nohighlight">\(\Phi\)</span> of the <span class="math notranslate nohighlight">\(N\)</span> degree-of-freedom system are used to create the <span class="math notranslate nohighlight">\(C\)</span> matrix.</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-damping-8">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-damping-8" title="Permalink to this equation">¶</a></span>\[C = M \left ( \sum_{m=1}^{N} \frac{2 \zeta_m \omega_m}{M_m} \phi_m \phi_m^TC \dot{U} \right ) M\]</div>
+<p>where the <span class="math notranslate nohighlight">\(m\)</span>’th term is the contribution of the <span class="math notranslate nohighlight">\(m\)</span>’th mode. The resulting damping matrix has not been popular in practical analyses because it is a fully populated matrix and its construction requires all frequencies and modes. However many FEM applications approximate this by limiting number of modes to first <span class="math notranslate nohighlight">\(n\)</span> modes, not including those components outside the sparsity pattern of the <span class="math notranslate nohighlight">\(K\)</span> matrix, <strong>AND</strong> including all terms in the calculation of the resisting forces to ensure that convergence to correct numerical solution occurs, albeit at a slower rate of convergence.</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-damping-9">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-damping-9" title="Permalink to this equation">¶</a></span>\[C = M \left ( \sum_{m=1}^{n} \frac{2 \zeta_m \omega_m}{M_m} \phi_m \phi_m^TC \dot{U} \right ) M\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A drawback of this practical implementation is that higher modes are undamped. To overcome this, FEM applications that permit modal damping also permit it to be combined with <strong>stiffness proportional damping</strong>, where at the last mode of interest, <span class="math notranslate nohighlight">\(n\)</span>, a damping ratio is specified for the calculation of tangent stiffness rayleigh damping. That is the purpose of the additional damping ratio to be provided by the user for the last mode specified, <span class="math notranslate nohighlight">\(\zeta_{nT}\)</span>, which by default in the tool is set to 0.0. If specified to be non-zero, the damping matrix provided is:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-damping-10">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-damping-10" title="Permalink to this equation">¶</a></span>\[C = M \left ( \sum_{m=1}^{n} \frac{2 \zeta_m \omega_m}{M_m} \phi_m \phi_m^TC \dot{U} \right ) M + a_1 K_0\]</div>
+<p>where <span class="math notranslate nohighlight">\(a_1 = \frac{2 * \zeta_{nT}}{\omega_{n}}\)</span></p>
+</div>
+<dl class="citation">
+<dt class="label" id="rayleigh45"><span class="brackets"><a class="fn-backref" href="#id1">Rayleigh45</a></span></dt>
+<dd><p>Rayleigh L. Theory of Sound, 1. Dover: New York, NY, 1945.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, The Regents of the University of California.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '...', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+    
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+<script>
+    /*
+    let selectedFilters = [];
+    const images  = document.getElementsByClassName("gallery-item");
+    const filters = [...document.querySelectorAll('.filter select')];
+    const toggles = [...document.querySelectorAll('.filter input')];
+
+    var show = function (elem) {
+        elem.style.display = 'block';
+    };
+    var hide = function (elem) {
+        elem.style.display = 'none';
+    };
+    var toggleFilter =  function(el,elid) {
+        const filter = document.getElementById(elid);
+        filter.disabled = !el.checked;
+       
+        if ("createEvent" in document) {
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            filter.dispatchEvent(evt);
+        }
+        else
+            filter.fireEvent("change");
+    };
+    
+    for (const filter of filters) {
+        filter.addEventListener('change', function(event) {
+            selectedFilters = filters.map(filter => filter.disabled ? '' : filter.value).filter(Boolean);
+            console.log(selectedFilters);
+            for (const image of images) {
+                if (selectedFilters.every(filter => image.classList.contains(filter))) {
+                    show(image);
+                }
+                else {hide(image)};
+            };
+        })
+    };
+    */
+</script>
+
+
+</body>
+</html>

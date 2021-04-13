@@ -1,0 +1,450 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>MacOS Users &mdash; Hydro-UQ  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
+<style media="screen">.vega-actions a {margin-right: 5px;}</style>
+<link href="../../../../_static/css/bootstrap.css" rel="stylesheet">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F2F2F2" >
+          
+<a href="https://simcenter.designsafe-ci.org/" style="margin-bottom: 0px;">
+  <img src="../../../../_static/img/SimCenter-Only.png" class="logo" alt="Org-Logo" />
+</a>
+<hr style="margin: 0px;">
+
+  <a href="../../../../hydro.html">
+
+
+
+  
+  <img src="../../../../_static/Hydro-Logo.png" class="logo" alt="Logo"/>
+
+</a>
+
+
+  
+  
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/about.html">1. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/ack.html">1. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/license.html">2. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/install.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/userguide/uguide.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/errors.html">3. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/examples/examples.html">4. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/releasenotes.html">6. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/featurereq.html">7. Bugs &amp; Feature Requests</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/UQ/uqengine.html">6. Uncertainity quantification</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/coding.html">4. Coding Style</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../hydro.html">Hydro-UQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>MacOS Users</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/common/user_manual/installation/desktop/downloadOtherMAC.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="macos-users">
+<span id="lbldownloadothermac"></span><h1>MacOS Users<a class="headerlink" href="#macos-users" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="install-location">
+<h2>Install Location<a class="headerlink" href="#install-location" title="Permalink to this headline">¶</a></h2>
+<p>The following set of instructions assumes all files will be placed in the <strong>bin</strong> folder in your home directory. You can of course place them anywhere you want, you just need to make appropriate changes to the <strong>env PATH</strong> settings discussed later. If you wish to follow our placement strategy, inside this <strong>bin</strong> folder create two additional folders named <code class="docutils literal notranslate"><span class="pre">dakota</span></code> and <code class="docutils literal notranslate"><span class="pre">OpenSees</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Placement of terminal applications in your home <strong>bin</strong> folder is common practice for the terminal applications on a <strong>MacOS</strong> system. It is legacy practice from the operating systems Linux heritage.</p>
+</div>
+</div>
+<div class="section" id="python">
+<h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
+<p>The Mac comes with Python pre-installed, which is currently the somewhat
+dated version 2.7. We recommend installing Python 3.7 from <a class="reference external" href="https://www.python.org/downloads/mac-osx">Python.org</a> . We recommend installing using the
+<strong>macOS 64-bit installer</strong>. The installer used to place a python3 executable in your /usr/local/bin directory, whose location should be on your system PATH, Version 3.8 does not appear to do so anymore, see the note below.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ol class="arabic simple">
+<li><p>We use the python.org installation over others, due to it’s simplicity of install.</p></li>
+<li><p>In the current installation of <strong>Python</strong> it leaves two script files in a folder when the installation ends. You need to execute both script files to get Python set up correctly so that it can be invoked from the terminal. To execute the files, double click on them. The two files, shown in the image below, are: <strong>Update Shell Profile.command.sh</strong> and <strong>Install CertificateCommand.sh</strong>.</p></li>
+</ol>
+<div class="align-center figure" id="id4">
+<img alt="../../../../_images/pythonInstallShell.png" src="../../../../_images/pythonInstallShell.png" />
+<p class="caption"><span class="caption-text">Python: Folder Displayed at Conclusion of Install</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<p>Once Python is installed, you need to extend it by installing the following packages: <strong>numpy</strong>, <strong>scipy</strong>, and <strong>pandas</strong>. To install these packages, start a terminal window and type the following instructions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip3</span> <span class="n">install</span> <span class="n">numpy</span>
+<span class="n">pip3</span> <span class="n">install</span> <span class="n">scipy</span>
+<span class="n">pip3</span> <span class="n">install</span> <span class="n">pandas</span>
+<span class="n">pip3</span> <span class="n">install</span> <span class="n">tables</span>
+<span class="n">pip3</span> <span class="n">install</span> <span class="n">hdf5</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>To start a terminal window you can use the spotlight app (magnifying glass at the top right corner of the desktop). Start the spotlight app and type in terminal. The terminal application should appear as the top hit. Click on it to start it.</p></li>
+<li><p>When the Hydro app is running, open the File/Preferences and make sure that python3 appears under <strong>External Applications:Python</strong>. If you used older versions of SimCenter tools this was not the default.</p></li>
+<li><p>If you forget to invoke the <strong>UpdateShellProfile.command.sh” script at the end of the install, you can always edit the correct shell file later to add the **PATH</strong> variable.</p></li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p>As an alternative, you can install the SimCenter’s pelicun module, which will include all three of the above</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pelicun</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>Dakota<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://dakota.sandia.gov/">Dakota</a> is the default UQ engine used by the Hydro app that is publicly available from the <a class="reference external" href="https://dakota.sandia.gov/download.html">Dakota Download</a> page. The download page offers an extensive list of downloadable files. You can narrow this down to the file to be selected by selecting <strong>MacOS</strong> in the <cite>Platform</cite>, <strong>6.10</strong> in the <cite>Release</cite>, and <strong>Command Line Only</strong> for the <cite>interface type</cite>. In the <cite>Public</cite>
+area you should now only have a single option, click on the link to download <strong>Dakota</strong>. When you extract the files that you download, they will all be contained in a single folder. Rename this folder <strong>dakota-6.10.0</strong> and move that folder to your <strong>bin/dakota</strong> folder.</p>
+</div>
+<div class="section" id="id3">
+<h2>OpenSees<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://opensees.berkeley.edu">OpenSees</a> is the default FEM engine used by the Hydro app that is publicly available from the <a class="reference external" href="https://opensees.berkeley.edu/OpenSees/user/download.php">OpenSees Download</a> page. To download the <strong>OpenSees</strong> you have to enter your email address, which may also require you to register (that requirement is going away and may be gone by time you read this). At the bottom of the page undet the section <strong>Mac Version</strong> is a table with two links: one for the <strong>OpenSees</strong> and also a link to <strong>Tcl</strong>, whose libraries OpenSees needs on your computer to run. You will need to follow both links to download both applications.</p>
+<dl class="simple">
+<dt>Steps to Install OpenSees on a Mac:</dt><dd><ol class="arabic simple">
+<li><p>Follow the OpenSees link and download the OpenSees.zip file. Uncompress the file and you will have an <strong>OpenSees-3.2.2</strong> folder. Move that folder to the <strong>bin/OpenSees</strong> folder.</p></li>
+<li><p>Download and run the Tcl installer.</p></li>
+</ol>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The additional requirement of installing <strong>Tcl</strong> was removed from the <strong>OpenSees</strong> installation process with version <strong>3.2.2</strong>.</p>
+</div>
+</div>
+<div class="section" id="edit-your-shell-file">
+<h2>Edit Your Shell file<a class="headerlink" href="#edit-your-shell-file" title="Permalink to this headline">¶</a></h2>
+<p>On Linux systems, the shell is the program that takes commands from the keyboard that you enter in the terminal window and passes them to the operating system to perform by invoking applications and passing data between applications. In the good old days, it was the only interface available to the user, i.e. there was no such thing as Finder! There are a number of shell programs that can be installed and made available to you. The most popular is the <strong>bash</strong> shell, the up and coming one is the <strong>Z</strong> shell. Power MacOS users will write shell scripts to do many many useful things. By default the applications that the shell program will invoke are limited to applications in a few specific directories that are defined in the users <strong>PATH</strong>. Users can modify this path by editing files that the shell program will read from everytime the program is started.</p>
+<p>When the frontend application is running the computations it is actually running a backend application using the shell program. As a consequence the shell program must be made aware of the locations of  some of the external applications that you have installed as <strong>OpenSees</strong> and <strong>dakota</strong> do not provide installers that automatically do this when they are installed. Other applications, like <strong>Tcl</strong> provide scripts that you invoke to do it. In short you have to edit the file appropriate to the shell you are using.</p>
+<p>To find which shell prgram you are using when you issue commands inside the terminal window, type the following in a terminal window:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>env | grep SHELL
+</pre></div>
+</div>
+<p>If the results is <strong>/bin/bash</strong> you will need to edit the <strong>.bashrc</strong> file or the <strong>bash_profile</strong> file. If the results is <strong>/bin/zsh</strong> you will need to edit the <strong>.zshrc</strong> or <strong>.zprofile</strong>. Typically the <strong>.bash_profile</strong> or the <strong>.zprofile</strong> file is the one to edit as these typically by design will invoke the <strong>.bashrc</strong> or <strong>.zshrc</strong> file. If in doubt, look for the files and see where <strong>Python</strong> placed its modifications. In your home directory type:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>env | grep SHELL
+</pre></div>
+</div>
+<p>Finally you want to edit that file so that the applications will find <strong>OpenSees</strong> and <strong>Dakota</strong>. The format depends on the shell, just copy the fomat that Python used, e.g. my <strong>.bash_profile</strong> file has the lines:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>export PATH=$HOME/bin:$PATH
+export PATH=$HOME/bin/dakota-6.10.0/bin:$PATH
+export PYTHONPATH=$HOME/bin/dakota-6.10.0/share/dakota/Python
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-the-install-of-python-opensees-dakota">
+<h2>Test the Install of Python, OpenSees &amp; Dakota<a class="headerlink" href="#test-the-install-of-python-opensees-dakota" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>Steps to Test the Installation of the Applications:</dt><dd><ol class="arabic simple">
+<li><p>Open a terminal windows (type <code class="docutils literal notranslate"><span class="pre">terminal</span></code> in spotlight search)</p></li>
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">python3</span></code> (this should bring up the Python interpreter)</p></li>
+<li><p>Enter the following to test the install of the modules and quit the application:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="n">quit</span><span class="p">()</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">OpenSees</span></code> (this should bring up the OpenSees interpreter).</p></li>
+<li><p>Enter the following to exit this program:</p></li>
+</ol>
+<div class="highlight-tcl notranslate"><div class="highlight"><pre><span></span><span class="nb">exit</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">dakota</span></code> (this should start the Dakota application which should give some error messages).</p></li>
+</ol>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Apple, in the latest release of their operating system, MacOS 10.16 Catalina, has changed the default working of Gatekeeper. Gatekeeper, first introduced in OS X Mountain Lion, is a Mac security feature that helps protect your Mac from Malware and other malicious software. Gatekeeper checks to make sure the application is safe to run by checking it against the list of apps that Apple has vetted and approved for the Apple Mac Store and/or approved by Apple even if not offered through the app store. In previous versions of MacOS, Gatekeeper had three security level options: App Store, App Store and Identified Developers, and Anywhere. Anywhere has been removed and this will cause problems with Dakota.</p>
+<p>Apple has greatly increased security with <strong>Catalina</strong> and now by default terminal applications can no longer run if they are downloaded from the internet and not signed by a recognized Apple developer. To over come this issue, before you start issuing the above commands in a terminal, open <strong>System Preferences/Security and Privacy</strong>. As you issue the commands, click the <strong>Cancel</strong> button in the window that pops warning you the <strong>application cannot be opened because the Developer cannot be verified</strong> up and then click the button <strong>Allow Anayway</strong> that now appears beside the application name in the <strong>Security an Privacy</strong> window, as shown in figure below. Rerun the application and it should now work without the warning window popping up.</p>
+<div class="align-center figure" id="id5">
+<img alt="../../../../_images/macSecurity.png" src="../../../../_images/macSecurity.png" />
+<p class="caption"><span class="caption-text">Catalina: Security and Privacy Panel for Unsigned Terminal Applications.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Dakota</strong> has even more troubles installing on Catalina. Not only is the develoepr not know, the application relies on code from other unsigned developers. As a consequence the above workaround for most terminal applications fails. For dakota, in the terminal we have to turn off gatekeeper even after we have o.k.’d the application for running. Issue the following commands inside the terminal window:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sudo spctl --master-disable
+dakota
+sudo spctl --master-enable
+</pre></div>
+</div>
+<p>This will temporarily disable gatekeeper (basically setting Gatekeeper options to Anywhere), allow the Dakota application and it’s .dylib files to be registered as safe, and then turn Gatekeeper options back to default.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, The Regents of the University of California.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '...', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+    
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+<script>
+    /*
+    let selectedFilters = [];
+    const images  = document.getElementsByClassName("gallery-item");
+    const filters = [...document.querySelectorAll('.filter select')];
+    const toggles = [...document.querySelectorAll('.filter input')];
+
+    var show = function (elem) {
+        elem.style.display = 'block';
+    };
+    var hide = function (elem) {
+        elem.style.display = 'none';
+    };
+    var toggleFilter =  function(el,elid) {
+        const filter = document.getElementById(elid);
+        filter.disabled = !el.checked;
+       
+        if ("createEvent" in document) {
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            filter.dispatchEvent(evt);
+        }
+        else
+            filter.fireEvent("change");
+    };
+    
+    for (const filter of filters) {
+        filter.addEventListener('change', function(event) {
+            selectedFilters = filters.map(filter => filter.disabled ? '' : filter.value).filter(Boolean);
+            console.log(selectedFilters);
+            for (const image of images) {
+                if (selectedFilters.every(filter => image.classList.contains(filter))) {
+                    show(image);
+                }
+                else {hide(image)};
+            };
+        })
+    };
+    */
+</script>
+
+
+</body>
+</html>

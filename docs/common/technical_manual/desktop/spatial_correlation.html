@@ -1,0 +1,1229 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Ground Motion Intensity Spatial Correlation Model Options &mdash; Hydro-UQ  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+        <script src="../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+        <script src="../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
+<style media="screen">.vega-actions a {margin-right: 5px;}</style>
+<link href="../../../_static/css/bootstrap.css" rel="stylesheet">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F2F2F2" >
+          
+<a href="https://simcenter.designsafe-ci.org/" style="margin-bottom: 0px;">
+  <img src="../../../_static/img/SimCenter-Only.png" class="logo" alt="Org-Logo" />
+</a>
+<hr style="margin: 0px;">
+
+  <a href="../../../hydro.html">
+
+
+
+  
+  <img src="../../../_static/Hydro-Logo.png" class="logo" alt="Logo"/>
+
+</a>
+
+
+  
+  
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/about.html">1. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../front-matter/ack.html">1. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../front-matter/license.html">2. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/install.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/userguide/uguide.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/errors.html">3. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/examples/examples.html">4. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/releasenotes.html">6. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/userman/featurereq.html">7. Bugs &amp; Feature Requests</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/techman/hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/techman/fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/techman/swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/techman/UQ/uqengine.html">6. Uncertainity quantification</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Hydro/devman/coding.html">4. Coding Style</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../hydro.html">Hydro-UQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Ground Motion Intensity Spatial Correlation Model Options</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/common/technical_manual/desktop/spatial_correlation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ground-motion-intensity-spatial-correlation-model-options">
+<span id="lblcorrelation"></span><h1>Ground Motion Intensity Spatial Correlation Model Options<a class="headerlink" href="#ground-motion-intensity-spatial-correlation-model-options" title="Permalink to this headline">¶</a></h1>
+<p>The regional seismic risk analysis requires the prediction of ground motion intensities at multiple sites. Such joint predictions need to consider the correlation between ground motion intensities at different sites given a specific earthquake scenario. In general, ground motion models predict intensities at an individual site <span class="math notranslate nohighlight">\(i\)</span> due to an earthquake <span class="math notranslate nohighlight">\(j\)</span> have the following form:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-0">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-0" title="Permalink to this equation">¶</a></span>\[ln(Y_{ij}) = ln(\bar{Y}_{ij}) + \epsilon_{ij} + \eta_j\]</div>
+<p>where <span class="math notranslate nohighlight">\(Y_{ij}\)</span> is the intensity measure (e.g., <span class="math notranslate nohighlight">\(Sa(T)\)</span>), <span class="math notranslate nohighlight">\(\bar{Y}_{ij}\)</span> is the predicted median intensity (given magnitude, distance, period, and site conditions), <span class="math notranslate nohighlight">\(\epsilon_{ij}\)</span> is the intra-event residual, and <span class="math notranslate nohighlight">\(\eta_j\)</span> is the inter-event residual. It is assumed that <span class="math notranslate nohighlight">\(\epsilon_{ij}\)</span> and <span class="math notranslate nohighlight">\(\eta_j\)</span> are random variables with zero means and standard deviations <span class="math notranslate nohighlight">\(\sigma_{ij}\)</span> and <span class="math notranslate nohighlight">\(\tau_j\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ol class="arabic simple">
+<li><p><strong>Intra-event residual</strong> quantifies the deviation of intensities at different sites given a specific earthquake realization.</p></li>
+<li><p><strong>Inter-event residual</strong> quantifies the deviation of intensities at a specific site given different earthquake realizations.</p></li>
+</ol>
+</div>
+<p><a class="reference internal" href="#jayaram08" id="id1"><span>[Jayaram08]</span></a> found that the spatially distributed intra-event residuals <span class="math notranslate nohighlight">\(\epsilon_j = (\epsilon_{1j}, \epsilon_{2j}, ..., \epsilon_{dj})\)</span> follows a multivariate normal distribution. This multivariate normal distribution can be defined by the mean, variance, and correlation (between <span class="math notranslate nohighlight">\(\epsilon_{i_1j}\)</span> and <span class="math notranslate nohighlight">\(\epsilon_{i_2j}\)</span>). The mean is zero (as discussed previously) and the variance can be predicted by ground motion models, but the correlation between residuals at two different sites needs to be described. The semivariogram <span class="math notranslate nohighlight">\(\gamma(u,u^\prime)\)</span> is used to describe the expected squared difference between two locations <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(u^\prime\)</span>. Because it is very difficult to obtain several observations of a random variable at a given pair of sites, the stationarity assumption is usually applied to simplify it to a more trackable problem. It is typically assumed that the semivariogram only depends on the distance <span class="math notranslate nohighlight">\(h\)</span> - the stationary semivariogram <span class="math notranslate nohighlight">\(\gamma(h)\)</span> can be obtained from data as follows:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-1">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-1" title="Permalink to this equation">¶</a></span>\[\gamma(h) = \frac{1}{2}[E(Z_u - Z_{u+h})^2]\]</div>
+<p>where <span class="math notranslate nohighlight">\(Z_u\)</span> and <span class="math notranslate nohighlight">\(Z_{u+h}\)</span> are the random variable realizations at sites with a distance of <span class="math notranslate nohighlight">\(h\)</span>.  The covariance between <span class="math notranslate nohighlight">\(Z_u\)</span> and <span class="math notranslate nohighlight">\(Z_{u+h}\)</span> are:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-2">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-2" title="Permalink to this equation">¶</a></span>\[C(h) = E[(Z_u - \mu_Z)(Z_{u+h} - \mu_Z)]\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu_Z\)</span> is the mean (which is zero under the stationarity assumption). Note this spatial covariance can also be related to the semivariogram with:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-3">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-3" title="Permalink to this equation">¶</a></span>\[C(h) = C(0) - \gamma(h)\]</div>
+<p>Similarly, the correlation coefficient is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-4">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-4" title="Permalink to this equation">¶</a></span>\[\rho(h) = \frac{C(h)}{C(0)} = 1 - \frac{\gamma(h)}{C(0)}\]</div>
+<p>Given the semivariogram is often preferred in geostatistical practice (because it does not require a prior estimation of the mean), many studies were carried to find the semivariogram models to derive the correlation <span class="math notranslate nohighlight">\(rho(h)\)</span> of ground motion intensities. The available models in the current Hydro app are briefly summarized in following sections.</p>
+<div class="section" id="jayaram-and-baker-2009">
+<h2>Jayaram and Baker (2009)<a class="headerlink" href="#jayaram-and-baker-2009" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#jayaram09" id="id2"><span>[Jayaram09]</span></a> adopted a exponential model for the semivariogram function with a isotropic hypothesis (i.e., the distance <span class="math notranslate nohighlight">\(h\)</span> is the separation length):</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-5">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-5" title="Permalink to this equation">¶</a></span>\[\gamma(h) = a[1 - exp(-3h / b)]\]</div>
+<p>where a and b are two modeling coefficients, namely sill and the range of the semivariogram function, respectively. When <span class="math notranslate nohighlight">\(h = 0\)</span>, <span class="math notranslate nohighlight">\(\gamma(h=0) = 0\)</span> which leads to <span class="math notranslate nohighlight">\(\rho(h = 0) = 1\)</span>. As the distance between two sites increases, i.e., <span class="math notranslate nohighlight">\(h\)</span> increases, <span class="math notranslate nohighlight">\(\gamma(h)\)</span> increases and <span class="math notranslate nohighlight">\(\rho(h)\)</span> decreases, which is consistent with the decaying trend of correlation between the two sites. After calibrating the model to past earthquake recordings, the following model was proposed for predicting the spatial correlation <span class="math notranslate nohighlight">\(\rho(h)\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-6">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-6" title="Permalink to this equation">¶</a></span>\[\rho(h) = exp(-3h / b)\]</div>
+<p>The range of the semivariogram function <span class="math notranslate nohighlight">\(b\)</span> was found to depend on the similarity of <span class="math notranslate nohighlight">\(V_{S30}\)</span> values in the given region. If the <span class="math notranslate nohighlight">\(V_{S30}\)</span> values do not show clustering, the <span class="math notranslate nohighlight">\(b\)</span> is computed by:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-7">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-7" title="Permalink to this equation">¶</a></span>\[ \begin{align}\begin{aligned}b = 8.5 + 17.2T, T &lt; 1s\\b = 22.0 + 3.7T, T \leq 1s\end{aligned}\end{align} \]</div>
+<p>where T is the period. If the <span class="math notranslate nohighlight">\(V_{S30}\)</span> values are very close in the given region, the <span class="math notranslate nohighlight">\(b\)</span> can be computed by:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-8">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-8" title="Permalink to this equation">¶</a></span>\[ \begin{align}\begin{aligned}b = 40.7 - 15.0T, T &lt; 1s\\b = 22.0 + 3.7T, T \leq 1s\end{aligned}\end{align} \]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Earthquakes that were considered in the development: Anza earthquake, Alum Rock earthquake, Parkfield earthquake, Chi-Chi earthquake, Northridge earthquake, Big Bear City earthquake, and Chino Hills earthquake.</p>
+</div>
+</div>
+<div class="section" id="loth-and-baker-2013">
+<h2>Loth and Baker (2013)<a class="headerlink" href="#loth-and-baker-2013" title="Permalink to this headline">¶</a></h2>
+<p>Note that the cross-semivariograms between different pairs of intensity measures can be different, for instance, <span class="math notranslate nohighlight">\(\rho_{Sa(T=0.1s),Sa(T=0.2s)}(h)\)</span> might be greater than <span class="math notranslate nohighlight">\(\rho_{Sa(T=0.1s),Sa(T=1s)}(h)\)</span>. This means one needs to repeat a calibration process many times to develop semivariogram functions and correlation models that have higher resolutions (i.e., direct semivariogram fit). Instead of fitting each semivariogram independently, <a class="reference internal" href="#loth13" id="id3"><span>[Loth13]</span></a> proposed a predictive model for spatial covariance of spectral accelerations at different periods:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-9">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-9" title="Permalink to this equation">¶</a></span>\[\textbf{C}(h) = \textbf{B}^1 exp(-3h/20) + \textbf{B}^2 exp(-3h/70) + \textbf{B}^3 I_{h=0}\]</div>
+<p>where <span class="math notranslate nohighlight">\(I_{h=0}\)</span> is the indicator function equal to 1 at <span class="math notranslate nohighlight">\(h = 0\)</span> and 0 otherwise. And the three coefficient matrices <span class="math notranslate nohighlight">\(\textbf{B}^1\)</span>, <span class="math notranslate nohighlight">\(\textbf{B}^2\)</span>, and <span class="math notranslate nohighlight">\(\textbf{B}^3\)</span> were calibrated by 2080 recordings from 8 earthquakes.</p>
+<div class="align-center figure" id="id9">
+<img alt="../../../_images/spatial_correlation_1.png" src="../../../_images/spatial_correlation_1.png" />
+<p class="caption"><span class="caption-text">Location of recordings from the 8 earthquakes considered by <a class="reference internal" href="#loth13" id="id4"><span>[Loth13]</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
+<table class="docutils align-default" id="id10">
+<caption><span class="caption-text">Short-range coregionalization matrix, <span class="math notranslate nohighlight">\(\textbf{B}^1\)</span></span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Periods (s)</p></td>
+<td><p>0.01</p></td>
+<td><p>0.1</p></td>
+<td><p>0.2</p></td>
+<td><p>0.5</p></td>
+<td><p>1.0</p></td>
+<td><p>2.0</p></td>
+<td><p>5.0</p></td>
+<td><p>7.5</p></td>
+<td><p>10.0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.01</p></td>
+<td><p>0.29</p></td>
+<td><p>0.25</p></td>
+<td><p>0.23</p></td>
+<td><p>0.23</p></td>
+<td><p>0.18</p></td>
+<td><p>0.10</p></td>
+<td><p>0.06</p></td>
+<td><p>0.06</p></td>
+<td><p>0.06</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.1</p></td>
+<td><p>0.25</p></td>
+<td><p>0.30</p></td>
+<td><p>0.20</p></td>
+<td><p>0.16</p></td>
+<td><p>0.10</p></td>
+<td><p>0.04</p></td>
+<td><p>0.03</p></td>
+<td><p>0.04</p></td>
+<td><p>0.05</p></td>
+</tr>
+<tr class="row-even"><td><p>0.2</p></td>
+<td><p>0.23</p></td>
+<td><p>0.20</p></td>
+<td><p>0.27</p></td>
+<td><p>0.18</p></td>
+<td><p>0.10</p></td>
+<td><p>0.03</p></td>
+<td><p>0.00</p></td>
+<td><p>0.01</p></td>
+<td><p>0.02</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.5</p></td>
+<td><p>0.23</p></td>
+<td><p>0.16</p></td>
+<td><p>0.18</p></td>
+<td><p>0.31</p></td>
+<td><p>0.22</p></td>
+<td><p>0.14</p></td>
+<td><p>0.08</p></td>
+<td><p>0.07</p></td>
+<td><p>0.07</p></td>
+</tr>
+<tr class="row-even"><td><p>1.0</p></td>
+<td><p>0.18</p></td>
+<td><p>0.10</p></td>
+<td><p>0.10</p></td>
+<td><p>0.22</p></td>
+<td><p>0.33</p></td>
+<td><p>0.24</p></td>
+<td><p>0.16</p></td>
+<td><p>0.13</p></td>
+<td><p>0.12</p></td>
+</tr>
+<tr class="row-odd"><td><p>2.0</p></td>
+<td><p>0.10</p></td>
+<td><p>0.04</p></td>
+<td><p>0.03</p></td>
+<td><p>0.14</p></td>
+<td><p>0.24</p></td>
+<td><p>0.33</p></td>
+<td><p>0.26</p></td>
+<td><p>0.21</p></td>
+<td><p>0.19</p></td>
+</tr>
+<tr class="row-even"><td><p>5.0</p></td>
+<td><p>0.06</p></td>
+<td><p>0.03</p></td>
+<td><p>0.00</p></td>
+<td><p>0.08</p></td>
+<td><p>0.16</p></td>
+<td><p>0.26</p></td>
+<td><p>0.37</p></td>
+<td><p>0.30</p></td>
+<td><p>0.26</p></td>
+</tr>
+<tr class="row-odd"><td><p>7.5</p></td>
+<td><p>0.06</p></td>
+<td><p>0.04</p></td>
+<td><p>0.01</p></td>
+<td><p>0.07</p></td>
+<td><p>0.13</p></td>
+<td><p>0.21</p></td>
+<td><p>0.30</p></td>
+<td><p>0.28</p></td>
+<td><p>0.24</p></td>
+</tr>
+<tr class="row-even"><td><p>10.0</p></td>
+<td><p>0.06</p></td>
+<td><p>0.05</p></td>
+<td><p>0.02</p></td>
+<td><p>0.07</p></td>
+<td><p>0.12</p></td>
+<td><p>0.19</p></td>
+<td><p>0.26</p></td>
+<td><p>0.24</p></td>
+<td><p>0.23</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id11">
+<caption><span class="caption-text">Short-range coregionalization matrix, <span class="math notranslate nohighlight">\(\textbf{B}^2\)</span></span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Periods (s)</p></td>
+<td><p>0.01</p></td>
+<td><p>0.1</p></td>
+<td><p>0.2</p></td>
+<td><p>0.5</p></td>
+<td><p>1.0</p></td>
+<td><p>2.0</p></td>
+<td><p>5.0</p></td>
+<td><p>7.5</p></td>
+<td><p>10.0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.01</p></td>
+<td><p>0.47</p></td>
+<td><p>0.40</p></td>
+<td><p>0.43</p></td>
+<td><p>0.35</p></td>
+<td><p>0.27</p></td>
+<td><p>0.15</p></td>
+<td><p>0.13</p></td>
+<td><p>0.09</p></td>
+<td><p>0.12</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.1</p></td>
+<td><p>0.40</p></td>
+<td><p>0.42</p></td>
+<td><p>0.37</p></td>
+<td><p>0.25</p></td>
+<td><p>0.15</p></td>
+<td><p>0.03</p></td>
+<td><p>0.04</p></td>
+<td><p>0.00</p></td>
+<td><p>0.03</p></td>
+</tr>
+<tr class="row-even"><td><p>0.2</p></td>
+<td><p>0.43</p></td>
+<td><p>0.37</p></td>
+<td><p>0.45</p></td>
+<td><p>0.36</p></td>
+<td><p>0.26</p></td>
+<td><p>0.15</p></td>
+<td><p>0.09</p></td>
+<td><p>0.05</p></td>
+<td><p>0.08</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.5</p></td>
+<td><p>0.35</p></td>
+<td><p>0.25</p></td>
+<td><p>0.36</p></td>
+<td><p>0.42</p></td>
+<td><p>0.37</p></td>
+<td><p>0.29</p></td>
+<td><p>0.20</p></td>
+<td><p>0.16</p></td>
+<td><p>0.16</p></td>
+</tr>
+<tr class="row-even"><td><p>1.0</p></td>
+<td><p>0.27</p></td>
+<td><p>0.15</p></td>
+<td><p>0.26</p></td>
+<td><p>0.37</p></td>
+<td><p>0.48</p></td>
+<td><p>0.41</p></td>
+<td><p>0.26</p></td>
+<td><p>0.21</p></td>
+<td><p>0.21</p></td>
+</tr>
+<tr class="row-odd"><td><p>2.0</p></td>
+<td><p>0.15</p></td>
+<td><p>0.03</p></td>
+<td><p>0.15</p></td>
+<td><p>0.29</p></td>
+<td><p>0.41</p></td>
+<td><p>0.55</p></td>
+<td><p>0.37</p></td>
+<td><p>0.33</p></td>
+<td><p>0.32</p></td>
+</tr>
+<tr class="row-even"><td><p>5.0</p></td>
+<td><p>0.13</p></td>
+<td><p>0.04</p></td>
+<td><p>0.09</p></td>
+<td><p>0.20</p></td>
+<td><p>0.26</p></td>
+<td><p>0.37</p></td>
+<td><p>0.51</p></td>
+<td><p>0.49</p></td>
+<td><p>0.49</p></td>
+</tr>
+<tr class="row-odd"><td><p>7.5</p></td>
+<td><p>0.09</p></td>
+<td><p>0.00</p></td>
+<td><p>0.05</p></td>
+<td><p>0.16</p></td>
+<td><p>0.21</p></td>
+<td><p>0.33</p></td>
+<td><p>0.49</p></td>
+<td><p>0.62</p></td>
+<td><p>0.60</p></td>
+</tr>
+<tr class="row-even"><td><p>10.0</p></td>
+<td><p>0.12</p></td>
+<td><p>0.03</p></td>
+<td><p>0.08</p></td>
+<td><p>0.16</p></td>
+<td><p>0.21</p></td>
+<td><p>0.32</p></td>
+<td><p>0.49</p></td>
+<td><p>0.60</p></td>
+<td><p>0.68</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id12">
+<caption><span class="caption-text">Short-range coregionalization matrix, <span class="math notranslate nohighlight">\(\textbf{B}^3\)</span></span><a class="headerlink" href="#id12" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Periods (s)</p></td>
+<td><p>0.01</p></td>
+<td><p>0.1</p></td>
+<td><p>0.2</p></td>
+<td><p>0.5</p></td>
+<td><p>1.0</p></td>
+<td><p>2.0</p></td>
+<td><p>5.0</p></td>
+<td><p>7.5</p></td>
+<td><p>10.0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.01</p></td>
+<td><p>0.24</p></td>
+<td><p>0.22</p></td>
+<td><p>0.21</p></td>
+<td><p>0.09</p></td>
+<td><p>-0.02</p></td>
+<td><p>0.01</p></td>
+<td><p>0.03</p></td>
+<td><p>0.02</p></td>
+<td><p>0.01</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.1</p></td>
+<td><p>0.22</p></td>
+<td><p>0.28</p></td>
+<td><p>0.20</p></td>
+<td><p>0.04</p></td>
+<td><p>-0.05</p></td>
+<td><p>0.00</p></td>
+<td><p>0.01</p></td>
+<td><p>0.01</p></td>
+<td><p>-0.01</p></td>
+</tr>
+<tr class="row-even"><td><p>0.2</p></td>
+<td><p>0.21</p></td>
+<td><p>0.20</p></td>
+<td><p>0.28</p></td>
+<td><p>0.05</p></td>
+<td><p>-0.06</p></td>
+<td><p>0.00</p></td>
+<td><p>0.04</p></td>
+<td><p>0.03</p></td>
+<td><p>0.01</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.5</p></td>
+<td><p>0.09</p></td>
+<td><p>0.04</p></td>
+<td><p>0.05</p></td>
+<td><p>0.26</p></td>
+<td><p>0.14</p></td>
+<td><p>0.05</p></td>
+<td><p>0.05</p></td>
+<td><p>0.04</p></td>
+<td><p>0.04</p></td>
+</tr>
+<tr class="row-even"><td><p>1.0</p></td>
+<td><p>-0.02</p></td>
+<td><p>-0.05</p></td>
+<td><p>-0.06</p></td>
+<td><p>0.14</p></td>
+<td><p>0.20</p></td>
+<td><p>0.07</p></td>
+<td><p>0.05</p></td>
+<td><p>0.05</p></td>
+<td><p>0.05</p></td>
+</tr>
+<tr class="row-odd"><td><p>2.0</p></td>
+<td><p>0.01</p></td>
+<td><p>0.00</p></td>
+<td><p>0.00</p></td>
+<td><p>0.05</p></td>
+<td><p>0.07</p></td>
+<td><p>0.12</p></td>
+<td><p>0.08</p></td>
+<td><p>0.07</p></td>
+<td><p>0.06</p></td>
+</tr>
+<tr class="row-even"><td><p>5.0</p></td>
+<td><p>0.03</p></td>
+<td><p>0.01</p></td>
+<td><p>0.04</p></td>
+<td><p>0.05</p></td>
+<td><p>0.05</p></td>
+<td><p>0.08</p></td>
+<td><p>0.12</p></td>
+<td><p>0.10</p></td>
+<td><p>0.08</p></td>
+</tr>
+<tr class="row-odd"><td><p>7.5</p></td>
+<td><p>0.02</p></td>
+<td><p>0.01</p></td>
+<td><p>0.03</p></td>
+<td><p>0.05</p></td>
+<td><p>0.05</p></td>
+<td><p>0.07</p></td>
+<td><p>0.10</p></td>
+<td><p>0.10</p></td>
+<td><p>0.09</p></td>
+</tr>
+<tr class="row-even"><td><p>10.0</p></td>
+<td><p>0.01</p></td>
+<td><p>-0.01</p></td>
+<td><p>0.01</p></td>
+<td><p>0.04</p></td>
+<td><p>0.05</p></td>
+<td><p>0.06</p></td>
+<td><p>0.08</p></td>
+<td><p>0.09</p></td>
+<td><p>0.09</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="markhvida-et-al-2017">
+<h2>Markhvida et al. (2017)<a class="headerlink" href="#markhvida-et-al-2017" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#markhvida17" id="id5"><span>[Markhvida17]</span></a> proposed to use Principal Component Analysis (PCA) to develop the predictive model for cross-correlograms. In theorem, PCA performs a linear transformation of the variables of interests to an orthogonal basis, where the resulting projections onto the new basis are uncorrelated:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-10">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-10" title="Permalink to this equation">¶</a></span>\[\textbf{P} \textbf{Z} = \textbf{Y}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\textbf{P}\)</span> is an orthogonal linear transformation matrix, <span class="math notranslate nohighlight">\(\textbf{Z}\)</span> is the original data matrix, and <span class="math notranslate nohighlight">\(\textbf{Y}\)</span> is the transformed variable matrix which contains uncorrelated principal components <span class="math notranslate nohighlight">\(\textbf{Y}_i\)</span>. Since <span class="math notranslate nohighlight">\(\textbf{P}\)</span> is orthogonal, so the inversion is easy to compute:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-11">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-11" title="Permalink to this equation">¶</a></span>\[\textbf{Z} = \textbf{P}^{-1} \textbf{Y} = \textbf{P}^{T} \textbf{Y}\]</div>
+<p>For each principal component, one covariance model is developed:</p>
+<div class="math notranslate nohighlight" id="equation-common-technical-manual-desktop-spatial-correlation-12">
+<span class="eqno">()<a class="headerlink" href="#equation-common-technical-manual-desktop-spatial-correlation-12" title="Permalink to this equation">¶</a></span>\[C_i(h) = c_{0i}I_{h=0} + c_{1i} exp(-3h/a_{1i}) + c_{2i} exp(-3h/a_{2i})\]</div>
+<p>where <span class="math notranslate nohighlight">\(c_{0i}\)</span>, <span class="math notranslate nohighlight">\(c_{1i}\)</span>, <span class="math notranslate nohighlight">\(c_{2i}\)</span>, <span class="math notranslate nohighlight">\(a_{1i}\)</span>, and <span class="math notranslate nohighlight">\(a_{2i}\)</span> are modeling coefficients for <span class="math notranslate nohighlight">\(i^{th}\)</span> principal component. Instead of directly simulating the desired intensity measures, this PCA-based method would first simulate uncorrelated variables using <span class="math notranslate nohighlight">\(C_i(h)\)</span> and then transform them back to intensity measures.</p>
+<table class="docutils align-default" id="id13">
+<caption><span class="caption-text">Principal component transformation coefficients</span><a class="headerlink" href="#id13" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Periods (s)</p></td>
+<td><p>0.01</p></td>
+<td><p>0.02</p></td>
+<td><p>0.03</p></td>
+<td><p>0.05</p></td>
+<td><p>0.075</p></td>
+<td><p>0.1</p></td>
+<td><p>0.15</p></td>
+<td><p>0.2</p></td>
+<td><p>0.25</p></td>
+<td><p>0.3</p></td>
+<td><p>0.4</p></td>
+<td><p>0.5</p></td>
+<td><p>0.75</p></td>
+<td><p>1.0</p></td>
+<td><p>1.5</p></td>
+<td><p>2.0</p></td>
+<td><p>3.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+</tr>
+<tr class="row-even"><td><p>0.01</p></td>
+<td><p>0.27</p></td>
+<td><p>-0.14</p></td>
+<td><p>0.07</p></td>
+<td><p>-0.11</p></td>
+<td><p>-0.09</p></td>
+<td><p>-0.11</p></td>
+<td><p>-0.19</p></td>
+<td><p>0.15</p></td>
+<td><p>-0.16</p></td>
+<td><p>-0.05</p></td>
+<td><p>0.11</p></td>
+<td><p>0.05</p></td>
+<td><p>-0.08</p></td>
+<td><p>0.00</p></td>
+<td><p>0.23</p></td>
+<td><p>-0.04</p></td>
+<td><p>-0.30</p></td>
+<td><p>-0.53</p></td>
+<td><p>-0.58</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.02</p></td>
+<td><p>0.27</p></td>
+<td><p>-0.14</p></td>
+<td><p>0.08</p></td>
+<td><p>-0.12</p></td>
+<td><p>-0.10</p></td>
+<td><p>-0.12</p></td>
+<td><p>-0.20</p></td>
+<td><p>0.16</p></td>
+<td><p>-0.16</p></td>
+<td><p>-0.05</p></td>
+<td><p>0.10</p></td>
+<td><p>0.05</p></td>
+<td><p>-0.08</p></td>
+<td><p>0.01</p></td>
+<td><p>0.22</p></td>
+<td><p>-0.04</p></td>
+<td><p>-0.26</p></td>
+<td><p>-0.15</p></td>
+<td><p>0.78</p></td>
+</tr>
+<tr class="row-even"><td><p>0.03</p></td>
+<td><p>0.27</p></td>
+<td><p>-0.15</p></td>
+<td><p>0.10</p></td>
+<td><p>-0.14</p></td>
+<td><p>-0.13</p></td>
+<td><p>-0.15</p></td>
+<td><p>-0.22</p></td>
+<td><p>0.15</p></td>
+<td><p>-0.14</p></td>
+<td><p>-0.05</p></td>
+<td><p>0.09</p></td>
+<td><p>0.04</p></td>
+<td><p>-0.06</p></td>
+<td><p>0.01</p></td>
+<td><p>0.15</p></td>
+<td><p>-0.02</p></td>
+<td><p>-0.03</p></td>
+<td><p>0.81</p></td>
+<td><p>-0.23</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.05</p></td>
+<td><p>0.25</p></td>
+<td><p>-0.18</p></td>
+<td><p>0.18</p></td>
+<td><p>-0.22</p></td>
+<td><p>-0.18</p></td>
+<td><p>-0.18</p></td>
+<td><p>-0.19</p></td>
+<td><p>0.04</p></td>
+<td><p>-0.05</p></td>
+<td><p>-0.03</p></td>
+<td><p>-0.03</p></td>
+<td><p>-0.06</p></td>
+<td><p>0.09</p></td>
+<td><p>0.02</p></td>
+<td><p>-0.30</p></td>
+<td><p>0.06</p></td>
+<td><p>0.75</p></td>
+<td><p>-0.21</p></td>
+<td><p>0.02</p></td>
+</tr>
+<tr class="row-even"><td><p>0.075</p></td>
+<td><p>0.24</p></td>
+<td><p>-0.22</p></td>
+<td><p>0.24</p></td>
+<td><p>-0.23</p></td>
+<td><p>-0.13</p></td>
+<td><p>-0.04</p></td>
+<td><p>0.12</p></td>
+<td><p>-0.27</p></td>
+<td><p>0.24</p></td>
+<td><p>0.10</p></td>
+<td><p>-0.26</p></td>
+<td><p>-0.12</p></td>
+<td><p>0.20</p></td>
+<td><p>0.01</p></td>
+<td><p>-0.49</p></td>
+<td><p>0.12</p></td>
+<td><p>-0.48</p></td>
+<td><p>0.04</p></td>
+<td><p>-0.01</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.1</p></td>
+<td><p>0.23</p></td>
+<td><p>-0.23</p></td>
+<td><p>0.23</p></td>
+<td><p>-0.16</p></td>
+<td><p>0.04</p></td>
+<td><p>0.18</p></td>
+<td><p>0.43</p></td>
+<td><p>-0.32</p></td>
+<td><p>0.26</p></td>
+<td><p>0.14</p></td>
+<td><p>-0.08</p></td>
+<td><p>0.05</p></td>
+<td><p>-0.15</p></td>
+<td><p>-0.08</p></td>
+<td><p>0.53</p></td>
+<td><p>-0.18</p></td>
+<td><p>0.21</p></td>
+<td><p>-0.00</p></td>
+<td><p>0.00</p></td>
+</tr>
+<tr class="row-even"><td><p>0.15</p></td>
+<td><p>0.24</p></td>
+<td><p>-0.21</p></td>
+<td><p>0.13</p></td>
+<td><p>0.08</p></td>
+<td><p>0.33</p></td>
+<td><p>0.39</p></td>
+<td><p>0.33</p></td>
+<td><p>0.16</p></td>
+<td><p>-0.18</p></td>
+<td><p>-0.14</p></td>
+<td><p>0.47</p></td>
+<td><p>0.18</p></td>
+<td><p>-0.11</p></td>
+<td><p>0.09</p></td>
+<td><p>-0.29</p></td>
+<td><p>0.26</p></td>
+<td><p>-0.00</p></td>
+<td><p>0.02</p></td>
+<td><p>0.00</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.2</p></td>
+<td><p>0.25</p></td>
+<td><p>-0.17</p></td>
+<td><p>-0.01</p></td>
+<td><p>0.28</p></td>
+<td><p>0.40</p></td>
+<td><p>0.22</p></td>
+<td><p>-0.08</p></td>
+<td><p>0.22</p></td>
+<td><p>-0.17</p></td>
+<td><p>-0.03</p></td>
+<td><p>-0.38</p></td>
+<td><p>-0.24</p></td>
+<td><p>0.36</p></td>
+<td><p>-0.09</p></td>
+<td><p>-0.01</p></td>
+<td><p>-0.44</p></td>
+<td><p>0.02</p></td>
+<td><p>0.01</p></td>
+<td><p>0.00</p></td>
+</tr>
+<tr class="row-even"><td><p>0.25</p></td>
+<td><p>0.25</p></td>
+<td><p>-0.12</p></td>
+<td><p>-0.15</p></td>
+<td><p>0.37</p></td>
+<td><p>0.25</p></td>
+<td><p>-0.06</p></td>
+<td><p>-0.28</p></td>
+<td><p>-0.08</p></td>
+<td><p>0.21</p></td>
+<td><p>0.14</p></td>
+<td><p>-0.28</p></td>
+<td><p>-0.04</p></td>
+<td><p>-0.20</p></td>
+<td><p>0.02</p></td>
+<td><p>0.16</p></td>
+<td><p>0.63</p></td>
+<td><p>0.05</p></td>
+<td><p>0.00</p></td>
+<td><p>0.00</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.3</p></td>
+<td><p>0.25</p></td>
+<td><p>-0.07</p></td>
+<td><p>-0.24</p></td>
+<td><p>0.36</p></td>
+<td><p>0.04</p></td>
+<td><p>-0.25</p></td>
+<td><p>-0.14</p></td>
+<td><p>-0.29</p></td>
+<td><p>0.30</p></td>
+<td><p>0.06</p></td>
+<td><p>0.33</p></td>
+<td><p>0.21</p></td>
+<td><p>-0.19</p></td>
+<td><p>0.03</p></td>
+<td><p>-0.26</p></td>
+<td><p>-0.48</p></td>
+<td><p>0.00</p></td>
+<td><p>0.01</p></td>
+<td><p>0.00</p></td>
+</tr>
+<tr class="row-even"><td><p>0.4</p></td>
+<td><p>0.25</p></td>
+<td><p>0.01</p></td>
+<td><p>-0.33</p></td>
+<td><p>0.23</p></td>
+<td><p>-0.26</p></td>
+<td><p>-0.22</p></td>
+<td><p>0.34</p></td>
+<td><p>-0.12</p></td>
+<td><p>-0.06</p></td>
+<td><p>-0.22</p></td>
+<td><p>0.21</p></td>
+<td><p>-0.13</p></td>
+<td><p>0.58</p></td>
+<td><p>-0.06</p></td>
+<td><p>0.20</p></td>
+<td><p>0.21</p></td>
+<td><p>0.02</p></td>
+<td><p>0.00</p></td>
+<td><p>0.00</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.5</p></td>
+<td><p>0.25</p></td>
+<td><p>0.08</p></td>
+<td><p>-0.36</p></td>
+<td><p>0.06</p></td>
+<td><p>-0.34</p></td>
+<td><p>0.02</p></td>
+<td><p>0.39</p></td>
+<td><p>0.18</p></td>
+<td><p>-0.26</p></td>
+<td><p>-0.01</p></td>
+<td><p>-0.38</p></td>
+<td><p>-0.08</p></td>
+<td><p>-0.50</p></td>
+<td><p>0.02</p></td>
+<td><p>-0.18</p></td>
+<td><p>-0.07</p></td>
+<td><p>0.02</p></td>
+<td><p>0.01</p></td>
+<td><p>0.00</p></td>
+</tr>
+<tr class="row-even"><td><p>0.75</p></td>
+<td><p>0.23</p></td>
+<td><p>0.19</p></td>
+<td><p>-0.34</p></td>
+<td><p>-0.22</p></td>
+<td><p>-0.17</p></td>
+<td><p>0.42</p></td>
+<td><p>-0.14</p></td>
+<td><p>0.19</p></td>
+<td><p>0.15</p></td>
+<td><p>0.53</p></td>
+<td><p>0.04</p></td>
+<td><p>0.33</p></td>
+<td><p>0.27</p></td>
+<td><p>0.06</p></td>
+<td><p>0.00</p></td>
+<td><p>0.01</p></td>
+<td><p>0.02</p></td>
+<td><p>0.00</p></td>
+<td><p>0.00</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.0</p></td>
+<td><p>0.21</p></td>
+<td><p>0.26</p></td>
+<td><p>-0.24</p></td>
+<td><p>-0.33</p></td>
+<td><p>0.08</p></td>
+<td><p>0.33</p></td>
+<td><p>-0.22</p></td>
+<td><p>-0.12</p></td>
+<td><p>0.27</p></td>
+<td><p>-0.44</p></td>
+<td><p>0.15</p></td>
+<td><p>-0.48</p></td>
+<td><p>-0.14</p></td>
+<td><p>-0.04</p></td>
+<td><p>0.01</p></td>
+<td><p>-0.02</p></td>
+<td><p>-0.01</p></td>
+<td><p>0.00</p></td>
+<td><p>-0.00</p></td>
+</tr>
+<tr class="row-even"><td><p>1.5</p></td>
+<td><p>0.19</p></td>
+<td><p>0.33</p></td>
+<td><p>-0.09</p></td>
+<td><p>-0.27</p></td>
+<td><p>0.36</p></td>
+<td><p>-0.15</p></td>
+<td><p>-0.00</p></td>
+<td><p>-0.33</p></td>
+<td><p>-0.27</p></td>
+<td><p>-0.28</p></td>
+<td><p>-0.26</p></td>
+<td><p>0.53</p></td>
+<td><p>0.07</p></td>
+<td><p>-0.08</p></td>
+<td><p>-0.03</p></td>
+<td><p>0.03</p></td>
+<td><p>0.01</p></td>
+<td><p>0.00</p></td>
+<td><p>-0.00</p></td>
+</tr>
+<tr class="row-odd"><td><p>2.0</p></td>
+<td><p>0.18</p></td>
+<td><p>0.36</p></td>
+<td><p>0.06</p></td>
+<td><p>-0.16</p></td>
+<td><p>0.35</p></td>
+<td><p>-0.34</p></td>
+<td><p>0.16</p></td>
+<td><p>-0.03</p></td>
+<td><p>-0.21</p></td>
+<td><p>0.51</p></td>
+<td><p>0.21</p></td>
+<td><p>-0.41</p></td>
+<td><p>-0.04</p></td>
+<td><p>0.17</p></td>
+<td><p>-0.00</p></td>
+<td><p>-0.01</p></td>
+<td><p>-0.01</p></td>
+<td><p>0.00</p></td>
+<td><p>0.00</p></td>
+</tr>
+<tr class="row-even"><td><p>3.0</p></td>
+<td><p>0.17</p></td>
+<td><p>0.36</p></td>
+<td><p>0.26</p></td>
+<td><p>0.07</p></td>
+<td><p>0.06</p></td>
+<td><p>-0.22</p></td>
+<td><p>0.18</p></td>
+<td><p>0.52</p></td>
+<td><p>0.46</p></td>
+<td><p>-0.10</p></td>
+<td><p>-0.02</p></td>
+<td><p>0.12</p></td>
+<td><p>-0.00</p></td>
+<td><p>-0.42</p></td>
+<td><p>-0.04</p></td>
+<td><p>0.02</p></td>
+<td><p>0.01</p></td>
+<td><p>-0.01</p></td>
+<td><p>0.00</p></td>
+</tr>
+<tr class="row-odd"><td><p>4.0</p></td>
+<td><p>0.16</p></td>
+<td><p>0.35</p></td>
+<td><p>0.35</p></td>
+<td><p>0.24</p></td>
+<td><p>-0.16</p></td>
+<td><p>0.09</p></td>
+<td><p>-0.01</p></td>
+<td><p>0.02</p></td>
+<td><p>0.11</p></td>
+<td><p>-0.18</p></td>
+<td><p>-0.12</p></td>
+<td><p>0.07</p></td>
+<td><p>0.06</p></td>
+<td><p>0.75</p></td>
+<td><p>0.08</p></td>
+<td><p>-0.05</p></td>
+<td><p>0.00</p></td>
+<td><p>-0.00</p></td>
+<td><p>-0.00</p></td>
+</tr>
+<tr class="row-even"><td><p>5.0</p></td>
+<td><p>0.15</p></td>
+<td><p>0.33</p></td>
+<td><p>0.37</p></td>
+<td><p>0.33</p></td>
+<td><p>-0.28</p></td>
+<td><p>0.28</p></td>
+<td><p>-0.18</p></td>
+<td><p>-0.33</p></td>
+<td><p>-0.31</p></td>
+<td><p>0.13</p></td>
+<td><p>0.08</p></td>
+<td><p>-0.07</p></td>
+<td><p>-0.05</p></td>
+<td><p>-0.44</p></td>
+<td><p>-0.04</p></td>
+<td><p>0.03</p></td>
+<td><p>3.0</p></td>
+<td><p>0.00</p></td>
+<td><p>0.00</p></td>
+</tr>
+</tbody>
+</table>
+<p>The general idea is to include more degrees of freedom in the predictive model if compared to linear models (e.g., <a class="reference internal" href="#loth13" id="id6"><span>[Loth13]</span></a>). The figure below contrasts the correlation coefficient functions by PCA and the linear model by <a class="reference internal" href="#loth13" id="id7"><span>[Loth13]</span></a>.</p>
+<div class="align-center figure" id="id14">
+<img alt="../../../_images/spatial_correlation_2.png" src="../../../_images/spatial_correlation_2.png" />
+<p class="caption"><span class="caption-text">Comparison of principal component analysis (PCA) model and linear model of coregionalization (LMC) correlograms and cross-correlograms (<a class="reference internal" href="#loth13" id="id8"><span>[Loth13]</span></a>) for different periods</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+</div>
+<dl class="citation">
+<dt class="label" id="jayaram08"><span class="brackets"><a class="fn-backref" href="#id1">Jayaram08</a></span></dt>
+<dd><p>Jayaram N, Baker JW. Statistical tests of the joint distribution of spectral acceleration values. Bulletin of the Seismological Society of America 2008; 98(5):2231–2243.</p>
+</dd>
+<dt class="label" id="jayaram09"><span class="brackets"><a class="fn-backref" href="#id2">Jayaram09</a></span></dt>
+<dd><p>Jayaram, N., &amp; Baker, J. W. (2009). Correlation model for spatially distributed ground‐motion intensities. Earthquake Engineering &amp; Structural Dynamics, 38(15), 1687-1708.</p>
+</dd>
+<dt class="label" id="loth13"><span class="brackets">Loth13</span><span class="fn-backref">(<a href="#id3">1</a>,<a href="#id4">2</a>,<a href="#id6">3</a>,<a href="#id7">4</a>,<a href="#id8">5</a>)</span></dt>
+<dd><p>Loth, C., &amp; Baker, J. W. (2013). A spatial cross‐correlation model of spectral accelerations at multiple periods. Earthquake Engineering &amp; Structural Dynamics, 42(3), 397-417.</p>
+</dd>
+<dt class="label" id="markhvida17"><span class="brackets"><a class="fn-backref" href="#id5">Markhvida17</a></span></dt>
+<dd><p>Markhvida, M., Ceferino, L., &amp; Baker, J. W. (2018). Modeling spatially correlated spectral accelerations at multiple periods using principal component analysis and geostatistics. Earthquake Engineering &amp; Structural Dynamics, 47(5), 1107-1123.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, The Regents of the University of California.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '...', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+    
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+<script>
+    /*
+    let selectedFilters = [];
+    const images  = document.getElementsByClassName("gallery-item");
+    const filters = [...document.querySelectorAll('.filter select')];
+    const toggles = [...document.querySelectorAll('.filter input')];
+
+    var show = function (elem) {
+        elem.style.display = 'block';
+    };
+    var hide = function (elem) {
+        elem.style.display = 'none';
+    };
+    var toggleFilter =  function(el,elid) {
+        const filter = document.getElementById(elid);
+        filter.disabled = !el.checked;
+       
+        if ("createEvent" in document) {
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            filter.dispatchEvent(evt);
+        }
+        else
+            filter.fireEvent("change");
+    };
+    
+    for (const filter of filters) {
+        filter.addEventListener('change', function(event) {
+            selectedFilters = filters.map(filter => filter.disabled ? '' : filter.value).filter(Boolean);
+            console.log(selectedFilters);
+            for (const image of images) {
+                if (selectedFilters.every(filter => image.classList.contains(filter))) {
+                    show(image);
+                }
+                else {hide(image)};
+            };
+        })
+    };
+    */
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,469 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>2.2. RV: Random Variables &mdash; Hydro-UQ  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
+<style media="screen">.vega-actions a {margin-right: 5px;}</style>
+<link href="../../../../_static/css/bootstrap.css" rel="stylesheet">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F2F2F2" >
+          
+<a href="https://simcenter.designsafe-ci.org/" style="margin-bottom: 0px;">
+  <img src="../../../../_static/img/SimCenter-Only.png" class="logo" alt="Org-Logo" />
+</a>
+<hr style="margin: 0px;">
+
+  <a href="../../../../hydro.html">
+
+
+
+  
+  <img src="../../../../_static/Hydro-Logo.png" class="logo" alt="Logo"/>
+
+</a>
+
+
+  
+  
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/about.html">1. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/ack.html">1. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/license.html">2. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/install.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/userguide/uguide.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/errors.html">3. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/examples/examples.html">4. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/releasenotes.html">6. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/featurereq.html">7. Bugs &amp; Feature Requests</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/techman/UQ/uqengine.html">6. Uncertainity quantification</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/devman/coding.html">4. Coding Style</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../hydro.html">Hydro-UQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><span class="section-number">2.2. </span>RV: Random Variables</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/common/user_manual/usage/desktop/RV.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rv-random-variables">
+<h1><span class="section-number">2.2. </span>RV: Random Variables<a class="headerlink" href="#rv-random-variables" title="Permalink to this headline">¶</a></h1>
+<p>The <strong>RV</strong> tab allows the user to specify the probabilistic distribution for the random problem at hand. The following probabilistic distributions for the random variables are currently supported:</p>
+<div class="section" id="probability-distribution">
+<h2><span class="section-number">2.2.1. </span>Probability distribution<a class="headerlink" href="#probability-distribution" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To add a new random variable the user presses the <strong>Add</strong> button. To remove a random variable, the user must first select it by checking the small circle before the random variable, and then pressing the <strong>Remove</strong> button.</p>
+</div>
+<div class="section" id="dakota-engine">
+<h3><span class="section-number">2.2.1.1. </span>Dakota Engine<a class="headerlink" href="#dakota-engine" title="Permalink to this headline">¶</a></h3>
+<p>The following six distribution classes are supported for Dakota engine.</p>
+<ol class="arabic">
+<li><p><a class="reference external" href="https://dakota.sandia.gov//sites/default/files/docs/6.9/html-ref/variables-normal_uncertain.html">Normal (Gaussian)</a></p>
+<p>User provides the mean (<span class="math notranslate nohighlight">\(\mu\)</span>) and standard deviation (<span class="math notranslate nohighlight">\(\sigma\)</span>) of the normal distribution. The density function of the normal distribution, as a function of <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-0">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-0" title="Permalink to this equation">¶</a></span>\[f(x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp \left( -{\frac{1}{2} \left( \frac{x - \mu}{\sigma} \right)^2} \right)\]</div>
+</li>
+<li><p><a class="reference external" href="https://dakota.sandia.gov//sites/default/files/docs/6.9/html-ref/variables-lognormal_uncertain.html">Lognormal</a></p>
+<p>User provides the mean (<span class="math notranslate nohighlight">\(\mu\)</span>) and standard deviation (<span class="math notranslate nohighlight">\(\sigma\)</span>) of the lognormal distribution. The density function of the lognormal distribution, as a function of <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-1">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-1" title="Permalink to this equation">¶</a></span>\[f(x) = \frac{1}{\sqrt{2 \pi} \zeta x} \exp \left( -{\frac{1}{2} \left( \frac{\ln x - \lambda}{\zeta} \right)^2} \right)\]</div>
+</li>
+</ol>
+<blockquote>
+<div><p>where <span class="math notranslate nohighlight">\(\zeta^2 = \ln \left( \frac{\sigma^2}{\mu^2} + 1 \right)\)</span> and <span class="math notranslate nohighlight">\(\lambda = \ln(\mu) - \frac{\zeta^2}{2}\)</span></p>
+</div></blockquote>
+<ol class="arabic" start="3">
+<li><p><a class="reference external" href="https://dakota.sandia.gov//sites/default/files/docs/6.9/html-ref/variables-beta_uncertain.html">Beta</a></p>
+<p>User provides <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, lower bound (<span class="math notranslate nohighlight">\(L_B\)</span>), and an upper bound (<span class="math notranslate nohighlight">\(U_B\)</span>) for the beta distribution. The density function of the normal distribution, as a function of these quantities is:</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-2">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-2" title="Permalink to this equation">¶</a></span>\[f(x) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \frac{(x - L_B)^{\alpha-1}(U_B-x)^{\beta-1}}{(U_B - L_B)^{\alpha + \beta - 1}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Gamma(\alpha)\)</span> is the <a class="reference external" href="http://mathworld.wolfram.com/GammaFunction.html">Gamma function</a>.</p>
+</li>
+<li><p><a class="reference external" href="https://dakota.sandia.gov//sites/default/files/docs/6.9/html-ref/variables-uniform_uncertain.html">Uniform</a></p>
+<p>User provides the lower bound (<span class="math notranslate nohighlight">\(L_B\)</span>), and an upper bound (<span class="math notranslate nohighlight">\(U_B\)</span>) for the uniform distribution. The density function of the normal distribution, as a function of these quantities is:</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-3">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-3" title="Permalink to this equation">¶</a></span>\[f(x) = \frac{1.0}{(U_B - L_B)}\]</div>
+<p>The mean of the distribution is <span class="math notranslate nohighlight">\(\frac{(U_B + L_B)}{2.0}\)</span></p>
+</li>
+<li><p><a class="reference external" href="https://dakota.sandia.gov//sites/default/files/docs/6.9/html-ref/variables-weibull_uncertain.html">Weibull</a></p>
+<p>User provides shape parameter (<span class="math notranslate nohighlight">\(k\)</span>) and scale parameter (<span class="math notranslate nohighlight">\(\lambda\)</span>)  for the Weibull distribution. The density function of the Weibull distribution, as a function of these quantities is:</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-4">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-4" title="Permalink to this equation">¶</a></span>\[f(x) = \frac{k}{\lambda}\left(\frac{x}{\lambda}\right)^{k-1} \exp \left( -(x/\lambda)^{k} \right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(k,\lambda &gt; 0\)</span> and <span class="math notranslate nohighlight">\(x \geq 0\)</span>. For <span class="math notranslate nohighlight">\(x&lt;0\)</span>, <span class="math notranslate nohighlight">\(f(x) = 0\)</span>.</p>
+</li>
+<li><p><a class="reference external" href="https://dakota.sandia.gov//sites/default/files/docs/6.9/html-ref/variables-gumbel_uncertain.html">Gumbel</a></p>
+<p>User provides <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> for the Gumbel distribution, where <span class="math notranslate nohighlight">\(\beta\)</span> is known as the <strong>location parameter</strong> and <span class="math notranslate nohighlight">\(\frac{1}{\alpha}\)</span> the <strong>scale parameter</strong>. The density function of the Gumbel distribution, as a function of these quantities is:</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-5">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-5" title="Permalink to this equation">¶</a></span>\[f(x) = \alpha e^{-\alpha(x-\beta)} \exp(-e^{-\alpha(x-\beta)})\]</div>
+</li>
+</ol>
+<p>For each random variable, the user must enter a name and select from the pull down menu the distribution associated with the random variable. For the distribution selected, the user must then provide the input arguments, which are as described above. <code class="xref std std-numref docutils literal notranslate"><span class="pre">figRV</span></code> shows the panel for a problem with four Random Variables with all random input following Gaussian distributions.</p>
+<div class="align-center figure" id="id2">
+<span id="figrv"></span><img alt="../../../../_images/rv.png" src="../../../../_images/rv.png" />
+<p class="caption"><span class="caption-text">Random variable specification.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To add a new random variable the user presses the <strong>Add</strong> button. To remove a random variable, the user must first select it by checking the small circle before the random variable, and then pressing the <strong>Remove</strong> button.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Removing a random variable may have unintended consequences and cause the UQ engine to fail.</p>
+</div>
+<div class="align-center figure" id="id3">
+<a class="reference internal image-reference" href="../../../../_images/rvplot.png"><img alt="../../../../_images/rvplot.png" src="../../../../_images/rvplot.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Various distributions offered by the Hydro app .</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="simceteruq-engine">
+<h3><span class="section-number">2.2.1.2. </span>SimCeterUQ Engine<a class="headerlink" href="#simceteruq-engine" title="Permalink to this headline">¶</a></h3>
+<p>Five additional distributions are supported in the SimCenter UQ engine. The users can define distributions either by <strong>Parameters</strong>, <strong>Moments</strong> or <strong>Dataset</strong>. (<strong>Note</strong>: Nataf transform module developed by <a class="reference internal" href="#era19" id="id1"><span>[ERA19]</span></a> is adopted)</p>
+<ol class="arabic">
+<li><p>Exponential</p>
+<p>User provides the parameter (<span class="math notranslate nohighlight">\(\lambda\)</span>) of the exponential distribution. The density function of the exponential distribution, as a function of <span class="math notranslate nohighlight">\(\lambda\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-6">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-6" title="Permalink to this equation">¶</a></span>\[f(x) = \lambda \exp(-\lambda x)\]</div>
+<p>where <span class="math notranslate nohighlight">\(x&gt;0\)</span> and <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span>. User can alternatively provide the <strong>mean</strong> (<span class="math notranslate nohighlight">\(m\)</span>) of the exponential distribution.</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-7">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-7" title="Permalink to this equation">¶</a></span>\[m = \frac{1}{\lambda}\]</div>
+</li>
+<li><p>Discrete</p>
+<p>User provides the <span class="math notranslate nohighlight">\(N\)</span> discrete values (<span class="math notranslate nohighlight">\(x_i\)</span>) and their weights (probability <span class="math notranslate nohighlight">\(p_i\)</span>) for a multinomial distribution. The probability mass function of the discrete distribution is:</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-8">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-8" title="Permalink to this equation">¶</a></span>\[\begin{split}p(x)=\begin{cases}
+           p_i, &amp; \text{if $x=x_i$}\\
+           0, &amp; \text{otherwise}
+\end{cases}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(p_i&gt;0\)</span>. The weights (<span class="math notranslate nohighlight">\(p_i\)</span>) will be automatically normalized if they do not sum up to one. The option to define by moments is not supported for the discrete distribution.</p>
+</li>
+<li><p>Gamma</p>
+<p>User provides the shape parameter (<span class="math notranslate nohighlight">\(k\)</span>) and scale parameter (<span class="math notranslate nohighlight">\(\lambda\)</span>) of the Gamma distribution. The density function of the Gamma distribution, as a function of <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-9">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-9" title="Permalink to this equation">¶</a></span>\[f(x) = \frac{\lambda^kx^{k-1}\exp(-\lambda x)}{\Gamma(k)}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span> and <span class="math notranslate nohighlight">\(k&gt;0\)</span>. User can alternatively provide the <strong>mean</strong> (<span class="math notranslate nohighlight">\(m\)</span>) and <strong>standard deviation</strong> (<span class="math notranslate nohighlight">\(\sigma\)</span>) .</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-10">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-10" title="Permalink to this equation">¶</a></span>\[\begin{split}m &amp;= \frac{k}{\lambda} \\
+\sigma &amp;= \sqrt{\frac{k}{\lambda^2}}\end{split}\]</div>
+</li>
+<li><p>Chi-squared</p>
+<p>User provides the parameter <span class="math notranslate nohighlight">\(k\)</span> of the Chi-squared distribution. The density function of the Chi-squared distribution, as a function of <span class="math notranslate nohighlight">\(k\)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-11">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-11" title="Permalink to this equation">¶</a></span>\[f(x) = \frac{1}{2^{\frac{k}{2}}\Gamma\left(\frac{k}{2}\right)}x^{\left(\frac{k}{2}-1\right)} \exp\left(-\frac{x}{2}\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(x&gt;0\)</span> and <span class="math notranslate nohighlight">\(k\)</span> is a natural number. User can alternatively select the moment option where the <strong>mean</strong> (<span class="math notranslate nohighlight">\(m\)</span>) is</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-12">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-12" title="Permalink to this equation">¶</a></span>\[m = k\]</div>
+</li>
+<li><p>Truncated exponential</p>
+<p>User provides the parameter <span class="math notranslate nohighlight">\(k\)</span> and bounds <span class="math notranslate nohighlight">\(L_B\)</span> and <span class="math notranslate nohighlight">\(U_B\)</span> for the truncated exponential distribution. The density function of the truncated exponential distribution, as a function is</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-13">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-13" title="Permalink to this equation">¶</a></span>\[f(x) = \frac{\lambda}{c} \exp(-\lambda x), \text{  where $L_B&lt;x&lt;U_B$}\]</div>
+<p>where <span class="math notranslate nohighlight">\(c\)</span> is a normalization constant, i.e.</p>
+<div class="math notranslate nohighlight" id="equation-common-user-manual-usage-desktop-rv-14">
+<span class="eqno">()<a class="headerlink" href="#equation-common-user-manual-usage-desktop-rv-14" title="Permalink to this equation">¶</a></span>\[c = \int_{L_B}^{U_B} \lambda\exp(-\lambda x) dx\]</div>
+<p>where <span class="math notranslate nohighlight">\(x&gt;0\)</span> and <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span>. User can alternatively provide the <strong>mean</strong> of the distribution along with the <strong>truncated bounds</strong>.</p>
+<div class="align-center figure" id="id4">
+<a class="reference internal image-reference" href="../../../../_images/rv5.png"><img alt="../../../../_images/rv5.png" src="../../../../_images/rv5.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Extended random variable specification</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<p>User can also define the random variables by providing sample realization data set as shown in the below figure, by selecting <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> input type. The data will be fitted to the specified probability distribution model. Note that for some of the bounded distributions, such as beta and truncated exponential, the bounds should additionally be provided.</p>
+</li>
+</ol>
+<div class="align-center figure" id="id5">
+<a class="reference internal image-reference" href="../../../../_images/rv3.png"><img alt="../../../../_images/rv3.png" src="../../../../_images/rv3.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Example of input dataset file</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Clicking the <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">PDF</span></code> or <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">PMF</span></code> button will display probability distribution (or mass) function of each random variable with the specified parameters/moments. If the PDF or PMF is not displayed, we recommend the users to double-check the parameters/moments if they are in a valid range. The plotting button is not activated for the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> input type.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="correlation-matrix">
+<h2><span class="section-number">2.2.2. </span>Correlation matrix<a class="headerlink" href="#correlation-matrix" title="Permalink to this headline">¶</a></h2>
+<p>Correlation coefficients between each variable can be defined by clicking the <code class="docutils literal notranslate"><span class="pre">Correlation</span> <span class="pre">Matrix</span></code> button. Default correlations between variables are set to be zero. The diagonal element of the matrix is fixed as one, and symmetricity of the correlation matrix is enforced once the entries of the lower triangular part of the matrix are modified.</p>
+<div class="align-center figure" id="id6">
+<a class="reference internal image-reference" href="../../../../_images/rv4.png"><img alt="../../../../_images/rv4.png" src="../../../../_images/rv4.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Example of a valid correlation matrix</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">OK</span></code> button is clicked after setting all required entries, the program will automatically check the validity of the matrix before closing the correlation matrix window. If the matrix is not <strong>positively defined</strong>, an error message will be displayed and the window will not be closed. In such case, user should adjust the correlation coefficients to be positive definite.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>When <code class="docutils literal notranslate"><span class="pre">constant</span></code> variable is introduced instead of probability distributions, the correlation coefficient corresponding to those variables will be ignored.</p></li>
+<li><p>When more than one random variable is provided as <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>, correlations between the data pairs will not be incorporated automatically. If correlations exist, user can define them manually at the correlation matrix window.</p></li>
+</ul>
+</div>
+<dl class="citation">
+<dt class="label" id="era19"><span class="brackets"><a class="fn-backref" href="#id1">ERA19</a></span></dt>
+<dd><p>Engineering Risk Analysis Group, Technische Universität München: <a class="reference external" href="https://www.bgu.tum.de/era/software/eradist/">https://www.bgu.tum.de/era/software/eradist/</a> (Matlab/python programs and documentations)</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, The Regents of the University of California.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '...', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+    
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+<script>
+    /*
+    let selectedFilters = [];
+    const images  = document.getElementsByClassName("gallery-item");
+    const filters = [...document.querySelectorAll('.filter select')];
+    const toggles = [...document.querySelectorAll('.filter input')];
+
+    var show = function (elem) {
+        elem.style.display = 'block';
+    };
+    var hide = function (elem) {
+        elem.style.display = 'none';
+    };
+    var toggleFilter =  function(el,elid) {
+        const filter = document.getElementById(elid);
+        filter.disabled = !el.checked;
+       
+        if ("createEvent" in document) {
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            filter.dispatchEvent(evt);
+        }
+        else
+            filter.fireEvent("change");
+    };
+    
+    for (const filter of filters) {
+        filter.addEventListener('change', function(event) {
+            selectedFilters = filters.map(filter => filter.disabled ? '' : filter.value).filter(Boolean);
+            console.log(selectedFilters);
+            for (const image of images) {
+                if (selectedFilters.every(filter => image.classList.contains(filter))) {
+                    show(image);
+                }
+                else {hide(image)};
+            };
+        })
+    };
+    */
+</script>
+
+
+</body>
+</html>

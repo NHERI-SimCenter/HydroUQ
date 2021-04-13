@@ -19,6 +19,7 @@ GeoClawOpenFOAM::GeoClawOpenFOAM(RandomVariablesContainer *theRV, QWidget *paren
 {
     // Start the UI
     ui->setupUi(this);
+    ui->pushButton->setVisible(false);
 
     // Suppress unused parameters
     (void)theRV;

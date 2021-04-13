@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Index &mdash; Hydro-UQ 1.0 documentation</title>
+  <title>Index &mdash; Hydro-UQ  documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
   <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
 
   
@@ -33,12 +34,21 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+        <script src="_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+        <script src="_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="#" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+<script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
+<style media="screen">.vega-actions a {margin-right: 5px;}</style>
+<link href="_static/css/bootstrap.css" rel="stylesheet">
+
 </head>
 
 <body class="wy-body-for-nav">
@@ -50,20 +60,26 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F2F2F2" >
           
+<a href="https://simcenter.designsafe-ci.org/" style="margin-bottom: 0px;">
+  <img src="_static/img/SimCenter-Only.png" class="logo" alt="Org-Logo" />
+</a>
+<hr style="margin: 0px;">
 
-          
-            <a href="index.html">
-          
+  <a href="hydro.html">
 
-          
-            
-            <img src="_static/SimCenter_H2O_logo.png" class="logo" alt="Logo"/>
-          
-          </a>
 
-          
 
-          
+  
+  <img src="_static/Hydro-Logo.png" class="logo" alt="Logo"/>
+
+</a>
+
+
+  
+  
+
+
+
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -72,7 +88,7 @@
   </form>
 </div>
 
-          
+
         </div>
 
         
@@ -83,41 +99,44 @@
               
             
             
-              <p class="caption"><span class="caption-text">User manual</span></p>
+              <p class="caption"><span class="caption-text">About</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="userman/acknowledgement.html">1. Acknowledgements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="userman/about.html">2. About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="userman/install.html">3. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="userman/userguide/uguide.html">4. User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="userman/errors.html">5. Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="userman/examples/examples.html">6. Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="userman/bestpractices.html">7. Best Practices</a></li>
-<li class="toctree-l1"><a class="reference internal" href="userman/releasenotes.html">8. Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="userman/featurereq.html">9. Bugs &amp; Feature Requests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="userman/copyright.html">10. Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/userman/about.html">1. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common/front-matter/ack.html">1. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common/front-matter/license.html">2. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/userman/install.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/userman/userguide/uguide.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/userman/errors.html">3. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/userman/examples/examples.html">4. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/userman/releasenotes.html">6. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/userman/featurereq.html">7. Bugs &amp; Feature Requests</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Technical manual</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="techman/hazards/water.html">1. Water-borne Natural Hazards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="techman/fvm/fvm.html">2. Finite Volume Method</a></li>
-<li class="toctree-l1"><a class="reference internal" href="techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="techman/swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="techman/UQ/uqengine.html">6. Uncertainity quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/techman/hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/techman/fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/techman/swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/techman/UQ/uqengine.html">6. Uncertainity quantification</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Researcher manual</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="resman/swsolvers.html">1. Shallow Water Solvers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resman/swcfdinter.html">2. SW / CFD Interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resman/cfdsolvers.html">3. CFD Solver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developer manual</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="devman/build.html">1. How to Build?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="devman/softarchi.html">2. Software Architecture</a></li>
-<li class="toctree-l1"><a class="reference internal" href="devman/verify.html">3. Verification of Hydro-UQ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="devman/coding.html">4. Coding Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Hydro/devman/coding.html">4. Coding Style</a></li>
 </ul>
 
             
@@ -133,7 +152,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Hydro-UQ</a>
+          <a href="hydro.html">Hydro-UQ</a>
         
       </nav>
 
@@ -164,7 +183,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="hydro.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Index</li>
     
@@ -187,8 +206,41 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="common/front-matter/glossary.html#term-Application"><strong>Application</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="common/front-matter/glossary.html#term-Scientific-Workflow"><strong>Scientific Workflow</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="common/front-matter/glossary.html#term-Scientific-Workflow-System"><strong>Scientific Workflow System</strong></a>
+</li>
+      <li><a href="common/front-matter/glossary.html#term-Software-Framework"><strong>Software Framework</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="common/front-matter/glossary.html#term-Workflow"><strong>Workflow</strong></a>
+</li>
+  </ul></td>
+</tr></table>
+
 
 
            </div>
@@ -200,7 +252,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2020-2025, SimCenter.
+        &#169; Copyright 2021, The Regents of the University of California.
 
     </p>
   </div>
@@ -231,12 +283,65 @@
   
   
     
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '...', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
     
 
   <style>
          .wy-nav-content { max-width: none; }
   </style>
 
+<script>
+    /*
+    let selectedFilters = [];
+    const images  = document.getElementsByClassName("gallery-item");
+    const filters = [...document.querySelectorAll('.filter select')];
+    const toggles = [...document.querySelectorAll('.filter input')];
+
+    var show = function (elem) {
+        elem.style.display = 'block';
+    };
+    var hide = function (elem) {
+        elem.style.display = 'none';
+    };
+    var toggleFilter =  function(el,elid) {
+        const filter = document.getElementById(elid);
+        filter.disabled = !el.checked;
+       
+        if ("createEvent" in document) {
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            filter.dispatchEvent(evt);
+        }
+        else
+            filter.fireEvent("change");
+    };
+    
+    for (const filter of filters) {
+        filter.addEventListener('change', function(event) {
+            selectedFilters = filters.map(filter => filter.disabled ? '' : filter.value).filter(Boolean);
+            console.log(selectedFilters);
+            for (const image of images) {
+                if (selectedFilters.every(filter => image.classList.contains(filter))) {
+                    show(image);
+                }
+                else {hide(image)};
+            };
+        })
+    };
+    */
+</script>
 
 
 </body>

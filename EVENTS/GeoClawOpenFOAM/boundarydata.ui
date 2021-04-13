@@ -206,6 +206,11 @@
        <string>Moving wall</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>SW solutions</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>
