@@ -15,6 +15,7 @@
 #include "solver.h"
 #include "cfdsolvers/openfoam/openfoam.h"
 #include "postprocess.h"
+#include "hydroerror.h"
 
 #include <SimCenterAppWidget.h>
 #include <QDebug>
@@ -73,5 +74,6 @@ private:
     QString applicationname = "Hydro-UQ";
     QString applicationversion = "1.0.0";
     AgaveCurl *theRemoteService;
+    Hydroerror error;
 };
 #endif // GEOCLAW_OPENFOAM_H

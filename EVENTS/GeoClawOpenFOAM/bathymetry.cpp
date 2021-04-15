@@ -91,6 +91,11 @@ void bathymetry::hideshowelems(int type)
         ui->CmB_SolFormat->hide();
         ui->CmB_Library->hide();
         ui->Lbl_Notice->hide();
+
+        // Hide the gravity boxes
+        ui->Lbl_Gravity->hide();
+        ui->CmB_Grav01->hide();
+        ui->CmB_Grav02->hide();
     }
     else
     {
@@ -141,6 +146,9 @@ void bathymetry::hideshowelems(int type)
         ui->CmB_FileType->hide();
         ui->CmB_SolFormat->hide();
         ui->CmB_Library->hide();
+        ui->Lbl_Gravity->hide();
+        ui->CmB_Grav01->hide();
+        ui->CmB_Grav02->hide();
     }
     else
     {
@@ -178,6 +186,11 @@ void bathymetry::hideshowelems(int type)
         ui->Btn_UploadSolution->hide();
         ui->CmB_FileType->hide();
         ui->CmB_SolFormat->hide();
+
+        // Hide the gravity boxes
+        ui->Lbl_Gravity->hide();
+        ui->CmB_Grav01->hide();
+        ui->CmB_Grav02->hide();
     }
     else if(type == 3) // Bathymetry files
     {
@@ -325,6 +338,20 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
 }
 
 //*********************************************************************************
+// Get data from bathymetry
+//*********************************************************************************
+bool bathymetry::putData(QMap<QString, QString>& map,int type)
+{
+    bool hasData=true;
+
+    error.criterrormessage("This simulation type is not yet supported!");
+    hasData=false;
+
+    // Return the bool
+    return hasData;
+}
+
+//*********************************************************************************
 // Select bathymetry files
 //*********************************************************************************
 void bathymetry::on_Btn_UploadFiles_clicked()
@@ -338,7 +365,7 @@ void bathymetry::on_Btn_UploadFiles_clicked()
     if(selectfilesdialog.exec()) bathfilenames = selectfilesdialog.selectedFiles();
     if(bathfilenames.size() == 0)
     {
-        error.warnerrormessage("No files selected!");
+        error.warnerrormessage("No bathymetry files selected!");
     }
 }
 
@@ -356,7 +383,7 @@ void bathymetry::on_Btn_UploadSolution_clicked()
     if(selectfilesdialog.exec()) solfilenames = selectfilesdialog.selectedFiles();
     if(solfilenames.size() == 0)
     {
-        error.warnerrormessage("No files selected!");
+        error.warnerrormessage("No solution files selected!");
     }
 }
 
@@ -466,7 +493,9 @@ void bathymetry::on_CmB_FlumeGeoType_currentIndexChanged(int index)
     }
     else if(ui->CmB_FlumeGeoType->currentIndex() == 2) // Standard OSU flume
     {
-        ui->Btn_UploadFiles->hide();
+        ui->Btn_UploadFiles->show();
+        ui->Btn_UploadFiles->setText("Coming soon");
+        ui->Btn_UploadFiles->setEnabled(false);
         ui->Lbl_TopViewH2->hide();
         ui->Lbl_TopView->hide();
         ui->Lbl_Breadth->hide();

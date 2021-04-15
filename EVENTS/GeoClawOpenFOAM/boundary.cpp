@@ -69,7 +69,7 @@ void boundary::hideshowelems(int type)
 }
 
 //*********************************************************************************
-// Get data from meshing
+// Get data from boundary
 //*********************************************************************************
 bool boundary::getData(QMap<QString, QString>& map,int type)
 {

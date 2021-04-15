@@ -51,9 +51,6 @@ bool solver::getData(QMap<QString, QString>& map, int type)
     bool hasData=false;
     (void) type;
 
-    // Change hasData to be true
-    hasData = true;
-
     // Get the times
     map.insert("StartTime",ui->DSpBx_Start->textFromValue(ui->DSpBx_Start->value()));
     map.insert("EndTime",ui->DSpBx_End->textFromValue(ui->DSpBx_End->value()));
