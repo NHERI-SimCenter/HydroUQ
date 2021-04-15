@@ -18,6 +18,7 @@ public:
     ~meshing();
     bool getData(QMap<QString, QString>&,int);
     void refreshData(int);
+    bool copyFiles(QString dirName, int);
 
 private slots:
     void on_Cmb_MeshType_currentIndexChanged(int index);

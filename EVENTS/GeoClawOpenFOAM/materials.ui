@@ -64,6 +64,9 @@
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Exponent of kinematic viscosity of water</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -102,6 +105,9 @@
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Value of kinematic viscosity of water</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -165,6 +171,9 @@
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Density of water</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -200,6 +209,9 @@
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Exponent of kinematic viscosity of air</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -243,6 +255,9 @@
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Value of kinematic viscosity of air</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -299,6 +314,9 @@
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Density of air</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -353,6 +371,9 @@
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Surface tension between water and air</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

@@ -16,17 +16,17 @@ public:
     ~buildings();
     bool getData(QMap<QString, QString>&,int);
     void refreshData(int);
+    bool copyFiles(QString dirName, int);
 
 private slots:
     void on_Btn_AddBuild_clicked();
     void on_Btn_RemBuild_clicked();
-    void on_ChB_Parametric_stateChanged(int arg1);
-
     void on_CmB_BuildData_currentIndexChanged(int index);
 
 private:
     void hideshowelems(int);
     Ui::buildings *ui;
+    int simtype;
 };
 
 #endif // BUILDINGS_H

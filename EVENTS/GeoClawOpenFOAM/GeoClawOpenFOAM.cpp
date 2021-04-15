@@ -184,6 +184,9 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 {
     (void) jsonObject;
+
+    error.criterrormessage("This is not presently supported! Contact developer");
+
     return false;
 }
 

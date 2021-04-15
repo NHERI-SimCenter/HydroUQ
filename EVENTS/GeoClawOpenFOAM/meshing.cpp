@@ -116,6 +116,7 @@ bool meshing::getData(QMap<QString, QString>& map,int type)
         // Fineness of mesh to be generated
         map.insert("MeshSize",QString::number(ui->HSl_MeshSize->value()));
         // Write data from the table
+        map.insert("NumMeshRefine",QString::number(ui->Tbl_Regions->rowCount()));
         if(ui->Tbl_Regions->rowCount() > 0)
         {
             for(int ii=0;ii<ui->Tbl_Regions->rowCount(); ++ii)
@@ -132,26 +133,15 @@ bool meshing::getData(QMap<QString, QString>& map,int type)
         //Mesh generating software
         map.insert("MeshSoftware",QString::number(ui->Cmb_MeshGen->currentIndex()));
         // Write only the first mesh file
-        map.insert("MeshFile",meshfilenames[0]);
-        // Number of mesh files
-        //map.insert("NumMeshfiles",QString::number(meshfilenames.size()));
-        // Write the mesh file names
-        //for (int ii=0; ii<meshfilenames.size(); ++ii)
-        //{
-        //    map.insert("Meshfiles"+QString::number(ii),meshfilenames[ii]);
-        //}
+        QFile f(meshfilenames[0]);
+        QFileInfo fileInfo(f.fileName());
+        QString filename(fileInfo.fileName());
+        map.insert("MeshFile",filename);
     }
     else if(index == 2) // Get the mesh dict
     {
-//        // Number of mesh files
-//        map.insert("NumMeshDicts",QString::number(meshfilenames.size()));
-//        // Write the mesh dictionaries
-//        for (int ii=0; ii<meshfilenames.size(); ++ii)
-//        {
-//            map.insert("MeshDict"+QString::number(ii),meshfilenames[ii]);
-//        }
-//        //Mesh generating software
-//        //map.insert("Solver",QString::number(ui->Cmb_MeshDict->currentIndex()));
+        // Do nothing
+        // We find if the file exists. If not then error is produced
     }
 
 
@@ -191,3 +181,47 @@ void meshing::on_Btn_RemRegion_clicked()
 {
     ui->Tbl_Regions->removeRow(ui->Tbl_Regions->currentRow());
 }
+
+//*********************************************************************************
+// Copyfiles
+//*********************************************************************************
+bool meshing::copyFiles(QString dirName,int type)
+{
+    // Initialize if has data
+    bool hasdata = false;
+
+    // Get type of meshing
+    int index = ui->Cmb_MeshType->currentIndex();
+
+    // Depending on the index - copy relevant files
+    if(index == 0) // Own meshing
+    {
+        // Nothing to upload
+    }
+    else if(index == 1) // Upload mesh files
+    {
+        QFile fileToCopy(meshfilenames[0]);
+        QFileInfo fileInfo(meshfilenames[0]);
+        QString theFile = fileInfo.fileName();
+        fileToCopy.copy(dirName + QDir::separator() + theFile);
+
+        // Change data to true
+        hasdata = true;
+    }
+    else if(index == 2) // Upload mesh dictionaries
+    {
+        for (int ii=0; ii<2; ++ii)
+        {
+            QFile fileToCopy(meshfilenames[ii]);
+            QFileInfo fileInfo(meshfilenames[ii]);
+            QString theFile = fileInfo.fileName();
+            fileToCopy.copy(dirName + QDir::separator() + theFile);
+        }
+        // Change data to true
+        hasdata = true;
+    }
+
+    // Return if data exists
+    return hasdata;
+}
+
