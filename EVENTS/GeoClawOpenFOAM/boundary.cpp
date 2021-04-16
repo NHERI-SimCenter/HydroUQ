@@ -102,6 +102,27 @@ bool boundary::getData(QMap<QString, QString>& map,int type)
 }
 
 //*********************************************************************************
+// Copyfiles
+//*********************************************************************************
+bool boundary::copyFiles(QString dirName,int type)
+{
+    (void) type;
+
+    // Initialize if has data
+    bool hasdata = false;
+
+    // Copy the data from each pane
+    int numberOfPanes = ui->SWg_Interface->count();
+    for (int i=0;i<numberOfPanes;i++)
+    {
+        dynamic_cast<boundaryData *>(ui->SWg_Interface->widget(i))->copyFiles(dirName,type);
+    }
+
+    // Return if data exists
+    return hasdata;
+}
+
+//*********************************************************************************
 // Add Boundary
 //*********************************************************************************
 void boundary::on_Btn_AddBoundary_clicked()

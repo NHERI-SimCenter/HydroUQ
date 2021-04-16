@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QFileDialog>
 #include <QDir>
+#include "hydroerror.h"
 
 namespace Ui {
 class boundaryData;
@@ -17,6 +18,7 @@ public:
     explicit boundaryData(const QString, QWidget *parent = nullptr);
     ~boundaryData();
     bool getData(QMap<QString, QString>&,int);
+    bool copyFiles(QString dirName, int);
 
 private slots:
     void on_Cmb_UBC_currentIndexChanged(int index);
@@ -28,6 +30,7 @@ private:
     void hideshowelems();
     Ui::boundaryData *ui;
     QStringList velfilenames;
+    Hydroerror error;
 };
 
 #endif // BOUNDARYDATA_H

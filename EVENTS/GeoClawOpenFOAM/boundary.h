@@ -20,12 +20,12 @@ public:
     ~boundary();
     bool getData(QMap<QString, QString>&,int);
     void refreshData(int);
+    bool copyFiles(QString dirName, int);
 
 private slots:
     void on_Btn_AddBoundary_clicked();
     void on_Btn_Previous_clicked();
     void on_Btn_Next_clicked();
-
     void on_Btn_RemBoundary_clicked();
 
 private:

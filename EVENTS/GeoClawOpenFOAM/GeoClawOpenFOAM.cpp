@@ -233,8 +233,11 @@ bool GeoClawOpenFOAM::copyFiles(QString &dirName)
     // Meshing
     dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->copyFiles(dirName,simtype);
 
-    // Solver
+    // Boundary
     dynamic_cast<solver *>(ui->stackedWidget->widget(11))->copyFiles(dirName,simtype);
+
+    // Solver
+    dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->copyFiles(dirName,simtype);
 
     // Postprocess
     dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->copyFiles(dirName,simtype);

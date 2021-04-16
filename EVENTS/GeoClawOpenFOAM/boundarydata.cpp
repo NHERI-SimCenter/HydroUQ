@@ -47,53 +47,66 @@ bool boundaryData::getData(QMap<QString, QString>& map,int type)
     (void) type;
 
     // Attach patch name
-    QString patchname = ui->Lbl_H1->text();
+    //QString patchname = ui->Lbl_H1->text();
+    QString patchname = ui->Cmb_PatchStdLoc->currentText();
 
     // Add patch location information
-    map.insert("LocationType_"+patchname,ui->Cmb_PatchLoc->currentText());
-    if(ui->Cmb_PatchLoc->currentIndex() == 0)
-        map.insert("PatchLocation",ui->Cmb_PatchStdLoc->currentText());
-    else
-        map.insert("PatchLocation",ui->Lbl_H1->text());
+    //map.insert("LocationType_"+patchname,ui->Cmb_PatchLoc->currentText());
+//    if(ui->Cmb_PatchLoc->currentIndex() == 0)
+//        map.insert("PatchLocation",ui->Cmb_PatchStdLoc->currentText());
+//    else
+//        map.insert("PatchLocation",ui->Lbl_H1->text());
 
     // Get velocity information
     int index = ui->Cmb_UBC->currentIndex();
-    map.insert("VelocityType",ui->Cmb_UBC->currentText());
+    map.insert("VelocityType_"+patchname,QString::number(ui->Cmb_UBC->currentIndex()));
     if( ((index == 1) || (index == 5)) || (index == 7) )
     {
         QString veldata = ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()) +
                 "," + ui->DSpBx_UMeanY->textFromValue(ui->DSpBx_UMeanY->value()) +
                 "," + ui->DSpBx_UMeanZ->textFromValue(ui->DSpBx_UMeanZ->value());
-        map.insert("Velocity",veldata);
+        map.insert("Velocity_"+patchname,veldata);
     }
     else if(index == 2)
     {
-        map.insert("WaveType",ui->Cmb_PatchStdLoc->currentText());
+        map.insert("WaveType_"+patchname,ui->Cmb_PatchStdLoc->currentText());
         QString veldata = ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()) +
                 "," + ui->DSpBx_UMeanY->textFromValue(ui->DSpBx_UMeanY->value()) +
                 "," + ui->DSpBx_UMeanZ->textFromValue(ui->DSpBx_UMeanZ->value());
-        map.insert("MeanVelocity",veldata);
+        map.insert("MeanVelocity_"+patchname,veldata);
         veldata = ui->DSpBx_OX->textFromValue(ui->DSpBx_OX->value()) +
                 "," + ui->DSpBx_OY->textFromValue(ui->DSpBx_OY->value()) +
                 "," + ui->DSpBx_OZ->textFromValue(ui->DSpBx_OZ->value());
-        map.insert("Origin",veldata);
+        map.insert("Origin_"+patchname,veldata);
         veldata = ui->DSpBx_DirnX->textFromValue(ui->DSpBx_DirnX->value()) +
                 "," + ui->DSpBx_DirnY->textFromValue(ui->DSpBx_DirnY->value()) +
                 "," + ui->DSpBx_DirnZ->textFromValue(ui->DSpBx_DirnZ->value());
-        map.insert("Direction",veldata);
-        map.insert("WaveParameters",ui->Led_WavePara->text());
+        map.insert("Direction_"+patchname,veldata);
+        map.insert("WaveParameters_"+patchname,ui->Led_WavePara->text());
     }
     else if ((index == 3) || (index == 4))
     {
-        // Write the velocity file names
-        for (int ii=0; ii<velfilenames.size(); ++ii)
+        if(velfilenames.size() > 0)
         {
-            map.insert("VelocityBoundaryFiles"+QString::number(ii),velfilenames[ii]);
+            QFile f(velfilenames[0]);
+            QFileInfo fileInfo(f.fileName());
+            QString filename(fileInfo.fileName());
+            map.insert("VelocityBoundaryFiles_"+patchname,filename);
         }
     }
     else if(index == 6)
     {
-        map.insert("MeanFlowRate", ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()));
+        map.insert("MeanFlowRate_"+patchname, ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()));
+    }
+    else if(index == 9) // Moving wall
+    {
+        if(velfilenames.size() > 0)
+        {
+            QFile f(velfilenames[0]);
+            QFileInfo fileInfo(f.fileName());
+            QString filename(fileInfo.fileName());
+            map.insert("MovingWall_"+patchname,filename);
+        }
     }
 
     // Get pressure information
@@ -101,11 +114,11 @@ bool boundaryData::getData(QMap<QString, QString>& map,int type)
     map.insert("PressureType",ui->Cmb_PresBC->currentText());
     if( (index == 2) || (index == 3) )
     {
-        map.insert("Pressure",ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
+        map.insert("Pressure_"+patchname,ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
     }
     else if (index == 4)
     {
-        map.insert("PressureGradient",ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
+        map.insert("PressureGradient_"+patchname,ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
     }
 
     // Change hasData to be true
@@ -139,8 +152,8 @@ void boundaryData::on_Cmb_PatchLoc_currentIndexChanged(int index)
 void boundaryData::on_Cmb_UBC_currentIndexChanged(int index)
 {
 
-    ui->Lbl_Sampling->hide();
-    ui->DSpBx_Sampling->hide();
+//    ui->Lbl_Sampling->hide();
+//    ui->DSpBx_Sampling->hide();
 
     if(index == 0)
     {
@@ -255,8 +268,10 @@ void boundaryData::on_Cmb_UBC_currentIndexChanged(int index)
     else if(index == 9) // Moving wall
     {
         ui->Btn_UploadFile->show();
-        ui->Lbl_Sampling->show();
-        ui->DSpBx_Sampling->show();
+    }
+    else if(index == 10) // SW solutions
+    {
+        ui->Btn_UploadFile->hide();
     }
 }
 
@@ -291,4 +306,37 @@ void boundaryData::on_Btn_UploadFile_clicked()
     selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
     selectfilesdialog.setNameFilter(tr("All files (*.*)"));
     if(selectfilesdialog.exec()) velfilenames = selectfilesdialog.selectedFiles();
+}
+
+//*********************************************************************************
+// Copyfiles
+//*********************************************************************************
+bool boundaryData::copyFiles(QString dirName,int type)
+{
+    (void) type;
+
+    // Initialize if has data
+    bool hasdata = false;
+
+    // Get index of velocity
+    int index = ui->Cmb_UBC->currentIndex();
+
+    if( ((index == 3) || (index == 4)) || (index == 9))
+    {
+        if(velfilenames.size() == 0)
+        {
+            error.criterrormessage("No velocity boundary condition files selected!");
+        }
+        else
+        {
+            QFile fileToCopy(velfilenames[0]);
+            QFileInfo fileInfo(velfilenames[0]);
+            QString theFile = fileInfo.fileName();
+            fileToCopy.copy(dirName + QDir::separator() + theFile);
+        }
+    }
+
+
+    // Return if data exists
+    return hasdata;
 }
