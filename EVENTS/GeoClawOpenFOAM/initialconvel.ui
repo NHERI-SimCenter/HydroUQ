@@ -83,6 +83,9 @@ the shallow water solvers</string>
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Global x-component of velocity</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -95,6 +98,9 @@ the shallow water solvers</string>
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Global y-component of velocity</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -106,6 +112,9 @@ the shallow water solvers</string>
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Global z-component of velocity</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -137,7 +146,7 @@ the shallow water solvers</string>
       </font>
      </property>
      <property name="toolTip">
-      <string>Regions for initial condition</string>
+      <string>Regions for initial condition (Velocity)</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>

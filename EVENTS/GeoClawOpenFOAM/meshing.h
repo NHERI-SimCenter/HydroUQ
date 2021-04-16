@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QFileDialog>
 #include <QDir>
+#include "hydroerror.h"
 
 namespace Ui {
 class meshing;
@@ -30,6 +31,7 @@ private:
     void hideshowelems(int);
     Ui::meshing *ui;
     QStringList meshfilenames;
+    Hydroerror error;
 };
 
 #endif // MESHING_H

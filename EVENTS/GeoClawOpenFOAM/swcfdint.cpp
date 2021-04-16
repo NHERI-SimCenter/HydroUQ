@@ -68,12 +68,15 @@ bool swcfdint::getData(QMap<QString, QString>& map, int type)
 
     if(type == 1)
     {
-        // Write the interface file name
-        QFile f(interffilenames[0]);
-        QFileInfo fileInfo(f.fileName());
-        QString filename(fileInfo.fileName());
-        map.insert("SWCFDInteFile",filename);
-        hasData = true;
+        if(interffilenames.size() > 0)
+        {
+            // Write the interface file name
+            QFile f(interffilenames[0]);
+            QFileInfo fileInfo(f.fileName());
+            QString filename(fileInfo.fileName());
+            map.insert("SWCFDInteFile",filename);
+            hasData = true;
+        }
     }
     // Return the bool
     return hasData;
@@ -107,13 +110,21 @@ bool swcfdint::copyFiles(QString dirName,int type)
     // Only for SW + CFD (type = 1)
     if(type == 1)
     {
-        QFile fileToCopy(interffilenames[0]);
-        QFileInfo fileInfo(interffilenames[0]);
-        QString theFile = fileInfo.fileName();
-        fileToCopy.copy(dirName + QDir::separator() + theFile);
+        if(interffilenames.size() == 0)
+        {
+            error.criterrormessage("No interface files selected!");
+            //errorMessage("No interface files selected!");
+        }
+        else
+        {
+            QFile fileToCopy(interffilenames[0]);
+            QFileInfo fileInfo(interffilenames[0]);
+            QString theFile = fileInfo.fileName();
+            fileToCopy.copy(dirName + QDir::separator() + theFile);
 
-        // Change data to true
-        hasdata = true;
+            // Change data to true
+            hasdata = true;
+        }
     }
 
     // Return if data exists

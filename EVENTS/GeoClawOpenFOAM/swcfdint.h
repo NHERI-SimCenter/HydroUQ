@@ -5,6 +5,8 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QDebug>
+#include "hydroerror.h"
+#include "GeoClawOpenFOAM.h"
 
 namespace Ui {
 class swcfdint;
@@ -28,6 +30,7 @@ private:
     void hideshowelems(int);
     Ui::swcfdint *ui;
     QStringList interffilenames;
+    Hydroerror error;
 };
 
 #endif // SWCFDINT_H

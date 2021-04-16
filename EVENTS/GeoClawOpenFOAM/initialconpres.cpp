@@ -70,6 +70,7 @@ bool initialconPres::getData(QMap<QString, QString>& map,int type)
     if(type > 2)
     {
         map.insert("InitialPressureGlobal",ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
+        map.insert("NumPressureRegion",QString::number(ui->Tbl_IniCondTable->rowCount()));
         if(ui->Tbl_IniCondTable->rowCount() > 0)
         {
             for(int ii=0;ii<ui->Tbl_IniCondTable->rowCount(); ++ii)
@@ -77,7 +78,7 @@ bool initialconPres::getData(QMap<QString, QString>& map,int type)
                 QString presdata = ui->Tbl_IniCondTable->item(ii,0)->text() +
                         "," + ui->Tbl_IniCondTable->item(ii,1)->text() +
                         "," + ui->Tbl_IniCondTable->item(ii,2)->text();
-                map.insert("InitialPressureLocal"+QString::number(ii),presdata);
+                map.insert("InitialPressureRegion"+QString::number(ii),presdata);
             }
         }
     }
@@ -102,5 +103,5 @@ void initialconPres::on_Btn_AddRegion_clicked()
 //*********************************************************************************
 void initialconPres::on_Btn_RemRegion_clicked()
 {
-
+    ui->Tbl_IniCondTable->removeRow(ui->Tbl_IniCondTable->currentRow());
 }

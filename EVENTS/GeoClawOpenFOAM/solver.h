@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QFileDialog>
 #include <QDir>
+#include "hydroerror.h"
 
 namespace Ui {
 class solver;
@@ -18,6 +19,7 @@ public:
     ~solver();
     bool getData(QMap<QString, QString>&,int);
     void refreshData(int);
+    bool copyFiles(QString dirName, int);
 
 private slots:
     void on_ChB_Restart_stateChanged(int arg1);
@@ -27,6 +29,7 @@ private:
     void hideshowelems(int);
     Ui::solver *ui;
     QStringList restartfilenames;
+    Hydroerror error;
 };
 
 #endif // SOLVER_H

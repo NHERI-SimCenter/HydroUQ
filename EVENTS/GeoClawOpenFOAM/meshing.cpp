@@ -124,7 +124,7 @@ bool meshing::getData(QMap<QString, QString>& map,int type)
                 QString regdata = ui->Tbl_Regions->item(ii,0)->text() +
                         "," + ui->Tbl_Regions->item(ii,1)->text() +
                         "," + ui->Tbl_Regions->item(ii,1)->text();
-                map.insert("Region"+QString::number(ii),regdata);
+                map.insert("MeshRegion"+QString::number(ii),regdata);
             }
         }
     }
@@ -200,25 +200,40 @@ bool meshing::copyFiles(QString dirName,int type)
     }
     else if(index == 1) // Upload mesh files
     {
-        QFile fileToCopy(meshfilenames[0]);
-        QFileInfo fileInfo(meshfilenames[0]);
-        QString theFile = fileInfo.fileName();
-        fileToCopy.copy(dirName + QDir::separator() + theFile);
+        if(meshfilenames.size() == 0)
+        {
+            error.criterrormessage("No mesh files provided!");
+        }
+        else
+        {
+            QFile fileToCopy(meshfilenames[0]);
+            QFileInfo fileInfo(meshfilenames[0]);
+            QString theFile = fileInfo.fileName();
+            fileToCopy.copy(dirName + QDir::separator() + theFile);
 
-        // Change data to true
-        hasdata = true;
+            // Change data to true
+            hasdata = true;
+        }
     }
     else if(index == 2) // Upload mesh dictionaries
     {
-        for (int ii=0; ii<2; ++ii)
+        if(meshfilenames.size() == 0)
         {
-            QFile fileToCopy(meshfilenames[ii]);
-            QFileInfo fileInfo(meshfilenames[ii]);
-            QString theFile = fileInfo.fileName();
-            fileToCopy.copy(dirName + QDir::separator() + theFile);
+            error.criterrormessage("No mesh dictionaries provided!");
         }
-        // Change data to true
-        hasdata = true;
+        else
+        {
+            for (int ii=0; ii<meshfilenames.size(); ++ii)
+            {
+                QFile fileToCopy(meshfilenames[ii]);
+                QFileInfo fileInfo(meshfilenames[ii]);
+                QString theFile = fileInfo.fileName();
+                fileToCopy.copy(dirName + QDir::separator() + theFile);
+            }
+            // Change data to true
+            hasdata = true;
+        }
+
     }
 
     // Return if data exists

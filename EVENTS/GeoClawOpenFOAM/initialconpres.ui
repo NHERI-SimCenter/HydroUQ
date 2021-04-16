@@ -83,6 +83,9 @@ the shallow water solvers</string>
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Global value of pressure</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -113,7 +116,7 @@ the shallow water solvers</string>
       </font>
      </property>
      <property name="toolTip">
-      <string>Regions for initial condition</string>
+      <string>Regions for initial condition (Pressure)</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
