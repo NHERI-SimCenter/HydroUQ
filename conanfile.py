@@ -1,6 +1,6 @@
 from conans import ConanFile
 
-class EEUQ(ConanFile):
+class HYDROUQ(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     version = "2.1.0"
     license = "BSD"
