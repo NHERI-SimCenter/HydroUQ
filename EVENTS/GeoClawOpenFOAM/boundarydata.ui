@@ -62,7 +62,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Choose type of velocity boundary condition on East face</string>
+      <string>Use this to define the type of patch</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -70,16 +70,6 @@
      <item>
       <property name="text">
        <string>Standard</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Mesh-based</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Non-standard</string>
       </property>
      </item>
     </widget>
@@ -92,7 +82,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Choose type of velocity boundary condition on East face</string>
+      <string>Choose the standard patch for this boundary</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -114,7 +104,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Botton</string>
+       <string>Bottom</string>
       </property>
      </item>
      <item>
@@ -151,7 +141,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Choose type of velocity boundary condition on East face</string>
+      <string>Choose type of velocity boundary condition</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -221,7 +211,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Upload files for time-varying velocity boundary conditions on East face</string>
+      <string>Upload files related to the boundary patch</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -234,40 +224,6 @@ Upload files
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="HLY_Sampling" stretch="0,0">
-     <item>
-      <widget class="QLabel" name="Lbl_Sampling">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Sampling rate</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="DSpBx_Sampling">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="minimum">
-        <double>-1000000.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>10000000.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <widget class="QComboBox" name="Cmb_WaveType">
      <property name="font">
       <font>
@@ -275,7 +231,7 @@ Upload files
       </font>
      </property>
      <property name="toolTip">
-      <string>Types of wave inputs on East face</string>
+      <string>Types of wave inputs</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -316,6 +272,9 @@ Upload files
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Mean velocity (y-direction)</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -330,6 +289,9 @@ Upload files
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Wave direction vector (z-component)</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -346,6 +308,9 @@ Upload files
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Wave origian (z-coordinate)</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -360,6 +325,9 @@ Upload files
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Wave origian (y-coordinate)</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -388,6 +356,9 @@ Upload files
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Wave direction vector (y-component)</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -415,6 +386,9 @@ Upload files
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Mean velocity (x-direction)</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -429,6 +403,9 @@ Upload files
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Mean velocity (z-direction)</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -457,6 +434,9 @@ Upload files
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Wave direction vector (x-component)</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -471,6 +451,9 @@ Upload files
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Wave origian (x-coordinate)</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -501,7 +484,7 @@ Phase, Angle</string>
         </font>
        </property>
        <property name="toolTip">
-        <string>Length, amplitude, phase and angle of the wave</string>
+        <string>Wave input parameters</string>
        </property>
        <property name="toolTipDuration">
         <number>10000</number>
@@ -538,7 +521,7 @@ Phase, Angle</string>
       </font>
      </property>
      <property name="toolTip">
-      <string>Choose type of pressure boundary condition on East face</string>
+      <string>Choose type of pressure boundary condition</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -590,6 +573,9 @@ Phase, Angle</string>
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Value of pressure</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
