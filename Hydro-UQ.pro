@@ -4,20 +4,22 @@
 #
 #-------------------------------------------------
 
+include($$PWD/ConanHelper.pri)
+
 QT += core gui charts concurrent network qml webenginewidgets webengine webchannel 3dcore 3drender 3dextras charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Hydro_UQ
 TEMPLATE = app
-CONFIG+=sdk_no_version_check
 
 DEFINES += _GRAPHICS_Qt3D
 
-VERSION=0.0.3
+VERSION=1.0.0
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 win32 {
+    LIBS +=  -lAdvapi32
     RC_ICONS = icons/NHERI-HydroUQ-Icon.ico
 } else {
     mac {
@@ -25,12 +27,12 @@ win32 {
     }
 }
 
-macos:LIBS += /usr/local/Cellar/curl/7.75.0/lib/libcurl.dylib
-win32:LIBS += C:\Users\SimCenter\libCurl-7.59.0/lib/libcurl.lib
-linux:LIBS += /usr/lib/x86_64-linux-gnu/libcurl.so
+#macos:LIBS += /usr/lib/libcurl.dylib
+#win32:LIBS += C:\Users\SimCenter\libCurl-7.59.0/lib/libcurl.lib
+#linux:LIBS += /usr/lib/x86_64-linux-gnu/libcurl.so
 
-win32:INCLUDEPATH += "..\jansson\build\include"
-win32:LIBS += "..\jansson\build\lib\release\jansson.lib"
+#win32:INCLUDEPATH += "..\jansson\build\include"
+#win32:LIBS += "..\jansson\build\lib\release\jansson.lib"
 
 include(../SimCenterCommon/Common/Common.pri)
 include(../SimCenterCommon/Workflow/Workflow.pri)
