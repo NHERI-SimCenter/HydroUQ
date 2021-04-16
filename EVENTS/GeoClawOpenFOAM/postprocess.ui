@@ -13,19 +13,7 @@
   <property name="windowTitle">
    <string>Frame</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
-   <property name="leftMargin">
-    <number>6</number>
-   </property>
-   <property name="topMargin">
-    <number>6</number>
-   </property>
-   <property name="rightMargin">
-    <number>6</number>
-   </property>
-   <property name="bottomMargin">
-    <number>6</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="QLabel" name="Lbl_H1">
      <property name="font">
@@ -42,7 +30,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QComboBox" name="CmB_Probelocation">
+    <widget class="QComboBox" name="CmB_PPFlag">
      <property name="font">
       <font>
        <pointsize>14</pointsize>
@@ -61,131 +49,102 @@
      </item>
      <item>
       <property name="text">
-       <string>Manually add probes</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Upload .csv file </string>
+       <string>Provide state script</string>
       </property>
      </item>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="HLY_Files">
-     <item>
-      <widget class="QPushButton" name="Btn_UploadFiles">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Select the bathymetric files to be used</string>
-       </property>
-       <property name="toolTipDuration">
-        <number>10000</number>
-       </property>
-       <property name="text">
-        <string>
-Upload .csv file
+    <widget class="QGroupBox" name="OpGroupBox">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Output items</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QCheckBox" name="ChB_Velocity">
+          <property name="toolTip">
+           <string>Select if velocity needs to be extracted</string>
+          </property>
+          <property name="text">
+           <string>Extract velocity</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="ChB_Pressure">
+          <property name="toolTip">
+           <string>Select if pressure needs to be extracted</string>
+          </property>
+          <property name="text">
+           <string>Extract pressure</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="ChB_Images">
+          <property name="toolTip">
+           <string>Select if images need to be extracted</string>
+          </property>
+          <property name="text">
+           <string>Extract images for video</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="Btn_UploadFiles">
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Select a single .zip file</string>
+          </property>
+          <property name="toolTipDuration">
+           <number>10000</number>
+          </property>
+          <property name="text">
+           <string>
+Upload .zip file
 </string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QLabel" name="Lbl_Probes">
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::ClickFocus</enum>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Probe locations&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="Tbl_Probes">
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Table of segments along the length of the flume</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>10000</number>
-     </property>
-     <column>
-      <property name="text">
-       <string>X</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Y</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Z</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>U / p / both</string>
-      </property>
-     </column>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="HLY_Probe">
-     <item>
-      <widget class="QToolButton" name="Btn_AddProbe">
-       <property name="toolTip">
-        <string>Add segment along the length of the flume</string>
-       </property>
-       <property name="toolTipDuration">
-        <number>10000</number>
-       </property>
-       <property name="text">
-        <string>Add probe</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="Btn_RemProbe">
-       <property name="toolTip">
-        <string>Remove segment along the length of the flume</string>
-       </property>
-       <property name="toolTipDuration">
-        <number>10000</number>
-       </property>
-       <property name="text">
-        <string>Remove probe</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <spacer name="VSp">
+    <spacer name="Vsp_PP">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>214</height>
+       <height>1017</height>
       </size>
      </property>
     </spacer>

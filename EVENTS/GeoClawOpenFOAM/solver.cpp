@@ -58,10 +58,27 @@ bool solver::getData(QMap<QString, QString>& map, int type)
     map.insert("WriteInterval",ui->DSpBx_WriteT->textFromValue(ui->DSpBx_WriteT->value()));
 
     // Restart files
-    // Write the mesh file names
-    for (int ii=0; ii<restartfilenames.size(); ++ii)
+    // Write the restart file
+    if(ui->ChB_Restart->isChecked())
     {
-        map.insert("RestartFiles"+QString::number(ii),restartfilenames[ii]);
+        if(restartfilenames.size() == 0)
+        {
+            //error.criterrormessage("Restart files not provided!");
+            map.insert("Restart","No");
+        }
+        else
+        {
+            map.insert("Restart","Yes");
+            QFile f(restartfilenames[0]);
+            QFileInfo fileInfo(f.fileName());
+            QString filename(fileInfo.fileName());
+            map.insert("RestartFile",filename);
+        }
+    }
+    else
+    {
+        // No restart
+        map.insert("Restart","No");
     }
 
     // Decomposition
@@ -105,5 +122,38 @@ void solver::on_Btn_UploadFiles_clicked()
     selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
     selectfilesdialog.setNameFilter(tr("All files (*.*)"));
     if(selectfilesdialog.exec()) restartfilenames = selectfilesdialog.selectedFiles();
+}
+
+//*********************************************************************************
+// Copyfiles
+//*********************************************************************************
+bool solver::copyFiles(QString dirName,int type)
+{
+    (void) type;
+
+    // Initialize if has data
+    bool hasdata = false;
+
+    // If restart is enabled
+    if(ui->ChB_Restart->isChecked())
+    {
+        if(restartfilenames.size() == 0)
+        {
+            error.criterrormessage("Restart files not provided!");
+        }
+        else
+        {
+            QFile fileToCopy(restartfilenames[0]);
+            QFileInfo fileInfo(restartfilenames[0]);
+            QString theFile = fileInfo.fileName();
+            fileToCopy.copy(dirName + QDir::separator() + theFile);
+        }
+
+        // Change data to true
+        hasdata = true;
+    }
+
+    // Return if data exists
+    return hasdata;
 }
 

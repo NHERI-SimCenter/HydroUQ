@@ -40,10 +40,50 @@ void postprocess::refreshData(int type)
 //*********************************************************************************
 bool postprocess::getData(QMap<QString, QString>& map,int type)
 {
+    (void) type;
     bool hasData=false;
 
-    // Insert data into map
-    map.insert("Postprocess",QString::number(100));
+    if(ui->CmB_PPFlag->currentIndex() == 0)
+    {
+        // No postprocessing
+        map.insert("Postprocessing","No");
+    }
+    else if(ui->CmB_PPFlag->currentIndex() == 1)
+    {
+        if(pprocessfilenames.size() > 0)
+        {
+            // Add postprocessing
+            map.insert("Postprocessing","Yes");
+            // Add pp file names
+            QFile f(pprocessfilenames[0]);
+            QFileInfo fileInfo(f.fileName());
+            QString filename(fileInfo.fileName());
+            map.insert("PProcessFile",filename);
+
+            // Insert data into map (Velocity)
+            if(ui->ChB_Velocity->isChecked())
+                map.insert("PPVelocity","Yes");
+            else
+                map.insert("PPVelocity","No");
+
+            // Insert data into map (Pressure)
+            if(ui->ChB_Pressure->isChecked())
+                map.insert("PPPressure","Yes");
+            else
+                map.insert("PPPressure","No");
+
+            // Insert data into map (Images)
+            if(ui->ChB_Images->isChecked())
+                map.insert("PPImages","Yes");
+            else
+                map.insert("PPImages","No");
+        }
+        else
+        {
+            // No postprocessing
+            map.insert("Postprocessing","No");
+        }
+    }
 
     // Change hasData to be true
     hasData = true;
@@ -57,71 +97,71 @@ bool postprocess::getData(QMap<QString, QString>& map,int type)
 //*********************************************************************************
 void postprocess::hideshowelems(int type)
 {
-    if(ui->CmB_Probelocation->currentIndex() == 0) // No postprocessing
-    {
-        ui->Btn_UploadFiles->hide();
-        ui->Lbl_Probes->hide();
-        ui->Tbl_Probes->hide();
-        ui->Btn_AddProbe->hide();
-        ui->Btn_RemProbe->hide();
-    }
-    else if(ui->CmB_Probelocation->currentIndex() == 0) // Manual addition
-    {
+    (void) type;
 
+    if(ui->CmB_PPFlag->currentIndex() == 0) // No postprocessing
+    {
+        ui->OpGroupBox->hide();
+    }
+    else if(ui->CmB_PPFlag->currentIndex() == 1) // Provide the python script
+    {
+        ui->OpGroupBox->show();
     }
 }
 
 //*********************************************************************************
-// Show - hide elements (initially at start)
+// Click upload files
 //*********************************************************************************
-void postprocess::hideshowelems2()
+void postprocess::on_Btn_UploadFiles_clicked()
 {
-    if(ui->CmB_Probelocation->currentIndex() == 0) // No postprocessing
-    {
-        ui->Btn_UploadFiles->hide();
-        ui->Lbl_Probes->hide();
-        ui->Tbl_Probes->hide();
-        ui->Btn_AddProbe->hide();
-        ui->Btn_RemProbe->hide();
-    }
-    else if(ui->CmB_Probelocation->currentIndex() == 1) // Manual addition
-    {
-        ui->Btn_UploadFiles->hide();
-        ui->Lbl_Probes->show();
-        ui->Tbl_Probes->show();
-        ui->Btn_AddProbe->show();
-        ui->Btn_RemProbe->show();
-    }
-    else if(ui->CmB_Probelocation->currentIndex() == 2) // CSV File
-    {
-        ui->Btn_UploadFiles->show();
-        ui->Lbl_Probes->hide();
-        ui->Tbl_Probes->hide();
-        ui->Btn_AddProbe->hide();
-        ui->Btn_RemProbe->hide();
-    }
+    // Open a dialog window to select the files
+    // Here one can select multiple files
+    // The selected files are stored in the String list intefilenames (declared in mainwindow.h)
+    QFileDialog selectfilesdialog(this);
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
+    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    if(selectfilesdialog.exec()) pprocessfilenames = selectfilesdialog.selectedFiles();
 }
 
 //*********************************************************************************
 // What to do when user chooses different option
 //*********************************************************************************
-void postprocess::on_CmB_Probelocation_currentIndexChanged(int index)
+void postprocess::on_CmB_PPFlag_currentIndexChanged(int index)
 {
-    hideshowelems2();
+    (void) index;
+    hideshowelems(0);
 }
 
 //*********************************************************************************
-// Add probe locations
+// Get data from solvers
 //*********************************************************************************
-void postprocess::on_Btn_AddProbe_clicked()
+bool postprocess::copyFiles(QString dirName,int type)
 {
-    ui->Tbl_Probes->insertRow(ui->Tbl_Probes->rowCount());
+    (void) type;
+
+    // Initialize
+    bool hasdata = false;
+
+    // If postprocessing is activated
+    if(ui->CmB_PPFlag->currentIndex() > 0)
+    {
+        if(pprocessfilenames.size() == 0)
+        {
+            error.criterrormessage("Postprocessing files not provided!");
+        }
+        else
+        {
+            QFile fileToCopy(pprocessfilenames[0]);
+            QFileInfo fileInfo(pprocessfilenames[0]);
+            QString theFile = fileInfo.fileName();
+            fileToCopy.copy(dirName + QDir::separator() + theFile);
+            hasdata = true;
+        }
+    }
+
+    // Return if data exists
+    return hasdata;
+
 }
 
-//*********************************************************************************
-// Remove probe locations
-//*********************************************************************************
-void postprocess::on_Btn_RemProbe_clicked()
-{
-    ui->Tbl_Probes->removeRow(ui->Tbl_Probes->currentRow());
-}
+

@@ -79,6 +79,7 @@ bool initialconVel::getData(QMap<QString, QString>& map,int type)
                 "," + ui->DSpBx_Vy->textFromValue(ui->DSpBx_Vy->value()) +
                 "," + ui->DSpBx_Vz->textFromValue(ui->DSpBx_Vz->value());
         map.insert("InitialVelocityGlobal",glveldata);
+        map.insert("NumVelocityRegion",QString::number(ui->Tbl_IniCondTable->rowCount()));
 
         // Get local initial velocity
         if(ui->Tbl_IniCondTable->rowCount() > 0)
@@ -88,7 +89,7 @@ bool initialconVel::getData(QMap<QString, QString>& map,int type)
                 QString veldata = ui->Tbl_IniCondTable->item(ii,0)->text() +
                         "," + ui->Tbl_IniCondTable->item(ii,1)->text() +
                         "," + ui->Tbl_IniCondTable->item(ii,2)->text();
-                map.insert("InitialVelocityLocal"+QString::number(ii),veldata);
+                map.insert("InitialVelocityRegion"+QString::number(ii),veldata);
             }
         }
 
@@ -114,5 +115,5 @@ void initialconVel::on_Btn_AddRegion_clicked()
 //*********************************************************************************
 void initialconVel::on_Btn_RemRegion_clicked()
 {
-
+    ui->Tbl_IniCondTable->removeRow(ui->Tbl_IniCondTable->currentRow());
 }

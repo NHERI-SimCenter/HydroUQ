@@ -90,6 +90,9 @@
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Start time of the simulation</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -127,6 +130,9 @@
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>End time of the simulation</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -144,6 +150,9 @@
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Time step size</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -184,6 +193,9 @@
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Intervals at which output is written</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -227,7 +239,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Upload files from previous time step</string>
+      <string>Upload a single .zip file</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -262,6 +274,9 @@ Upload Restart Files
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="toolTip">
+        <string>Number of domains along x</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -279,6 +294,9 @@ Upload Restart Files
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Number of domains along z</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -316,6 +334,9 @@ Upload Restart Files
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="toolTip">
+        <string>Number of domains along y</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

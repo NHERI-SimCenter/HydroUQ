@@ -163,6 +163,13 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(11, singleData);
     }
 
+    // Solver settings - index 12
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->getData(*singleData,simtype))
+    {
+        allData.insert(11, singleData);
+    }
+
     // Add all objects to the json object
     foreach (int key, allData.keys())
     {
@@ -219,6 +226,18 @@ bool GeoClawOpenFOAM::copyFiles(QString &dirName)
 
     // Copy bathymetry and solution files
     dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->copyFiles(dirName,simtype);
+
+    // Copy SW-CFD interface files
+    dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->copyFiles(dirName,simtype);
+
+    // Meshing
+    dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->copyFiles(dirName,simtype);
+
+    // Solver
+    dynamic_cast<solver *>(ui->stackedWidget->widget(11))->copyFiles(dirName,simtype);
+
+    // Postprocess
+    dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->copyFiles(dirName,simtype);
 
     // Return
     return true;

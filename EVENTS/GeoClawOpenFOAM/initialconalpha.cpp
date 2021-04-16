@@ -70,6 +70,7 @@ bool initialconAlpha::getData(QMap<QString, QString>& map,int type)
     if(type > 2)
     {
         map.insert("InitialAlphaGlobal",ui->DSpBx_Alpha->textFromValue(ui->DSpBx_Alpha->value()));
+        map.insert("NumAlphaRegion",QString::number(ui->Tbl_IniCondTable->rowCount()));
         if(ui->Tbl_IniCondTable->rowCount() > 0)
         {
             for(int ii=0;ii<ui->Tbl_IniCondTable->rowCount(); ++ii)
@@ -77,7 +78,7 @@ bool initialconAlpha::getData(QMap<QString, QString>& map,int type)
                 QString alphadata = ui->Tbl_IniCondTable->item(ii,0)->text() +
                         "," + ui->Tbl_IniCondTable->item(ii,1)->text() +
                         "," + ui->Tbl_IniCondTable->item(ii,2)->text();
-                map.insert("InitialAlphaLocal"+QString::number(ii),alphadata);
+                map.insert("InitialAlphaRegion"+QString::number(ii),alphadata);
             }
         }
     }
@@ -102,5 +103,5 @@ void initialconAlpha::on_Btn_AddRegion_clicked()
 //*********************************************************************************
 void initialconAlpha::on_Btn_RemRegion_clicked()
 {
-
+    ui->Tbl_IniCondTable->removeRow(ui->Tbl_IniCondTable->currentRow());
 }

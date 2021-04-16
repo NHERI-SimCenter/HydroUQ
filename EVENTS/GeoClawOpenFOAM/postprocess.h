@@ -2,6 +2,9 @@
 #define POSTPROCESS_H
 
 #include <QFrame>
+#include <QFileDialog>
+#include <QDir>
+#include "hydroerror.h"
 
 namespace Ui {
 class postprocess;
@@ -16,16 +19,19 @@ public:
     ~postprocess();
     bool getData(QMap<QString, QString>&, int);
     void refreshData(int);
+    bool copyFiles(QString dirName, int);
 
 private slots:
-    void on_CmB_Probelocation_currentIndexChanged(int index);
-    void on_Btn_AddProbe_clicked();
-    void on_Btn_RemProbe_clicked();
+    void on_CmB_PPFlag_currentIndexChanged(int index);
+
+    void on_Btn_UploadFiles_clicked();
 
 private:
     Ui::postprocess *ui;
+    QStringList pprocessfilenames;
     void hideshowelems(int);
-    void hideshowelems2();
+    Hydroerror error;
+
 };
 
 #endif // POSTPROCESS_H
