@@ -67,7 +67,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
     QCoreApplication::setApplicationVersion("1.0.0");
-    //    GoogleAnalytics::SetTrackingId("UA-178848988-1");
+
+    // GoogleAnalytics::SetTrackingId("UA-178848988-1");
     GoogleAnalytics::StartSession();
     GoogleAnalytics::ReportStart();
 
