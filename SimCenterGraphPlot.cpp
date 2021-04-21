@@ -3,7 +3,7 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <MainWindow.h>
+//#include <MainWindow.h>
 #include <QSpinBox>
 
 #include <qcustomplot.h>
