@@ -33,8 +33,11 @@ export HYDROPATH=${inputDirectory}/templatedir
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/OpenFOAMExtensions
 echo "New variables to folders have been created"
 
+# Get the location of the SimCenter Backend Applications
+SIMBACKEND=$(jq -r .remoteAppDir $BIM)
+
 # Set paths for the HydroUQ at the simcenter backend
-HydroBrain=/home1/00477/tg457427/SimCenterBackendApplications/v2.3.0/applications/createEVENT/GeoClawOpenFOAM
+HYDROBRAIN=$SIMBACKEND/applications/createEVENT/GeoClawOpenFOAM
 echo "Path to HydroBrain initialize"
 
 # Load the OpenFoam module
@@ -45,7 +48,7 @@ module load python3
 echo "Modules have been loaded on Stampede2"
 
 # Install necessary 
-
+python3 -m pip install --user -r $HYDROBRAIN/requirements.txt
 echo "Necessary python modules installed for the user"
 
 # Export the paths to load OpenFOAM
@@ -74,7 +77,7 @@ then
 	# by reading the dakota.json file
 	# python Processor.py ${inputDirectory}/templatedir/dakota.json
 	# python Processor.py $BIM
-	python3 $HydroBrain/Processor.py $BIM
+	python3 $HYDROBRAIN/Processor.py $BIM
 
 	# Meshing with OpenFOAM (or conversion)
 	MESHTYPE=$(jq -r .Events[0].MeshType $BIM)
@@ -153,6 +156,8 @@ then
 
 	# Starting CFD simulations
 	ibrun olaDyMFlow -parallel > olaDyMFlow.log
+
+
 
 elif [[ $EVENTAPP == "Preprocess" ]]; then
 	echo "Event is pre-processing"
