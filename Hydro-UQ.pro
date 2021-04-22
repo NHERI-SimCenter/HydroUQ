@@ -24,6 +24,7 @@ win32 {
 } else {
     mac {
     ICON = icons/NHERI-HydroUQ-Icon.icns
+    QMAKE_INFO_PLIST=$$PWD/Info.plist    
     }
 }
 
