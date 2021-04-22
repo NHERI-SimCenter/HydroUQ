@@ -11,6 +11,8 @@ for:
     matrix:
       only:
         - image: macOS
+           env:
+           - BADGE=macOS
 
     clone_folder: ~/SimCenter
 
