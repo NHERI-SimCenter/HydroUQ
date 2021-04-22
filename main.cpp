@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     GoogleAnalytics::ReportStart();
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
-    Q_INIT_RESOURCE(images1);
+    // Q_INIT_RESOURCE(images1);
     Q_INIT_RESOURCE(resources);
 
     // Set up logging of output messages for user debugging

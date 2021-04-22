@@ -19,10 +19,11 @@ for:
        - python -m pip install --upgrade pip
        - pip install conan
        - conan user
-       - conan remote add simcenter https://nherisimcenter.jfrog.io/artifactory/api/conan/simcenter       
+       - conan remote add simcenter https://nherisimcenter.jfrog.io/artifactory/api/conan/simcenter
+       
     install:
        - uname
-       - git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git       
+       - git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
        - git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
        - git clone https://github.com/NHERI-SimCenter/HydroUQ.git
 
