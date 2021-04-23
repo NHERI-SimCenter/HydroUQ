@@ -56,7 +56,7 @@ DISTFILES += \
 
 RESOURCES += \
     $$PWD/images.qrc \
-    $$PWD/Resources.qrc \   
+    $$PWD/resources.qrc \   
     $$PWD/styles.qrc
        
 
