@@ -6,7 +6,9 @@
 
 include($$PWD/ConanHelper.pri)
 
-QT += core gui charts concurrent network qml webenginewidgets webengine webchannel 3dcore 3drender 3dextras charts
+QT += core gui charts concurrent network qml
+QT += webchannel webenginewidgets webengine 
+QT += 3dcore 3drender 3dextras charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,6 +26,7 @@ win32 {
 } else {
     mac {
     ICON = icons/NHERI-HydroUQ-Icon.icns
+    QMAKE_INFO_PLIST=$$PWD/Info.plist    
     }
 }
 
@@ -51,8 +54,11 @@ DISTFILES += \
 
 #FORMS    += mainwindow.ui
 
-#RESOURCES += \
-#    schema.qrc
+RESOURCES += \
+    $$PWD/images.qrc \
+    $$PWD/resources.qrc \   
+    $$PWD/styles.qrc
+       
 
 
 
