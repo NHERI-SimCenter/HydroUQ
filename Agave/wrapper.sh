@@ -77,7 +77,10 @@ then
 	# by reading the dakota.json file
 	# python Processor.py ${inputDirectory}/templatedir/dakota.json
 	# python Processor.py $BIM
-	python3 $HYDROBRAIN/Processor.py $BIM
+	python3 $HYDROBRAIN/Processor.py -b $BIM 
+
+	# Get the patches and add them
+	python3 $HYDROBRAIN/AddBuildingForces.py -b $BIM
 
 	# Meshing with OpenFOAM (or conversion)
 	MESHTYPE=$(jq -r .Events[0].MeshType $BIM)
@@ -87,6 +90,7 @@ then
 		# Run blockmesh and snappyHexMesh
 		# This is default for hydromesher
 		blockMesh > blockMesh.log
+		surfaceFeatureExtract -force > surffeatureext.log
 		snappyHexMesh > snappyHexMesh.log
 		# Log in the event
 		echo "blockMesh and snappyHexMesh complete"
@@ -131,15 +135,20 @@ then
 			if [[ -f "$snappymeshfile" ]]; then
 				# Copy the files to system folder
 				mv templatedir/snappyHexMeshDict system/snappyHexMeshDict
+				mv templatedir/surfaceFeatureExtractDict system/surfaceFeatureExtractDict
 				# Run the command
+				surfaceFeatureExtract -force > surffeatureext.log
 				snappyHexMesh > snappyHexMesh.log
 				# Log in the event
 				echo "snappyHexMesh complete"
 			fi
+			# Check the mesh
 		else
 			# Provide an error message
 			echo "Error: Could not find blockMeshDict"
 		fi
+		# Check the created mesh
+		checkMesh > Meshcheck.log
 	fi
 
 	# Create the 0-folder
@@ -154,14 +163,25 @@ then
 	decomposePar > decomposePar.log
 	echo "Domain has been decomposed"
 
+	# Get the number of processors
+	export nProcessors=$(jq -r .Events[0].sim.processors $BIM)
+
 	# Starting CFD simulations
-	ibrun olaDyMFlow -parallel > olaDyMFlow.log
+	#ibrun olaDyMFlow -parallel > olaDyMFlow.log
+	ibrun -n $nProcessors -o 0 olaDyMFlow -parallel > olaDyMFlow.log
 
+	# Get the building forces to run Dakota / OpenSees
+	python3 $HYDROBRAIN/GetOpenFOAMEvent.py -b $BIM
+	cp -f EVENT.json ${inputDirectory}/templatedir/EVENT.json
+	cp -f EVENT.json ${inputDirectory}/templatedir/evt.j
 
+	# Call Dakota and OpenSees
 
 elif [[ $EVENTAPP == "Preprocess" ]]; then
 	echo "Event is pre-processing"
 elif [[ $EVENTAPP == "Postprocess" ]]; then
 	echo "Event is post-processing"
 fi
+
+
 
