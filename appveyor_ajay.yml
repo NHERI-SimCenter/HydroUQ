@@ -79,7 +79,7 @@ for:
        - cd HydroUQ
        - chmod 'u+x' makeEXE.sh
        - ls
-       - ./makeEXE.sh
+       #- ./makeEXE.sh
        - cd ..
 
     test_script:
