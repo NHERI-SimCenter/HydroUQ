@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     // Q_INIT_RESOURCE(images1);
-    Q_INIT_RESOURCE(resources);
+    Q_INIT_RESOURCE(Resources);
 
     // Set up logging of output messages for user debugging
     logFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
