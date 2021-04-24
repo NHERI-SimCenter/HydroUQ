@@ -80,7 +80,7 @@ then
 	python3 $HYDROBRAIN/Processor.py -b $BIM 
 
 	# Get the patches and add them
-	python3 $HYDROBRAIN/AddBuildingForces.py -b $BIM
+	#python3 $HYDROBRAIN/AddBuildingForces.py -b $BIM
 
 	# Create the script that has been created
 	# This script is created by the Processor.py
@@ -181,32 +181,32 @@ then
 	# ibrun -n $nProcessors -o 0 olaDyMFlow -parallel > olaDyMFlow.log
 
 	# Get the building forces to run Dakota / OpenSees
-	python3 $HYDROBRAIN/GetOpenFOAMEvent.py -b $BIM
-	cp -f EVENT.json ${inputDirectory}/templatedir/EVENT.json
-	cp -f EVENT.json ${inputDirectory}/templatedir/evt.j
+	# python3 $HYDROBRAIN/GetOpenFOAMEvent.py -b $BIM
+	# cp -f EVENT.json ${inputDirectory}/templatedir/EVENT.json
+	# cp -f EVENT.json ${inputDirectory}/templatedir/evt.j
 
-	# Call Dakota and OpenSees
-	# Load necessary modules
-	module load intel/18.0.2  impi/18.0.2 dakota/6.8.0 python3
+	# # Call Dakota and OpenSees
+	# # Load necessary modules
+	# module load intel/18.0.2  impi/18.0.2 dakota/6.8.0 python3
 
-	# just grab the filename if they dropped in the entire agave url (works if they didn't as well)
-	echo "inputScript is ${inputFile}"
-	INPUTFILE='${inputFile}'
-	INPUTFILE="${INPUTFILE##*/}"
+	# # just grab the filename if they dropped in the entire agave url (works if they didn't as well)
+	# echo "inputScript is ${inputFile}"
+	# INPUTFILE='${inputFile}'
+	# INPUTFILE="${INPUTFILE##*/}"
 
-	echo "driver is ${driverFile}"
-	DRIVERFILE='${driverFile}'
-	DRIVERFILE="${DRIVERFILE##*/}"
+	# echo "driver is ${driverFile}"
+	# DRIVERFILE='${driverFile}'
+	# DRIVERFILE="${DRIVERFILE##*/}"
 
-	# make scripts executable in template dir and copy up the driver file
-	cd templatedir
-	chmod 'a+x' $DRIVERFILE
-	chmod 'a+x' dpreproSimCenter
-	cp $DRIVERFILE ../
-	cd ..
+	# # make scripts executable in template dir and copy up the driver file
+	# cd templatedir
+	# chmod 'a+x' $DRIVERFILE
+	# chmod 'a+x' dpreproSimCenter
+	# cp $DRIVERFILE ../
+	# cd ..
 
-	#run the exe
-	ibrun dakota -in $INPUTFILE -out dakota.out -err dakota.err
+	# #run the exe
+	# ibrun dakota -in $INPUTFILE -out dakota.out -err dakota.err
 
 elif [[ $EVENTAPP == "Preprocess" ]]; then
 	echo "Event is pre-processing"
