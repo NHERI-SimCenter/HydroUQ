@@ -82,93 +82,103 @@ then
 	# Get the patches and add them
 	python3 $HYDROBRAIN/AddBuildingForces.py -b $BIM
 
-	# Meshing with OpenFOAM (or conversion)
-	MESHTYPE=$(jq -r .Events[0].MeshType $BIM)
-	if [[ $MESHTYPE == "0" ]]; then
-		# Log in the event
-		echo "Hydro-UQ mesher is being used"
-		# Run blockmesh and snappyHexMesh
-		# This is default for hydromesher
-		blockMesh > blockMesh.log
-		surfaceFeatureExtract -force > surffeatureext.log
-		snappyHexMesh > snappyHexMesh.log
-		# Log in the event
-		echo "blockMesh and snappyHexMesh complete"
-	elif [[ $MESHTYPE == "1" ]]; then
-		# Log in the event
-		echo "Mesh being imported from other software"
-		# Get which software
-		MESHSOFT=$(jq -r .Events[0].MeshSoftware $BIM)
-		# Get the file name
-		MESHSOFTFILE=$(jq -r .Events[0].MeshFile $BIM)
-		# Get the path of the file exactle
-		MESHFILE=${inputDirectory}/templatedir/$MESHSOFTFILE
-		# Create the mesh files using the mesh
-		# that have been imported from other softwares
-		if [[ $MESHSOFT == "0" ]]; then
-			fluentMeshToFoam $MESHFILE > fluentMeshToFoam.log
-		elif [[ $MESHSOFT == "1" ]]; then
-			ideasToFoam $MESHFILE > ideasToFoam.log
-		elif [[ $MESHSOFT == "2" ]]; then
-			cfx4ToFoam $MESHFILE > cfx4ToFoam.log
-		elif [[ $MESHSOFT == "3" ]]; then
-			gambitToFoam $MESHFILE > gambitToFoam.log
-		elif [[ $MESHSOFT == "4" ]]; then
-			gmshToFoam $MESHFILE > gmshToFoam.log
-		fi
-		# Log in the event
-		echo "Mesh import complete"
-	elif [[ $MESHTYPE == "2" ]]; then
-		# Log in the event
-		echo "Mesh being read from dictionaries"
-		# Check what dictionary files are uploaded
-		blockmeshfile=blockMeshDict
-		snappymeshfile=snappyHexMeshDict
-		if [[ -f "$blockmeshfile" ]]; then
-			# Copy the files to system folder
-			mv templatedir/blockMeshDict system/blockMeshDict
-			# Run the command
-			blockMesh > blockMesh.log
-			# Log in the event
-			echo "blockMesh complete"
-			# Check if snappy needed
-			if [[ -f "$snappymeshfile" ]]; then
-				# Copy the files to system folder
-				mv templatedir/snappyHexMeshDict system/snappyHexMeshDict
-				mv templatedir/surfaceFeatureExtractDict system/surfaceFeatureExtractDict
-				# Run the command
-				surfaceFeatureExtract -force > surffeatureext.log
-				snappyHexMesh > snappyHexMesh.log
-				# Log in the event
-				echo "snappyHexMesh complete"
-			fi
-			# Check the mesh
-		else
-			# Provide an error message
-			echo "Error: Could not find blockMeshDict"
-		fi
-		# Check the created mesh
-		checkMesh > Meshcheck.log
-	fi
+	# Create the script that has been created
+	# This script is created by the Processor.py
+	chmod +x caserun.sh
+	./caserun.sh
 
-	# Create the 0-folder
-	rm -fr 0
-	cp -r 0.org 0
+	# # Meshing with OpenFOAM (or conversion)
+	# MESHTYPE=$(jq -r .Events[0].MeshType $BIM)
+	# if [[ $MESHTYPE == "0" ]]; then
+	# 	# Log in the event
+	# 	echo "Hydro-UQ mesher is being used"
+	# 	# Run blockmesh and snappyHexMesh
+	# 	# This is default for hydromesher
+	# 	blockMesh > blockMesh.log
+	# 	surfaceFeatureExtract -force > surffeatureext.log
+	# 	snappyHexMesh > snappyHexMesh.log
+	# 	# Log in the event
+	# 	echo "blockMesh and snappyHexMesh complete"
+	# elif [[ $MESHTYPE == "1" ]]; then
+	# 	# Log in the event
+	# 	echo "Mesh being imported from other software"
+	# 	# Get which software
+	# 	MESHSOFT=$(jq -r .Events[0].MeshSoftware $BIM)
+	# 	# Get the file name
+	# 	MESHSOFTFILE=$(jq -r .Events[0].MeshFile $BIM)
+	# 	# Get the path of the file exactle
+	# 	MESHFILE=${inputDirectory}/templatedir/$MESHSOFTFILE
+	# 	# Create the mesh files using the mesh
+	# 	# that have been imported from other softwares
+	# 	if [[ $MESHSOFT == "0" ]]; then
+	# 		fluentMeshToFoam $MESHFILE > fluentMeshToFoam.log
+	# 	elif [[ $MESHSOFT == "1" ]]; then
+	# 		ideasToFoam $MESHFILE > ideasToFoam.log
+	# 	elif [[ $MESHSOFT == "2" ]]; then
+	# 		cfx4ToFoam $MESHFILE > cfx4ToFoam.log
+	# 	elif [[ $MESHSOFT == "3" ]]; then
+	# 		gambitToFoam $MESHFILE > gambitToFoam.log
+	# 	elif [[ $MESHSOFT == "4" ]]; then
+	# 		gmshToFoam $MESHFILE > gmshToFoam.log
+	# 	fi
+	# 	# Log in the event
+	# 	echo "Mesh import complete"
+	# elif [[ $MESHTYPE == "2" ]]; then
+	# 	# Log in the event
+	# 	echo "Mesh being read from dictionaries"
+	# 	# Check what dictionary files are uploaded
+	# 	blockmeshfile=blockMeshDict
+	# 	snappymeshfile=snappyHexMeshDict
+	# 	if [[ -f "$blockmeshfile" ]]; then
+	# 		# Copy the files to system folder
+	# 		mv templatedir/blockMeshDict system/blockMeshDict
+	# 		# Run the command
+	# 		blockMesh > blockMesh.log
+	# 		# Log in the event
+	# 		echo "blockMesh complete"
+	# 		# Check if snappy needed
+	# 		if [[ -f "$snappymeshfile" ]]; then
+	# 			# Copy the files to system folder
+	# 			mv templatedir/snappyHexMeshDict system/snappyHexMeshDict
+	# 			mv templatedir/surfaceFeatureExtractDict system/surfaceFeatureExtractDict
+	# 			# Run the command
+	# 			surfaceFeatureExtract -force > surffeatureext.log
+	# 			snappyHexMesh > snappyHexMesh.log
+	# 			# Log in the event
+	# 			echo "snappyHexMesh complete"
+	# 		fi
+	# 		# Check the mesh
+	# 	else
+	# 		# Provide an error message
+	# 		echo "Error: Could not find blockMeshDict"
+	# 	fi
+	# 	# Check the created mesh
+	# 	checkMesh > Meshcheck.log
+	# fi
 
-	# Setting up the fields
-	setFields > setFields.log
-	echo "Fields have been set successfully"
+	# # Create the 0-folder
+	# rm -fr 0
+	# cp -r 0.org 0
 
-	# Decomposte for parallel processing
-	decomposePar > decomposePar.log
-	echo "Domain has been decomposed"
+	# # Setting up the fields
+	# setFields > setFields.log
+	# echo "Fields have been set successfully"
 
-	# Get the number of processors
-	export nProcessors=$(jq -r .Events[0].sim.processors $BIM)
+	# # Decomposte for parallel processing
+	# decomposePar > decomposePar.log
+	# echo "Domain has been decomposed"
 
-	# Starting CFD simulations
-	#ibrun olaDyMFlow -parallel > olaDyMFlow.log
-	ibrun -n $nProcessors -o 0 olaDyMFlow -parallel > olaDyMFlow.log
+	# # Get the number of processors
+	# NPROC=$(jq -r .Events[0].DomainDecomposition $BIM)
+	# nProcessors=1
+	# for n in ${NPROC//,/ }
+	# do
+	# 	((nProcessors\*=n))
+	# done
+
+	# # Starting CFD simulations
+	# #ibrun olaDyMFlow -parallel > olaDyMFlow.log
+	# ibrun -n $nProcessors -o 0 olaDyMFlow -parallel > olaDyMFlow.log
 
 	# Get the building forces to run Dakota / OpenSees
 	python3 $HYDROBRAIN/GetOpenFOAMEvent.py -b $BIM
