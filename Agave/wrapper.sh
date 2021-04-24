@@ -164,7 +164,12 @@ then
 	echo "Domain has been decomposed"
 
 	# Get the number of processors
-	export nProcessors=$(jq -r .Events[0].sim.processors $BIM)
+	NPROC=$(jq -r .Events[0].DomainDecomposition $BIM)
+	nProcessors=1
+	for n in ${NPROC//,/ }
+	do
+		((nProcessors\*=n))
+	done
 
 	# Starting CFD simulations
 	#ibrun olaDyMFlow -parallel > olaDyMFlow.log
