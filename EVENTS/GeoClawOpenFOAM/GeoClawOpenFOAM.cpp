@@ -167,7 +167,7 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
     singleData = new QMap<QString,QString>;
     if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->getData(*singleData,simtype))
     {
-        allData.insert(11, singleData);
+        allData.insert(12, singleData);
     }
 
     // Add all objects to the json object
