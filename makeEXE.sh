@@ -12,7 +12,7 @@ conan install .. --build missing
 status=$?
 if [[ $status != 0 ]]
 then
-    echo "EE-UQ: conan install failed";
+    echo "Hydro-UQ: conan install failed";
     exit $status;
 fi
 
@@ -21,7 +21,7 @@ qmake ../Hydro-UQ.pro
 status=$?
 if [[ $status != 0 ]]
 then
-    echo "EE-UQ: qmake failed";
+    echo "Hydro-UQ: qmake failed";
     exit $status;
 fi
 
@@ -30,6 +30,6 @@ make
 status=$?;
 if [[ $status != 0 ]]
 then
-    echo "EE-UQ: make failed";
+    echo "Hydro-UQ: make failed";
     exit $status;
 fi
