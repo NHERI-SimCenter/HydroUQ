@@ -289,27 +289,42 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
         if(ui->CmB_FlumeGeoType->currentIndex() == 0)
         {
             // Add flume breadth
-            if(abs(ui->DSpBx_Breadth->value()) < 0.000001)
+            if(abs(ui->DSpBx_Breadth->value()) < 0.00000001)
             {
-                error.warnerrormessage("Flume breadth almost zero!");
+                error.criterrormessage("Critical error: Flume breadth almost zero!");
+            }
+            else
+            {
                 map.insert("FlumeBreadth",ui->DSpBx_Breadth->textFromValue(ui->DSpBx_Breadth->value()));
             }
 
             // Create the file and add the segments
             // Create and open a text file
-            QString filename = "FlumeData.txt";
-            QFile file(filename);
-            if (file.open(QIODevice::WriteOnly))
+//            QString filename = "FlumeData.txt";
+//            QFile file(filename);
+//            if (file.open(QIODevice::WriteOnly))
+//            {
+//                QTextStream stream(&file);
+//                for(int ii=0;ii<ui->Tbl_Segments->rowCount(); ++ii)
+//                {
+//                    QString segdata = ui->Tbl_Segments->item(ii,0)->text() +
+//                            "," + ui->Tbl_Segments->item(ii,1)->text();
+//                    stream << segdata << Qt::endl;
+//                }
+//            }
+//            file.close();
+            // Adding segment data directly to json file
+            map.insert("NumFlumeSegments",QString::number(ui->Tbl_Segments->rowCount()));
+            if(ui->Tbl_Segments->rowCount() > 0)
             {
-                QTextStream stream(&file);
+                QString segdata = QString::number(ui->Tbl_Segments->rowCount());
                 for(int ii=0;ii<ui->Tbl_Segments->rowCount(); ++ii)
                 {
-                    QString segdata = ui->Tbl_Segments->item(ii,0)->text() +
+                    segdata = segdata + "," + ui->Tbl_Segments->item(ii,0)->text() +
                             "," + ui->Tbl_Segments->item(ii,1)->text();
-                    stream << segdata << Qt::endl;
                 }
+                map.insert("FlumeSegments",segdata);
             }
-            file.close();
 
         }
         else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // LIDAR data
@@ -437,10 +452,10 @@ bool bathymetry::copyFiles(QString dirName,int type)
         if(ui->CmB_FlumeGeoType->currentIndex() == 0) // Coordinates
         {
             // Copy the segment coordinates file
-            QFile fileToCopy("FlumeData.txt");
-            QFileInfo fileInfo(fileToCopy);
-            QString theFile = fileInfo.fileName();
-            fileToCopy.copy(dirName + QDir::separator() + theFile);
+//            QFile fileToCopy("FlumeData.txt");
+//            QFileInfo fileInfo(fileToCopy);
+//            QString theFile = fileInfo.fileName();
+//            fileToCopy.copy(dirName + QDir::separator() + theFile);
         }
         else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // LIDAR data
         {

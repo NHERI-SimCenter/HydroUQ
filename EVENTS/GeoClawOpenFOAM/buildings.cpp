@@ -86,7 +86,7 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
             {
                 QString segdata = ui->Tbl_Building->item(ii,0)->text() +
                         "," + ui->Tbl_Building->item(ii,1)->text() +
-                        "," + ui->Tbl_Building->item(ii,1)->text();
+                        "," + ui->Tbl_Building->item(ii,2)->text();
                 map.insert("BuildingTable"+QString::number(ii),segdata);
             }
         }
@@ -118,7 +118,7 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
             {
                 QString segdata = ui->Tbl_Building->item(ii,0)->text() +
                         "," + ui->Tbl_Building->item(ii,1)->text() +
-                        "," + ui->Tbl_Building->item(ii,1)->text();
+                        "," + ui->Tbl_Building->item(ii,2)->text();
                 map.insert("BuildingRegion"+QString::number(ii),segdata);
             }
         }
