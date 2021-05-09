@@ -19,7 +19,6 @@ GeoClawOpenFOAM::GeoClawOpenFOAM(RandomVariablesContainer *theRV, QWidget *paren
 {
     // Start the UI
     ui->setupUi(this);
-    ui->pushButton->setVisible(false);
 
     // Suppress unused parameters
     (void)theRV;
@@ -88,12 +87,8 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
     {
         allData.insert(1, singleData);
     }
-    else
-    {
-        isitready = false;
-    }
 
-    // Add SW-CFD Interface - Index 2
+    // Add SW-CFD Interface - index 2
     singleData = new QMap<QString,QString>;
     if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->getData(*singleData,simtype))
     {
@@ -107,12 +102,12 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(3, singleData);
     }
 
-    // Get data from floating bodies - Index 4
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->getData(*singleData,simtype))
-    {
-        allData.insert(4, singleData);
-    }
+//    // Get data from floating bodies - index 4
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->getData(*singleData,simtype))
+//    {
+//        allData.insert(4, singleData);
+//    }
 
     // Get data from mesh - index 5
     singleData = new QMap<QString,QString>;
@@ -128,19 +123,19 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(6, singleData);
     }
 
-    // Initial conditions: velocity - index 7
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->getData(*singleData,simtype))
-    {
-        allData.insert(7, singleData);
-    }
+//    // Initial conditions: velocity - index 7
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->getData(*singleData,simtype))
+//    {
+//        allData.insert(7, singleData);
+//    }
 
-    // Initial conditions: pressure - index 8
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->getData(*singleData,simtype))
-    {
-        allData.insert(8, singleData);
-    }
+//    // Initial conditions: pressure - index 8
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->getData(*singleData,simtype))
+//    {
+//        allData.insert(8, singleData);
+//    }
 
     // Initial conditions: alpha - index 9
     singleData = new QMap<QString,QString>;
@@ -163,7 +158,7 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(11, singleData);
     }
 
-    // Solver settings - index 12
+    // Postprocess settings - index 12
     singleData = new QMap<QString,QString>;
     if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->getData(*singleData,simtype))
     {
@@ -181,8 +176,6 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
     }
   
     return isitready;
-    //return true;
-//    return false;
 }
 
 //*********************************************************************************
@@ -230,14 +223,17 @@ bool GeoClawOpenFOAM::copyFiles(QString &dirName)
     // Copy SW-CFD interface files
     dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->copyFiles(dirName,simtype);
 
+    // Copy Building files
+    dynamic_cast<swcfdint *>(ui->stackedWidget->widget(3))->copyFiles(dirName,simtype);
+
     // Meshing
     dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->copyFiles(dirName,simtype);
 
     // Boundary
-    dynamic_cast<solver *>(ui->stackedWidget->widget(11))->copyFiles(dirName,simtype);
+    dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->copyFiles(dirName,simtype);
 
     // Solver
-    dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->copyFiles(dirName,simtype);
+    dynamic_cast<solver *>(ui->stackedWidget->widget(11))->copyFiles(dirName,simtype);
 
     // Postprocess
     dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->copyFiles(dirName,simtype);
@@ -432,34 +428,4 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
             ui->stackedWidget->setCurrentIndex(12);
         }
     }
-}
-
-//*********************************************************************************
-// Temporary button
-//*********************************************************************************
-void GeoClawOpenFOAM::on_pushButton_clicked()
-{
-
-//    QMap<QString, QString> *singleData;
-//    this->clearAllData();
-//    singleData = new QMap<QString,QString>;
-//    // Get data from Bathymetry - index 1
-//    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->getData(*singleData,simtype))
-//    {
-//        allData.insert(1, singleData);
-//    }
-
-    //qDebug() << allData;
-    // Create the file and add the segments
-    // Create and open a text file
-//    QString filename = "FlSegmentData.txt";
-//    QFile file(filename);
-//    QFileInfo fi(file);
-//    qDebug() << fi.absolutePath() << " fn=" << fi.fileName();
-//    if (file.open(QIODevice::ReadWrite))
-//    {
-//        QTextStream stream(&file);
-//        stream << "something" << Qt::endl;
-//    }
 }

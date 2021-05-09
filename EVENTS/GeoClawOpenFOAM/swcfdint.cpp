@@ -37,25 +37,22 @@ void swcfdint::refreshData(int type)
 //*********************************************************************************
 void swcfdint::hideshowelems(int type)
 {
+    // Hide all elements by default
+    ui->Lbl_Interface->hide();
+    ui->Lbl_Notice->hide();
+    ui->Btn_UploadFile->hide();
+
     if(type == 1)
     {
-        ui->Lbl_Notice->hide();
-        ui->Lbl_Interface->show();
         ui->Btn_UploadFile->show();
+        ui->Btn_UploadFile->setText("\nUpload interface files\n");
+        ui->Lbl_Notice->show();
+        ui->Lbl_Notice->setText("Check the documentation for format of interface files");
     }
     else
     {
-        if(type == 2)
-        {
-            ui->Lbl_Notice->setText("This option is not yet available.");
-        }
-        else
-        {
-            ui->Lbl_Notice->setText("SW-CFD settings are not available for this option");
-        }
         ui->Lbl_Notice->show();
-        ui->Lbl_Interface->hide();
-        ui->Btn_UploadFile->hide();
+        ui->Lbl_Notice->setText("This option is not available for this simulation type.");
     }
 }
 
@@ -77,7 +74,13 @@ bool swcfdint::getData(QMap<QString, QString>& map, int type)
             map.insert("SWCFDInteFile",filename);
             hasData = true;
         }
+        else
+        {
+            error.warnerrormessage("No interface file provided. Entire domain shall be used!");
+            hasData = true;
+        }
     }
+
     // Return the bool
     return hasData;
 }
@@ -110,12 +113,7 @@ bool swcfdint::copyFiles(QString dirName,int type)
     // Only for SW + CFD (type = 1)
     if(type == 1)
     {
-        if(interffilenames.size() == 0)
-        {
-            error.criterrormessage("No interface files selected!");
-            //errorMessage("No interface files selected!");
-        }
-        else
+        if(interffilenames.size() > 0)
         {
             QFile fileToCopy(interffilenames[0]);
             QFileInfo fileInfo(interffilenames[0]);

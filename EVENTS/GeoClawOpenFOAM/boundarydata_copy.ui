@@ -148,12 +148,7 @@
      </property>
      <item>
       <property name="text">
-       <string>Select velocity boundary condition</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>General: SW solutions</string>
+       <string>Empty</string>
       </property>
      </item>
      <item>
@@ -163,17 +158,27 @@
      </item>
      <item>
       <property name="text">
-       <string>Inlet: Moving wall (OSU Flume)</string>
+       <string>Inlet: Wave input</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Inlet: Moving wall (General flume)</string>
+       <string>Inlet: Time-varying uniform velocity</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Outlet: zeroGradient</string>
+       <string>Inlet: Time-varying non-uniform velocity</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Outlet: Phase-mean velocity</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Outlet: flowRateOutletVelocity</string>
       </property>
      </item>
      <item>
@@ -184,6 +189,16 @@
      <item>
       <property name="text">
        <string>Wall: noSlip</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Moving wall</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>SW solutions</string>
       </property>
      </item>
     </widget>
@@ -518,12 +533,22 @@ Phase, Angle</string>
      </item>
      <item>
       <property name="text">
-       <string>zeroGradient</string>
+       <string>Inlet / Outlet / Wall: Zero gradient</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>fixedValue</string>
+       <string>Inlet: Calculated pressure</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Outlet: Total pressure</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Wall: Fixed flux</string>
       </property>
      </item>
     </widget>

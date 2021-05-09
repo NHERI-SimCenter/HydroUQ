@@ -386,11 +386,6 @@ Upload Restart Files
          <string>Simple</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>Hierarchical</string>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>
@@ -424,12 +419,7 @@ Upload Restart Files
      </property>
      <item>
       <property name="text">
-       <string>OlaFlow</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>More coming soon</string>
+       <string>OpenFOAM</string>
       </property>
      </item>
     </widget>

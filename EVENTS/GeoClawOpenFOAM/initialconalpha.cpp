@@ -36,7 +36,7 @@ void initialconAlpha::refreshData(int type)
 //*********************************************************************************
 void initialconAlpha::hideshowelems(int type)
 {
-    if((type == 1) || (type == 2))
+    if(type == 1)
     {
         ui->Lbl_Notice->show();
         ui->Lbl_Alpha->hide();

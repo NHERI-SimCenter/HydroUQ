@@ -45,14 +45,27 @@ void meshing::hideshowelems(int type)
 //*********************************************************************************
 void meshing::on_Cmb_MeshType_currentIndexChanged(int index)
 {
+
+    // Show the selection boxes
+    ui->Lbl_MeshType->show();
+    ui->Cmb_MeshType->show();
+
+    // Hide everything else by default
+    ui->Btn_UploadMesh->hide();
+    ui->Lbl_FineH2->hide();
+    ui->HSl_MeshSize->hide();
+    ui->Lbl_FineMesh->hide();
+    ui->Lbl_CoarseMesh->hide();
+    ui->Lbl_H2Regions->hide();
+    ui->Tbl_Regions->hide();
+    ui->Btn_AddRegion->hide();
+    ui->Btn_RemRegion->hide();
+    ui->Lbl_MeshGen->hide();
+    ui->Cmb_MeshGen->hide();
+
     // Hide / Unhide elements based on mesh options
     if(index == 0) // In-built mesher
     {
-        ui->Btn_UploadMesh->hide();
-        ui->Lbl_MeshGen->hide();
-        ui->Cmb_MeshGen->hide();
-        //ui->cBoxblockMesh->hide();
-        //ui->cBoxsnappyHex->hide();
         ui->Lbl_FineH2->show();
         ui->HSl_MeshSize->show();
         ui->Lbl_CoarseMesh->show();
@@ -67,16 +80,6 @@ void meshing::on_Cmb_MeshType_currentIndexChanged(int index)
         ui->Btn_UploadMesh->show();
         ui->Lbl_MeshGen->show();
         ui->Cmb_MeshGen->show();
-        //ui->cBoxblockMesh->hide();
-        //ui->cBoxsnappyHex->hide();
-        ui->Lbl_FineH2->hide();
-        ui->HSl_MeshSize->hide();
-        ui->Lbl_CoarseMesh->hide();
-        ui->Lbl_FineMesh->hide();
-        ui->Lbl_H2Regions->hide();
-        ui->Tbl_Regions->hide();
-        ui->Btn_AddRegion->hide();
-        ui->Btn_RemRegion->hide();
     }
 
     // Change name on the button
@@ -91,8 +94,6 @@ void meshing::on_Cmb_MeshType_currentIndexChanged(int index)
         ui->Btn_UploadMesh->setText("\nUpload mesh dictionary files\n");
         ui->Lbl_MeshGen->hide();
         ui->Cmb_MeshGen->hide();
-        //ui->cBoxblockMesh->show();
-        //ui->cBoxsnappyHex->show();
     }
 }
 

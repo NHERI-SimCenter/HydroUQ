@@ -61,11 +61,6 @@
        <string>Parameterized building data</string>
       </property>
      </item>
-     <item>
-      <property name="text">
-       <string>Extract building data from LIDAR</string>
-      </property>
-     </item>
     </widget>
    </item>
    <item>
@@ -425,11 +420,6 @@
         </item>
         <item>
          <property name="text">
-          <string>Cylindrical</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
           <string>User-defined</string>
          </property>
         </item>
@@ -561,6 +551,15 @@
        </layout>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="Btn_CustomBuild">
+     <property name="text">
+      <string>
+Upload custom building .stl file
+</string>
+     </property>
     </widget>
    </item>
    <item>

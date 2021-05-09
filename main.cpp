@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
     w.setVersion(version);
 
     // Citation
-    QString citeText("Ajay B Harish, & Frank McKenna. (2021, March 31). NHERI-SimCenter/Hydro-UQ: Version 1.0.0 (Version v1.0.0). Zenodo. http://doi.org/to-be-added");
+    QString citeText("Ajay B Harish, & Frank McKenna. (2021, April 30). NHERI-SimCenter/HydroUQ: Version 1.0.0 (Version v1.0.0). Zenodo. http://doi.org/10.5281/zenodo.4731074");
     w.setCite(citeText);
 
     // Link to repository

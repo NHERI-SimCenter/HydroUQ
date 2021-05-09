@@ -2,6 +2,8 @@
 #define BUILDINGS_H
 
 #include <QFrame>
+#include <QFileDialog>
+#include "hydroerror.h"
 
 namespace Ui {
 class buildings;
@@ -22,11 +24,15 @@ private slots:
     void on_Btn_AddBuild_clicked();
     void on_Btn_RemBuild_clicked();
     void on_CmB_BuildData_currentIndexChanged(int index);
+    void on_CmB_BuildShape_currentIndexChanged(int index);
+    void on_Btn_CustomBuild_clicked();
 
 private:
     void hideshowelems(int);
     Ui::buildings *ui;
+    QStringList STLfilenames;
     int simtype;
+    Hydroerror error;
 };
 
 #endif // BUILDINGS_H

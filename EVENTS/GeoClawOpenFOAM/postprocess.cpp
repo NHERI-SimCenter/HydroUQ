@@ -30,9 +30,29 @@ postprocess::~postprocess()
 //*********************************************************************************
 void postprocess::refreshData(int type)
 {
-    qDebug() << "Arrived here";
     // Initialize to show / hide elements
     hideshowelems(type);
+}
+
+//*********************************************************************************
+// Show - hide elements (initially at start)
+//*********************************************************************************
+void postprocess::hideshowelems(int type)
+{
+    (void) type;
+
+    // Hide the Images checkbox
+    ui->ChB_Images->hide();
+
+    // Hide based on postprocessing combo box
+    if(ui->CmB_PPFlag->currentIndex() == 0) // No postprocessing
+    {
+        ui->OpGroupBox->hide();
+    }
+    else if(ui->CmB_PPFlag->currentIndex() == 1) // Provide the python script
+    {
+        ui->OpGroupBox->show();
+    }
 }
 
 //*********************************************************************************
@@ -54,6 +74,7 @@ bool postprocess::getData(QMap<QString, QString>& map,int type)
         {
             // Add postprocessing
             map.insert("Postprocessing","Yes");
+
             // Add pp file names
             QFile f(pprocessfilenames[0]);
             QFileInfo fileInfo(f.fileName());
@@ -71,12 +92,6 @@ bool postprocess::getData(QMap<QString, QString>& map,int type)
                 map.insert("PPPressure","Yes");
             else
                 map.insert("PPPressure","No");
-
-            // Insert data into map (Images)
-            if(ui->ChB_Images->isChecked())
-                map.insert("PPImages","Yes");
-            else
-                map.insert("PPImages","No");
         }
         else
         {
@@ -93,23 +108,6 @@ bool postprocess::getData(QMap<QString, QString>& map,int type)
 }
 
 //*********************************************************************************
-// Show - hide elements (initially at start)
-//*********************************************************************************
-void postprocess::hideshowelems(int type)
-{
-    (void) type;
-
-    if(ui->CmB_PPFlag->currentIndex() == 0) // No postprocessing
-    {
-        ui->OpGroupBox->hide();
-    }
-    else if(ui->CmB_PPFlag->currentIndex() == 1) // Provide the python script
-    {
-        ui->OpGroupBox->show();
-    }
-}
-
-//*********************************************************************************
 // Click upload files
 //*********************************************************************************
 void postprocess::on_Btn_UploadFiles_clicked()
@@ -119,7 +117,7 @@ void postprocess::on_Btn_UploadFiles_clicked()
     // The selected files are stored in the String list intefilenames (declared in mainwindow.h)
     QFileDialog selectfilesdialog(this);
     selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
-    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
+    selectfilesdialog.setNameFilter(tr("All files (*.csv)"));
     if(selectfilesdialog.exec()) pprocessfilenames = selectfilesdialog.selectedFiles();
 }
 
@@ -147,7 +145,7 @@ bool postprocess::copyFiles(QString dirName,int type)
     {
         if(pprocessfilenames.size() == 0)
         {
-            error.criterrormessage("Postprocessing files not provided!");
+            error.warnerrormessage("Postprocessing files not provided. Postprocessing disabled!");
         }
         else
         {
@@ -155,13 +153,12 @@ bool postprocess::copyFiles(QString dirName,int type)
             QFileInfo fileInfo(pprocessfilenames[0]);
             QString theFile = fileInfo.fileName();
             fileToCopy.copy(dirName + QDir::separator() + theFile);
-            hasdata = true;
         }
+        // Change data to true
+        hasdata = true;
     }
 
     // Return if data exists
     return hasdata;
 
 }
-
-

@@ -44,6 +44,18 @@ void solver::hideshowelems(int type)
 }
 
 //*********************************************************************************
+// When state of check box is changed
+//*********************************************************************************
+void solver::on_ChB_Restart_stateChanged(int arg1)
+{
+    // Show upload button
+    if(arg1 > 0)
+        ui->Btn_UploadFiles->show();
+    else
+        ui->Btn_UploadFiles->hide();
+}
+
+//*********************************************************************************
 // Get data from solvers
 //*********************************************************************************
 bool solver::getData(QMap<QString, QString>& map, int type)
@@ -63,7 +75,6 @@ bool solver::getData(QMap<QString, QString>& map, int type)
     {
         if(restartfilenames.size() == 0)
         {
-            //error.criterrormessage("Restart files not provided!");
             map.insert("Restart","No");
         }
         else
@@ -99,18 +110,6 @@ bool solver::getData(QMap<QString, QString>& map, int type)
 }
 
 //*********************************************************************************
-// WHen state of check box is changed
-//*********************************************************************************
-void solver::on_ChB_Restart_stateChanged(int arg1)
-{
-    // Show upload button
-    if(arg1 > 0)
-        ui->Btn_UploadFiles->show();
-    else
-        ui->Btn_UploadFiles->hide();
-}
-
-//*********************************************************************************
 // Select restart files
 //*********************************************************************************
 void solver::on_Btn_UploadFiles_clicked()
@@ -139,7 +138,7 @@ bool solver::copyFiles(QString dirName,int type)
     {
         if(restartfilenames.size() == 0)
         {
-            error.criterrormessage("Restart files not provided!");
+            error.warnerrormessage("Restart files not provided. Restart disabled!");
         }
         else
         {
@@ -148,7 +147,6 @@ bool solver::copyFiles(QString dirName,int type)
             QString theFile = fileInfo.fileName();
             fileToCopy.copy(dirName + QDir::separator() + theFile);
         }
-
         // Change data to true
         hasdata = true;
     }
@@ -156,4 +154,3 @@ bool solver::copyFiles(QString dirName,int type)
     // Return if data exists
     return hasdata;
 }
-
