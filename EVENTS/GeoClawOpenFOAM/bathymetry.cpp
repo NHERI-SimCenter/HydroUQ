@@ -108,6 +108,10 @@ void bathymetry::hideshowelems(int type)
         ui->Btn_UploadFiles->show();
         ui->Lbl_Notice->setText("Check documentation to prepare files correctly.");
         ui->Lbl_Notice->show();
+        // Show gravity
+        ui->Lbl_Gravity->show();
+        ui->CmB_Grav01->show();
+        ui->CmB_Grav02->show();
     }
 
     // Wave flume digital twin
@@ -258,17 +262,155 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
 }
 
 //*********************************************************************************
-// Get data from bathymetry
+// Put data into bathymetry from the JSON file
 //*********************************************************************************
-bool bathymetry::putData(QMap<QString, QString>& map,int type)
+bool bathymetry::putData(QJsonObject &jsonObject)
 {
-    bool hasData=true;
+    // Number and all bathymetry files
+    if(jsonObject.contains("NumBathymetryFiles"))
+    {
+        int numbathfiles = jsonObject["NumBathymetryFiles"].toString().toInt();
+        if(numbathfiles > 0)
+        {
+            bathfilenames.clear();
+        }
+        for (int ii=0; ii<numbathfiles; ++ii)
+        {
+            if(jsonObject.contains("BathymetryFile"+QString::number(ii)))
+            {
+                bathfilenames.append(jsonObject["BathymetryFile"+QString::number(ii)].toString());
+            }
+        }
+    }
 
-    error.criterrormessage("This simulation type is not yet supported!");
-    hasData=false;
+    // Bathymetry file type
+    if(jsonObject.contains("BathymetryFileType"))
+    {
+        ui->CmB_FileType->setCurrentIndex(jsonObject["BathymetryFileType"].toString().toInt());
+    }
 
-    // Return the bool
-    return hasData;
+    // Number and all solution files
+    if(jsonObject.contains("NumSolutionFiles"))
+    {
+        int numsolfiles = jsonObject["NumSolutionFiles"].toString().toInt();
+        if(numsolfiles > 0)
+        {
+            solfilenames.clear();
+        }
+        for (int ii=0; ii<numsolfiles; ++ii)
+        {
+            if(jsonObject.contains("SWSolutionFile"+QString::number(ii)))
+            {
+                solfilenames.append(jsonObject["SWSolutionFile"+QString::number(ii)].toString());
+            }
+        }
+    }
+
+    // Solution file type
+    if(jsonObject.contains("SolutionFileType"))
+    {
+        ui->CmB_SolFormat->setCurrentIndex(jsonObject["SolutionFileType"].toString().toInt());
+    }
+
+    // Gravity
+    if(jsonObject.contains("Gravity"))
+    {
+        int grav = jsonObject["Gravity"].toString().toInt();
+        if(grav == 11)
+        {
+            ui->CmB_Grav01->setCurrentIndex(0);
+            ui->CmB_Grav02->setCurrentIndex(0);
+        }
+        if(grav == 12)
+        {
+            ui->CmB_Grav01->setCurrentIndex(0);
+            ui->CmB_Grav02->setCurrentIndex(1);
+        }
+        if(grav == 13)
+        {
+            ui->CmB_Grav01->setCurrentIndex(0);
+            ui->CmB_Grav02->setCurrentIndex(2);
+        }
+        if(grav == 21)
+        {
+            ui->CmB_Grav01->setCurrentIndex(1);
+            ui->CmB_Grav02->setCurrentIndex(0);
+        }
+        if(grav == 22)
+        {
+            ui->CmB_Grav01->setCurrentIndex(1);
+            ui->CmB_Grav02->setCurrentIndex(1);
+        }
+        if(grav == 23)
+        {
+            ui->CmB_Grav01->setCurrentIndex(1);
+            ui->CmB_Grav02->setCurrentIndex(2);
+        }
+    }
+
+    // STL files
+    for (int ii=0; ii<7; ++ii)
+    {
+        if(jsonObject.contains("STLFiles"+QString::number(ii)))
+        {
+            if(ii == 0)
+            {
+                bathfilenames.clear();
+            }
+            bathfilenames.append(jsonObject["STLFiles"+QString::number(ii)].toString());
+        }
+    }
+
+    // Wave flume definition
+    if(jsonObject.contains("FlumeInfoType"))
+    {
+        ui->CmB_FlumeGeoType->setCurrentIndex(jsonObject["FlumeInfoType"].toString().toInt());
+    }
+
+    // Wave flume breadth
+    if(jsonObject.contains("FlumeBreadth"))
+    {
+        ui->DSpBx_Breadth->setValue(jsonObject["FlumeBreadth"].toString().toDouble());
+    }
+
+    // Flume table
+    if(jsonObject.contains("NumFlumeSegments"))
+    {
+        int numflumesegs = jsonObject["NumFlumeSegments"].toString().toInt();
+        if(numflumesegs > 0)
+        {
+            // Insert the required number of rows
+            for(int ii=0; ii<numflumesegs; ++ii)
+            {
+                ui->Tbl_Segments->insertRow(ui->Tbl_Segments->rowCount());
+            }
+
+            if(jsonObject.contains("FlumeSegments"))
+            {
+                // Get the flume segments
+                QString flusegs = jsonObject["FlumeSegments"].toString();
+
+                // Convert to a stringlist
+                QStringList elements = flusegs.split(',');
+
+                // Put elements into table
+                int ll=0;
+                for (int ii=0; ii<numflumesegs; ++ii)
+                {
+                    QTableWidgetItem* itemtoAdd = new QTableWidgetItem();
+                    itemtoAdd->setText(elements[2*ii+1]);
+                    ui->Tbl_Segments->setItem(ll,0,itemtoAdd);
+
+                    QTableWidgetItem* itemtoAdd2 = new QTableWidgetItem();
+                    itemtoAdd2->setText(elements[2*ii+2]);
+                    ui->Tbl_Segments->setItem(ll,1,itemtoAdd2);
+                    ll = ll+1;
+                }
+            }
+        }
+    }
+
+    return true;
 }
 
 //*********************************************************************************

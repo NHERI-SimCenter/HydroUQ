@@ -41,7 +41,7 @@ void projectsettings::hideshowelems(int type)
 }
 
 //*********************************************************************************
-// Get data from project settings
+// Get data from project settings for JSON file output
 //*********************************************************************************
 bool projectsettings::getData(QMap<QString, QString> & map, int type)
 {
@@ -57,3 +57,45 @@ bool projectsettings::getData(QMap<QString, QString> & map, int type)
 
     return hasData;
 }
+
+//*********************************************************************************
+// Read data from JSON file
+//*********************************************************************************
+bool projectsettings::putData(QJsonObject &jsonObject)
+{
+
+    // Project name
+    if(jsonObject.contains("ProjectName"))
+    {
+        ui->Led_PName->setText(jsonObject["ProjectName"].toString());
+    }
+
+    // Project description
+    if(jsonObject.contains("ProjectDescription"))
+    {
+        ui->Ted_PDesc->document()->setPlainText(jsonObject["ProjectDescription"].toString());
+    }
+
+    // Simulation type
+    if(jsonObject.contains("SimulationType"))
+    {
+        ui->CmB_SimType->setCurrentIndex(jsonObject["SimulationType"].toString().toInt());
+    }
+
+    // Turbulence model
+    if(jsonObject.contains("TurbulenceModel"))
+    {
+        ui->CmB_TurbModel->setCurrentIndex(jsonObject["TurbulenceModel"].toString().toInt());
+    }
+
+    // Return true
+    return true;
+}
+
+//    int simtype;
+//    error.criterrormessage("Simulation type is: " + jsonObject["SimulationType"].toString());
+//    error.criterrormessage("Simulation type is: " + QString::number(simtype));
+//    error.criterrormessage("Simulation type is: " + simtype);
+//    int simtype = jsonObject["SimulationType"].toInt();
+//    QString simtype = jsonObject["SimulationType"].toString();
+//    ui->CmB_SimType->setCurrentIndex(simtype.toInt());

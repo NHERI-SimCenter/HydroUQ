@@ -38,18 +38,32 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 // Written: fmckenna
-
-#include <SimCenterAppWidget.h>
+// Modified: Ajay B Harish (May 2021)
 
 #include <QGroupBox>
 #include <QVector>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QStackedWidget>
+#include <QComboBox>
+#include <QSpacerItem>
+#include <QPushButton>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QLabel>
+#include <QLineEdit>
+#include <QDebug>
+#include <QFileDialog>
+#include <QPushButton>
+#include <sectiontitle.h>
+#include <SimCenterAppWidget.h>
 #include <GeneralInformationWidget.h>
+#include <InputWidgetExistingEvent.h>
+#include <GeoClawOpenFOAM.h>
 
 class QComboBox;
 class QStackedWidget;
-
 class RandomVariablesContainer;
-
 class HydroEventSelection : public  SimCenterAppWidget
 {
     Q_OBJECT
@@ -78,7 +92,6 @@ private:
    //   SimCenterAppWidget *theSHA_MotionWidget;
    SimCenterAppWidget *theGeoClawOpenFOAM;
    SimCenterAppWidget *theFlumeDigiTwin;
-
    RandomVariablesContainer *theRandomVariablesContainer;
 };
 

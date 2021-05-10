@@ -39,27 +39,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "HydroEventSelection.h"
 
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QStackedWidget>
-#include <QComboBox>
-#include <QSpacerItem>
-#include <QPushButton>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QLabel>
-#include <QLineEdit>
-#include <QDebug>
-#include <QFileDialog>
-#include <QPushButton>
-#include <sectiontitle.h>
-#include <InputWidgetExistingEvent.h>
-#include <GeoClawOpenFOAM.h>
-
+//*********************************************************************************
+// Main Hydro event
+//*********************************************************************************
 HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVariableIW,
 					 GeneralInformationWidget* generalInfoWidget,
 					 QWidget *parent)
-    : SimCenterAppWidget(parent), theCurrentEvent(0), theRandomVariablesContainer(theRandomVariableIW)
+    : SimCenterAppWidget(parent),
+      theCurrentEvent(0),
+      theRandomVariablesContainer(theRandomVariableIW)
 {
     // Unused variables
     (void) generalInfoWidget;
@@ -118,56 +106,17 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 
 }
 
-
+//*********************************************************************************
+// Destructor for the main Hydro event
+//*********************************************************************************
 HydroEventSelection::~HydroEventSelection()
 {
 
 }
 
-
-// Output data to JSON
-bool HydroEventSelection::outputToJSON(QJsonObject &jsonObject)
-{
-    QJsonArray eventArray;
-    QJsonObject singleEventData;
-    bool result = theCurrentEvent->outputToJSON(singleEventData);
-    if (result == true) {
-        eventArray.append(singleEventData);
-        jsonObject["Events"]=eventArray;
-    }
-
-    return result;
-}
-
-
-// Input data from JSON
-bool HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
-
-    QString type;
-    QJsonObject theEvent;
-
-    if (jsonObject.contains("Events")) {
-        QJsonArray theEvents = jsonObject["Events"].toArray();
-        QJsonValue theValue = theEvents.at(0);
-        if (theValue.isNull()) {
-            qDebug() << "HydroEventSelection::no Event in Events";
-            return false;
-        }
-        theEvent = theValue.toObject();
-
-    } else {
-        qDebug() << "HydroEventSelection::no Events";
-        return false;
-    }
-
-    if (theCurrentEvent != 0) {
-        return theCurrentEvent->inputFromJSON(theEvent);
-    }
-
-    return false;
-}
-
+//*********************************************************************************
 // If Event selection is changed
+//*********************************************************************************
 void HydroEventSelection::eventSelectionChanged(const QString &arg1)
 {
     // switch stacked widgets depending on text
@@ -184,17 +133,58 @@ void HydroEventSelection::eventSelectionChanged(const QString &arg1)
     }
 }
 
-bool HydroEventSelection::outputAppDataToJSON(QJsonObject &jsonObject)
+//*********************************************************************************
+// Input data from JSON
+//*********************************************************************************
+bool HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
+
+    QString type;
+    QJsonObject theEvent;
+
+    if (jsonObject.contains("Events"))
+    {
+        QJsonArray theEvents = jsonObject["Events"].toArray();
+        QJsonValue theValue = theEvents.at(0);
+        if (theValue.isNull())
+        {
+            qDebug() << "HydroEventSelection::no Event in Events";
+            return false;
+        }
+        theEvent = theValue.toObject();
+    }
+    else
+    {
+        qDebug() << "HydroEventSelection::no Events";
+        return false;
+    }
+
+    if (theCurrentEvent != 0)
+    {
+        return theCurrentEvent->inputFromJSON(theEvent);
+    }
+
+    return false;
+}
+
+//*********************************************************************************
+// Output data to JSON
+//*********************************************************************************
+bool HydroEventSelection::outputToJSON(QJsonObject &jsonObject)
 {
     QJsonArray eventArray;
     QJsonObject singleEventData;
-    theCurrentEvent->outputAppDataToJSON(singleEventData);
-    eventArray.append(singleEventData);
-    jsonObject["Events"]=eventArray;
-    return true;
+    bool result = theCurrentEvent->outputToJSON(singleEventData);
+    if (result == true) {
+        eventArray.append(singleEventData);
+        jsonObject["Events"]=eventArray;
+    }
+
+    return result;
 }
 
-
+//*********************************************************************************
+// Input AppData to JSON
+//*********************************************************************************
 bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
 {
     QJsonObject theEvent;
@@ -202,54 +192,62 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
     QString subtype;
 
     // from Events get the single event
-    if (jsonObject.contains("Events")) {
+    if (jsonObject.contains("Events"))
+    {
         QJsonArray theEvents = jsonObject["Events"].toArray();
         QJsonValue theValue = theEvents.at(0);
-        if (theValue.isNull()) {
+        if (theValue.isNull())
+        {
           return false;
         }
         theEvent = theValue.toObject();
-        if (theEvent.contains("Application")) {
+        if (theEvent.contains("Application"))
+        {
             QJsonValue theName = theEvent["Application"];
             type = theName.toString();
             if(theEvent.contains("subtype"))
                 subtype = theEvent["subtype"].toString();
-        } else
-            return false;
-    } else
-        return false;
-
-
-    int index = 0;
-    if ((type == QString("Existing Events")) ||
-	(type == QString("Existing SimCenter Events")) ||
-	(type == QString("ExistingSimCenterEvents"))) {
-        index = 4;
-    } else if ((type == QString("Existing PEER Records")) ||
-               (type == QString("ExistingPEER_Events"))  ||
-               (type == QString("ExistingPEER_Records"))) {
-        if(!subtype.isEmpty() && subtype == "PEER NGA Records")
-            index = 1;
+        }
         else
-            index = 3;
-  //  } else if (type == QString("Hazard Based Event")) {
-  //      index = 3;
-    } else if (type == QString("Site Response") ||
-               type == QString("SiteResponse")) {
-        index = 2;
-    } else if (type == QString("Stochastic Ground Motion Model") ||
-	       type == QString("Stochastic Ground Motion") ||
-	       type == QString("StochasticGroundMotion") ||
-               type == QString("StochasticMotion")) {
-        index = 0;
-   // } else if ((type == QString("User Application")) ||
-   //            (type == QString("UserDefinedApplication"))) {
-   //     index = 6;
-    } else {
+        {
+            return false;
+        }
+    }
+    else
+    {
         return false;
     }
 
-    eventSelection->setCurrentIndex(index);
+//    int index = 0;
+//    if ((type == QString("Existing Events")) ||
+//	(type == QString("Existing SimCenter Events")) ||
+//	(type == QString("ExistingSimCenterEvents"))) {
+//        index = 4;
+//    } else if ((type == QString("Existing PEER Records")) ||
+//               (type == QString("ExistingPEER_Events"))  ||
+//               (type == QString("ExistingPEER_Records"))) {
+//        if(!subtype.isEmpty() && subtype == "PEER NGA Records")
+//            index = 1;
+//        else
+//            index = 3;
+//  //  } else if (type == QString("Hazard Based Event")) {
+//  //      index = 3;
+//    } else if (type == QString("Site Response") ||
+//               type == QString("SiteResponse")) {
+//        index = 2;
+//    } else if (type == QString("Stochastic Ground Motion Model") ||
+//	       type == QString("Stochastic Ground Motion") ||
+//	       type == QString("StochasticGroundMotion") ||
+//               type == QString("StochasticMotion")) {
+//        index = 0;
+//   // } else if ((type == QString("User Application")) ||
+//   //            (type == QString("UserDefinedApplication"))) {
+//   //     index = 6;
+//    } else {
+//        return false;
+//    }
+
+//    eventSelection->setCurrentIndex(index);
 
     // invoke inputAppDataFromJSON on new type
     if (theCurrentEvent != 0 && !theEvent.isEmpty())
@@ -260,9 +258,26 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
     return true;
 }
 
+//*********************************************************************************
+// Output AppData to JSON
+//*********************************************************************************
+bool HydroEventSelection::outputAppDataToJSON(QJsonObject &jsonObject)
+{
+    QJsonArray eventArray;
+    QJsonObject singleEventData;
+    theCurrentEvent->outputAppDataToJSON(singleEventData);
+    eventArray.append(singleEventData);
+    jsonObject["Events"]=eventArray;
+    return true;
+}
+
+//*********************************************************************************
+// Copy files
+//*********************************************************************************
 bool HydroEventSelection::copyFiles(QString &destDir) {
 
-    if (theCurrentEvent != 0) {
+    if (theCurrentEvent != 0)
+    {
         return  theCurrentEvent->copyFiles(destDir);
     }
 

@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QFileInfo>
+#include <QJsonObject>
 #include "hydroerror.h"
 
 namespace Ui {
@@ -23,7 +24,8 @@ public:
     explicit bathymetry(int, QWidget *parent = nullptr);
     ~bathymetry();
     bool getData(QMap<QString, QString>&, int);
-    bool putData(QMap<QString, QString>&, int);
+    bool putData(QJsonObject &);
+//    bool putData(QMap<QString, QString>&, int);
     void refreshData(int);
     bool copyFiles(QString dirName, int);
 

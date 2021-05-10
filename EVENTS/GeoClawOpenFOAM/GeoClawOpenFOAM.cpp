@@ -1,14 +1,44 @@
+/* *****************************************************************************
+Copyright (c) 2016-2017, The Regents of the University of California (Regents).
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+The views and conclusions contained in the software and documentation are those
+of the authors and should not be interpreted as representing official policies,
+either expressed or implied, of the FreeBSD Project.
+
+REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS
+PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+*************************************************************************** */
+
+// Written: fmckenna
+// Modified: Ajay B Harish (Feb 2021)
+
 #include "GeoClawOpenFOAM.h"
 #include "ui_GeoClawOpenFOAM.h"
-#include "AgaveCurl.h"
-#include <QDir>
-#include <QFileInfo>
-#include <QFile>
-#include <QSettings>
-#include <QUuid>
-#include <ZipUtils.h>
-#include <QStandardPaths>
-
 
 //*********************************************************************************
 // Main window
@@ -179,15 +209,24 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 }
 
 //*********************************************************************************
-// Use JSON file to update all elements in the GUI (Need to add this)
+// Use JSON file to update all elements in the GUI
 //*********************************************************************************
 bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 {
-    (void) jsonObject;
 
-    error.criterrormessage("This is not presently supported! Contact developer");
+    // Put data into project settings
+    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->putData(jsonObject))
+    {
+        // do nothing
+    }
 
-    return false;
+    // Put data into bathymetry settings
+    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->putData(jsonObject))
+    {
+        // do nothing
+    }
+
+    return true;
 }
 
 //*********************************************************************************
@@ -207,7 +246,7 @@ bool GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &jsonObject)
 //*********************************************************************************
 bool GeoClawOpenFOAM::inputAppDataFromJSON(QJsonObject &jsonObject)
 {
-    (void) jsonObject;
+    //(void) jsonObject;
     return true;
 }
 
