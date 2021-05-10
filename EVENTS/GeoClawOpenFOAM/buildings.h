@@ -3,6 +3,7 @@
 
 #include <QFrame>
 #include <QFileDialog>
+#include <QJsonObject>
 #include "hydroerror.h"
 
 namespace Ui {
@@ -17,6 +18,7 @@ public:
     explicit buildings(int, QWidget *parent = nullptr);
     ~buildings();
     bool getData(QMap<QString, QString>&,int);
+    bool putData(QJsonObject &);
     void refreshData(int);
     bool copyFiles(QString dirName, int);
 

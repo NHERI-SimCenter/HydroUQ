@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QDebug>
+#include <QJsonObject>
 #include "hydroerror.h"
 #include "GeoClawOpenFOAM.h"
 
@@ -20,6 +21,7 @@ public:
     explicit swcfdint(int,QWidget *parent = nullptr);
     ~swcfdint();
     bool getData(QMap<QString, QString>&,int);
+    bool putData(QJsonObject &);
     void refreshData(int);
     bool copyFiles(QString dirName, int);
 

@@ -226,6 +226,18 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
         // do nothing
     }
 
+    // Put data into SW-CFD settings
+    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->putData(jsonObject))
+    {
+        // do nothing
+    }
+
+    // Put data into Building settings
+    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->putData(jsonObject))
+    {
+        // do nothing
+    }
+
     return true;
 }
 

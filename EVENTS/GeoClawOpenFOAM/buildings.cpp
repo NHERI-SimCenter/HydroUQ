@@ -111,6 +111,14 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
 }
 
 //*********************************************************************************
+// Put data into bathymetry from the JSON file
+//*********************************************************************************
+bool buildings::putData(QJsonObject &jsonObject)
+{
+    return true;
+}
+
+//*********************************************************************************
 // Add building
 //*********************************************************************************
 void buildings::on_Btn_AddBuild_clicked()

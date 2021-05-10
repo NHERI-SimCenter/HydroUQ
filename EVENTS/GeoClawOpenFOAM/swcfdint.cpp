@@ -86,6 +86,49 @@ bool swcfdint::getData(QMap<QString, QString>& map, int type)
 }
 
 //*********************************************************************************
+// Put data into SW-CFD from the JSON file
+//*********************************************************************************
+bool swcfdint::putData(QJsonObject &jsonObject)
+{
+    // Check for the SW-CFD interface file
+    if(jsonObject.contains("SWCFDInteFile"))
+    {
+
+        QMessageBox msgBox;
+        msgBox.setText("File path to the SW-CFD interface needs to be updated.");
+        msgBox.setInformativeText("Select files?");
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        int ret = msgBox.exec();
+
+        switch (ret)
+        {
+            case QMessageBox::Ok:
+            {
+                interffilenames.clear();
+                QFileDialog selectfilesdialog(this);
+                selectfilesdialog.setDirectory(QDir::homePath());
+                selectfilesdialog.setFileMode(QFileDialog::ExistingFile);
+                selectfilesdialog.setNameFilter(tr("All files (*.csv)"));
+                selectfilesdialog.setWindowTitle("Select the interface files");
+                if(selectfilesdialog.exec()) interffilenames = selectfilesdialog.selectedFiles();
+                break;
+            }
+            case QMessageBox::Cancel:
+            {
+                interffilenames.clear();
+            }
+            default:
+            {
+                interffilenames.clear();
+            }
+        }
+    }
+
+    // Return true
+    return true;
+}
+//*********************************************************************************
 // Select interface files
 //*********************************************************************************
 void swcfdint::on_Btn_UploadFile_clicked()
