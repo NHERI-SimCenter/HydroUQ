@@ -61,7 +61,7 @@ bool projectsettings::getData(QMap<QString, QString> & map, int type)
 //*********************************************************************************
 // Read data from JSON file
 //*********************************************************************************
-bool projectsettings::putData(QJsonObject &jsonObject)
+bool projectsettings::putData(QJsonObject &jsonObject, int stype)
 {
 
     // Project name
@@ -77,10 +77,8 @@ bool projectsettings::putData(QJsonObject &jsonObject)
     }
 
     // Simulation type
-    if(jsonObject.contains("SimulationType"))
-    {
-        ui->CmB_SimType->setCurrentIndex(jsonObject["SimulationType"].toString().toInt());
-    }
+    ui->CmB_SimType->setCurrentIndex(stype);
+
 
     // Turbulence model
     if(jsonObject.contains("TurbulenceModel"))
@@ -91,11 +89,3 @@ bool projectsettings::putData(QJsonObject &jsonObject)
     // Return true
     return true;
 }
-
-//    int simtype;
-//    error.criterrormessage("Simulation type is: " + jsonObject["SimulationType"].toString());
-//    error.criterrormessage("Simulation type is: " + QString::number(simtype));
-//    error.criterrormessage("Simulation type is: " + simtype);
-//    int simtype = jsonObject["SimulationType"].toInt();
-//    QString simtype = jsonObject["SimulationType"].toString();
-//    ui->CmB_SimType->setCurrentIndex(simtype.toInt());

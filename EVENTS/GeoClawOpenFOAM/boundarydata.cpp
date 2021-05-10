@@ -79,25 +79,41 @@ bool boundaryData::getData(QMap<QString, QString>& map,int type)
     // Moving wall (OSU) for velocity
     if(index == 3)
     {
-        if(velfilenames.size() > 0)
-        {
-            QFile f(velfilenames[0]);
-            QFileInfo fileInfo(f.fileName());
-            QString filename(fileInfo.fileName());
-            map.insert("MovingWall_"+patchname,filename);
-        }
+//        if(dispfilenames.size() > 0)
+//        {
+//            QFile f(dispfilenames[0]);
+//            QFileInfo fileInfo(f.fileName());
+//            QString filename(fileInfo.fileName());
+//            map.insert("OSUMovingWallDisp_"+patchname,filename);
+//        }
+
+//        if(heightfilenames.size() > 0)
+//        {
+//            QFile f(heightfilenames[0]);
+//            QFileInfo fileInfo(f.fileName());
+//            QString filename(fileInfo.fileName());
+//            map.insert("OSUMovingWallHeight_"+patchname,filename);
+//        }
     }
 
     // Moving wall (General) for velocity
     if(index == 4)
     {
-        if(velfilenames.size() > 0)
-        {
-            QFile f(velfilenames[0]);
-            QFileInfo fileInfo(f.fileName());
-            QString filename(fileInfo.fileName());
-            map.insert("MovingWall_"+patchname,filename);
-        }
+//        if(dispfilenames.size() > 0)
+//        {
+//            QFile f(dispfilenames[0]);
+//            QFileInfo fileInfo(f.fileName());
+//            QString filename(fileInfo.fileName());
+//            map.insert("MovingWallDisp_"+patchname,filename);
+//        }
+
+//        if(heightfilenames.size() > 0)
+//        {
+//            QFile f(heightfilenames[0]);
+//            QFileInfo fileInfo(f.fileName());
+//            QString filename(fileInfo.fileName());
+//            map.insert("MovingWallHeight_"+patchname,filename);
+//        }
     }
 
     // zeroGradient for velocity
@@ -223,6 +239,9 @@ void boundaryData::on_Cmb_UBC_currentIndexChanged(int index)
     // Hide all velocity items by default
     ui->Cmb_UBC->show();
     ui->Btn_UploadFile->hide();
+    ui->Btn_UploadFile_2->hide();
+    ui->Led_WaterDisp->hide();
+    ui->Led_WaterHeight->hide();
     ui->Cmb_WaveType->hide();
     ui->Lbl_Umean->hide();
     ui->DSpBx_UMeanX->hide();
@@ -260,14 +279,20 @@ void boundaryData::on_Cmb_UBC_currentIndexChanged(int index)
     if(index == 3)
     {
         ui->Btn_UploadFile->show();
-        ui->Btn_UploadFile->setText("\nUpload OSU wall motion .zip file\n");
+        ui->Btn_UploadFile_2->show();
+        ui->Led_WaterDisp->show();
+        ui->Led_WaterHeight->show();
+        //ui->Btn_UploadFile->setText("\nUpload OSU wall motion .zip file\n");
     }
 
     // Moving wall (General flume) (inlet)
     if(index == 4)
     {
         ui->Btn_UploadFile->show();
-        ui->Btn_UploadFile->setText("\nUpload wall motion .zip file\n");
+        ui->Btn_UploadFile_2->show();
+        ui->Led_WaterDisp->show();
+        ui->Led_WaterHeight->show();
+        //ui->Btn_UploadFile->setText("\nUpload wall motion .zip file\n");
     }
 
     // zeroGradient (outlet)
@@ -437,7 +462,7 @@ void boundaryData::on_Cmb_PresBC_currentIndexChanged(int index)
 }
 
 //*********************************************************************************
-// When files are uploaded
+// When files are uploaded - water displacement
 //*********************************************************************************
 void boundaryData::on_Btn_UploadFile_clicked()
 {
@@ -446,11 +471,37 @@ void boundaryData::on_Btn_UploadFile_clicked()
     // The selected files are stored in the String list velfilenames
     QFileDialog selectfilesdialog(this);
     selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
-    selectfilesdialog.setNameFilter(tr("All files (*.zip)"));
-    if(selectfilesdialog.exec()) velfilenames = selectfilesdialog.selectedFiles();
-    if(velfilenames.size() == 0)
+    selectfilesdialog.setNameFilter(tr("All files (*.txt)"));
+    if(selectfilesdialog.exec()) dispfilenames = selectfilesdialog.selectedFiles();
+    if(dispfilenames.size() == 0)
     {
         error.warnerrormessage("No files selected!");
+    }
+    else
+    {
+        ui->Led_WaterDisp->setText(dispfilenames[0]);
+    }
+}
+
+//*********************************************************************************
+// When files are uploaded - water height
+//*********************************************************************************
+void boundaryData::on_Btn_UploadFile_2_clicked()
+{
+    // Open a dialog window to select the files
+    // Here one can select multiple files
+    // The selected files are stored in the String list velfilenames
+    QFileDialog selectfilesdialog(this);
+    selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
+    selectfilesdialog.setNameFilter(tr("All files (*.txt)"));
+    if(selectfilesdialog.exec()) heightfilenames = selectfilesdialog.selectedFiles();
+    if(heightfilenames.size() == 0)
+    {
+        error.warnerrormessage("No files selected!");
+    }
+    else
+    {
+        ui->Led_WaterDisp->setText(heightfilenames[0]);
     }
 }
 
@@ -470,12 +521,21 @@ bool boundaryData::copyFiles(QString dirName,int type)
     // Wall motion - OSU and general flume
     if( (index == 3) || (index == 4) )
     {
-        QFile fileToCopy(velfilenames[0]);
-        QFileInfo fileInfo(velfilenames[0]);
+        // Copy water displacement file
+        QFile fileToCopy(dispfilenames[0]);
+        QFileInfo fileInfo(dispfilenames[0]);
         QString theFile = fileInfo.fileName();
         fileToCopy.copy(dirName + QDir::separator() + theFile);
+
+        // Copy water velocity file
+        QFile fileToCopy2(heightfilenames[0]);
+        QFileInfo fileInfo2(heightfilenames[0]);
+        QString theFile2 = fileInfo2.fileName();
+        fileToCopy2.copy(dirName + QDir::separator() + theFile2);
     }
 
     // Return if data exists
     return hasdata;
 }
+
+

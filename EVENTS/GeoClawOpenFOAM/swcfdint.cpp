@@ -41,13 +41,15 @@ void swcfdint::hideshowelems(int type)
     ui->Lbl_Interface->hide();
     ui->Lbl_Notice->hide();
     ui->Btn_UploadFile->hide();
+    ui->Led_path->hide();
 
     if(type == 1)
     {
         ui->Btn_UploadFile->show();
-        ui->Btn_UploadFile->setText("\nUpload interface files\n");
+        ui->Btn_UploadFile->setText("Upload interface files");
         ui->Lbl_Notice->show();
         ui->Lbl_Notice->setText("Check the documentation for format of interface files");
+        ui->Led_path->show();
     }
     else
     {
@@ -143,6 +145,9 @@ void swcfdint::on_Btn_UploadFile_clicked()
     selectfilesdialog.setFileMode(QFileDialog::ExistingFile);
     selectfilesdialog.setNameFilter(tr("All files (*.csv)"));
     if(selectfilesdialog.exec()) interffilenames = selectfilesdialog.selectedFiles();
+
+    // Set the path
+    ui->Led_path->setText(interffilenames[0]);
 }
 
 //*********************************************************************************

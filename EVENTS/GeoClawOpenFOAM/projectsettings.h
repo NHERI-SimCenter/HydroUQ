@@ -22,7 +22,7 @@ public:
     explicit projectsettings(int, QWidget *parent = nullptr);
     ~projectsettings();
     bool getData(QMap<QString, QString>&,int);
-    bool putData(QJsonObject &);
+    bool putData(QJsonObject &,int);
     void refreshData(int);
 
 private slots:

@@ -13,18 +13,18 @@
   <property name="windowTitle">
    <string>Frame</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="leftMargin">
-    <number>6</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>6</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>6</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>6</number>
+    <number>0</number>
    </property>
    <item>
     <widget class="QLabel" name="Lbl_H1">
@@ -189,24 +189,58 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="Btn_UploadFile">
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Upload files related to the boundary patch</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>10000</number>
-     </property>
-     <property name="text">
-      <string>
-Upload files
-</string>
-     </property>
-    </widget>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLineEdit" name="Led_WaterDisp"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="Btn_UploadFile">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Upload files related to the boundary patch</string>
+         </property>
+         <property name="toolTipDuration">
+          <number>10000</number>
+         </property>
+         <property name="text">
+          <string>Wall displacement</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLineEdit" name="Led_WaterHeight"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="Btn_UploadFile_2">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Upload files related to the boundary patch</string>
+         </property>
+         <property name="toolTipDuration">
+          <number>10000</number>
+         </property>
+         <property name="text">
+          <string>Water height</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QComboBox" name="Cmb_WaveType">

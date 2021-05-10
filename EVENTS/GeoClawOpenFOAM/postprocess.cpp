@@ -108,6 +108,52 @@ bool postprocess::getData(QMap<QString, QString>& map,int type)
 }
 
 //*********************************************************************************
+// Put data into postprocessing from the JSON file
+//*********************************************************************************
+bool postprocess::putData(QJsonObject &jsonObject)
+{
+    if(jsonObject.contains("Postprocessing"))
+    {
+        QString ppro = jsonObject["Postprocessing"].toString();
+        if(ppro == "No")
+        {
+            // Set postprocessing combobox
+            ui->CmB_PPFlag->setCurrentIndex(0);
+        }
+        else
+        {
+            // Set postprocessing combobox
+            ui->CmB_PPFlag->setCurrentIndex(1);
+
+            // Check for velocity
+            if(jsonObject.contains("PPVelocity"))
+            {
+                QString pvel = jsonObject["PPVelocity"].toString();
+                if(pvel == "Yes")
+                {
+                    ui->ChB_Velocity->isChecked();
+                }
+            }
+
+            // Check for pressire
+            if(jsonObject.contains("PPPressure"))
+            {
+                QString ppre = jsonObject["PPPressure"].toString();
+                if(ppre == "Yes")
+                {
+                    ui->ChB_Pressure->isChecked();
+                }
+            }
+
+            // Get path of postprocessing file
+
+        }
+    }
+
+    return true;
+}
+
+//*********************************************************************************
 // Click upload files
 //*********************************************************************************
 void postprocess::on_Btn_UploadFiles_clicked()
@@ -119,6 +165,9 @@ void postprocess::on_Btn_UploadFiles_clicked()
     selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
     selectfilesdialog.setNameFilter(tr("All files (*.csv)"));
     if(selectfilesdialog.exec()) pprocessfilenames = selectfilesdialog.selectedFiles();
+
+    // Show the file in the line edit
+    ui->Led_Path->setText(pprocessfilenames[0]);
 }
 
 //*********************************************************************************

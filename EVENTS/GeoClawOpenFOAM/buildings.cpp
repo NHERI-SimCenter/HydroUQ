@@ -93,15 +93,20 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
     }
 
     // Upload any STL files
-    map.insert("NumSTLFiles",QString::number(STLfilenames.size()));
+//    map.insert("NumSTLFiles",QString::number(STLfilenames.size()));
     // Write the bathymetry file names
-    for (int ii=0; ii<STLfilenames.size(); ++ii)
-    {
-        QFile f(STLfilenames[ii]);
-        QFileInfo fileInfo(f.fileName());
-        QString filename(fileInfo.fileName());
-        map.insert("STLFile"+QString::number(ii),filename);
-    }
+//    for (int ii=0; ii<STLfilenames.size(); ++ii)
+//    {
+//        QFile f(STLfilenames[ii]);
+//        QFileInfo fileInfo(f.fileName());
+//        QString filename(fileInfo.fileName());
+//        map.insert("STLFile"+QString::number(ii),filename);
+//    }
+    // Upload only the first STL file
+    QFile f(STLfilenames[0]);
+    QFileInfo fileInfo(f.fileName());
+    QString filename(fileInfo.fileName());
+    map.insert("BuildingSTLFile",filename);
 
     // Change hasData to be true
     hasData = true;
@@ -111,7 +116,7 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
 }
 
 //*********************************************************************************
-// Put data into bathymetry from the JSON file
+// Put data into buildings from the JSON file
 //*********************************************************************************
 bool buildings::putData(QJsonObject &jsonObject)
 {
@@ -145,6 +150,7 @@ void buildings::on_CmB_BuildData_currentIndexChanged(int index)
     ui->GroupPara->hide();
     ui->Lbl_Notice->hide();
     ui->Btn_CustomBuild->hide();
+    ui->PText_CustomBuild->hide();
 
     // Manually add buildings using table
     if(index == 0)
@@ -165,6 +171,7 @@ void buildings::on_CmB_BuildData_currentIndexChanged(int index)
         ui->Lbl_Notice->show();
         ui->Lbl_Notice->setText("Check the documentation to prepare the STL files for custom building shapes");
         ui->Btn_CustomBuild->show();
+        ui->PText_CustomBuild->show();
     }
     // Add buildings using parametric
     else if(index == 1)
@@ -183,14 +190,20 @@ bool buildings::copyFiles(QString dirName,int type)
     // If files are selected, then copy the STL files
     if(STLfilenames.size() > 0)
     {
-        // Copy the solution files
-        for (int ii=0; ii<STLfilenames.size(); ++ii)
-        {
-            QFile fileToCopy(STLfilenames[ii]);
-            QFileInfo fileInfo(STLfilenames[ii]);
-            QString theFile = fileInfo.fileName();
-            fileToCopy.copy(dirName + QDir::separator() + theFile);
-        }
+
+        QFile fileToCopy(STLfilenames[0]);
+        QFileInfo fileInfo(STLfilenames[0]);
+        QString theFile = fileInfo.fileName();
+        fileToCopy.copy(dirName + QDir::separator() + theFile);
+
+//        // Copy the solution files
+//        for (int ii=0; ii<STLfilenames.size(); ++ii)
+//        {
+//            QFile fileToCopy(STLfilenames[ii]);
+//            QFileInfo fileInfo(STLfilenames[ii]);
+//            QString theFile = fileInfo.fileName();
+//            fileToCopy.copy(dirName + QDir::separator() + theFile);
+//        }
     }
 
     // Return if data exists
@@ -203,11 +216,13 @@ bool buildings::copyFiles(QString dirName,int type)
 void buildings::on_CmB_BuildShape_currentIndexChanged(int index)
 {
     ui->Btn_CustomBuild->hide();
+    ui->PText_CustomBuild->hide();
 
     // Show for custom build
     if(index == 2)
     {
         ui->Btn_CustomBuild->show();
+        ui->PText_CustomBuild->show();
         ui->Lbl_Notice->show();
         ui->Lbl_Notice->setText("Check the documentation to prepare the STL files for custom building shapes");
     }
@@ -228,5 +243,9 @@ void buildings::on_Btn_CustomBuild_clicked()
     if(STLfilenames.size() == 0)
     {
         error.warnerrormessage("No files selected!");
+    }
+    else
+    {
+        ui->PText_CustomBuild->setText(STLfilenames[0]);
     }
 }

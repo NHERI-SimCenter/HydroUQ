@@ -118,82 +118,82 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(1, singleData);
     }
 
-    // Add SW-CFD Interface - index 2
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->getData(*singleData,simtype))
-    {
-        allData.insert(2, singleData);
-    }
-
-    // Get data from buildings - index 3
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->getData(*singleData,simtype))
-    {
-        allData.insert(3, singleData);
-    }
-
-//    // Get data from floating bodies - index 4
+//    // Add SW-CFD Interface - index 2
 //    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->getData(*singleData,simtype))
+//    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->getData(*singleData,simtype))
 //    {
-//        allData.insert(4, singleData);
+//        allData.insert(2, singleData);
 //    }
 
-    // Get data from mesh - index 5
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->getData(*singleData,simtype))
-    {
-        allData.insert(5, singleData);
-    }
-
-    // Get data from materials - index 6
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<materials *>(ui->stackedWidget->widget(6))->getData(*singleData,simtype))
-    {
-        allData.insert(6, singleData);
-    }
-
-//    // Initial conditions: velocity - index 7
+//    // Get data from buildings - index 3
 //    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->getData(*singleData,simtype))
+//    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->getData(*singleData,simtype))
 //    {
-//        allData.insert(7, singleData);
+//        allData.insert(3, singleData);
 //    }
 
-//    // Initial conditions: pressure - index 8
+////    // Get data from floating bodies - index 4
+////    singleData = new QMap<QString,QString>;
+////    if (dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->getData(*singleData,simtype))
+////    {
+////        allData.insert(4, singleData);
+////    }
+
+//    // Get data from mesh - index 5
 //    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->getData(*singleData,simtype))
+//    if (dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->getData(*singleData,simtype))
 //    {
-//        allData.insert(8, singleData);
+//        allData.insert(5, singleData);
 //    }
 
-    // Initial conditions: alpha - index 9
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->getData(*singleData,simtype))
-    {
-        allData.insert(9, singleData);
-    }
+//    // Get data from materials - index 6
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<materials *>(ui->stackedWidget->widget(6))->getData(*singleData,simtype))
+//    {
+//        allData.insert(6, singleData);
+//    }
 
-    // Boundary conditions - index 10
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->getData(*singleData,simtype))
-    {
-        allData.insert(10, singleData);
-    }
+////    // Initial conditions: velocity - index 7
+////    singleData = new QMap<QString,QString>;
+////    if (dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->getData(*singleData,simtype))
+////    {
+////        allData.insert(7, singleData);
+////    }
 
-    // Solver settings - index 11
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<solver *>(ui->stackedWidget->widget(11))->getData(*singleData,simtype))
-    {
-        allData.insert(11, singleData);
-    }
+////    // Initial conditions: pressure - index 8
+////    singleData = new QMap<QString,QString>;
+////    if (dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->getData(*singleData,simtype))
+////    {
+////        allData.insert(8, singleData);
+////    }
 
-    // Postprocess settings - index 12
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->getData(*singleData,simtype))
-    {
-        allData.insert(12, singleData);
-    }
+//    // Initial conditions: alpha - index 9
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->getData(*singleData,simtype))
+//    {
+//        allData.insert(9, singleData);
+//    }
+
+//    // Boundary conditions - index 10
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->getData(*singleData,simtype))
+//    {
+//        allData.insert(10, singleData);
+//    }
+
+//    // Solver settings - index 11
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<solver *>(ui->stackedWidget->widget(11))->getData(*singleData,simtype))
+//    {
+//        allData.insert(11, singleData);
+//    }
+
+//    // Postprocess settings - index 12
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->getData(*singleData,simtype))
+//    {
+//        allData.insert(12, singleData);
+//    }
 
     // Add all objects to the json object
     foreach (int key, allData.keys())
@@ -214,29 +214,48 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 {
 
+    // Check for simulation type
+    int stype;
+    if(jsonObject.contains("SimulationType"))
+    {
+        stype = jsonObject["SimulationType"].toString().toInt();
+    }
+    else
+    {
+        error.criterrormessage("Simulation type not found. Check JSON file!");
+        return false;
+    }
+
     // Put data into project settings
-    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->putData(jsonObject))
+    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->putData(jsonObject,stype))
     {
         // do nothing
     }
 
-    // Put data into bathymetry settings
-    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->putData(jsonObject))
-    {
-        // do nothing
-    }
+//    // Put data into bathymetry settings
+//    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->putData(jsonObject))
+//    {
+//        // do nothing
+//    }
 
-    // Put data into SW-CFD settings
-    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->putData(jsonObject))
-    {
-        // do nothing
-    }
+//    // Put data into SW-CFD settings
+//    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->putData(jsonObject))
+//    {
+//        // do nothing
+//    }
 
     // Put data into Building settings
-    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->putData(jsonObject))
-    {
-        // do nothing
-    }
+//    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->putData(jsonObject))
+//    {
+//        // do nothing
+//    }
+
+
+//    // Postprocess settings - index 12
+//    if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->putData(jsonObject))
+//    {
+//        // do nothing for now
+//    }
 
     return true;
 }
@@ -271,23 +290,23 @@ bool GeoClawOpenFOAM::copyFiles(QString &dirName)
     // Copy bathymetry and solution files
     dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->copyFiles(dirName,simtype);
 
-    // Copy SW-CFD interface files
-    dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->copyFiles(dirName,simtype);
+//    // Copy SW-CFD interface files
+//    dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->copyFiles(dirName,simtype);
 
-    // Copy Building files
-    dynamic_cast<swcfdint *>(ui->stackedWidget->widget(3))->copyFiles(dirName,simtype);
+//    // Copy Building files
+//    dynamic_cast<swcfdint *>(ui->stackedWidget->widget(3))->copyFiles(dirName,simtype);
 
-    // Meshing
-    dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->copyFiles(dirName,simtype);
+//    // Meshing
+//    dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->copyFiles(dirName,simtype);
 
-    // Boundary
-    dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->copyFiles(dirName,simtype);
+//    // Boundary
+//    dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->copyFiles(dirName,simtype);
 
-    // Solver
-    dynamic_cast<solver *>(ui->stackedWidget->widget(11))->copyFiles(dirName,simtype);
+//    // Solver
+//    dynamic_cast<solver *>(ui->stackedWidget->widget(11))->copyFiles(dirName,simtype);
 
-    // Postprocess
-    dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->copyFiles(dirName,simtype);
+//    // Postprocess
+//    dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->copyFiles(dirName,simtype);
 
     // Return
     return true;

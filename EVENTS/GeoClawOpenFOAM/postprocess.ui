@@ -14,6 +14,18 @@
    <string>Frame</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QLabel" name="Lbl_H1">
      <property name="font">
@@ -112,26 +124,31 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="Btn_UploadFiles">
-          <property name="font">
-           <font>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <bold>false</bold>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Select a single .zip file</string>
-          </property>
-          <property name="toolTipDuration">
-           <number>10000</number>
-          </property>
-          <property name="text">
-           <string>
-Upload .csv file
-</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLineEdit" name="Led_Path"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="Btn_UploadFiles">
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>Select a single .zip file</string>
+            </property>
+            <property name="toolTipDuration">
+             <number>10000</number>
+            </property>
+            <property name="text">
+             <string>Upload .csv file</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
