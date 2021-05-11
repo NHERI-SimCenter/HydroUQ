@@ -501,10 +501,11 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
 
 void
 WorkflowAppHydroUQ::onRunButtonClicked() {
-    theRunWidget->hide();
-    theRunWidget->setMinimumWidth(this->width()*0.5);
-    theRunWidget->showLocalApplication();
-    GoogleAnalytics::ReportLocalRun();
+    emit errorMessage("This app cannot be run locally. Please run remotely on DesignSafe");
+//    theRunWidget->hide();
+//    theRunWidget->setMinimumWidth(this->width()*0.5);
+//    theRunWidget->showLocalApplication();
+//    GoogleAnalytics::ReportLocalRun();
 }
 
 void
