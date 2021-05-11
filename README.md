@@ -1,8 +1,7 @@
 # HydroUQ 
 
-|Build OS|Windows|MacOS|Linux|
-|---|---|---|---|
-[![Build status](https://ci.appveyor.com/api/projects/status/bc9yw6q0v1p0pvji?svg=true)](https://ci.appveyor.com/project/bhajay/hydrouq)
+
+[![Build status](https://ci.appveyor.com/api/projects/status/k1cfrfmjsq14akso?svg=true)](https://ci.appveyor.com/project/fmckenna/hydrouq)
 
 ### Water-borne Natural Hazards Engineering with Uncertainty Quantification ###
 
