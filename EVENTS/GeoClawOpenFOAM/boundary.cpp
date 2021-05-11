@@ -59,7 +59,7 @@ bool boundary::getData(QMap<QString, QString>& map,int type)
     map.insert("NumberOfBoundaries",QString::number(numberOfPanes));
     for (int i=0;i<numberOfPanes;i++)
     {
-        if (dynamic_cast<boundaryData *>(ui->SWg_Interface->widget(i))->getData(*singleData,type))
+        if (dynamic_cast<boundaryData *>(ui->SWg_Interface->widget(i))->getData(*singleData,type,i))
         {
             // Loop over the entire map and insert all elements
             foreach(QString varname, singleData->keys())
@@ -77,6 +77,46 @@ bool boundary::getData(QMap<QString, QString>& map,int type)
 
     // Return the bool
     return hasData;
+}
+
+//*********************************************************************************
+// Put data to boundary
+//*********************************************************************************
+bool boundary::putData(QJsonObject &jsonObject,int stype,QString workpath)
+{
+
+    // Get the number of boundary panes
+    int numboun = 0;
+    QString bpatchname;
+    if(jsonObject.contains("NumberOfBoundaries"))
+        numboun = jsonObject["NumberOfBoundaries"].toString().toInt();
+
+    // Loop over all the patches
+    for(int ii=0; ii<numboun; ++ii)
+    {
+        // Get the patchname
+        if(jsonObject.contains("BounPatch"+QString::number(ii)))
+        {
+            // If patch name exists
+            bpatchname = jsonObject["BounPatch"+QString::number(ii)].toString();
+
+            // Add the patch
+            ui->SWg_Interface->addWidget(new boundaryData(bpatchname));
+
+            // Put the data into this patch
+            dynamic_cast<boundaryData *>(ui->SWg_Interface->widget(ii))->putData(jsonObject,stype,workpath,bpatchname);
+        }
+        else
+        {   // if no patchname
+            bpatchname = "patch" + QString::number(ii);
+
+            // Add the patch
+            ui->SWg_Interface->addWidget(new boundaryData(bpatchname));
+        }
+    }
+
+    // Return true
+    return true;
 }
 
 //*********************************************************************************
@@ -106,7 +146,7 @@ bool boundary::copyFiles(QString dirName,int type)
 void boundary::on_Btn_AddBoundary_clicked()
 {
     bool ok;
-    QString temppname = "UntitledPatch_" + QString::number(ui->SWg_Interface->count());
+    QString temppname = "patch_" + QString::number(ui->SWg_Interface->count());
     QString bpatchname = QInputDialog::getText(this, tr("Add boundary conditions"),
                                             tr("Boundary patch name"), QLineEdit::Normal,
                                             temppname, &ok);
@@ -119,11 +159,8 @@ void boundary::on_Btn_AddBoundary_clicked()
     }
     else
     {
-        QMessageBox msgBox;
-        msgBox.setText("Critical error!");
-        msgBox.setInformativeText("A patch name is required to set the boundary!");
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.exec();
+        int patchcount = ui->SWg_Interface->count();
+        bpatchname = "patch" + QString::number(patchcount);
     }
 }
 

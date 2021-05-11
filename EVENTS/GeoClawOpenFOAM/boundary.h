@@ -6,6 +6,7 @@
 #include <QFrame>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QJsonObject>
 
 namespace Ui {
 class boundary;
@@ -19,6 +20,7 @@ public:
     explicit boundary(int, QWidget *parent = nullptr);
     ~boundary();
     bool getData(QMap<QString, QString>&,int);
+    bool putData(QJsonObject &,int,QString);
     void refreshData(int);
     bool copyFiles(QString dirName, int);
 

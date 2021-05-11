@@ -39,181 +39,6 @@ void boundaryData::hideshowelems()
 }
 
 //*********************************************************************************
-// Get data from meshing
-//*********************************************************************************
-bool boundaryData::getData(QMap<QString, QString>& map,int type)
-{
-    bool hasData=false;
-    (void) type;
-
-    // Attach patch name
-    // QString patchname = ui->Lbl_H1->text();
-    QString patchname = ui->Cmb_PatchStdLoc->currentText();
-
-    // Add patch location information
-    //map.insert("LocationType_"+patchname,ui->Cmb_PatchLoc->currentText());
-//    if(ui->Cmb_PatchLoc->currentIndex() == 0)
-//        map.insert("PatchLocation",ui->Cmb_PatchStdLoc->currentText());
-//    else
-//        map.insert("PatchLocation",ui->Lbl_H1->text());
-
-    // Get velocity information
-    int index = ui->Cmb_UBC->currentIndex();
-    map.insert("VelocityType_"+patchname,QString::number(ui->Cmb_UBC->currentIndex()));
-
-    // SW solutions for velocity
-    if(index == 1)
-    {
-        // No additional info
-    }
-
-    // Constant velocity
-    if(index == 2)
-    {
-        QString veldata = ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()) +
-                "," + ui->DSpBx_UMeanY->textFromValue(ui->DSpBx_UMeanY->value()) +
-                "," + ui->DSpBx_UMeanZ->textFromValue(ui->DSpBx_UMeanZ->value());
-        map.insert("Velocity_"+patchname,veldata);
-    }
-
-    // Moving wall (OSU) for velocity
-    if(index == 3)
-    {
-//        if(dispfilenames.size() > 0)
-//        {
-//            QFile f(dispfilenames[0]);
-//            QFileInfo fileInfo(f.fileName());
-//            QString filename(fileInfo.fileName());
-//            map.insert("OSUMovingWallDisp_"+patchname,filename);
-//        }
-
-//        if(heightfilenames.size() > 0)
-//        {
-//            QFile f(heightfilenames[0]);
-//            QFileInfo fileInfo(f.fileName());
-//            QString filename(fileInfo.fileName());
-//            map.insert("OSUMovingWallHeight_"+patchname,filename);
-//        }
-    }
-
-    // Moving wall (General) for velocity
-    if(index == 4)
-    {
-//        if(dispfilenames.size() > 0)
-//        {
-//            QFile f(dispfilenames[0]);
-//            QFileInfo fileInfo(f.fileName());
-//            QString filename(fileInfo.fileName());
-//            map.insert("MovingWallDisp_"+patchname,filename);
-//        }
-
-//        if(heightfilenames.size() > 0)
-//        {
-//            QFile f(heightfilenames[0]);
-//            QFileInfo fileInfo(f.fileName());
-//            QString filename(fileInfo.fileName());
-//            map.insert("MovingWallHeight_"+patchname,filename);
-//        }
-    }
-
-    // zeroGradient for velocity
-    if(index == 5)
-    {
-        // No data to be provided
-    }
-
-    // inletOutlet for velocity
-    if(index == 6)
-    {
-        QString veldata = ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()) +
-                "," + ui->DSpBx_UMeanY->textFromValue(ui->DSpBx_UMeanY->value()) +
-                "," + ui->DSpBx_UMeanZ->textFromValue(ui->DSpBx_UMeanZ->value());
-        map.insert("Velocity_"+patchname,veldata);
-    }
-
-    // Wall  for velocity
-    if(index == 7)
-    {
-        // Nothing to add
-    }
-
-//    if( ((index == 1) || (index == 5)) || (index == 7) )
-//    {
-//        QString veldata = ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()) +
-//                "," + ui->DSpBx_UMeanY->textFromValue(ui->DSpBx_UMeanY->value()) +
-//                "," + ui->DSpBx_UMeanZ->textFromValue(ui->DSpBx_UMeanZ->value());
-//        map.insert("Velocity_"+patchname,veldata);
-//    }
-//    else if(index == 2)
-//    {
-//        map.insert("WaveType_"+patchname,ui->Cmb_PatchStdLoc->currentText());
-//        QString veldata = ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()) +
-//                "," + ui->DSpBx_UMeanY->textFromValue(ui->DSpBx_UMeanY->value()) +
-//                "," + ui->DSpBx_UMeanZ->textFromValue(ui->DSpBx_UMeanZ->value());
-//        map.insert("MeanVelocity_"+patchname,veldata);
-//        veldata = ui->DSpBx_OX->textFromValue(ui->DSpBx_OX->value()) +
-//                "," + ui->DSpBx_OY->textFromValue(ui->DSpBx_OY->value()) +
-//                "," + ui->DSpBx_OZ->textFromValue(ui->DSpBx_OZ->value());
-//        map.insert("Origin_"+patchname,veldata);
-//        veldata = ui->DSpBx_DirnX->textFromValue(ui->DSpBx_DirnX->value()) +
-//                "," + ui->DSpBx_DirnY->textFromValue(ui->DSpBx_DirnY->value()) +
-//                "," + ui->DSpBx_DirnZ->textFromValue(ui->DSpBx_DirnZ->value());
-//        map.insert("Direction_"+patchname,veldata);
-//        map.insert("WaveParameters_"+patchname,ui->Led_WavePara->text());
-//    }
-//    else if ((index == 3) || (index == 4))
-//    {
-//        if(velfilenames.size() > 0)
-//        {
-//            QFile f(velfilenames[0]);
-//            QFileInfo fileInfo(f.fileName());
-//            QString filename(fileInfo.fileName());
-//            map.insert("VelocityBoundaryFiles_"+patchname,filename);
-//        }
-//    }
-//    else if(index == 6)
-//    {
-//        map.insert("MeanFlowRate_"+patchname, ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()));
-//    }
-//    else if(index == 9) // Moving wall
-//    {
-//        if(velfilenames.size() > 0)
-//        {
-//            QFile f(velfilenames[0]);
-//            QFileInfo fileInfo(f.fileName());
-//            QString filename(fileInfo.fileName());
-//            map.insert("MovingWall_"+patchname,filename);
-//        }
-//    }
-
-    // Get pressure information
-    index = ui->Cmb_PresBC->currentIndex();
-    map.insert("PressureType",ui->Cmb_PresBC->currentText());
-
-    // fixed Value
-    if(index == 2)
-    {
-        map.insert("Pressure_"+patchname,ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
-    }
-
-//    if( (index == 2) || (index == 3) )
-//    {
-//        map.insert("Pressure_"+patchname,ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
-//    }
-//    else if (index == 4)
-//    {
-//        map.insert("PressureGradient_"+patchname,ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
-//    }
-
-    // Change hasData to be true
-    hasData = true;
-
-    // Return the bool
-    return hasData;
-
-}
-
-//*********************************************************************************
 // Location combobox options
 //*********************************************************************************
 void boundaryData::on_Cmb_PatchLoc_currentIndexChanged(int index)
@@ -316,126 +141,6 @@ void boundaryData::on_Cmb_UBC_currentIndexChanged(int index)
     {
         // No element needs to be activated
     }
-
-
-//    if(index == 0)
-//    {
-//        ui->Btn_UploadFile->hide();
-//        ui->Cmb_WaveType->hide();
-//        ui->Lbl_Umean->hide();
-//        ui->DSpBx_UMeanX->hide();
-//        ui->DSpBx_UMeanY->hide();
-//        ui->DSpBx_UMeanZ->hide();
-//        ui->Lbl_Origin->hide();
-//        ui->DSpBx_OX->hide();
-//        ui->DSpBx_OY->hide();
-//        ui->DSpBx_OZ->hide();
-//        ui->Lbl_Dirn->hide();
-//        ui->DSpBx_DirnX->hide();
-//        ui->DSpBx_DirnY->hide();
-//        ui->DSpBx_DirnZ->hide();
-//        ui->Lbl_WavePara->hide();
-//        ui->Led_WavePara->hide();
-//    }
-
-//    if(((index == 1) || (index == 5)) || (index == 7)) // Uniform velocityinlet/outlet
-//    {
-//        if(index == 1) ui->Lbl_Umean->setText("Velocity");
-//        else if(index == 5) ui->Lbl_Umean->setText("UMean");
-//        else if(index == 7) ui->Lbl_Umean->setText("UMean");
-
-//        ui->Btn_UploadFile->hide();
-//        ui->Cmb_WaveType->hide();
-//        ui->Lbl_Umean->show();
-//        ui->DSpBx_UMeanX->show();
-//        ui->DSpBx_UMeanY->show();
-//        ui->DSpBx_UMeanZ->show();
-//        ui->Lbl_Origin->hide();
-//        ui->DSpBx_OX->hide();
-//        ui->DSpBx_OY->hide();
-//        ui->DSpBx_OZ->hide();
-//        ui->Lbl_Dirn->hide();
-//        ui->DSpBx_DirnX->hide();
-//        ui->DSpBx_DirnY->hide();
-//        ui->DSpBx_DirnZ->hide();
-//        ui->Lbl_WavePara->hide();
-//        ui->Led_WavePara->hide();
-//    }
-//    else if(index == 2)
-//    {
-//        ui->Btn_UploadFile->hide();
-//        ui->Cmb_WaveType->show();
-//        ui->Lbl_Umean->show();
-//        ui->Lbl_Umean->setText("Umean");
-//        ui->DSpBx_UMeanX->show();
-//        ui->DSpBx_UMeanY->show();
-//        ui->DSpBx_UMeanZ->show();
-//        ui->Lbl_Origin->show();
-//        ui->DSpBx_OX->show();
-//        ui->DSpBx_OY->show();
-//        ui->DSpBx_OZ->show();
-//        ui->Lbl_Dirn->show();
-//        ui->DSpBx_DirnX->show();
-//        ui->DSpBx_DirnY->show();
-//        ui->DSpBx_DirnZ->show();
-//        ui->Lbl_WavePara->show();
-//        ui->Led_WavePara->show();
-//    }
-//    else if((index == 3) || (index == 4))
-//    {
-//        ui->Btn_UploadFile->show();
-//        ui->Cmb_WaveType->hide();
-//        ui->Lbl_Umean->hide();
-//        ui->DSpBx_UMeanX->hide();
-//        ui->DSpBx_UMeanY->hide();
-//        ui->DSpBx_UMeanZ->hide();
-//        ui->Lbl_Origin->hide();
-//        ui->DSpBx_OX->hide();
-//        ui->DSpBx_OY->hide();
-//        ui->DSpBx_OZ->hide();
-//        ui->Lbl_Dirn->hide();
-//        ui->DSpBx_DirnX->hide();
-//        ui->DSpBx_DirnY->hide();
-//        ui->DSpBx_DirnZ->hide();
-//        ui->Lbl_WavePara->hide();
-//        ui->Led_WavePara->hide();
-//    }
-//    else if((index == 6) || (index == 8))
-//    {
-//        if(index == 6)
-//        {
-//            ui->Lbl_Umean->setText("Flow rate");
-//            ui->Lbl_Umean->show();
-//            ui->DSpBx_UMeanX->show();
-//        }
-//        else
-//        {
-//            ui->Lbl_Umean->hide();
-//            ui->DSpBx_UMeanX->hide();
-//        }
-//        ui->Btn_UploadFile->hide();
-//        ui->Cmb_WaveType->hide();
-//        ui->DSpBx_UMeanY->hide();
-//        ui->DSpBx_UMeanZ->hide();
-//        ui->Lbl_Origin->hide();
-//        ui->DSpBx_OX->hide();
-//        ui->DSpBx_OY->hide();
-//        ui->DSpBx_OZ->hide();
-//        ui->Lbl_Dirn->hide();
-//        ui->DSpBx_DirnX->hide();
-//        ui->DSpBx_DirnY->hide();
-//        ui->DSpBx_DirnZ->hide();
-//        ui->Lbl_WavePara->hide();
-//        ui->Led_WavePara->hide();
-//    }
-//    else if(index == 9) // Moving wall
-//    {
-//        ui->Btn_UploadFile->show();
-//    }
-//    else if(index == 10) // SW solutions
-//    {
-//        ui->Btn_UploadFile->hide();
-//    }
 }
 
 //*********************************************************************************
@@ -473,13 +178,13 @@ void boundaryData::on_Btn_UploadFile_clicked()
     selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
     selectfilesdialog.setNameFilter(tr("All files (*.txt)"));
     if(selectfilesdialog.exec()) dispfilenames = selectfilesdialog.selectedFiles();
-    if(dispfilenames.size() == 0)
+    if(dispfilenames.size() > 0)
     {
-        error.warnerrormessage("No files selected!");
+        ui->Led_WaterDisp->setText(dispfilenames[0]);
     }
     else
     {
-        ui->Led_WaterDisp->setText(dispfilenames[0]);
+        error.warnerrormessage("No files selected!");
     }
 }
 
@@ -495,14 +200,245 @@ void boundaryData::on_Btn_UploadFile_2_clicked()
     selectfilesdialog.setFileMode(QFileDialog::ExistingFiles);
     selectfilesdialog.setNameFilter(tr("All files (*.txt)"));
     if(selectfilesdialog.exec()) heightfilenames = selectfilesdialog.selectedFiles();
-    if(heightfilenames.size() == 0)
+    if(heightfilenames.size() > 0)
     {
-        error.warnerrormessage("No files selected!");
+        ui->Led_WaterHeight->setText(heightfilenames[0]);
     }
     else
     {
-        ui->Led_WaterDisp->setText(heightfilenames[0]);
+        error.warnerrormessage("No files selected!");
     }
+}
+
+//*********************************************************************************
+// Get data from boundary data
+//*********************************************************************************
+bool boundaryData::getData(QMap<QString, QString>& map,int type,int count)
+{
+    bool hasData=false;
+
+    // Error for SW solutions
+    if(type != 1)
+    {
+        if(ui->Cmb_UBC->currentIndex() == 1)
+        {
+            error.criterrormessage("SW solutions cannot be used for boundary conditions for this simulation type");
+            return false;
+        }
+    }
+
+    // Attach patch name
+    // QString patchname = ui->Lbl_H1->text();
+    QString patchname = ui->Cmb_PatchStdLoc->currentText();
+    map.insert("BounPatch"+QString::number(count),patchname);
+
+    // Get velocity information
+    int index = ui->Cmb_UBC->currentIndex();
+    map.insert("VelocityType_"+patchname,QString::number(ui->Cmb_UBC->currentIndex()));
+
+    // SW solutions for velocity
+    if(index == 1)
+    {
+        // No additional info
+    }
+
+    // Constant velocity
+    if(index == 2)
+    {
+        QString veldata = ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()) +
+                "," + ui->DSpBx_UMeanY->textFromValue(ui->DSpBx_UMeanY->value()) +
+                "," + ui->DSpBx_UMeanZ->textFromValue(ui->DSpBx_UMeanZ->value());
+        map.insert("Velocity_"+patchname,veldata);
+    }
+
+    // Moving wall (OSU) for velocity
+    if(index == 3)
+    {
+        if(dispfilenames.size() > 0)
+        {
+            QFile f(dispfilenames[0]);
+            QFileInfo fileInfo(f.fileName());
+            QString filename(fileInfo.fileName());
+            map.insert("OSUMovingWallDisp_"+patchname,filename);
+        }
+
+        if(heightfilenames.size() > 0)
+        {
+            QFile f(heightfilenames[0]);
+            QFileInfo fileInfo(f.fileName());
+            QString filename(fileInfo.fileName());
+            map.insert("OSUMovingWallHeight_"+patchname,filename);
+        }
+    }
+
+    // Moving wall (General) for velocity
+    if(index == 4)
+    {
+        if(dispfilenames.size() > 0)
+        {
+            QFile f(dispfilenames[0]);
+            QFileInfo fileInfo(f.fileName());
+            QString filename(fileInfo.fileName());
+            map.insert("MovingWallDisp_"+patchname,filename);
+        }
+
+        if(heightfilenames.size() > 0)
+        {
+            QFile f(heightfilenames[0]);
+            QFileInfo fileInfo(f.fileName());
+            QString filename(fileInfo.fileName());
+            map.insert("MovingWallHeight_"+patchname,filename);
+        }
+    }
+
+    // zeroGradient for velocity
+    if(index == 5)
+    {
+        // No data to be provided
+    }
+
+    // inletOutlet for velocity
+    if(index == 6)
+    {
+        QString veldata = ui->DSpBx_UMeanX->textFromValue(ui->DSpBx_UMeanX->value()) +
+                "," + ui->DSpBx_UMeanY->textFromValue(ui->DSpBx_UMeanY->value()) +
+                "," + ui->DSpBx_UMeanZ->textFromValue(ui->DSpBx_UMeanZ->value());
+        map.insert("Velocity_"+patchname,veldata);
+    }
+
+    // Wall  for velocity
+    if(index == 7)
+    {
+        // Nothing to add
+    }
+
+    // Get pressure information
+    index = ui->Cmb_PresBC->currentIndex();
+    map.insert("PressureType_"+patchname,QString::number(ui->Cmb_PresBC->currentIndex()));
+
+    // fixed Value
+    if(index == 2)
+    {
+        map.insert("Pressure_"+patchname,ui->DSpBx_Pres->textFromValue(ui->DSpBx_Pres->value()));
+    }
+
+    // Change hasData to be true
+    hasData = true;
+
+    // Return the bool
+    return hasData;
+
+}
+
+//*********************************************************************************
+// Put data to boundary data
+//*********************************************************************************
+bool boundaryData::putData(QJsonObject &jsonObject,int stype, QString workpath, QString bpatchname)
+{
+    // Suppress warnings
+    (void) stype;
+
+    // Set the patch location
+    int typeindex = 0;
+    if(QString::compare(bpatchname,"Entry") == 0)
+        typeindex = 0;
+    else if(QString::compare(bpatchname,"Exit") == 0)
+        typeindex = 1;
+    else if(QString::compare(bpatchname,"Top") == 0)
+        typeindex = 2;
+    else if(QString::compare(bpatchname,"Bottom") == 0)
+        typeindex = 3;
+    else if(QString::compare(bpatchname,"Right") == 0)
+        typeindex = 4;
+    else if(QString::compare(bpatchname,"Left") == 0)
+        typeindex = 5;
+    ui->Cmb_PatchStdLoc->setCurrentIndex(typeindex);
+
+    // Set the velocity boundary condition
+    if(jsonObject.contains("VelocityType_"+bpatchname))
+    {
+        // Get the velocity index
+        int velindex = jsonObject["VelocityType_"+bpatchname].toString().toInt();
+
+        // Set the combobox accordingly
+        ui->Cmb_UBC->setCurrentIndex(velindex);
+
+        // Set the conditions for different index
+        if( (velindex == 2) || (velindex == 6) ) // Constant velocity
+        {
+            if(jsonObject.contains("Velocity_"+bpatchname))
+            {
+                QString veldata = jsonObject["Velocity_"+bpatchname].toString();
+                QStringList vellist = veldata.split(",");
+                if(vellist.size() == 3)
+                {
+                    ui->DSpBx_UMeanX->setValue(vellist[0].toDouble());
+                    ui->DSpBx_UMeanY->setValue(vellist[0].toDouble());
+                    ui->DSpBx_UMeanZ->setValue(vellist[0].toDouble());
+                }
+            }
+        }
+        else if(velindex == 3) // OSU Flume
+        {
+            if(jsonObject.contains("OSUMovingWallDisp_"+bpatchname))
+            {
+                QString filename = jsonObject["OSUMovingWallDisp_"+bpatchname].toString();
+                QFileInfo fi(QDir(workpath),filename);
+                dispfilenames.append(fi.canonicalFilePath());
+                ui->Led_WaterDisp->setText(dispfilenames.join(";\n\n"));
+            }
+
+            if(jsonObject.contains("OSUMovingWallHeight_"+bpatchname))
+            {
+                QString filename = jsonObject["OSUMovingWallHeight_"+bpatchname].toString();
+                QFileInfo fi(QDir(workpath),filename);
+                heightfilenames.append(fi.canonicalFilePath());
+                ui->Led_WaterHeight->setText(heightfilenames.join(";\n\n"));
+            }
+        }
+        else if(velindex == 4) // General Flume
+        {
+            if(jsonObject.contains("MovingWallDisp_"+bpatchname))
+            {
+                QString filename = jsonObject["MovingWallDisp_"+bpatchname].toString();
+                QFileInfo fi(QDir(workpath),filename);
+                dispfilenames.append(fi.canonicalFilePath());
+                ui->Led_WaterDisp->setText(dispfilenames.join(";\n\n"));
+            }
+
+            if(jsonObject.contains("MovingWallHeight_"+bpatchname))
+            {
+                QString filename = jsonObject["MovingWallHeight_"+bpatchname].toString();
+                QFileInfo fi(QDir(workpath),filename);
+                heightfilenames.append(fi.canonicalFilePath());
+                ui->Led_WaterHeight->setText(heightfilenames.join(";\n\n"));
+            }
+        }
+    }
+
+    // Set the pressure boundary condition
+    if(jsonObject.contains("PressureType_"+bpatchname))
+    {
+        // Get the velocity index
+        int presindex = jsonObject["PressureType_"+bpatchname].toString().toInt();
+
+        // Set the combobox accordingly
+        ui->Cmb_PresBC->setCurrentIndex(presindex);
+
+        // Set the conditions for different index
+        if( presindex == 2) // Constant pressure
+        {
+            if(jsonObject.contains("Pressure_"+bpatchname))
+            {
+
+                ui->DSpBx_Pres->setValue(jsonObject["Pressure_"+bpatchname].toString().toDouble());
+            }
+        }
+    }
+
+
+    // Return true
+    return true;
 }
 
 //*********************************************************************************

@@ -174,12 +174,12 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(9, singleData);
     }
 
-//    // Boundary conditions - index 10
-//    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->getData(*singleData,simtype))
-//    {
-//        allData.insert(10, singleData);
-//    }
+    // Boundary conditions - index 10
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->getData(*singleData,simtype))
+    {
+        allData.insert(10, singleData);
+    }
 
     // Solver settings - index 11
     singleData = new QMap<QString,QString>;
@@ -295,6 +295,12 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
         // do nothing
     }
 
+    // Boundary conditions - index 10
+    if (dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing for now
+    }
+
     // Solver settings - index 11
     if (dynamic_cast<solver *>(ui->stackedWidget->widget(11))->putData(jsonObject,stype,workpath))
     {
@@ -349,8 +355,8 @@ bool GeoClawOpenFOAM::copyFiles(QString &dirName)
     // Meshing
     dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->copyFiles(dirName,simtype);
 
-//    // Boundary
-//    dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->copyFiles(dirName,simtype);
+    // Boundary
+    dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->copyFiles(dirName,simtype);
 
     // Solver
     dynamic_cast<solver *>(ui->stackedWidget->widget(11))->copyFiles(dirName,simtype);
