@@ -37,6 +37,6 @@ This material is based upon work supported by the National Science Foundation un
 
 ### Contact
 
-NHERI-SimCenter nheri-simcenter@berkeley.edu
-Ajay B Harish ajaybh@berkeley.edu
-Frank McKenna fmckenna@berkeley.edu
+NHERI-SimCenter nheri-simcenter@berkeley.edu \
+Ajay B Harish ajaybh@berkeley.edu \
+Frank McKenna fmckenna@berkeley.edu \
