@@ -193,7 +193,11 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QLineEdit" name="Led_WaterDisp"/>
+        <widget class="QLineEdit" name="Led_WaterDisp">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QPushButton" name="Btn_UploadFile">
@@ -218,7 +222,11 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QLineEdit" name="Led_WaterHeight"/>
+        <widget class="QLineEdit" name="Led_WaterHeight">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QPushButton" name="Btn_UploadFile_2">
@@ -297,8 +305,14 @@
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000000000.000000000000000</double>
+       </property>
        <property name="maximum">
-        <double>100000.000000000000000</double>
+        <double>1000000000.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -315,8 +329,14 @@
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000000000.000000000000000</double>
+       </property>
        <property name="maximum">
-        <double>100000.000000000000000</double>
+        <double>1000000000.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -333,8 +353,14 @@
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000000000.000000000000000</double>
+       </property>
        <property name="maximum">
-        <double>100000.000000000000000</double>
+        <double>1000000000.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -351,8 +377,14 @@
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000000000.000000000000000</double>
+       </property>
        <property name="maximum">
-        <double>100000.000000000000000</double>
+        <double>1000000000.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -381,8 +413,14 @@
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000000000.000000000000000</double>
+       </property>
        <property name="maximum">
-        <double>100000.000000000000000</double>
+        <double>1000000000.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -411,8 +449,14 @@
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000000000.000000000000000</double>
+       </property>
        <property name="maximum">
-        <double>100000.000000000000000</double>
+        <double>1000000000.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -429,8 +473,14 @@
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000000000.000000000000000</double>
+       </property>
        <property name="maximum">
-        <double>100000.000000000000000</double>
+        <double>1000000000.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -459,8 +509,14 @@
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000000000.000000000000000</double>
+       </property>
        <property name="maximum">
-        <double>100000.000000000000000</double>
+        <double>1000000000.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -477,8 +533,14 @@
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000000000.000000000000000</double>
+       </property>
        <property name="maximum">
-        <double>100000.000000000000000</double>
+        <double>1000000000.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -589,11 +651,14 @@ Phase, Angle</string>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
        <property name="minimum">
-        <double>-1000000.000000000000000</double>
+        <double>-1000000000000.000000000000000</double>
        </property>
        <property name="maximum">
-        <double>10000000.000000000000000</double>
+        <double>10000000000000.000000000000000</double>
        </property>
       </widget>
      </item>

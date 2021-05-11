@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QFileDialog>
 #include <QDir>
+#include <QJsonObject>
 #include "hydroerror.h"
 
 namespace Ui {
@@ -17,7 +18,8 @@ class boundaryData : public QFrame
 public:
     explicit boundaryData(const QString, QWidget *parent = nullptr);
     ~boundaryData();
-    bool getData(QMap<QString, QString>&,int);
+    bool getData(QMap<QString, QString>&,int,int);
+    bool putData(QJsonObject &,int,QString,QString);
     bool copyFiles(QString dirName, int);
 
 private slots:
