@@ -39,4 +39,4 @@ This material is based upon work supported by the National Science Foundation un
 
 NHERI-SimCenter nheri-simcenter@berkeley.edu \
 Ajay B Harish ajaybh@berkeley.edu \
-Frank McKenna fmckenna@berkeley.edu \
+Frank McKenna fmckenna@berkeley.edu
