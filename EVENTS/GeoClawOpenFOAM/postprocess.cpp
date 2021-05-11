@@ -110,8 +110,13 @@ bool postprocess::getData(QMap<QString, QString>& map,int type)
 //*********************************************************************************
 // Put data into postprocessing from the JSON file
 //*********************************************************************************
-bool postprocess::putData(QJsonObject &jsonObject)
+bool postprocess::putData(QJsonObject &jsonObject,int stype, QString workpath)
 {
+
+    // Suppress warnings
+    (void) stype;
+
+    // Check for postprocessing
     if(jsonObject.contains("Postprocessing"))
     {
         QString ppro = jsonObject["Postprocessing"].toString();
@@ -130,26 +135,38 @@ bool postprocess::putData(QJsonObject &jsonObject)
             {
                 QString pvel = jsonObject["PPVelocity"].toString();
                 if(pvel == "Yes")
-                {
-                    ui->ChB_Velocity->isChecked();
-                }
+                    ui->ChB_Velocity->setChecked(true);
+                else
+                    ui->ChB_Velocity->setChecked(false);
             }
 
-            // Check for pressire
+            // Check for pressure
             if(jsonObject.contains("PPPressure"))
             {
                 QString ppre = jsonObject["PPPressure"].toString();
                 if(ppre == "Yes")
-                {
-                    ui->ChB_Pressure->isChecked();
-                }
+                    ui->ChB_Pressure->setChecked(true);
+                else
+                    ui->ChB_Pressure->setChecked(false);
             }
 
             // Get path of postprocessing file
+            if(!workpath.isEmpty())
+            {
+                if(jsonObject.contains("PProcessFile"))
+                {
+                    // Set the STL file if exists
+                    QString filename = jsonObject["PProcessFile"].toString();
+                    QFileInfo fi(QDir(workpath),filename);
+                    pprocessfilenames.append(fi.canonicalFilePath());
+                    ui->Led_Path->setText(pprocessfilenames.join(";\n\n"));
+                }
+            }
 
         }
     }
 
+    // Return true
     return true;
 }
 

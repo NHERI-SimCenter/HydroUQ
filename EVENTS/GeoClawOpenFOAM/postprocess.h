@@ -19,7 +19,7 @@ public:
     explicit postprocess(int, QWidget *parent = nullptr);
     ~postprocess();
     bool getData(QMap<QString, QString>&, int);
-    bool putData(QJsonObject &);
+    bool putData(QJsonObject &,int,QString);
     void refreshData(int);
     bool copyFiles(QString dirName, int);
 

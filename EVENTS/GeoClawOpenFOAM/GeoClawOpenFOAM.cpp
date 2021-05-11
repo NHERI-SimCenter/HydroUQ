@@ -181,19 +181,19 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 //        allData.insert(10, singleData);
 //    }
 
-//    // Solver settings - index 11
-//    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<solver *>(ui->stackedWidget->widget(11))->getData(*singleData,simtype))
-//    {
-//        allData.insert(11, singleData);
-//    }
+    // Solver settings - index 11
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<solver *>(ui->stackedWidget->widget(11))->getData(*singleData,simtype))
+    {
+        allData.insert(11, singleData);
+    }
 
-//    // Postprocess settings - index 12
-//    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->getData(*singleData,simtype))
-//    {
-//        allData.insert(12, singleData);
-//    }
+    // Postprocess settings - index 12
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->getData(*singleData,simtype))
+    {
+        allData.insert(12, singleData);
+    }
 
     // Add all objects to the json object
     foreach (int key, allData.keys())
@@ -253,25 +253,25 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
         return false;
     }
 
-    // Put data into project settings
+    // Put data into project settings (0)
     if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->putData(jsonObject,stype))
     {
         // do nothing
     }
 
-    // Put data into bathymetry settings
+    // Put data into bathymetry settings (1)
     if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->putData(jsonObject,stype,workpath))
     {
         // do nothing
     }
 
-    // Put data into SW-CFD settings
+    // Put data into SW-CFD settings (2)
     if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->putData(jsonObject,stype,workpath))
     {
         // do nothing
     }
 
-    // Put data into Building settings
+    // Put data into Building settings (3)
     if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->putData(jsonObject,stype,workpath))
     {
         // do nothing
@@ -283,24 +283,29 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
         // do nothing
     }
 
-    // Put data into material settings
+    // Put data into material settings (6)
     if (dynamic_cast<materials *>(ui->stackedWidget->widget(6))->putData(jsonObject,stype,workpath))
     {
         // do nothing
     }
 
-    // Put data into initial condition (alpha) settings
+    // Put data into initial condition (alpha) settings (9)
     if (dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->putData(jsonObject,stype,workpath))
     {
         // do nothing
     }
 
+    // Solver settings - index 11
+    if (dynamic_cast<solver *>(ui->stackedWidget->widget(11))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing for now
+    }
 
-//    // Postprocess settings - index 12
-//    if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->putData(jsonObject))
-//    {
-//        // do nothing for now
-//    }
+    // Postprocess settings - index 12
+    if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing for now
+    }
 
     return true;
 }
@@ -347,11 +352,11 @@ bool GeoClawOpenFOAM::copyFiles(QString &dirName)
 //    // Boundary
 //    dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->copyFiles(dirName,simtype);
 
-//    // Solver
-//    dynamic_cast<solver *>(ui->stackedWidget->widget(11))->copyFiles(dirName,simtype);
+    // Solver
+    dynamic_cast<solver *>(ui->stackedWidget->widget(11))->copyFiles(dirName,simtype);
 
-//    // Postprocess
-//    dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->copyFiles(dirName,simtype);
+    // Postprocess
+    dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->copyFiles(dirName,simtype);
 
     // Return
     return true;
