@@ -92,21 +92,14 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
         map.insert("BuildSizePara03",ui->DSpBx_BuildSize03->textFromValue(ui->DSpBx_BuildSize03->value()));
     }
 
-    // Upload any STL files
-//    map.insert("NumSTLFiles",QString::number(STLfilenames.size()));
-    // Write the bathymetry file names
-//    for (int ii=0; ii<STLfilenames.size(); ++ii)
-//    {
-//        QFile f(STLfilenames[ii]);
-//        QFileInfo fileInfo(f.fileName());
-//        QString filename(fileInfo.fileName());
-//        map.insert("STLFile"+QString::number(ii),filename);
-//    }
     // Upload only the first STL file
-    QFile f(STLfilenames[0]);
-    QFileInfo fileInfo(f.fileName());
-    QString filename(fileInfo.fileName());
-    map.insert("BuildingSTLFile",filename);
+    if(STLfilenames.size() > 0)
+    {
+        QFile f(STLfilenames[0]);
+        QFileInfo fileInfo(f.fileName());
+        QString filename(fileInfo.fileName());
+        map.insert("BuildingSTLFile",filename);
+    }
 
     // Change hasData to be true
     hasData = true;
@@ -120,6 +113,104 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
 //*********************************************************************************
 bool buildings::putData(QJsonObject &jsonObject,int stype, QString workpath)
 {
+
+    // Get the type of building definition
+    int buildindex = -1;
+    if(jsonObject.contains("BuildData"))
+    {
+        QString builddatatype = jsonObject["BuildData"].toString();
+
+        // Set if it is manual or parameters
+        if(QString::compare(builddatatype, "Manual", Qt::CaseInsensitive) == 0)
+        {
+            ui->CmB_BuildData->setCurrentIndex(0);
+            buildindex = 0;
+        }
+        else if (QString::compare(builddatatype, "Parameters", Qt::CaseInsensitive) == 0)
+        {
+            ui->CmB_BuildData->setCurrentIndex(1);
+            buildindex = 1;
+        }
+    }
+
+    // Set up the building table
+    if(buildindex == 0) // Manual
+    {
+        int numbuildings = jsonObject["NumBuild"].toString().toInt();
+        if(numbuildings > 0)
+        {
+            for(int ii=0; ii<numbuildings; ++ii)
+            {
+                // Add a row for the building
+                ui->Tbl_Building->insertRow(ui->Tbl_Building->rowCount());
+                // Add the particular building parameters
+                if(jsonObject.contains("BuildingTable"+QString::number(ii)))
+                {
+                    // Get the parameters for each building / building table row
+                    QString building = jsonObject["BuildingTable"+QString::number(ii)].toString();
+                    QStringList buildingdata = building.split(',');
+                    if(buildingdata.size() == 4)
+                    {
+                        QTableWidgetItem* itemtoAdd = new QTableWidgetItem();
+                        QTableWidgetItem* itemtoAdd2 = new QTableWidgetItem();
+                        QTableWidgetItem* itemtoAdd3 = new QTableWidgetItem();
+                        itemtoAdd->setText(buildingdata[0]);
+                        ui->Tbl_Building->setItem(ii,0,itemtoAdd);
+                        itemtoAdd2->setText(buildingdata[1]+","+buildingdata[2]);
+                        ui->Tbl_Building->setItem(ii,1,itemtoAdd2);
+                        itemtoAdd3->setText(buildingdata[3]);
+                        ui->Tbl_Building->setItem(ii,2,itemtoAdd3);
+                    }
+                }
+            }
+        }
+    }
+    else if(buildindex == 1) // Parameters
+    {
+        // Set building distribution
+        if(jsonObject.contains("BuildDist"))
+            ui->CmB_BuildDist->setCurrentIndex(jsonObject["BuildDist"].toString().toInt());
+        // Set building shape
+        if(jsonObject.contains("BuildShape"))
+            ui->CmB_BuildShape->setCurrentIndex(jsonObject["BuildShape"].toString().toInt());
+        // Number of buildings in X-Y direction
+        if(jsonObject.contains("NumBuildX"))
+            ui->DSpBx_NumBuildX->setValue(jsonObject["NumBuildX"].toString().toDouble());
+        if(jsonObject.contains("NumBuildY"))
+            ui->DSpBx_NumBuildX->setValue(jsonObject["NumBuildY"].toString().toDouble());
+        // Number of buildings in X-Y direction
+        if(jsonObject.contains("DistBuildX"))
+            ui->DSpBx_BuildDistX->setValue(jsonObject["DistBuildX"].toString().toDouble());
+        if(jsonObject.contains("DistBuildY"))
+            ui->DSpBx_BuildDistY->setValue(jsonObject["DistBuildY"].toString().toDouble());
+        // Coordinate of coast in X-Y direction
+        if(jsonObject.contains("CoastX"))
+            ui->DSpBx_OffsetX->setValue(jsonObject["CoastX"].toString().toDouble());
+        if(jsonObject.contains("CoastY"))
+            ui->DSpBx_OffsetY->setValue(jsonObject["CoastY"].toString().toDouble());
+        // Building size parameter 1 / 2/ 3
+        if(jsonObject.contains("BuildSizePara01"))
+            ui->DSpBx_BuildSize01->setValue(jsonObject["BuildSizePara01"].toString().toDouble());
+        if(jsonObject.contains("BuildSizePara02"))
+            ui->DSpBx_BuildSize02->setValue(jsonObject["BuildSizePara02"].toString().toDouble());
+        if(jsonObject.contains("BuildSizePara03"))
+            ui->DSpBx_BuildSize03->setValue(jsonObject["BuildSizePara03"].toString().toDouble());
+    }
+
+    // Get the custom STL file
+    if(!workpath.isEmpty())
+    {
+        if(jsonObject.contains("BuildingSTLFile"))
+        {
+            // Set the STL file if exists
+            QString filename = jsonObject["BuildingSTLFile"].toString();
+            QFileInfo fi(QDir(workpath),filename);
+            STLfilenames.append(fi.canonicalFilePath());
+            ui->PText_CustomBuild->setText(STLfilenames.join(";\n\n"));
+        }
+    }
+
+    // Return true
     return true;
 }
 
@@ -190,20 +281,10 @@ bool buildings::copyFiles(QString dirName,int type)
     // If files are selected, then copy the STL files
     if(STLfilenames.size() > 0)
     {
-
         QFile fileToCopy(STLfilenames[0]);
         QFileInfo fileInfo(STLfilenames[0]);
         QString theFile = fileInfo.fileName();
         fileToCopy.copy(dirName + QDir::separator() + theFile);
-
-//        // Copy the solution files
-//        for (int ii=0; ii<STLfilenames.size(); ++ii)
-//        {
-//            QFile fileToCopy(STLfilenames[ii]);
-//            QFileInfo fileInfo(STLfilenames[ii]);
-//            QString theFile = fileInfo.fileName();
-//            fileToCopy.copy(dirName + QDir::separator() + theFile);
-//        }
     }
 
     // Return if data exists

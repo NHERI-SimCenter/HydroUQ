@@ -556,7 +556,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLineEdit" name="PText_CustomBuild"/>
+      <widget class="QLineEdit" name="PText_CustomBuild">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="Btn_CustomBuild">

@@ -2,6 +2,7 @@
 #define MATERIALS_H
 
 #include <QFrame>
+#include <QJsonObject>
 
 namespace Ui {
 class materials;
@@ -15,6 +16,7 @@ public:
     explicit materials(int, QWidget *parent = nullptr);
     ~materials();
     bool getData(QMap<QString, QString>&,int);
+    bool putData(QJsonObject &,int,QString);
     void refreshData(int);
 
 private:

@@ -477,18 +477,7 @@ void bathymetry::on_Btn_UploadFiles_clicked()
     }
     else
     {
-        QString data;
-        data = QString();
-        for (int ii = 0; ii<bathfilenames.size(); ++ii)
-        {
-            if(ii == 0)
-                data = bathfilenames[ii] + ";\n\n";
-            else if(ii < bathfilenames.size()-1)
-                data = data + bathfilenames[ii] + ";\n\n";
-            else
-                data = data + bathfilenames[ii];
-        }
-        ui->PText_Files->document()->setPlainText(data);
+        ui->PText_Files->document()->setPlainText(bathfilenames.join(";\n\n"));
     }
 }
 
@@ -510,18 +499,7 @@ void bathymetry::on_Btn_UploadSolution_clicked()
     }
     else
     {
-        QString data;
-        data = QString();
-        for (int ii = 0; ii<solfilenames.size(); ++ii)
-        {
-            if(ii == 0)
-                data = solfilenames[ii] + ";\n\n";
-            else if(ii < solfilenames.size()-1)
-                data = data + solfilenames[ii] + ";\n\n";
-            else
-                data = data + solfilenames[ii];
-        }
-        ui->PText_Solution->document()->setPlainText(data);
+        ui->PText_Solution->document()->setPlainText(solfilenames.join(";\n\n"));
     }
 }
 

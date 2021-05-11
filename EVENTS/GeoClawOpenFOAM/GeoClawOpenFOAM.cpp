@@ -132,40 +132,40 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(3, singleData);
     }
 
-////    // Get data from floating bodies - index 4
-////    singleData = new QMap<QString,QString>;
-////    if (dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->getData(*singleData,simtype))
-////    {
-////        allData.insert(4, singleData);
-////    }
-
-//    // Get data from mesh - index 5
+//    // Get data from floating bodies - index 4
 //    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->getData(*singleData,simtype))
+//    if (dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->getData(*singleData,simtype))
 //    {
-//        allData.insert(5, singleData);
+//        allData.insert(4, singleData);
 //    }
 
-//    // Get data from materials - index 6
+    // Get data from mesh - index 5
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->getData(*singleData,simtype))
+    {
+        allData.insert(5, singleData);
+    }
+
+    // Get data from materials - index 6
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<materials *>(ui->stackedWidget->widget(6))->getData(*singleData,simtype))
+    {
+        allData.insert(6, singleData);
+    }
+
+//    // Initial conditions: velocity - index 7
 //    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<materials *>(ui->stackedWidget->widget(6))->getData(*singleData,simtype))
+//    if (dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->getData(*singleData,simtype))
 //    {
-//        allData.insert(6, singleData);
+//        allData.insert(7, singleData);
 //    }
 
-////    // Initial conditions: velocity - index 7
-////    singleData = new QMap<QString,QString>;
-////    if (dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->getData(*singleData,simtype))
-////    {
-////        allData.insert(7, singleData);
-////    }
-
-////    // Initial conditions: pressure - index 8
-////    singleData = new QMap<QString,QString>;
-////    if (dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->getData(*singleData,simtype))
-////    {
-////        allData.insert(8, singleData);
-////    }
+//    // Initial conditions: pressure - index 8
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->getData(*singleData,simtype))
+//    {
+//        allData.insert(8, singleData);
+//    }
 
 //    // Initial conditions: alpha - index 9
 //    singleData = new QMap<QString,QString>;
@@ -272,10 +272,22 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
     }
 
     // Put data into Building settings
-//    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->putData(jsonObject))
-//    {
-//        // do nothing
-//    }
+    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing
+    }
+
+    // Put data in meshing settings (5)
+    if (dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing
+    }
+
+    // Put data into material settings
+    if (dynamic_cast<materials *>(ui->stackedWidget->widget(6))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing
+    }
 
 
 //    // Postprocess settings - index 12
@@ -320,11 +332,11 @@ bool GeoClawOpenFOAM::copyFiles(QString &dirName)
     // Copy SW-CFD interface files
     dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->copyFiles(dirName,simtype);
 
-//    // Copy Building files
-//    dynamic_cast<swcfdint *>(ui->stackedWidget->widget(3))->copyFiles(dirName,simtype);
+    // Copy Building files
+    dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->copyFiles(dirName,simtype);
 
-//    // Meshing
-//    dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->copyFiles(dirName,simtype);
+    // Meshing
+    dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->copyFiles(dirName,simtype);
 
 //    // Boundary
 //    dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->copyFiles(dirName,simtype);
