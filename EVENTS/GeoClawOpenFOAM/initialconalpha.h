@@ -2,6 +2,7 @@
 #define INITIALCONALPHA_H
 
 #include <QFrame>
+#include <QJsonObject>
 
 namespace Ui {
 class initialconAlpha;
@@ -15,6 +16,7 @@ public:
     explicit initialconAlpha(int, QWidget *parent = nullptr);
     ~initialconAlpha();
     bool getData(QMap<QString, QString>&, int);
+    bool putData(QJsonObject &,int,QString);
     void refreshData(int);
 
 private slots:

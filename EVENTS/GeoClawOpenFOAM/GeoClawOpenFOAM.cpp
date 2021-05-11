@@ -167,12 +167,12 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 //        allData.insert(8, singleData);
 //    }
 
-//    // Initial conditions: alpha - index 9
-//    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->getData(*singleData,simtype))
-//    {
-//        allData.insert(9, singleData);
-//    }
+    // Initial conditions: alpha - index 9
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->getData(*singleData,simtype))
+    {
+        allData.insert(9, singleData);
+    }
 
 //    // Boundary conditions - index 10
 //    singleData = new QMap<QString,QString>;
@@ -285,6 +285,12 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 
     // Put data into material settings
     if (dynamic_cast<materials *>(ui->stackedWidget->widget(6))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing
+    }
+
+    // Put data into initial condition (alpha) settings
+    if (dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->putData(jsonObject,stype,workpath))
     {
         // do nothing
     }

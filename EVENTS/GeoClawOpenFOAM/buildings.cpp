@@ -113,6 +113,8 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
 //*********************************************************************************
 bool buildings::putData(QJsonObject &jsonObject,int stype, QString workpath)
 {
+    // Suppress warnings
+    (void) stype;
 
     // Get the type of building definition
     int buildindex = -1;
