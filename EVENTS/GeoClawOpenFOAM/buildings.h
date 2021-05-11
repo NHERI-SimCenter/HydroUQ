@@ -18,7 +18,7 @@ public:
     explicit buildings(int, QWidget *parent = nullptr);
     ~buildings();
     bool getData(QMap<QString, QString>&,int);
-    bool putData(QJsonObject &);
+    bool putData(QJsonObject &,int,QString);
     void refreshData(int);
     bool copyFiles(QString dirName, int);
 

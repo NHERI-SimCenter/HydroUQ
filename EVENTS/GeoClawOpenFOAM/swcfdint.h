@@ -21,7 +21,7 @@ public:
     explicit swcfdint(int,QWidget *parent = nullptr);
     ~swcfdint();
     bool getData(QMap<QString, QString>&,int);
-    bool putData(QJsonObject &);
+    bool putData(QJsonObject &,int,QString);
     void refreshData(int);
     bool copyFiles(QString dirName, int);
 

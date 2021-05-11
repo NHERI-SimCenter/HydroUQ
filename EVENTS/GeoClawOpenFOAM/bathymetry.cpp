@@ -160,26 +160,29 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
     bool hasData=true;
 
     // Add the gravity direction
-    int gravity = 0;
-    if(ui->CmB_Grav01->currentIndex() == 0)
+    if(type != 4)
     {
-        if(ui->CmB_Grav02->currentIndex() == 0)
-            gravity = 11;
-        else if(ui->CmB_Grav02->currentIndex() == 1)
-            gravity = 12;
-        else if(ui->CmB_Grav02->currentIndex() == 2)
-            gravity = 13;
+        int gravity = 0;
+        if(ui->CmB_Grav01->currentIndex() == 0)
+        {
+            if(ui->CmB_Grav02->currentIndex() == 0)
+                gravity = 11;
+            else if(ui->CmB_Grav02->currentIndex() == 1)
+                gravity = 12;
+            else if(ui->CmB_Grav02->currentIndex() == 2)
+                gravity = 13;
+        }
+        else if(ui->CmB_Grav01->currentIndex() == 1)
+        {
+            if(ui->CmB_Grav02->currentIndex() == 0)
+                gravity = 21;
+            else if(ui->CmB_Grav02->currentIndex() == 1)
+                gravity = 22;
+            else if(ui->CmB_Grav02->currentIndex() == 2)
+                gravity = 23;
+        }
+        map.insert("Gravity",QString::number(gravity));
     }
-    else if(ui->CmB_Grav01->currentIndex() == 1)
-    {
-        if(ui->CmB_Grav02->currentIndex() == 0)
-            gravity = 21;
-        else if(ui->CmB_Grav02->currentIndex() == 1)
-            gravity = 22;
-        else if(ui->CmB_Grav02->currentIndex() == 2)
-            gravity = 23;
-    }
-    map.insert("Gravity",QString::number(gravity));
 
     // Shallow water bathymetry files
     if((type == 1) || (type == 2))
@@ -269,16 +272,13 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
 //*********************************************************************************
 // Put data into bathymetry from the JSON file
 //*********************************************************************************
-bool bathymetry::putData(QJsonObject &jsonObject)
+bool bathymetry::putData(QJsonObject &jsonObject,int stype, QString workpath)
 {
 
-    // Get the simulation type
-    if(jsonObject.contains("SimulationType"))
+    if(!workpath.isEmpty())
     {
-        int stype = jsonObject["SimulationType"].toString().toInt();
-
-        // SW - CFD simulation
-        if( (stype == 1) || (stype == 3) )
+        // SW-CFD solutions only
+        if( (stype == 1) || (stype == 2) )
         {
 
             // Bathymetry file type
@@ -287,54 +287,29 @@ bool bathymetry::putData(QJsonObject &jsonObject)
                 ui->CmB_FileType->setCurrentIndex(jsonObject["BathymetryFileType"].toString().toInt());
             }
 
+            // Get the number of bathymetry files
+            int numbathfiles = 0;
+            if(jsonObject.contains("NumBathymetryFiles"))
+            {
+                numbathfiles = jsonObject["NumBathymetryFiles"].toString().toInt();
+            }
+
             // Get the bathymetry file paths
             bathfilenames.clear();
-            QMessageBox msgBox;
-            msgBox.setText("File path to the bathymetry needs to be updated.");
-            msgBox.setInformativeText("Select files?");
-            msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-            msgBox.setDefaultButton(QMessageBox::Ok);
-            int ret = msgBox.exec();
-
-            switch (ret)
+            for (int ii=0; ii<numbathfiles; ++ii)
             {
-                case QMessageBox::Ok:
+                if(jsonObject.contains("BathymetryFile"+QString::number(ii)))
                 {
-                    bathfilenames.clear();
-                    // Select the bathymetry files
-                    QFileDialog selectfilesdialog(this);
-                    selectfilesdialog.setDirectory(QDir::homePath());
-                    selectfilesdialog.setFileMode(QFileDialog::ExistingFile);
-                    selectfilesdialog.setNameFilter(tr("All files (*.*)"));
-                    selectfilesdialog.setWindowTitle("Select the bathymetry files");
-                    if(selectfilesdialog.exec()) bathfilenames = selectfilesdialog.selectedFiles();
-                    // Show the file list in the plaintext
-                    QString data;
-                    data = QString();
-                    for (int ii = 0; ii<bathfilenames.size(); ++ii)
-                    {
-                        if(ii == 0)
-                            data = bathfilenames[ii] + "\n";
-                        else
-                            data = data + bathfilenames[ii] + "\n";
-                    }
-                    ui->PText_Files->document()->setPlainText(data);
-                    break;
-                }
-                case QMessageBox::Cancel:
-                {
-                    bathfilenames.clear();
-                    ui->PText_Files->clear();
-                    break;
-                }
-                default:
-                {
-                    bathfilenames.clear();
-                    ui->PText_Files->clear();
-                    break;
+                    QString filename = jsonObject["BathymetryFile"+QString::number(ii)].toString();
+                    QFileInfo fi(QDir(workpath),filename);
+                    bathfilenames.append(fi.canonicalFilePath());
                 }
             }
 
+            // Show the file list in the plaintext
+            ui->PText_Files->document()->setPlainText(bathfilenames.join(";\n\n"));
+
+            // SW solutions
             if(stype == 1)
             {
                 // Solution file type
@@ -343,197 +318,140 @@ bool bathymetry::putData(QJsonObject &jsonObject)
                     ui->CmB_SolFormat->setCurrentIndex(jsonObject["SolutionFileType"].toString().toInt());
                 }
 
-                // Get paths to solution files from the user
-                solfilenames.clear();
-                QMessageBox msgBox2;
-                msgBox2.setText("File path to the solutions needs to be updated.");
-                msgBox2.setInformativeText("Select files?");
-                msgBox2.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-                msgBox2.setDefaultButton(QMessageBox::Ok);
-                int ret2 = msgBox2.exec();
-
-                switch (ret2)
+                // Get the number of solution files
+                int numsolfiles = 0;
+                if(jsonObject.contains("NumSolutionFiles"))
                 {
-                    case QMessageBox::Ok:
+                    numsolfiles = jsonObject["NumSolutionFiles"].toString().toInt();
+                }
+
+                // Get the solution file paths
+                solfilenames.clear();
+                for (int ii=0; ii<numsolfiles; ++ii)
+                {
+                    if(jsonObject.contains("SWSolutionFile"+QString::number(ii)))
                     {
-                        solfilenames.clear();
-                        // Get the updated solution files
-                        QFileDialog selectfilesdialog(this);
-                        selectfilesdialog.setDirectory(QDir::homePath());
-                        selectfilesdialog.setFileMode(QFileDialog::ExistingFile);
-                        selectfilesdialog.setNameFilter(tr("All files (*.*)"));
-                        selectfilesdialog.setWindowTitle("Select the solution files");
-                        if(selectfilesdialog.exec()) solfilenames = selectfilesdialog.selectedFiles();
-                        // Update teh file names in plain text
-                        QString data2;
-                        data2 = QString();
-                        for (int ii = 0; ii<solfilenames.size(); ++ii)
-                        {
-                            if(ii == 0)
-                                data2 = solfilenames[ii] + ";\n";
-                            else
-                                data2 = data2 + solfilenames[ii] + ";\n";
-                        }
-                        ui->PText_Solution->document()->setPlainText(data2);
-                        break;
-                    }
-                    case QMessageBox::Cancel:
-                    {
-                        solfilenames.clear();
-                        ui->PText_Solution->clear();
-                        break;
-                    }
-                    default:
-                    {
-                        solfilenames.clear();
-                        ui->PText_Solution->clear();
-                        break;
+                        QString filename = jsonObject["SWSolutionFile"+QString::number(ii)].toString();
+                        QFileInfo fi(QDir(workpath),filename);
+                        solfilenames.append(fi.canonicalFilePath());
                     }
                 }
+
+                // Show the file list in the plaintext
+                ui->PText_Solution->document()->setPlainText(solfilenames.join(";\n\n"));
             }
         }
 
+        // For STL Files
         if(stype == 3)
         {
+            // Get the STL file paths
             bathfilenames.clear();
-            QMessageBox msgBox;
-            msgBox.setText("File path to the STL needs to be updated.");
-            msgBox.setInformativeText("Select STL files?");
-            msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-            msgBox.setDefaultButton(QMessageBox::Ok);
-            int ret = msgBox.exec();
-
-            switch (ret)
+            for (int ii=0; ii<6; ++ii)
             {
-                case QMessageBox::Ok:
+                if(jsonObject.contains("STLFiles"+QString::number(ii)))
                 {
-                    bathfilenames.clear();
-                    // Select the bathymetry files
-                    QFileDialog selectfilesdialog(this);
-                    selectfilesdialog.setDirectory(QDir::homePath());
-                    selectfilesdialog.setFileMode(QFileDialog::ExistingFile);
-                    selectfilesdialog.setNameFilter(tr("All files (*.stl)"));
-                    selectfilesdialog.setWindowTitle("Select the STL files");
-                    if(selectfilesdialog.exec()) bathfilenames = selectfilesdialog.selectedFiles();
-                    // Show the file list in the plaintext
-                    QString data;
-                    data = QString();
-                    for (int ii = 0; ii<bathfilenames.size(); ++ii)
-                    {
-                        if(ii == 0)
-                            data = bathfilenames[ii] + "\n";
-                        else
-                            data = data + bathfilenames[ii] + "\n";
-                    }
-                    ui->PText_Files->document()->setPlainText(data);
-                    break;
-                }
-                case QMessageBox::Cancel:
-                {
-                    bathfilenames.clear();
-                    ui->PText_Files->clear();
-                    break;
-                }
-                default:
-                {
-                    bathfilenames.clear();
-                    ui->PText_Files->clear();
-                    break;
+                    QString filename = jsonObject["STLFiles"+QString::number(ii)].toString();
+                    QFileInfo fi(QDir(workpath),filename);
+                    bathfilenames.append(fi.canonicalFilePath());
                 }
             }
+
+            // Show the file list in the plaintext
+            ui->PText_Files->document()->setPlainText(bathfilenames.join(";\n\n"));
+        }
+    }
+
+    // For Wave flume
+    if(stype == 4)
+    {
+        // Wave flume definition
+        if(jsonObject.contains("FlumeInfoType"))
+        {
+            ui->CmB_FlumeGeoType->setCurrentIndex(jsonObject["FlumeInfoType"].toString().toInt());
         }
 
-        if(stype == 4)
+        // Wave flume breadth
+        if(jsonObject.contains("FlumeBreadth"))
         {
-            // Wave flume definition
-            if(jsonObject.contains("FlumeInfoType"))
-            {
-                ui->CmB_FlumeGeoType->setCurrentIndex(jsonObject["FlumeInfoType"].toString().toInt());
-            }
+            ui->DSpBx_Breadth->setValue(jsonObject["FlumeBreadth"].toString().toDouble());
+        }
 
-            // Wave flume breadth
-            if(jsonObject.contains("FlumeBreadth"))
+        // Flume table
+        if(jsonObject.contains("NumFlumeSegments"))
+        {
+            int numflumesegs = jsonObject["NumFlumeSegments"].toString().toInt();
+            if(numflumesegs > 0)
             {
-                ui->DSpBx_Breadth->setValue(jsonObject["FlumeBreadth"].toString().toDouble());
-            }
-
-            // Flume table
-            if(jsonObject.contains("NumFlumeSegments"))
-            {
-                int numflumesegs = jsonObject["NumFlumeSegments"].toString().toInt();
-                if(numflumesegs > 0)
+                // Insert the required number of rows
+                for(int ii=0; ii<numflumesegs; ++ii)
                 {
-                    // Insert the required number of rows
-                    for(int ii=0; ii<numflumesegs; ++ii)
+                    ui->Tbl_Segments->insertRow(ui->Tbl_Segments->rowCount());
+                }
+
+                if(jsonObject.contains("FlumeSegments"))
+                {
+                    // Get the flume segments
+                    QString flusegs = jsonObject["FlumeSegments"].toString();
+
+                    // Convert to a stringlist
+                    QStringList elements = flusegs.split(',');
+
+                    // Put elements into table
+                    int ll=0;
+                    for (int ii=0; ii<numflumesegs; ++ii)
                     {
-                        ui->Tbl_Segments->insertRow(ui->Tbl_Segments->rowCount());
-                    }
+                        QTableWidgetItem* itemtoAdd = new QTableWidgetItem();
+                        itemtoAdd->setText(elements[2*ii+1]);
+                        ui->Tbl_Segments->setItem(ll,0,itemtoAdd);
 
-                    if(jsonObject.contains("FlumeSegments"))
-                    {
-                        // Get the flume segments
-                        QString flusegs = jsonObject["FlumeSegments"].toString();
-
-                        // Convert to a stringlist
-                        QStringList elements = flusegs.split(',');
-
-                        // Put elements into table
-                        int ll=0;
-                        for (int ii=0; ii<numflumesegs; ++ii)
-                        {
-                            QTableWidgetItem* itemtoAdd = new QTableWidgetItem();
-                            itemtoAdd->setText(elements[2*ii+1]);
-                            ui->Tbl_Segments->setItem(ll,0,itemtoAdd);
-
-                            QTableWidgetItem* itemtoAdd2 = new QTableWidgetItem();
-                            itemtoAdd2->setText(elements[2*ii+2]);
-                            ui->Tbl_Segments->setItem(ll,1,itemtoAdd2);
-                            ll = ll+1;
-                        }
+                        QTableWidgetItem* itemtoAdd2 = new QTableWidgetItem();
+                        itemtoAdd2->setText(elements[2*ii+2]);
+                        ui->Tbl_Segments->setItem(ll,1,itemtoAdd2);
+                        ll = ll+1;
                     }
                 }
             }
         }
     }
-    else
-    {
-        error.criterrormessage("Simulation type not found. Geometry cannot be realized!");
-        return false;
-    }
 
-    // Gravity
-    if(jsonObject.contains("Gravity"))
+    // Read gravity only if not the flume
+    if(stype != 4)
     {
-        int grav = jsonObject["Gravity"].toString().toInt();
-        if(grav == 11)
+        // Gravity
+        if(jsonObject.contains("Gravity"))
         {
-            ui->CmB_Grav01->setCurrentIndex(0);
-            ui->CmB_Grav02->setCurrentIndex(0);
-        }
-        if(grav == 12)
-        {
-            ui->CmB_Grav01->setCurrentIndex(0);
-            ui->CmB_Grav02->setCurrentIndex(1);
-        }
-        if(grav == 13)
-        {
-            ui->CmB_Grav01->setCurrentIndex(0);
-            ui->CmB_Grav02->setCurrentIndex(2);
-        }
-        if(grav == 21)
-        {
-            ui->CmB_Grav01->setCurrentIndex(1);
-            ui->CmB_Grav02->setCurrentIndex(0);
-        }
-        if(grav == 22)
-        {
-            ui->CmB_Grav01->setCurrentIndex(1);
-            ui->CmB_Grav02->setCurrentIndex(1);
-        }
-        if(grav == 23)
-        {
-            ui->CmB_Grav01->setCurrentIndex(1);
-            ui->CmB_Grav02->setCurrentIndex(2);
+            int grav = jsonObject["Gravity"].toString().toInt();
+            if(grav == 11)
+            {
+                ui->CmB_Grav01->setCurrentIndex(0);
+                ui->CmB_Grav02->setCurrentIndex(0);
+            }
+            if(grav == 12)
+            {
+                ui->CmB_Grav01->setCurrentIndex(0);
+                ui->CmB_Grav02->setCurrentIndex(1);
+            }
+            if(grav == 13)
+            {
+                ui->CmB_Grav01->setCurrentIndex(0);
+                ui->CmB_Grav02->setCurrentIndex(2);
+            }
+            if(grav == 21)
+            {
+                ui->CmB_Grav01->setCurrentIndex(1);
+                ui->CmB_Grav02->setCurrentIndex(0);
+            }
+            if(grav == 22)
+            {
+                ui->CmB_Grav01->setCurrentIndex(1);
+                ui->CmB_Grav02->setCurrentIndex(1);
+            }
+            if(grav == 23)
+            {
+                ui->CmB_Grav01->setCurrentIndex(1);
+                ui->CmB_Grav02->setCurrentIndex(2);
+            }
         }
     }
 
@@ -564,9 +482,11 @@ void bathymetry::on_Btn_UploadFiles_clicked()
         for (int ii = 0; ii<bathfilenames.size(); ++ii)
         {
             if(ii == 0)
-                data = bathfilenames[ii] + "\n";
+                data = bathfilenames[ii] + ";\n\n";
+            else if(ii < bathfilenames.size()-1)
+                data = data + bathfilenames[ii] + ";\n\n";
             else
-                data = data + bathfilenames[ii] + "\n";
+                data = data + bathfilenames[ii];
         }
         ui->PText_Files->document()->setPlainText(data);
     }
@@ -595,11 +515,13 @@ void bathymetry::on_Btn_UploadSolution_clicked()
         for (int ii = 0; ii<solfilenames.size(); ++ii)
         {
             if(ii == 0)
-                data = solfilenames[ii] + ";\n";
+                data = solfilenames[ii] + ";\n\n";
+            else if(ii < solfilenames.size()-1)
+                data = data + solfilenames[ii] + ";\n\n";
             else
-                data = data + solfilenames[ii] + ";\n";
+                data = data + solfilenames[ii];
         }
-        ui->PText_Files->document()->setPlainText(data);
+        ui->PText_Solution->document()->setPlainText(data);
     }
 }
 

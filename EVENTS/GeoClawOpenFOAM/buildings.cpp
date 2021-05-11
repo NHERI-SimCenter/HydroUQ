@@ -118,7 +118,7 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
 //*********************************************************************************
 // Put data into buildings from the JSON file
 //*********************************************************************************
-bool buildings::putData(QJsonObject &jsonObject)
+bool buildings::putData(QJsonObject &jsonObject,int stype, QString workpath)
 {
     return true;
 }

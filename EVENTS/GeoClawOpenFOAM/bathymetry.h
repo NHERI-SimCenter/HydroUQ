@@ -24,7 +24,7 @@ public:
     explicit bathymetry(int, QWidget *parent = nullptr);
     ~bathymetry();
     bool getData(QMap<QString, QString>&, int);
-    bool putData(QJsonObject &);
+    bool putData(QJsonObject &,int,QString);
     void refreshData(int);
     bool copyFiles(QString dirName, int);
 

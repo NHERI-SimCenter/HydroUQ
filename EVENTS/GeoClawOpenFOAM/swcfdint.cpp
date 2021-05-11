@@ -90,39 +90,23 @@ bool swcfdint::getData(QMap<QString, QString>& map, int type)
 //*********************************************************************************
 // Put data into SW-CFD from the JSON file
 //*********************************************************************************
-bool swcfdint::putData(QJsonObject &jsonObject)
+bool swcfdint::putData(QJsonObject &jsonObject,int stype,QString workpath)
 {
-    // Check for the SW-CFD interface file
-    if(jsonObject.contains("SWCFDInteFile"))
+
+    // Only if work dir is defined
+    if(!workpath.isEmpty())
     {
-
-        QMessageBox msgBox;
-        msgBox.setText("File path to the SW-CFD interface needs to be updated.");
-        msgBox.setInformativeText("Select files?");
-        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Ok);
-        int ret = msgBox.exec();
-
-        switch (ret)
+        // Only if SW-CFD simulation
+        if(stype == 1)
         {
-            case QMessageBox::Ok:
+            interffilenames.clear();
+            // Check for the SW-CFD interface file
+            if(jsonObject.contains("SWCFDInteFile"))
             {
-                interffilenames.clear();
-                QFileDialog selectfilesdialog(this);
-                selectfilesdialog.setDirectory(QDir::homePath());
-                selectfilesdialog.setFileMode(QFileDialog::ExistingFile);
-                selectfilesdialog.setNameFilter(tr("All files (*.csv)"));
-                selectfilesdialog.setWindowTitle("Select the interface files");
-                if(selectfilesdialog.exec()) interffilenames = selectfilesdialog.selectedFiles();
-                break;
-            }
-            case QMessageBox::Cancel:
-            {
-                interffilenames.clear();
-            }
-            default:
-            {
-                interffilenames.clear();
+                QString filename = jsonObject["SWCFDInteFile"].toString();
+                QFileInfo fi(QDir(workpath),filename);
+                interffilenames.append(fi.canonicalFilePath());
+                ui->Led_path->setText(interffilenames.join(";\n\n"));
             }
         }
     }

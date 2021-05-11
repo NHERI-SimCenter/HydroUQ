@@ -118,19 +118,19 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(1, singleData);
     }
 
-//    // Add SW-CFD Interface - index 2
-//    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->getData(*singleData,simtype))
-//    {
-//        allData.insert(2, singleData);
-//    }
+    // Add SW-CFD Interface - index 2
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->getData(*singleData,simtype))
+    {
+        allData.insert(2, singleData);
+    }
 
-//    // Get data from buildings - index 3
-//    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->getData(*singleData,simtype))
-//    {
-//        allData.insert(3, singleData);
-//    }
+    // Get data from buildings - index 3
+    singleData = new QMap<QString,QString>;
+    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->getData(*singleData,simtype))
+    {
+        allData.insert(3, singleData);
+    }
 
 ////    // Get data from floating bodies - index 4
 ////    singleData = new QMap<QString,QString>;
@@ -216,9 +216,36 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 
     // Check for simulation type
     int stype;
+    // Get a working directory to import files from
+    QDir workdir;
+    QString workpath;
     if(jsonObject.contains("SimulationType"))
     {
+        // Get the simulation type
         stype = jsonObject["SimulationType"].toString().toInt();
+
+        // Message box
+        QMessageBox msgBox;
+        msgBox.setText("Please select work directory. Support files will be set if found in this path only.");
+        msgBox.exec();
+
+        // File directory to choose the home directory
+        QFileDialog selectworkdir;
+        selectworkdir.setDirectory(QDir::homePath());
+        selectworkdir.setFileMode(QFileDialog::DirectoryOnly);
+        selectworkdir.setWindowTitle("Select working directory");
+        if(selectworkdir.exec())
+        {
+            workdir = selectworkdir.directory();
+            workpath = workdir.canonicalPath();
+        }
+        else
+        {
+            QMessageBox msgBox;
+            msgBox.setText("Work directory has not been set! You will need to manually update the required files for EVT again.");
+            msgBox.exec();
+            workpath.clear();
+        }
     }
     else
     {
@@ -232,17 +259,17 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
         // do nothing
     }
 
-//    // Put data into bathymetry settings
-//    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->putData(jsonObject))
-//    {
-//        // do nothing
-//    }
+    // Put data into bathymetry settings
+    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing
+    }
 
-//    // Put data into SW-CFD settings
-//    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->putData(jsonObject))
-//    {
-//        // do nothing
-//    }
+    // Put data into SW-CFD settings
+    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing
+    }
 
     // Put data into Building settings
 //    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->putData(jsonObject))
@@ -290,8 +317,8 @@ bool GeoClawOpenFOAM::copyFiles(QString &dirName)
     // Copy bathymetry and solution files
     dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->copyFiles(dirName,simtype);
 
-//    // Copy SW-CFD interface files
-//    dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->copyFiles(dirName,simtype);
+    // Copy SW-CFD interface files
+    dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->copyFiles(dirName,simtype);
 
 //    // Copy Building files
 //    dynamic_cast<swcfdint *>(ui->stackedWidget->widget(3))->copyFiles(dirName,simtype);

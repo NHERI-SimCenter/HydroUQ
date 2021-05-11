@@ -61,6 +61,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <QDebug>
 #include <QFile>
+#include <QDir>
 #include <QInputDialog>
 #include <QJsonDocument>
 #include <QJsonObject>
