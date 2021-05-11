@@ -6,6 +6,9 @@
 #include <QDir>
 #include <iostream>
 #include <fstream>
+#include <QJsonObject>
+
+#include "hydroerror.h"
 
 namespace Ui {
 class projectsettings;
@@ -19,6 +22,7 @@ public:
     explicit projectsettings(int, QWidget *parent = nullptr);
     ~projectsettings();
     bool getData(QMap<QString, QString>&,int);
+    bool putData(QJsonObject &,int);
     void refreshData(int);
 
 private slots:
@@ -27,6 +31,7 @@ private:
     void hideshowelems(int);
     Ui::projectsettings *ui;
     QUrl workdirUrl; // Defaulty workdirectory
+    Hydroerror error;
 };
 
 #endif // PROJECTSETTINGS_H

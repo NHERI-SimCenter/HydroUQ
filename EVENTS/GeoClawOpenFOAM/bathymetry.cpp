@@ -36,17 +36,103 @@ void bathymetry::refreshData(int type)
 //*********************************************************************************
 void bathymetry::hideshowelems(int type)
 {
-    // Hide - Show elements
+    // Hide extra elements
+    ui->Lbl_H1->hide();
+    ui->CmB_FlumeGeoType->hide();
+    ui->Lbl_SelFiles->hide();
+    ui->Btn_UploadFiles->hide();
+    ui->Btn_UploadSolution->hide();
+    ui->PText_Files->hide();
+    ui->PText_Solution->hide();
+    ui->CmB_FileType->hide();
+    ui->CmB_SolFormat->hide();
+    ui->Lbl_Gravity->hide();
+    ui->CmB_Grav01->hide();
+    ui->CmB_Grav02->hide();
+    ui->CmB_Library->hide();
+    ui->Lbl_Notice->hide();
+    ui->Lbl_TopViewH2->hide();
+    ui->Lbl_TopView->hide();
+    ui->Lbl_Breadth->hide();
+    ui->DSpBx_Breadth->hide();
+    ui->Lbl_Segments->hide();
+    ui->Tbl_Segments->hide();
+    ui->Btn_AddSeg->hide();
+    ui->Btn_RemSeg->hide();
+
+    // Show-Hide elements based on type of simulations
+    // SW resolved with CFD
+    if(type == 1) //SW solutions
+    {
+        // Set the heading
+        ui->Lbl_H1->setText("<b>BATHYMETRY AND SW SOLUTIONS</b>");
+        ui->Lbl_H1->show();
+        ui->Btn_UploadFiles->setText("Select bathymetry");
+        ui->PText_Files->show();
+        ui->Btn_UploadSolution->setText("Select solution");
+        ui->PText_Solution->show();
+
+        // Show bathy items
+        ui->Btn_UploadFiles->show();
+        ui->Btn_UploadSolution->show();
+        ui->CmB_FileType->show();
+        ui->CmB_SolFormat->show();
+
+        // Show gravity
+        ui->Lbl_Gravity->show();
+        ui->CmB_Grav01->show();
+        ui->CmB_Grav02->show();
+    }
+
+    // Bathymetry files only
+    if(type == 2)
+    {
+        // Set the heading
+        ui->Lbl_H1->setText("<b>BATHYMETRY FILE SETTINGS</b>");
+        ui->Lbl_H1->show();
+        // Show bathy items
+        ui->Btn_UploadFiles->setText("Select bathymetry");
+        ui->PText_Files->show();
+        ui->Btn_UploadFiles->show();
+        ui->CmB_FileType->show();
+
+        // Show gravity
+        ui->Lbl_Gravity->show();
+        ui->CmB_Grav01->show();
+        ui->CmB_Grav02->show();
+    }
+
+    // STL files only
+    if(type == 3)
+    {
+        // Set the heading
+        ui->Lbl_H1->setText("<b>STL FILE UPLOAD</b>");
+        ui->Lbl_H1->show();
+        ui->Btn_UploadFiles->setText("Select STL files");
+        ui->Btn_UploadFiles->show();
+        ui->PText_Files->show();
+        ui->Lbl_Notice->setText("Check documentation to prepare files correctly.");
+        ui->Lbl_Notice->show();
+        // Show gravity
+        ui->Lbl_Gravity->show();
+        ui->CmB_Grav01->show();
+        ui->CmB_Grav02->show();
+    }
+
+    // Wave flume digital twin
     if(type == 4)
     {
         // Set heading
         ui->Lbl_H1->setText("<b>WAVE FLUME SETTINGS</b>");
+        ui->Lbl_H1->show();
 
-        // Show wave flume
+        // Show wave flume types
         ui->CmB_FlumeGeoType->show();
-        if(ui->CmB_FlumeGeoType->currentIndex() == 0) // Provide coordinates
+
+        // Show elements for each type of flume definition
+        // Provide coordinates
+        if(ui->CmB_FlumeGeoType->currentIndex() == 0)
         {
-            ui->Btn_UploadFiles->hide();
             ui->Lbl_TopViewH2->show();
             ui->Lbl_TopView->show();
             ui->Lbl_Breadth->show();
@@ -56,165 +142,14 @@ void bathymetry::hideshowelems(int type)
             ui->Btn_AddSeg->show();
             ui->Btn_RemSeg->show();
         }
-        else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // Upload LIDAR data
+
+        // Standard OSU flume
+        else if(ui->CmB_FlumeGeoType->currentIndex() == 1)
         {
-            ui->Btn_UploadFiles->show();
-            //ui->Btn_UploadFiles->setText("Upload LIDAR scan");
-            ui->Btn_UploadFiles->setText("Coming soon");
-            ui->Btn_UploadFiles->setEnabled(false);
-            ui->Lbl_TopViewH2->hide();
-            ui->Lbl_TopView->hide();
-            ui->Lbl_Breadth->hide();
-            ui->DSpBx_Breadth->hide();
-            ui->Lbl_Segments->hide();
-            ui->Tbl_Segments->hide();
-            ui->Btn_AddSeg->hide();
-            ui->Btn_RemSeg->hide();
+            ui->Lbl_Notice->setText("Standard flume geometry will be used. Please check documentation for more details.");
+            ui->Lbl_Notice->show();
         }
-        else if(ui->CmB_FlumeGeoType->currentIndex() == 2) // Standard OSU flume
-        {
-            ui->Btn_UploadFiles->hide();
-            ui->Lbl_TopViewH2->hide();
-            ui->Lbl_TopView->hide();
-            ui->Lbl_Breadth->hide();
-            ui->DSpBx_Breadth->hide();
-            ui->Lbl_Segments->hide();
-            ui->Tbl_Segments->hide();
-            ui->Btn_AddSeg->hide();
-            ui->Btn_RemSeg->hide();
-        }
-
-        // Hide all other elements
-        ui->Lbl_SelFiles->hide();
-        ui->Btn_UploadSolution->hide();
-        ui->CmB_FileType->hide();
-        ui->CmB_SolFormat->hide();
-        ui->CmB_Library->hide();
-        ui->Lbl_Notice->hide();
-
-        // Hide the gravity boxes
-        ui->Lbl_Gravity->hide();
-        ui->CmB_Grav01->hide();
-        ui->CmB_Grav02->hide();
     }
-    else
-    {
-        // Hide wave flume
-        ui->CmB_FlumeGeoType->hide();
-        ui->Lbl_TopViewH2->hide();
-        ui->Lbl_TopView->hide();
-        ui->Lbl_Breadth->hide();
-        ui->DSpBx_Breadth->hide();
-        ui->Lbl_Segments->hide();
-        ui->Tbl_Segments->hide();
-        ui->Btn_AddSeg->hide();
-        ui->Btn_RemSeg->hide();
-    }
-
-    // If STL / Maps / Surrogate - show only notice
-    if( ((type == 5)
-            || (type == 6))
-            || (type == 7))
-    {
-        // Set heading and notice
-        if(type == 5)
-        {
-            ui->Lbl_H1->setText("<b>STL/OBJ FILE SETTINGS</b>");
-            ui->Lbl_Notice->setText("STL option is not yet available. "
-                                       "Watch out for future updates");
-        }
-        else if(type == 6)
-        {
-            ui->Lbl_H1->setText("<b>BATHYMETRY USING MAPS</b>");
-            ui->Lbl_Notice->setText("Maps option is not yet available. "
-                                       "Watch out for future updates");
-        }
-        else if(type == 7)
-        {
-            ui->Lbl_H1->setText("<b>BATHYMETRY FOR SURROGATE MODELS</b>");
-            ui->Lbl_Notice->setText("Surrogate model option is not yet available. "
-                                       "Watch out for future updates");
-        }
-
-        // Show notice
-        ui->Lbl_Notice->show();
-
-        // Hide all other elements
-        ui->Lbl_SelFiles->hide();
-        ui->Btn_UploadFiles->hide();
-        ui->Btn_UploadSolution->hide();
-        ui->CmB_FileType->hide();
-        ui->CmB_SolFormat->hide();
-        ui->CmB_Library->hide();
-        ui->Lbl_Gravity->hide();
-        ui->CmB_Grav01->hide();
-        ui->CmB_Grav02->hide();
-    }
-    else
-    {
-        // Hide the notice
-        ui->Lbl_Notice->hide();
-    }
-
-    // Show-Hide elements based on type of simulations
-    if(type == 1) //SW solutions
-    {
-        // Set the heading
-        ui->Lbl_H1->setText("<b>BATHYMETRY AND SW SOLUTIONS</b>");
-        ui->Btn_UploadFiles->setText("Select bathymetry files");
-
-        // Show bathy items
-        ui->Btn_UploadFiles->show();
-        ui->Btn_UploadSolution->show();
-        ui->CmB_FileType->show();
-        ui->CmB_SolFormat->show();
-
-        // Hide library items
-        ui->CmB_Library->hide();
-    }
-    else if(type == 2) //Library
-    {
-        // Set the heading
-        ui->Lbl_H1->setText("<b>BATHYMETRY AND SW LIBRRAY</b>");
-        ui->Btn_UploadFiles->setText("Select bathymetry files");
-
-        // Show library items
-        ui->CmB_Library->show();
-
-        // Hide bathy items
-        ui->Btn_UploadFiles->hide();
-        ui->Btn_UploadSolution->hide();
-        ui->CmB_FileType->hide();
-        ui->CmB_SolFormat->hide();
-
-        // Hide the gravity boxes
-        ui->Lbl_Gravity->hide();
-        ui->CmB_Grav01->hide();
-        ui->CmB_Grav02->hide();
-    }
-    else if(type == 3) // Bathymetry files
-    {
-        // Set the heading
-        ui->Lbl_H1->setText("<b>BATHYMETRY FILE SETTINGS</b>");
-        ui->Btn_UploadFiles->setText("Select bathymetry files");
-
-        // Show bathy items
-        ui->Btn_UploadFiles->show();
-        ui->CmB_FileType->show();
-
-        // Hide solutions and library items
-        ui->Btn_UploadSolution->hide();
-        ui->CmB_SolFormat->hide();
-        ui->CmB_Library->hide();
-    }
-    /*else if(type == 5) // STL file
-    {
-        // Set the heading
-        ui->Lbl_H1->setText("<b>STL FILE UPLOAD</b>");
-        ui->Btn_UploadFiles->show();
-        ui->Btn_UploadFiles->setText("Select STL files");
-        ui->Lbl_Notice->setText("Check documentation to prepare files correctly.");
-    }*/
 }
 
 //*********************************************************************************
@@ -225,29 +160,32 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
     bool hasData=true;
 
     // Add the gravity direction
-    int gravity = 0;
-    if(ui->CmB_Grav01->currentIndex() == 0)
+    if(type != 4)
     {
-        if(ui->CmB_Grav02->currentIndex() == 0)
-            gravity = 11;
-        else if(ui->CmB_Grav02->currentIndex() == 1)
-            gravity = 12;
-        else if(ui->CmB_Grav02->currentIndex() == 2)
-            gravity = 13;
+        int gravity = 0;
+        if(ui->CmB_Grav01->currentIndex() == 0)
+        {
+            if(ui->CmB_Grav02->currentIndex() == 0)
+                gravity = 11;
+            else if(ui->CmB_Grav02->currentIndex() == 1)
+                gravity = 12;
+            else if(ui->CmB_Grav02->currentIndex() == 2)
+                gravity = 13;
+        }
+        else if(ui->CmB_Grav01->currentIndex() == 1)
+        {
+            if(ui->CmB_Grav02->currentIndex() == 0)
+                gravity = 21;
+            else if(ui->CmB_Grav02->currentIndex() == 1)
+                gravity = 22;
+            else if(ui->CmB_Grav02->currentIndex() == 2)
+                gravity = 23;
+        }
+        map.insert("Gravity",QString::number(gravity));
     }
-    else if(ui->CmB_Grav01->currentIndex() == 1)
-    {
-        if(ui->CmB_Grav02->currentIndex() == 0)
-            gravity = 21;
-        else if(ui->CmB_Grav02->currentIndex() == 1)
-            gravity = 22;
-        else if(ui->CmB_Grav02->currentIndex() == 2)
-            gravity = 23;
-    }
-    map.insert("Gravity",QString::number(gravity));
 
     // Shallow water bathymetry files
-    if((type == 1) || (type == 3))
+    if((type == 1) || (type == 2))
     {
         // Type of bathymetry
         map.insert("BathymetryFileType",QString::number(ui->CmB_FileType->currentIndex()));
@@ -279,6 +217,19 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
         map.insert("SolutionFileType",QString::number(ui->CmB_SolFormat->currentIndex()));
     }
 
+    // STL file
+    if(type == 3)
+    {
+        // Write the STL file names
+        for (int ii=0; ii<6; ++ii)
+        {
+            QFile f(bathfilenames[ii]);
+            QFileInfo fileInfo(f.fileName());
+            QString filename(fileInfo.fileName());
+            map.insert("STLFiles"+QString::number(ii),filename);
+        }
+    }
+
     // Wave flume
     if(type == 4)
     {
@@ -289,30 +240,16 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
         if(ui->CmB_FlumeGeoType->currentIndex() == 0)
         {
             // Add flume breadth
-            if(abs(ui->DSpBx_Breadth->value()) < 0.00000001)
+            if(abs(ui->DSpBx_Breadth->value()) < 0.000001)
             {
                 error.criterrormessage("Critical error: Flume breadth almost zero!");
+                return false;
             }
             else
             {
                 map.insert("FlumeBreadth",ui->DSpBx_Breadth->textFromValue(ui->DSpBx_Breadth->value()));
             }
 
-            // Create the file and add the segments
-            // Create and open a text file
-//            QString filename = "FlumeData.txt";
-//            QFile file(filename);
-//            if (file.open(QIODevice::WriteOnly))
-//            {
-//                QTextStream stream(&file);
-//                for(int ii=0;ii<ui->Tbl_Segments->rowCount(); ++ii)
-//                {
-//                    QString segdata = ui->Tbl_Segments->item(ii,0)->text() +
-//                            "," + ui->Tbl_Segments->item(ii,1)->text();
-//                    stream << segdata << Qt::endl;
-//                }
-//            }
-//            file.close();
             // Adding segment data directly to json file
             map.insert("NumFlumeSegments",QString::number(ui->Tbl_Segments->rowCount()));
             if(ui->Tbl_Segments->rowCount() > 0)
@@ -325,27 +262,7 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
                 }
                 map.insert("FlumeSegments",segdata);
             }
-
         }
-        else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // LIDAR data
-        {
-            map.insert("NumLIDARFiles",QString::number(bathfilenames.size()));
-            // Write the LIDAR file names
-            for (int ii=0; ii<bathfilenames.size(); ++ii)
-            {
-                QFile f(bathfilenames[ii]);
-                QFileInfo fileInfo(f.fileName());
-                QString filename(fileInfo.fileName());
-                map.insert("LIDARFile"+QString::number(ii),filename);
-            }
-        }
-    }
-
-    // CFD with STL / Maps / Surrogate models
-    if( (type == 2 || type == 5) || (type == 6 || type == 7) )
-    {
-        error.criterrormessage("This simulation type is not yet supported!");
-        hasData=false;
     }
 
     // Return the bool
@@ -353,17 +270,193 @@ bool bathymetry::getData(QMap<QString, QString>& map,int type)
 }
 
 //*********************************************************************************
-// Get data from bathymetry
+// Put data into bathymetry from the JSON file
 //*********************************************************************************
-bool bathymetry::putData(QMap<QString, QString>& map,int type)
+bool bathymetry::putData(QJsonObject &jsonObject,int stype, QString workpath)
 {
-    bool hasData=true;
 
-    error.criterrormessage("This simulation type is not yet supported!");
-    hasData=false;
+    if(!workpath.isEmpty())
+    {
+        // SW-CFD solutions only
+        if( (stype == 1) || (stype == 2) )
+        {
 
-    // Return the bool
-    return hasData;
+            // Bathymetry file type
+            if(jsonObject.contains("BathymetryFileType"))
+            {
+                ui->CmB_FileType->setCurrentIndex(jsonObject["BathymetryFileType"].toString().toInt());
+            }
+
+            // Get the number of bathymetry files
+            int numbathfiles = 0;
+            if(jsonObject.contains("NumBathymetryFiles"))
+            {
+                numbathfiles = jsonObject["NumBathymetryFiles"].toString().toInt();
+            }
+
+            // Get the bathymetry file paths
+            bathfilenames.clear();
+            for (int ii=0; ii<numbathfiles; ++ii)
+            {
+                if(jsonObject.contains("BathymetryFile"+QString::number(ii)))
+                {
+                    QString filename = jsonObject["BathymetryFile"+QString::number(ii)].toString();
+                    QFileInfo fi(QDir(workpath),filename);
+                    bathfilenames.append(fi.canonicalFilePath());
+                }
+            }
+
+            // Show the file list in the plaintext
+            ui->PText_Files->document()->setPlainText(bathfilenames.join(";\n\n"));
+
+            // SW solutions
+            if(stype == 1)
+            {
+                // Solution file type
+                if(jsonObject.contains("SolutionFileType"))
+                {
+                    ui->CmB_SolFormat->setCurrentIndex(jsonObject["SolutionFileType"].toString().toInt());
+                }
+
+                // Get the number of solution files
+                int numsolfiles = 0;
+                if(jsonObject.contains("NumSolutionFiles"))
+                {
+                    numsolfiles = jsonObject["NumSolutionFiles"].toString().toInt();
+                }
+
+                // Get the solution file paths
+                solfilenames.clear();
+                for (int ii=0; ii<numsolfiles; ++ii)
+                {
+                    if(jsonObject.contains("SWSolutionFile"+QString::number(ii)))
+                    {
+                        QString filename = jsonObject["SWSolutionFile"+QString::number(ii)].toString();
+                        QFileInfo fi(QDir(workpath),filename);
+                        solfilenames.append(fi.canonicalFilePath());
+                    }
+                }
+
+                // Show the file list in the plaintext
+                ui->PText_Solution->document()->setPlainText(solfilenames.join(";\n\n"));
+            }
+        }
+
+        // For STL Files
+        if(stype == 3)
+        {
+            // Get the STL file paths
+            bathfilenames.clear();
+            for (int ii=0; ii<6; ++ii)
+            {
+                if(jsonObject.contains("STLFiles"+QString::number(ii)))
+                {
+                    QString filename = jsonObject["STLFiles"+QString::number(ii)].toString();
+                    QFileInfo fi(QDir(workpath),filename);
+                    bathfilenames.append(fi.canonicalFilePath());
+                }
+            }
+
+            // Show the file list in the plaintext
+            ui->PText_Files->document()->setPlainText(bathfilenames.join(";\n\n"));
+        }
+    }
+
+    // For Wave flume
+    if(stype == 4)
+    {
+        // Wave flume definition
+        if(jsonObject.contains("FlumeInfoType"))
+        {
+            ui->CmB_FlumeGeoType->setCurrentIndex(jsonObject["FlumeInfoType"].toString().toInt());
+        }
+
+        // Wave flume breadth
+        if(jsonObject.contains("FlumeBreadth"))
+        {
+            ui->DSpBx_Breadth->setValue(jsonObject["FlumeBreadth"].toString().toDouble());
+        }
+
+        // Flume table
+        if(jsonObject.contains("NumFlumeSegments"))
+        {
+            int numflumesegs = jsonObject["NumFlumeSegments"].toString().toInt();
+            if(numflumesegs > 0)
+            {
+                // Insert the required number of rows
+                for(int ii=0; ii<numflumesegs; ++ii)
+                {
+                    ui->Tbl_Segments->insertRow(ui->Tbl_Segments->rowCount());
+                }
+
+                if(jsonObject.contains("FlumeSegments"))
+                {
+                    // Get the flume segments
+                    QString flusegs = jsonObject["FlumeSegments"].toString();
+
+                    // Convert to a stringlist
+                    QStringList elements = flusegs.split(',');
+
+                    // Put elements into table
+                    int ll=0;
+                    for (int ii=0; ii<numflumesegs; ++ii)
+                    {
+                        QTableWidgetItem* itemtoAdd = new QTableWidgetItem();
+                        itemtoAdd->setText(elements[2*ii+1]);
+                        ui->Tbl_Segments->setItem(ll,0,itemtoAdd);
+
+                        QTableWidgetItem* itemtoAdd2 = new QTableWidgetItem();
+                        itemtoAdd2->setText(elements[2*ii+2]);
+                        ui->Tbl_Segments->setItem(ll,1,itemtoAdd2);
+                        ll = ll+1;
+                    }
+                }
+            }
+        }
+    }
+
+    // Read gravity only if not the flume
+    if(stype != 4)
+    {
+        // Gravity
+        if(jsonObject.contains("Gravity"))
+        {
+            int grav = jsonObject["Gravity"].toString().toInt();
+            if(grav == 11)
+            {
+                ui->CmB_Grav01->setCurrentIndex(0);
+                ui->CmB_Grav02->setCurrentIndex(0);
+            }
+            if(grav == 12)
+            {
+                ui->CmB_Grav01->setCurrentIndex(0);
+                ui->CmB_Grav02->setCurrentIndex(1);
+            }
+            if(grav == 13)
+            {
+                ui->CmB_Grav01->setCurrentIndex(0);
+                ui->CmB_Grav02->setCurrentIndex(2);
+            }
+            if(grav == 21)
+            {
+                ui->CmB_Grav01->setCurrentIndex(1);
+                ui->CmB_Grav02->setCurrentIndex(0);
+            }
+            if(grav == 22)
+            {
+                ui->CmB_Grav01->setCurrentIndex(1);
+                ui->CmB_Grav02->setCurrentIndex(1);
+            }
+            if(grav == 23)
+            {
+                ui->CmB_Grav01->setCurrentIndex(1);
+                ui->CmB_Grav02->setCurrentIndex(2);
+            }
+        }
+    }
+
+    // Return true if no errors
+    return true;
 }
 
 //*********************************************************************************
@@ -380,7 +473,11 @@ void bathymetry::on_Btn_UploadFiles_clicked()
     if(selectfilesdialog.exec()) bathfilenames = selectfilesdialog.selectedFiles();
     if(bathfilenames.size() == 0)
     {
-        error.warnerrormessage("No bathymetry files selected!");
+        error.warnerrormessage("No files selected!");
+    }
+    else
+    {
+        ui->PText_Files->document()->setPlainText(bathfilenames.join(";\n\n"));
     }
 }
 
@@ -398,7 +495,11 @@ void bathymetry::on_Btn_UploadSolution_clicked()
     if(selectfilesdialog.exec()) solfilenames = selectfilesdialog.selectedFiles();
     if(solfilenames.size() == 0)
     {
-        error.warnerrormessage("No solution files selected!");
+        error.warnerrormessage("No files selected!");
+    }
+    else
+    {
+        ui->PText_Solution->document()->setPlainText(solfilenames.join(";\n\n"));
     }
 }
 
@@ -425,7 +526,7 @@ bool bathymetry::copyFiles(QString dirName,int type)
 {
 
     // SW + CFD or CFD with bath
-    if( (type == 1) || (type == 3) )
+    if( (type == 1) || (type == 2) )
     {
         // Copy the bathymetry files
         for (int ii=0; ii<bathfilenames.size(); ++ii)
@@ -447,26 +548,17 @@ bool bathymetry::copyFiles(QString dirName,int type)
             }
         }
     }
-    else if(type == 4) // CFD with Flume
+
+    // STL files
+    if(type == 3)
     {
-        if(ui->CmB_FlumeGeoType->currentIndex() == 0) // Coordinates
+        // Copy the bathymetry files
+        for (int ii=0; ii<6; ++ii)
         {
-            // Copy the segment coordinates file
-//            QFile fileToCopy("FlumeData.txt");
-//            QFileInfo fileInfo(fileToCopy);
-//            QString theFile = fileInfo.fileName();
-//            fileToCopy.copy(dirName + QDir::separator() + theFile);
-        }
-        else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // LIDAR data
-        {
-            // Copy the LIDAR files
-            for (int ii=0; ii<bathfilenames.size(); ++ii)
-            {
-                QFile fileToCopy(bathfilenames[ii]);
-                QFileInfo fileInfo(bathfilenames[ii]);
-                QString theFile = fileInfo.fileName();
-                fileToCopy.copy(dirName + QDir::separator() + theFile);
-            }
+            QFile fileToCopy(bathfilenames[ii]);
+            QFileInfo fileInfo(bathfilenames[ii]);
+            QString theFile = fileInfo.fileName();
+            fileToCopy.copy(dirName + QDir::separator() + theFile);
         }
     }
 
@@ -479,9 +571,20 @@ bool bathymetry::copyFiles(QString dirName,int type)
 //*********************************************************************************
 void bathymetry::on_CmB_FlumeGeoType_currentIndexChanged(int index)
 {
-    if(ui->CmB_FlumeGeoType->currentIndex() == 0) // Provide coordinates
+
+    ui->Lbl_TopViewH2->hide();
+    ui->Lbl_TopView->hide();
+    ui->Lbl_Breadth->hide();
+    ui->DSpBx_Breadth->hide();
+    ui->Lbl_Segments->hide();
+    ui->Tbl_Segments->hide();
+    ui->Btn_AddSeg->hide();
+    ui->Btn_RemSeg->hide();
+    ui->Lbl_Notice->hide();
+
+    // Coordinate-based flume definition
+    if(index == 0)
     {
-        ui->Btn_UploadFiles->hide();
         ui->Lbl_TopViewH2->show();
         ui->Lbl_TopView->show();
         ui->Lbl_Breadth->show();
@@ -491,45 +594,11 @@ void bathymetry::on_CmB_FlumeGeoType_currentIndexChanged(int index)
         ui->Btn_AddSeg->show();
         ui->Btn_RemSeg->show();
     }
-    else if(ui->CmB_FlumeGeoType->currentIndex() == 1) // Upload LIDAR data
+
+    // Standard OSU flume
+    else if(index == 1)
     {
-        ui->Btn_UploadFiles->show();
-        //ui->Btn_UploadFiles->setText("\nUpload LIDAR scan\n");
-        ui->Btn_UploadFiles->setText("Coming soon");
-        ui->Btn_UploadFiles->setEnabled(false);
-        ui->Lbl_TopViewH2->hide();
-        ui->Lbl_TopView->hide();
-        ui->Lbl_Breadth->hide();
-        ui->DSpBx_Breadth->hide();
-        ui->Lbl_Segments->hide();
-        ui->Tbl_Segments->hide();
-        ui->Btn_AddSeg->hide();
-        ui->Btn_RemSeg->hide();
+        ui->Lbl_Notice->setText("Standard flume geometry will be used. Please check documentation for more details.");
+        ui->Lbl_Notice->show();
     }
-    else if(ui->CmB_FlumeGeoType->currentIndex() == 2) // Standard OSU flume
-    {
-        ui->Btn_UploadFiles->show();
-        ui->Btn_UploadFiles->setText("Coming soon");
-        ui->Btn_UploadFiles->setEnabled(false);
-        ui->Lbl_TopViewH2->hide();
-        ui->Lbl_TopView->hide();
-        ui->Lbl_Breadth->hide();
-        ui->DSpBx_Breadth->hide();
-        ui->Lbl_Segments->hide();
-        ui->Tbl_Segments->hide();
-        ui->Btn_AddSeg->hide();
-        ui->Btn_RemSeg->hide();
-    }
-
-    // Hide all other elements
-    ui->Lbl_SelFiles->hide();
-    ui->Btn_UploadSolution->hide();
-    ui->CmB_FileType->hide();
-    ui->CmB_SolFormat->hide();
-    ui->CmB_Library->hide();
-    ui->Lbl_Notice->hide();
-
-    // Unused variables
-    (void) index;
-
 }

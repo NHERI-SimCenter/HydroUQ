@@ -26,10 +26,12 @@ private slots:
     void on_Cmb_PatchLoc_currentIndexChanged(int index);
     void on_Btn_UploadFile_clicked();
 
+    void on_Btn_UploadFile_2_clicked();
+
 private:
     void hideshowelems();
     Ui::boundaryData *ui;
-    QStringList velfilenames;
+    QStringList dispfilenames,heightfilenames;
     Hydroerror error;
 };
 

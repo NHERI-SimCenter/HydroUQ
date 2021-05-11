@@ -417,35 +417,49 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
         }
 
         // note: Events is different because the object is an Array
-        if (theApplicationObject.contains("Events")) {
-            //  QJsonObject theObject = theApplicationObject["Events"].toObject(); it is null object, actually an array
-            if (theEventSelection->inputAppDataFromJSON(theApplicationObject) == false) {
+        if (theApplicationObject.contains("Events"))
+        {
+            QJsonObject theObject = theApplicationObject["Events"].toObject(); //it is null object, actually an array
+            if (theEventSelection->inputAppDataFromJSON(theApplicationObject) == false)
+            {
                 emit errorMessage("HydroUQ: failed to read Event Application");
             }
 
-        } else {
+        }
+        else
+        {
             emit errorMessage("HydroUQ: failed to find Event Application");
             return false;
         }
 
+        // UQ application
         if (theUQ_Selection->inputAppDataFromJSON(theApplicationObject) == false)
             emit errorMessage("HydroUQ: failed to read UQ application");
 
+        // FEM application
         if (theAnalysisSelection->inputAppDataFromJSON(theApplicationObject) == false)
             emit errorMessage("HydroUQ: failed to read FEM application");
 
-        if (theApplicationObject.contains("EDP")) {
+        // EDP application
+        if (theApplicationObject.contains("EDP"))
+        {
             QJsonObject theObject = theApplicationObject["EDP"].toObject();
-            if (theEDP_Selection->inputAppDataFromJSON(theObject) == false) {
+            if (theEDP_Selection->inputAppDataFromJSON(theObject) == false)
+            {
                 emit errorMessage("HydroUQ: failed to read EDP application");
             }
-        } else {
+        }
+        else
+        {
             emit errorMessage("HydroUQ: failed to find EDP application");
             return false;
         }
 
-    } else
+    }
+    else
+    {
         return false;
+    }
 
     /*
     ** Note to me - RVs and Events treated differently as both use arrays .. rethink API!

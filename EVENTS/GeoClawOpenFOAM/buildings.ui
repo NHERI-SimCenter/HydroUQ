@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>362</width>
+    <width>401</width>
     <height>923</height>
    </rect>
   </property>
@@ -59,11 +59,6 @@
      <item>
       <property name="text">
        <string>Parameterized building data</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Extract building data from LIDAR</string>
       </property>
      </item>
     </widget>
@@ -425,11 +420,6 @@
         </item>
         <item>
          <property name="text">
-          <string>Cylindrical</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
           <string>User-defined</string>
          </property>
         </item>
@@ -562,6 +552,33 @@
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLineEdit" name="PText_CustomBuild">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="Btn_CustomBuild">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Upload custom 
+building .stl file</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="Lbl_Notice">

@@ -1,14 +1,44 @@
+/* *****************************************************************************
+Copyright (c) 2016-2017, The Regents of the University of California (Regents).
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+The views and conclusions contained in the software and documentation are those
+of the authors and should not be interpreted as representing official policies,
+either expressed or implied, of the FreeBSD Project.
+
+REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS
+PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+*************************************************************************** */
+
+// Written: fmckenna
+// Modified: Ajay B Harish (Feb 2021)
+
 #include "GeoClawOpenFOAM.h"
 #include "ui_GeoClawOpenFOAM.h"
-#include "AgaveCurl.h"
-#include <QDir>
-#include <QFileInfo>
-#include <QFile>
-#include <QSettings>
-#include <QUuid>
-#include <ZipUtils.h>
-#include <QStandardPaths>
-
 
 //*********************************************************************************
 // Main window
@@ -19,7 +49,6 @@ GeoClawOpenFOAM::GeoClawOpenFOAM(RandomVariablesContainer *theRV, QWidget *paren
 {
     // Start the UI
     ui->setupUi(this);
-    ui->pushButton->setVisible(false);
 
     // Suppress unused parameters
     (void)theRV;
@@ -88,12 +117,8 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
     {
         allData.insert(1, singleData);
     }
-    else
-    {
-        isitready = false;
-    }
 
-    // Add SW-CFD Interface - Index 2
+    // Add SW-CFD Interface - index 2
     singleData = new QMap<QString,QString>;
     if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->getData(*singleData,simtype))
     {
@@ -107,12 +132,12 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(3, singleData);
     }
 
-    // Get data from floating bodies - Index 4
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->getData(*singleData,simtype))
-    {
-        allData.insert(4, singleData);
-    }
+//    // Get data from floating bodies - index 4
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->getData(*singleData,simtype))
+//    {
+//        allData.insert(4, singleData);
+//    }
 
     // Get data from mesh - index 5
     singleData = new QMap<QString,QString>;
@@ -128,19 +153,19 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(6, singleData);
     }
 
-    // Initial conditions: velocity - index 7
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->getData(*singleData,simtype))
-    {
-        allData.insert(7, singleData);
-    }
+//    // Initial conditions: velocity - index 7
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->getData(*singleData,simtype))
+//    {
+//        allData.insert(7, singleData);
+//    }
 
-    // Initial conditions: pressure - index 8
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->getData(*singleData,simtype))
-    {
-        allData.insert(8, singleData);
-    }
+//    // Initial conditions: pressure - index 8
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->getData(*singleData,simtype))
+//    {
+//        allData.insert(8, singleData);
+//    }
 
     // Initial conditions: alpha - index 9
     singleData = new QMap<QString,QString>;
@@ -149,12 +174,12 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(9, singleData);
     }
 
-    // Boundary conditions - index 10
-    singleData = new QMap<QString,QString>;
-    if (dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->getData(*singleData,simtype))
-    {
-        allData.insert(10, singleData);
-    }
+//    // Boundary conditions - index 10
+//    singleData = new QMap<QString,QString>;
+//    if (dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->getData(*singleData,simtype))
+//    {
+//        allData.insert(10, singleData);
+//    }
 
     // Solver settings - index 11
     singleData = new QMap<QString,QString>;
@@ -163,7 +188,7 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
         allData.insert(11, singleData);
     }
 
-    // Solver settings - index 12
+    // Postprocess settings - index 12
     singleData = new QMap<QString,QString>;
     if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->getData(*singleData,simtype))
     {
@@ -181,20 +206,108 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
     }
   
     return isitready;
-    //return true;
-//    return false;
 }
 
 //*********************************************************************************
-// Use JSON file to update all elements in the GUI (Need to add this)
+// Use JSON file to update all elements in the GUI
 //*********************************************************************************
 bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 {
-    (void) jsonObject;
 
-    error.criterrormessage("This is not presently supported! Contact developer");
+    // Check for simulation type
+    int stype;
+    // Get a working directory to import files from
+    QDir workdir;
+    QString workpath;
+    if(jsonObject.contains("SimulationType"))
+    {
+        // Get the simulation type
+        stype = jsonObject["SimulationType"].toString().toInt();
 
-    return false;
+        // Message box
+        QMessageBox msgBox;
+        msgBox.setText("Please select work directory. Support files will be set if found in this path only.");
+        msgBox.exec();
+
+        // File directory to choose the home directory
+        QFileDialog selectworkdir;
+        selectworkdir.setDirectory(QDir::homePath());
+        selectworkdir.setFileMode(QFileDialog::DirectoryOnly);
+        selectworkdir.setWindowTitle("Select working directory");
+        if(selectworkdir.exec())
+        {
+            workdir = selectworkdir.directory();
+            workpath = workdir.canonicalPath();
+        }
+        else
+        {
+            QMessageBox msgBox;
+            msgBox.setText("Work directory has not been set! You will need to manually update the required files for EVT again.");
+            msgBox.exec();
+            workpath.clear();
+        }
+    }
+    else
+    {
+        error.criterrormessage("Simulation type not found. Check JSON file!");
+        return false;
+    }
+
+    // Put data into project settings (0)
+    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->putData(jsonObject,stype))
+    {
+        // do nothing
+    }
+
+    // Put data into bathymetry settings (1)
+    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing
+    }
+
+    // Put data into SW-CFD settings (2)
+    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing
+    }
+
+    // Put data into Building settings (3)
+    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing
+    }
+
+    // Put data in meshing settings (5)
+    if (dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing
+    }
+
+    // Put data into material settings (6)
+    if (dynamic_cast<materials *>(ui->stackedWidget->widget(6))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing
+    }
+
+    // Put data into initial condition (alpha) settings (9)
+    if (dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing
+    }
+
+    // Solver settings - index 11
+    if (dynamic_cast<solver *>(ui->stackedWidget->widget(11))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing for now
+    }
+
+    // Postprocess settings - index 12
+    if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->putData(jsonObject,stype,workpath))
+    {
+        // do nothing for now
+    }
+
+    return true;
 }
 
 //*********************************************************************************
@@ -214,7 +327,7 @@ bool GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &jsonObject)
 //*********************************************************************************
 bool GeoClawOpenFOAM::inputAppDataFromJSON(QJsonObject &jsonObject)
 {
-    (void) jsonObject;
+    //(void) jsonObject;
     return true;
 }
 
@@ -230,14 +343,17 @@ bool GeoClawOpenFOAM::copyFiles(QString &dirName)
     // Copy SW-CFD interface files
     dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->copyFiles(dirName,simtype);
 
+    // Copy Building files
+    dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->copyFiles(dirName,simtype);
+
     // Meshing
     dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->copyFiles(dirName,simtype);
 
-    // Boundary
-    dynamic_cast<solver *>(ui->stackedWidget->widget(11))->copyFiles(dirName,simtype);
+//    // Boundary
+//    dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->copyFiles(dirName,simtype);
 
     // Solver
-    dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->copyFiles(dirName,simtype);
+    dynamic_cast<solver *>(ui->stackedWidget->widget(11))->copyFiles(dirName,simtype);
 
     // Postprocess
     dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->copyFiles(dirName,simtype);
@@ -432,34 +548,4 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
             ui->stackedWidget->setCurrentIndex(12);
         }
     }
-}
-
-//*********************************************************************************
-// Temporary button
-//*********************************************************************************
-void GeoClawOpenFOAM::on_pushButton_clicked()
-{
-
-//    QMap<QString, QString> *singleData;
-//    this->clearAllData();
-//    singleData = new QMap<QString,QString>;
-//    // Get data from Bathymetry - index 1
-//    singleData = new QMap<QString,QString>;
-//    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->getData(*singleData,simtype))
-//    {
-//        allData.insert(1, singleData);
-//    }
-
-    //qDebug() << allData;
-    // Create the file and add the segments
-    // Create and open a text file
-//    QString filename = "FlSegmentData.txt";
-//    QFile file(filename);
-//    QFileInfo fi(file);
-//    qDebug() << fi.absolutePath() << " fn=" << fi.fileName();
-//    if (file.open(QIODevice::ReadWrite))
-//    {
-//        QTextStream stream(&file);
-//        stream << "something" << Qt::endl;
-//    }
 }

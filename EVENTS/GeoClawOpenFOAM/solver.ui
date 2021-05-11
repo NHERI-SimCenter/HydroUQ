@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>383</width>
+    <width>394</width>
     <height>872</height>
    </rect>
   </property>
@@ -14,6 +14,18 @@
    <string>Frame</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QLabel" name="Lbl_H1">
      <property name="font">
@@ -232,24 +244,62 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="Btn_UploadFiles">
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Upload a single .zip file</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>10000</number>
-     </property>
-     <property name="text">
-      <string>
-Upload Restart Files 
-</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1">
+     <item>
+      <widget class="QLineEdit" name="Led_Path">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>400</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="Btn_UploadFiles">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Upload a single .zip file</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>10000</number>
+       </property>
+       <property name="text">
+        <string>Upload restart files</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="Lbl_Domain">
@@ -386,11 +436,6 @@ Upload Restart Files
          <string>Simple</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>Hierarchical</string>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>
@@ -424,25 +469,20 @@ Upload Restart Files
      </property>
      <item>
       <property name="text">
-       <string>OlaFlow</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>More coming soon</string>
+       <string>OpenFOAM</string>
       </property>
      </item>
     </widget>
    </item>
    <item>
-    <spacer name="VSP">
+    <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>420</height>
+       <height>415</height>
       </size>
      </property>
     </spacer>

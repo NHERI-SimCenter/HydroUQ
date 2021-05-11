@@ -41,7 +41,7 @@ void projectsettings::hideshowelems(int type)
 }
 
 //*********************************************************************************
-// Get data from project settings
+// Get data from project settings for JSON file output
 //*********************************************************************************
 bool projectsettings::getData(QMap<QString, QString> & map, int type)
 {
@@ -56,4 +56,36 @@ bool projectsettings::getData(QMap<QString, QString> & map, int type)
     hasData = true;
 
     return hasData;
+}
+
+//*********************************************************************************
+// Read data from JSON file
+//*********************************************************************************
+bool projectsettings::putData(QJsonObject &jsonObject, int stype)
+{
+
+    // Project name
+    if(jsonObject.contains("ProjectName"))
+    {
+        ui->Led_PName->setText(jsonObject["ProjectName"].toString());
+    }
+
+    // Project description
+    if(jsonObject.contains("ProjectDescription"))
+    {
+        ui->Ted_PDesc->document()->setPlainText(jsonObject["ProjectDescription"].toString());
+    }
+
+    // Simulation type
+    ui->CmB_SimType->setCurrentIndex(stype);
+
+
+    // Turbulence model
+    if(jsonObject.contains("TurbulenceModel"))
+    {
+        ui->CmB_TurbModel->setCurrentIndex(jsonObject["TurbulenceModel"].toString().toInt());
+    }
+
+    // Return true
+    return true;
 }

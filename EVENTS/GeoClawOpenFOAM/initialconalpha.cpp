@@ -36,7 +36,7 @@ void initialconAlpha::refreshData(int type)
 //*********************************************************************************
 void initialconAlpha::hideshowelems(int type)
 {
-    if((type == 1) || (type == 2))
+    if(type == 1)
     {
         ui->Lbl_Notice->show();
         ui->Lbl_Alpha->hide();
@@ -88,6 +88,59 @@ bool initialconAlpha::getData(QMap<QString, QString>& map,int type)
 
     // Return the bool
     return hasData;
+}
+
+//*********************************************************************************
+// Put data into alpha initial condition from the JSON file
+//*********************************************************************************
+bool initialconAlpha::putData(QJsonObject &jsonObject,int stype, QString workpath)
+{
+    // Suppress warnings
+    (void) workpath;
+
+    // For all simulations except SW-CFD
+    if(stype !=1)
+    {
+        // Get the global value of alpha
+        if(jsonObject.contains("InitialAlphaGlobal"))
+            ui->DSpBx_Alpha->setValue(jsonObject["InitialAlphaGlobal"].toString().toDouble());
+
+        // Fill the alpha table
+        if(jsonObject.contains("NumAlphaRegion"))
+        {
+            int numalphareg = jsonObject["NumAlphaRegion"].toString().toInt();
+            if(numalphareg > 0)
+            {
+                for(int ii=0; ii<numalphareg; ++ii)
+                {
+                    // Add a row for the building
+                    ui->Tbl_IniCondTable->insertRow(ui->Tbl_IniCondTable->rowCount());
+                    // Add the particular building parameters
+                    if(jsonObject.contains("InitialAlphaRegion"+QString::number(ii)))
+                    {
+                        // Get the parameters for each building / building table row
+                        QString alphareg = jsonObject["InitialAlphaRegion"+QString::number(ii)].toString();
+                        QStringList alpharegdata = alphareg.split(',');
+                        if(alpharegdata.size() == 7)
+                        {
+                            QTableWidgetItem* itemtoAdd = new QTableWidgetItem();
+                            QTableWidgetItem* itemtoAdd2 = new QTableWidgetItem();
+                            QTableWidgetItem* itemtoAdd3 = new QTableWidgetItem();
+                            itemtoAdd->setText(alpharegdata[0]+","+alpharegdata[1]+","+alpharegdata[2]);
+                            ui->Tbl_IniCondTable->setItem(ii,0,itemtoAdd);
+                            itemtoAdd2->setText(alpharegdata[3]+","+alpharegdata[4]+","+alpharegdata[5]);
+                            ui->Tbl_IniCondTable->setItem(ii,1,itemtoAdd2);
+                            itemtoAdd3->setText(alpharegdata[6]);
+                            ui->Tbl_IniCondTable->setItem(ii,2,itemtoAdd3);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Return true
+    return true;
 }
 
 //*********************************************************************************

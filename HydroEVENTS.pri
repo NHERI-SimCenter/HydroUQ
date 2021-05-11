@@ -352,9 +352,11 @@ HEADERS += \
     $$PWD/EVENTS/dependencies/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 
 FORMS += \
+    $$PWD/EVENTS/GeoClawOpenFOAM/GeoClawOpenFOAM_copy.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/bathymetry.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundary.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundarydata.ui \
+    $$PWD/EVENTS/GeoClawOpenFOAM/boundarydata_copy.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/buildings.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/floatingbds.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/initialconalpha.ui \
@@ -364,6 +366,7 @@ FORMS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/materials.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/meshing.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/projectsettings.ui \
+    $$PWD/EVENTS/GeoClawOpenFOAM/projectsettings_old.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/solver.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/swcfdint.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/postprocess.ui

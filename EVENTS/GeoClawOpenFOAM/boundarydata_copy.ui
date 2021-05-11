@@ -13,18 +13,18 @@
   <property name="windowTitle">
    <string>Frame</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>6</number>
    </property>
    <item>
     <widget class="QLabel" name="Lbl_H1">
@@ -148,12 +148,7 @@
      </property>
      <item>
       <property name="text">
-       <string>Select velocity boundary condition</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>General: SW solutions</string>
+       <string>Empty</string>
       </property>
      </item>
      <item>
@@ -163,17 +158,27 @@
      </item>
      <item>
       <property name="text">
-       <string>Inlet: Moving wall (OSU Flume)</string>
+       <string>Inlet: Wave input</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Inlet: Moving wall (General flume)</string>
+       <string>Inlet: Time-varying uniform velocity</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Outlet: zeroGradient</string>
+       <string>Inlet: Time-varying non-uniform velocity</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Outlet: Phase-mean velocity</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Outlet: flowRateOutletVelocity</string>
       </property>
      </item>
      <item>
@@ -186,61 +191,37 @@
        <string>Wall: noSlip</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>Moving wall</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>SW solutions</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QLineEdit" name="Led_WaterDisp"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="Btn_UploadFile">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>Upload files related to the boundary patch</string>
-         </property>
-         <property name="toolTipDuration">
-          <number>10000</number>
-         </property>
-         <property name="text">
-          <string>Wall displacement</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <widget class="QLineEdit" name="Led_WaterHeight"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="Btn_UploadFile_2">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>Upload files related to the boundary patch</string>
-         </property>
-         <property name="toolTipDuration">
-          <number>10000</number>
-         </property>
-         <property name="text">
-          <string>Water height</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
+    <widget class="QPushButton" name="Btn_UploadFile">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>Upload files related to the boundary patch</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>10000</number>
+     </property>
+     <property name="text">
+      <string>
+Upload files
+</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QComboBox" name="Cmb_WaveType">
@@ -552,12 +533,22 @@ Phase, Angle</string>
      </item>
      <item>
       <property name="text">
-       <string>zeroGradient</string>
+       <string>Inlet / Outlet / Wall: Zero gradient</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>fixedValue</string>
+       <string>Inlet: Calculated pressure</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Outlet: Total pressure</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Wall: Fixed flux</string>
       </property>
      </item>
     </widget>

@@ -44,28 +44,6 @@ void boundary::hideshowelems(int type)
     ui->Btn_RemBoundary->show();
     ui->Btn_Next->show();
     ui->Btn_Previous->show();
-    //on_Cmb_MeshType_currentIndexChanged(ui->Cmb_MeshType->currentIndex());
-//    if((type == 1) || (type == 2))
-//    {
-//        ui->Lbl_Notice->show();
-//        ui->SWg_Interface->hide();
-//        ui->Btn_AddBoundary->hide();
-//        ui->Btn_RemBoundary->hide();
-//        ui->Btn_Next->hide();
-//        ui->Btn_Previous->hide();
-//    }
-//    else
-//    {
-//        ui->Lbl_Notice->hide();
-//        ui->SWg_Interface->show();
-//        ui->Btn_AddBoundary->show();
-//        ui->Btn_RemBoundary->show();
-//        ui->Btn_Next->show();
-//        ui->Btn_Previous->show();
-//    }
-
-
-
 }
 
 //*********************************************************************************

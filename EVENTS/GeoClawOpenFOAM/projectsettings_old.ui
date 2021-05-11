@@ -147,7 +147,17 @@
      </item>
      <item>
       <property name="text">
+       <string>CFD to resolve SW (Using sim library)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>CFD using bathymetry data</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>CFD using Wave Flume Digital Twin</string>
       </property>
      </item>
      <item>
@@ -157,7 +167,12 @@
      </item>
      <item>
       <property name="text">
-       <string>CFD using Wave Flume Digital Twin</string>
+       <string>CFD using maps</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>CFD using Surrogate solver</string>
       </property>
      </item>
     </widget>
