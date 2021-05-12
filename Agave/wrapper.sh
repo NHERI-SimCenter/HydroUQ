@@ -60,7 +60,7 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${FOAM_USER_LIBBIN}
 echo "OpenFOAM paths loaded"
 
 echo "HydroUQ pre-processing has started"
-python3 $HYDROBRAIN/Processor.py -b $BIM -I ${inputDirectory} -L $LD_LIBRARY_PATH -P $PATH
+python3 $HYDROBRAIN/Processor.py -b $BIM -I ${inputDirectory} -L $LD_LIBRARY_PATH -P $PATH -i ${inputFile} -d ${driverFile}
 echo "HydroUQ pre-processing complete"
 
 echo "HydroUQ processing started using caserun"
