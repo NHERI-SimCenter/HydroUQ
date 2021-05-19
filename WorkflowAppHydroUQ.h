@@ -65,7 +65,7 @@ class RemoteService;
 class RemoteJobManager;
 class QNetworkAccessManager;
 class QNetworkReply;
-class EDP_EarthquakeSelection;
+class EDP_Selection;
 
 class WorkflowAppHydroUQ : public WorkflowAppWidget
 {
@@ -108,7 +108,7 @@ private:
     UQ_EngineSelection *theUQ_Selection;
     HydroEventSelection *theEventSelection;
     FEM_Selection *theAnalysisSelection;
-    EDP_EarthquakeSelection *theEDP_Selection;
+    EDP_Selection *theEDP_Selection;
     UQ_Results *theResults;
 
     // objects for running the workflow and obtaining results

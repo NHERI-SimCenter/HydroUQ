@@ -73,7 +73,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <InputWidgetBIM.h>
 #include <InputWidgetUQ.h>
 
-#include <EDP_EarthquakeSelection.h>
+#include <EDP_Selection.h>
 
 #include "CustomizedItemModel.h"
 
@@ -111,7 +111,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theEventSelection = new HydroEventSelection(theRVs, theGI, this);
     theAnalysisSelection = new FEM_Selection(theRVs);
     theUQ_Selection = new UQ_EngineSelection(theRVs);
-    theEDP_Selection = new EDP_EarthquakeSelection(theRVs);
+    theEDP_Selection = new EDP_Selection(theRVs);
 
     //theResults = new DakotaResultsSampling(theRVs);
     theResults = theUQ_Selection->getResults();
