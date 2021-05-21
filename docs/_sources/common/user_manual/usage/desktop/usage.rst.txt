@@ -27,6 +27,7 @@ remotely, and finally views the simulation results. The main window of the UI is
  
       The |app| user interface.
 
+
 .. only:: EEUQ_app
 
    .. _figGenericUI-EE:
@@ -37,13 +38,17 @@ remotely, and finally views the simulation results. The main window of the UI is
 
       The |app| user interface.
 
+
 .. only:: WEUQ_app
 
    .. _figGenericUI-WE:
 
    .. figure:: figures/wePanel.png
-	   :align: center
-	   :figclass: align-center
+      :align: center
+      :figclass: align-center
+
+      The |app| user interface.
+
 
 
 .. only:: R2D_app
@@ -85,7 +90,6 @@ The ribbon on the left side provides the user with a selection of buttons to cho
    :R2D:R2DTool/ANA
    :R2D:R2DTool/DL
    UQ
-   :wind:GI
    :EEUQ:GI
    :WEUQ:GI
    :EEUQ:SIM
@@ -93,10 +97,11 @@ The ribbon on the left side provides the user with a selection of buttons to cho
    :PBE:SIM
    :wind:Assets
    :EEUQ:earthquake/earthquakeEvents.rst
-   :PBE:earthquake/EarthquakeEvents.rst	 	 
+   :PBE:earthquake/earthquakeEvents.rst	 	 
    :wind:wind/WindEvents
    :wind:FEM
    :EEUQ:FEM
+   :PBE:FEM	 
    :quoFEM:quoFEM/FEM
    :EEUQ:response/EDP
    :WEUQ:response/EDP

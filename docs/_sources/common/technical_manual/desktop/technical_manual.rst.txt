@@ -6,7 +6,7 @@ Technical Manual
 .. toctree-filt::
    :maxdepth: 1
 
-   uqTechnical   
+   uqTechnical
    :EEUQ:damping
    :WEUQ:damping
    :PBE:damping
@@ -14,3 +14,4 @@ Technical Manual
    :WEUQ:WEUQ/TinF
    :quoFEM:SimCenterUQTechnical
    :quoFEM:UCSDUQTechnical
+   :HazardSimulation:spatial_correlation

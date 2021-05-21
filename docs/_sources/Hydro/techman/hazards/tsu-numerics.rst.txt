@@ -16,7 +16,7 @@ There have been several tools that have been used till date. Some of the notewor
 
 * OpenFOAM is an open/source CFD solver that is used extensively. It was also recently used to simulate Tsunami [Xietal2018]_.
 
-* Chombo is another platform that facilitates automated meshing and can be downloaded from the official `Chombu website <https://commons.lbl.gov/display/chombo/Chombo+-+Software+for+Adaptive+Solutions+of+Partial+Differential+Equations>`_.
+* Chombo is another platform that facilitates automated meshing and can be downloaded from the official `Chombo website <https://commons.lbl.gov/display/chombo/Chombo+-+Software+for+Adaptive+Solutions+of+Partial+Differential+Equations>`_.
 
 * SAMRAI can be downloaded from the official `website <https://computing.llnl.gov/projects/samrai/software>`_.
 

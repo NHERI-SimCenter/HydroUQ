@@ -12,3 +12,4 @@ The following examples demonstrate how to use the backend applications for regio
 
    eqAssessment
    hurricaneAssessment
+   siteResponseAssessment/siteResponseAssessment

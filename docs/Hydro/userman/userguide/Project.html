@@ -67,7 +67,7 @@
 </a>
 <hr style="margin: 0px;">
 
-  <a href="../../../hydro.html">
+  <a href="../../../Hydro.html">
 
 
 
@@ -111,7 +111,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">1. Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="uguide.html">2. User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="UQ.html">2.1. UQ: Uncertainty Quantification (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UQ.html">2.1. UQ: Uncertainty Quantification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="GI.html">2.2. GI: General Information (Coming soon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SIM.html">2.3. SIM: Structural Model (Coming soon)</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="EVT.html">2.4. EVT: Hydro Events</a><ul class="current">
@@ -125,7 +125,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="FEM.html">2.5. FEM: Finite Element Method (Coming soon)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="EDP.html">2.6. EDP: Demand Parameters (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EDP.html">2.6. EDP: Demand Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="RV.html">2.7. RV: Random Variables (Coming soon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="RES.html">2.8. RES: Results (Coming soon)</a></li>
 </ul>
@@ -173,7 +173,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../hydro.html">Hydro-UQ</a>
+          <a href="../../../Hydro.html">Hydro-UQ</a>
         
       </nav>
 
@@ -204,7 +204,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../Hydro.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="uguide.html"><span class="section-number">2. </span>User Guide</a> &raquo;</li>
         
@@ -233,38 +233,36 @@
 <span id="lbl-projsett"></span><h1>Project settings<a class="headerlink" href="#project-settings" title="Permalink to this headline">¶</a></h1>
 <p>The first step is to setup the project as shown in <a class="reference internal" href="EVT.html#evtsettings"><span class="std std-numref">Fig. 2.4.1</span></a>. All of these settings, except <code class="docutils literal notranslate"><span class="pre">Simulation</span> <span class="pre">type</span></code>, are optional. However, setting them makes the future steps easier.</p>
 <div class="align-center figure" id="id1">
-<span id="projsettings"></span><img alt="../../../_images/ProjSett01.png" src="../../../_images/ProjSett01.png" />
+<span id="projsettings"></span><a class="reference internal image-reference" href="../../../_images/ProjSett01.png"><img alt="../../../_images/ProjSett01.png" src="../../../_images/ProjSett01.png" style="height: 400px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 2.4.2 </span><span class="caption-text">Project settings for <code class="docutils literal notranslate"><span class="pre">Hydro</span></code> event</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-<ol class="arabic simple">
-<li><p><strong>Working directory</strong>: It is recommended to copy all the project files into a particular directory, i.e. the working directory. However, this is <em>optional</em>. When file selection is required, the tool will automatically use the working directory as default. The selected directory is shown below the <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">working</span> <span class="pre">directory</span></code> button.</p></li>
+<ol class="arabic">
 <li><p><strong>Project name and description</strong>: This is an <em>optional</em> parameter primarily meant for the user to identify and differentiate between projects.</p></li>
-</ol>
+<li><p><strong>Simulation type</strong>: This is <em>mandatory</em> and without a selection of the type, no other options can be set. The various simulation types available in <code class="docutils literal notranslate"><span class="pre">Hydro</span></code> event are as shown in <a class="reference internal" href="#simtype"><span class="std std-numref">Fig. 2.4.3</span></a>. The differences between different simulation types are as given below.</p>
 <div class="align-center figure" id="id2">
 <span id="simtype"></span><a class="reference internal image-reference" href="../../../_images/SimulationType.png"><img alt="../../../_images/SimulationType.png" src="../../../_images/SimulationType.png" style="height: 200px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 2.4.3 </span><span class="caption-text">Simulation types available in <code class="docutils literal notranslate"><span class="pre">Hydro</span></code> event</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
-<ol class="arabic" start="3">
-<li><p><strong>Simulation type</strong>: This is <em>mandatory</em> and without a selection of the type, no other options can be set. The various simulation types available in <code class="docutils literal notranslate"><span class="pre">Hydro</span></code> event are as shown in <a class="reference internal" href="#simtype"><span class="std std-numref">Fig. 2.4.3</span></a>. The differences between different simulation types are as given below.</p>
-<blockquote>
-<div><ol class="loweralpha simple">
-<li><p><strong>CFD to resolve SW (Using SW results)</strong>: This setting facilitates the flow to allow the user to import pre-run two-dimensional shallow water solutions. Further, the user can select small areas to run high-fidelity three-dimensional CFD solutions. For example: If one would run a GeoClaw simulation for an earthquake on the Alaska fault and one is interested in the inundation in Cresant City, CA (USA). Then, a GeoClaw simulation can be run for the entire domain up to the coast. Near the coast, the region can be resolved to run a full three-dimensional CFD simulation.</p></li>
-<li><p><strong>CFD to resolve SW (Using SimCenter library)</strong>: This option is not available in <code class="docutils literal notranslate"><span class="pre">v1.0.0</span></code>. This allows the users to use existing shallow-water solutions that have been run by the SimCenter and collaborators. The user can use these run to select areas of interest for a full CFD simulation.</p></li>
-<li><p><strong>CFD using bathymetry data</strong>: This simulation type allows the user to setup a CFD simulation .</p></li>
+<ol class="loweralpha simple">
+<li><p><strong>CFD to resolve SW (Using SW results)</strong>: This setting facilitates the user to import solutions from pre-run two-dimensional shallow water solver. The user can select small portions of the shallow-water domain and setup high-fidelity three-dimensional CFD on these selected areas. For example: If one had a GeoClaw simulation for an earthquake on the Alaska fault and one is interested in the inundation in Cresant City, CA (USA). Then, the user can bring in the GeoClaw solutions and resolve the near-coast using a full three-dimensional CFD simulation.</p></li>
+<li><p><strong>CFD using bathymetry data</strong>: This simulation type allows the user to setup a CFD simulation using the geometry defined through the bathymetry data of the ocean floor.</p></li>
+<li><p><strong>CFD using STL file</strong>: This simulation type allows the users to setup the CFD simulation using STL files to define the geometry of the domain.</p></li>
 <li><p><strong>CFD of wave flume</strong>: This simulation type allows the user to access the <code class="docutils literal notranslate"><span class="pre">Wave</span> <span class="pre">Flume</span> <span class="pre">Digital</span> <span class="pre">Twin</span></code>.</p></li>
-<li><p><strong>CFD using STL file</strong>: This option is not available in <code class="docutils literal notranslate"><span class="pre">v1.0.0</span></code>. More details are coming soon.</p></li>
-<li><p><strong>CFD using maps</strong>: This option is not available in <code class="docutils literal notranslate"><span class="pre">v1.0.0</span></code>. More details are coming soon.</p></li>
-<li><p><strong>CFD using Surrogate solver</strong>: This option is not available in <code class="docutils literal notranslate"><span class="pre">v1.0.0</span></code>. More details are coming soon.</p></li>
 </ol>
-</div></blockquote>
 </li>
-</ol>
+<li><p><strong>Turbulence model</strong>:</p>
 <div class="align-center figure" id="id3">
-<a class="reference internal image-reference" href="../../../_images/TurbSett.png"><img alt="../../../_images/TurbSett.png" src="../../../_images/TurbSett.png" style="height: 100px;" /></a>
+<span id="turbmodel"></span><a class="reference internal image-reference" href="../../../_images/TurbSett.png"><img alt="../../../_images/TurbSett.png" src="../../../_images/TurbSett.png" style="height: 100px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 2.4.4 </span><span class="caption-text">Turbulence settings available for <code class="docutils literal notranslate"><span class="pre">Hydro</span></code> event</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-<ol class="arabic simple" start="3">
-<li><p><strong>Turbulence model</strong>:</p></li>
+<p>Hydro-UQ presently supports two different turbulence models as shown in <a class="reference internal" href="#turbmodel"><span class="std std-numref">Fig. 2.4.4</span></a>. The available options include:</p>
+<ol class="loweralpha simple">
+<li><p>Laminar</p></li>
+<li><p>k-Epsilon</p></li>
+<li><p>k-Omega SST</p></li>
+</ol>
+<p>By default, the flow is assumed to be laminar if no turbulence model is selected. More information about the turbulence wall models is available in the technical manual (CFD solvers / Turbulence models).</p>
+</li>
 </ol>
 </div>
 

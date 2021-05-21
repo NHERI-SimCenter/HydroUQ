@@ -71,7 +71,7 @@ Make sure you see a message that confirms the successful installation of the nhe
 Download the Application
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-To download the |app|, first navigate to the |appLink| page. As shown in |figDownload|, to get to the download page, you need to click on the link **Download app and User Manual** in the application page. The download page contains a list of downloadable files and directories.
+To download the |app|, navigate to the |appLink| page which should resemble |figDownload|. The download page contains a list of downloadable files and directories.
 
 .. only:: R2D_app
 
@@ -125,7 +125,7 @@ To download the |app|, first navigate to the |appLink| page. As shown in |figDow
 
       quoFEM download page.
 
-Click on the file with a name ending with **Mac_Download.dmg** to download the |app|. In the pop-up window, click on the **Download** button in the bottom right corner. After the download completed, open the dmg file and copy the |short tool name| application to a location in your filesystem.
+Click on the file with a name ending with **Mac_Download.dmg** to download the |app|. In the pop-up window, click on the **Download** button in the bottom right corner. After the download has completed, open the dmg file and copy the |short tool name| application to a location in your filesystem.
 
 .. note::
 
@@ -134,18 +134,18 @@ Click on the file with a name ending with **Mac_Download.dmg** to download the |
 Test the Installation
 ^^^^^^^^^^^^^^^^^^^^^
 
-Once the installation procedure has been completed, it is a good practice to run some basic checks. Navigate to the location where you placed the application and open it by running the |short tool id|.exe executable. You should see the user interface shown in |figUI|. The installation can be tested by running the example problem |test example|.
+Once the installation procedure has been completed, it is a good practice to run some basic checks. Navigate to the location where you placed the application and open it by running the |short tool id|.exe executable. You should see the user interface shown in |figUI|. The installation can be tested by running the example problem |test example| which is provided with the installation.
 
 .. note::
 
-   SimCenter apps are codesigned and notarized, but because they are not downloaded from the operating system's app store, they may not be recognized as such. As a consequence, depending on your security settings, when you start a SimCenter app for the first time, your operating system may bring up a dialog box indicating it is unsafe. If this dialog should appear, hit the cancel button. Restart the app by right clicking on it and selecting open.
+   SimCenter apps are code-signed and notarized, but because they are not downloaded from the operating system's app store, they may not be recognized as such. As a consequence, depending on your security settings, when you start a SimCenter app for the first time, your operating system may bring up a dialog box indicating it is unsafe. If this dialog should appear, hit the cancel button. Restart the app by right clicking on it and selecting open.
 
 
 .. only:: R2D_app
 
    .. _figUI-R2D:
 
-   .. figure:: figures/PBE.png
+   .. figure:: figures/R2D-Startup.png
     :align: center
     :figclass: align-center
 

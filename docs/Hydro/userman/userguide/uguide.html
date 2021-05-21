@@ -43,7 +43,7 @@
     
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="2.1. UQ: Uncertainty Quantification (Coming soon)" href="UQ.html" />
+    <link rel="next" title="2.1. UQ: Uncertainty Quantification" href="UQ.html" />
     <link rel="prev" title="1. Installation" href="../install.html" />
 <script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
@@ -67,7 +67,7 @@
 </a>
 <hr style="margin: 0px;">
 
-  <a href="../../../hydro.html">
+  <a href="../../../Hydro.html">
 
 
 
@@ -111,12 +111,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">1. Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">2. User Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="UQ.html">2.1. UQ: Uncertainty Quantification (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UQ.html">2.1. UQ: Uncertainty Quantification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="GI.html">2.2. GI: General Information (Coming soon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SIM.html">2.3. SIM: Structural Model (Coming soon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="EVT.html">2.4. EVT: Hydro Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="FEM.html">2.5. FEM: Finite Element Method (Coming soon)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="EDP.html">2.6. EDP: Demand Parameters (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EDP.html">2.6. EDP: Demand Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="RV.html">2.7. RV: Random Variables (Coming soon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="RES.html">2.8. RES: Results (Coming soon)</a></li>
 </ul>
@@ -164,7 +164,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../hydro.html">Hydro-UQ</a>
+          <a href="../../../Hydro.html">Hydro-UQ</a>
         
       </nav>
 
@@ -195,7 +195,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../Hydro.html" class="icon icon-home"></a> &raquo;</li>
         
       <li><span class="section-number">2. </span>User Guide</li>
     
@@ -220,15 +220,15 @@
 <span id="lbl-uguide"></span><h1><span class="section-number">2. </span>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
 <p>The Hydro-UQ app, as will be discussed in <a class="reference internal" href="../../devman/softarchi.html#lbl-softarchi"><span class="std std-ref">Software Architecture</span></a>, is an hazard event application. In addition to the hazard event, the workflow also includes other aspects, like UQ and FEM engine. Each of these workflow elements can involve multiple different backend applications. Once the Hydro-UQ app is started, the user is presented with the user interface shown in <a class="reference internal" href="#primarygui"><span class="std std-numref">Fig. 2.1</span></a>. It is in this UI where the user selects the applications to run in a workflow, inputs the necessary parameters for each of these applications, starts the workflow either locally or remotely, and finally views the simulation results. The main window of the UI is divided into several separate areas. Each of these areas are discussed in the upcoming sections.</p>
 <div class="align-center figure" id="id1">
-<span id="primarygui"></span><img alt="../../../_images/PrimaryGUI.png" src="../../../_images/PrimaryGUI.png" />
+<span id="primarygui"></span><img alt="../../../_images/EVT_Tab.png" src="../../../_images/EVT_Tab.png" />
 <p class="caption"><span class="caption-number">Fig. 2.1 </span><span class="caption-text">The Hydro-UQ app user interface</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <ol class="arabic simple">
-<li><p>Login Button:</p></li>
+<li><p>Login button:</p></li>
 </ol>
 <p>The <strong>Login</strong> button is at the top right of the user interface. Before the user can launch any jobs on DesignSafe, they must first login to DesignSafe using their DesignSafe login and password. Pressing the login button will open up the login window for users to enter this information. Users can register for an account on the <a class="reference external" href="https://www.designsafe-ci.org/account/register">DesignSafe-CI</a> website.</p>
 <ol class="arabic simple" start="2">
-<li><p>Action Buttons:</p></li>
+<li><p>Action buttons:</p></li>
 </ol>
 <p>The action buttons consists of possible action button. This includes:</p>
 <blockquote>
@@ -240,33 +240,29 @@
 </ol>
 </div></blockquote>
 <ol class="arabic simple" start="3">
-<li><p>Message Area:</p></li>
-</ol>
-<p>The message area is located in the top center of the UI and displays status and error messages for a running background application.</p>
-<ol class="arabic simple" start="4">
-<li><p>Input Panel Selection:</p></li>
+<li><p>Input panel selection:</p></li>
 </ol>
 <p>The ribbon on the left side provides the user with a selection of buttons to choose from (e.g. <strong>UQ</strong>, <strong>EVT</strong>, <strong>RV</strong>, <strong>FEM</strong>, <strong>RES</strong>). Selecting any of these buttons will change what is displayed in the central input panel. Each panel, with exception of <strong>RV</strong> panel,  will present the user with an option for which application to choose for that part of the workflow, and will then present the users for inputs for that application. Of particular interest here is the <strong>EVT</strong> where all flow-parameters are assigned. At present, the other inputs have not been integrated into the Hydro-UQ application. More information will be provided as and when the other inputs are integrated.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="UQ.html">2.1. UQ: Uncertainty Quantification (Coming soon)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UQ.html">2.1. UQ: Uncertainty Quantification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GI.html">2.2. GI: General Information (Coming soon)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SIM.html">2.3. SIM: Structural Model (Coming soon)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="EVT.html">2.4. EVT: Hydro Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FEM.html">2.5. FEM: Finite Element Method (Coming soon)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="EDP.html">2.6. EDP: Demand Parameters (Coming soon)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EDP.html">2.6. EDP: Demand Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RV.html">2.7. RV: Random Variables (Coming soon)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RES.html">2.8. RES: Results (Coming soon)</a></li>
 </ul>
 </div>
 <ol class="arabic simple" start="5">
-<li><p>Event Parameter Panel:</p></li>
+<li><p>Event parameter pPanel:</p></li>
 </ol>
 <p>The input panel is the large central area of the UI where the user provides input for the application chosen and where they can view the results. For example, if the user had selected <strong>RV</strong> in the input panel selection, it is in this panel that the user would provide details on the distributions associated with each random variable. In the following sections each of the panels that is presented to the user when the buttons in the input panel selection are reviewed:</p>
 <ol class="arabic simple" start="6">
-<li><p>Graphics Window:</p></li>
+<li><p>Graphics panel:</p></li>
 </ol>
-<p>The graphics window will be added into the upcoming versions. This is meant to show various geometric entities related to the Hydro-event.</p>
+<p>The graphics window is not available in v.1.0.0 but will be added into the upcoming versions. The graphics window will help users to select boundary conditions graphically.</p>
 </div>
 
 

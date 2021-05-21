@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Transitional Markov chain Monte Carlo (TMCMC) algorithm &mdash; Hydro-UQ  documentation</title>
+  <title>2.1.3.1. Transitional Markov chain Monte Carlo (TMCMC) algorithm &mdash; Hydro-UQ  documentation</title>
   
 
   
@@ -65,7 +65,7 @@
 </a>
 <hr style="margin: 0px;">
 
-  <a href="../../../../hydro.html">
+  <a href="../../../../Hydro.html">
 
 
 
@@ -102,8 +102,8 @@
               <p class="caption"><span class="caption-text">About</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/about.html">1. About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/ack.html">1. Acknowledgments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/license.html">2. Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/ack.html">2. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/license.html">3. Copyright and License</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User manual</span></p>
 <ul>
@@ -152,7 +152,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../hydro.html">Hydro-UQ</a>
+          <a href="../../../../Hydro.html">Hydro-UQ</a>
         
       </nav>
 
@@ -183,9 +183,9 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../../Hydro.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Transitional Markov chain Monte Carlo (TMCMC) algorithm</li>
+      <li><span class="section-number">2.1.3.1. </span>Transitional Markov chain Monte Carlo (TMCMC) algorithm</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -205,7 +205,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="transitional-markov-chain-monte-carlo-tmcmc-algorithm">
-<span id="lblucsdtmcmc"></span><h1>Transitional Markov chain Monte Carlo (TMCMC) algorithm<a class="headerlink" href="#transitional-markov-chain-monte-carlo-tmcmc-algorithm" title="Permalink to this headline">¶</a></h1>
+<span id="lblucsdtmcmc"></span><h1><span class="section-number">2.1.3.1. </span>Transitional Markov chain Monte Carlo (TMCMC) algorithm<a class="headerlink" href="#transitional-markov-chain-monte-carlo-tmcmc-algorithm" title="Permalink to this headline">¶</a></h1>
 <p>This is an algorithm which is used to draw samples from the posterior probability distribution of random variables when performing Bayesian estimation. To use the TMCMC algorithm, select the <strong>UCSD_UQ</strong> engine in the <strong>UQ</strong> panel. Currently, only the TMCMC method is available with the <strong>UCSD_UQ</strong> engine. In the <strong>Log Likelihood Script</strong> field, the user needs to provide the path to a Python script which contains a function called <code class="docutils literal notranslate"><span class="pre">log_likelihood</span></code> that returns the log-likelihood value. The user also needs to specify the number of samples that is desired to be drawn from the posterior probability distribution of the unknown parameters.</p>
 <div class="align-center figure" id="id1">
 <img alt="../../../../_images/TMCMC_UQ_Engine.png" src="../../../../_images/TMCMC_UQ_Engine.png" />

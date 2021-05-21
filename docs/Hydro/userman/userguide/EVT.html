@@ -67,7 +67,7 @@
 </a>
 <hr style="margin: 0px;">
 
-  <a href="../../../hydro.html">
+  <a href="../../../Hydro.html">
 
 
 
@@ -111,7 +111,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">1. Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="uguide.html">2. User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="UQ.html">2.1. UQ: Uncertainty Quantification (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UQ.html">2.1. UQ: Uncertainty Quantification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="GI.html">2.2. GI: General Information (Coming soon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SIM.html">2.3. SIM: Structural Model (Coming soon)</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">2.4. EVT: Hydro Events</a><ul>
@@ -125,7 +125,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="FEM.html">2.5. FEM: Finite Element Method (Coming soon)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="EDP.html">2.6. EDP: Demand Parameters (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EDP.html">2.6. EDP: Demand Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="RV.html">2.7. RV: Random Variables (Coming soon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="RES.html">2.8. RES: Results (Coming soon)</a></li>
 </ul>
@@ -173,7 +173,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../hydro.html">Hydro-UQ</a>
+          <a href="../../../Hydro.html">Hydro-UQ</a>
         
       </nav>
 
@@ -204,7 +204,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../Hydro.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="uguide.html"><span class="section-number">2. </span>User Guide</a> &raquo;</li>
         
@@ -229,9 +229,9 @@
             
   <div class="section" id="evt-hydro-events">
 <span id="lbl-evthydro"></span><h1><span class="section-number">2.4. </span>EVT: Hydro Events<a class="headerlink" href="#evt-hydro-events" title="Permalink to this headline">¶</a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">Hydro</span> <span class="pre">EVT</span></code> is used to setup the flow parameters related to the water-borne hazard event. This can either be a coupling between the shallow-water and CFD solver or using a CFD solver alone. The steps of the setup process for the event has been kept nearly similar to that often used in Finite Element Method to make it easier for researchers from structural engineering background to easily use the app. This includes <code class="docutils literal notranslate"><span class="pre">project</span> <span class="pre">settings</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">geometry</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">meshing</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">materials</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">initial</span> <span class="pre">conditions</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">boundary</span> <span class="pre">conditions</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">solver</span> <span class="pre">settings</span></code>. These steps are available through a tree-structure as shown in <a class="reference internal" href="#evtsettings"><span class="std std-numref">Fig. 2.4.1</span></a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Hydro</span> <span class="pre">EVT</span></code> is used to setup the flow parameters related to the water-borne hazard event. This can either be a coupling between the shallow-water and CFD solver or using the CFD solver alone. The steps of the setup process for the event have been kept nearly similar to that often used in Finite Element Method to make it easier for researchers from structural engineering background to easily use this application. This includes <code class="docutils literal notranslate"><span class="pre">project</span> <span class="pre">settings</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">geometry</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">meshing</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">materials</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">initial</span> <span class="pre">conditions</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">boundary</span> <span class="pre">conditions</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">solver</span> <span class="pre">settings</span></code>. These steps are available through a tree-structure as shown in <a class="reference internal" href="#evtsettings"><span class="std std-numref">Fig. 2.4.1</span></a>.</p>
 <div class="align-center figure" id="id1">
-<span id="evtsettings"></span><img alt="../../../_images/HydroSteps.png" src="../../../_images/HydroSteps.png" />
+<span id="evtsettings"></span><a class="reference internal image-reference" href="../../../_images/HydroSteps.png"><img alt="../../../_images/HydroSteps.png" src="../../../_images/HydroSteps.png" style="height: 300px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 2.4.1 </span><span class="caption-text">The steps involved in setup of the <code class="docutils literal notranslate"><span class="pre">Hydro</span></code> event</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <p>Each of the above steps in the setup process differs depending on the type of simulation considered. They will be outlined in detail below:</p>

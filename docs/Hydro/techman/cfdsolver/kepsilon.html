@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>k-Epsilon model &mdash; Hydro-UQ  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+        <script src="../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+        <script src="../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="k-Omega SST model" href="komegasst.html" />
+    <link rel="prev" title="4. CFD Solvers" href="cfdsolver.html" />
+<script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
+<style media="screen">.vega-actions a {margin-right: 5px;}</style>
+<link href="../../../_static/css/bootstrap.css" rel="stylesheet">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F2F2F2" >
+          
+<a href="https://simcenter.designsafe-ci.org/" style="margin-bottom: 0px;">
+  <img src="../../../_static/img/SimCenter-Only.png" class="logo" alt="Org-Logo" />
+</a>
+<hr style="margin: 0px;">
+
+  <a href="../../../Hydro.html">
+
+
+
+  
+  <img src="../../../_static/Hydro-Logo.png" class="logo" alt="Logo"/>
+
+</a>
+
+
+  
+  
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/about.html">1. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../common/front-matter/ack.html">1. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../common/front-matter/license.html">2. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/install.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/userguide/uguide.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/errors.html">3. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/examples/examples.html">4. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/releasenotes.html">6. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../userman/featurereq.html">7. Bugs &amp; Feature Requests</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cfdsolver.html">4. CFD Solvers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cfdsolver.html#solvers-in-openfoam">4.1. Solvers in OpenFOAM</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cfdsolver.html#turbulence-models">4.2. Turbulence models</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">k-Epsilon model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="komegasst.html">k-Omega SST model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cfdsolver.html#input-file-formats">4.3. Input file formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfdsolver.html#mesh-topology">4.4. Mesh topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfdsolver.html#running-openfoam-on-tacc">4.5. Running OpenFOAM on TACC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UQ/uqengine.html">6. Uncertainity quantification</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../devman/coding.html">4. Coding Style</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../Hydro.html">Hydro-UQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../Hydro.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="cfdsolver.html"><span class="section-number">4. </span>CFD Solvers</a> &raquo;</li>
+        
+      <li>k-Epsilon model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/Hydro/techman/cfdsolver/kepsilon.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="k-epsilon-model">
+<h1>k-Epsilon model<a class="headerlink" href="#k-epsilon-model" title="Permalink to this headline">¶</a></h1>
+<p>k-<span class="math notranslate nohighlight">\(\epsilon\)</span> model was originally proposed by <a class="reference internal" href="#lasp1974" id="id1"><span>[LaSp1974]</span></a>. It is one of the most common model used for simulation of turbulent flow conditions. The model introduces two variable transport equation related to:</p>
+<ul class="simple">
+<li><p>Turbulence kinetic energy (k)</p></li>
+<li><p>Rate of dissipation of turbulence kinetic energy(<span class="math notranslate nohighlight">\(\epsilon\)</span>)</p></li>
+</ul>
+<p>The k-<span class="math notranslate nohighlight">\(\epsilon\)</span> model is one of the most popular models and widely used for a range of applications from industrial to environmental flows. This popularity can be attributed to the fact that it remains one of the simplest turbulence models, has good convergence properties and lower memory requirements. It is also often used to provide an initial estimate for more complex turbulent wall models. This model is not recommended for unconfined flows, flow cases involving strong curvatures, rotating flows etc.</p>
+<p>k-<span class="math notranslate nohighlight">\(\epsilon\)</span> model focuses on the mechanisms that affect the turbulent kinetic energy. The underlying assumtion is that the turbulent viscosity is isotropic. This imples that the ratio between the Reynolds’ stress and the mean rate of deformation is same in all directions. The standard k-<span class="math notranslate nohighlight">\(\epsilon\)</span> model proposed by <a class="reference internal" href="#lasp1974" id="id2"><span>[LaSp1974]</span></a> includes additional transport equations given as</p>
+<ul>
+<li><p>For turbulent kinetic energy <span class="math notranslate nohighlight">\((k)\)</span></p>
+<blockquote>
+<div><div class="math notranslate nohighlight" id="equation-hydro-techman-cfdsolver-kepsilon-0">
+<span class="eqno">(4.2.1)<a class="headerlink" href="#equation-hydro-techman-cfdsolver-kepsilon-0" title="Permalink to this equation">¶</a></span>\[\underbrace{\frac{\partial \left(\rho k\right)}{\partial t}}_{T1} + \underbrace{\frac{\partial \left(\rho k u_i\right)}{\partial x_i}}_{T2} = \underbrace{\frac{\partial}{\partial x_j} \left[ \frac{\mu_t}{\sigma_k} \frac{\partial k}{\partial x_j} \right]}_{T3} + \underbrace{2\mu_i E_{ij} E_{ij}}_{T4} - \underbrace{\rho \epsilon}_{T5}\]</div>
+</div></blockquote>
+</li>
+<li><p>For dissipation (<span class="math notranslate nohighlight">\(\epsilon\)</span>)</p>
+<blockquote>
+<div><div class="math notranslate nohighlight" id="equation-hydro-techman-cfdsolver-kepsilon-1">
+<span class="eqno">(4.2.2)<a class="headerlink" href="#equation-hydro-techman-cfdsolver-kepsilon-1" title="Permalink to this equation">¶</a></span>\[\underbrace{\frac{\partial \left(\rho \epsilon\right)}{\partial t}}_{T1} + \underbrace{\frac{\partial \left(\rho \epsilon u_i\right)}{\partial x_i}}_{T2} = \underbrace{\frac{\partial}{\partial x_j} \left[ \frac{\mu_t}{\sigma_{\epsilon}} \frac{\partial \epsilon}{\partial x_j} \right]}_{T3} + \underbrace{C_{1\epsilon} \frac{\epsilon}{k} 2\mu_t E_{ij} E_{ij}}_{T4} - \underbrace{C_{2\epsilon} \rho \frac{\epsilon^2}{k}}_{T5}\]</div>
+</div></blockquote>
+</li>
+</ul>
+<p>where <span class="math notranslate nohighlight">\(u_i\)</span> represent the velocity components, <span class="math notranslate nohighlight">\(E_{ij}\)</span> represent the component of rate of deformation, <span class="math notranslate nohighlight">\(\mu_t = \rho C_{\mu} \frac{k^2}{\epsilon}\)</span> represents the eddy viscosity. The other constants <span class="math notranslate nohighlight">\(\sigma_{k}, \sigma_{\epsilon}, C_{1\epsilon}, C_{2\epsilon}\)</span> are adjustable constants.</p>
+<p>The physical interpretation of the various terms in the above equation are as follows:</p>
+<ul class="simple">
+<li><p><strong>T1</strong>: Rate of change of <span class="math notranslate nohighlight">\(k/\epsilon\)</span> in time</p></li>
+<li><p><strong>T2</strong>: Transport of <span class="math notranslate nohighlight">\(k/\epsilon\)</span> by advection</p></li>
+<li><p><strong>T3</strong>: Transport of <span class="math notranslate nohighlight">\(k/\epsilon\)</span> by diffusion</p></li>
+<li><p><strong>T4</strong>: Rate of production of <span class="math notranslate nohighlight">\(k/\epsilon\)</span></p></li>
+<li><p><strong>T5</strong>: Rate of destruction of <span class="math notranslate nohighlight">\(k/\epsilon\)</span></p></li>
+</ul>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<dl class="citation">
+<dt class="label" id="lasp1974"><span class="brackets">LaSp1974</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
+<dd><p>B.E. Launder and D.B. Spalding, “The numerical computation of turbulent flows,” Computer Methods in Applied Mechanics and Engineering, vol. 3(2), pp. 269 - 289 (1974)</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, The Regents of the University of California.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '...', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+    
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+<script>
+    /*
+    let selectedFilters = [];
+    const images  = document.getElementsByClassName("gallery-item");
+    const filters = [...document.querySelectorAll('.filter select')];
+    const toggles = [...document.querySelectorAll('.filter input')];
+
+    var show = function (elem) {
+        elem.style.display = 'block';
+    };
+    var hide = function (elem) {
+        elem.style.display = 'none';
+    };
+    var toggleFilter =  function(el,elid) {
+        const filter = document.getElementById(elid);
+        filter.disabled = !el.checked;
+       
+        if ("createEvent" in document) {
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            filter.dispatchEvent(evt);
+        }
+        else
+            filter.fireEvent("change");
+    };
+    
+    for (const filter of filters) {
+        filter.addEventListener('change', function(event) {
+            selectedFilters = filters.map(filter => filter.disabled ? '' : filter.value).filter(Boolean);
+            console.log(selectedFilters);
+            for (const image of images) {
+                if (selectedFilters.every(filter => image.classList.contains(filter))) {
+                    show(image);
+                }
+                else {hide(image)};
+            };
+        })
+    };
+    */
+</script>
+
+
+</body>
+</html>
