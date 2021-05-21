@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>2.6. EDP: Demand Parameters (Coming soon) &mdash; Hydro-UQ  documentation</title>
+  <title>2.6. EDP: Demand Parameters &mdash; Hydro-UQ  documentation</title>
   
 
   
@@ -67,7 +67,7 @@
 </a>
 <hr style="margin: 0px;">
 
-  <a href="../../../hydro.html">
+  <a href="../../../Hydro.html">
 
 
 
@@ -111,12 +111,16 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">1. Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="uguide.html">2. User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="UQ.html">2.1. UQ: Uncertainty Quantification (Coming soon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UQ.html">2.1. UQ: Uncertainty Quantification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="GI.html">2.2. GI: General Information (Coming soon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SIM.html">2.3. SIM: Structural Model (Coming soon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="EVT.html">2.4. EVT: Hydro Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="FEM.html">2.5. FEM: Finite Element Method (Coming soon)</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.6. EDP: Demand Parameters (Coming soon)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.6. EDP: Demand Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#standard">Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-defined">User Defined</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="RV.html">2.7. RV: Random Variables (Coming soon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="RES.html">2.8. RES: Results (Coming soon)</a></li>
 </ul>
@@ -164,7 +168,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../hydro.html">Hydro-UQ</a>
+          <a href="../../../Hydro.html">Hydro-UQ</a>
         
       </nav>
 
@@ -195,11 +199,11 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../Hydro.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="uguide.html"><span class="section-number">2. </span>User Guide</a> &raquo;</li>
         
-      <li><span class="section-number">2.6. </span>EDP: Demand Parameters (Coming soon)</li>
+      <li><span class="section-number">2.6. </span>EDP: Demand Parameters</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -218,9 +222,109 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="edp-demand-parameters-coming-soon">
-<span id="lbl-edpdempara"></span><h1><span class="section-number">2.6. </span>EDP: Demand Parameters (Coming soon)<a class="headerlink" href="#edp-demand-parameters-coming-soon" title="Permalink to this headline">¶</a></h1>
-<p>Coming soon</p>
+  <div class="section" id="edp-demand-parameters">
+<span id="lbl-edpdempara"></span><h1><span class="section-number">2.6. </span>EDP: Demand Parameters<a class="headerlink" href="#edp-demand-parameters" title="Permalink to this headline">¶</a></h1>
+<p>This panel is where the user selects which outputs will be displayed when
+the simulation runs. There are a number of options available in the pull-down</p>
+<ol class="arabic simple">
+<li><p>Standard</p></li>
+<li><p>User Defined</p></li>
+</ol>
+<div class="section" id="standard">
+<h2>Standard<a class="headerlink" href="#standard" title="Permalink to this headline">¶</a></h2>
+<p>When the user selects there are no additional
+inputs required. The standard EDP generator will ensure the
+the max absolute value of the following are obtained:</p>
+<ol class="arabic simple">
+<li><p>Relative Floor displacements:</p></li>
+<li><p>Absolute Floor Accelerations</p></li>
+<li><p>Interstory Drifts</p></li>
+</ol>
+<p>The results will contain results for these in abbreviated form:</p>
+<ol class="arabic simple">
+<li><p>PFD peak relative floor displacement Event#-PFD-FLOOR-CLINE</p></li>
+<li><p>PFA peak floor acceleration Event#-PFA-FLOOR-CLINE</p></li>
+<li><p>PID peak inter-story drift: Event#-PID-STORY-CLINE</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Floors are numbered starting at floor 0, and stories are numbered starting at story 1.</p>
+</div>
+</div>
+<div class="section" id="user-defined">
+<h2>User Defined<a class="headerlink" href="#user-defined" title="Permalink to this headline">¶</a></h2>
+<p>As shown in fig userEDP, this panel allows the user to determine their own output and process it. When using this option the user provides additional data:</p>
+<div class="align-center figure" id="id1">
+<img alt="Hydro/userman/userguide/figures/userDefinedEDP.png" src="Hydro/userman/userguide/figures/userDefinedEDP.png" />
+<p class="caption"><span class="caption-number">Fig. 2.6.1 </span><span class="caption-text">User Defined EDP panel.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<ol class="arabic simple">
+<li><p>Additional Input: These are additional commands that are invoked by the analysis application
+before the transient analysis is performed. For example, for OpenSees this would be a script
+containing a series of recorder commands.</p></li>
+</ol>
+<blockquote>
+<div><p>A recorder file passed to OpenSees might look like the following:</p>
+<div class="highlight-tcl notranslate"><div class="highlight"><pre><span></span><span class="nv">recorder</span> EnvelopeNode <span class="o">-</span>file node.out <span class="o">-</span>node <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="o">-</span>dof <span class="mi">1</span> disp
+<span class="nv">recorder</span> EnvelopeElement <span class="o">-</span>file ele.out <span class="o">-</span>ele <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> forces
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p>Postprocess Script: This is a python or tcl script that will be invoked</p></li>
+</ol>
+<blockquote>
+<div><p>after the finite element application has run. It must be provided by
+the user. It’s purpose is to process the output files and create a
+single file, results.out. This file must contain a single line with
+as many entries as EDP’s specified.</p>
+<p>For example, a python postprocessing file that would take the outputs from the recorder commands of the pervious code block to create the results file needed vy the applications might look like the following:</p>
+<blockquote>
+<div></div></blockquote>
+</div></blockquote>
+<p>A Tcl file might look like the following:</p>
+<div class="highlight-tcl notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> nodeIn <span class="k">[</span><span class="nb">open</span> node.out r<span class="k">]</span>
+<span class="k">while</span> <span class="k">{</span> <span class="k">[</span><span class="nb">gets</span> <span class="nv">$nodeIn</span> data<span class="k">]</span> <span class="o">&gt;=</span> <span class="nv">0</span> <span class="k">}</span> <span class="k">{</span>
+   <span class="k">set</span> maxDisplacement <span class="nv">$data</span>
+<span class="k">}</span>
+<span class="nb">puts</span> <span class="nv">$maxDisplacement</span>
+
+<span class="c"># create file handler to write results to output &amp; list into which we will put results</span>
+<span class="k">set</span> resultFile <span class="k">[</span><span class="nb">open</span> results.out w<span class="k">]</span>
+<span class="k">set</span> results <span class="k">[]</span>
+
+<span class="c"># for each quanity in list of QoI passed</span>
+<span class="c">#  - get nodeTag</span>
+<span class="c">#  - get nodal displacement if valid node, output 0.0 if not</span>
+<span class="c">#  - for valid node output displacement, note if dof not provided output 1&#39;st dof</span>
+
+<span class="k">foreach</span> edp <span class="nv">$listQoI</span> <span class="k">{</span>
+   <span class="k">set</span> splitEDP <span class="k">[</span><span class="nb">split</span> <span class="nv">$edp</span> <span class="s2">&quot;_&quot;</span><span class="k">]</span>
+   <span class="k">set</span> nodeTag <span class="k">[</span><span class="nb">lindex</span> <span class="nv">$splitEDP</span> <span class="mi">1</span><span class="k">]</span>
+   <span class="k">if</span> <span class="k">{[</span><span class="nb">llength</span> <span class="nv">$splitEDP</span><span class="k">]</span> <span class="o">==</span> <span class="nv">3</span><span class="k">}</span> <span class="k">{</span>
+      <span class="k">set</span> dof <span class="mi">1</span>
+   <span class="k">}</span> <span class="k">else</span> <span class="k">{</span>
+      <span class="k">set</span> dof <span class="k">[</span><span class="nb">lindex</span> <span class="nv">$splitEDP</span> <span class="mi">3</span><span class="k">]</span>
+   <span class="k">}</span>
+   <span class="k">set</span> nodeDisp <span class="k">[</span><span class="nb">lindex</span> <span class="nv">$maxDisplacement</span> <span class="k">[expr</span> <span class="k">((</span><span class="nv">$nodeTag-1</span><span class="k">)</span><span class="o">*</span><span class="nv">2</span><span class="k">)</span><span class="o">+</span><span class="nv">$dof-1</span><span class="k">]]</span>
+   <span class="nb">lappend</span> results <span class="nv">$nodeDisp</span>
+<span class="k">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The name of the output file must be <strong>results.out</strong>.</p>
+</div>
+<ol class="arabic simple">
+<li><p>Response Parameters. This is an area in which the user</p></li>
+</ol>
+<blockquote>
+<div><p>associates a variable name with the column of the results output
+file. If the process script has an array of strings named named
+EDP’s the script, the Response Parameters will be initially set with
+these values from the script.</p>
+</div></blockquote>
+</div>
 </div>
 
 

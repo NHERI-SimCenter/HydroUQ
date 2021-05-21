@@ -26,8 +26,8 @@ Running applications locally on a personal desktop is convenient for running sma
 
 where:
     - **<path to R2D_workflow.py>** is the full path to the file "R2D_workflow.py" in the applications folder
-    - **<path to rWHALE_config.json>** is the full path to the provided file "rWHALE_config.json"
-    - **<path to WorkflowApplications.json>** is the full path to the file "WorkflowApplications.json" in the applications folder
+    - **<path to rWHALE_config.json>** is the full path to the provided file ``rWHALE_config.json``
+    - **<path to WorkflowApplications.json>** is the full path to the file ``WorkflowApplications.json`` in the applications folder
     - **<path to input_data folder>** is the full path to the folder with all input files
     - **<path to output results folder>** is the full path to where a "results" folder will be created to contain the output files
 

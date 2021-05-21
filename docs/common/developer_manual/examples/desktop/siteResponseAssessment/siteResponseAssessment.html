@@ -1,0 +1,1317 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Regional Site Response Assessment &mdash; Hydro-UQ  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+        <script src="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+        <script src="../../../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+<script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
+<style media="screen">.vega-actions a {margin-right: 5px;}</style>
+<link href="../../../../../_static/css/bootstrap.css" rel="stylesheet">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F2F2F2" >
+          
+<a href="https://simcenter.designsafe-ci.org/" style="margin-bottom: 0px;">
+  <img src="../../../../../_static/img/SimCenter-Only.png" class="logo" alt="Org-Logo" />
+</a>
+<hr style="margin: 0px;">
+
+  <a href="../../../../../Hydro.html">
+
+
+
+  
+  <img src="../../../../../_static/Hydro-Logo.png" class="logo" alt="Logo"/>
+
+</a>
+
+
+  
+  
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/userman/about.html">1. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../front-matter/ack.html">1. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../front-matter/license.html">2. Copyright and License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/userman/install.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/userman/userguide/uguide.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/userman/errors.html">3. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/userman/examples/examples.html">4. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/userman/bestpractices.html">5. Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/userman/releasenotes.html">6. Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/userman/featurereq.html">7. Bugs &amp; Feature Requests</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Technical manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/techman/hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/techman/fvm/fvm.html">2. Finite Volume Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/techman/swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/techman/cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/techman/swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/techman/UQ/uqengine.html">6. Uncertainity quantification</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Researcher manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/resman/swsolvers.html">1. Shallow Water Solvers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/resman/swcfdinter.html">2. SW / CFD Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/resman/cfdsolvers.html">3. CFD Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/resman/flumetwin.html">4. Wave Flume: Digital Twin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/devman/build.html">1. How to Build?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/devman/softarchi.html">2. Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/devman/verify.html">3. Verification of Hydro-UQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../Hydro/devman/coding.html">4. Coding Style</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../Hydro.html">Hydro-UQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../Hydro.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Regional Site Response Assessment</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../../_sources/common/developer_manual/examples/desktop/siteResponseAssessment/siteResponseAssessment.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="regional-site-response-assessment">
+<span id="lbl-example-rdt-srt"></span><h1>Regional Site Response Assessment<a class="headerlink" href="#regional-site-response-assessment" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="problem-statement">
+<h2>Problem Statement<a class="headerlink" href="#problem-statement" title="Permalink to this headline">¶</a></h2>
+<p>Site response analysis is commonly performed to analyze the propagation of seismic wave through soil. As shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">fig_siteResponse</span></code>,
+one-dimensional response analyses, as a simplified method, assume that all boundaries are horizontal and that the response of a soil deposit is
+predominately caused by SH-waves propagating vertically from the underlying bedrock. Ground surface response is usually the major output from
+these analyses, together with profile plots such as peak horizontal acceleration along the soil profile. When liquefiable soils are presenting,
+maximum shear strain and excess pore pressure ratio plots are also important.</p>
+<div class="align-center figure" id="id6">
+<span id="fig-siteresponse"></span><a class="reference internal image-reference" href="../../../../../_images/siteResponse.png"><img alt="../../../../../_images/siteResponse.png" src="../../../../../_images/siteResponse.png" style="width: 538.0px; height: 287.5px;" /></a>
+<p class="caption"><span class="caption-text">Simplified 1D site response analysis (courtesy of Pedro Arduino)</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+<p>This example demonstrates a small-scale regional earthquake risk assessment which performs site response simulation for a group of 20 sites
+located in the San Francisco Bay area. The sites are distributed in space in a 4x5 grid, within a 3x3 grid of event sites. At each event site,
+5 ground motion records of similar intensity are assigned.</p>
+<div class="align-center figure" id="id7">
+<span id="figcontext"></span><a class="reference internal image-reference" href="../../../../../_images/example.png"><img alt="../../../../../_images/example.png" src="../../../../../_images/example.png" style="width: 1083.2px; height: 429.8px;" /></a>
+<p class="caption"><span class="caption-text">Location of testbed sites</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="methodology">
+<h2>Methodology<a class="headerlink" href="#methodology" title="Permalink to this headline">¶</a></h2>
+<p>In this example, the coordinates of a list of sites are known and peak ground accelerations at these sites are of interest. A summary of the RDT
+procedure for the site response analysis is summarized here:</p>
+<ol class="arabic simple">
+<li><p>Assemble required information for interested sites. These data include site locations, input motions, and site geological data, e.g., Vs30 (the time-averaged shear-wave velocity to 30 m depth) and depth to bedrock</p></li>
+<li><p>If the input motions are not provided, use OpenSHA to obtain proper input motions</p></li>
+<li><p>If the Vs30 data are not known, use SimCenter <strong>EQHazard</strong> to obtain proper Vs30 data</p></li>
+<li><p>If the depth to bedrock data are not known, they can be obtained from SoilGrid250 database</p></li>
+<li><p>Use Sediment Velocity Model (SVM) to generate soil shear wave velocity profile</p></li>
+<li><p>Generate material input for site response analysis based on predefined model calibration methods</p></li>
+<li><p>Perform site response analysis using RDT and obtain acceleration response at the surface of soil columns defined for each site</p></li>
+</ol>
+<p>In this example, a total of twenty sites and their input motions have been pre-selected. Details of selected sits are summarized in <code class="xref std std-numref docutils literal notranslate"><span class="pre">tab_inputs</span></code>. The directory structure for inputs is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>srt_example
+├── rWHALE_config_SRT.json
+└── input_data
+    ├── model
+        ├── getVs30.py
+        ├── Scenario.json
+        ├── FreeField3D_Dry.tcl
+    ├── records
+        ├── EventGrid.csv
+        ├── RSN30.json
+        ├── RSN63.json
+        .
+        .
+        .
+        ├── site0.csv
+        ├── site1.csv
+        .
+        .
+        .
+        └── site8.csv
+    └── input_params.csv
+</pre></div>
+</div>
+<div class="section" id="obtaining-vs30-data">
+<h3>Obtaining Vs30 Data<a class="headerlink" href="#obtaining-vs30-data" title="Permalink to this headline">¶</a></h3>
+<p>Vs30 data can be obtained using <strong>EQHazard</strong> tool. EQHazard is a console application developed by the SimCenter to facilitate performing seismic hazard analysis(SHA) for regional earthquake simulations.
+The application makes use of OpenSHA to perform deterministic SHA. This application is developed using Java to facilitate the use of OpenSHA Java library. It is worth noting that this tool is most suitable
+for research applications where SHA needs to be performed for many sites given a single earthquake scenario, such as using a grid of sites for regional simulations. Several site data sources have been included in EQHazard, such as CGS/Wills VS30 Map (2015),
+Global Vs30 from Topographic Slope (Wald &amp; Allen 2008), and more.</p>
+<p>Using EQHazard is simple, the EQHazard tool is distributed as a jar file and can executed directly using:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="n">EQHazard</span> <span class="n">Scenario</span><span class="p">.</span><span class="na">json</span> <span class="n">Output</span><span class="p">.</span><span class="na">json</span>
+</pre></div>
+</div>
+<p>Scenario.json is the name of the input file and output.json is the name to be used for the resulting output file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Java is required to run EQHazard</p>
+</div>
+<p>Python script <strong>getVs30.py</strong> provides a wrapper for EQHazard. It uses the site coordinates from input_params.csv and
+a template scenario file, <em>Scenario.json</em>, to obtain Vs30 data. An updated input file, <em>input_params_srt.csv</em>, is then created with Vs30 data populated as shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">tab_inputs_srt</span></code>. In this case, CGS/Wills VS30 Map (2015) is used.</p>
+<span id="tab-inputs-srt"></span><table class="docutils align-default" id="id8">
+<caption><span class="caption-text">Input Parameters with Vs30 Data Obtained Using EQHazard</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>id</p></th>
+<th class="head"><p>longitude</p></th>
+<th class="head"><p>latitude</p></th>
+<th class="head"><p>stories</p></th>
+<th class="head"><p>yearbuilt</p></th>
+<th class="head"><p>occupancy</p></th>
+<th class="head"><p>structure</p></th>
+<th class="head"><p>areafootprint</p></th>
+<th class="head"><p>replacementCost</p></th>
+<th class="head"><p>W</p></th>
+<th class="head"><p>f_yield</p></th>
+<th class="head"><p>T1</p></th>
+<th class="head"><p>Vs30</p></th>
+<th class="head"><p>DepthToRock</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>-122.182</p></td>
+<td><p>37.422</p></td>
+<td><p>0</p></td>
+<td><p>1957</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1293.253476</p></td>
+<td><p>1</p></td>
+<td><p>55.25</p></td>
+<td><p>118.75</p></td>
+<td><p>0.29375</p></td>
+<td><p>386.6</p></td>
+<td><p>7.61</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>-122.18575</p></td>
+<td><p>37.422</p></td>
+<td><p>0</p></td>
+<td><p>1927</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2568.835761</p></td>
+<td><p>1</p></td>
+<td><p>86.75</p></td>
+<td><p>148.75</p></td>
+<td><p>0.15625</p></td>
+<td><p>386.6</p></td>
+<td><p>8.79</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>-122.1895</p></td>
+<td><p>37.422</p></td>
+<td><p>0</p></td>
+<td><p>2020</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1127.07738</p></td>
+<td><p>1</p></td>
+<td><p>114.75</p></td>
+<td><p>123.75</p></td>
+<td><p>0.39375</p></td>
+<td><p>351.9</p></td>
+<td><p>9.28</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>-122.19325</p></td>
+<td><p>37.422</p></td>
+<td><p>0</p></td>
+<td><p>1951</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2085.809768</p></td>
+<td><p>1</p></td>
+<td><p>107.75</p></td>
+<td><p>126.25</p></td>
+<td><p>0.24375</p></td>
+<td><p>386.6</p></td>
+<td><p>8.65</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>-122.197</p></td>
+<td><p>37.422</p></td>
+<td><p>0</p></td>
+<td><p>1960</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1481.567067</p></td>
+<td><p>1</p></td>
+<td><p>76.25</p></td>
+<td><p>101.25</p></td>
+<td><p>0.30625</p></td>
+<td><p>386.6</p></td>
+<td><p>7.74</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>-122.182</p></td>
+<td><p>37.42366667</p></td>
+<td><p>0</p></td>
+<td><p>1986</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1240.719532</p></td>
+<td><p>1</p></td>
+<td><p>90.25</p></td>
+<td><p>116.25</p></td>
+<td><p>0.21875</p></td>
+<td><p>386.6</p></td>
+<td><p>7.65</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>-122.18575</p></td>
+<td><p>37.42366667</p></td>
+<td><p>0</p></td>
+<td><p>1984</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2437.970509</p></td>
+<td><p>1</p></td>
+<td><p>93.75</p></td>
+<td><p>141.25</p></td>
+<td><p>0.35625</p></td>
+<td><p>386.6</p></td>
+<td><p>9.35</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>-122.1895</p></td>
+<td><p>37.42366667</p></td>
+<td><p>0</p></td>
+<td><p>1983</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2668.60615</p></td>
+<td><p>1</p></td>
+<td><p>111.25</p></td>
+<td><p>133.75</p></td>
+<td><p>0.36875</p></td>
+<td><p>351.9</p></td>
+<td><p>9.88</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>-122.19325</p></td>
+<td><p>37.42366667</p></td>
+<td><p>0</p></td>
+<td><p>1957</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1553.47035</p></td>
+<td><p>1</p></td>
+<td><p>104.25</p></td>
+<td><p>108.75</p></td>
+<td><p>0.19375</p></td>
+<td><p>386.6</p></td>
+<td><p>9.71</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>-122.197</p></td>
+<td><p>37.42366667</p></td>
+<td><p>0</p></td>
+<td><p>1984</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1625.164708</p></td>
+<td><p>1</p></td>
+<td><p>58.75</p></td>
+<td><p>106.25</p></td>
+<td><p>0.23125</p></td>
+<td><p>386.6</p></td>
+<td><p>9.32</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>-122.182</p></td>
+<td><p>37.42533333</p></td>
+<td><p>0</p></td>
+<td><p>2018</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1787.865419</p></td>
+<td><p>1</p></td>
+<td><p>62.25</p></td>
+<td><p>143.75</p></td>
+<td><p>0.34375</p></td>
+<td><p>386.6</p></td>
+<td><p>7.53</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>-122.18575</p></td>
+<td><p>37.42533333</p></td>
+<td><p>0</p></td>
+<td><p>2018</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1821.174819</p></td>
+<td><p>1</p></td>
+<td><p>65.75</p></td>
+<td><p>138.75</p></td>
+<td><p>0.20625</p></td>
+<td><p>386.6</p></td>
+<td><p>9.02</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>-122.1895</p></td>
+<td><p>37.42533333</p></td>
+<td><p>0</p></td>
+<td><p>1930</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1624.532488</p></td>
+<td><p>1</p></td>
+<td><p>69.25</p></td>
+<td><p>146.25</p></td>
+<td><p>0.31875</p></td>
+<td><p>386.6</p></td>
+<td><p>9.79</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>-122.19325</p></td>
+<td><p>37.42533333</p></td>
+<td><p>0</p></td>
+<td><p>1922</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1134.673241</p></td>
+<td><p>1</p></td>
+<td><p>79.75</p></td>
+<td><p>103.75</p></td>
+<td><p>0.25625</p></td>
+<td><p>351.9</p></td>
+<td><p>9.84</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>-122.197</p></td>
+<td><p>37.42533333</p></td>
+<td><p>0</p></td>
+<td><p>1947</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>1625.097354</p></td>
+<td><p>1</p></td>
+<td><p>51.75</p></td>
+<td><p>128.75</p></td>
+<td><p>0.16875</p></td>
+<td><p>386.6</p></td>
+<td><p>10.67</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>-122.182</p></td>
+<td><p>37.427</p></td>
+<td><p>0</p></td>
+<td><p>1969</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2289.96328</p></td>
+<td><p>1</p></td>
+<td><p>83.25</p></td>
+<td><p>131.25</p></td>
+<td><p>0.33125</p></td>
+<td><p>386.6</p></td>
+<td><p>7.66</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>-122.18575</p></td>
+<td><p>37.427</p></td>
+<td><p>0</p></td>
+<td><p>2006</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2288.360712</p></td>
+<td><p>1</p></td>
+<td><p>100.75</p></td>
+<td><p>136.25</p></td>
+<td><p>0.38125</p></td>
+<td><p>386.6</p></td>
+<td><p>9.77</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>-122.1895</p></td>
+<td><p>37.427</p></td>
+<td><p>0</p></td>
+<td><p>1959</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2291.605647</p></td>
+<td><p>1</p></td>
+<td><p>97.25</p></td>
+<td><p>111.25</p></td>
+<td><p>0.18125</p></td>
+<td><p>351.9</p></td>
+<td><p>9.8</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>-122.19325</p></td>
+<td><p>37.427</p></td>
+<td><p>0</p></td>
+<td><p>1979</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2770.811412</p></td>
+<td><p>1</p></td>
+<td><p>72.75</p></td>
+<td><p>113.75</p></td>
+<td><p>0.26875</p></td>
+<td><p>351.9</p></td>
+<td><p>10.03</p></td>
+</tr>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>-122.197</p></td>
+<td><p>37.427</p></td>
+<td><p>0</p></td>
+<td><p>1976</p></td>
+<td><p>RES1</p></td>
+<td><p>W1</p></td>
+<td><p>2088.450773</p></td>
+<td><p>1</p></td>
+<td><p>118.25</p></td>
+<td><p>121.25</p></td>
+<td><p>0.28125</p></td>
+<td><p>386.6</p></td>
+<td><p>9.68</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="obtaining-depth-to-bedrock">
+<h3>Obtaining Depth to Bedrock<a class="headerlink" href="#obtaining-depth-to-bedrock" title="Permalink to this headline">¶</a></h3>
+<p>The depth to bedrock can be obtained using several datasets. For example, SoilGrid250 map provides absolute depth to bedrock (in cm) predicted using the global compilation of soil ground observations.
+Accuracy assessment of the maps is available in Hengl <span class="bibtex" id="id1">[Hengl2017]</span> and can be downloaded <a class="reference download external" download="" href="https://data.isric.org/geonetwork/srv/eng/catalog.search#/metadata/f36117ea-9be5-4afd-bb7d-7a3e77bf392a"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a>.
+In this dataset, the depth to bedrock is considered as “depth (in cm) from the ground surface to the contact with coherent (continuous) bedrock.”
+It should be noted that the definition of bedrock in this database is based on lithology rather than shear wave velocity. Hence, depending on the geological condition, bedrock may imply
+different shear wave velocity and it might vary dramatically, e.g., western U.S. vs. eastern U.S.. Assumption is required for modeling purposes. In this example, the shear wave velocity of bedrock is assumed to be
+760 m/s, as the sites are located in western U.S..</p>
+<div class="align-center figure" id="id9">
+<span id="fig-dtr"></span><img alt="../../../../../_images/US_Depth_To_Rock.png" src="../../../../../_images/US_Depth_To_Rock.png" />
+<p class="caption"><span class="caption-text">Depth to bedrock (Cropped from SoilGrid250 to show continental U.S., 10 km resolution)</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
+<p>Example python script to obtain the data is shown below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rioxarray</span> <span class="k">as</span> <span class="nn">rxr</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Transformer</span>
+
+<span class="n">soil250</span> <span class="o">=</span> <span class="n">rxr</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="s1">&#39;BDTICM_M_250m_ll.tif&#39;</span><span class="p">)</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;input_params_srt.csv&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+   <span class="n">lon</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span>
+   <span class="n">lat</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span>
+   <span class="n">transformer</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="n">soil250</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+   <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+   <span class="n">depth_To_Rock</span> <span class="o">=</span> <span class="n">soil250</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">yy</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;depth to rock is </span><span class="si">{:.2f}</span><span class="s1"> m&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">depth_To_Rock</span><span class="o">/</span><span class="mi">100</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generating-soil-profile-using-svm">
+<h3>Generating Soil Profile Using SVM<a class="headerlink" href="#generating-soil-profile-using-svm" title="Permalink to this headline">¶</a></h3>
+<p>Once the depth to rock is obtained, the next step is to generate soil profile based on Vs30. Amplitude, frequency content and duration of ground shaking are important parameters in ground motion modeling and are
+heavily dependent on crustal material properties. The Sediment Velocity Model (SVM) “translates VS30 and a proxy which describes stiffness of the near surface sediments into a 1D velocity profile” (Shi and Asimaki, 2018, <span class="bibtex" id="id2">[Shi2018]</span>).</p>
+<p>Datasets of soil parameters only exist for specific locations and there is no way to collect adequate data on all regions. For this reason, there is a need for a method which can determine these crustal
+material properties such as wave velocity and mass density for those regions which we do not have physically collected data. One such method, called the Community Velocity Models (CVMs),
+which was developed by the Southern California Earthquake Center (SCEC), is used to provide 3D seismic velocity information for Southern California. However, CVMs have their limitations.
+There exist two sub-models of the CVM which are the CVM-SCEC (CVM-S) and CVM-Harvard (CVM-H). Both sub-models rely on the spatial resolution of the available datasets and thus result in crude velocity profiles.
+Moreover, the CVM-H has an optional geotechnical layer (GTL) option which replaces the soft sediments in the top 350 m of soil, smoothing the velocity profile and obscuring basin edges which cause strong velocity impedance.</p>
+<p>The SVM method was developed to get more accurate soil profiles as a function of VS30 which can be easily obtained from maps. It further allows for determination of basin depths based on crustal velocity models and preserves basin edges.</p>
+<p>The Shi and Asimaki <span class="bibtex" id="id3">[Shi2018]</span> Sediment Velocity Model (SVM) is used in this example because of its ability to predict a soil velocity profile based solely on VS30. From this profile we are able to determine ground motion wavelengths and set
+a constraint for a minimum number of points needed to fully describe a soil column. Gmax at depth is also obtained from this shear wave velocity profile. The results of the test case are presented in <code class="xref std std-numref docutils literal notranslate"><span class="pre">fig_Vs</span></code>.</p>
+<div class="align-center figure" id="id10">
+<span id="fig-vs"></span><img alt="../../../../../_images/Vs.png" src="../../../../../_images/Vs.png" />
+<p class="caption"><span class="caption-text">Generated shear wave velocity profile based on SVM</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="including-soil-nonlinearity">
+<h3>Including Soil Nonlinearity<a class="headerlink" href="#including-soil-nonlinearity" title="Permalink to this headline">¶</a></h3>
+<p>By default, <a class="reference external" href="https://opensees.berkeley.edu/wiki/index.php/Elastic_Isotropic_Material">elastic isotropic material</a> is assigned to the soil column due to limited available information. However, Nonlinearity can be incorporated into workflow by switching the constitutive model to other nonlinear model, for example,
+the multiaxial cyclic plasticity model proposed by Borja and Amies <span class="bibtex" id="id4">[Borja1994]</span>. This simple total stress-based bounding surface plasticity model for clays was developed to accommodate multiaxial stress reversals. The model was constructed based on the idea
+of a vanishing elastic region undergoing pure translation inside a bounding surface, and an interpolation function for hardening modulus which varies with stress distance of the elastic region from the unloading point.
+The model can be applied to cohesive soils undergoing undrained stress reversals and cyclic loading. <code class="xref std std-numref docutils literal notranslate"><span class="pre">fig_BA94</span></code> illustrates behaviors of this model under cyclic loading. More information regarding the implementation of this model in OpenSees can be found
+<a class="reference external" href="https://opensees.berkeley.edu/wiki/index.php/J2CyclicBoundingSurface_Material">here</a>.</p>
+<div class="align-center figure" id="id11">
+<span id="fig-ba94"></span><a class="reference internal image-reference" href="../../../../../_images/CTC_Fig3_Comparison.png"><img alt="../../../../../_images/CTC_Fig3_Comparison.png" src="../../../../../_images/CTC_Fig3_Comparison.png" style="width: 450.0px; height: 450.0px;" /></a>
+<p class="caption"><span class="caption-text">Example behavior of Borja and Amies model</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
+<table class="colwidths-given docutils align-default" id="id12">
+<caption><span class="caption-text">Input for elastic material</span><a class="headerlink" href="#id12" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 29%" />
+<col style="width: 29%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>id</p></th>
+<th class="head"><p>longitude</p></th>
+<th class="head"><p>latitude</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>Model</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>-122.182</p></td>
+<td><p>37.422</p></td>
+<td><p>…</p></td>
+<td><p>Elastic</p></td>
+</tr>
+</tbody>
+</table>
+<p>The example input parameters for using Borja and Amies are summarized in the following table:</p>
+<table class="colwidths-given docutils align-default" id="id13">
+<caption><span class="caption-text">Input for multiaxial cyclic plasticity model for clays (Borja and Amies, <span class="bibtex" id="id5">[Borja2018]</span>)</span><a class="headerlink" href="#id13" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>id</p></th>
+<th class="head"><p>longitude</p></th>
+<th class="head"><p>latitude</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>Model</p></th>
+<th class="head"><p>Su_rat</p></th>
+<th class="head"><p>Den</p></th>
+<th class="head"><p>h/G</p></th>
+<th class="head"><p>m</p></th>
+<th class="head"><p>h0</p></th>
+<th class="head"><p>chi</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>-122.182</p></td>
+<td><p>37.422</p></td>
+<td><p>…</p></td>
+<td><p>BA</p></td>
+<td><p>0.26</p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0.2</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>where <code class="docutils literal notranslate"><span class="pre">Su_rat</span></code> is the ratio between undrain shear strength and initial vertical stress.</p>
+</div>
+<div class="section" id="adding-surface-structural-model">
+<h3>Adding Surface Structural Model<a class="headerlink" href="#adding-surface-structural-model" title="Permalink to this headline">¶</a></h3>
+<p>A structure model can also be added to the workflow. In this case, the structure model uses the <a class="reference internal" href="../../../architecture/desktop/applications/modelingApps.html#lblmodelingapp"><span class="std std-ref">OpenSeesPyInput</span></a> modeling application as discussed in <a class="reference internal" href="../eqAssessment.html#lbleqassessment"><span class="std std-ref">Earthquake Assessment</span></a>.
+The buildings are modeled as elastic-perfectly plastic single-degree-of-freedom (SDOF) systems defined by three input model parameters: the weight <code class="docutils literal notranslate"><span class="pre">W</span></code>, yield strength <code class="docutils literal notranslate"><span class="pre">f_yield</span></code>, and fundamental period <code class="docutils literal notranslate"><span class="pre">T1</span></code>.
+Functions are included which record the peak response as EDPs for each of the EDP types specified in the EDP_specs.json file.</p>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;Modeling&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="nt">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenSeesInputSRT&quot;</span><span class="p">,</span>
+<span class="nt">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+   <span class="nt">&quot;mainScript&quot;</span><span class="p">:</span> <span class="s2">&quot;FreeField3D_Dry.tcl&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;modelPath&quot;</span><span class="p">:</span> <span class="s2">&quot;model/&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;ndm&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+   <span class="nt">&quot;includeStructureModel&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+   <span class="nt">&quot;SimulationApplication&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenSeesPy-Simulation&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;structureModel&quot;</span><span class="p">:</span> <span class="s2">&quot;cantilever.py&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="performing-analysis">
+<h3>Performing Analysis<a class="headerlink" href="#performing-analysis" title="Permalink to this headline">¶</a></h3>
+<p>Configurations for RDT workflow are defined in <strong>rWHALE_config_SRT.json</strong>. In this example, the application for Modeling and Simulation is OpenSeesInputSRT and OpenSees-Simulation-SRT, respectively.</p>
+<p>For each site, two additional input files for OpenSees are created during analysis: <strong>freefield_config.tcl</strong> and <strong>freefield_material.tcl</strong>. <strong>freefield_config.tcl</strong> defines the discretization of the profile and applied input motion(s).</p>
+<div class="highlight-tcl notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c"># site response configuration file</span>
+<span class="k">set</span> soilThick <span class="mf">99.0</span>
+<span class="k">set</span> numLayers <span class="mi">198</span>
+<span class="c"># layer thickness - bottom to top</span>
+<span class="k">set</span> layerThick<span class="k">(</span><span class="nv">1</span><span class="k">)</span> <span class="mf">0.50</span>
+<span class="k">set</span> nElemY<span class="k">(</span><span class="nv">1</span><span class="k">)</span> <span class="mi">1</span>
+<span class="k">set</span> sElemY<span class="k">(</span><span class="nv">1</span><span class="k">)</span> <span class="mf">0.500</span>
+<span class="k">set</span> layerThick<span class="k">(</span><span class="nv">2</span><span class="k">)</span> <span class="mf">0.50</span>
+<span class="k">set</span> nElemY<span class="k">(</span><span class="nv">2</span><span class="k">)</span> <span class="mi">1</span>
+<span class="k">set</span> sElemY<span class="k">(</span><span class="nv">2</span><span class="k">)</span> <span class="mf">0.500</span>
+
+<span class="c"># ...</span>
+<span class="c"># ...</span>
+
+<span class="c"># motion file (used if the input arguments do not include motion)</span>
+<span class="k">set</span> accFile  xInput.acc
+<span class="k">set</span> dispFile xInput.disp
+<span class="k">set</span> velFile  xInput.vel
+<span class="k">set</span> timeFile xInput.time
+<span class="k">set</span> numEvt <span class="mi">2</span>
+<span class="k">set</span> accFile2  yInput.acc
+<span class="k">set</span> dispFile2 yInput.disp
+<span class="k">set</span> velFile2  yInput.vel
+<span class="k">set</span> rockVs <span class="mf">760.0</span>
+<span class="k">set</span> omega1 <span class="mf">8.59</span>
+<span class="k">set</span> omega2 <span class="mf">42.95</span>
+</pre></div>
+</td></tr></table></div>
+<p><strong>freefield_material.tcl</strong> defines material inputs based on predefined calibration procedure based on Vs profile created from previous step. Input motion(s) is converted from records for each evaluation,
+for example, xInput.vel and xInput.time defiles velocity and time series, respectively, for one component of the motion.</p>
+<div class="highlight-tcl notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">set</span> rho<span class="k">(</span><span class="nv">1</span><span class="k">)</span> <span class="mf">2.0</span>
+<span class="k">set</span> shearG<span class="k">(</span><span class="nv">1</span><span class="k">)</span> <span class="mf">112692.20</span>
+<span class="k">set</span> nu<span class="k">(</span><span class="nv">1</span><span class="k">)</span> <span class="mf">0.30</span>
+<span class="k">set</span> E<span class="k">(</span><span class="nv">1</span><span class="k">)</span> <span class="mf">292999.71</span>
+
+<span class="k">set</span> mat<span class="k">(</span><span class="nv">1</span><span class="k">)</span> <span class="s2">&quot;ElasticIsotropic 1 $E(1) $nu(1) $rho(1)&quot;</span>
+
+
+<span class="k">set</span> rho<span class="k">(</span><span class="nv">2</span><span class="k">)</span> <span class="mf">2.0</span>
+<span class="k">set</span> shearG<span class="k">(</span><span class="nv">2</span><span class="k">)</span> <span class="mf">112692.20</span>
+<span class="k">set</span> nu<span class="k">(</span><span class="nv">2</span><span class="k">)</span> <span class="mf">0.30</span>
+<span class="k">set</span> E<span class="k">(</span><span class="nv">2</span><span class="k">)</span> <span class="mf">292999.71</span>
+
+<span class="k">set</span> mat<span class="k">(</span><span class="nv">2</span><span class="k">)</span> <span class="s2">&quot;ElasticIsotropic 2 $E(2) $nu(2) $rho(2)&quot;</span>
+
+<span class="c"># ... </span>
+<span class="c"># ...</span>
+</pre></div>
+</td></tr></table></div>
+<p>The working/results directory structure is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>results
+   └── 0
+      ├── templatedir
+         ├── bim.j
+         ├── edb.j
+         |── evt.j
+         ├── sam.j
+         ├── workflow_driver.bat
+      ├── workdir.1
+         ├── FreeField3D_Dry.tcl
+         ├── freefield_config.tcl
+         ├── freefield_material.tcl
+         ├── xInput.vel
+         ├── xInput.time
+         ├── yInput.vel
+         ├── yInput.time
+         .
+         .
+         .
+      ├── workdir.2
+      .
+      .
+      ├── workdir.5
+      └── response.csv
+   └── 1
+   .
+   .
+   └── 19
+</pre></div>
+</div>
+<p><strong>EDP_1-19.csv</strong>: reports statistics on the EDP results from simulating 5 ground motions for each building asset.
+The statistics reported are the median and lognormal standard deviation of peak ground acceleration (shown as PFA) in two directions.</p>
+<span id="tab-edp-results"></span><table class="docutils align-default" id="id14">
+<caption><span class="caption-text">EDP Results</span><a class="headerlink" href="#id14" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>type</p></th>
+<th class="head"><p>PGA</p></th>
+<th class="head"><p>PGA</p></th>
+<th class="head"><p>PGA</p></th>
+<th class="head"><p>PGA</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>loc</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>dir</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>stat</p></td>
+<td><p>median</p></td>
+<td><p>beta</p></td>
+<td><p>median</p></td>
+<td><p>beta</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0.6628029999999999</p></td>
+<td><p>0.13600449843043236</p></td>
+<td><p>0.736927</p></td>
+<td><p>0.1275636943053479</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0.633193</p></td>
+<td><p>0.20304404095647471</p></td>
+<td><p>0.717512</p></td>
+<td><p>0.24904764429936244</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>0.721433</p></td>
+<td><p>0.38880051595831655</p></td>
+<td><p>0.715938</p></td>
+<td><p>0.3514059337674102</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>0.713946</p></td>
+<td><p>0.14054739273872968</p></td>
+<td><p>0.764877</p></td>
+<td><p>0.3915961386798949</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>0.743542</p></td>
+<td><p>0.2171580362193277</p></td>
+<td><p>0.49029799999999996</p></td>
+<td><p>0.2407229856374786</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>0.6505810000000001</p></td>
+<td><p>0.15337053057961506</p></td>
+<td><p>0.56929</p></td>
+<td><p>0.19106712482954594</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>0.667912</p></td>
+<td><p>0.0821461264634056</p></td>
+<td><p>0.76647</p></td>
+<td><p>0.2854761912873225</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>0.8115100000000001</p></td>
+<td><p>0.3580416351456673</p></td>
+<td><p>0.7321770000000001</p></td>
+<td><p>0.10374091963523832</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>0.5919449999999999</p></td>
+<td><p>0.484515336289696</p></td>
+<td><p>0.767825</p></td>
+<td><p>0.2795311183002603</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>0.8206610000000001</p></td>
+<td><p>0.169420903616953</p></td>
+<td><p>0.679726</p></td>
+<td><p>0.31719489352530283</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>0.6627770000000001</p></td>
+<td><p>0.1160975874275244</p></td>
+<td><p>0.623636</p></td>
+<td><p>0.1383857442038908</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>0.664215</p></td>
+<td><p>0.3068794966334912</p></td>
+<td><p>0.681191</p></td>
+<td><p>0.17780768288420262</p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>0.7623260000000001</p></td>
+<td><p>0.3342121915707141</p></td>
+<td><p>0.709516</p></td>
+<td><p>0.10729744618054217</p></td>
+</tr>
+<tr class="row-even"><td><p>13</p></td>
+<td><p>0.540041</p></td>
+<td><p>0.2794970883918737</p></td>
+<td><p>0.702222</p></td>
+<td><p>0.07850396436049084</p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>0.628897</p></td>
+<td><p>0.3682471518218779</p></td>
+<td><p>0.6626449999999999</p></td>
+<td><p>0.08292658813669537</p></td>
+</tr>
+<tr class="row-even"><td><p>15</p></td>
+<td><p>0.63932</p></td>
+<td><p>0.3279279372030125</p></td>
+<td><p>0.574796</p></td>
+<td><p>0.2115260225991987</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>0.74392</p></td>
+<td><p>0.3603316789411304</p></td>
+<td><p>0.690448</p></td>
+<td><p>0.21550453311227016</p></td>
+</tr>
+<tr class="row-even"><td><p>17</p></td>
+<td><p>0.8111510000000001</p></td>
+<td><p>0.2871611406223856</p></td>
+<td><p>0.714084</p></td>
+<td><p>0.20898183490987293</p></td>
+</tr>
+<tr class="row-odd"><td><p>18</p></td>
+<td><p>0.6592899999999999</p></td>
+<td><p>0.3766289667049084</p></td>
+<td><p>0.742772</p></td>
+<td><p>0.11470562563412998</p></td>
+</tr>
+<tr class="row-even"><td><p>19</p></td>
+<td><p>0.67061</p></td>
+<td><p>0.17423255167006754</p></td>
+<td><p>0.740329</p></td>
+<td><p>0.3700796708017528</p></td>
+</tr>
+</tbody>
+</table>
+<p>Under Windows system, the commands can be summarized as:</p>
+</div>
+</div>
+<div class="section" id="appendix">
+<h2>Appendix<a class="headerlink" href="#appendix" title="Permalink to this headline">¶</a></h2>
+<p>Configurations for RDT workflow:</p>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;Name&quot;</span><span class="p">:</span> <span class="s2">&quot;rWHALE_&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Author&quot;</span><span class="p">:</span> <span class="s2">&quot;Adam Zsarnóczay&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;WorkflowType&quot;</span><span class="p">:</span> <span class="s2">&quot;Parametric Study&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;buildingFile&quot;</span><span class="p">:</span><span class="s2">&quot;buildings.json&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;runDir&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;units&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;force&quot;</span><span class="p">:</span> <span class="s2">&quot;kips&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;time&quot;</span><span class="p">:</span> <span class="s2">&quot;sec&quot;</span>
+   <span class="p">},</span>
+   <span class="nt">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;EDP&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;DM&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;DV&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;every_realization&quot;</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;Applications&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;Building&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;CSV_to_BIM&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;Min&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;Max&quot;</span><span class="p">:</span> <span class="s2">&quot;19&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;buildingSourceFile&quot;</span><span class="p">:</span><span class="s2">&quot;input_params_srt.csv&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;RegionalMapping&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;NearestNeighborEvents&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;filenameEVENTgrid&quot;</span><span class="p">:</span> <span class="s2">&quot;records/EventGrid.csv&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;samples&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="nt">&quot;neighbors&quot;</span><span class="p">:</span> <span class="mi">4</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;Events&quot;</span><span class="p">:</span> <span class="p">[{</span>
+      <span class="nt">&quot;EventClassification&quot;</span><span class="p">:</span> <span class="s2">&quot;Earthquake&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;SimCenterEvent&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;pathEventData&quot;</span><span class="p">:</span> <span class="s2">&quot;records/&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}],</span>
+    <span class="nt">&quot;Modeling&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenSeesInputSRT&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;mainScript&quot;</span><span class="p">:</span> <span class="s2">&quot;FreeField3D_Dry.tcl&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;modelPath&quot;</span><span class="p">:</span> <span class="s2">&quot;model/&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;ndm&quot;</span><span class="p">:</span> <span class="mi">3</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;EDP&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;UserDefinedEDP_R&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;EDPspecs&quot;</span><span class="p">:</span> <span class="s2">&quot;EDP_specs.json&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;Simulation&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="nt">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenSees-Simulation-SRT&quot;</span><span class="p">,</span>
+       <span class="nt">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;UQ&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="nt">&quot;Application&quot;</span><span class="p">:</span> <span class="s2">&quot;Dakota-UQ&quot;</span><span class="p">,</span>
+       <span class="nt">&quot;ApplicationData&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;LHS&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;samples&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+          <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;UQ&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;concurrency&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+          <span class="nt">&quot;keepSamples&quot;</span><span class="p">:</span> <span class="kc">true</span>
+       <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="p">},</span>
+	<span class="nt">&quot;runType&quot;</span><span class="p">:</span> <span class="s2">&quot;runningLocal&quot;</span><span class="p">,</span>
+	<span class="nt">&quot;runDir&quot;</span><span class="p">:</span> <span class="s2">&quot;path_to_runDir&quot;</span><span class="p">,</span>
+	<span class="nt">&quot;localAppDir&quot;</span><span class="p">:</span> <span class="s2">&quot;path_to_SimCenterBackendApplications&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, The Regents of the University of California.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '...', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+    
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+<script>
+    /*
+    let selectedFilters = [];
+    const images  = document.getElementsByClassName("gallery-item");
+    const filters = [...document.querySelectorAll('.filter select')];
+    const toggles = [...document.querySelectorAll('.filter input')];
+
+    var show = function (elem) {
+        elem.style.display = 'block';
+    };
+    var hide = function (elem) {
+        elem.style.display = 'none';
+    };
+    var toggleFilter =  function(el,elid) {
+        const filter = document.getElementById(elid);
+        filter.disabled = !el.checked;
+       
+        if ("createEvent" in document) {
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            filter.dispatchEvent(evt);
+        }
+        else
+            filter.fireEvent("change");
+    };
+    
+    for (const filter of filters) {
+        filter.addEventListener('change', function(event) {
+            selectedFilters = filters.map(filter => filter.disabled ? '' : filter.value).filter(Boolean);
+            console.log(selectedFilters);
+            for (const image of images) {
+                if (selectedFilters.every(filter => image.classList.contains(filter))) {
+                    show(image);
+                }
+                else {hide(image)};
+            };
+        })
+    };
+    */
+</script>
+
+
+</body>
+</html>

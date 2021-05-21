@@ -4,13 +4,14 @@
 EVT: Hydro Events
 ******************************************
 
-The ``Hydro EVT`` is used to setup the flow parameters related to the water-borne hazard event. This can either be a coupling between the shallow-water and CFD solver or using a CFD solver alone. The steps of the setup process for the event has been kept nearly similar to that often used in Finite Element Method to make it easier for researchers from structural engineering background to easily use the app. This includes ``project settings`` >> ``geometry`` >> ``meshing`` >> ``materials`` >> ``initial conditions`` >> ``boundary conditions`` >> ``solver settings``. These steps are available through a tree-structure as shown in :numref:`EVTSettings`.
+The ``Hydro EVT`` is used to setup the flow parameters related to the water-borne hazard event. This can either be a coupling between the shallow-water and CFD solver or using the CFD solver alone. The steps of the setup process for the event have been kept nearly similar to that often used in Finite Element Method to make it easier for researchers from structural engineering background to easily use this application. This includes ``project settings`` >> ``geometry`` >> ``meshing`` >> ``materials`` >> ``initial conditions`` >> ``boundary conditions`` >> ``solver settings``. These steps are available through a tree-structure as shown in :numref:`EVTSettings`.
 
 .. _EVTSettings:
 
 .. figure:: figures/HydroSteps.png
    :align: center
    :figclass: align-center
+   :height: 300px
 
    The steps involved in setup of the ``Hydro`` event
 

@@ -3,7 +3,7 @@
 Issues While Running
 --------------------
 
-The |app| is a complicated tool and it will not always run. Causes of failure include incorrect set up, non-functioning or poorly functioning websites, user error, and possible bugs in the software. To discover the errors it is useful to understand how the user interface and the backend work when the user submits to run a job. A number of things occur when the Submit button is clicked:
+Common causes of failure include incorrect set up, non-functioning or poorly functioning websites, user error, and possible bugs in the software. To discover the errors it is useful to understand how the user interface and the backend work when the user submits to run a job. A number of things occur when the Submit button is clicked:
 
 #. The UI creates a folder in the working dir location specified called ``tmp.SimCenter`` and in that folder creates another folder called ``templatedir``.
 #. The UI then iterates through all the widgets chosen and these widgets place all needed files for the computation into the ``templatedir`` directory.

@@ -8,17 +8,17 @@ The Hydro-UQ app, as will be discussed in :ref:`lbl-softarchi`, is an hazard eve
 
 .. _primaryGUI:
 
-.. figure:: figures/PrimaryGUI.png
+.. figure:: figures/EVT_Tab.png
    :align: center
    :figclass: align-center
 
    The Hydro-UQ app user interface
 
-1. Login Button: 
+1. Login button: 
 
 The **Login** button is at the top right of the user interface. Before the user can launch any jobs on DesignSafe, they must first login to DesignSafe using their DesignSafe login and password. Pressing the login button will open up the login window for users to enter this information. Users can register for an account on the `DesignSafe-CI <https://www.designsafe-ci.org/account/register>`_ website.
 
-2. Action Buttons:
+2. Action buttons:
 
 The action buttons consists of possible action button. This includes:
 
@@ -30,11 +30,7 @@ The action buttons consists of possible action button. This includes:
 
     d. **Exit**: Exit the application.
 
-3. Message Area: 
-
-The message area is located in the top center of the UI and displays status and error messages for a running background application. 
-
-4. Input Panel Selection: 
+3. Input panel selection: 
 
 The ribbon on the left side provides the user with a selection of buttons to choose from (e.g. **UQ**, **EVT**, **RV**, **FEM**, **RES**). Selecting any of these buttons will change what is displayed in the central input panel. Each panel, with exception of **RV** panel,  will present the user with an option for which application to choose for that part of the workflow, and will then present the users for inputs for that application. Of particular interest here is the **EVT** where all flow-parameters are assigned. At present, the other inputs have not been integrated into the Hydro-UQ application. More information will be provided as and when the other inputs are integrated.
 
@@ -50,10 +46,10 @@ The ribbon on the left side provides the user with a selection of buttons to cho
     RV
     RES
 
-5. Event Parameter Panel: 
+5. Event parameter pPanel: 
 
 The input panel is the large central area of the UI where the user provides input for the application chosen and where they can view the results. For example, if the user had selected **RV** in the input panel selection, it is in this panel that the user would provide details on the distributions associated with each random variable. In the following sections each of the panels that is presented to the user when the buttons in the input panel selection are reviewed:
 
-6. Graphics Window:
+6. Graphics panel:
 
-The graphics window will be added into the upcoming versions. This is meant to show various geometric entities related to the Hydro-event.
+The graphics window is not available in v.1.0.0 but will be added into the upcoming versions. The graphics window will help users to select boundary conditions graphically.

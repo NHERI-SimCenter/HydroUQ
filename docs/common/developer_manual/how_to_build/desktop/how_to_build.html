@@ -65,7 +65,7 @@
 </a>
 <hr style="margin: 0px;">
 
-  <a href="../../../../hydro.html">
+  <a href="../../../../Hydro.html">
 
 
 
@@ -102,8 +102,8 @@
               <p class="caption"><span class="caption-text">About</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../Hydro/userman/about.html">1. About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/ack.html">1. Acknowledgments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/license.html">2. Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/ack.html">2. Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../front-matter/license.html">3. Copyright and License</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User manual</span></p>
 <ul>
@@ -152,7 +152,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../hydro.html">Hydro-UQ</a>
+          <a href="../../../../Hydro.html">Hydro-UQ</a>
         
       </nav>
 
@@ -183,7 +183,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../hydro.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../../Hydro.html" class="icon icon-home"></a> &raquo;</li>
         
       <li><span class="section-number">1. </span>How to Build</li>
     
@@ -232,9 +232,7 @@
 <ol class="arabic">
 <li><p>Add Conan <a class="reference external" href="https://bintray.com/nheri-simcenter/simcenter">SimCenter</a> and  <a class="reference external" href="https://bintray.com/bincrafters/public-conan">BinCrafters</a> repositories to the Conan remotes. You can add these remotes by typing the following commands in the terminal:</p>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conan remote add simcenter https://api.bintray.com/conan/nheri-simcenter/simcenter</span>
-
-<span class="go">conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan</span>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conan remote add simcenter https://nherisimcenter.jfrog.io/artifactory/api/conan/simcenter</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -301,12 +299,17 @@
 </pre></div>
 </div>
 </li>
+<li><p>For Mac users, add the following command after <strong>cmake –install .</strong> to ensure the binary applications are copied to the applications folder.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">install</span> <span class="o">.</span>
+</pre></div>
+</div>
+</li>
 </ol>
 </div>
 </div></blockquote>
 </li>
 </ol>
-<p>If building and installation were successful you should find a folder called <code class="docutils literal notranslate"><span class="pre">applications</span></code> in the repository with all the applications inside of it. The name of this folder should not be changed.</p>
+<p>If building and installation were successful you should find a folder called <code class="docutils literal notranslate"><span class="pre">applications</span></code> in the repository with all the applications inside of it.   The name of this folder should not be changed.</p>
 </div>
 </div>
 <div class="section" id="build-the-user-interface">
@@ -320,7 +323,7 @@
 </div></blockquote>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Use the above links if you just want to download and build the applications. If you intend to make changes to any of the code in the repo’s, you should fork the latter repo and then clone your forked repo. Forking a repo at <strong>githib</strong> is done through your browser.</p>
+<p>Use the above links if you just want to download and build the applications. If you intend to make changes to any of the code in the repo’s, you should fork the latter repo and then clone your forked repo. Forking a repo at <strong>github</strong> is done through your browser.</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">YOUR_GITHUB_NAME</span><span class="o">/</span><span class="n">APP_NAME</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
@@ -339,7 +342,7 @@
 <div><pre class="literal-block">mkdir build
 cd build
 qmake ../Hydro.pro
-make</pre>
+     make</pre>
 </div></blockquote>
 </li>
 </ol>
