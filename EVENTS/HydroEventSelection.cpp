@@ -71,7 +71,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     //eventSelection->addItem(tr("Wave Flume Digitwin"));
 
     // Datatips for the different event types
-    eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     eventSelection->setItemData(0, "This is a general event from which all other events can be setup", Qt::ToolTipRole);
     //eventSelection->setItemData(1, "Coupling of shallow-water solver (GeoClaw) with CFD (OpenFOAM)", Qt::ToolTipRole);
     //eventSelection->setItemData(2, "Digital twin of Wave Flume (at OSU)", Qt::ToolTipRole);
