@@ -59,7 +59,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     QHBoxLayout *theSelectionLayout = new QHBoxLayout();
     SectionTitle *label=new SectionTitle();
     label->setMinimumWidth(250);
-    label->setText(QString("Simulation type"));
+    label->setText(QString("Event Type"));
 
     // Combobox for different simulation types
     eventSelection = new QComboBox();
