@@ -5,7 +5,7 @@ The major areas of the world that experience strong activity with potential for 
 
 .. _TsunamiWorld:
 
-.. figure:: images/TsunamiWorld.png
+.. figure:: figures/TsunamiWorld.png
     :width: 500px
     :align: center
     :alt: alternate text
@@ -17,7 +17,7 @@ There are good records for recent tsunamis. However, for those in the past centu
 
 .. _TsunamiEvents:
 
-.. figure:: images/TsunamiEvents.png
+.. figure:: figures/TsunamiEvents.png
     :width: 600px
     :align: center
     :alt: alternate text
@@ -29,7 +29,7 @@ The tabular data shown in :numref:`TsunamiRegion`, compiled by NOAA's National C
 
 .. _TsunamiRegion:
 
-.. figure:: images/RegionalTsunami.png
+.. figure:: figures/RegionalTsunami.png
     :width: 600px
     :align: center
     :figclass: align-center
@@ -40,26 +40,11 @@ The destruction caused by a tsunami can range to much larger extents. The tsunam
 
 .. _TsunamiDistant:
 
-.. figure:: images/TeleTsunami.png
+.. figure:: figures/TeleTsunami.png
     :width: 600px
     :align: center
     :alt: alternate text
     :figclass: align-center
 
     List of teletsunami events over the last 300 years. The table also shows the source and distant locations where damage was caused (Source: `NOAA report <https://www.ngdc.noaa.gov/hazard/data/publications/tsunami-sources-2017.pdf>`_)
-
-Tsunamis can be caused due to a variety of events. While majority of them are caused due to earthquakes, they also result due to volcanic eruptions, landslides and other events. These are shown in :numref:`TsunamiSource` and it is evident that most of these events are also in neighbourhood of the Pacific ocean.
-
-.. _TsunamiSource:
-
-.. figure:: images/SourceTsunami.png
-    :width: 600px
-    :align: center
-    :alt: alternate text
-    :figclass: align-center
-
-    Classification of source and mechanism of tsunami events. (Source: `NOAA report on tsunami <https://www.ngdc.noaa.gov/hazard/data/publications/tsunami-sources-2017.pdf>`_)
-
-Cause of tsunamis
-----------------------
 

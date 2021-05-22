@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>k-Epsilon model &mdash; Hydro-UQ  documentation</title>
+  <title>Storm surge events &mdash; Hydro-UQ  documentation</title>
   
 
   
@@ -37,15 +37,14 @@
         <script src="../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
         <script src="../../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
         <script src="../../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="k-Omega SST model" href="komegasst.html" />
-    <link rel="prev" title="4. CFD Solvers" href="cfdsolver.html" />
+    <link rel="next" title="Causes of storm surge" href="surge-cause.html" />
+    <link rel="prev" title="Tsunami modeling" href="tsu-numerics.html" />
 <script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
@@ -120,24 +119,20 @@
 </ul>
 <p class="caption"><span class="caption-text">Technical manual</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../hazards/water.html">1. Water-borne Natural Hazards</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="water.html">1. Water-borne Natural Hazards</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="water.html#tsunami">1.1. Tsunami</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="water.html#storm-surge">1.2. Storm Surge</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Storm surge events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surge-cause.html">Causes of storm surge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surge-risk.html">Storm surge risk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surge-numerics.html">Modeling storm surge</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">2. Finite Volume Method</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="cfdsolver.html">4. CFD Solvers</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="cfdsolver.html#solvers-in-openfoam">4.1. Solvers in OpenFOAM</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="cfdsolver.html#turbulence-models">4.2. Turbulence models</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">k-Epsilon model</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="komegasst.html">k-Omega SST model</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="cfdsolver.html#input-file-formats">4.3. Input file formats</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cfdsolver.html#mesh-topology">4.4. Mesh topology</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cfdsolver.html#running-openfoam-on-tacc">4.5. Running OpenFOAM on TACC</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swcfdcoupling/swcfdcoupling.html">5. SW-CFD Coupling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../UQ/uqengine.html">6. Uncertainity quantification</a></li>
 </ul>
@@ -202,15 +197,15 @@
     
       <li><a href="../../../Hydro.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="cfdsolver.html"><span class="section-number">4. </span>CFD Solvers</a> &raquo;</li>
+          <li><a href="water.html"><span class="section-number">1. </span>Water-borne Natural Hazards</a> &raquo;</li>
         
-      <li>k-Epsilon model</li>
+      <li>Storm surge events</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../../../_sources/Hydro/techman/cfdsolver/kepsilon.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/Hydro/techman/hazards/surge-events.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -223,45 +218,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="k-epsilon-model">
-<h1>k-Epsilon model<a class="headerlink" href="#k-epsilon-model" title="Permalink to this headline">¶</a></h1>
-<p>k-<span class="math notranslate nohighlight">\(\epsilon\)</span> model was originally proposed by <a class="reference internal" href="#lasp1974" id="id1"><span>[LaSp1974]</span></a>. It is one of the most common model used for simulation of turbulent flow conditions. The model introduces two variable transport equation related to:</p>
-<ul class="simple">
-<li><p>Turbulence kinetic energy (k)</p></li>
-<li><p>Rate of dissipation of turbulence kinetic energy(<span class="math notranslate nohighlight">\(\epsilon\)</span>)</p></li>
-</ul>
-<p>The k-<span class="math notranslate nohighlight">\(\epsilon\)</span> model is one of the most popular models and widely used for a range of applications from industrial to environmental flows. This popularity can be attributed to the fact that it remains one of the simplest turbulence models, has good convergence properties and lower memory requirements. It is also often used to provide an initial estimate for more complex turbulent wall models. This model is not recommended for unconfined flows, flow cases involving strong curvatures, rotating flows etc.</p>
-<p>k-<span class="math notranslate nohighlight">\(\epsilon\)</span> model focuses on the mechanisms that affect the turbulent kinetic energy. The underlying assumtion is that the turbulent viscosity is isotropic. This imples that the ratio between the Reynolds’ stress and the mean rate of deformation is same in all directions. The standard k-<span class="math notranslate nohighlight">\(\epsilon\)</span> model proposed by <a class="reference internal" href="#lasp1974" id="id2"><span>[LaSp1974]</span></a> includes additional transport equations given as</p>
-<ul>
-<li><p>For turbulent kinetic energy <span class="math notranslate nohighlight">\((k)\)</span></p>
-<blockquote>
-<div><div class="math notranslate nohighlight" id="equation-hydro-techman-cfdsolver-kepsilon-0">
-<span class="eqno">(4.2.1)<a class="headerlink" href="#equation-hydro-techman-cfdsolver-kepsilon-0" title="Permalink to this equation">¶</a></span>\[\underbrace{\frac{\partial \left(\rho k\right)}{\partial t}}_{T1} + \underbrace{\frac{\partial \left(\rho k u_i\right)}{\partial x_i}}_{T2} = \underbrace{\frac{\partial}{\partial x_j} \left[ \frac{\mu_t}{\sigma_k} \frac{\partial k}{\partial x_j} \right]}_{T3} + \underbrace{2\mu_i E_{ij} E_{ij}}_{T4} - \underbrace{\rho \epsilon}_{T5}\]</div>
-</div></blockquote>
-</li>
-<li><p>For dissipation (<span class="math notranslate nohighlight">\(\epsilon\)</span>)</p>
-<blockquote>
-<div><div class="math notranslate nohighlight" id="equation-hydro-techman-cfdsolver-kepsilon-1">
-<span class="eqno">(4.2.2)<a class="headerlink" href="#equation-hydro-techman-cfdsolver-kepsilon-1" title="Permalink to this equation">¶</a></span>\[\underbrace{\frac{\partial \left(\rho \epsilon\right)}{\partial t}}_{T1} + \underbrace{\frac{\partial \left(\rho \epsilon u_i\right)}{\partial x_i}}_{T2} = \underbrace{\frac{\partial}{\partial x_j} \left[ \frac{\mu_t}{\sigma_{\epsilon}} \frac{\partial \epsilon}{\partial x_j} \right]}_{T3} + \underbrace{C_{1\epsilon} \frac{\epsilon}{k} 2\mu_t E_{ij} E_{ij}}_{T4} - \underbrace{C_{2\epsilon} \rho \frac{\epsilon^2}{k}}_{T5}\]</div>
-</div></blockquote>
-</li>
-</ul>
-<p>where <span class="math notranslate nohighlight">\(u_i\)</span> represent the velocity components, <span class="math notranslate nohighlight">\(E_{ij}\)</span> represent the component of rate of deformation, <span class="math notranslate nohighlight">\(\mu_t = \rho C_{\mu} \frac{k^2}{\epsilon}\)</span> represents the eddy viscosity. The other constants <span class="math notranslate nohighlight">\(\sigma_{k}, \sigma_{\epsilon}, C_{1\epsilon}, C_{2\epsilon}\)</span> are adjustable constants.</p>
-<p>The physical interpretation of the various terms in the above equation are as follows:</p>
-<ul class="simple">
-<li><p><strong>T1</strong>: Rate of change of <span class="math notranslate nohighlight">\(k/\epsilon\)</span> in time</p></li>
-<li><p><strong>T2</strong>: Transport of <span class="math notranslate nohighlight">\(k/\epsilon\)</span> by advection</p></li>
-<li><p><strong>T3</strong>: Transport of <span class="math notranslate nohighlight">\(k/\epsilon\)</span> by diffusion</p></li>
-<li><p><strong>T4</strong>: Rate of production of <span class="math notranslate nohighlight">\(k/\epsilon\)</span></p></li>
-<li><p><strong>T5</strong>: Rate of destruction of <span class="math notranslate nohighlight">\(k/\epsilon\)</span></p></li>
-</ul>
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<dl class="citation">
-<dt class="label" id="lasp1974"><span class="brackets">LaSp1974</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
-<dd><p>B.E. Launder and D.B. Spalding, “The numerical computation of turbulent flows,” Computer Methods in Applied Mechanics and Engineering, vol. 3(2), pp. 269 - 289 (1974)</p>
-</dd>
-</dl>
+  <div class="section" id="storm-surge-events">
+<h1>Storm surge events<a class="headerlink" href="#storm-surge-events" title="Permalink to this headline">¶</a></h1>
+<p>Flooding from storm surge depends on several factors, including track, intensity, size, and forward speed of the hurricane and the characteristics of the coastline where it comes ashore or passes nearby. <a class="reference internal" href="#sloshinunnj"><span class="std std-numref">Fig. 1.2.2</span></a> is obtained from the map generated by the US Environmental Protection Agency (EPA). It shows the storm surge inundation map obtained from the SLOSH numerical model. It shows the vulnerable points on the Eastern US coast that are significantly vulnerable to inundation heights of up to 9 feet.</p>
+<div class="figure align-center" id="id1">
+<span id="sloshinunnj"></span><a class="reference internal image-reference" href="../../../_images/StormInundation.png"><img alt="Storm surge inundation in eastern seaboard of USA" src="../../../_images/StormInundation.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1.2.2 </span><span class="caption-text">This map displays the results from SLOSH (Sea, Lake, and Overland Surges from Hurricanes) model. SLOSH is a numerical model used by NWS (National Weather Service) to compute storm surge. (Source: <a class="reference external" href="https://www.arcgis.com/apps/MapSeries/index.html?appid=852ca645500d419e8c6761b923380663">Storm surge inundation map by EPA</a>.)</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 

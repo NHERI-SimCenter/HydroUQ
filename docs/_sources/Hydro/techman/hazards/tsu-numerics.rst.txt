@@ -1,4 +1,4 @@
-Modeling Tsunami: Numerical Methods
+Tsunami modeling
 ====================================
 
 The phenomenon of tsunami are modeling using shallow water equations. During a tsunami, the waves have very small amplitude in comparison to the wavelength (typically around 100 km or more ) and the depth of the ocean. However, as they approach the coast/surface, the depth of the ocean reduces and so does the wavelength. These systems can be modeled as a hyperbolic system of partial differential equations. 
@@ -28,7 +28,7 @@ During each time step, the location of the wet and dry interfaces need to be com
 
 It is further necessary to capture small perturbations to undisturbed water at rest. Consider here, that the ocean is about 4 kms deep while tsunami wave amplitude is 1m in open ocean and wavelength is about 100 km. Considering this, over 1km, the tsunami varies by less than 1 cm. In addition, the bathymetry may vary by 100’s of meters. Thus, it is required that a stable numerical method is required to maintain steady state of ocean at rest to accurately capture the small perturbations. An example of the same is shown below.
 
-.. figure:: images/PacificOcean.png
+.. figure:: figures/PacificOcean.png
     :width: 400px
     :align: center
     :alt: alternate text
