@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Years 1800 - 1850 &mdash; Hydro-UQ  documentation</title>
+  <title>Modeling storm surge &mdash; Hydro-UQ  documentation</title>
   
 
   
@@ -43,6 +43,8 @@
     
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="2. Finite Volume Method" href="../fvm/fvm.html" />
+    <link rel="prev" title="Storm surge risk" href="surge-risk.html" />
 <script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
@@ -116,8 +118,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../../userman/featurereq.html">7. Bugs &amp; Feature Requests</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Technical manual</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="water.html">1. Water-borne Natural Hazards</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="water.html">1. Water-borne Natural Hazards</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="water.html#tsunami">1.1. Tsunami</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="water.html#storm-surge">1.2. Storm Surge</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="surge-events.html">Storm surge events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surge-cause.html">Causes of storm surge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surge-risk.html">Storm surge risk</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Modeling storm surge</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modeling-tools-and-features">Modeling tools and features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../fvm/fvm.html">2. Finite Volume Method</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swsolver/swsolver.html">3. Shallow Water Solvers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cfdsolver/cfdsolver.html">4. CFD Solvers</a></li>
@@ -185,13 +201,15 @@
     
       <li><a href="../../../Hydro.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Years 1800 - 1850</li>
+          <li><a href="water.html"><span class="section-number">1. </span>Water-borne Natural Hazards</a> &raquo;</li>
+        
+      <li>Modeling storm surge</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../../../_sources/Hydro/techman/hazards/tsu-timeline01.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/Hydro/techman/hazards/surge-numerics.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -204,9 +222,38 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="years-1800-1850">
-<h1>Years 1800 - 1850<a class="headerlink" href="#years-1800-1850" title="Permalink to this headline">¶</a></h1>
-<p>In the years 1900 - 1950</p>
+  <div class="section" id="modeling-storm-surge">
+<h1>Modeling storm surge<a class="headerlink" href="#modeling-storm-surge" title="Permalink to this headline">¶</a></h1>
+<p>Storm surge models are important in predicting and planning for future events. Most storm surge models are two-dimensional, do not resolve the variation with depth but can provide an accurate estimate of the abnormal rise in water level. However, for applications like transportation of pollutants, debris etc., a three-dimensional model is necessary.</p>
+<p>Some of the common recipies for a storm surge model are:</p>
+<ul class="simple">
+<li><p>Bathymetry of the area of interest</p></li>
+<li><p>Computational mesh that covers the area of interest</p></li>
+<li><p>Hurrican information including storm track, wind strength, atmospheric pressure</p></li>
+<li><p>Tidal information</p></li>
+</ul>
+<div class="section" id="modeling-tools-and-features">
+<h2>Modeling tools and features<a class="headerlink" href="#modeling-tools-and-features" title="Permalink to this headline">¶</a></h2>
+<p>Some of the noteworthy models used in modeling storm surge events are</p>
+<ul class="simple">
+<li><p>SLOSH (Sea, Lake and Overland Surges from Hurricanes) was developed by the National Weather Service in the 1990’s <a class="reference internal" href="#jeetal1992" id="id1"><span>[Jeetal1992]</span></a> and is still widely used by the National Hurrican Center owing to its computational efficiency. The SLOSH model separates the US Atlantic and Gulf of Mexico coastline into 32 basins . These model basins are particularly centered around vulnerable features like inlets, low-lying areas, ports etc. Each mesh resolves the ocean bathymetry and land features but does not extend to the open ocean. SLOSH uses a structured grid and finite difference method. More information can be found on <a class="reference external" href="https://slosh.nws.noaa.gov/slosh/">SLOSH website</a>.</p></li>
+<li><p>AdCirc (Advanced Circulation) was developed at University of North Carolina by Dr. Rick Luettich. It is capable of resolving very detailed bathymetry in the coastal region. It is often used by FEMA to produce flood insurance rate maps (FIRM’s) in several coastal regions. More information can be found on the <a class="reference external" href="https://adcirc.org/">AdCirc website</a>.</p></li>
+<li><p>CH3D-SMSS (Storm Surge Modeling System with Curvilinear-grid Hydrodynamics in 3D) uses a horizontally boundary-fitted curvilinear grid and a vertically sigma grid, and hence is suitable for application to coastal and nearshore waters with complex shoreline and bathymetry. More information can be found on the <a class="reference external" href="https://aces.coastal.ufl.edu/CH3D/">CH3D website</a>.</p></li>
+</ul>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<dl class="citation">
+<dt class="label" id="jeetal1992"><span class="brackets"><a class="fn-backref" href="#id1">Jeetal1992</a></span></dt>
+<dd><ol class="upperalpha simple" start="3">
+<li><ol class="upperalpha simple" start="16">
+<li><p>Jelesnianski, J. Chen, and W. A. Shaffer, “SLOSH: Sea, lake, and overland surges from hurricanes,” NOAA Technical Report NWS 48, National Oceanic and Atmospheric Administration, U. S. Department of Commerce (1992)</p></li>
+</ol>
+</li>
+</ol>
+</dd>
+</dl>
+</div>
 </div>
 
 

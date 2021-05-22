@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Tsunami Measurements &mdash; Hydro-UQ  documentation</title>
+  <title>Tsunami events &mdash; Hydro-UQ  documentation</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Tsunami Risk Management" href="tsu-risk.html" />
-    <link rel="prev" title="Tsunami events" href="tsu-intro.html" />
+    <link rel="next" title="Causes of tsunami" href="tsu-cause.html" />
+    <link rel="prev" title="1. Water-borne Natural Hazards" href="water.html" />
 <script src="https://cdn.jsdelivr.net/npm/vega@5.12.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.13.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.8.0"></script>
@@ -121,10 +121,10 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="water.html">1. Water-borne Natural Hazards</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="water.html#tsunami">1.1. Tsunami</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="tsu-intro.html">Tsunami events</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Tsunami Measurements</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tsu-risk.html">Tsunami Risk Management</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tsu-numerics.html">Modeling Tsunami: Numerical Methods</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Tsunami events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsu-cause.html">Causes of tsunami</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsu-risk.html">Tsunami hazard and risk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsu-numerics.html">Tsunami modeling</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="water.html#storm-surge">1.2. Storm Surge</a></li>
@@ -199,13 +199,13 @@
         
           <li><a href="water.html"><span class="section-number">1. </span>Water-borne Natural Hazards</a> &raquo;</li>
         
-      <li>Tsunami Measurements</li>
+      <li>Tsunami events</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../../../_sources/Hydro/techman/hazards/tsu-measure.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/Hydro/techman/hazards/tsu-events.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -218,11 +218,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="tsunami-measurements">
-<h1>Tsunami Measurements<a class="headerlink" href="#tsunami-measurements" title="Permalink to this headline">¶</a></h1>
-<p>One of the important aspect is related to the measurement of Tsunami. There are three definitions that are considered for the water level. The first is the “Inundation height”. The inundation height is the height from the normal water level to the top of the flooded water level.</p>
-<p>The second measure is the “Inundation depth”. This is the distance from the ground surface to the top of the flooded water level.</p>
-<p>The last measure is known as the “Run-up height”. This is the height of the normal water level to the water level where the tsunami stops. This is important to gauge the overall tsunami energy.</p>
+  <div class="section" id="tsunami-events">
+<h1>Tsunami events<a class="headerlink" href="#tsunami-events" title="Permalink to this headline">¶</a></h1>
+<p>The major areas of the world that experience strong activity with potential for tsunami are along the boundaries of the Pacific ocean with other regions. However, in general, tsunamis can be generated in any coastal area, including inland seas and large lakes. <a class="reference internal" href="#tsunamiworld"><span class="std std-numref">Fig. 1.1.1</span></a>, sourced from NOAA, maps some of the trunami-prone regions in the world.</p>
+<div class="align-center figure" id="id1">
+<span id="tsunamiworld"></span><a class="reference internal image-reference" href="../../../_images/TsunamiWorld.png"><img alt="alternate text" src="../../../_images/TsunamiWorld.png" style="width: 500px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1.1.1 </span><span class="caption-text">Tsunami map across the world and color coded to the destructiveness of the earthquake and tsunami (Source: <a class="reference external" href="https://maps.ngdc.noaa.gov/viewers/hazards">NOAA, Natural Hazards Viewer</a>)</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>There are good records for recent tsunamis. However, for those in the past centuries, these are mostly based on the accounts of personal observations. <a class="reference internal" href="#tsunamievents"><span class="std std-numref">Fig. 1.1.2</span></a> shows the tsunami events caused due to earthquakes/volcanic eruptions/landslides/other causes between 1610 B.C. to 2017 A.D. The events are classified based on magnitude and cause by the National Oceanic and Atmospheric Administration (NOAA).</p>
+<div class="align-center figure" id="id2">
+<span id="tsunamievents"></span><a class="reference internal image-reference" href="../../../_images/TsunamiEvents.png"><img alt="alternate text" src="../../../_images/TsunamiEvents.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1.1.2 </span><span class="caption-text">Map of tsunami events between 1610 B.C. to 2017 A.D. and color coded to the magnitude and cause of the event (Source: <a class="reference external" href="https://www.ngdc.noaa.gov/hazard/data/publications/tsunami-sources-2017.pdf">NOAA report on tsunami events</a>)</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>The tabular data shown in <a class="reference internal" href="#tsunamiregion"><span class="std std-numref">Fig. 1.1.3</span></a>, compiled by NOAA’s National Centers for Environmental Information (NCEI) under the UNESCO/IOC-NOAA partnership, provides a glossery of tsunami events over the last 2000 years. Tsunamis that have a travel time of 1-3 hours are classified as regional tsunamis and major ones over the last 2000 years are shown in <a class="reference internal" href="#tsunamiregion"><span class="std std-numref">Fig. 1.1.3</span></a>.</p>
+<div class="align-center figure" id="id3">
+<span id="tsunamiregion"></span><a class="reference internal image-reference" href="../../../_images/RegionalTsunami.png"><img alt="../../../_images/RegionalTsunami.png" src="../../../_images/RegionalTsunami.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1.1.3 </span><span class="caption-text">List of tsunami events over the last 2000 years. The table also classifies the number of deaths and source of tsunami (Source: <a class="reference external" href="https://www.ngdc.noaa.gov/hazard/data/publications/tsunami-sources-2017.pdf">NOAA report on tsunamis</a>)</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p>The destruction caused by a tsunami can range to much larger extents. The tsunami that cause damage in regions beyond three hour of travel are classified as distant/teletsunami. Some of these from the last 300 years are shown in <a class="reference internal" href="#tsunamidistant"><span class="std std-numref">Fig. 1.1.4</span></a></p>
+<div class="align-center figure" id="id4">
+<span id="tsunamidistant"></span><a class="reference internal image-reference" href="../../../_images/TeleTsunami.png"><img alt="alternate text" src="../../../_images/TeleTsunami.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1.1.4 </span><span class="caption-text">List of teletsunami events over the last 300 years. The table also shows the source and distant locations where damage was caused (Source: <a class="reference external" href="https://www.ngdc.noaa.gov/hazard/data/publications/tsunami-sources-2017.pdf">NOAA report</a>)</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 
 
