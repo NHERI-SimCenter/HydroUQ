@@ -7,29 +7,32 @@
 
 For help and information about using HydroUQ tool or additional feature requests / bug reports, please write to us on the [SimCenter HydroUQ message board](http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0). 
 
-HydroUQ app forms a critical aspect of the research simulation tools and workflow aimed at predicting the response of coastal communities prone to water-borne natural hazard events. In particular, the tool aims to provide an open-source and inter-changeable modular framework for modeling of tsunami and storm surge events.
+The HydroUQ Application is open-source software that provides researchers a tool to assess the performance of a building subjected to wave loading due to tsunami and storm surge. The tool facilitates a multiscale coupling by resolving areas of interest by coupling two-dimensional shallow water solver (GeoClaw) with three-dimensional CFD solver (OpenFOAM) through an interchangeable workflow.
 
-Today, researchers in the areas of tsunami and storm-surge event modeling rely on shallow-water solvers. While shallow-water solver are extremely fast, they do not allow accurate determination of the building response due to wave loading. Alternatively, high-fidelity 3-D CFD simulations are computationally prohibitive for simulation of communities beyond a few buildings. Even with commercial CFD solvers, the geometries of building/bridges that can be modeled is significantly limited. Thus, there is a need for a more coupled solution.
+The tool facilitates researchers to consider:
 
-HydroUQ (alpha) brings about a coupled modular workflow that interfaces 2-D shallow water solvers with 3-D CFD solvers. The tool allows users to bring in existing 2-D shallow-water solutions and resolve areas of interest using 3-D CFD. Alternatively, SimCenter also provides a shallow-water library from where one can choose from a set of pre-computed solutions. The tool automatically calculates and sets up the boundary conditions at the shallow-water-to-CFD interface. Besides, the users can also add buildings to study the flow fields around them. At present, the tool supports input of data (input/output) from GeoClaw shallow-water solver and support for AdCirc as planned in the future releases. However, owing to the modular nature of the workflow, other solvers can be easily interfaced with.
+Bathymetry/topography of the ocean floor
+Shallow-water solutions as boundary conditions
+User-defined buildings
+UQ methods like forward propagation, sensitivity and reliability analysis
+Building models include MDOF, steel building model and OpenSees models
+In addition, the tool specifically allows for modeling of experiments from wave flumes (for example, the [NHERI Experimental Facility at Oregon State University](https://oregonstate.designsafe-ci.org)). The outputs of the HydroUQ include probabilistic building responses, velocities and pressure at any point in the fluid domain.
 
-A unique feature of the tool is its ability to model wave flume experiments particularly using the digital twin module. Most tsunami/storm-surge tests are conducted in wave flume (like the Oregon wave flume). The tool facilitates direct usage of parameters from the wave flume for simulations. The tool is generic enough to enable simulation using any STL CAD files.
-
-The tool also facilitates uncertainty quantification in structural response due to wave loading. Such computations can be prohibitively expensive to perform on a user's local computer. The user can quickly set up the calculations remotely on the Stampede2 supercomputer using Agave APIs. Stampede2 is located at the Texas Advanced Computing Center (TACC) and made available to the user through NHERI DesignSafe, the cyberinfrastructure provider for the distributed NSF funded Natural Hazards in Engineering Research Infrastructure (NHERI) facility.
+These simulations are computationally demanding and thus, users have the option to perform the computations on the Stampede2 supercomputer. Stampede2 is located at the Texas Advanced Computing Center and made available to the user through NSF's NHERI DesignSafe, the cyberinfrastructure provider for NHERI.
 
 ### Important links
 
 - Download the installer from [HydroUQ Research Tool webpage](https://simcenter.designsafe-ci.org/research-tools/hydro-uq)
 - Write to us for help and feature requests on [HydroUQ message board](http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0)
-- Help file and documentation from [HydroUQ help pages](https://nheri-simcenter.github.io/HydroUQ)
+- Help file and documentation from [HydroUQ help pages](https://nheri-simcenter.github.io/Hydro-Documentation)
 
 ### How to build HydroUQ?
 
-Instructions to build HydroUQ is now available in the documentation at [HydroUQ Build Documentation](https://nheri-simcenter.github.io/HydroUQ/Hydro/devman/build.html)
+Instructions to build HydroUQ is now available in the documentation at [HydroUQ Build Documentation](https://nheri-simcenter.github.io/Hydro-Documentation/Hydro/devman/build.html)
 
 ### Release information
 
-HydroUQ is released as an open-source research application under a [BSD 3-Clause License](https://github.com/NHERI-SimCenter/HydroUQ/blob/master/LICENSE)
+HydroUQ is released as an open-source research application under a [BSD 3-Clause License](https://nheri-simcenter.github.io/Hydro-Documentation/common/front-matter/license.html)
 
 ### Acknowledgement
 
