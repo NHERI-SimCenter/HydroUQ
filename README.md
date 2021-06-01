@@ -30,6 +30,10 @@ These simulations are computationally demanding and thus, users have the option 
 
 Instructions to build HydroUQ is now available in the documentation at [HydroUQ Build Documentation](https://nheri-simcenter.github.io/Hydro-Documentation/Hydro/devman/build.html)
 
+### How to contribute to HydroUQ?
+
+We would be very happy if you are interested in contributing to the HydroUQ project. You can find more information about it on the [HydroUQ Contribution](https://github.com/NHERI-SimCenter/HydroUQ/blob/master/CONTRIBUTING.md)
+
 ### Release information
 
 HydroUQ is released as an open-source research application under a [BSD 3-Clause License](https://nheri-simcenter.github.io/Hydro-Documentation/common/front-matter/license.html)
