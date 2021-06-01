@@ -36,7 +36,7 @@ We would be very happy if you are interested in contributing to the HydroUQ proj
 
 ### Release information
 
-HydroUQ is released as an open-source research application under a [BSD 3-Clause License](https://nheri-simcenter.github.io/Hydro-Documentation/common/front-matter/license.html)
+HydroUQ is released as an open-source research application under a [BSD 2-Clause License](https://nheri-simcenter.github.io/Hydro-Documentation/common/front-matter/license.html)
 
 ### Acknowledgement
 
