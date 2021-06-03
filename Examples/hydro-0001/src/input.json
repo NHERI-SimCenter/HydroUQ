@@ -1,0 +1,241 @@
+{
+    "Applications": {
+        "EDP": {
+            "Application": "StandardWindEDP",
+            "ApplicationData": {
+            }
+        },
+        "Events": [
+            {
+                "Application": "StochasticWindWittigSinha",
+                "ApplicationData": {
+                },
+                "EventClassification": "Wind"
+            }
+        ],
+        "Modeling": {
+            "Application": "MDOF_BuildingModel",
+            "ApplicationData": {
+            }
+        },
+        "Simulation": {
+            "Application": "OpenSees-Simulation",
+            "ApplicationData": {
+            }
+        },
+        "UQ": {
+            "Application": "Dakota-UQ1",
+            "ApplicationData": {
+            }
+        }
+    },
+    "EDP": {
+        "type": "StandardWindEDP"
+    },
+    "Events": [
+        {
+            "EventClassification": "Wind",
+            "dragCoefficient": 1.3,
+            "exposureCategory": "B",
+            "gustSpeed": "RV.gustWS",
+            "seed": "None",
+            "type": "StochasticWindWittigSinha"
+        }
+    ],
+    "GeneralInformation": {
+        "depth": 1600,
+        "height": 1400,
+        "location": {
+            "latitude": 37.8715,
+            "longitude": -122.273
+        },
+        "name": "",
+        "planArea": 129600,
+        "stories": 9,
+        "units": {
+            "force": "kips",
+            "length": "in",
+            "temperature": "C",
+            "time": "sec"
+        },
+        "width": 1600
+    },
+    "Simulation": {
+        "Application": "OpenSees-Simulation",
+        "algorithm": "Newton",
+        "analysis": "Transient -numSubLevels 2 -numSubSteps 10",
+        "convergenceTest": "NormUnbalance 1.0e-2 10",
+        "dampingModel": "Rayleigh Damping",
+        "dampingRatio": 0.02,
+        "dampingRatioModal": 0.02,
+        "firstMode": 1,
+        "integration": "Newmark 0.5 0.25",
+        "modalRayleighTangentRatio": 0,
+        "numModesModal": 1,
+        "rayleighTangent": "Initial",
+        "secondMode": 6,
+        "solver": "Umfpack"
+    },
+    "StructuralInformation": {
+        "Bx": 0.1,
+        "By": 0.1,
+        "Fyx": 1000000,
+        "Fyy": 1000000,
+        "Krz": 10000000000,
+        "Kx": 100,
+        "Ky": 100,
+        "ModelData": [
+            {
+                "Fyx": 1000000,
+                "Fyy": 1000000,
+                "Ktheta": 10000000000,
+                "bx": 0.1,
+                "by": 0.1,
+                "height": 155.556,
+                "kx": "RV.k",
+                "ky": 100,
+                "weight": 144
+            },
+            {
+                "Fyx": 1000000,
+                "Fyy": 1000000,
+                "Ktheta": 10000000000,
+                "bx": 0.1,
+                "by": 0.1,
+                "height": 155.556,
+                "kx": "RV.k",
+                "ky": "RV.k",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": 1000000,
+                "Fyy": 1000000,
+                "Ktheta": 10000000000,
+                "bx": 0.1,
+                "by": 0.1,
+                "height": 155.556,
+                "kx": "RV.k",
+                "ky": "RV.k",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": 1000000,
+                "Fyy": 1000000,
+                "Ktheta": 10000000000,
+                "bx": 0.1,
+                "by": 0.1,
+                "height": 155.556,
+                "kx": "RV.k",
+                "ky": "RV.k",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": 1000000,
+                "Fyy": 1000000,
+                "Ktheta": 10000000000,
+                "bx": 0.1,
+                "by": 0.1,
+                "height": 155.556,
+                "kx": "RV.k",
+                "ky": "RV.k",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": 1000000,
+                "Fyy": 1000000,
+                "Ktheta": 10000000000,
+                "bx": 0.1,
+                "by": 0.1,
+                "height": 155.556,
+                "kx": "RV.k",
+                "ky": "RV.k",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": 1000000,
+                "Fyy": 1000000,
+                "Ktheta": 10000000000,
+                "bx": 0.1,
+                "by": 0.1,
+                "height": 155.556,
+                "kx": "RV.k",
+                "ky": "RV.k",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": 1000000,
+                "Fyy": 1000000,
+                "Ktheta": 10000000000,
+                "bx": 0.1,
+                "by": 0.1,
+                "height": 155.556,
+                "kx": "RV.k",
+                "ky": "RV.k",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": 1000000,
+                "Fyy": 1000000,
+                "Ktheta": 10000000000,
+                "bx": 0.1,
+                "by": 0.1,
+                "height": 155.556,
+                "kx": "RV.k",
+                "ky": "RV.k",
+                "weight": "RV.w"
+            }
+        ],
+        "height": 155.556,
+        "massX": 0,
+        "massY": 0,
+        "numStories": 9,
+        "randomVar": [
+        ],
+        "responseX": 0,
+        "responseY": 0,
+        "type": "MDOF_BuildingModel",
+        "weight": 144
+    },
+    "UQ_Method": {
+        "samplingMethodData": {
+            "method": "LHS",
+            "samples": 500,
+            "seed": 20
+        },
+        "uqEngine": "Dakota",
+        "uqType": "Forward Propagation"
+    },
+    "localAppDir": "C:/Users/claud/sim/dist-2020b/WE-UQ",
+    "randomVariables": [
+        {
+            "distribution": "Normal",
+            "mean": 2200,
+            "name": "k",
+            "refCount": 1,
+            "stdDev": 220,
+            "value": "RV.k",
+            "variableClass": "Uncertain"
+        },
+        {
+            "distribution": "Normal",
+            "mean": 1600,
+            "name": "w",
+            "refCount": 1,
+            "stdDev": 160,
+            "value": "RV.w",
+            "variableClass": "Uncertain"
+        },
+        {
+            "distribution": "Normal",
+            "mean": 20,
+            "name": "gustWS",
+            "refCount": 1,
+            "stdDev": 2,
+            "value": "RV.gustWS",
+            "variableClass": "Uncertain"
+        }
+    ],
+    "remoteAppDir": "C:/Users/claud/sim/dist-2020b/WE-UQ",
+    "runType": "runningLocal",
+    "workingDir": "C:/Users/claud/Documents/WE-UQ/LocalWorkDir"
+}
