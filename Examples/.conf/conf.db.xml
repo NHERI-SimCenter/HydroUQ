@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<collection>
+    <category-schemes>
+      <category-scheme key="Difficulty">
+        <var cast="str" src="./meta.yaml#/difficulty" />
+        <map>
+            <str key="0">Beginner</str>
+            <str key="1">Intermediate</str>
+            <str key="2">Advanced</str>
+        </map>
+      </category-scheme>
+    </category-schemes>
+
+  <items>
+    <map id="hdro-0001" base="hdro-0001" type="hdro" />
+  </items>
+</collection>
+
