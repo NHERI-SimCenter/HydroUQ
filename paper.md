@@ -21,13 +21,32 @@ affiliations:
   index: 1
 - name: NHERI SimCenter, University of California, Berkeley, CA (USA)
   index: 2
-date: 25 Dec 2020
+date: 18 Jun 2021
 bibliography: paper.bib
 ---
 
-# Summary
+# Introduction
 
-The **CFD Notebooks** is a set of Jupyter notebooks aimed at senior undergraduate and early graduate students interested in learning OpenFOAM. It aims to allow the learner to get started with the open-source CFD tool OpenFOAM and run it on Designsafe. It provides a foundation for all aspects of OpenFOAM, from running cases to programming, so it is useful to both new users and existing users wishing to broaden their basic knowledge of OpenFOAM. The learners are exposed to running exercises and simulating OpenFOAM cases using an HPC computing platform, accessed directly through the Jupyter notebook. The Jupyter notebooks consist of video tutorials, DIY examples, and general reading materials. This learning tool is truly platform-independent and leverages the power of HPC. At present, CFD Notebooks are hosted and uses Designsafe's supercomputing infrastructure at the Texas Advanced Computing Center, particularly the Stampede2 and Frontera clusters.
+The **HydroUQ** is an open-source cloud-based application that provides researchers a tool to assess the performance of a building or specimen subjected to wave loading during natural hazard events, namely tsunami and storm surge. The recent works in the area of natural hazards, in review [@StateArtRepo2021],  software overviews [@SCPaper2020] and research needs and challenges [@RAPID2020], discuss the need for high-difelity tools to better characterize the hazard events and their impact on the urban environment. The disaster reconnaissance investigations of previous events have provided ways to understand and improve the scientific understanding of these extreme events. However, the grand challenge of being able to model hazards to determine the probabilistic
+
+
+The tool facilitates a multiscale coupling by resolving areas of interest by coupling two-dimensional shallow water solver (GeoClaw) with three-dimensional CFD solver (OpenFOAM) through an interchangeable workflow.
+
+The tool facilitates researchers to consider:
+
+Bathymetry/topography of the ocean floor
+Shallow-water solutions as boundary conditions
+User-defined buildings
+UQ methods like forward propagation, sensitivity and reliability analysis
+Building models include MDOF, steel building model and OpenSees models
+In addition, the tool specifically allows for modeling of experiments from wave flumes (for example, the NHERI Experimental Facility at Oregon State University). The outputs of the HydroUQ include probabilistic building responses, velocities and pressure at any point in the fluid domain.
+
+These simulations are computationally demanding and thus, users have the option to perform the computations on the Stampede2 supercomputer. Stampede2 is located at the Texas Advanced Computing Center and made available to the user through NSF's NHERI DesignSafe, the cyberinfrastructure provider for NHERI.
+
+
+
+
+is a set of Jupyter notebooks aimed at senior undergraduate and early graduate students interested in learning OpenFOAM. It aims to allow the learner to get started with the open-source CFD tool OpenFOAM and run it on Designsafe. It provides a foundation for all aspects of OpenFOAM, from running cases to programming, so it is useful to both new users and existing users wishing to broaden their basic knowledge of OpenFOAM. The learners are exposed to running exercises and simulating OpenFOAM cases using an HPC computing platform, accessed directly through the Jupyter notebook. The Jupyter notebooks consist of video tutorials, DIY examples, and general reading materials. This learning tool is truly platform-independent and leverages the power of HPC. At present, CFD Notebooks are hosted and uses Designsafe's supercomputing infrastructure at the Texas Advanced Computing Center, particularly the Stampede2 and Frontera clusters.
 
 The notebooks are broken up into various editions, each with four lessons: Beginner / Intermediate / Expert / Professional. At present, only the beginner edition is available. The beginner edition of the notebook includes four lessons:
 
@@ -41,18 +60,9 @@ The notebooks are broken up into various editions, each with four lessons: Begin
 
 Additionally, CFD-Notebooks are accompanied by an extensive theoretical [documentation](https://nheri-simcenter.github.io/CFD-Notebooks/) and [user forum](http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=11.0) to provide hands-on support.
 
-## Learning objectives
-
-Upon completion of this beginner series, you should have the ability to:
-
-- Modify the files and file directories of OpenFOAM
-- Modify and setup boundary conditions
-- Mesh using blockMesh utilities
-- Run OpenFOAM jobs on supercomputing cluster Stampede2
-- Be exposed to Agave API and Jupyter notebooks
-- Visualize OpenFOAM results using Paraview
-
 # Statement of need
+
+
 
 There are several tutorials available on Youtube, particularly concerning the usage of OpenFOAM for CFD. The CFD Notebooks are not an alternative to these video tutorials but as a complementary to the conventional classroom and online Computational Fluid Dynamics (CFD) courses like ''CFD Python: the 12 steps to Navier-Stokes equations'' [@Barba2019]; and computational fluid mechanics textbooks [@moukalled2015]. The most attractive aspect of the CFD Notebooks is its interface with HPC facilities that are often unavailable with other tutorials and tools.
 
@@ -64,7 +74,7 @@ Most importantly, OpenFOAM simulations are, most often, prohibitively expensive 
 
 Fluid mechanics form a part of the core curriculum for both mechanical and aerospace engineers. However, civil engineering students have much less exposure to fluid mechanics and particularly CFD. However, CFD is a critical aspect of several areas related to civil and geotechnical engineering like modeling water/wind/fire borne natural hazards. This module addresses this need for easier access to fluid mechanics tools and HPC for civil engineering students, particularly those interested in natural hazards engineering. The developed module is funded through the NSF NHERI to ensure that this is a stepping stone to use CFD-based research tools like [Hydro-UQ](https://simcenter.designsafe-ci.org/research-tools/hydro-uq/), [WE-UQ](https://simcenter.designsafe-ci.org/research-tools/we-uq/), etc.
 
-# Functionality and usage
+# Features and design
 
 THE CFD Notebooks are a series of Jupyter notebooks that include video tutorials, DIY examples, and exercises. Furthermore, sample problems are also provided on the [documentation](https://nheri-simcenter.github.io/CFD-Notebooks/) site.
 
@@ -118,8 +128,13 @@ asrp = AgaveAsyncResponse(ag,job)
 asrp.status
 ```
 
-# Recent Uses
 
-The CFD Notebooks are planned to be used in the fluid mechanics' courses at Stanford and UC Berkeley in the coming semester. In addition to the upcoming 2021 tool-training program for researchers in Natural Hazards.
+# Conclusions
+
+HydroUQ provides a novel architecture for the hazards engineering community to 
+
+# Acknowledgements
+
+The SimCenter was financially supported by the National Science Foundation under Grant CMMI-1612843. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the National Science Foundation. We would like to acknowledge (1) the contributions and collaboration with many faculty, post-doctoral researchers, students and staff who have contributed to the SimCenter’s work, and (2) the support and close collaboration with DesignSafe, which facilitates access to high-performance computing and information technologies for SimCenter tools.
 
 # References
