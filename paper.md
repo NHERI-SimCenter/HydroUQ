@@ -1,11 +1,11 @@
 ---
-title: 'CFD Notebooks: Learning OpenFOAM for HPC'
+title: 'HydroUQ: Open-source application for modeling water-borne natural hazards'
 tags:
 - Python
 - CFD
 - OpenFOAM
 - numerical methods
-- finite differences
+- finite volume
 authors:
 - name: Ajay B. Harish
   orcid: 0000-0001-5234-7047
@@ -27,7 +27,11 @@ bibliography: paper.bib
 
 # Introduction
 
-The **HydroUQ** is an open-source cloud-based application that provides researchers a tool to assess the performance of a building or specimen subjected to wave loading during natural hazard events, namely tsunami and storm surge. The recent works in the area of natural hazards, in review [@StateArtRepo2021],  software overviews [@SCPaper2020] and research needs and challenges [@RAPID2020], discuss the need for high-difelity tools to better characterize the hazard events and their impact on the urban environment. The disaster reconnaissance investigations of previous events have provided ways to understand and improve the scientific understanding of these extreme events. However, the grand challenge of being able to model hazards to determine the probabilistic
+In the recent decades, coastal hazards and the damage left in thieir wake has intensified rapidly. Increases in sea levels globally has lead to more frequent storm surges and tropical cyclones. Tsunamis that caused catastropic damage were once in a century event and we have already had two deadly events (2004 Indian ocean, 2011 Tohoku) in the early part of the 21st century. It is believed that the 
+
+The **HydroUQ** is an open-source cloud-based application that provides researchers a tool to assess the performance of a building or specimen subjected to wave loading during natural hazard events, namely tsunami and storm surge [@Knetal2010, @Heetel2013, @Knetal2014]. The recent works in the area of natural hazards, in review [@StateArtRepo2021],  software overviews [@SCPaper2020] and research needs and challenges [@RAPID2020], discuss the need for high-difelity tools to better characterize the hazard events and their impact on the urban environment. The disaster reconnaissance investigations of previous events have provided ways to understand and improve the scientific understanding of these extreme events. However, the grand challenge of being able to model hazards and probabilistically predict the risk remains. Such probabilitic high-fidelity tools are much necessary in order to make decisions to enhance community resilience. 
+
+
 
 
 The tool facilitates a multiscale coupling by resolving areas of interest by coupling two-dimensional shallow water solver (GeoClaw) with three-dimensional CFD solver (OpenFOAM) through an interchangeable workflow.
