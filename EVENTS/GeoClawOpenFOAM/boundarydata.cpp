@@ -228,13 +228,20 @@ bool boundaryData::getData(QMap<QString, QString>& map,int type,int count)
     }
 
     // Attach patch name
-    // QString patchname = ui->Lbl_H1->text();
     QString patchname = ui->Cmb_PatchStdLoc->currentText();
     map.insert("BounPatch"+QString::number(count),patchname);
 
     // Get velocity information
     int index = ui->Cmb_UBC->currentIndex();
-    map.insert("VelocityType_"+patchname,QString::number(ui->Cmb_UBC->currentIndex()));
+    int indexinsert = 0;
+    if(index == 1) indexinsert = 101;
+    else if(index == 2) indexinsert = 102;
+    else if(index == 3) indexinsert = 103;
+    else if(index == 4) indexinsert = 104;
+    else if(index == 5) indexinsert = 201;
+    else if(index == 6) indexinsert = 202;
+    else if(index == 7) indexinsert = 301;
+    map.insert("VelocityType_"+patchname,QString::number(indexinsert));
 
     // SW solutions for velocity
     if(index == 1)
