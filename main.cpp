@@ -66,9 +66,8 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, Version and Google Analytics Tracking Id
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("1.0.0");
-
-    // GoogleAnalytics::SetTrackingId("UA-178848988-1");
+    QCoreApplication::setApplicationVersion("1.0.1");
+    //GoogleAnalytics::SetTrackingId("UA-178848988-1");
     GoogleAnalytics::StartSession();
     GoogleAnalytics::ReportStart();
 
@@ -135,11 +134,11 @@ int main(int argc, char *argv[])
     w.setAbout(aboutTitle, aboutSource);
 
     // Version
-    QString version("Version 1.0.0");
+    QString version("Version 1.0.1");
     w.setVersion(version);
 
     // Citation
-    QString citeText("Ajay B Harish, & Frank McKenna. (2021, April 30). NHERI-SimCenter/HydroUQ: Version 1.0.0 (Version v1.0.0). Zenodo. http://doi.org/10.5281/zenodo.4731074");
+    QString citeText("1) Ajay B Harish, & Frank McKenna. (2021, April 30). NHERI-SimCenter/HydroUQ: Version 1.0.0 (Version v1.0.0). Zenodo. http://doi.org/10.5281/zenodo.4731074\n\n 2) Deierlein GG, McKenna F, Zsarnóczay A, Kijewski-Correa T, Kareem A, Elhaddad W, Lowes L, Schoettler MJ and Govindjee S (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Front. Built Environ. 6:558706. doi: 10.3389/fbuil.2020.558706");
     w.setCite(citeText);
 
     // Link to repository
