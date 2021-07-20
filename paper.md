@@ -39,23 +39,26 @@ While storm surges have been of significant importance to the eastern seaboard, 
 
 # Statement of need
 
+In order to understand the effects of coastal hazards, both field work and scaled wave flume experiments have been used. 
+
+[@lindt2009a], [@rueben2011a], [@shin2012a], [@park2013a]
 
 
-## Fieldwork and experiments
-In order to understand the effects of coastal hazards, both field work and scaled experiments using a wave flume have been used. 
 
 
 
-[@cox2008a], [@lindt2009a], [@rueben2011a], [@shin2012a], [@park2013a]
 
 The **HydroUQ** is an open-source cloud-based application that provides researchers a tool to assess the performance of a building or specimen subjected to wave loading during natural hazard events, namely tsunami and storm surge . 
 
 
 Effective prediction of tidal storm or tsunami waves is important to safeguard important infrastructure like ports, bridges and high-rise evacuation structures. During such water-borne hazard events, it is believe that vertical evacuation structures, within the predicted inundation zones, could provide refuge to people. Such structures need to be capable of withstanding the forces due to wave impact. Thus, it becomes important to consider the urban environment, including all the buildings, around such structures to evaluate the flow fields and forces accurately.
 
-Tsunami and storm-surge modeling widely uses shallow-water solutions to determine the inundation heights, and maximum runup heights. Such methodologies are largely restricted to smoother topographies and cannot accurately consider flows around the complex built urban environment [@Mike2018]. Thus, high-fidelity 3-D CFD simulations are required for structures into the coast.
 
 HydroUQ serves two of the paramount needs in the civil, structural and coastal engineering community, namely (a) Multiscale fluids modeling (b) Wave flume digital twin.
+
+
+
+# Features and design
 
 ## Multiscale fluids modeling
 
@@ -65,8 +68,17 @@ A more detailed discussion on the results and validation of the multiscale fluid
 
 A more detailed discussion on the results and validation of the wave flume digital twin is available in [@Ajay2021b].
 
-# Features and design
+The HydroUQ app is one of the SimCenter’s computational applications that execute a sequence of computational tasks specialized for water-borne natural hazard engineering (NHE) problems. The HydroUQ workflow includes the following features:
 
+- Access to high-performance computing resources, available on the cloud through DesignSafe, to enable parallel workflows for non-trivial large-scale NHE problems
+
+- Uncertainty quantification capabilities using Dakota, which allows users to introduce input uncertainties which are propagated through the workflow with random variables
+
+- Streamlined interfaces between existing software applications and datasets that are widely used by the NHE community, such as OpenFOAM, OpenSees, ADCIRC, and PEER Strong Ground Motion Databases. To do this, the SimCenter develops pre- and post-processors to these existing applications and utilize web technologies for accessing online services;
+
+additional custom software applications produced by the SimCenter. Among these are applications that automate the acquisition of building inventory data (BRAILS), applications which simulate hazard evens and generate corresponding input files for passing through the workflow system (RegionalEvent Applications), applications for damage and loss assessment (pelicun), and more.
+
+a modular framework which allows developers to incorporate their own software applications as components to the workflow system, so long as it meets the input-output structure at component interfaces.
 
 # Conclusions
 
