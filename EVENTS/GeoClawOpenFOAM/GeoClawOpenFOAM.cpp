@@ -88,6 +88,7 @@ void GeoClawOpenFOAM::initialize()
     // Set index to zero & simtype to zero
     ui->stackedWidget->setCurrentIndex(0);
     simtype = 0;
+
 }
 
 //*********************************************************************************

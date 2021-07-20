@@ -228,13 +228,20 @@ bool boundaryData::getData(QMap<QString, QString>& map,int type,int count)
     }
 
     // Attach patch name
-    // QString patchname = ui->Lbl_H1->text();
     QString patchname = ui->Cmb_PatchStdLoc->currentText();
     map.insert("BounPatch"+QString::number(count),patchname);
 
     // Get velocity information
     int index = ui->Cmb_UBC->currentIndex();
-    map.insert("VelocityType_"+patchname,QString::number(ui->Cmb_UBC->currentIndex()));
+    int indexinsert = 0;
+    if(index == 1) indexinsert = 101;
+    else if(index == 2) indexinsert = 102;
+    else if(index == 3) indexinsert = 103;
+    else if(index == 4) indexinsert = 104;
+    else if(index == 5) indexinsert = 201;
+    else if(index == 6) indexinsert = 202;
+    else if(index == 7) indexinsert = 301;
+    map.insert("VelocityType_"+patchname,QString::number(indexinsert));
 
     // SW solutions for velocity
     if(index == 1)
@@ -314,7 +321,11 @@ bool boundaryData::getData(QMap<QString, QString>& map,int type,int count)
 
     // Get pressure information
     index = ui->Cmb_PresBC->currentIndex();
-    map.insert("PressureType_"+patchname,QString::number(ui->Cmb_PresBC->currentIndex()));
+    int indexinsertP = 0;
+    if(index == 1) indexinsertP = 201;
+    else if(index == 2) indexinsertP = 101;
+    map.insert("PressureType_"+patchname,QString::number(indexinsertP));
+    //map.insert("PressureType_"+patchname,QString::number(ui->Cmb_PresBC->currentIndex()));
 
     // fixed Value
     if(index == 2)
@@ -358,7 +369,15 @@ bool boundaryData::putData(QJsonObject &jsonObject,int stype, QString workpath, 
     if(jsonObject.contains("VelocityType_"+bpatchname))
     {
         // Get the velocity index
-        int velindex = jsonObject["VelocityType_"+bpatchname].toString().toInt();
+        int velindex2 = jsonObject["VelocityType_"+bpatchname].toString().toInt();
+        int velindex = 0;
+        if(velindex2 == 101) velindex = 1;
+        else if(velindex2 == 102) velindex = 2;
+        else if(velindex2 == 103) velindex = 3;
+        else if(velindex2 == 104) velindex = 4;
+        else if(velindex2 == 201) velindex = 5;
+        else if(velindex2 == 202) velindex = 6;
+        else if(velindex2 == 301) velindex = 7;
 
         // Set the combobox accordingly
         ui->Cmb_UBC->setCurrentIndex(velindex);

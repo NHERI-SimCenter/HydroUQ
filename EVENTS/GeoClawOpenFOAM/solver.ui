@@ -333,6 +333,12 @@
        <property name="decimals">
         <number>0</number>
        </property>
+       <property name="minimum">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>10000.000000000000000</double>
+       </property>
        <property name="value">
         <double>3.000000000000000</double>
        </property>
@@ -368,7 +374,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Subdomains</string>
+        <string>Num. of Subdomains</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -433,7 +439,7 @@
        </property>
        <item>
         <property name="text">
-         <string>Simple</string>
+         <string>Scotch</string>
         </property>
        </item>
       </widget>
@@ -469,7 +475,7 @@
      </property>
      <item>
       <property name="text">
-       <string>OpenFOAM</string>
+       <string>OpenFOAM7</string>
       </property>
      </item>
     </widget>
