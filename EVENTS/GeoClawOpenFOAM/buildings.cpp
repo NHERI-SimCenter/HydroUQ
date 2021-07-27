@@ -138,34 +138,34 @@ bool buildings::putData(QJsonObject &jsonObject,int stype, QString workpath)
     // Set up the building table
     if(buildindex == 0) // Manual
     {
-        int numbuildings = jsonObject["NumBuild"].toString().toInt();
-        if(numbuildings > 0)
-        {
-            for(int ii=0; ii<numbuildings; ++ii)
-            {
+//        int numbuildings = jsonObject["NumBuild"].toString().toInt();
+//        if(numbuildings > 0)
+//        {
+//            for(int ii=0; ii<numbuildings; ++ii)
+//            {
                 // Add a row for the building
-                ui->Tbl_Building->insertRow(ui->Tbl_Building->rowCount());
+//                ui->Tbl_Building->insertRow(ui->Tbl_Building->rowCount());
                 // Add the particular building parameters
-                if(jsonObject.contains("BuildingTable"+QString::number(ii)))
-                {
+//                if(jsonObject.contains("BuildingTable"+QString::number(ii)))
+//                {
                     // Get the parameters for each building / building table row
-                    QString building = jsonObject["BuildingTable"+QString::number(ii)].toString();
-                    QStringList buildingdata = building.split(',');
-                    if(buildingdata.size() == 4)
-                    {
-                        QTableWidgetItem* itemtoAdd = new QTableWidgetItem();
-                        QTableWidgetItem* itemtoAdd2 = new QTableWidgetItem();
-                        QTableWidgetItem* itemtoAdd3 = new QTableWidgetItem();
-                        itemtoAdd->setText(buildingdata[0]);
-                        ui->Tbl_Building->setItem(ii,0,itemtoAdd);
-                        itemtoAdd2->setText(buildingdata[1]+","+buildingdata[2]);
-                        ui->Tbl_Building->setItem(ii,1,itemtoAdd2);
-                        itemtoAdd3->setText(buildingdata[3]);
-                        ui->Tbl_Building->setItem(ii,2,itemtoAdd3);
-                    }
-                }
-            }
-        }
+//                    QString building = jsonObject["BuildingTable"+QString::number(ii)].toString();
+//                    QStringList buildingdata = building.split(',');
+//                    if(buildingdata.size() == 4)
+//                    {
+//                        QTableWidgetItem* itemtoAdd = new QTableWidgetItem();
+//                        QTableWidgetItem* itemtoAdd2 = new QTableWidgetItem();
+//                        QTableWidgetItem* itemtoAdd3 = new QTableWidgetItem();
+//                        itemtoAdd->setText(buildingdata[0]);
+//                        ui->Tbl_Building->setItem(ii,0,itemtoAdd);
+//                        itemtoAdd2->setText(buildingdata[1]+","+buildingdata[2]);
+//                        ui->Tbl_Building->setItem(ii,1,itemtoAdd2);
+//                        itemtoAdd3->setText(buildingdata[3]);
+//                        ui->Tbl_Building->setItem(ii,2,itemtoAdd3);
+//                    }
+//                }
+//            }
+//        }
     }
     else if(buildindex == 1) // Parameters
     {
