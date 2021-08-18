@@ -8,12 +8,15 @@ include($$PWD/ConanHelper.pri)
 
 QT += core gui charts concurrent network qml
 QT += webchannel webenginewidgets webengine 
-QT += 3dcore 3drender 3dextras charts
+QT += 3dcore 3drender 3dextras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Hydro_UQ
 TEMPLATE = app
+
+
+CONFIG += c++17
 
 DEFINES += _GRAPHICS_Qt3D
 
