@@ -101,7 +101,6 @@ public:
     bool copyFiles(QString &dirName);
 				    
 private slots:
-    void errorMessage(QString message);
     void on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:

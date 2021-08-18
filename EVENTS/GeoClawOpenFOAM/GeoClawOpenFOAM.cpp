@@ -96,6 +96,8 @@ void GeoClawOpenFOAM::initialize()
 //*********************************************************************************
 bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 {
+    qDebug() << "geoClawOpenFoam:output START\n";
+
     jsonObject["EventClassification"]="Hydro";
     jsonObject["Application"] = "GeoClawOpenFOAM";
     bool isitready = true;
@@ -125,13 +127,14 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
     {
         allData.insert(2, singleData);
     }
-
+qDebug() << "geoClawOpenFoam:output line 130\n";
     // Get data from buildings - index 3
     singleData = new QMap<QString,QString>;
     if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->getData(*singleData,simtype))
     {
         allData.insert(3, singleData);
     }
+qDebug() << "geoClawOpenFoam:output line 137\n";
 
 //    // Get data from floating bodies - index 4
 //    singleData = new QMap<QString,QString>;
@@ -367,14 +370,6 @@ bool GeoClawOpenFOAM::copyFiles(QString &dirName)
 
     // Return
     return true;
-}
-
-//*********************************************************************************
-// Send error message
-//*********************************************************************************
-void GeoClawOpenFOAM::errorMessage(QString message)
-{
-    emit sendErrorMessage(message);
 }
 
 
