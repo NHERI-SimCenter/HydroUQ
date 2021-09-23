@@ -5,7 +5,7 @@
 
 ### Water-borne Natural Hazards Engineering with Uncertainty Quantification ###
 
-For help and information about using HydroUQ tool or additional feature requests / bug reports, please write to us on the [SimCenter HydroUQ message board](http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0). 
+For help and information about using HydroUQ tool or additional feature requests / bug reports, please write to us on the [SimCenter HydroUQ message board](http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0). We would be glad to accept feature requests.
 
 The HydroUQ Application is open-source software that provides researchers a tool to assess the performance of a building subjected to wave loading due to tsunami and storm surge. The tool facilitates a multiscale coupling by resolving areas of interest by coupling two-dimensional shallow water solver (GeoClaw) with three-dimensional CFD solver (OpenFOAM) through an interchangeable workflow.
 
