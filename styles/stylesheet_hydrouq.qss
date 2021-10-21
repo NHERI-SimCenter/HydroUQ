@@ -1,0 +1,65 @@
+/* ---   Styles for Hydro-UQ    --- */
+/* --- Written: Peter McKenzie --- */
+/* --- Modified: charles.wang --- */
+/* --- Modified (Oct-21-21): Ajay B Harish --- */
+
+QComboBox {
+    min-width: 6em;
+    font-size: 12px;
+    padding-left: 10px;
+    margin-top: 2px;
+}
+
+QComboBox#EDPSelectionComboBox {
+    min-width: 16em;
+}
+
+QComboBox#LoadingTypeCombox {
+    min-width: 16em;
+}
+
+QComboBox#StochasticLoadingModel {
+    min-width: 10em;
+}
+
+QComboBox#RecordDatabaseSelector {
+    min-width: 17em;
+}
+
+QTreeWidget {
+    font-size: 12px;
+}
+
+QTableWidget {
+    font-size: 12px;
+}
+
+QDoubleSpinBox {
+    font-size: 12px;
+}
+
+QPushButton {
+    font-size: 12px;
+}
+
+QLabel {
+    font-size: 12px;
+}
+
+QToolButton {
+    font-size: 12px;
+}
+
+QCheckBox {
+    font-size: 12px;
+}
+
+QLineEdit {
+    min-width: 6em;
+    font-size: 12px;
+    padding-left: 10px;
+    margin-top: 2px;
+}
+
+
+
