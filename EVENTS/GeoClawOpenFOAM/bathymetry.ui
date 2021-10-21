@@ -345,6 +345,11 @@
        <string>Use standard OSU Flume</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>Flume from mesh</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>

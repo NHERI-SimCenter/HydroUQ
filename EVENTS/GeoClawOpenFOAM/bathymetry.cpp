@@ -601,4 +601,11 @@ void bathymetry::on_CmB_FlumeGeoType_currentIndexChanged(int index)
         ui->Lbl_Notice->setText("Standard flume geometry will be used. Please check documentation for more details.");
         ui->Lbl_Notice->show();
     }
+
+    // Geometry of flume from mesh
+    else if(index == 2)
+    {
+        ui->Lbl_Notice->setText("Flume geometry defined in mesh.");
+        ui->Lbl_Notice->show();
+    }
 }
