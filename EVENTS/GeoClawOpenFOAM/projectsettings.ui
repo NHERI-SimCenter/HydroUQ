@@ -45,7 +45,7 @@
     <widget class="QLabel" name="Lbl_PName">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -59,7 +59,7 @@
     <widget class="QLineEdit" name="Led_PName">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="toolTip">
@@ -77,7 +77,7 @@
     <widget class="QLabel" name="Lbl_PDesc">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -91,7 +91,7 @@
     <widget class="QPlainTextEdit" name="Ted_PDesc">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="toolTip">
@@ -112,7 +112,7 @@
     <widget class="QLabel" name="Lbl_SimType">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -126,7 +126,7 @@
     <widget class="QComboBox" name="CmB_SimType">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="toolTip">
@@ -166,7 +166,7 @@
     <widget class="QLabel" name="Lbl_TurbModel">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -180,7 +180,7 @@
     <widget class="QComboBox" name="CmB_TurbModel">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="toolTip">
