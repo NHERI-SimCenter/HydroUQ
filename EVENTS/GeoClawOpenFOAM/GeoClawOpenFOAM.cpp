@@ -97,7 +97,7 @@ void GeoClawOpenFOAM::initialize()
 bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 {
     jsonObject["EventClassification"]="Hydro";
-    jsonObject["Application"] = "GeoClawOpenFOAM";
+    jsonObject["Application"] = "HydroCFD";
     bool isitready = true;
 
     // Get the simulation type
@@ -225,20 +225,29 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
         // Get the simulation type
         stype = jsonObject["SimulationType"].toString().toInt();
 
-        // Message box
-        QMessageBox msgBox;
-        msgBox.setText("Please select work directory. Support files will be set if found in this path only.");
-        msgBox.exec();
-
-        // File directory to choose the home directory
-        QFileDialog selectworkdir;
-        selectworkdir.setDirectory(QDir::homePath());
-        selectworkdir.setFileMode(QFileDialog::DirectoryOnly);
-        selectworkdir.setWindowTitle("Select working directory");
-        if(selectworkdir.exec())
+        // Check if we need to get work directory
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Select work directory", "Do you want to select work directory?",
+                                        QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes)
         {
-            workdir = selectworkdir.directory();
-            workpath = workdir.canonicalPath();
+            // File directory to choose the home directory
+            QFileDialog selectworkdir;
+            selectworkdir.setDirectory(QDir::homePath());
+            selectworkdir.setFileMode(QFileDialog::DirectoryOnly);
+            selectworkdir.setWindowTitle("Select working directory");
+            if(selectworkdir.exec())
+            {
+                workdir = selectworkdir.directory();
+                workpath = workdir.canonicalPath();
+            }
+            else
+            {
+                QMessageBox msgBox;
+                msgBox.setText("Work directory has not been set! You will need to manually update the required files for EVT again.");
+                msgBox.exec();
+                workpath.clear();
+            }
         }
         else
         {
@@ -323,7 +332,7 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 bool GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &jsonObject)
 {
     jsonObject["EventClassification"]="Hydro"; // Event is Hydro
-    jsonObject["Application"] = "GeoClawOpenFOAM"; // Event inHydro
+    jsonObject["Application"] = "HydroCFD"; //"GeoClawOpenFOAM"; // Event in Hydro
     QJsonObject dataObj;
     jsonObject["ApplicationData"] = dataObj; // All application data
     return true;  

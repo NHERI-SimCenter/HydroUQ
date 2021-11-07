@@ -33,6 +33,17 @@ void projectsettings::refreshData(int type)
 }
 
 //*********************************************************************************
+// Reset data
+//*********************************************************************************
+void projectsettings::resetData()
+{
+    ui->Led_PName->clear();
+    ui->Ted_PDesc->clear();
+    ui->CmB_SimType->setCurrentIndex(0);
+    ui->CmB_TurbModel->setCurrentIndex(0);
+}
+
+//*********************************************************************************
 // Show - hide elements
 //*********************************************************************************
 void projectsettings::hideshowelems(int type)
@@ -63,6 +74,9 @@ bool projectsettings::getData(QMap<QString, QString> & map, int type)
 //*********************************************************************************
 bool projectsettings::putData(QJsonObject &jsonObject, int stype)
 {
+
+    // Reset the data
+    resetData();
 
     // Project name
     if(jsonObject.contains("ProjectName"))
