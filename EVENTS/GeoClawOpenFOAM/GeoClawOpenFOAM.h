@@ -75,6 +75,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QUuid>
 #include <ZipUtils.h>
 #include <QStandardPaths>
+//#include <SimCenterAppWidget.h>
 
 //QT_BEGIN_NAMESPACE
 //QT_END_NAMESPACE
@@ -99,7 +100,7 @@ public:
     bool outputAppDataToJSON(QJsonObject &rvObject);
     bool inputAppDataFromJSON(QJsonObject &rvObject);
     bool copyFiles(QString &dirName);
-				    
+
 private slots:
     void on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
