@@ -67,14 +67,10 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 
     // Load the different event types
     eventSelection->addItem(tr("General"));
-    //eventSelection->addItem(tr("GeoClaw OpenFOAM"));
-    //eventSelection->addItem(tr("Wave Flume Digitwin"));
 
     // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-    eventSelection->setItemData(0, "This is a general event from which all other events can be setup", Qt::ToolTipRole);
-    //eventSelection->setItemData(1, "Coupling of shallow-water solver (GeoClaw) with CFD (OpenFOAM)", Qt::ToolTipRole);
-    //eventSelection->setItemData(2, "Digital twin of Wave Flume (at OSU)", Qt::ToolTipRole);
+    eventSelection->setItemData(0, "General event", Qt::ToolTipRole);
 
     theSelectionLayout->addWidget(label);
     QSpacerItem *spacer = new QSpacerItem(50,10);
@@ -89,8 +85,6 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     // create the individual load widgets & add to stacked widget
     theGeoClawOpenFOAM = new GeoClawOpenFOAM(theRandomVariablesContainer);
     theStackedWidget->addWidget(theGeoClawOpenFOAM);
-    //theFlumeDigiTwin = new FlumeDigiTwin(theRandomVariablesContainer);
-    //theStackedWidget->addWidget(theFlumeDigiTwin);
 
     // Setup the Layout
     layout->addWidget(theStackedWidget);
@@ -121,9 +115,9 @@ HydroEventSelection::~HydroEventSelection()
 //*********************************************************************************
 void HydroEventSelection::eventSelectionChanged(const QString &arg1)
 {
+    (void) arg1;
     // switch stacked widgets depending on text
     // note type output in json and name in pull down are not the same and hence the ||
-    //if (arg1 == "GeoClaw OpenFOAM")
     if (arg1 == "General")
     {
         theStackedWidget->setCurrentIndex(0);
@@ -140,7 +134,7 @@ void HydroEventSelection::eventSelectionChanged(const QString &arg1)
 //*********************************************************************************
 bool HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
 
-    QString type;
+//    QString type;
     QJsonObject theEvent;
 
     if (jsonObject.contains("Events"))
