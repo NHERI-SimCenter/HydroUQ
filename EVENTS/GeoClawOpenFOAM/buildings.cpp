@@ -38,6 +38,29 @@ void buildings::refreshData(int type)
 }
 
 //*********************************************************************************
+// Reset data
+//*********************************************************************************
+void buildings::resetData()
+{
+    ui->CmB_BuildData->setCurrentIndex(0);
+    ui->Tbl_Building->setRowCount(0);
+    ui->PText_CustomBuild->clear();
+    STLfilenames.removeAll(QString(""));
+    ui->DSpBx_CoastDist->clear();
+    ui->DSpBx_NumBuildX->clear();
+    ui->DSpBx_NumBuildY->clear();
+    ui->DSpBx_BuildDistX->clear();
+    ui->DSpBx_BuildDistY->clear();
+    ui->DSpBx_BuildSize01->clear();
+    ui->DSpBx_BuildSize02->clear();
+    ui->DSpBx_BuildSize03->clear();
+    ui->DSpBx_OffsetX->clear();
+    ui->DSpBx_OffsetY->clear();
+    ui->CmB_BuildDist->setCurrentIndex(0);
+    ui->CmB_BuildShape->setCurrentIndex(0);
+}
+
+//*********************************************************************************
 // Show - hide elements
 //*********************************************************************************
 void buildings::hideshowelems(int type)
@@ -62,17 +85,65 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
     if(ui->CmB_BuildData->currentIndex() == 0) //Manual by table
     {
         map.insert("BuildData","Manual");
+
+        int numbuilding = ui->Tbl_Building->rowCount();
+
         // Write data from the table
-        map.insert("NumBuild",QString::number(ui->Tbl_Building->rowCount()));
+        //map.insert("NumBuild",QString::number(ui->Tbl_Building->rowCount()));
         if(ui->Tbl_Building->rowCount() > 0)
         {
-            for(int ii=0;ii<ui->Tbl_Building->rowCount(); ++ii)
+            for(int ii=0; ii<ui->Tbl_Building->rowCount(); ++ii)
             {
-                QString segdata = ui->Tbl_Building->item(ii,0)->text() +
-                        "," + ui->Tbl_Building->item(ii,1)->text() +
-                        "," + ui->Tbl_Building->item(ii,2)->text();
+                // Check if items in the table are empty
+                QTableWidgetItem* item01 = ui->Tbl_Building->item(ii,0);
+                QTableWidgetItem* item02 = ui->Tbl_Building->item(ii,1);
+                QTableWidgetItem* item03 = ui->Tbl_Building->item(ii,2);
+                // Initialize the string
+                QString segdata = "";
+                if(!item01)
+                {
+                    numbuilding -= 1;
+                }
+                else if((ui->Tbl_Building->item(ii,0)->text()).toInt() == -2)
+                {
+                    if(!item03)
+                    {
+                        numbuilding -= 1;
+                    }
+                }
+                else if((ui->Tbl_Building->item(ii,0)->text()).toInt() == 1)
+                {
+                    if(!item03)
+                    {
+                        numbuilding -= 1;
+                    }
+                }
+                if( (!item02) && (!item03))
+                {
+                    numbuilding -= 1;
+                }
+                else
+                {
+
+                    // Column 01
+                    segdata = ui->Tbl_Building->item(ii,0)->text();
+                    segdata += ",";
+                    // Column 02
+                    if(!item02)
+                        segdata += "0,0";
+                    else
+                        segdata += ui->Tbl_Building->item(ii,1)->text();
+                    segdata += ",";
+                    // Column 03
+                    if(!item03)
+                        segdata += "0,0,0";
+                    else
+                        segdata += ui->Tbl_Building->item(ii,2)->text();
+                }
+                // Insert into the map
                 map.insert("BuildingTable"+QString::number(ii),segdata);
             }
+            map.insert("NumBuild",QString::number(numbuilding));
         }
     }
     else if(ui->CmB_BuildData->currentIndex() == 1) //From parameters
@@ -115,6 +186,9 @@ bool buildings::putData(QJsonObject &jsonObject,int stype, QString workpath)
 {
     // Suppress warnings
     (void) stype;
+
+    // Reset the data
+    resetData();
 
     // Get the type of building definition
     int buildindex = -1;

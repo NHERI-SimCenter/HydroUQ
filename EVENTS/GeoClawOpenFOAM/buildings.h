@@ -20,6 +20,7 @@ public:
     bool getData(QMap<QString, QString>&,int);
     bool putData(QJsonObject &,int,QString);
     void refreshData(int);
+    void resetData();
     bool copyFiles(QString dirName, int);
 
 private slots:
