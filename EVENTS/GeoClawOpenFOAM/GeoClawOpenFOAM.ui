@@ -73,7 +73,7 @@
         </property>
         <column>
          <property name="text">
-          <string notr="true">Simulation data</string>
+          <string notr="true">Event data</string>
          </property>
          <property name="font">
           <font>
@@ -84,7 +84,7 @@
         </column>
         <item>
          <property name="text">
-          <string>Project settings</string>
+          <string>General settings</string>
          </property>
         </item>
         <item>
@@ -103,7 +103,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Buildings</string>
+           <string>Structures</string>
           </property>
          </item>
         </item>
