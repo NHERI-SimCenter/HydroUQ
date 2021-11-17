@@ -74,7 +74,7 @@ void GeoClawOpenFOAM::initialize()
     ui->stackedWidget->addWidget(new projectsettings(0)); // Project settings
     ui->stackedWidget->addWidget(new bathymetry(0)); // Bathymetry
     ui->stackedWidget->addWidget(new swcfdint(0)); // SW-CFD interface: Check this if working
-    ui->stackedWidget->addWidget(new buildings(0)); // Buildings
+    ui->stackedWidget->addWidget(new buildings(0)); // Buildings/Structures
     ui->stackedWidget->addWidget(new floatingbds(0)); // Floating bodies
     ui->stackedWidget->addWidget(new meshing(0)); // Meshing
     ui->stackedWidget->addWidget(new materials(0)); // Materials
@@ -469,7 +469,7 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
     else
     {
         // Move to project settings page
-        if(sel == "Project settings")
+        if(sel == "General settings")
         {
             ui->stackedWidget->setCurrentIndex(0);
         }
@@ -489,7 +489,7 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
         }
 
         // Update buildings
-        else if(sel == "Buildings")
+        else if(sel == "Structures")
         {
             dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->refreshData(simtype);
             ui->stackedWidget->setCurrentIndex(3);

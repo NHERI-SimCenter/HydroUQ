@@ -214,37 +214,6 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
         return false;
     }
 
-//    int index = 0;
-//    if ((type == QString("Existing Events")) ||
-//	(type == QString("Existing SimCenter Events")) ||
-//	(type == QString("ExistingSimCenterEvents"))) {
-//        index = 4;
-//    } else if ((type == QString("Existing PEER Records")) ||
-//               (type == QString("ExistingPEER_Events"))  ||
-//               (type == QString("ExistingPEER_Records"))) {
-//        if(!subtype.isEmpty() && subtype == "PEER NGA Records")
-//            index = 1;
-//        else
-//            index = 3;
-//  //  } else if (type == QString("Hazard Based Event")) {
-//  //      index = 3;
-//    } else if (type == QString("Site Response") ||
-//               type == QString("SiteResponse")) {
-//        index = 2;
-//    } else if (type == QString("Stochastic Ground Motion Model") ||
-//	       type == QString("Stochastic Ground Motion") ||
-//	       type == QString("StochasticGroundMotion") ||
-//               type == QString("StochasticMotion")) {
-//        index = 0;
-//   // } else if ((type == QString("User Application")) ||
-//   //            (type == QString("UserDefinedApplication"))) {
-//   //     index = 6;
-//    } else {
-//        return false;
-//    }
-
-//    eventSelection->setCurrentIndex(index);
-
     // invoke inputAppDataFromJSON on new type
     if (theCurrentEvent != 0 && !theEvent.isEmpty())
     {
@@ -279,3 +248,16 @@ bool HydroEventSelection::copyFiles(QString &destDir) {
 
     return false;
 }
+
+//*********************************************************************************
+// Error message
+//*********************************************************************************
+//bool HydroEventSelection::errorMessage(QString msg) {
+
+//    if (theCurrentEvent != 0)
+//    {
+//        return  theCurrentEvent->errorMessage(msg);
+//    }
+
+//    return false;
+//}
