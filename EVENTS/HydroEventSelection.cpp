@@ -67,14 +67,10 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 
     // Load the different event types
     eventSelection->addItem(tr("General"));
-    //eventSelection->addItem(tr("GeoClaw OpenFOAM"));
-    //eventSelection->addItem(tr("Wave Flume Digitwin"));
 
     // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-    eventSelection->setItemData(0, "This is a general event from which all other events can be setup", Qt::ToolTipRole);
-    //eventSelection->setItemData(1, "Coupling of shallow-water solver (GeoClaw) with CFD (OpenFOAM)", Qt::ToolTipRole);
-    //eventSelection->setItemData(2, "Digital twin of Wave Flume (at OSU)", Qt::ToolTipRole);
+    eventSelection->setItemData(0, "General event", Qt::ToolTipRole);
 
     theSelectionLayout->addWidget(label);
     QSpacerItem *spacer = new QSpacerItem(50,10);
@@ -89,8 +85,6 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     // create the individual load widgets & add to stacked widget
     theGeoClawOpenFOAM = new GeoClawOpenFOAM(theRandomVariablesContainer);
     theStackedWidget->addWidget(theGeoClawOpenFOAM);
-    //theFlumeDigiTwin = new FlumeDigiTwin(theRandomVariablesContainer);
-    //theStackedWidget->addWidget(theFlumeDigiTwin);
 
     // Setup the Layout
     layout->addWidget(theStackedWidget);
@@ -121,9 +115,9 @@ HydroEventSelection::~HydroEventSelection()
 //*********************************************************************************
 void HydroEventSelection::eventSelectionChanged(const QString &arg1)
 {
+    (void) arg1;
     // switch stacked widgets depending on text
     // note type output in json and name in pull down are not the same and hence the ||
-    //if (arg1 == "GeoClaw OpenFOAM")
     if (arg1 == "General")
     {
         theStackedWidget->setCurrentIndex(0);
@@ -140,7 +134,7 @@ void HydroEventSelection::eventSelectionChanged(const QString &arg1)
 //*********************************************************************************
 bool HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
 
-    QString type;
+//    QString type;
     QJsonObject theEvent;
 
     if (jsonObject.contains("Events"))
@@ -220,37 +214,6 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
         return false;
     }
 
-//    int index = 0;
-//    if ((type == QString("Existing Events")) ||
-//	(type == QString("Existing SimCenter Events")) ||
-//	(type == QString("ExistingSimCenterEvents"))) {
-//        index = 4;
-//    } else if ((type == QString("Existing PEER Records")) ||
-//               (type == QString("ExistingPEER_Events"))  ||
-//               (type == QString("ExistingPEER_Records"))) {
-//        if(!subtype.isEmpty() && subtype == "PEER NGA Records")
-//            index = 1;
-//        else
-//            index = 3;
-//  //  } else if (type == QString("Hazard Based Event")) {
-//  //      index = 3;
-//    } else if (type == QString("Site Response") ||
-//               type == QString("SiteResponse")) {
-//        index = 2;
-//    } else if (type == QString("Stochastic Ground Motion Model") ||
-//	       type == QString("Stochastic Ground Motion") ||
-//	       type == QString("StochasticGroundMotion") ||
-//               type == QString("StochasticMotion")) {
-//        index = 0;
-//   // } else if ((type == QString("User Application")) ||
-//   //            (type == QString("UserDefinedApplication"))) {
-//   //     index = 6;
-//    } else {
-//        return false;
-//    }
-
-//    eventSelection->setCurrentIndex(index);
-
     // invoke inputAppDataFromJSON on new type
     if (theCurrentEvent != 0 && !theEvent.isEmpty())
     {
@@ -285,3 +248,16 @@ bool HydroEventSelection::copyFiles(QString &destDir) {
 
     return false;
 }
+
+//*********************************************************************************
+// Error message
+//*********************************************************************************
+//bool HydroEventSelection::errorMessage(QString msg) {
+
+//    if (theCurrentEvent != 0)
+//    {
+//        return  theCurrentEvent->errorMessage(msg);
+//    }
+
+//    return false;
+//}

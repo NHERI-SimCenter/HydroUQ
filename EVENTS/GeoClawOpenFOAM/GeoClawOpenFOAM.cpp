@@ -74,7 +74,7 @@ void GeoClawOpenFOAM::initialize()
     ui->stackedWidget->addWidget(new projectsettings(0)); // Project settings
     ui->stackedWidget->addWidget(new bathymetry(0)); // Bathymetry
     ui->stackedWidget->addWidget(new swcfdint(0)); // SW-CFD interface: Check this if working
-    ui->stackedWidget->addWidget(new buildings(0)); // Buildings
+    ui->stackedWidget->addWidget(new buildings(0)); // Buildings/Structures
     ui->stackedWidget->addWidget(new floatingbds(0)); // Floating bodies
     ui->stackedWidget->addWidget(new meshing(0)); // Meshing
     ui->stackedWidget->addWidget(new materials(0)); // Materials
@@ -96,10 +96,8 @@ void GeoClawOpenFOAM::initialize()
 //*********************************************************************************
 bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 {
-    qDebug() << "geoClawOpenFoam:output START\n";
-
     jsonObject["EventClassification"]="Hydro";
-    jsonObject["Application"] = "GeoClawOpenFOAM";
+    jsonObject["Application"] = "HydroCFD";
     bool isitready = true;
 
     // Get the simulation type
@@ -127,14 +125,13 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
     {
         allData.insert(2, singleData);
     }
-qDebug() << "geoClawOpenFoam:output line 130\n";
+
     // Get data from buildings - index 3
     singleData = new QMap<QString,QString>;
     if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->getData(*singleData,simtype))
     {
         allData.insert(3, singleData);
     }
-qDebug() << "geoClawOpenFoam:output line 137\n";
 
 //    // Get data from floating bodies - index 4
 //    singleData = new QMap<QString,QString>;
@@ -228,20 +225,29 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
         // Get the simulation type
         stype = jsonObject["SimulationType"].toString().toInt();
 
-        // Message box
-        QMessageBox msgBox;
-        msgBox.setText("Please select work directory. Support files will be set if found in this path only.");
-        msgBox.exec();
-
-        // File directory to choose the home directory
-        QFileDialog selectworkdir;
-        selectworkdir.setDirectory(QDir::homePath());
-        selectworkdir.setFileMode(QFileDialog::DirectoryOnly);
-        selectworkdir.setWindowTitle("Select working directory");
-        if(selectworkdir.exec())
+        // Check if we need to get work directory
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Select work directory", "Do you want to select work directory?",
+                                        QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes)
         {
-            workdir = selectworkdir.directory();
-            workpath = workdir.canonicalPath();
+            // File directory to choose the home directory
+            QFileDialog selectworkdir;
+            selectworkdir.setDirectory(QDir::homePath());
+            selectworkdir.setFileMode(QFileDialog::DirectoryOnly);
+            selectworkdir.setWindowTitle("Select working directory");
+            if(selectworkdir.exec())
+            {
+                workdir = selectworkdir.directory();
+                workpath = workdir.canonicalPath();
+            }
+            else
+            {
+                QMessageBox msgBox;
+                msgBox.setText("Work directory has not been set! You will need to manually update the required files for EVT again.");
+                msgBox.exec();
+                workpath.clear();
+            }
         }
         else
         {
@@ -326,7 +332,7 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 bool GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &jsonObject)
 {
     jsonObject["EventClassification"]="Hydro"; // Event is Hydro
-    jsonObject["Application"] = "GeoClawOpenFOAM"; // Event inHydro
+    jsonObject["Application"] = "HydroCFD"; //"GeoClawOpenFOAM"; // Event in Hydro
     QJsonObject dataObj;
     jsonObject["ApplicationData"] = dataObj; // All application data
     return true;  
@@ -387,10 +393,11 @@ void GeoClawOpenFOAM::clearAllData(void)
 //*********************************************************************************
 void GeoClawOpenFOAM::refresh_projsettings()
 {
+
     // Refresh the map to get the project data
     QMap<QString, QString> *singleData;
     this->clearAllData();
-    singleData = new QMap<QString,QString>;
+//    singleData = new QMap<QString,QString>;
     int numberOfPanes = 1;
     for (int i=0;i<numberOfPanes;i++) {
         singleData = new QMap<QString,QString>;
@@ -417,6 +424,7 @@ void GeoClawOpenFOAM::saveJson(QString wdir,QString pname, QJsonDocument jsondoc
     // Concatenate to get new dir path where files will be written
     QString finaldirpath = QDir(wdir).filePath(pname);
     QUrl finaldirpathUrl(finaldirpath);
+    (void) finaldirpathUrl;
 
     // Create a directory if it does not exist
     // All files to be written to this directory
@@ -461,7 +469,7 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
     else
     {
         // Move to project settings page
-        if(sel == "Project settings")
+        if(sel == "General settings")
         {
             ui->stackedWidget->setCurrentIndex(0);
         }
@@ -481,18 +489,18 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
         }
 
         // Update buildings
-        else if(sel == "Buildings")
+        else if(sel == "Structures")
         {
             dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->refreshData(simtype);
             ui->stackedWidget->setCurrentIndex(3);
         }
 
-        // Update floating bodies
-        else if(sel == "Floating bodies")
-        {
-            dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(4);
-        }
+//        // Update floating bodies
+//        else if(sel == "Floating bodies")
+//        {
+//            dynamic_cast<floatingbds *>(ui->stackedWidget->widget(4))->refreshData(simtype);
+//            ui->stackedWidget->setCurrentIndex(4);
+//        }
 
         // Update Meshing
         else if(sel == "Meshing")
@@ -508,19 +516,19 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
             ui->stackedWidget->setCurrentIndex(6);
         }
 
-        // Update Initial conditions - velocity
-        else if(sel == "Initial velocity")
-        {
-            dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(7);
-        }
+//        // Update Initial conditions - velocity
+//        else if(sel == "Initial velocity")
+//        {
+//            dynamic_cast<initialconVel *>(ui->stackedWidget->widget(7))->refreshData(simtype);
+//            ui->stackedWidget->setCurrentIndex(7);
+//        }
 
-        // Update Initial conditions - Pressure
-        else if(sel == "Initial pressure")
-        {
-            dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(8);
-        }
+//        // Update Initial conditions - Pressure
+//        else if(sel == "Initial pressure")
+//        {
+//            dynamic_cast<initialconPres *>(ui->stackedWidget->widget(8))->refreshData(simtype);
+//            ui->stackedWidget->setCurrentIndex(8);
+//        }
 
         // Update Initial conditions - Alpha
         else if(sel == "Initial phase")

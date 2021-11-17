@@ -24,6 +24,7 @@ public:
     bool getData(QMap<QString, QString>&,int);
     bool putData(QJsonObject &,int);
     void refreshData(int);
+    void resetData();
 
 private slots:
 

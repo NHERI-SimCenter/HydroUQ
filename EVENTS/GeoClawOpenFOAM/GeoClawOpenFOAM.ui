@@ -36,7 +36,7 @@
     <widget class="QFrame" name="parameterFrame">
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="frameShape">
@@ -73,7 +73,7 @@
         </property>
         <column>
          <property name="text">
-          <string notr="true">Simulation data</string>
+          <string notr="true">Event data</string>
          </property>
          <property name="font">
           <font>
@@ -84,7 +84,7 @@
         </column>
         <item>
          <property name="text">
-          <string>Project settings</string>
+          <string>General settings</string>
          </property>
         </item>
         <item>
@@ -103,7 +103,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Buildings</string>
+           <string>Structures</string>
           </property>
          </item>
         </item>
@@ -185,6 +185,11 @@
       </item>
       <item>
        <spacer name="VSp_ParaFrame">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -203,7 +208,7 @@
     <widget class="QFrame" name="parameterFrame_2">
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="frameShape">
@@ -226,13 +231,24 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QStackedWidget" name="stackedWidget"/>
+       <widget class="QStackedWidget" name="stackedWidget">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
    </item>
    <item>
     <spacer name="horizontalSpacer">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -246,6 +262,11 @@
    </item>
    <item>
     <widget class="QFrame" name="frame">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>

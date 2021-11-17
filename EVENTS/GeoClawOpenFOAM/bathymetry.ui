@@ -191,6 +191,21 @@
          <string>GeoClaw (Type I) bathymetry</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>GeoClaw (Type II) bathymetry</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GeoClaw (Type III) bathymetry</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>AdCirc data</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
@@ -214,6 +229,11 @@
        <item>
         <property name="text">
          <string>GeoClaw solution format</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>AdCirc solution format</string>
         </property>
        </item>
       </widget>
@@ -357,7 +377,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Flume from mesh</string>
+       <string>Geometry from mesh</string>
       </property>
      </item>
     </widget>
