@@ -97,7 +97,7 @@ void GeoClawOpenFOAM::initialize()
 bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
 {
     jsonObject["EventClassification"]="Hydro";
-    jsonObject["Application"] = "HydroCFD";
+    jsonObject["Application"] = "GeoClawOpenFOAM";
     bool isitready = true;
 
     // Get the simulation type
@@ -332,7 +332,7 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
 bool GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &jsonObject)
 {
     jsonObject["EventClassification"]="Hydro"; // Event is Hydro
-    jsonObject["Application"] = "HydroCFD"; //"GeoClawOpenFOAM"; // Event in Hydro
+    jsonObject["Application"] = "GeoClawOpenFOAM"; // Event in Hydro
     QJsonObject dataObj;
     jsonObject["ApplicationData"] = dataObj; // All application data
     return true;  
