@@ -234,7 +234,7 @@ bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
             // File directory to choose the home directory
             QFileDialog selectworkdir;
             selectworkdir.setDirectory(QDir::homePath());
-            selectworkdir.setFileMode(QFileDialog::DirectoryOnly);
+            selectworkdir.setFileMode(QFileDialog::Directory);
             selectworkdir.setWindowTitle("Select working directory");
             if(selectworkdir.exec())
             {

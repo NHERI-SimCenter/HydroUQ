@@ -88,7 +88,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 
     // Setup the Layout
     layout->addWidget(theStackedWidget);
-    layout->setMargin(0);
+    //layout->setMargin(0);
     this->setLayout(layout);
     theCurrentEvent=theGeoClawOpenFOAM;
 
