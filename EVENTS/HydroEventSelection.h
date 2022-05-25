@@ -60,6 +60,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <GeneralInformationWidget.h>
 #include <InputWidgetExistingEvent.h>
 #include <GeoClawOpenFOAM.h>
+#include <WaveDigitalFlume.h>
 
 class QComboBox;
 class QStackedWidget;
@@ -91,8 +92,7 @@ private:
 
    //   SimCenterAppWidget *theSHA_MotionWidget;
    SimCenterAppWidget *theGeoClawOpenFOAM;
-   //SimCenterAppWidget *waveflume;
-   //SimCenterAppWidget *theFlumeDigiTwin;
+   SimCenterAppWidget *theWaveDigitalFlume;
    RandomVariablesContainer *theRandomVariablesContainer;
 };
 

@@ -67,10 +67,12 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 
     // Load the different event types
     eventSelection->addItem(tr("General"));
+    eventSelection->addItem(tr("Digital twin"));
 
     // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     eventSelection->setItemData(0, "General event", Qt::ToolTipRole);
+    eventSelection->setItemData(1, "Digital twin for the wave flume", Qt::ToolTipRole);
 
     theSelectionLayout->addWidget(label);
     QSpacerItem *spacer = new QSpacerItem(50,10);
@@ -86,11 +88,15 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     theGeoClawOpenFOAM = new GeoClawOpenFOAM(theRandomVariablesContainer);
     theStackedWidget->addWidget(theGeoClawOpenFOAM);
 
+    // create the individual load widgets & add to stacked widget
+    theWaveDigitalFlume = new WaveDigitalFlume(theRandomVariablesContainer);
+    theStackedWidget->addWidget(theWaveDigitalFlume);
+
     // Setup the Layout
     layout->addWidget(theStackedWidget);
     //layout->setMargin(0);
     this->setLayout(layout);
-    theCurrentEvent=theGeoClawOpenFOAM;
+    //theCurrentEvent=theGeoClawOpenFOAM;
 
     // Connect signal and slots
     connect(eventSelection, SIGNAL(currentIndexChanged(QString)), this, SLOT(eventSelectionChanged(QString)));
@@ -115,7 +121,6 @@ HydroEventSelection::~HydroEventSelection()
 //*********************************************************************************
 void HydroEventSelection::eventSelectionChanged(const QString &arg1)
 {
-    (void) arg1;
     // switch stacked widgets depending on text
     // note type output in json and name in pull down are not the same and hence the ||
     if (arg1 == "General")
@@ -123,9 +128,16 @@ void HydroEventSelection::eventSelectionChanged(const QString &arg1)
         theStackedWidget->setCurrentIndex(0);
         theCurrentEvent = theGeoClawOpenFOAM;
     }
+    else if (arg1 == "Digital twin")
+    {
+        theStackedWidget->setCurrentIndex(1);
+        theCurrentEvent = theWaveDigitalFlume;
+        QMessageBox msgBox;
+        msgBox.critical(nullptr, "Critical error", "Event changed");
+    }
     else
     {
-        qDebug() << "ERROR: HydroEventSelection selection-type unknown: " << arg1;
+        qDebug() << "ERROR: Hydro-EventSelection selection-type unknown: " << arg1;
     }
 }
 
@@ -248,16 +260,3 @@ bool HydroEventSelection::copyFiles(QString &destDir) {
 
     return false;
 }
-
-//*********************************************************************************
-// Error message
-//*********************************************************************************
-//bool HydroEventSelection::errorMessage(QString msg) {
-
-//    if (theCurrentEvent != 0)
-//    {
-//        return  theCurrentEvent->errorMessage(msg);
-//    }
-
-//    return false;
-//}
