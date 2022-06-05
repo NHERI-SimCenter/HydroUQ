@@ -40,9 +40,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written: fmckenna
 // Modified: Ajay B Harish (May 2021)
 
-#include "projectsettings.h"
+#include "../Common/projectsettings.h"
 #include "swcfdint.h"
-#include "bathymetry.h"
+#include "../Common/bathymetry.h"
 #include "buildings.h"
 #include "floatingbds.h"
 #include "meshing.h"
@@ -75,7 +75,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QUuid>
 #include <ZipUtils.h>
 #include <QStandardPaths>
-//#include <SimCenterAppWidget.h>
 
 //QT_BEGIN_NAMESPACE
 //QT_END_NAMESPACE
@@ -83,7 +82,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 namespace Ui {
   class GeoClawOpenFOAM;
 }
-
 
 class AgaveCurl;
 
@@ -117,7 +115,7 @@ private:
     int simtype; // Simulation type
     QStringList optiontree; // Tree widget names
     QString applicationname = "Hydro-UQ";
-    QString applicationversion = "1.0.0";
+    QString applicationversion = "2.0.0";
     AgaveCurl *theRemoteService;
     Hydroerror error;
 };

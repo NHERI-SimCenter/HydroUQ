@@ -45,10 +45,12 @@ include(../SimCenterCommon/InputSheetBM/InputSheetBM.pri)
 
 
 SOURCES += main.cpp \
+    EVENTS/H20plotwindow.cpp \
     WorkflowAppHydroUQ.cpp \
     RunWidget.cpp
 
 HEADERS  += \
+    EVENTS/H20plotwindow.h \
     WorkflowAppHydroUQ.h\
     RunWidget.h 
 
@@ -66,6 +68,9 @@ RESOURCES += \
     $$PWD/resources.qrc \   
     $$PWD/styles.qrc
        
+
+FORMS += \
+    EVENTS/H20plotwindow.ui
 
 
 

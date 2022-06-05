@@ -72,7 +72,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     eventSelection->setItemData(0, "General event", Qt::ToolTipRole);
-    eventSelection->setItemData(1, "Digital twin for the wave flume", Qt::ToolTipRole);
+    eventSelection->setItemData(1, "Digital twin", Qt::ToolTipRole);
 
     theSelectionLayout->addWidget(label);
     QSpacerItem *spacer = new QSpacerItem(50,10);
@@ -99,7 +99,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     //theCurrentEvent=theGeoClawOpenFOAM;
 
     // Connect signal and slots
-    connect(eventSelection, SIGNAL(currentIndexChanged(QString)), this, SLOT(eventSelectionChanged(QString)));
+    connect(eventSelection, SIGNAL(currentIndexChanged(int)), this, SLOT(eventSelectionChanged(int)));
     /*
     connect(theGeoClawOpenFOAM, &SimCenterAppWidget::sendErrorMessage, this, [this](QString message) {emit sendErrorMessage(message);});
     connect(theGeoClawOpenFOAM, &SimCenterAppWidget::sendFatalMessage, this, [this](QString message) {emit sendFatalMessage(message);});
@@ -119,21 +119,22 @@ HydroEventSelection::~HydroEventSelection()
 //*********************************************************************************
 // If Event selection is changed
 //*********************************************************************************
-void HydroEventSelection::eventSelectionChanged(const QString &arg1)
+void HydroEventSelection::eventSelectionChanged(int arg1)
 {
     // switch stacked widgets depending on text
     // note type output in json and name in pull down are not the same and hence the ||
-    if (arg1 == "General")
+    if (arg1 == 0)
     {
         theStackedWidget->setCurrentIndex(0);
         theCurrentEvent = theGeoClawOpenFOAM;
     }
-    else if (arg1 == "Digital twin")
+    else if (arg1 == 1)
     {
         theStackedWidget->setCurrentIndex(1);
         theCurrentEvent = theWaveDigitalFlume;
-        QMessageBox msgBox;
-        msgBox.critical(nullptr, "Critical error", "Event changed");
+
+//        QMessageBox msgBox;
+//        msgBox.critical(nullptr, "Critical error", "Event changed");
     }
     else
     {

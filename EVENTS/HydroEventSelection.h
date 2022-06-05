@@ -62,7 +62,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <GeoClawOpenFOAM.h>
 #include <WaveDigitalFlume.h>
 
-class QComboBox;
+//class QComboBox;
 class QStackedWidget;
 class RandomVariablesContainer;
 class HydroEventSelection : public  SimCenterAppWidget
@@ -83,7 +83,7 @@ public:
 signals:
 
 public slots:
-   void eventSelectionChanged(const QString &arg1);
+   void eventSelectionChanged(int arg1);
 
 private:
    QComboBox   *eventSelection;
