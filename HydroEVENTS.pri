@@ -1,13 +1,13 @@
 INCLUDEPATH += $$PWD/EVENTS
 INCLUDEPATH += $$PWD/EVENTS/GeoClawOpenFOAM
-
+INCLUDEPATH += $$PWD/EVENTS/WaveDigitalFlume
+INCLUDEPATH += $$PWD/EVENTS/Common
 
 SOURCES += \
     $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.cpp \
     $$PWD/EVENTS/HydroEventSelection.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/GeoClawOpenFOAM.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/H20utilities/h20utilities.cpp \
-    $$PWD/EVENTS/GeoClawOpenFOAM/bathymetry.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundary.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundarydata.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/buildings.cpp \
@@ -19,19 +19,20 @@ SOURCES += \
     $$PWD/EVENTS/GeoClawOpenFOAM/initialconvel.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/materials.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/meshing.cpp \
-    $$PWD/EVENTS/GeoClawOpenFOAM/projectsettings.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/qt3dframe.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/scenemodifier.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/solver.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/swcfdint.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/swsolvers/geoclaw/geoclaw.cpp \
-    $$PWD/EVENTS/GeoClawOpenFOAM/postprocess.cpp
+    $$PWD/EVENTS/GeoClawOpenFOAM/postprocess.cpp \
+    $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.cpp \
+    $$PWD/EVENTS/Common/projectsettings.cpp \
+    $$PWD/EVENTS/Common/bathymetry.cpp
 
 HEADERS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.h \
     $$PWD/EVENTS/HydroEventSelection.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/H20utilities/h20utilities.h \
-    $$PWD/EVENTS/GeoClawOpenFOAM/bathymetry.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundary.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundarydata.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/buildings.h \
@@ -42,7 +43,6 @@ HEADERS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/GeoClawOpenFOAM.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/materials.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/meshing.h \
-    $$PWD/EVENTS/GeoClawOpenFOAM/projectsettings.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/qt3dframe.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/scenemodifier.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/solver.h \
@@ -50,6 +50,9 @@ HEADERS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/swsolvers/geoclaw/geoclaw.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/cfdsolvers/openfoam/openfoam.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/postprocess.h \
+    $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.h \
+    $$PWD/EVENTS/Common/projectsettings.h \
+    $$PWD/EVENTS/Common/bathymetry.h \
     $$PWD/EVENTS/dependencies/Eigen/Cholesky \
     $$PWD/EVENTS/dependencies/Eigen/CholmodSupport \
     $$PWD/EVENTS/dependencies/Eigen/Core \
@@ -353,7 +356,6 @@ HEADERS += \
 
 FORMS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/GeoClawOpenFOAM_copy.ui \
-    $$PWD/EVENTS/GeoClawOpenFOAM/bathymetry.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundary.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundarydata.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundarydata_copy.ui \
@@ -365,11 +367,13 @@ FORMS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/GeoClawOpenFOAM.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/materials.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/meshing.ui \
-    $$PWD/EVENTS/GeoClawOpenFOAM/projectsettings.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/projectsettings_old.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/solver.ui \
     $$PWD/EVENTS/GeoClawOpenFOAM/swcfdint.ui \
-    $$PWD/EVENTS/GeoClawOpenFOAM/postprocess.ui
+    $$PWD/EVENTS/GeoClawOpenFOAM/postprocess.ui \
+    $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.ui \
+    $$PWD/EVENTS/Common/projectsettings.ui \
+    $$PWD/EVENTS/Common/bathymetry.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -34,18 +34,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmckenna
-// Modified: Ajay B Harish (Feb 2021)
+// Written: Ajay B Harish (May 2022)
 
-#include "GeoClawOpenFOAM.h"
-#include "ui_GeoClawOpenFOAM.h"
+#include "WaveDigitalFlume.h"
+#include "ui_WaveDigitalFlume.h"
 
 //*********************************************************************************
 // Main window
 //*********************************************************************************
-GeoClawOpenFOAM::GeoClawOpenFOAM(RandomVariablesContainer *theRV, QWidget *parent)
+WaveDigitalFlume::WaveDigitalFlume(RandomVariablesContainer *theRV, QWidget *parent)
     : SimCenterAppWidget(parent), theRemoteService(NULL)
-    , ui(new Ui::GeoClawOpenFOAM)
+    , ui(new Ui::WaveDigitalFlume)
 {
     // Start the UI
     ui->setupUi(this);
@@ -60,7 +59,7 @@ GeoClawOpenFOAM::GeoClawOpenFOAM(RandomVariablesContainer *theRV, QWidget *paren
 //*********************************************************************************
 // Delete main window
 //*********************************************************************************
-GeoClawOpenFOAM::~GeoClawOpenFOAM()
+WaveDigitalFlume::~WaveDigitalFlume()
 {
     delete ui;
 }
@@ -68,11 +67,11 @@ GeoClawOpenFOAM::~GeoClawOpenFOAM()
 //*********************************************************************************
 // Initialize the UI
 //*********************************************************************************
-void GeoClawOpenFOAM::initialize()
+void WaveDigitalFlume::initialize()
 {
     // Add project page
-    ui->stackedWidget->addWidget(new projectsettings(0)); // Project settings
-    ui->stackedWidget->addWidget(new bathymetry(0)); // Bathymetry
+    ui->stackedWidget->addWidget(new projectsettings(4)); // Project settings
+    ui->stackedWidget->addWidget(new bathymetry(4)); // Bathymetry
     ui->stackedWidget->addWidget(new swcfdint(0)); // SW-CFD interface: Check this if working
     ui->stackedWidget->addWidget(new buildings(0)); // Buildings/Structures
     ui->stackedWidget->addWidget(new floatingbds(0)); // Floating bodies
@@ -87,15 +86,21 @@ void GeoClawOpenFOAM::initialize()
 
     // Set index to zero & simtype to zero
     ui->stackedWidget->setCurrentIndex(0);
-    simtype = 0;
+    simtype = 4;
 
+    // Activate wave flume
+    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->activateflume(simtype))
+    {
+        qDebug() << "Error";
+    }
 }
 
 //*********************************************************************************
 // Output to JSON
 //*********************************************************************************
-bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
+bool WaveDigitalFlume::outputToJSON(QJsonObject &jsonObject)
 {
+
     jsonObject["EventClassification"]="Hydro";
     jsonObject["Application"] = "GeoClawOpenFOAM";
     bool isitready = true;
@@ -205,159 +210,51 @@ bool GeoClawOpenFOAM::outputToJSON(QJsonObject &jsonObject)
             jsonObject[varname] = singleDataSet->value(varname);
         }
     }
-  
+
     return isitready;
 }
+
 
 //*********************************************************************************
 // Use JSON file to update all elements in the GUI
 //*********************************************************************************
-bool GeoClawOpenFOAM::inputFromJSON(QJsonObject &jsonObject)
+bool WaveDigitalFlume::inputFromJSON(QJsonObject &jsonObject)
 {
-
-    // Check for simulation type
-    int stype;
-    // Get a working directory to import files from
-    QDir workdir;
-    QString workpath;
-    if(jsonObject.contains("SimulationType"))
-    {
-        // Get the simulation type
-        stype = jsonObject["SimulationType"].toString().toInt();
-
-        // Check if we need to get work directory
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, "Select work directory", "Do you want to select work directory?",
-                                        QMessageBox::Yes|QMessageBox::No);
-        if (reply == QMessageBox::Yes)
-        {
-            // File directory to choose the home directory
-            QFileDialog selectworkdir;
-            selectworkdir.setDirectory(QDir::homePath());
-            selectworkdir.setFileMode(QFileDialog::Directory);
-            selectworkdir.setWindowTitle("Select working directory");
-            if(selectworkdir.exec())
-            {
-                workdir = selectworkdir.directory();
-                workpath = workdir.canonicalPath();
-            }
-            else
-            {
-                QMessageBox msgBox;
-                msgBox.setText("Work directory has not been set! You will need to manually update the required files for EVT again.");
-                msgBox.exec();
-                workpath.clear();
-            }
-        }
-        else
-        {
-            QMessageBox msgBox;
-            msgBox.setText("Work directory has not been set! You will need to manually update the required files for EVT again.");
-            msgBox.exec();
-            workpath.clear();
-        }
-    }
-    else
-    {
-        error.criterrormessage("Simulation type not found. Check JSON file!");
-        return false;
-    }
-
-    // Put data into project settings (0)
-    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->putData(jsonObject,stype))
-    {
-        // do nothing
-    }
-
-    // Put data into bathymetry settings (1)
-    if (dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->putData(jsonObject,stype,workpath))
-    {
-        // do nothing
-    }
-
-    // Put data into SW-CFD settings (2)
-    if (dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->putData(jsonObject,stype,workpath))
-    {
-        // do nothing
-    }
-
-    // Put data into Building settings (3)
-    if (dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->putData(jsonObject,stype,workpath))
-    {
-        // do nothing
-    }
-
-    // Put data in meshing settings (5)
-    if (dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->putData(jsonObject,stype,workpath))
-    {
-        // do nothing
-    }
-
-    // Put data into material settings (6)
-    if (dynamic_cast<materials *>(ui->stackedWidget->widget(6))->putData(jsonObject,stype,workpath))
-    {
-        // do nothing
-    }
-
-    // Put data into initial condition (alpha) settings (9)
-    if (dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->putData(jsonObject,stype,workpath))
-    {
-        // do nothing
-    }
-
-    // Boundary conditions - index 10
-    if (dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->putData(jsonObject,stype,workpath))
-    {
-        // do nothing for now
-    }
-
-    // Solver settings - index 11
-    if (dynamic_cast<solver *>(ui->stackedWidget->widget(11))->putData(jsonObject,stype,workpath))
-    {
-        // do nothing for now
-    }
-
-    // Postprocess settings - index 12
-    if (dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->putData(jsonObject,stype,workpath))
-    {
-        // do nothing for now
-    }
-
-    return true;
+    // Return
+    return false;
 }
 
 //*********************************************************************************
 // Output app Data to JSON file
 //*********************************************************************************
-bool GeoClawOpenFOAM::outputAppDataToJSON(QJsonObject &jsonObject)
+bool WaveDigitalFlume::outputAppDataToJSON(QJsonObject &jsonObject)
 {
     jsonObject["EventClassification"]="Hydro"; // Event is Hydro
     jsonObject["Application"] = "GeoClawOpenFOAM"; // Event in Hydro
     QJsonObject dataObj;
     jsonObject["ApplicationData"] = dataObj; // All application data
-    return true;  
+    return true;
 }
 
 //*********************************************************************************
 // Read app data from JSON file (Need to add)
 //*********************************************************************************
-bool GeoClawOpenFOAM::inputAppDataFromJSON(QJsonObject &jsonObject)
+bool WaveDigitalFlume::inputAppDataFromJSON(QJsonObject &jsonObject)
 {
-    //(void) jsonObject;
+    // Return
     return true;
 }
 
 //*********************************************************************************
 // Copy files
 //*********************************************************************************
-bool GeoClawOpenFOAM::copyFiles(QString &dirName)
+bool WaveDigitalFlume::copyFiles(QString &dirName)
 {
-
     // Copy bathymetry and solution files
     dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->copyFiles(dirName,simtype);
 
     // Copy SW-CFD interface files
-    dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->copyFiles(dirName,simtype);
+    //dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->copyFiles(dirName,simtype);
 
     // Copy Building files
     dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->copyFiles(dirName,simtype);
@@ -378,11 +275,10 @@ bool GeoClawOpenFOAM::copyFiles(QString &dirName)
     return true;
 }
 
-
 //*********************************************************************************
 // Clear all data
 //*********************************************************************************
-void GeoClawOpenFOAM::clearAllData(void)
+void WaveDigitalFlume::clearAllData(void)
 {
     foreach (int key, allData.keys()) { delete allData.value(key); }
     allData.clear();
@@ -391,35 +287,45 @@ void GeoClawOpenFOAM::clearAllData(void)
 //*********************************************************************************
 // Refresh project map and get latest simulation type
 //*********************************************************************************
-void GeoClawOpenFOAM::refresh_projsettings()
+void WaveDigitalFlume::refresh_projsettings()
 {
-
     // Refresh the map to get the project data
     QMap<QString, QString> *singleData;
     this->clearAllData();
 //    singleData = new QMap<QString,QString>;
     int numberOfPanes = 1;
+    simtype = 4;
     for (int i=0;i<numberOfPanes;i++) {
         singleData = new QMap<QString,QString>;
         if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(i))->getData(*singleData,simtype))
         {
             allData.insert(i, singleData);
         }
+        // Activate wave flume
+        if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->activateflume(simtype))
+        {
+            qDebug() << "Error";
+        }
+
     }
 
     // Search for simulation type
-    QMap<QString, QString> *singleDataSet = allData.value(0);
-    QString simty = singleDataSet->value("SimulationType");
+    //QMap<QString, QString> *singleDataSet = allData.value(0);
+    //QString simty = singleDataSet->value("SimulationType");
 
     // Get new simulation type, if user has changed it intermediately
     // This can also be same as old simulation type
-    simtype = simty.split(" ")[0].toInt();
+    //simtype = simty.split(" ")[0].toInt();
+
+    // Get new simulation type, if user has changed it intermediately
+    // This can also be same as old simulation type
+    // simtype = 4;
 }
 
 //*********************************************************************************
 // Save JSON file
 //*********************************************************************************
-void GeoClawOpenFOAM::saveJson(QString wdir,QString pname, QJsonDocument jsondoc)
+void WaveDigitalFlume::saveJson(QString wdir,QString pname, QJsonDocument jsondoc)
 {
     // Concatenate to get new dir path where files will be written
     QString finaldirpath = QDir(wdir).filePath(pname);
@@ -453,7 +359,7 @@ void GeoClawOpenFOAM::saveJson(QString wdir,QString pname, QJsonDocument jsondoc
 //*********************************************************************************
 // Tree item double clicked
 //*********************************************************************************
-void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column)
+void WaveDigitalFlume::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
     // Get the item double clicked on
     QString sel = item->text(column);
@@ -461,39 +367,39 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
     // Get the simulation type
     refresh_projsettings();
 
-    // Bathymetry
-    if(simtype == 0)
+    // Disable sim type
+    simtype = 4;
+    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->activateflume(simtype))
+    {
+        qDebug() << "Error";
+    }
+
+    // Move to project settings page
+    if(sel == "General settings")
     {
         ui->stackedWidget->setCurrentIndex(0);
     }
-    else
+
+    // Update bathymetry
+    else if(sel == "Bathymetry")
     {
-        // Move to project settings page
-        if(sel == "General settings")
-        {
-            ui->stackedWidget->setCurrentIndex(0);
-        }
+        dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->refreshData(simtype);
+        ui->stackedWidget->setCurrentIndex(1);
+    }
 
-        // Update bathymetry
-        else if(sel == "Bathymetry")
-        {
-            dynamic_cast<bathymetry *>(ui->stackedWidget->widget(1))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(1);
-        }
+    // Update sw-cfd interface
+    else if(sel == "SW-CFD interface")
+    {
+        dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->refreshData(simtype);
+        ui->stackedWidget->setCurrentIndex(2);
+    }
 
-        // Update sw-cfd interface
-        else if(sel == "SW-CFD interface")
-        {
-            dynamic_cast<swcfdint *>(ui->stackedWidget->widget(2))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(2);
-        }
-
-        // Update buildings
-        else if(sel == "Structures")
-        {
-            dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(3);
-        }
+    // Update buildings
+    else if(sel == "Structures")
+    {
+        dynamic_cast<buildings *>(ui->stackedWidget->widget(3))->refreshData(simtype);
+        ui->stackedWidget->setCurrentIndex(3);
+    }
 
 //        // Update floating bodies
 //        else if(sel == "Floating bodies")
@@ -502,19 +408,19 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
 //            ui->stackedWidget->setCurrentIndex(4);
 //        }
 
-        // Update Meshing
-        else if(sel == "Meshing")
-        {
-            dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(5);
-        }
+    // Update Meshing
+    else if(sel == "Meshing")
+    {
+        dynamic_cast<meshing *>(ui->stackedWidget->widget(5))->refreshData(simtype);
+        ui->stackedWidget->setCurrentIndex(5);
+    }
 
-        // Update Materials
-        else if(sel == "Materials")
-        {
-            dynamic_cast<materials *>(ui->stackedWidget->widget(6))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(6);
-        }
+    // Update Materials
+    else if(sel == "Materials")
+    {
+        dynamic_cast<materials *>(ui->stackedWidget->widget(6))->refreshData(simtype);
+        ui->stackedWidget->setCurrentIndex(6);
+    }
 
 //        // Update Initial conditions - velocity
 //        else if(sel == "Initial velocity")
@@ -530,32 +436,31 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
 //            ui->stackedWidget->setCurrentIndex(8);
 //        }
 
-        // Update Initial conditions - Alpha
-        else if(sel == "Initial phase")
-        {
-            dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(9);
-        }
+    // Update Initial conditions - Alpha
+    else if(sel == "Initial phase")
+    {
+        dynamic_cast<initialconAlpha *>(ui->stackedWidget->widget(9))->refreshData(simtype);
+        ui->stackedWidget->setCurrentIndex(9);
+    }
 
-        // Update boundary conditions
-        else if(sel == "Boundary conditions")
-        {
-            dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(10);
-        }
+    // Update boundary conditions
+    else if(sel == "Boundary conditions")
+    {
+        dynamic_cast<boundary *>(ui->stackedWidget->widget(10))->refreshData(simtype);
+        ui->stackedWidget->setCurrentIndex(10);
+    }
 
-        // Update solvers
-        else if(sel == "Solver")
-        {
-            dynamic_cast<solver *>(ui->stackedWidget->widget(11))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(11);
-        }
+    // Update solvers
+    else if(sel == "Solver")
+    {
+        dynamic_cast<solver *>(ui->stackedWidget->widget(11))->refreshData(simtype);
+        ui->stackedWidget->setCurrentIndex(11);
+    }
 
-        // Postprocessing
-        else if(sel == "Post-processing")
-        {
-            dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->refreshData(simtype);
-            ui->stackedWidget->setCurrentIndex(12);
-        }
+    // Postprocessing
+    else if(sel == "Post-processing")
+    {
+        dynamic_cast<postprocess *>(ui->stackedWidget->widget(12))->refreshData(simtype);
+        ui->stackedWidget->setCurrentIndex(12);
     }
 }

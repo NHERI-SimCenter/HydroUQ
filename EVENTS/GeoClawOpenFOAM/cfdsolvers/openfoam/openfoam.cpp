@@ -12,10 +12,10 @@ void openfoam::genopenfoam(QString wdir,QString pname)
     QUrl finaldirpathUrl(finaldirpath);
     QDir fildirs(finaldirpath);
     QFile jsonfile(fildirs.filePath(pname+".json"));
-    if(!jsonfile.open(QIODevice::ReadOnly)){
-        qDebug() << "Failed to open" << jsonfile;
-        exit(1);
-    }
+//    if(!jsonfile.open(QIODevice::ReadOnly)){
+//        qDebug() << "Failed to open" << jsonfile;
+//        exit(1);
+//    }
 
     // Convert to a format to search
     QTextStream file_text(&jsonfile);

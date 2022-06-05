@@ -1,5 +1,5 @@
-#ifndef GEOCLAW_OPENFOAM_H
-#define GEOCLAW_OPENFOAM_H
+#ifndef WAVEDIGITALFLUME_H
+#define WAVEDIGITALFLUME_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
@@ -37,24 +37,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmckenna
-// Modified: Ajay B Harish (May 2021)
+// Written: Ajay B Harish (May 2022)
+// Modified:
 
 #include "../Common/projectsettings.h"
-#include "swcfdint.h"
+#include "../GeoClawOpenFOAM/swcfdint.h"
 #include "../Common/bathymetry.h"
-#include "buildings.h"
-#include "floatingbds.h"
-#include "meshing.h"
-#include "materials.h"
-#include "initialconvel.h"
-#include "initialconpres.h"
-#include "initialconalpha.h"
-#include "boundary.h"
-#include "solver.h"
+#include "../GeoClawOpenFOAM/buildings.h"
+#include "../GeoClawOpenFOAM/floatingbds.h"
+#include "../GeoClawOpenFOAM/meshing.h"
+#include "../GeoClawOpenFOAM/materials.h"
+#include "../GeoClawOpenFOAM/initialconvel.h"
+#include "../GeoClawOpenFOAM/initialconpres.h"
+#include "../GeoClawOpenFOAM/initialconalpha.h"
+#include "../GeoClawOpenFOAM/boundary.h"
+#include "../GeoClawOpenFOAM/solver.h"
 #include "cfdsolvers/openfoam/openfoam.h"
-#include "postprocess.h"
-#include "hydroerror.h"
+#include "../GeoClawOpenFOAM/postprocess.h"
+#include "../GeoClawOpenFOAM/hydroerror.h"
 #include <RandomVariablesContainer.h>
 #include <SimCenterAppWidget.h>
 #include "AgaveCurl.h"
@@ -76,23 +76,20 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <ZipUtils.h>
 #include <QStandardPaths>
 
-//QT_BEGIN_NAMESPACE
-//QT_END_NAMESPACE
-
 namespace Ui {
-  class GeoClawOpenFOAM;
+class WaveDigitalFlume;
 }
 
 class AgaveCurl;
 
-class GeoClawOpenFOAM : public SimCenterAppWidget
+class WaveDigitalFlume : public SimCenterAppWidget
 {
     Q_OBJECT
 
 public:
-  GeoClawOpenFOAM(RandomVariablesContainer *theRV, QWidget *parent = nullptr);
-  ~GeoClawOpenFOAM();
-   
+    WaveDigitalFlume(RandomVariablesContainer *theRV, QWidget *parent = nullptr);
+    ~WaveDigitalFlume();
+
     bool outputToJSON(QJsonObject &rvObject);
     bool inputFromJSON(QJsonObject &rvObject);
     bool outputAppDataToJSON(QJsonObject &rvObject);
@@ -106,10 +103,10 @@ private:
     void clearAllData(void);
     void initialize();
     void refresh_projsettings();
-  
+
     void saveJson(QString wdir, QString pname, QJsonDocument jsondoc);
- 
-    Ui::GeoClawOpenFOAM *ui;
+
+    Ui::WaveDigitalFlume *ui;
     QMap<int, QMap<QString, QString>*> allData;
 
     int simtype; // Simulation type
@@ -117,6 +114,6 @@ private:
     QString applicationname = "Hydro-UQ";
     QString applicationversion = "2.0.0";
     AgaveCurl *theRemoteService;
-    Hydroerror error;
 };
-#endif // GEOCLAW_OPENFOAM_H
+
+#endif // WAVEDIGITALFLUME_H
