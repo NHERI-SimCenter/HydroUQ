@@ -38,6 +38,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Modified: Ajay B Harish (Feb 2021)
 
 #include "HydroEventSelection.h"
+#include <CoupledDigitalTwin.h>
 
 //*********************************************************************************
 // Main Hydro event
@@ -68,6 +69,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     // Load the different event types
     eventSelection->addItem(tr("General"));
     eventSelection->addItem(tr("Digital twin"));
+    eventSelection->addItem(tr("Coupled Digital Twin"));    
 
     // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
@@ -91,6 +93,9 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     // create the individual load widgets & add to stacked widget
     theWaveDigitalFlume = new WaveDigitalFlume(theRandomVariablesContainer);
     theStackedWidget->addWidget(theWaveDigitalFlume);
+
+    theCoupledDigitalTwin = new CoupledDigitalTwin(theRandomVariablesContainer);
+    theStackedWidget->addWidget(theCoupledDigitalTwin);    
 
     // Setup the Layout
     layout->addWidget(theStackedWidget);
@@ -132,10 +137,12 @@ void HydroEventSelection::eventSelectionChanged(int arg1)
     {
         theStackedWidget->setCurrentIndex(1);
         theCurrentEvent = theWaveDigitalFlume;
-
-//        QMessageBox msgBox;
-//        msgBox.critical(nullptr, "Critical error", "Event changed");
     }
+    else if (arg1 == 2)
+    {
+        theStackedWidget->setCurrentIndex(2);
+        theCurrentEvent = theCoupledDigitalTwin;
+    }    
     else
     {
         qDebug() << "ERROR: Hydro-EventSelection selection-type unknown: " << arg1;

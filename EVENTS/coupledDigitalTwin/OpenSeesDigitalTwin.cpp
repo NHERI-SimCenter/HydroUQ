@@ -1,8 +1,5 @@
-#ifndef HYDRO_EVENT_SELECTION_H
-#define HYDRO_EVENT_SELECTION_H
-
 /* *****************************************************************************
-Copyright (c) 2016-2017, The Regents of the University of California (Regents).
+Copyright (c) 2016-2023, The Regents of the University of California (Regents).
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without 
@@ -20,7 +17,7 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
 ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -37,65 +34,47 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmckenna
-// Modified: Ajay B Harish (May 2021)
-
-#include <QGroupBox>
-#include <QVector>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QStackedWidget>
-#include <QComboBox>
-#include <QSpacerItem>
-#include <QPushButton>
-#include <QJsonObject>
-#include <QJsonArray>
+#include <OpenSeesDigitalTwin.h>
 #include <QLabel>
-#include <QLineEdit>
-#include <QDebug>
-#include <QFileDialog>
-#include <QPushButton>
-#include <sectiontitle.h>
-#include <SimCenterAppWidget.h>
-#include <GeneralInformationWidget.h>
-#include <InputWidgetExistingEvent.h>
-#include <GeoClawOpenFOAM.h>
-#include <WaveDigitalFlume.h>
+#include <QGridLayout>
 
-//class QComboBox;
-class QStackedWidget;
-class RandomVariablesContainer;
-class HydroEventSelection : public  SimCenterAppWidget
+#include <SC_FileEdit.h>
+
+OpenSeesDigitalTwin::OpenSeesDigitalTwin(QWidget *parent)
+  :SimCenterWidget(parent)
 {
-    Q_OBJECT
-public:
-    explicit HydroEventSelection(RandomVariablesContainer *,
-				 GeneralInformationWidget* generalInfoWidget,
-				 QWidget *parent = 0);
-    ~HydroEventSelection();
 
-    bool outputToJSON(QJsonObject &rvObject);
-    bool inputFromJSON(QJsonObject &rvObject);
-    bool outputAppDataToJSON(QJsonObject &rvObject);
-    bool inputAppDataFromJSON(QJsonObject &rvObject);
-    bool copyFiles(QString &destName);
+  theOpenSeesPyScript = new SC_FileEdit("openSeesPyScript");
+  theSurfaceFile = new SC_FileEdit("interfaceSurface");
 
-signals:
+  QGridLayout *theLayout = new QGridLayout();
+  theLayout->addWidget(new QLabel("OpenSeesPy Script"),0,0);
+  theLayout->addWidget(theOpenSeesPyScript, 0,1);
+  theLayout->addWidget(new QLabel("Surface File"),1,0);
+  theLayout->addWidget(theSurfaceFile, 1,1);
+  theLayout->setRowStretch(2,1);
+  this->setLayout(theLayout);
+    
+}
 
-public slots:
-   void eventSelectionChanged(int arg1);
+OpenSeesDigitalTwin::~OpenSeesDigitalTwin()
+{
 
-private:
-   QComboBox   *eventSelection;
-   QStackedWidget *theStackedWidget;
-   SimCenterAppWidget *theCurrentEvent;
+}
 
-   //   SimCenterAppWidget *theSHA_MotionWidget;
-   SimCenterAppWidget *theGeoClawOpenFOAM;
-   SimCenterAppWidget *theWaveDigitalFlume;
-   SimCenterAppWidget *theCoupledDigitalTwin;  
-  
-   RandomVariablesContainer *theRandomVariablesContainer;
-};
+bool
+OpenSeesDigitalTwin::outputToJSON(QJsonObject &jsonObject)
+{
+  theOpenSeesPyScript->outputToJSON(jsonObject);
+  theSurfaceFile->outputToJSON(jsonObject);  
+  return true;
+}
 
-#endif // HYDRO_EVENT_SELECTION_H
+bool
+OpenSeesDigitalTwin::inputFromJSON(QJsonObject &jsonObject)
+{
+  theOpenSeesPyScript->inputFromJSON(jsonObject);
+  theSurfaceFile->inputFromJSON(jsonObject);    
+  return true;
+}
+
