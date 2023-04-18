@@ -50,7 +50,7 @@ class InputWidgetBIM;
 class InputWidgetUQ;
 class SIM_Selection;
 class UQ_EngineSelection;
-class FEM_Selection;
+class FEA_Selection;
 class UQOptions;
 class ResultsWidget;
 class GeneralInformationWidget;
@@ -92,9 +92,10 @@ signals:
 public slots:  
 
     void setUpForApplicationRun(QString &, QString &);
-    void processResults(QString dakotaOut, QString dakotaTab, QString inputFile);
+    void processResults(QString &resultsDir);
+    //void processResults(QString dakotaOut, QString dakotaTab, QString inputFile);
 
-    int loadFile(QString filename);
+    int loadFile(QString &filename);
     void replyFinished(QNetworkReply*);
 
 private:
@@ -107,7 +108,7 @@ private:
     SIM_Selection *theSIM;
     UQ_EngineSelection *theUQ_Selection;
     HydroEventSelection *theEventSelection;
-    FEM_Selection *theAnalysisSelection;
+    FEA_Selection *theAnalysisSelection;
     EDP_Selection *theEDP_Selection;
     UQ_Results *theResults;
 

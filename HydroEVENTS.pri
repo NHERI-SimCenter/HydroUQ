@@ -1,6 +1,7 @@
 INCLUDEPATH += $$PWD/EVENTS
 INCLUDEPATH += $$PWD/EVENTS/GeoClawOpenFOAM
 INCLUDEPATH += $$PWD/EVENTS/WaveDigitalFlume
+INCLUDEPATH += $$PWD/EVENTS/coupledDigitalTwin
 INCLUDEPATH += $$PWD/EVENTS/Common
 
 SOURCES += \
@@ -25,9 +26,18 @@ SOURCES += \
     $$PWD/EVENTS/GeoClawOpenFOAM/swcfdint.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/swsolvers/geoclaw/geoclaw.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/postprocess.cpp \
+    $$PWD/EVENTS/coupledDigitalTwin/CoupledDigitalTwin.cpp \
+    $$PWD/EVENTS/coupledDigitalTwin/SettingsDigitalTwin.cpp \
+    $$PWD/EVENTS/coupledDigitalTwin/OutputsDigitalTwin.cpp \
+    $$PWD/EVENTS/coupledDigitalTwin/OpenSeesDigitalTwin.cpp \
+    $$PWD/EVENTS/coupledDigitalTwin/OpenFOAM_DigitalTwin.cpp \
+    $$PWD/EVENTS/coupledDigitalTwin/VisualizeDigitalTwin.cpp \        
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.cpp \
     $$PWD/EVENTS/Common/projectsettings.cpp \
     $$PWD/EVENTS/Common/bathymetry.cpp
+
+
+
 
 HEADERS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.h \
@@ -50,6 +60,12 @@ HEADERS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/swsolvers/geoclaw/geoclaw.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/cfdsolvers/openfoam/openfoam.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/postprocess.h \
+    $$PWD/EVENTS/coupledDigitalTwin/CoupledDigitalTwin.h \
+    $$PWD/EVENTS/coupledDigitalTwin/SettingsDigitalTwin.h \
+    $$PWD/EVENTS/coupledDigitalTwin/OutputsDigitalTwin.h \
+    $$PWD/EVENTS/coupledDigitalTwin/OpenSeesDigitalTwin.h \
+    $$PWD/EVENTS/coupledDigitalTwin/OpenFOAM_DigitalTwin.h \
+    $$PWD/EVENTS/coupledDigitalTwin/VisualizeDigitalTwin.h \            
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.h \
     $$PWD/EVENTS/Common/projectsettings.h \
     $$PWD/EVENTS/Common/bathymetry.h \
@@ -374,6 +390,11 @@ FORMS += \
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.ui \
     $$PWD/EVENTS/Common/projectsettings.ui \
     $$PWD/EVENTS/Common/bathymetry.ui
+
+
+#    
+#    $$PWD/EVENTS/coupledDigitalTwin/SettingsDigitalTwin.h \    
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
