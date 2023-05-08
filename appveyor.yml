@@ -17,7 +17,7 @@ for:
     clone_folder: ~/SimCenter
 
     init:
-       - export PATH="$HOME/Qt/5.15.2/clang_64/bin:$HOME/venv3.8.6/bin:$PATH"
+       - export PATH="$HOME/Qt/5.15.2/clang_64/bin:$HOME/venv3.9/bin:$PATH"
        - python -m pip install --upgrade pip
        - pip install conan
        - conan user
@@ -63,6 +63,7 @@ for:
     install:
        - uname
        - sudo update-alternatives --set gcc /usr/bin/gcc-8
+       - sudo apt-get update       
        - sudo apt-get -y install libglu1-mesa-dev freeglut3-dev mesa-common-dev libblas-dev liblapack-dev
        - python -m pip install --upgrade pip
        - pip install conan

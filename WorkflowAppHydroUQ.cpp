@@ -61,8 +61,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "GeneralInformationWidget.h"
 #include <SIM_Selection.h>
 #include <RandomVariablesContainer.h>
-#include <InputWidgetSampling.h>
-#include <FEM_Selection.h>
+#include <FEA_Selection.h>
 #include <QDir>
 #include <QFile>
 #include <UQ_EngineSelection.h>
@@ -71,7 +70,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <RemoteJobManager.h>
 #include <RunWidget.h>
 #include <InputWidgetBIM.h>
-#include <InputWidgetUQ.h>
+#include <UQ_EngineSelection.h>
+#include <UQ_Results.h>
 
 #include <EDP_Selection.h>
 
@@ -83,7 +83,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QHostInfo>
-#include <DakotaResultsSampling.h>
 
 #include <GoogleAnalytics.h>
 
@@ -105,12 +104,12 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     // create the various widgets
     //
 
-    theRVs = new RandomVariablesContainer();
+    theRVs = RandomVariablesContainer::getInstance();
     theGI = GeneralInformationWidget::getInstance();
-    theSIM = new SIM_Selection(theRVs);
+    theSIM = new SIM_Selection(false, false);
     theEventSelection = new HydroEventSelection(theRVs, theGI, this);
-    theAnalysisSelection = new FEM_Selection(theRVs);
-    theUQ_Selection = new UQ_EngineSelection(theRVs);
+    theAnalysisSelection = new FEA_Selection(true);
+    theUQ_Selection = new UQ_EngineSelection();
     theEDP_Selection = new EDP_Selection(theRVs);
 
     //theResults = new DakotaResultsSampling(theRVs);
@@ -135,41 +134,13 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     // error messages and signals
 
-    connect(theResults,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
-    connect(theResults, SIGNAL(sendErrorMessage(QString)), this, SLOT(errorMessage(QString)));
-
-    connect(theGI,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-    connect(theGI,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
-    connect(theGI,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));
-
-    connect(theSIM,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-    connect(theSIM,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
-    connect(theSIM,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));
-
-    connect(theEventSelection,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-    connect(theEventSelection,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
-    connect(theEventSelection,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));
-
-    connect(theRunWidget,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-    connect(theRunWidget,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
-    connect(theRunWidget,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));
-
-    connect(localApp,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-    connect(localApp,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
-    connect(localApp,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));
-
-    connect(remoteApp,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-    connect(remoteApp,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
-    connect(remoteApp,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));
 
     connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     connect(this,SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
-    connect(localApp,SIGNAL(processResults(QString, QString, QString)), this, SLOT(processResults(QString, QString, QString)));
-
+    connect(localApp,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+    connect(theJobManager,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
     connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
-
-    connect(theJobManager,SIGNAL(processResults(QString , QString, QString)), this, SLOT(processResults(QString, QString, QString)));
-    connect(theJobManager,SIGNAL(loadFile(QString)), this, SLOT(loadFile(QString)));
+    connect(theJobManager,SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
 
     connect(remoteApp,SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));
        
@@ -184,7 +155,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     QHBoxLayout *horizontalLayout = new QHBoxLayout();
     this->setLayout(horizontalLayout);
     this->setContentsMargins(0,5,0,5);
-    horizontalLayout->setMargin(0);
+//    horizontalLayout->setMargin(0);
 
     //
     // create the component selection & add the components to it
@@ -250,6 +221,7 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
         return false;
     }
     jsonObjectTop["GeneralInformation"] = jsonObjGenInfo;
+qDebug() << "GI WRITTEN";
 
     QJsonObject jsonObjStructural;
     result = theSIM->outputToJSON(jsonObjStructural);
@@ -337,7 +309,7 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
 }
 
 
-void WorkflowAppHydroUQ::processResults(QString dakotaOut, QString dakotaTab, QString inputFile)
+void WorkflowAppHydroUQ::processResults(QString &dirName)
 {
 
 
@@ -355,17 +327,19 @@ void WorkflowAppHydroUQ::processResults(QString dakotaOut, QString dakotaTab, QS
   // connect signals for results widget
   //
 
+  /*
   connect(theResults,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
   connect(theResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-
+  */
+  
   //
   // swap current results with existing one in selection & disconnect signals
   //
 
   QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
   if (oldResults != NULL) {
-    disconnect(oldResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-    disconnect(oldResults,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));  
+    //disconnect(oldResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
+    //disconnect(oldResults,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));  
     delete oldResults;
   }
 
@@ -373,7 +347,7 @@ void WorkflowAppHydroUQ::processResults(QString dakotaOut, QString dakotaTab, QS
   // proess results
   // 
 
-  theResults->processResults(dakotaOut, dakotaTab);
+  theResults->processResults(dirName);
   theRunWidget->hide();
   theComponentSelection->displayComponent("RES");
 }
@@ -619,8 +593,8 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     emit setUpForApplicationRunDone(tmpDirectory, inputFile);
 }
 
-void
-WorkflowAppHydroUQ::loadFile(const QString fileName){
+int
+WorkflowAppHydroUQ::loadFile(QString &fileName){
 
     //
     // open file
@@ -629,7 +603,7 @@ WorkflowAppHydroUQ::loadFile(const QString fileName){
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
         emit errorMessage(QString("Could Not Open File: ") + fileName);
-        return;
+        return -1; 
     }
 
     //
@@ -649,7 +623,11 @@ WorkflowAppHydroUQ::loadFile(const QString fileName){
     //
 
     this->clear();
-    this->inputFromJSON(jsonObj);
+    bool result = this->inputFromJSON(jsonObj);
+    if (result == false)
+      return -1;
+    else
+      return 0;
 }
 
 int

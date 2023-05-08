@@ -4,16 +4,23 @@
 #
 #-------------------------------------------------
 
-include($$PWD/ConanHelper.pri)
+#include($$PWD/ConanHelper.pri)
+
+CONFIG += conan_basic_setup
+include($$OUT_PWD/conanbuildinfo.pri)
 
 QT += core gui charts concurrent network qml
-QT += webchannel webenginewidgets webengine 
-QT += 3dcore 3drender 3dextras charts
+QT += webchannel webenginewidgets
+QT += 3dcore 3drender 3dextras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
 
 TARGET = Hydro_UQ
 TEMPLATE = app
+
+
+CONFIG += c++17
 
 DEFINES += _GRAPHICS_Qt3D
 
@@ -37,11 +44,13 @@ include(../SimCenterCommon/RandomVariables/RandomVariables.pri)
 include(../SimCenterCommon/InputSheetBM/InputSheetBM.pri)
 
 
-SOURCES += main.cpp \   
+SOURCES += main.cpp \
+    EVENTS/H20plotwindow.cpp \
     WorkflowAppHydroUQ.cpp \
     RunWidget.cpp
 
 HEADERS  += \
+    EVENTS/H20plotwindow.h \
     WorkflowAppHydroUQ.h\
     RunWidget.h 
 
@@ -59,6 +68,9 @@ RESOURCES += \
     $$PWD/resources.qrc \   
     $$PWD/styles.qrc
        
+
+FORMS += \
+    EVENTS/H20plotwindow.ui
 
 
 

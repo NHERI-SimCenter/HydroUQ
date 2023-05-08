@@ -37,6 +37,10 @@ void solver::refreshData(int type)
 void solver::hideshowelems(int type)
 {
     (void) type;
+    // Hiding elements
+    ui->DSpBx_Py->hide();
+    ui->DSpBx_Pz->hide();
+
     if(ui->ChB_Restart->isChecked())
         on_ChB_Restart_stateChanged(2);
     else
@@ -99,9 +103,10 @@ bool solver::getData(QMap<QString, QString>& map, int type)
     }
 
     // Decomposition
-    QString decomp = ui->DSpBx_Px->textFromValue(ui->DSpBx_Px->value()) +
-            "," + ui->DSpBx_Py->textFromValue(ui->DSpBx_Py->value()) +
-            "," + ui->DSpBx_Pz->textFromValue(ui->DSpBx_Pz->value());
+    QString decomp = ui->DSpBx_Px->textFromValue(ui->DSpBx_Px->value());
+//            +
+//            "," + ui->DSpBx_Py->textFromValue(ui->DSpBx_Py->value()) +
+//            "," + ui->DSpBx_Pz->textFromValue(ui->DSpBx_Pz->value());
     map.insert("DomainDecomposition",decomp);
     map.insert("DecompositionMethod",ui->Cmb_Decomp->currentText().toLower());
 
@@ -137,21 +142,25 @@ bool solver::putData(QJsonObject &jsonObject,int stype, QString workpath)
     if(jsonObject.contains("DecompositionMethod"))
     {
         QString decompmeth = jsonObject["DecompositionMethod"].toString();
-        if(QString::compare(decompmeth, "Simple", Qt::CaseInsensitive) == 0)
+//        if(QString::compare(decompmeth, "Simple", Qt::CaseInsensitive) == 0)
+//            ui->Cmb_Decomp->setCurrentIndex(0);
+        if(QString::compare(decompmeth, "Scotch", Qt::CaseInsensitive) == 0)
             ui->Cmb_Decomp->setCurrentIndex(0);
     }
 
     // Set the domain decomposition for subdomains
     if(jsonObject.contains("DomainDecomposition"))
     {
-        QString totalproc = jsonObject["DomainDecomposition"].toString();
-        QStringList procs = totalproc.split(',');
-        if(procs.size() == 3)
-        {
-            ui->DSpBx_Px->setValue(procs[0].toInt());
-            ui->DSpBx_Py->setValue(procs[1].toInt());
-            ui->DSpBx_Pz->setValue(procs[2].toInt());
-        }
+        ui->DSpBx_Px->setValue(jsonObject["DomainDecomposition"].toString().toInt());
+//        QString totalproc = jsonObject["DomainDecomposition"].toString();
+//        QStringList procs = totalproc.split(',');
+//        if(procs.size() == 3)
+//        {
+//            ui->DSpBx_Px->setValue(procs[0].toInt());
+//            ui->DSpBx_Py->setValue(procs[1].toInt());
+//            ui->DSpBx_Pz->setValue(procs[2].toInt());
+//        }
+
     }
 
     // Get the solver

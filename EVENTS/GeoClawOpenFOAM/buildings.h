@@ -4,7 +4,7 @@
 #include <QFrame>
 #include <QFileDialog>
 #include <QJsonObject>
-#include "hydroerror.h"
+
 
 namespace Ui {
 class buildings;
@@ -20,7 +20,11 @@ public:
     bool getData(QMap<QString, QString>&,int);
     bool putData(QJsonObject &,int,QString);
     void refreshData(int);
+    void resetData();
     bool copyFiles(QString dirName, int);
+    int putbuildcode(int code);
+    int getbuildcode(int index);
+    void addBuildRow(int index);
 
 private slots:
     void on_Btn_AddBuild_clicked();
@@ -34,7 +38,7 @@ private:
     Ui::buildings *ui;
     QStringList STLfilenames;
     int simtype;
-    Hydroerror error;
+//    Hydroerror error;
 };
 
 #endif // BUILDINGS_H

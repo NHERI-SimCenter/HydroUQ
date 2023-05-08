@@ -40,9 +40,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written: fmckenna
 // Modified: Ajay B Harish (May 2021)
 
-#include "projectsettings.h"
+#include "../Common/projectsettings.h"
 #include "swcfdint.h"
-#include "bathymetry.h"
+#include "../Common/bathymetry.h"
 #include "buildings.h"
 #include "floatingbds.h"
 #include "meshing.h"
@@ -83,7 +83,6 @@ namespace Ui {
   class GeoClawOpenFOAM;
 }
 
-
 class AgaveCurl;
 
 class GeoClawOpenFOAM : public SimCenterAppWidget
@@ -99,9 +98,8 @@ public:
     bool outputAppDataToJSON(QJsonObject &rvObject);
     bool inputAppDataFromJSON(QJsonObject &rvObject);
     bool copyFiles(QString &dirName);
-				    
+
 private slots:
-    void errorMessage(QString message);
     void on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
@@ -117,7 +115,7 @@ private:
     int simtype; // Simulation type
     QStringList optiontree; // Tree widget names
     QString applicationname = "Hydro-UQ";
-    QString applicationversion = "1.0.0";
+    QString applicationversion = "2.0.0";
     AgaveCurl *theRemoteService;
     Hydroerror error;
 };

@@ -33,6 +33,17 @@ void projectsettings::refreshData(int type)
 }
 
 //*********************************************************************************
+// Reset data
+//*********************************************************************************
+void projectsettings::resetData()
+{
+    //ui->Led_PName->clear();
+    //ui->Ted_PDesc->clear();
+    ui->CmB_SimType->setCurrentIndex(0);
+    ui->CmB_TurbModel->setCurrentIndex(0);
+}
+
+//*********************************************************************************
 // Show - hide elements
 //*********************************************************************************
 void projectsettings::hideshowelems(int type)
@@ -48,8 +59,8 @@ bool projectsettings::getData(QMap<QString, QString> & map, int type)
     bool hasData=false;
     (void) type;
 
-    map.insert("ProjectName",ui->Led_PName->text());
-    map.insert("ProjectDescription",ui->Ted_PDesc->toPlainText());
+    //map.insert("ProjectName",ui->Led_PName->text());
+    //map.insert("ProjectDescription",ui->Ted_PDesc->toPlainText());
     map.insert("SimulationType",QString::number(ui->CmB_SimType->currentIndex()));
     map.insert("TurbulenceModel",QString::number(ui->CmB_TurbModel->currentIndex()));
 
@@ -64,17 +75,20 @@ bool projectsettings::getData(QMap<QString, QString> & map, int type)
 bool projectsettings::putData(QJsonObject &jsonObject, int stype)
 {
 
-    // Project name
-    if(jsonObject.contains("ProjectName"))
-    {
-        ui->Led_PName->setText(jsonObject["ProjectName"].toString());
-    }
+    // Reset the data
+    resetData();
 
-    // Project description
-    if(jsonObject.contains("ProjectDescription"))
-    {
-        ui->Ted_PDesc->document()->setPlainText(jsonObject["ProjectDescription"].toString());
-    }
+//    // Project name
+//    if(jsonObject.contains("ProjectName"))
+//    {
+//        ui->Led_PName->setText(jsonObject["ProjectName"].toString());
+//    }
+
+//    // Project description
+//    if(jsonObject.contains("ProjectDescription"))
+//    {
+//        ui->Ted_PDesc->document()->setPlainText(jsonObject["ProjectDescription"].toString());
+//    }
 
     // Simulation type
     ui->CmB_SimType->setCurrentIndex(stype);
