@@ -101,7 +101,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     layout->addWidget(theStackedWidget);
     //layout->setMargin(0);
     this->setLayout(layout);
-    //theCurrentEvent=theGeoClawOpenFOAM;
+    theCurrentEvent=theGeoClawOpenFOAM;
 
     // Connect signal and slots
     connect(eventSelection, SIGNAL(currentIndexChanged(int)), this, SLOT(eventSelectionChanged(int)));
