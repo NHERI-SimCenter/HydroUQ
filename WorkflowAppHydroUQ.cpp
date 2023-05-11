@@ -106,7 +106,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     theRVs = RandomVariablesContainer::getInstance();
     theGI = GeneralInformationWidget::getInstance();
-    theSIM = new SIM_Selection(false, false);
+    theSIM = new SIM_Selection(false, true);
     theEventSelection = new HydroEventSelection(theRVs, theGI, this);
     theAnalysisSelection = new FEA_Selection(true);
     theUQ_Selection = new UQ_EngineSelection();
@@ -115,8 +115,11 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //theResults = new DakotaResultsSampling(theRVs);
     theResults = theUQ_Selection->getResults();
 
-    localApp = new LocalApplication("femUQ.py");
-    remoteApp = new RemoteApplication("femUQ.py", theService);
+    localApp = new LocalApplication("sWHALE.py");
+    remoteApp = new RemoteApplication("sWHALE.py", theService);
+
+//    localApp = new LocalApplication("femUQ.py");
+//    remoteApp = new RemoteApplication("femUQ.py", theService);
 
     //    localApp = new LocalApplication("EE-UQ workflow.py");
     //   remoteApp = new RemoteApplication("EE-UQ workflow.py", theService);
@@ -565,11 +568,11 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     theEDP_Selection->copyFiles(templateDirectory);
 
     //
-    // in new templatedir dir save the UI data into dakota.json file (same result as using saveAs)
+    // in new templatedir dir save the UI data into scInput.json file (same result as using saveAs)
     // NOTE: we append object workingDir to this which points to template dir
     //
 
-    QString inputFile = templateDirectory + QDir::separator() + tr("dakota.json");
+    QString inputFile = templateDirectory + QDir::separator() + tr("scInput.json");
 
     QFile file(inputFile);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
