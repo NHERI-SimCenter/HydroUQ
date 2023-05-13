@@ -1,0 +1,177 @@
+{
+    "Applications": {
+        "EDP": {
+            "Application": "StandardEDP",
+            "ApplicationData": {
+            }
+        },
+        "Events": [
+            {
+                "Application": "GeoClawOpenFOAM",
+                "ApplicationData": {
+                },
+                "EventClassification": "Hydro"
+            }
+        ],
+        "Modeling": {
+            "Modeling": {
+                "Application": "MDOF_BuildingModel",
+                "ApplicationData": {
+                }
+            }
+        },
+        "Simulation": {
+            "Application": "OpenSees-Simulation",
+            "ApplicationData": {
+            }
+        },
+        "UQ": {
+            "Application": "Dakota-UQ",
+            "ApplicationData": {
+            }
+        }
+    },
+    "EDP": {
+        "type": "StandardEDP"
+    },
+    "Events": [
+        {
+            "AirDensity": "1.23",
+            "AirViscosity": "1.6200",
+            "AirViscosityExp": "-4",
+            "Application": "GeoClawOpenFOAM",
+            "BounPatch0": "Entry",
+            "BuildData": "Manual",
+            "BuildingSTLFile": "building.stl",
+            "BuildingTable0": "-2,22.5,5,0.5,0,0,0",
+            "DecompositionMethod": "scotch",
+            "DomainDecomposition": "3",
+            "EndTime": "0.01000000",
+            "EventClassification": "Hydro",
+            "FlumeBreadth": "10.00",
+            "FlumeInfoType": "0",
+            "FlumeSegments": "6,0,0,2,0,12.5,0,32.5,1,32.5,4,0,4",
+            "InitialAlphaGlobal": "0.00",
+            "InitialAlphaRegion0": "0,0,0,34.3,10,0.5,1.00",
+            "MeshDict0": "osu_basin.stl",
+            "MeshType": "2",
+            "NumAlphaRegion": "1",
+            "NumBuild": "1",
+            "NumFlumeSegments": "6",
+            "NumMeshDict": "1",
+            "NumberOfBoundaries": "1",
+            "Postprocessing": "No",
+            "PressureType_Entry": "0",
+            "Restart": "No",
+            "SimulationType": "4",
+            "SolverChoice": "0",
+            "StartTime": "0.00000000",
+            "SurfaceTension": "72.86",
+            "TimeInterval": "0.00100000",
+            "TurbulenceModel": "0",
+            "VelocityType_Entry": "0",
+            "WaterDensity": "997.00",
+            "WaterViscosity": "1.0035",
+            "WaterViscosityExp": "-6",
+            "WriteInterval": "0.00100000"
+        }
+    ],
+    "GeneralInformation": {
+        "NumberOfStories": 1,
+        "PlanArea": 0.16,
+        "StructureType": "RM1",
+        "YearBuilt": 1990,
+        "depth": 0.4,
+        "height": 0.5,
+        "location": {
+            "latitude": 37.8715,
+            "longitude": -122.273
+        },
+        "name": "building",
+        "planArea": 0.16,
+        "stories": 1,
+        "units": {
+            "force": "N",
+            "length": "m",
+            "temperature": "K",
+            "time": "sec"
+        },
+        "width": 0.4
+    },
+    "Modeling": {
+        "Bx": 0.1,
+        "By": 0.1,
+        "Fyx": 1000000,
+        "Fyy": 1000000,
+        "Krz": 10000000000,
+        "Kx": "RV.k",
+        "Ky": "RV.k",
+        "ModelData": [
+            {
+                "Fyx": 1000000,
+                "Fyy": 1000000,
+                "Ktheta": 10000000000,
+                "bx": 0.1,
+                "by": 0.1,
+                "height": 0.5,
+                "kx": "RV.k",
+                "ky": "RV.k",
+                "weight": 144
+            }
+        ],
+        "dampingRatio": 0.02,
+        "height": 0.5,
+        "massX": 0,
+        "massY": 0,
+        "numStories": 1,
+        "randomVar": [
+        ],
+        "responseX": 0,
+        "responseY": 0,
+        "type": "MDOF_BuildingModel",
+        "weight": 144
+    },
+    "Simulation": {
+        "Application": "OpenSees-Simulation",
+        "algorithm": "Newton",
+        "analysis": "Transient -numSubLevels 2 -numSubSteps 10",
+        "convergenceTest": "NormUnbalance 1.0e-2 10",
+        "dampingModel": "Rayleigh Damping",
+        "firstMode": 1,
+        "integration": "Newmark 0.5 0.25",
+        "modalRayleighTangentRatio": 0,
+        "numModesModal": -1,
+        "rayleighTangent": "Initial",
+        "secondMode": -1,
+        "solver": "Umfpack"
+    },
+    "UQ": {
+        "parallelExecution": true,
+        "samplingMethodData": {
+            "method": "LHS",
+            "samples": 20,
+            "seed": 228
+        },
+        "saveWorkDir": true,
+        "uqType": "Forward Propagation"
+    },
+    "correlationMatrix": [
+        1
+    ],
+    "localAppDir": "/Users/aakash/SimCenter/SimCenterBackendApplications",
+    "randomVariables": [
+        {
+            "distribution": "Normal",
+            "inputType": "Parameters",
+            "mean": 100,
+            "name": "k",
+            "refCount": 2,
+            "stdDev": 5,
+            "value": "RV.k",
+            "variableClass": "Uncertain"
+        }
+    ],
+    "remoteAppDir": "/Users/aakash/SimCenter/SimCenterBackendApplications",
+    "runType": "runningLocal",
+    "workingDir": "/Users/aakash/Documents/HydroUQ/LocalWorkDir"
+}

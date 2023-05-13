@@ -1,0 +1,9 @@
+{
+    "Examples": [
+    {
+      "name": "E1: Model Building in a Wave Flume",
+      "description": "This example takes a brief look at forward propagation of uncertainties in structural properties of a shear building subjected to wave loading.",
+      "inputFile": "hdro-0002/src/input.json"
+    }
+  ]
+}
