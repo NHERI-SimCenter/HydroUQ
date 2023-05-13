@@ -117,7 +117,8 @@ bool buildings::getData(QMap<QString, QString>& map,int type)
                 // Check for missing data to ignore building
                 if(buildcode == -2)
                 {
-                    if(!item03)
+//                    if(!item03)
+                    if(!item02)
                     {
                         buildflag = 1;
                     }
