@@ -220,23 +220,24 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
     QJsonObject jsonObjGenInfo;
     result = theGI->outputToJSON(jsonObjGenInfo);
     if (result == false) {
-        emit errorMessage("WorkflowAppHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputToJSON - GI");
         return false;
     }
     jsonObjectTop["GeneralInformation"] = jsonObjGenInfo;
 qDebug() << "GI WRITTEN";
 
-    QJsonObject jsonObjStructural;
-    result = theSIM->outputToJSON(jsonObjStructural);
+//    QJsonObject jsonObjStructural;
+//    result = theSIM->outputToJSON(jsonObjStructural);
+    result = theSIM->outputToJSON(jsonObjectTop);
     if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputToJSON - SIM");
         return false;
     }
-    jsonObjectTop["StructuralInformation"] = jsonObjStructural;
+//    jsonObjectTop["StructuralInformation"] = jsonObjStructural;
     QJsonObject appsSIM;
     result = theSIM->outputAppDataToJSON(appsSIM);
     if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputAppDataToJSON - SIM");
         return false;
     }
     apps["Modeling"]=appsSIM;
@@ -246,7 +247,7 @@ qDebug() << "GI WRITTEN";
     QJsonObject jsonObjectEDP;
     result = theEDP_Selection->outputToJSON(jsonObjectEDP);
     if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputToJSON - EDP");
         return false;
     }
     jsonObjectTop["EDP"] = jsonObjectEDP;
@@ -254,7 +255,7 @@ qDebug() << "GI WRITTEN";
     QJsonObject appsEDP;
     result = theEDP_Selection->outputAppDataToJSON(appsEDP);
     if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputAppDataToJSON - EDP");
         return false;
     }
     apps["EDP"]=appsEDP;
@@ -267,41 +268,41 @@ qDebug() << "GI WRITTEN";
 
     result = theUQ_Selection->outputAppDataToJSON(apps);
     if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputAppDataToJSON - UQ");
         return false;
     }
     result = theUQ_Selection->outputToJSON(jsonObjectTop);
     if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputToJSON - UQ");
         return false;
     }
 
     result = theAnalysisSelection->outputAppDataToJSON(apps);
     if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputAppDataToJSON - Analysis");
         return false;
     }
     result = theAnalysisSelection->outputToJSON(jsonObjectTop);
     if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputToJSON - Analysis");
         return false;
     }
 
    // NOTE: Events treated differently, due to array nature of objects
     result = theEventSelection->outputToJSON(jsonObjectTop);
     if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputToJSON - Events");
         return false;
     }
     result = theEventSelection->outputAppDataToJSON(apps);
     if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputAppDataToJSON - Events");
         return false;
     }
 
     result = theRunWidget->outputToJSON(jsonObjectTop);
     if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
+        emit errorMessage("WorkflowAppHydro - failed in outputToJSON - RunWidget");
         return false;
     }
 
@@ -446,13 +447,15 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
     theRVs->inputFromJSON(jsonObject);
     theRunWidget->inputFromJSON(jsonObject);
 
-    if (jsonObject.contains("StructuralInformation")) {
-        QJsonObject jsonObjStructuralInformation = jsonObject["StructuralInformation"].toObject();
+//    if (jsonObject.contains("StructuralInformation")) {
+//        QJsonObject jsonObjStructuralInformation = jsonObject["StructuralInformation"].toObject();
+    if (jsonObject.contains("Modeling")) {
+        QJsonObject jsonObjStructuralInformation = jsonObject["Modeling"].toObject();
         if (theSIM->inputFromJSON(jsonObjStructuralInformation) == false) {
-            emit errorMessage("HydroUQ: failed to read StructuralInformation");
+            emit errorMessage("HydroUQ: failed to read Modeling (StructuralInformation) data");
         }
     } else {
-        emit errorMessage("HydroUQ: failed to find StructuralInformation");
+        emit errorMessage("HydroUQ: failed to find Modeling (StructuralInformation) data");
         return false;
     }
 
