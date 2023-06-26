@@ -131,11 +131,11 @@ OutputsDigitalTwin::OutputsDigitalTwin(QWidget *parent)
 
   QWidget *scWidget = new QWidget();
   QGridLayout *scLayout = new QGridLayout();
-  scWidget->setLayout(fpLayout);
+  scWidget->setLayout(scLayout);
   
-  fpLayout->addWidget(new QLabel("Section Cuts"),0,0);
-  fpLayout->addWidget(outputOF_SC,0,1);
-  fpLayout->addWidget(sectionCuts,1,0,1,4);    
+  scLayout->addWidget(new QLabel("Section Cuts"),0,0);
+  scLayout->addWidget(outputOF_SC,0,1);
+  scLayout->addWidget(sectionCuts,1,0,1,4);    
 
   QTabWidget *theTabWidget = new QTabWidget();
   theTabWidget->addTab(fspWidget, "Free Surface Probes");

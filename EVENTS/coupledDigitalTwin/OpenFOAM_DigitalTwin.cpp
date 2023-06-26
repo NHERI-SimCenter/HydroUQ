@@ -156,9 +156,9 @@ OpenFOAM_DigitalTwin::OpenFOAM_DigitalTwin(QWidget *parent)
   turbLayout->addWidget(new QLabel("Reference Length"),0,0);
   turbLayout->addWidget(new QLabel("Turbulence Intensity"),1,0);
   turbLayout->addWidget(new QLabel("Reference (Mean) Velocity"),2,0);
-  turbLayout->addWidget(new QLabel("meters"),0,2);
-  turbLayout->addWidget(new QLabel("mean(U)/mean(U)!!!"),1,2);
-  turbLayout->addWidget(new QLabel("!!!"),2,2);  
+  turbLayout->addWidget(new QLabel("m"),0,2);
+  turbLayout->addWidget(new QLabel("unitless"),1,2);
+  turbLayout->addWidget(new QLabel("m/s"),2,2);  
 
   turbLayout->addWidget(referenceLength,0,1);
   turbLayout->addWidget(turbulanceIntensity,1,1);
