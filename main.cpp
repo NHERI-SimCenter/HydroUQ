@@ -63,13 +63,10 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_UseOpenGLES);
 #endif
 
-    //Setting Core Application Name, Organization, Version and Google Analytics Tracking Id
+    //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
     QCoreApplication::setApplicationVersion("2.0");
-    GoogleAnalytics::SetTrackingId("UA-178848988-1");
-    GoogleAnalytics::StartSession();
-    GoogleAnalytics::ReportStart();
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     // Q_INIT_RESOURCE(images1);
@@ -116,6 +113,12 @@ int main(int argc, char *argv[])
 
     // regular Qt startup
     QApplication a(argc, argv);
+
+    //Setting Google Analytics Tracking Information
+    GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
+    GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
+    GoogleAnalytics::CreateSessionId();
+    GoogleAnalytics::StartSession();
 
     // create a remote interface
     QString tenant("designsafe");
