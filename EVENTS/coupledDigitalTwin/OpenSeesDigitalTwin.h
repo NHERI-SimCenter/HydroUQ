@@ -59,7 +59,8 @@ public:
     virtual ~OpenSeesDigitalTwin();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-
+    bool copyFiles(QString &dirName);
+  
 signals:
 
 private:
@@ -68,3 +69,4 @@ private:
 };
 
 #endif // OPENSEES_DIGITAL_TWIN_H
+

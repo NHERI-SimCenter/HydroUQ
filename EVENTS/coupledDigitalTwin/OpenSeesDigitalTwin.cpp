@@ -78,3 +78,11 @@ OpenSeesDigitalTwin::inputFromJSON(QJsonObject &jsonObject)
   return true;
 }
 
+bool
+OpenSeesDigitalTwin::copyFiles(QString &destDir)
+{
+  if (theOpenSeesPyScript->copyFile(destDir) != true)
+    return false;
+  return theSurfaceFile->copyFile(destDir);    
+}
+

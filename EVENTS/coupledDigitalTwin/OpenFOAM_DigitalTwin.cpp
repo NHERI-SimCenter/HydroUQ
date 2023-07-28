@@ -78,7 +78,7 @@ OpenFOAM_DigitalTwin::OpenFOAM_DigitalTwin(QWidget *parent)
   flumeLength = new SC_DoubleLineEdit("flumeLength",104.0);
   flumeHeight = new SC_DoubleLineEdit("flumeHeight",4.6);
   flumeWidth = new SC_DoubleLineEdit("flumeWidth",3.658);
-  cellSize = new SC_DoubleLineEdit("flumeWidth",0.1);    
+  cellSize = new SC_DoubleLineEdit("cellSize",0.1);    
 
   dimensionsBoxLayout->addWidget(flumeLength, 0, 1);
   dimensionsBoxLayout->addWidget(flumeHeight, 1, 1);
@@ -91,7 +91,8 @@ OpenFOAM_DigitalTwin::OpenFOAM_DigitalTwin(QWidget *parent)
   QWidget *theBathymetry = new QWidget();
   QWidget *theInitialConditions = new QWidget();
   QWidget *theWaveGeneration = new QWidget();
-  QWidget *theTurbulenceSettings = new QWidget();  
+  QWidget *theTurbulenceSettings = new QWidget();
+  
   tabWidget->addTab(theBathymetry,"Bathymetry");
   tabWidget->addTab(theInitialConditions,"Initial Conditions");
   tabWidget->addTab(theWaveGeneration,"Wave Generation");
@@ -128,6 +129,7 @@ OpenFOAM_DigitalTwin::OpenFOAM_DigitalTwin(QWidget *parent)
   // 1. initial condotions
   stillWaterLevel = new SC_DoubleLineEdit("stillWaterLevel",2.0);
   initVel = new SC_DoubleLineEdit("initVelocity",0.0);
+  velFile = new SC_FileEdit("velocityFile");
   refPressure = new SC_DoubleLineEdit("refPressure",0.0);
   
   QGridLayout *initLayout = new QGridLayout();
@@ -136,14 +138,20 @@ OpenFOAM_DigitalTwin::OpenFOAM_DigitalTwin(QWidget *parent)
   initLayout->addWidget(new QLabel("Still Water Level"),0,0);
   initLayout->addWidget(new QLabel("Initial Velocity"),1,0);
   initLayout->addWidget(new QLabel("Reference Pressure"),2,0);
+  initLayout->addWidget(new QLabel("Velocity Time History File"),3,0);  
   initLayout->addWidget(new QLabel("meters"),0,2);
   initLayout->addWidget(new QLabel("meters/second"),1,2);
-  initLayout->addWidget(new QLabel("Pascals"),2,2);  
+  initLayout->addWidget(new QLabel("Pascals"),2,2);
+  
+
+  
 
   initLayout->addWidget(stillWaterLevel,0,1);
   initLayout->addWidget(initVel,1,1);
   initLayout->addWidget(refPressure,2,1);
-  initLayout->setRowStretch(3,1);
+  initLayout->addWidget(velFile,3,1);
+  initLayout->setRowStretch(4,1);
+
 
   // 2. turbulance conditions
   referenceLength = new SC_DoubleLineEdit("turbRefLength",0.125);
@@ -208,7 +216,7 @@ OpenFOAM_DigitalTwin::OpenFOAM_DigitalTwin(QWidget *parent)
   QGridLayout *theWaveGenLayout = new QGridLayout();
   theWaveGeneration->setLayout(theWaveGenLayout);
   
-  QStringList genOptions; genOptions << "Paddle Generated Waves" << "Periodic Waves";
+  QStringList genOptions; genOptions << "Paddle Generated Waves" << "Periodic Waves" << "No Waves";
   waveGenComboBox = new SC_ComboBox("waveType",genOptions);
   
   paddleDisplacementFile = new SC_FileEdit("paddleDispFile");
@@ -270,6 +278,7 @@ OpenFOAM_DigitalTwin::outputToJSON(QJsonObject &jsonObject)
   // init Conditions
   stillWaterLevel->outputToJSON(jsonObject);
   initVel->outputToJSON(jsonObject);
+  velFile->outputToJSON(jsonObject);  
   refPressure->outputToJSON(jsonObject);
   
   // turbilence settings
@@ -304,6 +313,7 @@ OpenFOAM_DigitalTwin::inputFromJSON(QJsonObject &jsonObject)
   // init Conditions
   stillWaterLevel->inputFromJSON(jsonObject);
   initVel->inputFromJSON(jsonObject);
+  velFile->inputFromJSON(jsonObject);  
   refPressure->inputFromJSON(jsonObject);
   
   // turbilence settings
@@ -322,6 +332,17 @@ OpenFOAM_DigitalTwin::inputFromJSON(QJsonObject &jsonObject)
   waveMag->inputFromJSON(jsonObject);
   waveCelerity->inputFromJSON(jsonObject);
   waveRepeatSpeed->inputFromJSON(jsonObject);
+  
+  return true;
+}
+
+
+bool
+OpenFOAM_DigitalTwin::copyFiles(QString &destDir)
+{
+  velFile->copyFile(destDir);  
+  bathSTL->copyFile(destDir);
+  paddleDisplacementFile->copyFile(destDir);    
   
   return true;
 }

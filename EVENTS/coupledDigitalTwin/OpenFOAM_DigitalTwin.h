@@ -62,6 +62,7 @@ public:
     virtual ~OpenFOAM_DigitalTwin();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
+    bool copyFiles(QString &dirName);  
 
 signals:
 
@@ -79,6 +80,7 @@ private:
   SC_DoubleLineEdit *stillWaterLevel;
   SC_DoubleLineEdit *initVel;
   SC_DoubleLineEdit *refPressure;
+  SC_FileEdit *velFile;
   
   // turbilence settings
   SC_DoubleLineEdit *referenceLength;

@@ -55,7 +55,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QDebug>
 #include <QFileDialog>
 #include <QPushButton>
-#include <sectiontitle.h>
+#include <SectionTitle.h>
 #include <SimCenterAppWidget.h>
 #include <GeneralInformationWidget.h>
 #include <InputWidgetExistingEvent.h>
