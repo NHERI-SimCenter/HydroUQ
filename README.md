@@ -7,7 +7,7 @@
 
 For help and information about using HydroUQ tool or additional feature requests / bug reports, please write to us on the [SimCenter HydroUQ message board](http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0). We would be glad to accept feature requests.
 
-The HydroUQ Application is open-source software that provides researchers a tool to assess the performance of a building subjected to wave loading due to tsunami and storm surge. The tool facilitates a multiscale coupling by resolving areas of interest by coupling two-dimensional shallow water solver (GeoClaw) with three-dimensional CFD solver (OpenFOAM) through an interchangeable workflow.
+The HydroUQ Application is open-source software that provides researchers a tool to assess the performance of a building subjected to wave loading due to tsunami and storm surge. The tool facilitates multiscale coupling by resolving areas of interest by coupling two-dimensional shallow water solver (GeoClaw) with three-dimensional CFD solver (OpenFOAM) through an interchangeable workflow.
 
 The tool facilitates researchers to consider:
 
@@ -28,7 +28,7 @@ These simulations are computationally demanding and thus, users have the option 
 
 ### How to build HydroUQ?
 
-Instructions to build HydroUQ is now available in the documentation at [HydroUQ Build Documentation](https://nheri-simcenter.github.io/Hydro-Documentation/Hydro/devman/build.html)
+Instructions to build HydroUQ is now available in the documentation at [HydroUQ Build Documentation](https://nheri-simcenter.github.io/Hydro-Documentation/common/developer_manual/how_to_build/desktop/how_to_build.html)
 
 ### How to contribute to HydroUQ?
 
@@ -46,4 +46,5 @@ This material is based upon work supported by the National Science Foundation un
 
 NHERI-SimCenter nheri-simcenter@berkeley.edu \
 Ajay B Harish ajaybh@berkeley.edu \
-Frank McKenna fmckenna@berkeley.edu
+Frank McKenna fmckenna@berkeley.edu \
+Justin Bonus bonusj@uw.edu
