@@ -234,12 +234,22 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
         return false;
     }
 
+    int index = 0;
+    if ((type == "CoupledDigitalTwin")
+	|| (type == "Coupled Digital Twin")) {
+      
+      theCurrentEvent = theCoupledDigitalTwin;
+      index = 2;
+    }
+
+    eventSelection->setCurrentIndex(index);
+    
     // invoke inputAppDataFromJSON on new type
     if (theCurrentEvent != 0 && !theEvent.isEmpty())
     {
-        return theCurrentEvent->inputAppDataFromJSON(theEvent);
+      return theCurrentEvent->inputAppDataFromJSON(theEvent);
     }
-
+    
     return true;
 }
 
