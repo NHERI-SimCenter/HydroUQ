@@ -84,6 +84,8 @@ private:
   SC_ComboBox *dataMappingScheme;
   SC_ComboBox *outputDataFromCoupling;
   SC_IntLineEdit *maxCouplingIterationDataFrequency;
+  SC_IntLineEdit *numProcessors;
+  SC_DoubleLineEdit *startEvent;
 };
 
 #endif // SETTINGS_DIGITAL_TWIN_H
