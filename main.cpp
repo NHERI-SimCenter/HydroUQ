@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("2.0");
+    QCoreApplication::setApplicationVersion("2.0.0");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     // Q_INIT_RESOURCE(images1);
@@ -115,8 +115,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     //Setting Google Analytics Tracking Information
-    GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
-    GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
+    //GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
+    //GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
     GoogleAnalytics::CreateSessionId();
     GoogleAnalytics::StartSession();
 
