@@ -22,6 +22,7 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QStatusBar>
+#include <QWebEngineView>
 
 static QString logFilePath;
 static bool logToFile = false;
