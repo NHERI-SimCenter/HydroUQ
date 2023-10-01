@@ -108,10 +108,10 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     theRVs = RandomVariablesContainer::getInstance();
     theGI = GeneralInformationWidget::getInstance();
-    theSIM = new SIM_Selection(false, false);
+    theSIM = new SIM_Selection(true, true);
     theEventSelection = new HydroEventSelection(theRVs, theGI, this);
     theAnalysisSelection = new FEA_Selection(true);
-    theUQ_Selection = new UQ_EngineSelection();
+    theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity);
     theEDP_Selection = new EDP_Selection(theRVs);
 
     //theResults = new DakotaResultsSampling(theRVs);
@@ -212,102 +212,108 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
     //
     // get each of the main widgets to output themselves
     //
-
+  
     bool result = true;
     QJsonObject apps;
 
+    //
+    // get each of the main widgets to output themselves to top 
+    // and workflow widgets to outut appData to apps
+    //
+
+    // theGI
     QJsonObject jsonObjGenInfo;
     result = theGI->outputToJSON(jsonObjGenInfo);
-    if (result == false) {
-        emit errorMessage("WorkflowAppHydro - failed in outputToJSON");
-        return false;
-    }
+    if (result == false)
+        return result;
     jsonObjectTop["GeneralInformation"] = jsonObjGenInfo;
-qDebug() << "GI WRITTEN";
 
-    QJsonObject jsonObjStructural;
-    result = theSIM->outputToJSON(jsonObjStructural);
-    if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
-        return false;
-    }
-    jsonObjectTop["StructuralInformation"] = jsonObjStructural;
-    QJsonObject appsSIM;
-    result = theSIM->outputAppDataToJSON(appsSIM);
-    if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
-        return false;
-    }
-    apps["Modeling"]=appsSIM;
+    // theRVs
+    result = theRVs->outputToJSON(jsonObjectTop);
+    if (result == false)
+        return result;
 
-    theRVs->outputToJSON(jsonObjectTop);
-
+    // theEDP
     QJsonObject jsonObjectEDP;
     result = theEDP_Selection->outputToJSON(jsonObjectEDP);
-    if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
-        return false;
-    }
+    if (result == false)
+        return result;
     jsonObjectTop["EDP"] = jsonObjectEDP;
 
     QJsonObject appsEDP;
     result = theEDP_Selection->outputAppDataToJSON(appsEDP);
-    if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
-        return false;
-    }
+    if (result == false)
+        return result;
     apps["EDP"]=appsEDP;
 
-    /*
-    QJsonObject jsonObjectUQ;
-    theUQ_Selection->outputToJSON(jsonObjectUQ);
-    jsonObjectTop["UQ_Method"] = jsonObjectUQ;
-    */
-
+    // theUQ
     result = theUQ_Selection->outputAppDataToJSON(apps);
-    if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
-        return false;
-    }
+    if (result == false)
+        return result;
+    
     result = theUQ_Selection->outputToJSON(jsonObjectTop);
-    if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
-        return false;
-    }
+    if (result == false)
+        return result;
 
+    // theSIM
+    result = theSIM->outputAppDataToJSON(apps);
+    if (result == false)
+        return result;
+
+    result = theSIM->outputToJSON(jsonObjectTop);
+    if (result == false)
+        return result;
+
+    // theAnalysis
     result = theAnalysisSelection->outputAppDataToJSON(apps);
-    if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
-        return false;
-    }
+    if (result == false)
+        return result;
+
     result = theAnalysisSelection->outputToJSON(jsonObjectTop);
-    if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
-        return false;
-    }
+    if (result == false)
+        return result;
 
    // NOTE: Events treated differently, due to array nature of objects
     result = theEventSelection->outputToJSON(jsonObjectTop);
-    if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
-        return false;
-    }
+    if (result == false)
+        return result;
+
     result = theEventSelection->outputAppDataToJSON(apps);
-    if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
-        return false;
-    }
+    if (result == false)
+        return result;
 
     result = theRunWidget->outputToJSON(jsonObjectTop);
-    if (result == false) {
-        emit errorMessage("WorkflowAPpHydro - failed in outputToJSON");
-        return false;
-    }
+    if (result == false)
+        return result;
+
+    // sy - to save results
+    result = theResults->outputToJSON(jsonObjectTop);
+    if (result == false)
+        return result;
 
     jsonObjectTop["Applications"]=apps;
 
-    //theRunLocalWidget->outputToJSON(jsonObjectTop);
-    return true;
+    QJsonObject defaultValues;
+    defaultValues["workflowInput"]=QString("scInput.json");    
+    defaultValues["filenameAIM"]=QString("AIM.json");
+    defaultValues["filenameEVENT"] = QString("EVENT.json");
+    defaultValues["filenameSAM"]= QString("SAM.json");
+    defaultValues["filenameEDP"]= QString("EDP.json");
+    defaultValues["filenameSIM"]= QString("SIM.json");
+    defaultValues["driverFile"]= QString("driver");
+    defaultValues["filenameDL"]= QString("BIM.json");
+    defaultValues["workflowOutput"]= QString("EDP.json");
+    QJsonArray rvFiles, edpFiles;
+    rvFiles.append(QString("AIM.json"));
+    rvFiles.append(QString("SAM.json"));
+    rvFiles.append(QString("EVENT.json"));
+    rvFiles.append(QString("SIM.json"));
+    edpFiles.append(QString("EDP.json"));
+    defaultValues["rvFiles"]= rvFiles;
+    defaultValues["edpFiles"]=edpFiles;
+    jsonObjectTop["DefaultValues"]=defaultValues;
+
+    return result;
 }
 
 
@@ -371,10 +377,10 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
     if (jsonObject.contains("GeneralInformation")) {
         QJsonObject jsonObjGeneralInformation = jsonObject["GeneralInformation"].toObject();
         if (theGI->inputFromJSON(jsonObjGeneralInformation) == false) {
-            emit errorMessage("HydroUQ: failed to read GeneralInformation");
+            this->errorMessage("EE_UQ: failed to read GeneralInformation");
         }
     } else {
-        emit errorMessage("HydroUQ: failed to find General Information");
+        this->errorMessage("EE_UQ: failed to find GeneralInformation");
         return false;
     }
 
@@ -382,60 +388,39 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
 
         QJsonObject theApplicationObject = jsonObject["Applications"].toObject();
 
-        if (theApplicationObject.contains("Modeling")) {
-            QJsonObject theObject = theApplicationObject["Modeling"].toObject();
-            if (theSIM->inputAppDataFromJSON(theObject) == false) {
-                emit errorMessage("HydroUQ: failed to read Modeling Application");
+        // note: Events is different because the object is an Array
+        if (theApplicationObject.contains("Events")) {
+            //  QJsonObject theObject = theApplicationObject["Events"].toObject(); it is null object, actually an array
+            if (theEventSelection->inputAppDataFromJSON(theApplicationObject) == false) {
+                this->errorMessage("EE_UQ: failed to read Event Application");
+            }
+
+        } else {
+            this->errorMessage("EE_UQ: failed to find Event Application");
+            return false;
+        }
+
+        if (theUQ_Selection->inputAppDataFromJSON(theApplicationObject) == false)
+            this->errorMessage("EE_UQ: failed to read UQ application");
+
+        if (theSIM->inputAppDataFromJSON(theApplicationObject) == false)
+            this->errorMessage("EE_UQ: failed to read SIM application");
+    
+        if (theAnalysisSelection->inputAppDataFromJSON(theApplicationObject) == false)
+            this->errorMessage("EE_UQ: failed to read FEM application");
+
+        if (theApplicationObject.contains("EDP")) {
+            QJsonObject theObject = theApplicationObject["EDP"].toObject();
+            if (theEDP_Selection->inputAppDataFromJSON(theObject) == false) {
+                this->errorMessage("EE_UQ: failed to read EDP application");
             }
         } else {
-            emit errorMessage("HydroUQ: failed to find Modeling Application");
+            this->errorMessage("EE_UQ: failed to find EDP application");
             return false;
         }
 
-        // note: Events is different because the object is an Array
-        if (theApplicationObject.contains("Events"))
-        {
-            QJsonObject theObject = theApplicationObject["Events"].toObject(); //it is null object, actually an array
-            if (theEventSelection->inputAppDataFromJSON(theApplicationObject) == false)
-            {
-                emit errorMessage("HydroUQ: failed to read Event Application");
-            }
-
-        }
-        else
-        {
-            emit errorMessage("HydroUQ: failed to find Event Application");
-            return false;
-        }
-
-        // UQ application
-        if (theUQ_Selection->inputAppDataFromJSON(theApplicationObject) == false)
-            emit errorMessage("HydroUQ: failed to read UQ application");
-
-        // FEM application
-        if (theAnalysisSelection->inputAppDataFromJSON(theApplicationObject) == false)
-            emit errorMessage("HydroUQ: failed to read FEM application");
-
-        // EDP application
-        if (theApplicationObject.contains("EDP"))
-        {
-            QJsonObject theObject = theApplicationObject["EDP"].toObject();
-            if (theEDP_Selection->inputAppDataFromJSON(theObject) == false)
-            {
-                emit errorMessage("HydroUQ: failed to read EDP application");
-            }
-        }
-        else
-        {
-            emit errorMessage("HydroUQ: failed to find EDP application");
-            return false;
-        }
-
-    }
-    else
-    {
+    } else
         return false;
-    }
 
     /*
     ** Note to me - RVs and Events treated differently as both use arrays .. rethink API!
@@ -445,33 +430,35 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
     theRVs->inputFromJSON(jsonObject);
     theRunWidget->inputFromJSON(jsonObject);
 
-    if (jsonObject.contains("StructuralInformation")) {
-        QJsonObject jsonObjStructuralInformation = jsonObject["StructuralInformation"].toObject();
-        if (theSIM->inputFromJSON(jsonObjStructuralInformation) == false) {
-            emit errorMessage("HydroUQ: failed to read StructuralInformation");
-        }
-    } else {
-        emit errorMessage("HydroUQ: failed to find StructuralInformation");
-        return false;
-    }
-
     if (jsonObject.contains("EDP")) {
         QJsonObject edpObj = jsonObject["EDP"].toObject();
         if (theEDP_Selection->inputFromJSON(edpObj) == false)
-            emit errorMessage("HydroUQ: failed to read EDP data");
+            this->errorMessage("EE_UQ: failed to read EDP data");
     } else {
-        emit errorMessage("HydroUQ: failed to find EDP data");
+        this->errorMessage("EE_UQ: failed to find EDP data");
         return false;
     }
 
 
     if (theUQ_Selection->inputFromJSON(jsonObject) == false)
-        emit errorMessage("HydroUQ: failed to read UQ Method data");
+       this->errorMessage("EE_UQ: failed to read UQ Method data");
 
     if (theAnalysisSelection->inputFromJSON(jsonObject) == false)
-        emit errorMessage("HydroUQ: failed to read FEM Method data");
+        this->errorMessage("EE_UQ: failed to read FEM Method data");
 
-    return true;
+    if (theSIM->inputFromJSON(jsonObject) == false)
+        this->errorMessage("EE_UQ: failed to read SIM Method data");
+
+    // sy - to display results
+    auto* theNewResults = theUQ_Selection->getResults();
+
+    if (theNewResults->inputFromJSON(jsonObject) == false)
+        this->errorMessage("EE_UQ: failed to read RES Method data");
+    theResults->setResultWidget(theNewResults);
+
+    this->statusMessage("Done Loading File");
+    
+    return true;  
 }
 
 
