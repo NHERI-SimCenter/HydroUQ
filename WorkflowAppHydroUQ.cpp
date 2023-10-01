@@ -84,6 +84,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QtNetwork/QNetworkRequest>
 #include <QHostInfo>
 
+#include <Utils/ProgramOutputDialog.h>
+#include <Utils/RelativePathResolver.h>
 #include <GoogleAnalytics.h>
 
 // static pointer for global procedure set in constructor
@@ -115,8 +117,8 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //theResults = new DakotaResultsSampling(theRVs);
     theResults = theUQ_Selection->getResults();
 
-    localApp = new LocalApplication("femUQ.py");
-    remoteApp = new RemoteApplication("femUQ.py", theService);
+    localApp = new LocalApplication("sWHALE.py");
+    remoteApp = new RemoteApplication("sWHALE.py", theService);
 
     //    localApp = new LocalApplication("EE-UQ workflow.py");
     //   remoteApp = new RemoteApplication("EE-UQ workflow.py", theService);
@@ -569,7 +571,7 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     // NOTE: we append object workingDir to this which points to template dir
     //
 
-    QString inputFile = templateDirectory + QDir::separator() + tr("dakota.json");
+    QString inputFile = templateDirectory + QDir::separator() + tr("scInput.json");
 
     QFile file(inputFile);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
@@ -618,12 +620,17 @@ WorkflowAppHydroUQ::loadFile(QString &fileName){
     // close file
     file.close();
 
+    //Resolve absolute paths from relative ones
+    QFileInfo fileInfo(fileName);
+    SCUtils::ResolveAbsolutePaths(jsonObj, fileInfo.dir());
+    
     //
     // clear current and input from new JSON
     //
 
     this->clear();
     bool result = this->inputFromJSON(jsonObj);
+    
     if (result == false)
       return -1;
     else

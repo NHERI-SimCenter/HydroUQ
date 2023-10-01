@@ -146,6 +146,8 @@ SettingsDigitalTwin::~SettingsDigitalTwin()
 bool
 SettingsDigitalTwin::outputToJSON(QJsonObject &jsonObject)
 {
+  numProcessors->outputToJSON(jsonObject);
+  startEvent->outputToJSON(jsonObject);
   timeStep->outputToJSON(jsonObject);
   simulationLength->outputToJSON(jsonObject);
   preloadStructure->outputToJSON(jsonObject);
@@ -171,7 +173,8 @@ SettingsDigitalTwin::outputToJSON(QJsonObject &jsonObject)
 bool
 SettingsDigitalTwin::inputFromJSON(QJsonObject &jsonObject)
 {
-
+  numProcessors->inputFromJSON(jsonObject);
+  startEvent->inputFromJSON(jsonObject);
   timeStep->inputFromJSON(jsonObject);
   simulationLength->inputFromJSON(jsonObject);
   preloadStructure->inputFromJSON(jsonObject);
