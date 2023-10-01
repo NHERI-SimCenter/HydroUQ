@@ -114,12 +114,6 @@ int main(int argc, char *argv[])
     // regular Qt startup
     QApplication a(argc, argv);
 
-    //Setting Google Analytics Tracking Information
-    //GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
-    //GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
-    GoogleAnalytics::CreateSessionId();
-    GoogleAnalytics::StartSession();
-
     // create a remote interface
     QString tenant("designsafe");
     QString storage("agave://designsafe.storage.default/");
@@ -185,6 +179,22 @@ int main(int argc, char *argv[])
         qDebug() << "could not open stylesheet";
     }
 
+
+    //Setting Google Analytics Tracking Information
+    //GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
+    //GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
+    GoogleAnalytics::CreateSessionId();
+    GoogleAnalytics::StartSession();
+
+    /************** TRY LATER
+    // Opening a QWebEngineView and using github to get app geographic usage
+    QWebEngineView view;
+    view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
+    view.resize(1024, 750);
+    view.show();
+    view.hide();
+    ************************/    
+    
     // Result of execution
     int res = a.exec();
 
