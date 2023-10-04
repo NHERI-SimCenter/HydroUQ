@@ -2,26 +2,16 @@
   "items": {
     "hdro-0001": {
       "id": "hdro-0001",
-      "title": "Wave flume digital twin",
+      "title": "Wave flume Coupled Digital twin",
       "base": "hdro-0001",
       "doc": [
-        "hdro-0001/figures/9story-FEM.png",
-        "hdro-0001/figures/9story-RV.png",
-        "hdro-0001/README.rst",
-        "hdro-0001/figures/9story-SIM2.png",
-        "hdro-0001/figures/9story-GI.png",
-        "hdro-0001/figures/9Story.png",
-        "hdro-0001/figures/9story-RES1.png",
-        "hdro-0001/figures/9story-UQ.png",
-        "hdro-0001/figures/9story-EVENT.png",
-        "hdro-0001/figures/9story-RES6.png",
-        "hdro-0001/figures/9story-SIM1.png",
-        "hdro-0001/src/Frame9Model.tcl",
-        "hdro-0001/figures/9story-RES2.png"
+        "hdro-0001/figures/openfoam.png",
+        "hdro-0001/figures/opensees.png",
+        "hdro-0001/README.rst"
       ],
       "entry_point": "hdro-0001/./input.json",
-      "summary": "Forward propagation of material uncertainties in building during wave loading.",
-      "logo": "figures/9Story.png",
+      "summary": "Simple Example of Using the Coupled Digital Twin.",
+      "logo": "figures/openfoam.png",
       "categories": {
         "Difficulty": "0"
       }
