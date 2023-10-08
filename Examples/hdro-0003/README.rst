@@ -7,13 +7,13 @@ Coupled Digital Twin Example 3
 Example to demonstrate how to run a coupled OpenSees-OpenFOAM simulation to determine floor loads on a building and then perform
 an OpenSees simulation of the building assuming uncertainties in the building properties.
 
-.. figure:: figures/hdro-0003 example.png
+.. figure:: figures/hdro-0003example.png
    :align: center
    :width: 400
    :figclass: align-center
     Overview of case
 	
-.. figure:: figures/hdro-0003 example probeLoc.png
+.. figure:: figures/hdro-0003exampleprobeLoc.png
    :align: center
    :width: 400
    :figclass: align-center
@@ -73,25 +73,6 @@ After retrieving the results.zip folder from the Tools and Applications Page of 
    :width: 400
    :figclass: align-center
     In the /src/ folder in the hrdo-0003 folder, an example matlab script is provided to look at time history data of the output probes	
-	
-
-.. figure:: figures/Forces.png
-   :align: center
-   :width: 400
-   :figclass: align-center
-    Forces
-   
-.. figure:: figures/Forces.png
-   :align: center
-   :width: 400
-   :figclass: align-center
-    Forces
-   
-.. figure:: figures/Forces.png
-   :align: center
-   :width: 400
-   :figclass: align-center
-    Forces
    
 
 .. figure:: figures/Forces.png
