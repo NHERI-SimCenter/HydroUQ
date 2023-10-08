@@ -30,6 +30,7 @@ Post Processing
 -------------------------------------------------------------------
 
 After retrieving the results.zip folder from the Tools and Applications Page of Design Safe.. 
+
 .. figure:: figures/DSToolsAndAppsJobsStatus.PNG
    :align: center
    :width: 400
