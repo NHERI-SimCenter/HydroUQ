@@ -139,6 +139,21 @@ Open OpenSeesOutput.pvd to look at OpenSees results.
    :figclass: align-center
     This is the model output data as seen from ParaView
 
+OpenSees Displacements And Reactions 
+
+
+.. figure:: figures/TipDisplacement.png
+   :align: center
+   :width: 600
+   :figclass: align-center
+    This is the model output data as seen from ParaView
+
+.. figure:: figures/ReactionForces.png
+   :align: center
+   :width: 600
+   :figclass: align-center
+    This is the model output data as seen from ParaView
+
 
 OpenFOAM probe and function object output is available in results/postProcessing/.
 
