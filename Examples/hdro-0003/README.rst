@@ -154,7 +154,7 @@ This file can be modified to work for any case. The names of the data folders wi
 	
 OpenFOAM Calculated Story Forces
 
-.. figure:: figures/StoryForces.png
+.. figure:: figures/storyForces.png
    :align: center
    :width: 600
    :figclass: align-center
