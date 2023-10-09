@@ -133,7 +133,7 @@ The results folder should look something like this.
 Paraview files have a .PVD extension. Open VTK/Fluid.vtm.series to look at OpenFOAM results.
 Open OpenSeesOutput.pvd to look at OpenSees results.
 
-.. figure:: figures/Paraview.png
+.. figure:: figures/Paraview.PNG
    :align: center
    :width: 600
    :figclass: align-center
