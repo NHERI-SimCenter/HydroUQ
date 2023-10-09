@@ -100,7 +100,7 @@ Find the files by clicking 'View'.
 
 Move the results.zip to somewhere in My Data/. Use the Extractor tool available on DesignSafe.  Unzip the results.zip folder. 
 
-.. figure:: figures/extractonDS.png
+.. figure:: figures/extractonDS.PNG
    :align: center
    :width: 600
    :figclass: align-center
