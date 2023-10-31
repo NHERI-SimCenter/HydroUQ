@@ -39,6 +39,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "HydroEventSelection.h"
 #include <CoupledDigitalTwin.h>
+#include <MPM.h>
 
 //*********************************************************************************
 // Main Hydro event
@@ -69,12 +70,14 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     // Load the different event types
     eventSelection->addItem(tr("General"));
     eventSelection->addItem(tr("Digital twin"));
-    eventSelection->addItem(tr("Coupled Digital Twin"));    
+    eventSelection->addItem(tr("Coupled Digital Twin"));
+    eventSelection->addItem(tr("MPM"));        
 
     // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     eventSelection->setItemData(0, "General event", Qt::ToolTipRole);
     eventSelection->setItemData(1, "Digital twin", Qt::ToolTipRole);
+    eventSelection->setItemData(2, "MPM", Qt::ToolTipRole);    
 
     theSelectionLayout->addWidget(label);
     QSpacerItem *spacer = new QSpacerItem(50,10);
@@ -95,7 +98,10 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     theStackedWidget->addWidget(theWaveDigitalFlume);
 
     theCoupledDigitalTwin = new CoupledDigitalTwin(theRandomVariablesContainer);
-    theStackedWidget->addWidget(theCoupledDigitalTwin);    
+    theStackedWidget->addWidget(theCoupledDigitalTwin);
+
+    theMPM = new MPM(theRandomVariablesContainer);
+    theStackedWidget->addWidget(theMPM);        
 
     // Setup the Layout
     layout->addWidget(theStackedWidget);
@@ -142,7 +148,12 @@ void HydroEventSelection::eventSelectionChanged(int arg1)
     {
         theStackedWidget->setCurrentIndex(2);
         theCurrentEvent = theCoupledDigitalTwin;
-    }    
+    }
+    else if (arg1 == 3)
+    {
+        theStackedWidget->setCurrentIndex(3);
+        theCurrentEvent = theMPM;
+    }        
     else
     {
         qDebug() << "ERROR: Hydro-EventSelection selection-type unknown: " << arg1;
@@ -242,6 +253,15 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
       index = 2;
     }
 
+    if ((type == "MPM")
+	|| (type == "MPM")) {
+      
+      theCurrentEvent = theCoupledDigitalTwin;
+      index = 2;
+    }
+
+    eventSelection->setCurrentIndex(index);
+    
     eventSelection->setCurrentIndex(index);
     
     // invoke inputAppDataFromJSON on new type

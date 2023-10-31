@@ -1,8 +1,8 @@
-#ifndef HYDRO_EVENT_SELECTION_H
-#define HYDRO_EVENT_SELECTION_H
+#ifndef SETTINGS_MPM_H
+#define SETTINGS_MPM_H
 
 /* *****************************************************************************
-Copyright (c) 2016-2017, The Regents of the University of California (Regents).
+Copyright (c) 2016-2023, The Regents of the University of California (Regents).
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without 
@@ -20,7 +20,7 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
 ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -37,66 +37,48 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmckenna
-// Modified: Ajay B Harish (May 2021)
+/**
+ *  @author  fmckenna
+ *  @date    2/2017
+ *  @version 1.0
+ *
+ *  @section DESCRIPTION
+ *
+ *  This is the class providing the Settings Tab for the CoupledDigitalTwin
+ */
 
-#include <QGroupBox>
-#include <QVector>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QStackedWidget>
-#include <QComboBox>
-#include <QSpacerItem>
-#include <QPushButton>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QLabel>
-#include <QLineEdit>
-#include <QDebug>
-#include <QFileDialog>
-#include <QPushButton>
-#include <SectionTitle.h>
-#include <SimCenterAppWidget.h>
-#include <GeneralInformationWidget.h>
-#include <InputWidgetExistingEvent.h>
-#include <GeoClawOpenFOAM.h>
-#include <WaveDigitalFlume.h>
+#include <SimCenterWidget.h>
 
-//class QComboBox;
-class QStackedWidget;
-class RandomVariablesContainer;
-class HydroEventSelection : public  SimCenterAppWidget
+class QJsonObject;
+class SC_DoubleLineEdit;
+class SC_IntLineEdit;
+class SC_CheckBox;
+
+class SettingsMPM : public SimCenterWidget
 {
-    Q_OBJECT
 public:
-    explicit HydroEventSelection(RandomVariablesContainer *,
-				 GeneralInformationWidget* generalInfoWidget,
-				 QWidget *parent = 0);
-    ~HydroEventSelection();
-
-    bool outputToJSON(QJsonObject &rvObject);
-    bool inputFromJSON(QJsonObject &rvObject);
-    bool outputAppDataToJSON(QJsonObject &rvObject);
-    bool inputAppDataFromJSON(QJsonObject &rvObject);
-    bool copyFiles(QString &destName);
+    SettingsMPM(QWidget *parent = 0);
+    virtual ~SettingsMPM();
+    bool outputToJSON(QJsonObject &jsonObject);
+    bool inputFromJSON(QJsonObject &jsonObject);
 
 signals:
 
-public slots:
-   void eventSelectionChanged(int arg1);
-
 private:
-   QComboBox   *eventSelection;
-   QStackedWidget *theStackedWidget;
-   SimCenterAppWidget *theCurrentEvent;
 
-   //   SimCenterAppWidget *theSHA_MotionWidget;
-   SimCenterAppWidget *theGeoClawOpenFOAM;
-   SimCenterAppWidget *theWaveDigitalFlume;
-   SimCenterAppWidget *theCoupledDigitalTwin;
-   SimCenterAppWidget *theMPM;    
-  
-   RandomVariablesContainer *theRandomVariablesContainer;
+  SC_DoubleLineEdit *gridCellSize;  
+  SC_DoubleLineEdit *timeStep;
+  SC_DoubleLineEdit *duration;
+  SC_DoubleLineEdit *initialTime;  
+  SC_IntLineEdit    *framesPerSecond;
+  SC_CheckBox       *mirrorDomain;  
+  SC_DoubleLineEdit *gravity;
+  SC_DoubleLineEdit *lengthRatio;
+  SC_CheckBox       *froudeScaling;    
+
+  SC_IntLineEdit *numGPUs;
+  SC_IntLineEdit *materialModelsPerGPU;  
+
 };
 
-#endif // HYDRO_EVENT_SELECTION_H
+#endif // SETTINGS_DIGITAL_TWIN_H

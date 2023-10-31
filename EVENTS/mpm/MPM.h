@@ -1,11 +1,11 @@
-#ifndef HYDRO_EVENT_SELECTION_H
-#define HYDRO_EVENT_SELECTION_H
+#ifndef MATERIAL_POINT_METHOD_H
+#define MATERIAL_POINT_METHOD_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without 
+Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
 1. Redistributions of source code must retain the above copyright notice, this
@@ -29,74 +29,49 @@ The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 
-REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
 THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS 
-PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, 
+THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS
+PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
 UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmckenna
-// Modified: Ajay B Harish (May 2021)
+// Written: fmk
 
-#include <QGroupBox>
-#include <QVector>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QStackedWidget>
-#include <QComboBox>
-#include <QSpacerItem>
-#include <QPushButton>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QLabel>
-#include <QLineEdit>
-#include <QDebug>
-#include <QFileDialog>
-#include <QPushButton>
-#include <SectionTitle.h>
 #include <SimCenterAppWidget.h>
-#include <GeneralInformationWidget.h>
-#include <InputWidgetExistingEvent.h>
-#include <GeoClawOpenFOAM.h>
-#include <WaveDigitalFlume.h>
 
-//class QComboBox;
-class QStackedWidget;
-class RandomVariablesContainer;
-class HydroEventSelection : public  SimCenterAppWidget
+class SettingsMPM;
+class ParticlesMPM;
+class BoundariesMPM;
+class SensorsMPM;
+class OutputsMPM; 
+
+class MPM : public SimCenterAppWidget
 {
-    Q_OBJECT
 public:
-    explicit HydroEventSelection(RandomVariablesContainer *,
-				 GeneralInformationWidget* generalInfoWidget,
-				 QWidget *parent = 0);
-    ~HydroEventSelection();
+    MPM(QWidget *parent = 0);
+    ~MPM();
 
-    bool outputToJSON(QJsonObject &rvObject);
     bool inputFromJSON(QJsonObject &rvObject);
+    bool outputToJSON(QJsonObject &rvObject);  
     bool outputAppDataToJSON(QJsonObject &rvObject);
     bool inputAppDataFromJSON(QJsonObject &rvObject);
-    bool copyFiles(QString &destName);
+    bool copyFiles(QString &dirName);
 
 signals:
 
 public slots:
-   void eventSelectionChanged(int arg1);
+   void clear(void);
 
 private:
-   QComboBox   *eventSelection;
-   QStackedWidget *theStackedWidget;
-   SimCenterAppWidget *theCurrentEvent;
 
-   //   SimCenterAppWidget *theSHA_MotionWidget;
-   SimCenterAppWidget *theGeoClawOpenFOAM;
-   SimCenterAppWidget *theWaveDigitalFlume;
-   SimCenterAppWidget *theCoupledDigitalTwin;
-   SimCenterAppWidget *theMPM;    
+  SettingsMPM   *mpmSettings;
+  ParticlesMPM  *mpmParticles;
+  BoundariesMPM *mpmBoundaries;
+  SensorsMPM    *mpmSensors;
+  OutputsMPM    *mpmOutputs; 
   
-   RandomVariablesContainer *theRandomVariablesContainer;
 };
 
-#endif // HYDRO_EVENT_SELECTION_H
+#endif // COUPLED_DIGITAL_TWIN_H
