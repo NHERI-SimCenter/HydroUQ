@@ -113,14 +113,15 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   QGridLayout *gpuSettingsLayout = new QGridLayout();
   gpuSettings->setLayout(gpuSettingsLayout);
 
-  numGPUs = new SC_IntLineEdit("numGPUs", 3);
+  row = 0;
+
+  numGPUs = new SC_IntLineEdit("numGPUs", 3);  
+  gpuSettingsLayout->addWidget(new QLabel("Number of GPUs"), row, 0);
+  gpuSettingsLayout->addWidget(numGPUs, row++, 1);
+
   materialModelsPerGPU = new SC_IntLineEdit("matModelsPerGPU",3);
-  
-  gpuSettingsLayout->addWidget(new QLabel("Number of GPUs"), 0, 0);
-  gpuSettingsLayout->addWidget(numGPUs, 2, 1);
-  
-  gpuSettingsLayout->addWidget(new QLabel("Max Material Models Per GPU"), 1, 0);
-  gpuSettingsLayout->addWidget(materialModelsPerGPU, 2, 1);  
+  gpuSettingsLayout->addWidget(new QLabel("Max Material Models Per GPU"), row, 0);
+  gpuSettingsLayout->addWidget(materialModelsPerGPU, row++, 1);  
 
   // gravZ = new SC_DoubleLineEdit("g", -9.81);
 
