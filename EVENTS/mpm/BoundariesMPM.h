@@ -54,6 +54,7 @@ class SC_DoubleLineEdit;
 class SC_ComboBox;
 class SC_TableEdit;
 class SC_FileEdit;
+class SC_CheckBox;
 
 class BoundariesMPM : public SimCenterWidget
 {
@@ -68,37 +69,48 @@ signals:
 
 private:
 
+  // waveFlume
   SC_ComboBox       *facility;
   SC_DoubleLineEdit *flumeLength;
   SC_DoubleLineEdit *flumeHeight;
   SC_DoubleLineEdit *flumeWidth;
-  SC_DoubleLineEdit *cellSize;
-
-  SimCenterWidget *waveGeneration;
-
-  // init Conditions
-  SC_DoubleLineEdit *stillWaterLevel;
-  SC_DoubleLineEdit *initVel;
-  SC_DoubleLineEdit *refPressure;
-  SC_FileEdit *velFile;
-  
-  // turbilence settings
-  SC_DoubleLineEdit *referenceLength;
-  SC_DoubleLineEdit *turbulanceIntensity;
-  SC_DoubleLineEdit *referenceVel;
-
-  // bathymetry
-  SC_ComboBox    *bathymetryComboBox;
-  SC_TableEdit   *bathXZData;
-  SC_FileEdit    *bathSTL;
-
+  SC_DoubleLineEdit *flumeOriginX;
+  SC_DoubleLineEdit *flumeOriginY;
+  SC_DoubleLineEdit *flumeOriginZ;  
+  SC_ComboBox       *bathymetryComboBox;
+  SC_TableEdit      *bathXZData;  
 
   // wave generation
-  SC_ComboBox    *waveGenComboBox;
-  SC_FileEdit    *paddleDisplacementFile;    
-  SC_DoubleLineEdit   *waveMag;
-  SC_DoubleLineEdit   *waveCelerity;
-  SC_DoubleLineEdit   *waveRepeatSpeed;    
+  SC_ComboBox         *generationMethod;    
+  SC_DoubleLineEdit   *paddleLength;    
+  SC_DoubleLineEdit   *paddleHeight;
+  SC_DoubleLineEdit   *paddleWidth;
+  SC_DoubleLineEdit   *waveRepeatSpeed;
+  SC_DoubleLineEdit   *paddleOriginX;
+  SC_DoubleLineEdit   *paddleOriginY;;
+  SC_DoubleLineEdit   *paddleOriginZ;
+  SC_ComboBox         *paddleContactType;      
+  SC_FileEdit         *paddleDisplacementFile;    
+
+
+  // obstacles
+  
+  
+  // walls
+  SC_ComboBox       *wallsContactType;
+  SC_DoubleLineEdit *wallsLength;
+  SC_DoubleLineEdit *wallsHeight;
+  SC_DoubleLineEdit *wallsWidth;
+  SC_DoubleLineEdit *originLength;
+  SC_DoubleLineEdit *originHeight;
+  SC_DoubleLineEdit *originWidth;
+  SC_CheckBox       *applyCoulombFriction;    
+  SC_DoubleLineEdit *staticFrictionWallX;
+  SC_DoubleLineEdit *staticFrictionFloor;
+  SC_DoubleLineEdit *staticFrictionWallZ;
+  SC_DoubleLineEdit *dynamicFrictionWallX;
+  SC_DoubleLineEdit *dynamicFrictionFloor;
+  SC_DoubleLineEdit *dynamicFrictionWallZ;    
 };
 
 #endif // OPENFOAM_DIGITAL_TWIN_H

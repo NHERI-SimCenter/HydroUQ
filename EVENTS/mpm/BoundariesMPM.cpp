@@ -48,61 +48,84 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_IntLineEdit.h>
 #include <SC_TableEdit.h>
 #include <SC_FileEdit.h>
+#include <SC_CheckBox.h>
 
 
 BoundariesMPM::BoundariesMPM(QWidget *parent)
   :SimCenterWidget(parent)
 {
-  QGroupBox *domainSettings = new QGroupBox("Domain");
-  QGridLayout *domainSettingsLayout = new QGridLayout();  
-  domainSettings->setLayout(domainSettingsLayout);  
+
+  QGridLayout *layout = new QGridLayout();
+  this->setLayout(layout);
+
+  QTabWidget *tabWidget = new QTabWidget();
+  QWidget *theWaveFlume = new QWidget();
+  QWidget *theWaveGeneration = new QWidget();
+  QWidget *theObstacles = new QWidget();
+  QWidget *theWalls = new QWidget();
+  
+  tabWidget->addTab(theWaveFlume,"Wave Flume");
+  tabWidget->addTab(theWaveGeneration,"Wave Generation");  
+  tabWidget->addTab(theObstacles,"Obstacles");
+  tabWidget->addTab(theWalls,"Walls");
+
+  layout->addWidget(tabWidget);
+
+  QGridLayout *waveFlumeLayout = new QGridLayout();
+  theWaveFlume->setLayout(waveFlumeLayout);
 
   QStringList facilityList; facilityList << "OSU LWF" << "UW WASIRF" << "CLOSED" << "INLETOUTLET";
   facility = new SC_ComboBox("domainSubType",facilityList);
-  domainSettingsLayout->addWidget(new QLabel("Facility"),0,0);
-  domainSettingsLayout->addWidget(facility,0,1);
+  waveFlumeLayout->addWidget(new QLabel("Facility"),0,0);
+  waveFlumeLayout->addWidget(facility,0,1);
 
   QGroupBox *dimensionsBox = new QGroupBox("");
   QGridLayout *dimensionsBoxLayout = new QGridLayout();
   dimensionsBox->setLayout(dimensionsBoxLayout);
 
-  dimensionsBoxLayout->addWidget(new QLabel("Flume Length"), 0, 0);
-  dimensionsBoxLayout->addWidget(new QLabel("m"), 0, 2);
-  dimensionsBoxLayout->addWidget(new QLabel("Flume Height"), 1, 0);
-  dimensionsBoxLayout->addWidget(new QLabel("m"), 1, 2);
-  dimensionsBoxLayout->addWidget(new QLabel("Flume Width"), 2, 0);
-  dimensionsBoxLayout->addWidget(new QLabel("m"), 2, 2);
-  dimensionsBoxLayout->addWidget(new QLabel("Cell Size"), 3, 0);
-  dimensionsBoxLayout->addWidget(new QLabel("m"), 3, 2);      
-  
-  flumeLength = new SC_DoubleLineEdit("flumeLength",104.0);
-  flumeHeight = new SC_DoubleLineEdit("flumeHeight",4.6);
   flumeWidth = new SC_DoubleLineEdit("flumeWidth",3.658);
-  cellSize = new SC_DoubleLineEdit("cellSize",0.1);    
 
-  dimensionsBoxLayout->addWidget(flumeLength, 0, 1);
-  dimensionsBoxLayout->addWidget(flumeHeight, 1, 1);
-  dimensionsBoxLayout->addWidget(flumeWidth, 2, 1);
-  dimensionsBoxLayout->addWidget(cellSize, 3, 1);
-
-  domainSettingsLayout->addWidget(dimensionsBox,0,2,2,5);  
-
-  QTabWidget *tabWidget = new QTabWidget();
-  QWidget *theBathymetry = new QWidget();
-  QWidget *theInitialConditions = new QWidget();
-  QWidget *theWaveGeneration = new QWidget();
-  QWidget *theTurbulenceSettings = new QWidget();
+  int numRow = 0;  
+  flumeLength = new SC_DoubleLineEdit("flumeLength",104.0);  
+  dimensionsBoxLayout->addWidget(new QLabel("Flume Length"), numRow, 0);
+  dimensionsBoxLayout->addWidget(flumeLength, numRow, 1);  
+  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 2);
   
-  tabWidget->addTab(theBathymetry,"Bathymetry");
-  tabWidget->addTab(theInitialConditions,"Initial Conditions");
-  tabWidget->addTab(theWaveGeneration,"Wave Generation");
-  tabWidget->addTab(theTurbulenceSettings,"Turbulance");  
-  
-  QGridLayout *layout = new QGridLayout();
-  this->setLayout(layout);
+  flumeHeight = new SC_DoubleLineEdit("flumeHeight",4.6);  
+  dimensionsBoxLayout->addWidget(new QLabel("Flume Height"), numRow, 0);
+  dimensionsBoxLayout->addWidget(flumeHeight, numRow, 1);  
+  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 2);
 
-  layout->addWidget(domainSettings,0,0);
-  layout->addWidget(tabWidget,1,0);  
+  dimensionsBoxLayout->addWidget(new QLabel("Flume Width"), numRow, 0);
+  dimensionsBoxLayout->addWidget(flumeWidth, numRow, 1);  
+  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 2);
+
+  numRow = 0;
+  flumeOriginX = new SC_DoubleLineEdit("flumeOriginX",0.0);
+  dimensionsBoxLayout->addWidget(new QLabel("Origin (X)"), numRow, 3);  
+  dimensionsBoxLayout->addWidget(flumeOriginX, numRow,4);
+  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 5);
+
+  flumeOriginY = new SC_DoubleLineEdit("flumeOriginY",0.0);
+  dimensionsBoxLayout->addWidget(new QLabel("Origin (Y)"), numRow, 3);    
+  dimensionsBoxLayout->addWidget(flumeOriginY, numRow,4);
+  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 5);
+
+  flumeOriginZ = new SC_DoubleLineEdit("flumeOriginZ",0.0);
+  dimensionsBoxLayout->addWidget(new QLabel("Origin (Z)"), numRow, 3);      
+  dimensionsBoxLayout->addWidget(flumeOriginZ, numRow,4);
+  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 5);  
+
+  waveFlumeLayout->addWidget(dimensionsBox,1,0,3,4);
+
+  QStringList bathXZHeadings; bathXZHeadings << "Position Along Flume (m)" << "Height (m)";
+  QStringList dataBathXZ; dataBathXZ << "35" << "0" << "42" << "1.75" << "56" << "2.5" << "105" << "2.5";
+  bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 4, dataBathXZ);
+
+  waveFlumeLayout->addWidget(new QLabel("Bathymetry"),5,0,1,4);    
+  waveFlumeLayout->addWidget(bathXZData,6,0,1,4);  
+  
+  
 
   //
   // connect the facility QComboBox to change entries to default values if selected
@@ -113,12 +136,10 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
       flumeLength->setText("104.0");
       flumeHeight->setText("4.6");
       flumeWidth->setText("3.658");
-      cellSize->setText("0.1");    
     } else if (val == "UW WASIRF") {
       flumeLength->setText("12.19");
       flumeHeight->setText("1.22");
       flumeWidth->setText("0.914");
-      cellSize->setText("0.038");    
     } 
   });
 
@@ -126,57 +147,172 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   // instead of more classes lets just do simple tabbed widgets
   //
 
-  // 1. initial condotions
+  /*
+  // 1. initial conditions
   stillWaterLevel = new SC_DoubleLineEdit("stillWaterLevel",2.0);
   initVel = new SC_DoubleLineEdit("initVelocity",0.0);
   velFile = new SC_FileEdit("velocityFile");
   refPressure = new SC_DoubleLineEdit("refPressure",0.0);
   
   QGridLayout *initLayout = new QGridLayout();
-  theInitialConditions->setLayout(initLayout);
+  theObstacles->setLayout(initLayout);
   
   initLayout->addWidget(new QLabel("Still Water Level"),0,0);
+
   initLayout->addWidget(new QLabel("Initial Velocity"),1,0);
   initLayout->addWidget(new QLabel("Reference Pressure"),2,0);
   initLayout->addWidget(new QLabel("Velocity Time History File"),3,0);  
   initLayout->addWidget(new QLabel("meters"),0,2);
   initLayout->addWidget(new QLabel("meters/second"),1,2);
   initLayout->addWidget(new QLabel("Pascals"),2,2);
-  
-
-  
-
   initLayout->addWidget(stillWaterLevel,0,1);
   initLayout->addWidget(initVel,1,1);
   initLayout->addWidget(refPressure,2,1);
   initLayout->addWidget(velFile,3,1);
   initLayout->setRowStretch(4,1);
+  */
 
-
-  // 2. turbulance conditions
-  referenceLength = new SC_DoubleLineEdit("turbRefLength",0.125);
-  turbulanceIntensity = new SC_DoubleLineEdit("turbIntensity",0.25);
-  referenceVel = new SC_DoubleLineEdit("turbReferenceVel",5);
+  // wave generator
   
-  QGridLayout *turbLayout = new QGridLayout();
-  theTurbulenceSettings->setLayout(turbLayout);
+  QGridLayout *paddleLayout = new QGridLayout();
+  theWaveGeneration->setLayout(paddleLayout);
+
+  numRow = 0;
+  QStringList listWaveGeneration; listWaveGeneration << "Preset Paddle Motion";
   
-  turbLayout->addWidget(new QLabel("Reference Length"),0,0);
-  turbLayout->addWidget(new QLabel("Turbulence Intensity"),1,0);
-  turbLayout->addWidget(new QLabel("Reference (Mean) Velocity"),2,0);
-  turbLayout->addWidget(new QLabel("m"),0,2);
-  turbLayout->addWidget(new QLabel("unitless"),1,2);
-  turbLayout->addWidget(new QLabel("m/s"),2,2);  
+  generationMethod = new SC_ComboBox("generationMethod",listWaveGeneration);
+  paddleLayout->addWidget(new QLabel("Generation Method"),numRow,0);
+  paddleLayout->addWidget(generationMethod,numRow++,1);
 
-  turbLayout->addWidget(referenceLength,0,1);
-  turbLayout->addWidget(turbulanceIntensity,1,1);
-  turbLayout->addWidget(referenceVel,2,1);
-  turbLayout->setRowStretch(3,1);
+  numRow = 1;
+  paddleLength = new SC_DoubleLineEdit("paddleLength",0.2);
+  paddleLayout->addWidget(new QLabel("Paddle Length (X)"),numRow, 0);
+  paddleLayout->addWidget(paddleLength,numRow,1);
+  paddleLayout->addWidget(new QLabel("m"),numRow++, 2);  
 
+  paddleHeight = new SC_DoubleLineEdit("paddleHeight",89.0);
+  paddleLayout->addWidget(new QLabel("Paddle Height (Y)"),numRow, 0);
+  paddleLayout->addWidget(paddleHeight,numRow,1);
+  paddleLayout->addWidget(new QLabel("m"),numRow++, 2);
+
+  paddleWidth = new SC_DoubleLineEdit("paddleWidth",89.0);
+  paddleLayout->addWidget(new QLabel("Paddle Width (Z)"),numRow, 0);
+  paddleLayout->addWidget(paddleWidth,numRow,1);
+  paddleLayout->addWidget(new QLabel("m"),numRow++, 2);
+
+  numRow = 1;
+  paddleLength = new SC_DoubleLineEdit("paddleOriginX",0.0);
+  paddleLayout->addWidget(new QLabel("Origin (X)"),numRow, 3);
+  paddleLayout->addWidget(paddleLength,numRow,4);
+  paddleLayout->addWidget(new QLabel("m"),numRow++, 5);  
+
+  paddleHeight = new SC_DoubleLineEdit("paddleOriginY",0.0);
+  paddleLayout->addWidget(new QLabel("Origin (Y)"),numRow, 3);
+  paddleLayout->addWidget(paddleHeight,numRow,4);
+  paddleLayout->addWidget(new QLabel("m"),numRow++, 5);    
+
+  paddleWidth = new SC_DoubleLineEdit("paddleOriginZ",0.0);
+  paddleLayout->addWidget(new QLabel("Origin (Z)"),numRow, 3);
+  paddleLayout->addWidget(paddleWidth,numRow,4);
+  paddleLayout->addWidget(new QLabel("m"),numRow++, 5);
+
+
+  QStringList paddleContactTypeList; paddleContactTypeList << "Sticky" << "Slip" << "Separable";  
+  paddleContactType = new SC_ComboBox("paddleContactType", paddleContactTypeList);
+  paddleLayout->addWidget(new QLabel("ContactType"),numRow, 0);
+  paddleLayout->addWidget(paddleContactType, numRow++, 1);  
+  
+  paddleDisplacementFile = new SC_FileEdit("paddleDisplacementFile");
+  paddleLayout->addWidget(new QLabel("Paddle Displacmenet File"),numRow, 0);
+  paddleLayout->addWidget(paddleDisplacementFile,numRow++, 1, 1, 5);  
+  
+  
+  // Walls
+  QGridLayout *wallsLayout = new QGridLayout();
+  theWalls->setLayout(wallsLayout);
+
+  numRow = 0;
+  QStringList listContact; listContact << "Stickly" << "Slip" << "Separable";  
+  
+  wallsContactType = new SC_ComboBox("wallContactType",listContact);
+  wallsLayout->addWidget(new QLabel("Contact Type"),numRow,0);
+  wallsLayout->addWidget(wallsContactType,numRow++,1);
+
+  numRow = 1;
+  wallsLength = new SC_DoubleLineEdit("wallsLength",89.0);
+  wallsLayout->addWidget(new QLabel("Length (X)"),numRow, 0);
+  wallsLayout->addWidget(wallsLength,numRow,1);
+  wallsLayout->addWidget(new QLabel("m"),numRow++, 2);  
+
+  wallsHeight = new SC_DoubleLineEdit("wallsHeight",89.0);
+  wallsLayout->addWidget(new QLabel("Height (Y)"),numRow, 0);
+  wallsLayout->addWidget(wallsHeight,numRow,1);
+  wallsLayout->addWidget(new QLabel("m"),numRow++, 2);
+
+  wallsWidth = new SC_DoubleLineEdit("wallsWidth",89.0);
+  wallsLayout->addWidget(new QLabel("Width (Z)"),numRow, 0);
+  wallsLayout->addWidget(wallsWidth,numRow,1);
+  wallsLayout->addWidget(new QLabel("m"),numRow++, 2);
+
+  numRow = 1;
+  originLength = new SC_DoubleLineEdit("wallsOriginX",0.0);
+  wallsLayout->addWidget(new QLabel("Origin (X)"),numRow, 3);
+  wallsLayout->addWidget(originLength,numRow,4);
+  wallsLayout->addWidget(new QLabel("m"),numRow++, 5);  
+
+  originHeight = new SC_DoubleLineEdit("wallsOriginY",0.0);
+  wallsLayout->addWidget(new QLabel("Origin (Y)"),numRow, 3);
+  wallsLayout->addWidget(originHeight,numRow,4);
+  wallsLayout->addWidget(new QLabel("m"),numRow++, 5);    
+
+  originWidth = new SC_DoubleLineEdit("wallsOriginZ",0.0);
+  wallsLayout->addWidget(new QLabel("Origin (Z)"),numRow, 3);
+  wallsLayout->addWidget(originWidth,numRow,4);
+  wallsLayout->addWidget(new QLabel("m"),numRow++, 5);
+
+  applyCoulombFriction = new SC_CheckBox("applyCoulombFriction");
+  wallsLayout->addWidget(new QLabel("Apply Coulomb Fruction?"),numRow, 0);  
+  wallsLayout->addWidget(applyCoulombFriction,numRow++, 1);
+  
+  QGroupBox *frictionBox = new QGroupBox("");
+  QGridLayout *frictionBoxLayout = new QGridLayout();
+  frictionBox->setLayout(frictionBoxLayout);
+  numRow = 0;
+  
+  staticFrictionWallX = new SC_DoubleLineEdit("staticFrictionWallX",0.0);
+  frictionBoxLayout->addWidget(new QLabel("Static Friction on Wall (X)"),numRow, 0);
+  frictionBoxLayout->addWidget(staticFrictionWallX,numRow,1);
+
+  dynamicFrictionWallX = new SC_DoubleLineEdit("dynamicFrictionWallX",0.0);
+  frictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Wall (X)"),numRow, 3);
+  frictionBoxLayout->addWidget(dynamicFrictionWallX,numRow++,4);  
+
+  staticFrictionFloor = new SC_DoubleLineEdit("staticFrictionFloor",0.0);
+  frictionBoxLayout->addWidget(new QLabel("Static Friction on Floor (Y)"),numRow, 0);
+  frictionBoxLayout->addWidget(staticFrictionFloor,numRow,1);
+
+  dynamicFrictionFloor = new SC_DoubleLineEdit("dynamicFrictionFloor",0.0);
+  frictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Floor (Y)"),numRow, 3);
+  frictionBoxLayout->addWidget(dynamicFrictionFloor,numRow++,4);  
+  
+  staticFrictionWallZ = new SC_DoubleLineEdit("staticFrictionWallZ",0.0);
+  frictionBoxLayout->addWidget(new QLabel("Static Friction on Wall (Z)"),numRow, 0);
+  frictionBoxLayout->addWidget(staticFrictionWallZ,numRow,1);
+
+  dynamicFrictionWallZ = new SC_DoubleLineEdit("dynamicFrictionWallZ",0.0);
+  frictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Wall (Z)"),numRow, 3);
+  frictionBoxLayout->addWidget(dynamicFrictionWallZ,numRow++,4);  
+
+  numRow = 5;
+  wallsLayout->addWidget(frictionBox, numRow, 0, 3, 4);
+  
+  // wallsLayout->setRowStretch(numRow,1);
+
+  /*
   // 3. Bathymetry .. getting a little more complicated!
   //    need to use ComboBox and StackedWidget
-  QGridLayout *theBathymetryLayout = new QGridLayout();
-  theBathymetry->setLayout(theBathymetryLayout);
+  QGridLayout *theWaveFlumeLayout = new QGridLayout();
+  theWaveFlume->setLayout(theWaveFlumeLayout);
   
   QStringList bathOptions; bathOptions << "Point List" << "STL File";
   bathymetryComboBox = new SC_ComboBox("bathType",bathOptions);
@@ -202,21 +338,21 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   bathStack->addWidget(ptWidget);
   bathStack->addWidget(stlWidget);
 
-  theBathymetryLayout->addWidget(new QLabel("Source Bathymetry"), 0,0);
-  theBathymetryLayout->addWidget(bathymetryComboBox,0,1);
-  theBathymetryLayout->addWidget(bathStack,1,0,1,2);
+  theWaveFlumeLayout->addWidget(new QLabel("Source Bathymetry"), 0,0);
+  theWaveFlumeLayout->addWidget(bathymetryComboBox,0,1);
+  theWaveFlumeLayout->addWidget(bathStack,1,0,1,2);
 
   // connext bathymetry to show correct widget
   connect(bathymetryComboBox, QOverload<int>::of(&QComboBox::activated),
 	  bathStack, &QStackedWidget::setCurrentIndex);
 
-
+  
   // 4. Wave Generation .. as complicated as previous!
   //    need to use ComboBox and StackedWidget
   QGridLayout *theWaveGenLayout = new QGridLayout();
   theWaveGeneration->setLayout(theWaveGenLayout);
   
-  QStringList genOptions; genOptions << "Paddle Generated Waves" << "Periodic Waves" << "No Waves";
+  QStringList genOptions; genOptions << "Preset Paddle Motion" << "Paddle Generated Waves" << "Periodic Waves" << "No Waves";
   waveGenComboBox = new SC_ComboBox("waveType",genOptions);
   
   paddleDisplacementFile = new SC_FileEdit("paddleDispFile");
@@ -258,7 +394,7 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   // connext bathymetry to show correct widget
   connect(waveGenComboBox, QOverload<int>::of(&QComboBox::activated),
 	  waveGenStack, &QStackedWidget::setCurrentIndex);
-
+  */
 }
 
 BoundariesMPM::~BoundariesMPM()
@@ -269,70 +405,12 @@ BoundariesMPM::~BoundariesMPM()
 bool
 BoundariesMPM::outputToJSON(QJsonObject &jsonObject)
 {
-  facility->outputToJSON(jsonObject);
-  flumeLength->outputToJSON(jsonObject);
-  flumeHeight->outputToJSON(jsonObject);
-  flumeWidth->outputToJSON(jsonObject);
-  cellSize->outputToJSON(jsonObject);
-  
-  // init Conditions
-  stillWaterLevel->outputToJSON(jsonObject);
-  initVel->outputToJSON(jsonObject);
-  velFile->outputToJSON(jsonObject);  
-  refPressure->outputToJSON(jsonObject);
-  
-  // turbilence settings
-  referenceLength->outputToJSON(jsonObject);
-  turbulanceIntensity->outputToJSON(jsonObject);
-  referenceVel->outputToJSON(jsonObject);
-  
-  // bathymetry
-  bathymetryComboBox->outputToJSON(jsonObject);
-  bathXZData->outputToJSON(jsonObject);
-  bathSTL->outputToJSON(jsonObject);
-  
-  // wave generation
-  waveGenComboBox->outputToJSON(jsonObject);
-  paddleDisplacementFile->outputToJSON(jsonObject);    
-  waveMag->outputToJSON(jsonObject);
-  waveCelerity->outputToJSON(jsonObject);
-  waveRepeatSpeed->outputToJSON(jsonObject);
-  
   return true;
 }
 
 bool
 BoundariesMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  facility->inputFromJSON(jsonObject);
-  flumeLength->inputFromJSON(jsonObject);
-  flumeHeight->inputFromJSON(jsonObject);
-  flumeWidth->inputFromJSON(jsonObject);
-  cellSize->inputFromJSON(jsonObject);
-  
-  // init Conditions
-  stillWaterLevel->inputFromJSON(jsonObject);
-  initVel->inputFromJSON(jsonObject);
-  velFile->inputFromJSON(jsonObject);  
-  refPressure->inputFromJSON(jsonObject);
-  
-  // turbilence settings
-  referenceLength->inputFromJSON(jsonObject);
-  turbulanceIntensity->inputFromJSON(jsonObject);
-  referenceVel->inputFromJSON(jsonObject);
-  
-  // bathymetry
-  bathymetryComboBox->inputFromJSON(jsonObject);
-  bathXZData->inputFromJSON(jsonObject);
-  bathSTL->inputFromJSON(jsonObject);
-  
-  // wave generation
-  waveGenComboBox->inputFromJSON(jsonObject);
-  paddleDisplacementFile->inputFromJSON(jsonObject);    
-  waveMag->inputFromJSON(jsonObject);
-  waveCelerity->inputFromJSON(jsonObject);
-  waveRepeatSpeed->inputFromJSON(jsonObject);
-  
   return true;
 }
 
@@ -340,9 +418,9 @@ BoundariesMPM::inputFromJSON(QJsonObject &jsonObject)
 bool
 BoundariesMPM::copyFiles(QString &destDir)
 {
-  velFile->copyFile(destDir);  
-  bathSTL->copyFile(destDir);
-  paddleDisplacementFile->copyFile(destDir);    
+  //  velFile->copyFile(destDir);  
+  //  bathSTL->copyFile(destDir);
+  //  paddleDisplacementFile->copyFile(destDir);    
   
   return true;
 }
