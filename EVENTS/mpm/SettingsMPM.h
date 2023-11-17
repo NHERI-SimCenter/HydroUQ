@@ -66,6 +66,10 @@ signals:
 
 private:
 
+  SC_DoubleLineEdit *domainSizeX;
+  SC_DoubleLineEdit *domainSizeY;
+  SC_DoubleLineEdit *domainSizeZ;  
+  
   SC_DoubleLineEdit *gridCellSize;  
   SC_DoubleLineEdit *timeStep;
   SC_DoubleLineEdit *duration;
