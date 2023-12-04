@@ -6,7 +6,7 @@ FROM ubuntu:bionic
 
 SHELL ["/bin/bash", "-c"]
 
-ARG versionEE=d3.4.0
+ARG versionEE=master
 ARG versionSimCenterCommon=v23.09
 ARG versionSimCenterBackend=v23.09
 ARG versionOpenSees=v3.5.0
@@ -33,10 +33,9 @@ RUN apt-get update \
 #
 
 RUN  source /opt/qt515/bin/qt515-env.sh \
-    && git clone -b $versionSimCenterCommon --single-branch https://github.com/NHERI-SimCenter/SimCenterCommon.git \
-    && git clone https://github.com/NHERI-SimCenter/QS3hark.git \    
-    && git clone -b $versionEE --single-branch https://github.com/NHERI-SimCenter/Hydro-UQ.git \
-    && cd Hydro-UQ \
+    && git clone -b $versionSimCenterCommon --single-branch https://github.com/NHERI-SimCenter/SimCenterCommon.git \    
+    && git clone https://github.com/NHERI-SimCenter/HydroUQ.git \
+    && cd HydroUQ \
     && mkdir build \
     && cd build \
     && qmake ../Hydro-UQ.pro \
@@ -127,7 +126,7 @@ RUN sudo apt-get install -y zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev l
 # Copy all files into correct locations for running & clean up
 #
 
-RUN cd Hydro-UQ/build \
+RUN cd HydroUQ/build \
     && cp -r ../Examples ./ \
     && cp -r ../../SimCenterBackendApplications/applications . \
     && rm -fr /simcenter/SimCenterBackendApplications \
@@ -174,7 +173,9 @@ RUN apt-get update \
     && sudo apt-get install -y build-essential freeglut3-dev python3-pip git \
     && sudo python3 -m pip install -U pip \
     && pip3 install conan==1.60.1 \
-    && sudo apt-get install -y qt515base qt5153d qt515charts-no-lgpl qt515webengine
+    && sudo apt-get install -y qt515base qt5153d qt515charts-no-lgpl qt515webengine \
+    && sudo apt-get install libcurl4-openssl-dev \
+    && sudo apt-get install libz-dev
 
 #
 # Build the Hydro-UQ frontend & copy tacc config.json
@@ -182,14 +183,14 @@ RUN apt-get update \
 
 RUN  source /opt/qt515/bin/qt515-env.sh \
     && git clone -b $versionSimCenterCommon --single-branch https://github.com/NHERI-SimCenter/SimCenterCommon.git \ 
-    && git clone -b $versionEE --single-branch https://github.com/NHERI-SimCenter/Hydro-UQ.git \
-    && cd Hydro-UQ \
+    && git clone https://github.com/NHERI-SimCenter/HydroUQ.git \
+    && cd HydroUQ \
     && mkdir build \
     && cd build \
+    && conan install .. --build missing \
     && qmake ../Hydro-UQ.pro \
     && make \
     && rm -fr .obj \
-    && cp ../tacc/config.json ./ \
     && cd ../.. 
 
 
@@ -274,7 +275,7 @@ RUN sudo apt-get install -y zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev l
 # Copy all files into correct locations for running & clean up
 #
 
-RUN cd Hydro-UQ/build \
+RUN cd HydroUQ/build \
     && cp -r ../Examples ./ \
     && cp -r ../../SimCenterBackendApplications/applications . \
     && rm -fr /simcenter/SimCenterBackendApplications \
