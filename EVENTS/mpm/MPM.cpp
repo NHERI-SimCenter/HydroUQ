@@ -58,12 +58,19 @@ MPM::MPM(QWidget *parent)
     QWidget     *mainGroup = new QWidget();
     QGridLayout *mainLayout = new QGridLayout();
 
-    QLabel *generalDescriptionLabel = new QLabel("Coupled Digital Twin Simulation of Structures within NHERI Experimental Facilities.: "
-                                                 "\n --> Specify Simulation Settings "						 
-                                                 "\n --> Define Objects to Model "
-                                                 "\n --> Set Wave-Maker, Wave-Flume and Obstacle Boundary Conditions. "
-                                                 "\n --> Specify Sensors/Istruments to place in Wave-Flume "
-                                                 "\n --> Run MPM and Visualize");
+    QLabel *generalDescriptionLabel = new QLabel("Digital Twins of NHERI Experimental Facilities and NSF Funded: "
+                                                 "\n This page defines the event (EVT) to simulate in HydroUQ."
+                                                 "\n Digital twins of pre-built and validated scaled flume facilities help set boundary and initial conditions"
+                                                 "\n Available wave flume twins: Hinsdale Large Wave Flume (OSU LWF), Hinsdale Directional Wave Basin (OSU DWB), Wind-Air-Sea Interaction Facility (UW WASIRF), Waseda University's Tsunami Wave Basin (WU TWB)"
+                                                 "\n Available wind-wave flume twins: Hinsdale Large Wave Flume (OSU LWF), Wind-Air-Sea Interaction Facility (UW WASIRF)"
+                                                 "\n Available lahar flume twins: U.S. Geological Survey's Debris Flow Flume (USGS DFF)"						 
+                                                 "\n ClaymoreUW, a high-performance 3D Material Point Method code, is the engine behind this page's functionality."
+                                                 "\n Step 1.) Set general simulation Settings. E.g., the gravity vector."						 
+                                                 "\n Step 2.) Define Bodies to model with initial conditions in the simulation."
+                                                 "\n Step 3.) Select Flume Facility, Wave Generator, Rigid Structures, Walls, and Custom boundary conditions."
+                                                 "\n Step 4.) Specify where to place Sensors (e.g. wave-gauges, piezometers) and what they measure."
+                                                 "\n Step 5.) Choose Output settings for simulation results."
+                                                 "\n Step 6.) If all side-bar pages are complete, click [RUN at DesignSafe] (bottom of the app) to simulate your Event.");
 
 
     mainLayout->addWidget(generalDescriptionLabel, 0, 0);
@@ -72,7 +79,7 @@ MPM::MPM(QWidget *parent)
     mpmSettings = new SettingsMPM();
     theTabWidget->addTab(mpmSettings, "Settings");
     mpmParticles = new ParticlesMPM();
-    theTabWidget->addTab(mpmParticles, "Particles");
+    theTabWidget->addTab(mpmParticles, "Bodies");
     mpmBoundaries = new BoundariesMPM();
     theTabWidget->addTab(mpmBoundaries, "Boundaries");
     mpmSensors = new SensorsMPM();
@@ -182,8 +189,8 @@ bool MPM::copyFiles(QString &destDir) {
     return false;
   if (mpmBoundaries->copyFiles(destDir) == false)
     return false;
-  if (mpmSensors->copyFiles(destDir) == false)
-    return false;    
+  // if (mpmSensors->copyFiles(destDir) == false)
+  //   return false;    
 
   return true;
  }

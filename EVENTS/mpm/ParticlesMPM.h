@@ -44,13 +44,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the OpenSees Tab for the CoupledDigitalTwin
+ *  This is the class providing the Particle Bodies Tab for mpm
  */
 
 #include <SimCenterWidget.h>
 
 class QJsonObject;
+class SC_DoubleLineEdit;
+class SC_ComboBox;
+class SC_TableEdit;
 class SC_FileEdit;
+class SC_CheckBox;
 
 class ParticlesMPM : public SimCenterWidget
 {
@@ -64,8 +68,53 @@ public:
 signals:
 
 private:
-  SC_FileEdit *theOpenSeesPyScript;
-  SC_FileEdit *theSurfaceFile;
+  // SC_FileEdit *theOpenSeesPyScript;
+  // SC_FileEdit *theSurfaceFile;
+
+  // fluid
+  SC_DoubleLineEdit *standingWaterLevel;
+  SC_CheckBox *fillFlumeUptoSWL;
+  SC_ComboBox       *facility;
+  SC_DoubleLineEdit *flumeLength;
+  SC_DoubleLineEdit *flumeHeight;
+  SC_DoubleLineEdit *flumeWidth;
+  SC_DoubleLineEdit *flumeOriginX;
+  SC_DoubleLineEdit *flumeOriginY;
+  SC_DoubleLineEdit *flumeOriginZ;  
+  SC_ComboBox       *bathymetryComboBox;
+  SC_TableEdit      *bathXZData;  
+
+  // debris
+  SC_ComboBox         *generationMethod;    
+  SC_DoubleLineEdit   *paddleLength;    
+  SC_DoubleLineEdit   *paddleHeight;
+  SC_DoubleLineEdit   *paddleWidth;
+  SC_DoubleLineEdit   *waveRepeatSpeed;
+  SC_DoubleLineEdit   *paddleOriginX;
+  SC_DoubleLineEdit   *paddleOriginY;;
+  SC_DoubleLineEdit   *paddleOriginZ;
+  SC_ComboBox         *debrisMaterialType;      
+  SC_FileEdit         *paddleDisplacementFile;    
+
+  // structures
+  SC_ComboBox       *wallsContactType;
+  SC_DoubleLineEdit *wallsLength;
+  SC_DoubleLineEdit *wallsHeight;
+  SC_DoubleLineEdit *wallsWidth;
+  SC_DoubleLineEdit *originLength;
+  SC_DoubleLineEdit *originHeight;
+  SC_DoubleLineEdit *originWidth;
+  SC_CheckBox       *applyCoulombFriction;    
+  SC_DoubleLineEdit *staticFrictionWallX;
+  SC_DoubleLineEdit *staticFrictionFloor;
+  SC_DoubleLineEdit *staticFrictionWallZ;
+  SC_DoubleLineEdit *dynamicFrictionWallX;
+  SC_DoubleLineEdit *dynamicFrictionFloor;
+  SC_DoubleLineEdit *dynamicFrictionWallZ;    
+  
+  // Custom Bodies
+
+
 };
 
 #endif // OPENSEES_DIGITAL_TWIN_H

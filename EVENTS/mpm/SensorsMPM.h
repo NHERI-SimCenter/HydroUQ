@@ -50,7 +50,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SimCenterWidget.h>
 
 class QJsonObject;
-class SC_FileEdit;
+// class SC_FileEdit;
+class SC_ComboBox;
+class SC_TableEdit;
+class SC_DoubleLineEdit;
 
 class SensorsMPM : public SimCenterWidget
 {
@@ -59,13 +62,25 @@ public:
     virtual ~SensorsMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-    bool copyFiles(QString &dirName);
+    // bool copyFiles(QString &dirName);
   
 signals:
 
 private:
-  SC_FileEdit *theOpenSeesPyScript;
-  SC_FileEdit *theSurfaceFile;
+  // SC_FileEdit *theOpenSeesPyScript;
+  // SC_FileEdit *theSurfaceFile;
+
+  // SC_DoubleLineEdit *outputOS_Dt;
+  SC_ComboBox       *vtkOF_Output;
+  SC_DoubleLineEdit *outputOF_Dt;
+  SC_ComboBox       *outputOF_FM;
+  SC_ComboBox       *outputOF_FSP;
+  SC_ComboBox       *outputOF_FP;
+  SC_ComboBox       *outputOF_SC;
+  SC_TableEdit      *freeSurfaceProbes;
+  SC_TableEdit      *fieldProbes;
+  SC_TableEdit      *sectionCuts;
+
 };
 
 #endif // OPENSEES_DIGITAL_TWIN_H

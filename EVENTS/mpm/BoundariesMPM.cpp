@@ -61,12 +61,12 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   QTabWidget *tabWidget = new QTabWidget();
   QWidget *theWaveFlume = new QWidget();
   QWidget *theWaveGeneration = new QWidget();
-  QWidget *theObstacles = new QWidget();
+  QWidget *theStructures = new QWidget();
   QWidget *theWalls = new QWidget();
   
-  tabWidget->addTab(theWaveFlume,"Wave Flume");
+  tabWidget->addTab(theWaveFlume,"Flume Facility");
   tabWidget->addTab(theWaveGeneration,"Wave Generation");  
-  tabWidget->addTab(theObstacles,"Obstacles");
+  tabWidget->addTab(theStructures,"Rigid Structures");
   tabWidget->addTab(theWalls,"Walls");
 
   layout->addWidget(tabWidget);
@@ -74,7 +74,7 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   QGridLayout *waveFlumeLayout = new QGridLayout();
   theWaveFlume->setLayout(waveFlumeLayout);
 
-  QStringList facilityList; facilityList << "OSU LWF" << "UW WASIRF" << "CLOSED" << "INLETOUTLET";
+  QStringList facilityList; facilityList << "Hinsdale Large Wave Flume (OSU LWF)" << "Hinsdale Directional Wave Basin (OSU DWB)" <<  "Wind-Air-Sea Interaction Facility (UW WASIRF)" << "Waseda University's Tsunami Wave Basin (WU TWB)" << "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)" << "CLOSED" << "INLETOUTLET";
   facility = new SC_ComboBox("domainSubType",facilityList);
   waveFlumeLayout->addWidget(new QLabel("Facility"),0,0);
   waveFlumeLayout->addWidget(facility,0,1);
@@ -83,7 +83,6 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   QGridLayout *dimensionsBoxLayout = new QGridLayout();
   dimensionsBox->setLayout(dimensionsBoxLayout);
 
-  flumeWidth = new SC_DoubleLineEdit("flumeWidth",3.658);
 
   int numRow = 0;  
   flumeLength = new SC_DoubleLineEdit("flumeLength",104.0);  
@@ -96,6 +95,7 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   dimensionsBoxLayout->addWidget(flumeHeight, numRow, 1);  
   dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 2);
 
+  flumeWidth = new SC_DoubleLineEdit("flumeWidth",3.658);
   dimensionsBoxLayout->addWidget(new QLabel("Flume Width"), numRow, 0);
   dimensionsBoxLayout->addWidget(flumeWidth, numRow, 1);  
   dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 2);
@@ -132,14 +132,26 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   //
   
   connect(facility, &QComboBox::currentTextChanged, [=](QString val) {
-    if (val == "OSU LWF") {
+    if (val == "Hinsdale Large Wave Flume (OSU LWF)") {
       flumeLength->setText("104.0");
       flumeHeight->setText("4.6");
       flumeWidth->setText("3.658");
-    } else if (val == "UW WASIRF") {
+    } else if (val == "Hinsdale Directional Wave Basin (OSU DWB)") {
+      flumeLength->setText("48.8");
+      flumeHeight->setText("26.5");
+      flumeWidth->setText("2.1");
+    } else if (val == "Wind-Air-Sea Interaction Facility (UW WASIRF)") {
       flumeLength->setText("12.19");
       flumeHeight->setText("1.22");
       flumeWidth->setText("0.914");
+    } else if (val == "Waseda University's Tsunami Wave Basin (WU TWB)") {
+      flumeLength->setText("9.0");
+      flumeHeight->setText("1.0");
+      flumeWidth->setText("4.0");
+    } else if (val == "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)") {
+      flumeLength->setText("90.0");
+      flumeHeight->setText("2.0");
+      flumeWidth->setText("2.0");
     } 
   });
 
@@ -190,12 +202,12 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   paddleLayout->addWidget(paddleLength,numRow,1);
   paddleLayout->addWidget(new QLabel("m"),numRow++, 2);  
 
-  paddleHeight = new SC_DoubleLineEdit("paddleHeight",89.0);
+  paddleHeight = new SC_DoubleLineEdit("paddleHeight",4.0);
   paddleLayout->addWidget(new QLabel("Paddle Height (Y)"),numRow, 0);
   paddleLayout->addWidget(paddleHeight,numRow,1);
   paddleLayout->addWidget(new QLabel("m"),numRow++, 2);
 
-  paddleWidth = new SC_DoubleLineEdit("paddleWidth",89.0);
+  paddleWidth = new SC_DoubleLineEdit("paddleWidth",4.0);
   paddleLayout->addWidget(new QLabel("Paddle Width (Z)"),numRow, 0);
   paddleLayout->addWidget(paddleWidth,numRow,1);
   paddleLayout->addWidget(new QLabel("m"),numRow++, 2);
@@ -226,13 +238,93 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   paddleLayout->addWidget(new QLabel("Paddle Displacmenet File"),numRow, 0);
   paddleLayout->addWidget(paddleDisplacementFile,numRow++, 1, 1, 5);  
   
+
+  // Rigid Structures
+  QGridLayout *structLayout = new QGridLayout();
+  theStructures->setLayout(structLayout);
+
+  numRow = 0;
+  QStringList listContact; listContact << "Sticky" << "Slip" << "Separable";  
   
+  structContactType = new SC_ComboBox("structContactType",listContact);
+  structLayout->addWidget(new QLabel("Contact Type"),numRow,0);
+  structLayout->addWidget(structContactType,numRow++,1);
+
+  numRow = 1;
+  structLength = new SC_DoubleLineEdit("structLength",1.016);
+  structLayout->addWidget(new QLabel("Structure Length (X)"),numRow, 0);
+  structLayout->addWidget(structLength,numRow,1);
+  structLayout->addWidget(new QLabel("m"),numRow++, 2);  
+
+  structHeight = new SC_DoubleLineEdit("structHeight",0.625);
+  structLayout->addWidget(new QLabel("Structure Height (Y)"),numRow, 0);
+  structLayout->addWidget(structHeight,numRow,1);
+  structLayout->addWidget(new QLabel("m"),numRow++, 2);
+
+  structWidth = new SC_DoubleLineEdit("structWidth",1.016);
+  structLayout->addWidget(new QLabel("Structure Width (Z)"),numRow, 0);
+  structLayout->addWidget(structWidth,numRow,1);
+  structLayout->addWidget(new QLabel("m"),numRow++, 2);
+
+  numRow = 1;
+  structOriginLength = new SC_DoubleLineEdit("structOriginX",45.8);
+  structLayout->addWidget(new QLabel("Structure Origin (X)"),numRow, 3);
+  structLayout->addWidget(structOriginLength,numRow,4);
+  structLayout->addWidget(new QLabel("m"),numRow++, 5);  
+
+  structOriginHeight = new SC_DoubleLineEdit("structOriginY",2.0);
+  structLayout->addWidget(new QLabel("Structure Origin (Y)"),numRow, 3);
+  structLayout->addWidget(structOriginHeight,numRow,4);
+  structLayout->addWidget(new QLabel("m"),numRow++, 5);    
+
+  structOriginWidth = new SC_DoubleLineEdit("structOriginZ",1.325);
+  structLayout->addWidget(new QLabel("Structure Origin (Z)"),numRow, 3);
+  structLayout->addWidget(structOriginWidth,numRow,4);
+  structLayout->addWidget(new QLabel("m"),numRow++, 5);
+
+  structApplyCoulombFriction = new SC_CheckBox("structApplyCoulombFriction");
+  structLayout->addWidget(new QLabel("Apply Coulomb Fruction?"),numRow, 0);  
+  structLayout->addWidget(structApplyCoulombFriction,numRow++, 1);
+  
+  QGroupBox *structFrictionBox = new QGroupBox("");
+  QGridLayout *structFrictionBoxLayout = new QGridLayout();
+  structFrictionBox->setLayout(structFrictionBoxLayout);
+  numRow = 0;
+  
+  structStaticFrictionWallX = new SC_DoubleLineEdit("structStaticFrictionWallX",0.0);
+  structFrictionBoxLayout->addWidget(new QLabel("Static Friction on Structure (X)"),numRow, 0);
+  structFrictionBoxLayout->addWidget(structStaticFrictionWallX,numRow,1);
+
+  structDynamicFrictionWallX = new SC_DoubleLineEdit("structDynamicFrictionWallX",0.0);
+  structFrictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Structure (X)"),numRow, 3);
+  structFrictionBoxLayout->addWidget(structDynamicFrictionWallX,numRow++,4);  
+
+  structStaticFrictionFloor = new SC_DoubleLineEdit("structStaticFrictionFloor",0.0);
+  structFrictionBoxLayout->addWidget(new QLabel("Static Friction on Structure (Y)"),numRow, 0);
+  structFrictionBoxLayout->addWidget(structStaticFrictionFloor,numRow,1);
+
+  structDynamicFrictionFloor = new SC_DoubleLineEdit("structDynamicFrictionFloor",0.0);
+  structFrictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Structure (Y)"),numRow, 3);
+  structFrictionBoxLayout->addWidget(structDynamicFrictionFloor,numRow++,4);  
+  
+  structStaticFrictionWallZ = new SC_DoubleLineEdit("structStaticFrictionWallZ",0.0);
+  structFrictionBoxLayout->addWidget(new QLabel("Static Friction on Structure (Z)"),numRow, 0);
+  structFrictionBoxLayout->addWidget(staticFrictionWallZ,numRow,1);
+
+  structDynamicFrictionWallZ = new SC_DoubleLineEdit("structDynamicFrictionWallZ",0.0);
+  structFrictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Structure (Z)"),numRow, 3);
+  structFrictionBoxLayout->addWidget(structDynamicFrictionWallZ,numRow++,4);  
+
+  numRow = 5;
+  structLayout->addWidget(structFrictionBox, numRow, 0, 3, 4);
+  
+  // -----
   // Walls
   QGridLayout *wallsLayout = new QGridLayout();
   theWalls->setLayout(wallsLayout);
 
   numRow = 0;
-  QStringList listContact; listContact << "Stickly" << "Slip" << "Separable";  
+  // QStringList listContact; listContact << "Sticky" << "Slip" << "Separable";  
   
   wallsContactType = new SC_ComboBox("wallContactType",listContact);
   wallsLayout->addWidget(new QLabel("Contact Type"),numRow,0);

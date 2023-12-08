@@ -93,8 +93,21 @@ private:
   SC_FileEdit         *paddleDisplacementFile;    
 
 
-  // obstacles
-  
+  // structures
+  SC_ComboBox       *structContactType;
+  SC_DoubleLineEdit *structLength;
+  SC_DoubleLineEdit *structHeight;
+  SC_DoubleLineEdit *structWidth;
+  SC_DoubleLineEdit *structOriginLength;
+  SC_DoubleLineEdit *structOriginHeight;
+  SC_DoubleLineEdit *structOriginWidth;
+  SC_CheckBox       *structApplyCoulombFriction;    
+  SC_DoubleLineEdit *structStaticFrictionWallX;
+  SC_DoubleLineEdit *structStaticFrictionFloor;
+  SC_DoubleLineEdit *structStaticFrictionWallZ;
+  SC_DoubleLineEdit *structDynamicFrictionWallX;
+  SC_DoubleLineEdit *structDynamicFrictionFloor;
+  SC_DoubleLineEdit *structDynamicFrictionWallZ;  
   
   // walls
   SC_ComboBox       *wallsContactType;

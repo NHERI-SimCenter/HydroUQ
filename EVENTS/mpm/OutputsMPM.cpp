@@ -55,28 +55,30 @@ OutputsMPM::OutputsMPM(QWidget *parent)
 {
 
   //
-  // create all litlle widgets
+  // create all little widgets
   //
   
   QStringList yesNo; yesNo << "Yes" << "No";
-  
-  vtkOS_Output = new SC_ComboBox("SeesVTKOUT",yesNo);  
-  vtkOF_Output = new SC_ComboBox("interfaceSurfaceOutput", yesNo);;
-  outputOS_Dt  = new SC_DoubleLineEdit("SeesVTKOUTRate", 0.1);
-  outputOF_Dt  = new SC_DoubleLineEdit("writeDT", 0.1);
+  QStringList particleExt; particleExt << "VTK" << "BGEO" << "GEO" << "CSV" << "TXT" << "PDB";
+  QStringList sensorExt; sensorExt << "VTK" << "BGEO" << "GEO" << "CSV" << "TXT" << "PDB";
+
+  vtkOS_Output = new SC_ComboBox("save_suffix",particleExt);  
+  vtkOF_Output = new SC_ComboBox("sensor_save_suffix", sensorExt);;
+  outputOS_Dt  = new SC_DoubleLineEdit("fps", 10);
+  outputOF_Dt  = new SC_DoubleLineEdit("output_freq", 30);
   
   outputOF_FM  = new SC_ComboBox("freeSurfOut", yesNo);
   outputOF_FSP = new SC_ComboBox("freeSurfProbes", yesNo);
   outputOF_FP  = new SC_ComboBox("fieldProbes", yesNo);
   outputOF_SC  = new SC_ComboBox("cutSurfaceOutput", yesNo);
   
-  QStringList  listFSP; listFSP << "X" << "Y" << "Z" << "tag";
-  QStringList  dataFSP; dataFSP << "0.05" << "0.2" << "0.5" << "WaveGauge1"
-				<< "0.15" << "0.2" << "0.5" << "WaveGauge2"
-				<< "0.25" << "0.2" << "0.5" << "WaveGauge3";
+  QStringList  listFSP; listFSP << "Origin X" << "Origin Y" << "Origin Z" << "tag";
+  QStringList  dataFSP; dataFSP << "16.0" << "2.0" << "0.5" << "WaveGauge1"
+				<< "24.0" << "2.0" << "0.5" << "WaveGauge2"
+				<< "36.0" << "2.0" << "0.5" << "WaveGauge3";
   freeSurfaceProbes = new SC_TableEdit("freeSurfProbeLocs",  listFSP, 3, dataFSP);
   
-  QStringList  listFP; listFP << "X" << "Y" << "Z" << "tag"  << "Field(U,p, etc.)";
+  QStringList  listFP; listFP << "Origin X" << "Origin Y" << "Origin Z" << "tag"  << "Field(U,p, etc.)";
   QStringList  dataFP; dataFP << "0.1"  << "0.3" << "0.45"  << "PressureProbe1" << "p"
 				<< "0.1"  << "0.3" << "0.425" << "PressureProbe1" << "p"
 				<< "0.1"  << "0.3" << "0.4"   << "PressureProbe1" << "p"
@@ -84,7 +86,7 @@ OutputsMPM::OutputsMPM(QWidget *parent)
 
   fieldProbes  = new SC_TableEdit("fieldProbeLocs", listFP, 4, dataFP);
   
-  QStringList  listSC; listSC << "X" << "Y" << "Z" << "X" << "Y" << "Z" << "tag" << "Field(U,p, etc.)";
+  QStringList  listSC; listSC << "Origin X" << "Origin Y" << "Origin Z" << "Lenght X" << "Height Y" << "Width Z" << "tag" << "Field(U,p, etc.)";
   QStringList  dataSC; dataSC << "0" << "0.1" << "0.25" << "0" << "1" << "0" << "XSec1" << "p,U,alpha,water";  
   sectionCuts  = new SC_TableEdit("cutSurfaceLocsDirsFields", listSC, 1, dataSC);
 
@@ -92,23 +94,31 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   // now add the widgets to Grpup Boxes
   //
 
-  QGroupBox *openseesBox = new QGroupBox("OpenSees Outputs");
+  QGroupBox *openseesBox = new QGroupBox("Bodies' Full Geometry Output");
   QGridLayout *openseesLayout = new QGridLayout();  
   openseesBox->setLayout(openseesLayout);
 
-  openseesLayout->addWidget(new QLabel("Output VTK"),0,0);
+  QGroupBox *energyBox = new QGroupBox("Energy Output");
+  QGridLayout *energyLayout = new QGridLayout();  
+  energyBox->setLayout(energyLayout);
+
+  QGroupBox *checkpointBox = new QGroupBox("Checkpoint Output");
+  QGridLayout *checkpointLayout = new QGridLayout();  
+  checkpointBox->setLayout(checkpointLayout);
+
+  openseesLayout->addWidget(new QLabel("Output File Type"),0,0);
   openseesLayout->addWidget(vtkOS_Output,0,1);  
-  openseesLayout->addWidget(new QLabel("Time Interval"),1,0);
+  openseesLayout->addWidget(new QLabel("Output Frequency"),1,0);
   openseesLayout->addWidget(outputOS_Dt,1,1);
-  openseesLayout->addWidget(new QLabel("sec."),1,2);  
+  openseesLayout->addWidget(new QLabel("Hz"),1,2);  
 			    
-  QGroupBox *openfoamBox = new QGroupBox("OpenFOAM Outputs");
+  QGroupBox *openfoamBox = new QGroupBox("Sensor Output");
   QGridLayout *openfoamLayout = new QGridLayout();  
   openfoamBox->setLayout(openfoamLayout);
 
-  openfoamLayout->addWidget(new QLabel("Output VTK"),0,0);
+  openfoamLayout->addWidget(new QLabel("Output File Type"),0,0);
   openfoamLayout->addWidget(vtkOF_Output,0,1);    
-  openfoamLayout->addWidget(new QLabel("Time Interval"),1,0);
+  openfoamLayout->addWidget(new QLabel("Output Frequency"),1,0);
   openfoamLayout->addWidget(outputOF_Dt,1,1);
   openfoamLayout->addWidget(new QLabel("sec."),1,2);
 
@@ -159,7 +169,9 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   
   QGridLayout *layout = new QGridLayout;
   layout->addWidget(openseesBox, 0,0);
-  layout->addWidget(openfoamBox, 1,0);
+  layout->addWidget(checkpointBox, 1,0);
+  layout->addWidget(energyBox, 2,0);
+  layout->addWidget(openfoamBox, 3,0);
 
   
   this->setLayout(layout);
