@@ -14,24 +14,24 @@ modification, are permitted provided that the following conditions are met:
    this list of conditions and the following disclaimer in the documentation
    and/or other materials provided with the distribution.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+THIS SSensorsTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+WARRANTIES Sensors MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPBodiesE ARE
 DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
 ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT Sensors SUBSTITUTE GOODS OR SERVICES;
+LBodiesS Sensors USE, DATA, OR PRSensorsITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY Sensors LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT Sensors THE USE Sensors THIS
+SSensorsTWARE, EVEN IF ADVISED Sensors THE PBodiesSIBILITY Sensors SUCH DAMAGE.
 
 The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 
 REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS 
+THE IMPLIED WARRANTIES Sensors MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPBodiesE.
+THE SSensorsTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS 
 PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, 
 UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -53,7 +53,7 @@ class QJsonObject;
 class SC_ComboBox;
 class SC_TableEdit;
 class SC_DoubleLineEdit;
-
+class SC_CheckBox;
 class OutputsMPM : public SimCenterWidget
 {
 public:
@@ -67,17 +67,33 @@ signals:
 
 private:
   
-  SC_ComboBox       *vtkOS_Output;  
-  SC_ComboBox       *vtkOF_Output;
-  SC_DoubleLineEdit *outputOS_Dt;
-  SC_DoubleLineEdit *outputOF_Dt;
-  SC_ComboBox       *outputOF_FM;
-  SC_ComboBox       *outputOF_FSP;
-  SC_ComboBox       *outputOF_FP;
-  SC_ComboBox       *outputOF_SC;
-  SC_TableEdit      *freeSurfaceProbes;
-  SC_TableEdit      *fieldProbes;
-  SC_TableEdit      *sectionCuts;
+  SC_ComboBox       *vtkBodies_Output;  
+  SC_ComboBox       *vtkSensors_Output;
+  SC_ComboBox       *vtkBoundaries_Output;
+  SC_ComboBox       *vtkCheckpoints_Output;
+  SC_ComboBox       *vtkEnergies_Output;
+
+  SC_DoubleLineEdit *outputBodies_Dt;
+  SC_DoubleLineEdit *outputSensors_Dt;
+  SC_DoubleLineEdit *outputCheckpoints_Dt;
+  SC_DoubleLineEdit *outputBoundaries_Dt;
+  SC_DoubleLineEdit *outputEnergies_Dt;
+
+  SC_CheckBox       *useKineticEnergy;
+  SC_CheckBox       *useStrainEnergy;
+  SC_CheckBox       *usePotentialEnergy;
+
+
+  // SC_CheckBox       *outputBodies_Particle;
+
+  // SC_ComboBox       *outputSensors_FM;
+  // SC_ComboBox       *outputSensors_FSP;
+  // SC_ComboBox       *outputSensors_FP;
+  // SC_ComboBox       *outputSensors_SC;
+
+  // SC_TableEdit      *freeSurfaceProbes;
+  // SC_TableEdit      *fieldProbes;
+  // SC_TableEdit      *sectionCuts;
   
 };
 

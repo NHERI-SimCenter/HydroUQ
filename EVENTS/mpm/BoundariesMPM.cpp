@@ -42,6 +42,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QTabWidget>
 #include <QStackedWidget>
 #include <QDebug>
+#include <QIcon>
+#include <QSvgWidget>
+#include <QString> 
 
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
@@ -64,91 +67,134 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   QWidget *theStructures = new QWidget();
   QWidget *theWalls = new QWidget();
   
-  tabWidget->addTab(theWaveFlume,"Flume Facility");
-  tabWidget->addTab(theWaveGeneration,"Wave Generation");  
-  tabWidget->addTab(theStructures,"Rigid Structures");
-  tabWidget->addTab(theWalls,"Walls");
-
+  tabWidget->addTab(theWaveFlume,QIcon(QString(":/icons/wash-black.svg")), "Flume Facility");
+  tabWidget->addTab(theWaveGeneration,QIcon(QString(":/icons/wave-break-black.svg")), "Wave Generator");  
+  tabWidget->addTab(theStructures,QIcon(QString(":/icons/home-black.svg")), "Rigid Structures");
+  tabWidget->addTab(theWalls,QIcon(QString(":/icons/wall-black.svg")), "Walls");
+  int sizeTabIcon = 20;
+  tabWidget->setIconSize(QSize(sizeTabIcon,sizeTabIcon));
   layout->addWidget(tabWidget);
+  layout->setRowStretch(1,1);
 
   QGridLayout *waveFlumeLayout = new QGridLayout();
   theWaveFlume->setLayout(waveFlumeLayout);
 
-  QStringList facilityList; facilityList << "Hinsdale Large Wave Flume (OSU LWF)" << "Hinsdale Directional Wave Basin (OSU DWB)" <<  "Wind-Air-Sea Interaction Facility (UW WASIRF)" << "Waseda University's Tsunami Wave Basin (WU TWB)" << "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)" << "CLOSED" << "INLETOUTLET";
-  facility = new SC_ComboBox("domainSubType",facilityList);
-  waveFlumeLayout->addWidget(new QLabel("Facility"),0,0);
-  waveFlumeLayout->addWidget(facility,0,1);
 
-  QGroupBox *dimensionsBox = new QGroupBox("");
+
+  QGroupBox *dimensionsBox = new QGroupBox("Flume Facility Dimensions");
   QGridLayout *dimensionsBoxLayout = new QGridLayout();
-  dimensionsBox->setLayout(dimensionsBoxLayout);
-
 
   int numRow = 0;  
   flumeLength = new SC_DoubleLineEdit("flumeLength",104.0);  
-  dimensionsBoxLayout->addWidget(new QLabel("Flume Length"), numRow, 0);
-  dimensionsBoxLayout->addWidget(flumeLength, numRow, 1);  
-  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 2);
-  
   flumeHeight = new SC_DoubleLineEdit("flumeHeight",4.6);  
-  dimensionsBoxLayout->addWidget(new QLabel("Flume Height"), numRow, 0);
-  dimensionsBoxLayout->addWidget(flumeHeight, numRow, 1);  
-  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 2);
-
   flumeWidth = new SC_DoubleLineEdit("flumeWidth",3.658);
-  dimensionsBoxLayout->addWidget(new QLabel("Flume Width"), numRow, 0);
-  dimensionsBoxLayout->addWidget(flumeWidth, numRow, 1);  
-  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 2);
+  dimensionsBoxLayout->addWidget(new QLabel("Dimensions (X,Y,Z)"), numRow, 0);
+  dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
+  dimensionsBoxLayout->addWidget(flumeLength, numRow, 1);    
+  dimensionsBoxLayout->addWidget(flumeHeight, numRow, 2);  
+  dimensionsBoxLayout->addWidget(flumeWidth, numRow, 3);  
+  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 4);
+
+  flumeOriginX = new SC_DoubleLineEdit("flumeOriginX",0.0);
+  flumeOriginY = new SC_DoubleLineEdit("flumeOriginY",0.0);
+  flumeOriginZ = new SC_DoubleLineEdit("flumeOriginZ",0.0);
+  dimensionsBoxLayout->addWidget(new QLabel("Origin (X,Y,Z)"), numRow, 0);  
+  dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
+  dimensionsBoxLayout->addWidget(flumeOriginX, numRow, 1);
+  dimensionsBoxLayout->addWidget(flumeOriginY, numRow, 2);
+  dimensionsBoxLayout->addWidget(flumeOriginZ, numRow, 3);
+  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 4);  
+  dimensionsBoxLayout->setRowStretch(numRow,1);
+  dimensionsBox->setLayout(dimensionsBoxLayout);
+
 
   numRow = 0;
-  flumeOriginX = new SC_DoubleLineEdit("flumeOriginX",0.0);
-  dimensionsBoxLayout->addWidget(new QLabel("Origin (X)"), numRow, 3);  
-  dimensionsBoxLayout->addWidget(flumeOriginX, numRow,4);
-  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 5);
+  // QGroupBox *bathBox = new QGroupBox("");
+  // QGridLayout *bathBoxLayout = new QGridLayout();
+  // bathBox->setLayout(bathBoxLayout);
+  // QStringList bathXZHeadings; bathXZHeadings << "Position in Flume (X)" << "Elevation (Y)";
+  // QStringList dataBathXZ; dataBathXZ << "35" << "0" << "42" << "1.75" << "56" << "2.5" << "105" << "2.5";
+  // bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 4, dataBathXZ);
 
-  flumeOriginY = new SC_DoubleLineEdit("flumeOriginY",0.0);
-  dimensionsBoxLayout->addWidget(new QLabel("Origin (Y)"), numRow, 3);    
-  dimensionsBoxLayout->addWidget(flumeOriginY, numRow,4);
-  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 5);
+  // bathBoxLayout->addWidget(new QLabel("Bathymetry Segments"),numRow++,0,1,4);    
+  // bathBoxLayout->addWidget(bathXZData,numRow++,0,1,4);  
+  // bathBoxLayout->setRowStretch(2,1);
 
-  flumeOriginZ = new SC_DoubleLineEdit("flumeOriginZ",0.0);
-  dimensionsBoxLayout->addWidget(new QLabel("Origin (Z)"), numRow, 3);      
-  dimensionsBoxLayout->addWidget(flumeOriginZ, numRow,4);
-  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 5);  
 
-  waveFlumeLayout->addWidget(dimensionsBox,1,0,3,4);
-
+  // Stack for bathymetry
+  QStringList bathOptions; bathOptions << "Point List" << "STL File";
+  bathymetryComboBox = new SC_ComboBox("bathType",bathOptions);
+  
   QStringList bathXZHeadings; bathXZHeadings << "Position Along Flume (m)" << "Height (m)";
   QStringList dataBathXZ; dataBathXZ << "35" << "0" << "42" << "1.75" << "56" << "2.5" << "105" << "2.5";
   bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 4, dataBathXZ);
+  bathSTL = new SC_FileEdit("bathSTL");
 
-  waveFlumeLayout->addWidget(new QLabel("Bathymetry"),5,0,1,4);    
-  waveFlumeLayout->addWidget(bathXZData,6,0,1,4);  
-  
-  
+  QWidget *ptWidget = new QWidget(); // going to add figure which is why the layout
+  QGridLayout *ptLayout = new QGridLayout();
+  ptLayout->addWidget(bathXZData, 0, 0);
+  ptLayout->setRowStretch(1,1);
+  ptWidget->setLayout(ptLayout);
 
+  QWidget *stlWidget = new QWidget();
+  QGridLayout *stlLayout = new QGridLayout();
+  stlLayout->addWidget(new QLabel("Surface File (stl)"),0,0);
+  stlLayout->itemAt(stlLayout->count()-1)->setAlignment(Qt::AlignRight);
+  stlLayout->addWidget(bathSTL,0,1);
+  stlLayout->setRowStretch(1,1);  
+  stlWidget->setLayout(stlLayout);
+
+  QStackedWidget *bathStack = new QStackedWidget();
+  bathStack->addWidget(ptWidget);
+  bathStack->addWidget(stlWidget);
+  //
+
+
+  numRow = 0;
+  // QStringList facilityList; facilityList << "Hinsdale Large Wave Flume - Oregon State University (OSU LWF)" << "Hinsdale Directional Wave Basin (OSU DWB)" <<  "Wind-Air-Sea Interaction Facility (UW WASIRF)" << "Waseda University's Tsunami Wave Basin (WU TWB)" << "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)" << "CLOSED" << "INLETOUTLET";
+  QStringList facilityList; facilityList << "Hinsdale Large Wave Flume (OSU LWF)" << "Hinsdale Directional Wave Basin (OSU DWB)" <<  "Wind-Air-Sea Interaction Facility (UW WASIRF)" << "Waseda University's Tsunami Wave Basin (WU TWB)" << "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)" << "CLOSED" << "INLETOUTLET";
+  facility = new SC_ComboBox("domainSubType",facilityList);
+  waveFlumeLayout->addWidget(new QLabel("Digital Twin Facility"),numRow,0);
+  waveFlumeLayout->itemAt(waveFlumeLayout->count()-1)->setAlignment(Qt::AlignRight);
+  waveFlumeLayout->addWidget(facility,numRow++,1);
+
+  waveFlumeLayout->addWidget(dimensionsBox,numRow++,0,2,5);
+  numRow++; // Adjust for groupbox title
+  waveFlumeLayout->addWidget(new QLabel("Source Bathymetry"),numRow,0);
+  waveFlumeLayout->itemAt(waveFlumeLayout->count()-1)->setAlignment(Qt::AlignRight);
+  waveFlumeLayout->addWidget(bathymetryComboBox,numRow++,1);
+  waveFlumeLayout->addWidget(bathStack,numRow++,0,1,2);
+  waveFlumeLayout->setRowStretch(numRow,1);
+
+  // connext bathymetry to show correct widget
+  connect(bathymetryComboBox, QOverload<int>::of(&QComboBox::activated),
+	  bathStack, &QStackedWidget::setCurrentIndex);
   //
   // connect the facility QComboBox to change entries to default values if selected
   //
   
   connect(facility, &QComboBox::currentTextChanged, [=](QString val) {
-    if (val == "Hinsdale Large Wave Flume (OSU LWF)") {
+    if (val == "Hinsdale Large Wave Flume - Oregon State University (OSU LWF)") {
       flumeLength->setText("104.0");
       flumeHeight->setText("4.6");
       flumeWidth->setText("3.658");
-    } else if (val == "Hinsdale Directional Wave Basin (OSU DWB)") {
+      // dataBathXZ << "0" << "0" << "35" << "0" << "42" << "1.75" << "56" << "2.5" << "105" << "2.5";
+    } else if (val == "Hinsdale Directional Wave Basin - Oregon State University (OSU DWB)") {
       flumeLength->setText("48.8");
       flumeHeight->setText("26.5");
       flumeWidth->setText("2.1");
-    } else if (val == "Wind-Air-Sea Interaction Facility (UW WASIRF)") {
+      // dataBathXZ << "0" << "0" << "11" << "0" << "31" << "2.0" << "45" << "2.0" << "45" << "0" << "48.8" << "0";
+    } else if (val == "Wind-Air-Sea Interaction Facility - University of Washington (UW WASIRF)") {
       flumeLength->setText("12.19");
       flumeHeight->setText("1.22");
       flumeWidth->setText("0.914");
-    } else if (val == "Waseda University's Tsunami Wave Basin (WU TWB)") {
+      // dataBathXZ << "0" << "0" << "12" << "0";
+    } else if (val == "Tsunami Wave Basin - Waseda University (WU TWB)") {
       flumeLength->setText("9.0");
       flumeHeight->setText("1.0");
       flumeWidth->setText("4.0");
-    } else if (val == "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)") {
+      // dataBathXZ << "0" << "0" << "3.95" << "0" << "3.95" << "0.255" << "9.0" << "0.255";
+    } else if (val == "Debris Flow Flume - U.S. Geological Survey (USGS DFF)") {
       flumeLength->setText("90.0");
       flumeHeight->setText("2.0");
       flumeWidth->setText("2.0");
@@ -186,104 +232,147 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
 
   // wave generator
   
-  QGridLayout *paddleLayout = new QGridLayout();
-  theWaveGeneration->setLayout(paddleLayout);
+  QGridLayout *theWaveGenLayout = new QGridLayout();
+  theWaveGeneration->setLayout(theWaveGenLayout);
 
   numRow = 0;
-  QStringList listWaveGeneration; listWaveGeneration << "Preset Paddle Motion";
-  
+  QStringList listWaveGeneration; listWaveGeneration << "Preset Paddle - OSU LWF" << "Periodic Waves - Custom" << "Preset Paddle - OSU DWB" << "Paddle - Custom" << "Preset Wave Pump - UW WASIRF"  <<  "Pump - Custom" << "Preset Vanishing Gate - WU TWB" << "Preset Swinging Gates - USGS DFF" << "Gate - Custom";
   generationMethod = new SC_ComboBox("generationMethod",listWaveGeneration);
-  paddleLayout->addWidget(new QLabel("Generation Method"),numRow,0);
-  paddleLayout->addWidget(generationMethod,numRow++,1);
 
-  numRow = 1;
-  paddleLength = new SC_DoubleLineEdit("paddleLength",0.2);
-  paddleLayout->addWidget(new QLabel("Paddle Length (X)"),numRow, 0);
-  paddleLayout->addWidget(paddleLength,numRow,1);
-  paddleLayout->addWidget(new QLabel("m"),numRow++, 2);  
-
-  paddleHeight = new SC_DoubleLineEdit("paddleHeight",4.0);
-  paddleLayout->addWidget(new QLabel("Paddle Height (Y)"),numRow, 0);
-  paddleLayout->addWidget(paddleHeight,numRow,1);
-  paddleLayout->addWidget(new QLabel("m"),numRow++, 2);
-
-  paddleWidth = new SC_DoubleLineEdit("paddleWidth",4.0);
-  paddleLayout->addWidget(new QLabel("Paddle Width (Z)"),numRow, 0);
-  paddleLayout->addWidget(paddleWidth,numRow,1);
-  paddleLayout->addWidget(new QLabel("m"),numRow++, 2);
-
-  numRow = 1;
-  paddleLength = new SC_DoubleLineEdit("paddleOriginX",0.0);
-  paddleLayout->addWidget(new QLabel("Origin (X)"),numRow, 3);
-  paddleLayout->addWidget(paddleLength,numRow,4);
-  paddleLayout->addWidget(new QLabel("m"),numRow++, 5);  
-
-  paddleHeight = new SC_DoubleLineEdit("paddleOriginY",0.0);
-  paddleLayout->addWidget(new QLabel("Origin (Y)"),numRow, 3);
-  paddleLayout->addWidget(paddleHeight,numRow,4);
-  paddleLayout->addWidget(new QLabel("m"),numRow++, 5);    
-
-  paddleWidth = new SC_DoubleLineEdit("paddleOriginZ",0.0);
-  paddleLayout->addWidget(new QLabel("Origin (Z)"),numRow, 3);
-  paddleLayout->addWidget(paddleWidth,numRow,4);
-  paddleLayout->addWidget(new QLabel("m"),numRow++, 5);
-
-
-  QStringList paddleContactTypeList; paddleContactTypeList << "Sticky" << "Slip" << "Separable";  
+  QStringList paddleContactTypeList; paddleContactTypeList <<  "Separable" << "Slip" << "Sticky";  
   paddleContactType = new SC_ComboBox("paddleContactType", paddleContactTypeList);
-  paddleLayout->addWidget(new QLabel("ContactType"),numRow, 0);
+
+  QWidget *paddleWidget = new QWidget();
+  QGridLayout *paddleLayout = new QGridLayout();
+  paddleLayout->addWidget(new QLabel("Contact Type"),numRow, 0);
+  paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
   paddleLayout->addWidget(paddleContactType, numRow++, 1);  
   
+  paddleLength = new SC_DoubleLineEdit("paddleLength",0.2);
+  paddleHeight = new SC_DoubleLineEdit("paddleHeight",4.0);
+  paddleWidth  = new SC_DoubleLineEdit("paddleWidth",4.0);
+  paddleLayout->addWidget(new QLabel("Paddle Dimensions (X,Y,Z)"),numRow, 0);
+  paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
+  paddleLayout->addWidget(paddleLength,numRow,1);
+  paddleLayout->addWidget(paddleHeight,numRow,2);
+  paddleLayout->addWidget(paddleWidth,numRow, 3);
+  paddleLayout->addWidget(new QLabel("m"),numRow++, 4);
+
+
+  paddleOriginX = new SC_DoubleLineEdit("paddleOriginX",0.0);
+  paddleOriginY = new SC_DoubleLineEdit("paddleOriginY",0.0);
+  paddleOriginZ = new SC_DoubleLineEdit("paddleOriginZ",0.0);
+  paddleLayout->addWidget(new QLabel("Paddle Origin (X,Y,Z)"),numRow, 0);
+  paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
+  paddleLayout->addWidget(paddleOriginX,numRow,1);
+  paddleLayout->addWidget(paddleOriginY,numRow,2);
+  paddleLayout->addWidget(paddleOriginZ,numRow,3);
+  paddleLayout->addWidget(new QLabel("m"),numRow++, 4);
+
+
+
   paddleDisplacementFile = new SC_FileEdit("paddleDisplacementFile");
-  paddleLayout->addWidget(new QLabel("Paddle Displacmenet File"),numRow, 0);
-  paddleLayout->addWidget(paddleDisplacementFile,numRow++, 1, 1, 5);  
+  paddleLayout->addWidget(new QLabel("Paddle Displacement File"), numRow, 0);
+  paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
+  paddleLayout->addWidget(paddleDisplacementFile, numRow++, 1, 1, 4);  
+  paddleLayout->setRowStretch(numRow,1);  
   
+  paddleWidget = new QWidget();
+  paddleWidget->setLayout(paddleLayout);
+ 
+  // Periodic Waves
+  waveMag = new SC_DoubleLineEdit("waveMag",0.5);
+  waveCelerity = new SC_DoubleLineEdit("waveCelerity",4.0);
+  waveRepeatSpeed = new SC_DoubleLineEdit("waveRepeatSpeed",10.0);
+  QWidget *periodicWidget = new QWidget();
+  QGridLayout *periodicLayout = new QGridLayout();  
+  periodicWidget->setLayout(periodicLayout);
+  periodicLayout->addWidget(new QLabel("Wave Height"),0,0);
+  periodicLayout->itemAt(periodicLayout->count()-1)->setAlignment(Qt::AlignRight);
+  periodicLayout->addWidget(new QLabel("Wave Celerity"),1,0);
+  periodicLayout->itemAt(periodicLayout->count()-1)->setAlignment(Qt::AlignRight);
+  periodicLayout->addWidget(new QLabel("Wave Period"),2,0);
+  periodicLayout->itemAt(periodicLayout->count()-1)->setAlignment(Qt::AlignRight);
+  periodicLayout->addWidget(waveMag,0,1);
+  periodicLayout->addWidget(waveCelerity,1,1);
+  periodicLayout->addWidget(waveRepeatSpeed,2,1);
+  periodicLayout->addWidget(new QLabel("meters"),0,2);
+  periodicLayout->addWidget(new QLabel("meters/sec"),1,2);
+  periodicLayout->addWidget(new QLabel("sec."),2,2);
+  periodicLayout->setRowStretch(3,1);
+
+  QStackedWidget *waveGenStack = new QStackedWidget();
+  waveGenStack->addWidget(paddleWidget);
+  waveGenStack->addWidget(periodicWidget); 
+
+
+  connect(generationMethod, QOverload<int>::of(&QComboBox::activated),
+    waveGenStack, &QStackedWidget::setCurrentIndex);
+
+  numRow = 0;
+  theWaveGenLayout->addWidget(new QLabel("Wave Generation Method"),numRow,0);
+  theWaveGenLayout->itemAt(theWaveGenLayout->count()-1)->setAlignment(Qt::AlignRight);
+  theWaveGenLayout->addWidget(generationMethod,numRow++,1);
+  theWaveGenLayout->addWidget(waveGenStack,numRow++,0,1,2);
+  theWaveGenLayout->setRowStretch(numRow,1);
+
 
   // Rigid Structures
   QGridLayout *structLayout = new QGridLayout();
   theStructures->setLayout(structLayout);
 
   numRow = 0;
+
+  QStringList listObject; listObject << "Orange Box - OSU LWF" << "Grey Box - UW WASIRF" << "Square Columns - WU TWB" << "Rectangular Prism" << "Cylinder" << "Wedge" << "Custom";  
+  structObjectType = new SC_ComboBox("structObjectType",listObject);
+  structLayout->addWidget(new QLabel("Object Type"),numRow,0);
+  structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
+  structLayout->addWidget(structObjectType,numRow++,1);
+
   QStringList listContact; listContact << "Sticky" << "Slip" << "Separable";  
-  
   structContactType = new SC_ComboBox("structContactType",listContact);
   structLayout->addWidget(new QLabel("Contact Type"),numRow,0);
+  structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
   structLayout->addWidget(structContactType,numRow++,1);
 
-  numRow = 1;
+  autoCreateLoadCells = new SC_CheckBox("autoCreateLoadCells");
+  autoCreateLoadCells->setChecked(true);
+  structLayout->addWidget(new QLabel("Auto-Create Load-Cells (Sensors)?"),numRow, 0);
+  structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
+  structLayout->addWidget(autoCreateLoadCells,numRow++, 1);
+
+  QStringList faceList; faceList << "X-" << "X+" << "Y-" << "Y+" << "Z-" << "Z+";
+  loadCellFace = new SC_ComboBox("loadCellFace", faceList);
+  structLayout->addWidget(new QLabel("Load-Cell on Face"),numRow,0);
+  structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
+  structLayout->addWidget(loadCellFace,numRow++,1);
+
+  // numRow = 2;
   structLength = new SC_DoubleLineEdit("structLength",1.016);
-  structLayout->addWidget(new QLabel("Structure Length (X)"),numRow, 0);
-  structLayout->addWidget(structLength,numRow,1);
-  structLayout->addWidget(new QLabel("m"),numRow++, 2);  
-
   structHeight = new SC_DoubleLineEdit("structHeight",0.625);
-  structLayout->addWidget(new QLabel("Structure Height (Y)"),numRow, 0);
-  structLayout->addWidget(structHeight,numRow,1);
-  structLayout->addWidget(new QLabel("m"),numRow++, 2);
-
   structWidth = new SC_DoubleLineEdit("structWidth",1.016);
-  structLayout->addWidget(new QLabel("Structure Width (Z)"),numRow, 0);
-  structLayout->addWidget(structWidth,numRow,1);
-  structLayout->addWidget(new QLabel("m"),numRow++, 2);
+  structLayout->addWidget(new QLabel("Dimensions (X,Y,Z)"),numRow, 0);
+  structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
+  structLayout->addWidget(structLength,numRow,1);
+  structLayout->addWidget(structHeight,numRow,2);
+  structLayout->addWidget(structWidth,numRow,3);
+  structLayout->addWidget(new QLabel("m"),numRow++, 4);
 
-  numRow = 1;
   structOriginLength = new SC_DoubleLineEdit("structOriginX",45.8);
-  structLayout->addWidget(new QLabel("Structure Origin (X)"),numRow, 3);
-  structLayout->addWidget(structOriginLength,numRow,4);
-  structLayout->addWidget(new QLabel("m"),numRow++, 5);  
-
   structOriginHeight = new SC_DoubleLineEdit("structOriginY",2.0);
-  structLayout->addWidget(new QLabel("Structure Origin (Y)"),numRow, 3);
-  structLayout->addWidget(structOriginHeight,numRow,4);
-  structLayout->addWidget(new QLabel("m"),numRow++, 5);    
-
   structOriginWidth = new SC_DoubleLineEdit("structOriginZ",1.325);
-  structLayout->addWidget(new QLabel("Structure Origin (Z)"),numRow, 3);
-  structLayout->addWidget(structOriginWidth,numRow,4);
-  structLayout->addWidget(new QLabel("m"),numRow++, 5);
+  structLayout->addWidget(new QLabel("Origin (X,Y,Z)"),numRow, 0);
+  structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
+  structLayout->addWidget(structOriginLength,numRow,1);
+  structLayout->addWidget(structOriginHeight,numRow,2);
+  structLayout->addWidget(structOriginWidth,numRow,3);
+  structLayout->addWidget(new QLabel("m"),numRow++, 4);
+
 
   structApplyCoulombFriction = new SC_CheckBox("structApplyCoulombFriction");
-  structLayout->addWidget(new QLabel("Apply Coulomb Fruction?"),numRow, 0);  
+  structApplyCoulombFriction->setChecked(true);
+  structLayout->addWidget(new QLabel("Apply Coulomb Friction?"),numRow, 0);  
+  structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
   structLayout->addWidget(structApplyCoulombFriction,numRow++, 1);
   
   QGroupBox *structFrictionBox = new QGroupBox("");
@@ -291,113 +380,260 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   structFrictionBox->setLayout(structFrictionBoxLayout);
   numRow = 0;
   
+  
   structStaticFrictionWallX = new SC_DoubleLineEdit("structStaticFrictionWallX",0.0);
-  structFrictionBoxLayout->addWidget(new QLabel("Static Friction on Structure (X)"),numRow, 0);
+  structStaticFrictionWallY = new SC_DoubleLineEdit("structStaticFrictionWallY",0.0);
+  structStaticFrictionWallZ = new SC_DoubleLineEdit("structStaticFrictionWallZ",0.0);
+  structFrictionBoxLayout->addWidget(new QLabel("Static Friction on Faces (X,Y,Z)"),numRow, 0);
+  structFrictionBoxLayout->itemAt(structFrictionBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   structFrictionBoxLayout->addWidget(structStaticFrictionWallX,numRow,1);
+  structFrictionBoxLayout->addWidget(structStaticFrictionWallY,numRow,2);
+  structFrictionBoxLayout->addWidget(structStaticFrictionWallZ,numRow,3);
+  structFrictionBoxLayout->addWidget(new QLabel("Coef."),numRow++, 4);
 
   structDynamicFrictionWallX = new SC_DoubleLineEdit("structDynamicFrictionWallX",0.0);
-  structFrictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Structure (X)"),numRow, 3);
-  structFrictionBoxLayout->addWidget(structDynamicFrictionWallX,numRow++,4);  
-
-  structStaticFrictionFloor = new SC_DoubleLineEdit("structStaticFrictionFloor",0.0);
-  structFrictionBoxLayout->addWidget(new QLabel("Static Friction on Structure (Y)"),numRow, 0);
-  structFrictionBoxLayout->addWidget(structStaticFrictionFloor,numRow,1);
-
-  structDynamicFrictionFloor = new SC_DoubleLineEdit("structDynamicFrictionFloor",0.0);
-  structFrictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Structure (Y)"),numRow, 3);
-  structFrictionBoxLayout->addWidget(structDynamicFrictionFloor,numRow++,4);  
-  
-  structStaticFrictionWallZ = new SC_DoubleLineEdit("structStaticFrictionWallZ",0.0);
-  structFrictionBoxLayout->addWidget(new QLabel("Static Friction on Structure (Z)"),numRow, 0);
-  structFrictionBoxLayout->addWidget(staticFrictionWallZ,numRow,1);
-
+  structDynamicFrictionWallY = new SC_DoubleLineEdit("structDynamicFrictionWallY",0.0);
   structDynamicFrictionWallZ = new SC_DoubleLineEdit("structDynamicFrictionWallZ",0.0);
-  structFrictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Structure (Z)"),numRow, 3);
-  structFrictionBoxLayout->addWidget(structDynamicFrictionWallZ,numRow++,4);  
+  structFrictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Faces (X,Y,Z)"),numRow, 0);
+  structFrictionBoxLayout->itemAt(structFrictionBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
+  structFrictionBoxLayout->addWidget(structDynamicFrictionWallX,numRow,1);  
+  structFrictionBoxLayout->addWidget(structDynamicFrictionWallY,numRow,2);  
+  structFrictionBoxLayout->addWidget(structDynamicFrictionWallZ,numRow,3);  
+  structFrictionBoxLayout->addWidget(new QLabel("Coef."),numRow++, 4);
+  structFrictionBoxLayout->setRowStretch(numRow,1);
 
-  numRow = 5;
-  structLayout->addWidget(structFrictionBox, numRow, 0, 3, 4);
-  
+  numRow = 7+1;
+  structLayout->addWidget(structFrictionBox, numRow++, 0, 2, 5);
+
+  numRow += 1; // Adjust for groupbox
+
+  applyArray = new SC_CheckBox("applyArray");
+  applyArray->setChecked(true);
+  structLayout->addWidget(new QLabel("Make an Array?"),numRow, 0);
+  structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
+  structLayout->addWidget(applyArray,numRow++, 1);
+
+  // numRow = 0;
+  QGroupBox *structArrayBox = new QGroupBox("");
+  QGridLayout *structArrayBoxLayout = new QGridLayout();
+  structArrayBox->setLayout(structArrayBoxLayout);
+  int numStructArrayRow = 0;
+  structArrayX  = new SC_IntLineEdit("structArrayX",1);
+  structArrayY  = new SC_IntLineEdit("structArrayY",1);
+  structArrayZ  = new SC_IntLineEdit("structArrayZ",1);
+  structSpacingX = new SC_DoubleLineEdit("structSpacingX",0.0);
+  structSpacingY = new SC_DoubleLineEdit("structSpacingY",0.0);
+  structSpacingZ = new SC_DoubleLineEdit("structSpacingZ",0.0);
+  structArrayBoxLayout->addWidget(new QLabel("Array of Objects (nX, nY, nZ)"),numStructArrayRow, 0);
+  structArrayBoxLayout->itemAt(structArrayBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
+  structArrayBoxLayout->addWidget(structArrayX,numStructArrayRow,1);
+  structArrayBoxLayout->addWidget(structArrayY,numStructArrayRow,2);
+  structArrayBoxLayout->addWidget(structArrayZ,numStructArrayRow,3);
+  structArrayBoxLayout->addWidget(new QLabel("#"),numStructArrayRow++, 4);
+  structArrayBoxLayout->addWidget(new QLabel("Spacing of Objects (X,Y,Z)"),numStructArrayRow, 0);
+  structArrayBoxLayout->itemAt(structArrayBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
+  structArrayBoxLayout->addWidget(structSpacingX,numStructArrayRow,1);
+  structArrayBoxLayout->addWidget(structSpacingY,numStructArrayRow,2);
+  structArrayBoxLayout->addWidget(structSpacingZ,numStructArrayRow,3);
+  structArrayBoxLayout->addWidget(new QLabel("m"),numStructArrayRow++, 4);
+  structArrayBoxLayout->setRowStretch(numStructArrayRow,1);
+
+  // numRow = 10;
+  structLayout->addWidget(structArrayBox, numRow++, 0, 2, 5);
+  // numRow += 2; // Adjust for groupbox
+
+  structLayout->setRowStretch(numRow+1,1);
+
+  // structLayout->setRowStretch(numRow,1);
+
+  connect(structApplyCoulombFriction, &QCheckBox::stateChanged, [=](int state) {
+    if (state == Qt::Checked) {
+      structFrictionBox->setVisible(true);
+    } else {
+      structFrictionBox->setVisible(false);
+    }
+  });
+
+  connect(applyArray, &QCheckBox::stateChanged, [=](int state) {
+    if (state == Qt::Checked) {
+      structArrayBox->setVisible(true);
+    } else {
+      structArrayBox->setVisible(false);
+    }
+  });
+
+
   // -----
   // Walls
   QGridLayout *wallsLayout = new QGridLayout();
   theWalls->setLayout(wallsLayout);
 
   numRow = 0;
-  // QStringList listContact; listContact << "Sticky" << "Slip" << "Separable";  
+  QStringList wallListContact; wallListContact << "Separable" << "Slip" << "Sticky";  
   
   wallsContactType = new SC_ComboBox("wallContactType",listContact);
   wallsLayout->addWidget(new QLabel("Contact Type"),numRow,0);
+  wallsLayout->itemAt(wallsLayout->count()-1)->setAlignment(Qt::AlignRight);
   wallsLayout->addWidget(wallsContactType,numRow++,1);
 
-  numRow = 1;
-  wallsLength = new SC_DoubleLineEdit("wallsLength",89.0);
-  wallsLayout->addWidget(new QLabel("Length (X)"),numRow, 0);
+  wallsLength = new SC_DoubleLineEdit("wallsLength",90.0);
+  wallsHeight = new SC_DoubleLineEdit("wallsHeight",4.5);
+  wallsWidth = new SC_DoubleLineEdit("wallsWidth",3.65);
+  wallsLayout->addWidget(new QLabel("Dimensions (X,Y,Z)"),numRow, 0);
+  wallsLayout->itemAt(wallsLayout->count()-1)->setAlignment(Qt::AlignRight);
   wallsLayout->addWidget(wallsLength,numRow,1);
-  wallsLayout->addWidget(new QLabel("m"),numRow++, 2);  
+  wallsLayout->addWidget(wallsHeight,numRow,2);
+  wallsLayout->addWidget(wallsWidth,numRow,3);
+  wallsLayout->addWidget(new QLabel("m"),numRow++, 4);
 
-  wallsHeight = new SC_DoubleLineEdit("wallsHeight",89.0);
-  wallsLayout->addWidget(new QLabel("Height (Y)"),numRow, 0);
-  wallsLayout->addWidget(wallsHeight,numRow,1);
-  wallsLayout->addWidget(new QLabel("m"),numRow++, 2);
-
-  wallsWidth = new SC_DoubleLineEdit("wallsWidth",89.0);
-  wallsLayout->addWidget(new QLabel("Width (Z)"),numRow, 0);
-  wallsLayout->addWidget(wallsWidth,numRow,1);
-  wallsLayout->addWidget(new QLabel("m"),numRow++, 2);
-
-  numRow = 1;
   originLength = new SC_DoubleLineEdit("wallsOriginX",0.0);
-  wallsLayout->addWidget(new QLabel("Origin (X)"),numRow, 3);
-  wallsLayout->addWidget(originLength,numRow,4);
-  wallsLayout->addWidget(new QLabel("m"),numRow++, 5);  
-
   originHeight = new SC_DoubleLineEdit("wallsOriginY",0.0);
-  wallsLayout->addWidget(new QLabel("Origin (Y)"),numRow, 3);
-  wallsLayout->addWidget(originHeight,numRow,4);
-  wallsLayout->addWidget(new QLabel("m"),numRow++, 5);    
-
   originWidth = new SC_DoubleLineEdit("wallsOriginZ",0.0);
-  wallsLayout->addWidget(new QLabel("Origin (Z)"),numRow, 3);
-  wallsLayout->addWidget(originWidth,numRow,4);
-  wallsLayout->addWidget(new QLabel("m"),numRow++, 5);
+  wallsLayout->addWidget(new QLabel("Origin (X,Y,Z)"),numRow, 0);
+  wallsLayout->itemAt(wallsLayout->count()-1)->setAlignment(Qt::AlignRight);
+  wallsLayout->addWidget(originLength,numRow,1);
+  wallsLayout->addWidget(originHeight,numRow,2);
+  wallsLayout->addWidget(originWidth,numRow,3);
+  wallsLayout->addWidget(new QLabel("m"),numRow++, 4);
 
   applyCoulombFriction = new SC_CheckBox("applyCoulombFriction");
-  wallsLayout->addWidget(new QLabel("Apply Coulomb Fruction?"),numRow, 0);  
+  applyCoulombFriction->setChecked(true);
+  wallsLayout->addWidget(new QLabel("Apply Coulomb Friction?"),numRow, 0);  
+  wallsLayout->itemAt(wallsLayout->count()-1)->setAlignment(Qt::AlignRight);
   wallsLayout->addWidget(applyCoulombFriction,numRow++, 1);
+  
+
   
   QGroupBox *frictionBox = new QGroupBox("");
   QGridLayout *frictionBoxLayout = new QGridLayout();
   frictionBox->setLayout(frictionBoxLayout);
-  numRow = 0;
-  
+  int numFrictionRow = 0;
   staticFrictionWallX = new SC_DoubleLineEdit("staticFrictionWallX",0.0);
-  frictionBoxLayout->addWidget(new QLabel("Static Friction on Wall (X)"),numRow, 0);
-  frictionBoxLayout->addWidget(staticFrictionWallX,numRow,1);
+  staticFrictionWallY = new SC_DoubleLineEdit("staticFrictionWallY",0.0);
+  staticFrictionWallZ = new SC_DoubleLineEdit("staticFrictionWallZ",0.0);
+  frictionBoxLayout->addWidget(new QLabel("Static Friction on Walls (X,Y,Z)"),numFrictionRow, 0);
+  frictionBoxLayout->itemAt(frictionBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
+  frictionBoxLayout->addWidget(staticFrictionWallX,numFrictionRow,1);
+  frictionBoxLayout->addWidget(staticFrictionWallY,numFrictionRow,2);
+  frictionBoxLayout->addWidget(staticFrictionWallZ,numFrictionRow,3);
+  frictionBoxLayout->addWidget(new QLabel("Coef."),numFrictionRow++, 4);
 
   dynamicFrictionWallX = new SC_DoubleLineEdit("dynamicFrictionWallX",0.0);
-  frictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Wall (X)"),numRow, 3);
-  frictionBoxLayout->addWidget(dynamicFrictionWallX,numRow++,4);  
-
-  staticFrictionFloor = new SC_DoubleLineEdit("staticFrictionFloor",0.0);
-  frictionBoxLayout->addWidget(new QLabel("Static Friction on Floor (Y)"),numRow, 0);
-  frictionBoxLayout->addWidget(staticFrictionFloor,numRow,1);
-
-  dynamicFrictionFloor = new SC_DoubleLineEdit("dynamicFrictionFloor",0.0);
-  frictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Floor (Y)"),numRow, 3);
-  frictionBoxLayout->addWidget(dynamicFrictionFloor,numRow++,4);  
-  
-  staticFrictionWallZ = new SC_DoubleLineEdit("staticFrictionWallZ",0.0);
-  frictionBoxLayout->addWidget(new QLabel("Static Friction on Wall (Z)"),numRow, 0);
-  frictionBoxLayout->addWidget(staticFrictionWallZ,numRow,1);
-
+  dynamicFrictionWallY = new SC_DoubleLineEdit("dynamicFrictionWallY",0.0);
   dynamicFrictionWallZ = new SC_DoubleLineEdit("dynamicFrictionWallZ",0.0);
-  frictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Wall (Z)"),numRow, 3);
-  frictionBoxLayout->addWidget(dynamicFrictionWallZ,numRow++,4);  
+  frictionBoxLayout->addWidget(new QLabel("Dynamic Friction on Walls (X,Y,Z)"),numFrictionRow, 0);
+  frictionBoxLayout->itemAt(frictionBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
+  frictionBoxLayout->addWidget(dynamicFrictionWallX,numFrictionRow,1);  
+  frictionBoxLayout->addWidget(dynamicFrictionWallY,numFrictionRow,2);  
+  frictionBoxLayout->addWidget(dynamicFrictionWallZ,numFrictionRow,3);  
+  frictionBoxLayout->addWidget(new QLabel("Coef."),numFrictionRow++, 4);
+  frictionBoxLayout->setRowStretch(numFrictionRow,1);
 
-  numRow = 5;
-  wallsLayout->addWidget(frictionBox, numRow, 0, 3, 4);
-  
+  wallsLayout->addWidget(frictionBox, numRow, 0, numFrictionRow, 5);
+  numRow += numFrictionRow;
+
+  // Inlet/Outlet
+  applyInletOutlet = new SC_CheckBox("applyInletOutlet");
+  applyInletOutlet->setChecked(true);
+  wallsLayout->addWidget(new QLabel("Apply Inlet/Outlet?"),numRow, 0);
+  wallsLayout->itemAt(wallsLayout->count()-1)->setAlignment(Qt::AlignRight);
+  wallsLayout->addWidget(applyInletOutlet,numRow++, 1);
+
+
+  QGroupBox *inletOutletBox = new QGroupBox("");
+  QGridLayout *inletOutletBoxLayout = new QGridLayout();
+  inletOutletBox->setLayout(inletOutletBoxLayout);
+  int numInOutRow = 0;
+  QStringList inletOutletList; inletOutletList << "None" << "Inlet - Laminar" << "Inlet - Turbulent" << "Inlet - OpenFOAM" << "Inlet - Boussinesq" << "Inlet - GeoClaw" << "Inlet - SWE File" << "Outlet - Laminar" << "Outlet - Turbulent" << "Outlet - OpenFOAM" << "Outlet - Boussinesq" << "Outlet - GeoClaw" << "Outlet - SWE File";
+  inletOutletTypeSubX = new SC_ComboBox("inletOutletTypeSubX",inletOutletList);
+  inletOutletTypeSubY = new SC_ComboBox("inletOutletTypeSubY",inletOutletList);
+  inletOutletTypeSubZ = new SC_ComboBox("inletOutletTypeSubZ",inletOutletList);
+  inletOutletTypePlusX = new SC_ComboBox("inletOutletTypePlusX",inletOutletList);
+  inletOutletTypePlusY = new SC_ComboBox("inletOutletTypePlusY",inletOutletList);
+  inletOutletTypePlusZ = new SC_ComboBox("inletOutletTypePlusZ",inletOutletList);
+  inletOutletBoxLayout->addWidget(new QLabel("Inlet-Outlet at (-X,-Y,-Z) Walls"),numInOutRow, 0);
+  inletOutletBoxLayout->itemAt(inletOutletBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
+  inletOutletBoxLayout->addWidget(inletOutletTypeSubX,numInOutRow,1);
+  inletOutletBoxLayout->addWidget(inletOutletTypeSubY,numInOutRow,2);
+  inletOutletBoxLayout->addWidget(inletOutletTypeSubZ,numInOutRow++,3);
+  inletOutletBoxLayout->addWidget(new QLabel("Inlet-Outlet at (+X,+Y,+Z) Walls"),numInOutRow, 0);
+  inletOutletBoxLayout->itemAt(inletOutletBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
+  inletOutletBoxLayout->addWidget(inletOutletTypePlusX,numInOutRow,1);
+  inletOutletBoxLayout->addWidget(inletOutletTypePlusY,numInOutRow,2);
+  inletOutletBoxLayout->addWidget(inletOutletTypePlusZ,numInOutRow++,3);
+  inletOutletBoxLayout->setRowStretch(numInOutRow,1);
+  // numRow = numRow+1;  
+  wallsLayout->addWidget(inletOutletBox, numRow+numInOutRow, 0, 2, 4);
+  numRow += numInOutRow;
+  // numRow += 4;
+  wallsLayout->setRowStretch(numRow+2, 1);
+
+  connect(applyCoulombFriction, &QCheckBox::stateChanged, [=](int state) {
+    if (state == Qt::Checked) {
+      staticFrictionWallX->setEnabled(true);
+      staticFrictionWallY->setEnabled(true);
+      staticFrictionWallZ->setEnabled(true);
+      dynamicFrictionWallX->setEnabled(true);
+      dynamicFrictionWallY->setEnabled(true);
+      dynamicFrictionWallZ->setEnabled(true);
+      staticFrictionWallX->setVisible(true);
+      staticFrictionWallY->setVisible(true);
+      staticFrictionWallZ->setVisible(true);
+      dynamicFrictionWallX->setVisible(true);
+      dynamicFrictionWallY->setVisible(true);
+      dynamicFrictionWallZ->setVisible(true);
+      frictionBox->setVisible(true);
+    } else {
+      staticFrictionWallX->setEnabled(false);
+      staticFrictionWallY->setEnabled(false);
+      staticFrictionWallZ->setEnabled(false);
+      dynamicFrictionWallX->setEnabled(false);
+      dynamicFrictionWallY->setEnabled(false);
+      dynamicFrictionWallZ->setEnabled(false);
+      staticFrictionWallX->setVisible(false);
+      staticFrictionWallY->setVisible(false);
+      staticFrictionWallZ->setVisible(false);
+      dynamicFrictionWallX->setVisible(false);
+      dynamicFrictionWallY->setVisible(false);
+      dynamicFrictionWallZ->setVisible(false);
+      frictionBox->setVisible(false);
+    }
+  });
+
+
+  connect(applyInletOutlet, &QCheckBox::stateChanged, [=](int state) {
+    if (state == Qt::Checked) {
+      inletOutletTypeSubX->setEnabled(true);
+      inletOutletTypeSubY->setEnabled(true);
+      inletOutletTypeSubZ->setEnabled(true);
+      inletOutletTypePlusX->setEnabled(true);
+      inletOutletTypePlusY->setEnabled(true);
+      inletOutletTypePlusZ->setEnabled(true);
+      inletOutletTypeSubX->setVisible(true);
+      inletOutletTypeSubY->setVisible(true);
+      inletOutletTypeSubZ->setVisible(true);
+      inletOutletTypePlusX->setVisible(true);
+      inletOutletTypePlusY->setVisible(true);
+      inletOutletTypePlusZ->setVisible(true);
+      inletOutletBox->setVisible(true);
+    } else {
+      inletOutletTypeSubX->setEnabled(false);
+      inletOutletTypeSubY->setEnabled(false);
+      inletOutletTypeSubZ->setEnabled(false);
+      inletOutletTypePlusX->setEnabled(false);
+      inletOutletTypePlusY->setEnabled(false);
+      inletOutletTypePlusZ->setEnabled(false);
+      inletOutletTypeSubX->setVisible(false);
+      inletOutletTypeSubY->setVisible(false);
+      inletOutletTypeSubZ->setVisible(false);
+      inletOutletTypePlusX->setVisible(false);
+      inletOutletTypePlusY->setVisible(false);
+      inletOutletTypePlusZ->setVisible(false);
+      inletOutletBox->setVisible(false);
+    }
+  });
+
+
   // wallsLayout->setRowStretch(numRow,1);
 
   /*
@@ -497,12 +733,22 @@ BoundariesMPM::~BoundariesMPM()
 bool
 BoundariesMPM::outputToJSON(QJsonObject &jsonObject)
 {
+  //  jsonObject["domainSubType"]=facility->currentText();
+  bathSTL->outputToJSON(jsonObject);
+  paddleDisplacementFile->outputToJSON(jsonObject);
   return true;
 }
 
 bool
 BoundariesMPM::inputFromJSON(QJsonObject &jsonObject)
 {
+  // if (jsonObject.contains("domainSubType")) {
+  //   QJsonValue theValue = jsonObject["domainSubType"];
+  //   QString valueString = theValue.toString();
+  //   facility->setCurrentText(valueString);
+  // }
+  bathSTL->inputFromJSON(jsonObject);
+  paddleDisplacementFile->inputFromJSON(jsonObject);
   return true;
 }
 
@@ -511,9 +757,10 @@ bool
 BoundariesMPM::copyFiles(QString &destDir)
 {
   //  velFile->copyFile(destDir);  
-  //  bathSTL->copyFile(destDir);
-  //  paddleDisplacementFile->copyFile(destDir);    
-  
-  return true;
+  bathSTL->copyFile(destDir);
+  // return true;
+  if (paddleDisplacementFile->copyFile(destDir) != true)
+    return false;
+  return paddleDisplacementFile->copyFile(destDir);    
 }
 

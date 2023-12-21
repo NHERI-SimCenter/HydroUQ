@@ -44,7 +44,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the Settings Tab for the CoupledDigitalTwin
+ *  This is the class providing the Settings Tab for the MPM application
  */
 
 #include <SimCenterWidget.h>
@@ -52,7 +52,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 class QJsonObject;
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
+class SC_StringLineEdit;
 class SC_CheckBox;
+class SC_ComboBox;
 
 class SettingsMPM : public SimCenterWidget
 {
@@ -65,24 +67,43 @@ public:
 signals:
 
 private:
-
-  SC_DoubleLineEdit *domainSizeX;
-  SC_DoubleLineEdit *domainSizeY;
+  // domain settings
+  SC_DoubleLineEdit *domainSizeX; // MPM background grid absolute max domain size
+  SC_DoubleLineEdit *domainSizeY; 
   SC_DoubleLineEdit *domainSizeZ;  
+  SC_CheckBox       *mirrorDomainX; // Mirror X- domain over YZ plane  
+  SC_CheckBox       *mirrorDomainY; // Mirror Y- domain over XZ plane  
+  SC_CheckBox       *mirrorDomainZ; // Mirror Z- domain over XY plane 
+  SC_DoubleLineEdit *gridCellSize; // MPM background grid cell size 
   
-  SC_DoubleLineEdit *gridCellSize;  
-  SC_DoubleLineEdit *timeStep;
-  SC_DoubleLineEdit *duration;
-  SC_DoubleLineEdit *initialTime;  
-  SC_IntLineEdit    *framesPerSecond;
-  SC_CheckBox       *mirrorDomain;  
-  SC_DoubleLineEdit *gravity;
-  SC_DoubleLineEdit *lengthRatio;
-  SC_CheckBox       *froudeScaling;    
+  // time settings
+  SC_DoubleLineEdit *initialTime; // MPM simulation start time
+  SC_DoubleLineEdit *duration; // MPM simulation duration, [initialTime, initialTime + duration]
+  SC_DoubleLineEdit *timeStep; // MPM time step size 
+  SC_DoubleLineEdit *cflNumber; // Courant-Friedrichs-Lewy number (typically 0.5), dt = CFL * dx / v_max
+  SC_IntLineEdit    *framesPerSecond; // Number of frames per second for full animation output
+  SC_ComboBox       *timeIntegration; // Time integration scheme, e.g., Explicit, Semi-implicit, etc.
+  // external field settings
+  SC_DoubleLineEdit *gravityX; 
+  SC_DoubleLineEdit *gravityY;
+  SC_DoubleLineEdit *gravityZ;
 
-  SC_IntLineEdit *numGPUs;
-  SC_IntLineEdit *materialModelsPerGPU;  
+  // similitude scaling
+  SC_CheckBox       *froudeScaling; // apply Froude scaling to length, velocity
+  SC_CheckBox       *cauchyScaling; // apply Cauchy scaling to bulk modulus, stress, pressure
+  SC_DoubleLineEdit *froudeLengthRatio; // ratio of model length to prototype length
+  SC_DoubleLineEdit *froudeTimeRatio; // ratio of model length to prototype length
+  SC_DoubleLineEdit *cauchyBulkRatio; // ratio of model bulk modulus to prototype bulk modulus
 
+  // computational facility, CPU/GPU hardware, and precompiled ClaymoreUW software-hardware settings
+  SC_ComboBox *hpc; // High-performance computing facility 
+  SC_StringLineEdit *hpcCardBrand; // Ratio of double-precision to single-precision performance
+  SC_StringLineEdit *hpcCardName; // GPU name
+  SC_StringLineEdit *hpcCardArchitecture; // GPU architecture
+  SC_IntLineEdit *hpcCardGlobalMemory; // GPU global memory (GB)
+  SC_IntLineEdit *hpcCardComputeCapability; // GPU compute capability (sm_XY)
+  SC_IntLineEdit *numGPUs; // Number of GPUs to use
+  SC_IntLineEdit *modelsPerGPU; // Number of models to run per GPU
 };
 
 #endif // SETTINGS_DIGITAL_TWIN_H

@@ -66,18 +66,42 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     // Combobox for different simulation types
     eventSelection = new QComboBox();
     eventSelection->setObjectName("LoadingTypeCombox");
+    // methodSelection = new QComboBox();
+    // methodSelection->setObjectName("MethodTypeCombox");
 
     // Load the different event types
-    eventSelection->addItem(tr("General"));
-    eventSelection->addItem(tr("Digital twin"));
-    eventSelection->addItem(tr("Coupled Digital Twin"));
-    eventSelection->addItem(tr("MPM"));        
+    eventSelection->addItem(tr("General Event (GeoClaw and OpenFOAM)"));
+    eventSelection->addItem(tr("Digital Twin (GeoClaw and OpenFOAM)"));
+    eventSelection->addItem(tr("Digital Twin (OpenFOAM and OpenSees)"));
+    eventSelection->addItem(tr("Digital Twin (MPM)"));        
+    eventSelection->addItem(tr("Digital Twin (SPH)"));        
 
     // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-    eventSelection->setItemData(0, "General event", Qt::ToolTipRole);
-    eventSelection->setItemData(1, "Digital twin", Qt::ToolTipRole);
-    eventSelection->setItemData(2, "MPM", Qt::ToolTipRole);    
+    eventSelection->setItemData(0, "Shallow-Water-Equations -> Finite-Volume-Method (GeoClaw -> OpenFOAM) [Multi-CPU]", Qt::ToolTipRole);
+    eventSelection->setItemData(1, "Shallow-Water-Equations -> Finite-Volume-Method -> Finite-Element-Analysis (GeoClaw -> OpenFOAM -> OpenSees) [Multi-CPU]", Qt::ToolTipRole);
+    eventSelection->setItemData(2, "Finite-Volume-Method <-> Finite-Element-Analysis (OpenFOAM <-> OpenSees) [Multi-CPU]", Qt::ToolTipRole);
+    eventSelection->setItemData(3, "Material-Point-Method (ClaymoreUW) [Multi-GPU]", Qt::ToolTipRole);    
+    eventSelection->setItemData(4, "Smoothed-Particle-Hydrodynamics (DualSPHysics) [CPU, GPU]", Qt::ToolTipRole);    
+
+    // eventSelection->addItem(tr("General Event"));
+    // eventSelection->addItem(tr("Digital Twin"));
+    // eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+    // eventSelection->setItemData(0, "Create a Hazard Event From Scratch In Your Choice of Numerical Method. [Difficulty: Moderate]", Qt::ToolTipRole);
+    // eventSelection->setItemData(1, "Start From Pre-Designed Digital-Twins of Experimental Facilities, Case-Histories, and Other Assets. [Difficulty: Easy]", Qt::ToolTipRole);
+
+    // methodSelection->addItem(tr("Shallow-Water-Equations -> Finite-Volume-Method (GeoClaw -> OpenFOAM) [Multi-CPU]"));
+    // methodSelection->addItem(tr("Shallow-Water-Equations -> Finite-Volume-Method -> Finite-Element-Analysis (GeoClaw -> OpenFOAM -> OpenSees) [Multi-CPU]"));
+    // methodSelection->addItem(tr("Finite-Volume-Method <-> Finite-Element-Analysis (OpenFOAM <-> OpenSees) [Multi-CPU]"));
+    // methodSelection->addItem(tr("Material-Point-Method (ClaymoreUW) [Multi-GPU]"));    
+    // methodSelection->addItem(tr("Smoothed-Particle-Hydrodynamics (DualSPHysics)"));   
+    // // Datatips for the different event types
+    // methodSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+    // methodSelection->setItemData(0, "Shallow-Water-Equations -> Finite-Volume-Method (GeoClaw -> OpenFOAM) [Multi-CPU]", Qt::ToolTipRole);
+    // methodSelection->setItemData(1, "Shallow-Water-Equations -> Finite-Volume-Method -> Finite-Element-Analysis (GeoClaw -> OpenFOAM -> OpenSees) [Multi-CPU]", Qt::ToolTipRole);
+    // methodSelection->setItemData(2, "Finite-Volume-Method <-> Finite-Element-Analysis (OpenFOAM <-> OpenSees) [Multi-CPU]", Qt::ToolTipRole);
+    // methodSelection->setItemData(3, "Material-Point-Method (ClaymoreUW) [Multi-GPU]", Qt::ToolTipRole);    
+    // methodSelection->setItemData(4, "Smoothed-Particle-Hydrodynamics (DualSPHysics) [CPU, GPU]", Qt::ToolTipRole);    
 
     theSelectionLayout->addWidget(label);
     QSpacerItem *spacer = new QSpacerItem(50,10);
@@ -86,28 +110,41 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     theSelectionLayout->addStretch();
     layout->addLayout(theSelectionLayout);
 
-    // Create the stacked widget
+
+    // ---
+    // Create the stacked widget for the different event-method types
     theStackedWidget = new QStackedWidget();
 
     // create the individual load widgets & add to stacked widget
     theGeoClawOpenFOAM = new GeoClawOpenFOAM(theRandomVariablesContainer);
-    theStackedWidget->addWidget(theGeoClawOpenFOAM);
-
-    // create the individual load widgets & add to stacked widget
     theWaveDigitalFlume = new WaveDigitalFlume(theRandomVariablesContainer);
-    theStackedWidget->addWidget(theWaveDigitalFlume);
-
     theCoupledDigitalTwin = new CoupledDigitalTwin(theRandomVariablesContainer);
-    theStackedWidget->addWidget(theCoupledDigitalTwin);
-
     theMPM = new MPM(theRandomVariablesContainer);
+    theSPH = new MPM(theRandomVariablesContainer);
+    // TODO: Fully implement SPH without using MPM
+
+    theStackedWidget->addWidget(theGeoClawOpenFOAM);
+    theStackedWidget->addWidget(theWaveDigitalFlume);
+    theStackedWidget->addWidget(theCoupledDigitalTwin);
     theStackedWidget->addWidget(theMPM);        
+    theStackedWidget->addWidget(theSPH);        
+    // --- 
+
 
     // Setup the Layout
     layout->addWidget(theStackedWidget);
     //layout->setMargin(0);
     this->setLayout(layout);
     //theCurrentEvent=theGeoClawOpenFOAM;
+    // --
+    // Set the default event to select at boot-up. For now, it is MPM
+    int indexForMPM = 3;
+    theStackedWidget->setCurrentIndex(indexForMPM);
+    theStackedWidget->setCurrentIndex(indexForMPM);
+    eventSelection->setCurrentIndex(indexForMPM);
+    eventSelection->setCurrentIndex(indexForMPM);
+    theCurrentEvent = theMPM;
+    theCurrentEvent = theMPM;
 
     // Connect signal and slots
     connect(eventSelection, SIGNAL(currentIndexChanged(int)), this, SLOT(eventSelectionChanged(int)));
@@ -116,7 +153,6 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     connect(theGeoClawOpenFOAM, &SimCenterAppWidget::sendFatalMessage, this, [this](QString message) {emit sendFatalMessage(message);});
     connect(theGeoClawOpenFOAM, &SimCenterAppWidget::sendStatusMessage, this, [this](QString message) {emit sendStatusMessage(message);});
     */
-
 }
 
 //*********************************************************************************
@@ -153,6 +189,11 @@ void HydroEventSelection::eventSelectionChanged(int arg1)
     {
         theStackedWidget->setCurrentIndex(3);
         theCurrentEvent = theMPM;
+    }        
+    else if (arg1 == 4)
+    {
+        theStackedWidget->setCurrentIndex(4);
+        theCurrentEvent = theSPH;
     }        
     else
     {
@@ -245,21 +286,37 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
         return false;
     }
 
-    int index = 0;
-    if ((type == "CoupledDigitalTwin")
-	|| (type == "Coupled Digital Twin")) {
+    int index = 3; // Open to MPM for now
+    if (((type == "GeneralEvent")
+	|| (type == "General Event")) || ((type == "General") || (type == "General Event (GeoClaw and OpenFOAM FVM)"))) {
+      
+      theCurrentEvent = theGeoClawOpenFOAM;
+      index = 0;
+    }
+    else if (((type == "DigitalTwin")
+	|| (type == "Digital Twin")) || (type == "Digital Twin (GeoClaw and OpenFOAM)")) {
+      
+      theCurrentEvent = theWaveDigitalFlume;
+      index = 1;
+    }
+    else if (((type == "CoupledDigitalTwin")
+	|| (type == "Coupled Digital Twin")) || (type == "Digital Twin (OpenFOAM and OpenSees)")) {
       
       theCurrentEvent = theCoupledDigitalTwin;
       index = 2;
     }
-
-    if ((type == "MPM")
-	|| (type == "MPM")) {
+    else if (((type == "MPM")
+	|| (type == "Material Point Method")) || (type == "Digital Twin (MPM)")) {
       
-      theCurrentEvent = theCoupledDigitalTwin;
-      index = 2;
+      theCurrentEvent = theMPM;
+      index = 3;
     }
-
+    else if (((type == "SPH")
+	|| (type == "Smoothed Particle Hydrodynamics")) || (type == "Digital Twin (SPH)")) {
+      
+      theCurrentEvent = theSPH;
+      index = 4;
+    }
     eventSelection->setCurrentIndex(index);
     
     eventSelection->setCurrentIndex(index);

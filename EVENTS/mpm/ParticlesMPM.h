@@ -48,74 +48,65 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
 #include <SimCenterWidget.h>
+#include <vector>
+#include <memory>
 
 class QJsonObject;
 class SC_DoubleLineEdit;
+class SC_IntLineEdit;
+class SC_StringLineEdit;
 class SC_ComboBox;
 class SC_TableEdit;
 class SC_FileEdit;
 class SC_CheckBox;
+
+class GeometryMPM;
+class MaterialMPM;
+class AlgorithmMPM;
+class PartitionMPM;
 
 class ParticlesMPM : public SimCenterWidget
 {
 public:
     ParticlesMPM(QWidget *parent = 0);
     virtual ~ParticlesMPM();
+
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
+    // bool outputAppDataToJSON(QJsonObject &rvObject);
+    // bool inputAppDataFromJSON(QJsonObject &rvObject);
     bool copyFiles(QString &dirName);
   
 signals:
 
 private:
-  // SC_FileEdit *theOpenSeesPyScript;
-  // SC_FileEdit *theSurfaceFile;
+  GeometryMPM       *fluidGeometry = nullptr;
+  MaterialMPM       *fluidMaterial = nullptr;
+  AlgorithmMPM      *fluidAlgorithm = nullptr;
+  PartitionMPM      *fluidPartition = nullptr;
 
-  // fluid
-  SC_DoubleLineEdit *standingWaterLevel;
-  SC_CheckBox *fillFlumeUptoSWL;
-  SC_ComboBox       *facility;
-  SC_DoubleLineEdit *flumeLength;
-  SC_DoubleLineEdit *flumeHeight;
-  SC_DoubleLineEdit *flumeWidth;
-  SC_DoubleLineEdit *flumeOriginX;
-  SC_DoubleLineEdit *flumeOriginY;
-  SC_DoubleLineEdit *flumeOriginZ;  
-  SC_ComboBox       *bathymetryComboBox;
-  SC_TableEdit      *bathXZData;  
+  GeometryMPM       *debrisGeometry = nullptr;
+  MaterialMPM       *debrisMaterial = nullptr;
+  AlgorithmMPM      *debrisAlgorithm = nullptr;
+  PartitionMPM      *debrisPartition = nullptr;
 
-  // debris
-  SC_ComboBox         *generationMethod;    
-  SC_DoubleLineEdit   *paddleLength;    
-  SC_DoubleLineEdit   *paddleHeight;
-  SC_DoubleLineEdit   *paddleWidth;
-  SC_DoubleLineEdit   *waveRepeatSpeed;
-  SC_DoubleLineEdit   *paddleOriginX;
-  SC_DoubleLineEdit   *paddleOriginY;;
-  SC_DoubleLineEdit   *paddleOriginZ;
-  SC_ComboBox         *debrisMaterialType;      
-  SC_FileEdit         *paddleDisplacementFile;    
+  GeometryMPM       *structureGeometry = nullptr;
+  MaterialMPM       *structureMaterial = nullptr;
+  AlgorithmMPM      *structureAlgorithm = nullptr;
+  PartitionMPM      *structurePartition = nullptr;
 
-  // structures
-  SC_ComboBox       *wallsContactType;
-  SC_DoubleLineEdit *wallsLength;
-  SC_DoubleLineEdit *wallsHeight;
-  SC_DoubleLineEdit *wallsWidth;
-  SC_DoubleLineEdit *originLength;
-  SC_DoubleLineEdit *originHeight;
-  SC_DoubleLineEdit *originWidth;
-  SC_CheckBox       *applyCoulombFriction;    
-  SC_DoubleLineEdit *staticFrictionWallX;
-  SC_DoubleLineEdit *staticFrictionFloor;
-  SC_DoubleLineEdit *staticFrictionWallZ;
-  SC_DoubleLineEdit *dynamicFrictionWallX;
-  SC_DoubleLineEdit *dynamicFrictionFloor;
-  SC_DoubleLineEdit *dynamicFrictionWallZ;    
-  
-  // Custom Bodies
+  // GeometryMPM       *customGeometry;
+  // MaterialMPM       *customMaterial;
+  // AlgorithmMPM      *customAlgorithm;
+  // PartitionMPM      *customPartition;
 
-
+  QVector<GeometryMPM*> addedGeometry {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  QVector<MaterialMPM*> addedMaterial {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  QVector<AlgorithmMPM*> addedAlgorithm {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  QVector<PartitionMPM*> addedPartition {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  int numReserveTabs = 8;
+  int numAddedTabs = 0;
 };
 
-#endif // OPENSEES_DIGITAL_TWIN_H
+#endif // PARTICLES_MPM_H
 

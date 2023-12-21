@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>styles/stylesheet_hydrouq.qss</file>
         <file>styles/menuBar.qss</file>
+        <file>styles/menuIcons.qss</file>
     </qresource>
 </RCC>

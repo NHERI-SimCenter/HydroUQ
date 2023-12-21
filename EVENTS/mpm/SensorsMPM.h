@@ -67,20 +67,32 @@ public:
 signals:
 
 private:
-  // SC_FileEdit *theOpenSeesPyScript;
-  // SC_FileEdit *theSurfaceFile;
+  // Wave-gauges (WG), Velocimeters (VM), and Load-cells (LC)
+  SC_ComboBox       *toggleWG;
+  SC_ComboBox       *typeWG;
+  SC_ComboBox       *attributeWG;
+  SC_ComboBox       *operationWG;
+  SC_ComboBox       *directionWG;
+  SC_DoubleLineEdit *output_frequencyWG;
+  SC_TableEdit      *waveGaugesTable;
+  
 
-  // SC_DoubleLineEdit *outputOS_Dt;
-  SC_ComboBox       *vtkOF_Output;
-  SC_DoubleLineEdit *outputOF_Dt;
-  SC_ComboBox       *outputOF_FM;
-  SC_ComboBox       *outputOF_FSP;
-  SC_ComboBox       *outputOF_FP;
-  SC_ComboBox       *outputOF_SC;
-  SC_TableEdit      *freeSurfaceProbes;
-  SC_TableEdit      *fieldProbes;
-  SC_TableEdit      *sectionCuts;
+  SC_ComboBox       *toggleVM;
+  SC_ComboBox       *typeVM;
+  SC_ComboBox       *attributeVM;
+  SC_ComboBox       *operationVM;
+  SC_ComboBox       *directionVM;
+  SC_DoubleLineEdit *output_frequencyVM;
+  SC_TableEdit      *velociMetersTable;
 
+
+  SC_ComboBox       *toggleLC;
+  SC_ComboBox       *typeLC;
+  SC_ComboBox       *attributeLC;
+  SC_ComboBox       *operationLC;
+  SC_ComboBox       *directionLC;
+  SC_DoubleLineEdit *output_frequencyLC;
+  SC_TableEdit      *loadCellsTable;
 };
 
 #endif // OPENSEES_DIGITAL_TWIN_H

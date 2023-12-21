@@ -74,4 +74,4 @@ private:
   
 };
 
-#endif // COUPLED_DIGITAL_TWIN_H
+#endif // MATERIAL_POINT_METHOD_H

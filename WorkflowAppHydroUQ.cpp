@@ -56,6 +56,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QtNetwork/QNetworkRequest>
 #include <QHostInfo>
 #include <QUuid>
+#include <QSvgWidget>
+
 
 #include <SimCenterComponentSelection.h>
 #include "GeneralInformationWidget.h"
@@ -120,11 +122,11 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     localApp = new LocalApplication("sWHALE.py");
     remoteApp = new RemoteApplication("sWHALE.py", theService);
 
-    //    localApp = new LocalApplication("EE-UQ workflow.py");
-    //   remoteApp = new RemoteApplication("EE-UQ workflow.py", theService);
+    //    localApp = new LocalApplication("Hydro-UQ workflow.py");
+    //   remoteApp = new RemoteApplication("Hydro-UQ workflow.py", theService);
 
-    // localApp = new LocalApplication("EE-UQ.py");
-    // remoteApp = new RemoteApplication("EE-UQ.py", theService);
+    // localApp = new LocalApplication("Hydro-UQ.py");
+    // remoteApp = new RemoteApplication("Hydro-UQ.py", theService);
     theJobManager = new RemoteJobManager(theService);
 
     SimCenterWidget *theWidgets[1];// =0;
@@ -157,7 +159,128 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     QHBoxLayout *horizontalLayout = new QHBoxLayout();
     this->setLayout(horizontalLayout);
     this->setContentsMargins(0,5,0,5);
-//    horizontalLayout->setMargin(0);
+    horizontalLayout->setMargin(0);
+    horizontalLayout->setSpacing(0);
+
+    QSvgWidget *theSvgUQ  = new QSvgWidget();
+    QSvgWidget *theSvgGI  = new QSvgWidget();
+    QSvgWidget *theSvgSIM = new QSvgWidget();
+    QSvgWidget *theSvgEVT = new QSvgWidget();
+    QSvgWidget *theSvgFEM = new QSvgWidget();
+    QSvgWidget *theSvgEDP = new QSvgWidget();
+    QSvgWidget *theSvgRV  = new QSvgWidget();
+    QSvgWidget *theSvgRES = new QSvgWidget();
+    theSvgUQ->load(QString(":/icons/question-dimensions-white.svg"));
+    theSvgGI->load(QString(":/icons/building-white.svg"));
+    theSvgSIM->load(QString(":/icons/shape-3-white.svg"));
+    theSvgEVT->load(QString(":/icons/ripple-white.svg"));
+    theSvgFEM->load(QString(":/icons/vector-triangle-white.svg"));
+    theSvgEDP->load(QString(":/icons/chart-arrows-white.svg"));
+    theSvgRV->load(QString(":/icons/dice-6-white.svg"));
+    theSvgRES->load(QString(":/icons/flag-white.svg"));
+    // Set size of SVG to match the size of the test in the side bar at theComponentSelection, e.g. "UQ"
+    
+    int iconSize = 36;
+    theSvgUQ->setFixedSize(iconSize,iconSize);
+    theSvgGI->setFixedSize(iconSize,iconSize);
+    theSvgSIM->setFixedSize(iconSize,iconSize);
+    theSvgEVT->setFixedSize(iconSize,iconSize);
+    theSvgFEM->setFixedSize(iconSize,iconSize);
+    theSvgEDP->setFixedSize(iconSize,iconSize);
+    theSvgRV->setFixedSize(iconSize,iconSize);
+    theSvgRES->setFixedSize(iconSize,iconSize);
+
+    // Set background color of SVG to match the background color of the side bar
+    // theSvgUQ->setStyleSheet("background-color: rgb(79, 83, 89)");
+    // theSvgGI->setStyleSheet("background-color: rgb(79, 83, 89)");
+    // theSvgSIM->setStyleSheet("background-color: rgb(79, 83, 89)");
+    // theSvgEVT->setStyleSheet("background-color: rgb(79, 83, 89)");
+    // theSvgFEM->setStyleSheet("background-color: rgb(79, 83, 89)");
+    // theSvgEDP->setStyleSheet("background-color: rgb(79, 83, 89)");
+    // theSvgRV->setStyleSheet("background-color: rgb(79, 83, 89)");
+    // theSvgRES->setStyleSheet("background-color: rgb(79, 83, 89)");
+    // Set the size policy of the SVG to be fixed
+    theSvgUQ->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    theSvgGI->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    theSvgSIM->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    theSvgEVT->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    theSvgFEM->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    theSvgEDP->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    theSvgRV->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    theSvgRES->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    // Set the contents margins of the SVG to be 0
+    theSvgUQ->setContentsMargins(0,10,0,10);
+    theSvgGI->setContentsMargins(0,10,0,10);
+    theSvgSIM->setContentsMargins(0,10,0,10);
+    theSvgEVT->setContentsMargins(0,10,0,10);
+    theSvgFEM->setContentsMargins(0,10,0,10);
+    theSvgEDP->setContentsMargins(0,10,0,10);
+    theSvgRV->setContentsMargins(0,10,0,10);
+    theSvgRES->setContentsMargins(0,10,0,10);
+    theSvgUQ->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    theSvgGI->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    theSvgSIM->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    theSvgEVT->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    theSvgFEM->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    theSvgEDP->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    theSvgRV->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    theSvgRES->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+
+    // theSvgUQ->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
+    // theSvgGI->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
+    // theSvgSIM->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
+    // theSvgEVT->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
+    // theSvgFEM->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
+    // theSvgEDP->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
+    // theSvgRV->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
+    // theSvgRES->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
+
+
+// :active{
+//     background: rgb(63, 147, 168);
+// }
+
+// QTreeView#treeViewOnTheLeft::item:selected:!active {
+//     background: rgb(63, 147, 168);
+// }
+    // Now, place the SVG in a frame
+
+
+
+    // QDir dir("/home/");
+    // QString s;
+    // s = dir.relativeFilePath("images/file.jpg");     // s is "images/file.jpg"
+
+
+    QVBoxLayout *verticalIconLayout = new QVBoxLayout();
+    verticalIconLayout->addWidget(theSvgUQ);
+    verticalIconLayout->addWidget(theSvgGI);
+    verticalIconLayout->addWidget(theSvgSIM);
+    verticalIconLayout->addWidget(theSvgEVT);
+    verticalIconLayout->addWidget(theSvgFEM);
+    verticalIconLayout->addWidget(theSvgEDP);
+    verticalIconLayout->addWidget(theSvgRV);
+    verticalIconLayout->addWidget(theSvgRES);
+    verticalIconLayout->setAlignment(Qt::AlignTop);
+    verticalIconLayout->setSpacing(13.5);
+    verticalIconLayout->setContentsMargins(0,5,0,5);
+
+    sideBarIconFrame = new QFrame();
+    sideBarIconFrame->setLayout(verticalIconLayout);
+    // sideBarIconFrame->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
+    sideBarIconFrame->setStyleSheet("background-color: rgb(79, 83, 89)");
+    sideBarIconFrame->setFrameShape(QFrame::NoFrame);
+    sideBarIconFrame->setLineWidth(0);
+    sideBarIconFrame->setContentsMargins(0,10,0,10);
+    // sideBarIconFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    // sideBarIconFrame->setFixedWidth(25);
+    // sideBarIconFrame->setFixedHeight(800);
+
+
+    // Now, place the frame in the side bar
+    horizontalLayout->addWidget(sideBarIconFrame);
+
+
 
     //
     // create the component selection & add the components to it
@@ -174,7 +297,51 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("EDP"), theEDP_Selection);
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
-    theComponentSelection->displayComponent("UQ");
+    theComponentSelection->displayComponent("EVT"); // Initial page on startup
+
+
+    horizontalLayout->setAlignment(Qt::AlignLeft);
+    // create the side bar icons in QT
+    // Need to place SVG in a frame to get it to display properly
+    // The frame is then placed in the side bar
+    // QSvgWidget *theSvg = new QSvgWidget();
+    // theSvg->load(QString("./icons/engine-white.svg"));
+    // theSvg->setFixedSize(50,50);
+    // theSvg->setStyleSheet("background-color: rgb(0,0,0,0)");
+    // theSvg->setContentsMargins(0,0,0,0);
+    // theSvg->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    // // Now, place the SVG in a frame
+    // QFrame *frame = new QFrame();
+    // frame->setFixedSize(50,50);
+    // frame->setStyleSheet("background-color: rgb(0,0,0,0)");
+    // frame->setContentsMargins(0,0,0,0);
+    // frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    // QVBoxLayout *verticalLayout = new QVBoxLayout();
+    // verticalLayout->setContentsMargins(0,0,0,0);
+    // verticalLayout->addWidget(theSvg);
+    // frame->setLayout(verticalLayout);
+
+    // // Now, place the frame in the side bar
+    // horizontalLayout->addWidget(frame);
+
+    // // Now, repeat for each icon
+    // theSvg = new QSvgWidget();
+    // theSvg->load(QString("./icons/building-white.svg"));
+    // theSvg->setFixedSize(50,50);
+    // theSvg->setStyleSheet("background-color: rgb(0,0,0,0)");
+    // theSvg->setContentsMargins(0,0,0,0);
+    // theSvg->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    // frame = new QFrame();
+    // frame->setFixedSize(50,50);
+    // frame->setStyleSheet("background-color: rgb(0,0,0,0)");
+    // frame->setContentsMargins(0,0,0,0);
+    // frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    // verticalLayout = new QVBoxLayout();
+    // verticalLayout->setContentsMargins(0,0,0,0);
+    // verticalLayout->addWidget(theSvg);
+    // frame->setLayout(verticalLayout);
+    // horizontalLayout->addWidget(frame);
 
     // access a web page which will increment the usage count for this tool
     manager = new QNetworkAccessManager(this);
@@ -273,7 +440,8 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
     if (result == false)
         return result;
 
-   // NOTE: Events treated differently, due to array nature of objects
+    // theEventSelection
+    // NOTE: Events treated differently, due to array nature of objects
     result = theEventSelection->outputToJSON(jsonObjectTop);
     if (result == false)
         return result;
@@ -286,6 +454,7 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
     if (result == false)
         return result;
 
+    // theResults
     // sy - to save results
     result = theResults->outputToJSON(jsonObjectTop);
     if (result == false)
@@ -322,7 +491,7 @@ void WorkflowAppHydroUQ::processResults(QString &dirName)
 
 
   //
-  // get results widget fr currently selected UQ option
+  // get results widget for currently selected UQ option
   //
 
   theResults=theUQ_Selection->getResults();
@@ -377,10 +546,10 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
     if (jsonObject.contains("GeneralInformation")) {
         QJsonObject jsonObjGeneralInformation = jsonObject["GeneralInformation"].toObject();
         if (theGI->inputFromJSON(jsonObjGeneralInformation) == false) {
-            this->errorMessage("EE_UQ: failed to read GeneralInformation");
+            this->errorMessage("_UQ: failed to read GeneralInformation");
         }
     } else {
-        this->errorMessage("EE_UQ: failed to find GeneralInformation");
+        this->errorMessage("Hydro_UQ: failed to find GeneralInformation");
         return false;
     }
 
@@ -392,30 +561,30 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
         if (theApplicationObject.contains("Events")) {
             //  QJsonObject theObject = theApplicationObject["Events"].toObject(); it is null object, actually an array
             if (theEventSelection->inputAppDataFromJSON(theApplicationObject) == false) {
-                this->errorMessage("EE_UQ: failed to read Event Application");
+                this->errorMessage("Hydro_UQ: failed to read Event Application");
             }
 
         } else {
-            this->errorMessage("EE_UQ: failed to find Event Application");
+            this->errorMessage("Hydro_UQ: failed to find Event Application");
             return false;
         }
 
         if (theUQ_Selection->inputAppDataFromJSON(theApplicationObject) == false)
-            this->errorMessage("EE_UQ: failed to read UQ application");
+            this->errorMessage("Hydro_UQ: failed to read UQ application");
 
         if (theSIM->inputAppDataFromJSON(theApplicationObject) == false)
-            this->errorMessage("EE_UQ: failed to read SIM application");
+            this->errorMessage("Hydro_UQ: failed to read SIM application");
     
         if (theAnalysisSelection->inputAppDataFromJSON(theApplicationObject) == false)
-            this->errorMessage("EE_UQ: failed to read FEM application");
+            this->errorMessage("Hydro_UQ: failed to read FEM application");
 
         if (theApplicationObject.contains("EDP")) {
             QJsonObject theObject = theApplicationObject["EDP"].toObject();
             if (theEDP_Selection->inputAppDataFromJSON(theObject) == false) {
-                this->errorMessage("EE_UQ: failed to read EDP application");
+                this->errorMessage("Hydro_UQ: failed to read EDP application");
             }
         } else {
-            this->errorMessage("EE_UQ: failed to find EDP application");
+            this->errorMessage("Hydro_UQ: failed to find EDP application");
             return false;
         }
 
@@ -433,27 +602,27 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
     if (jsonObject.contains("EDP")) {
         QJsonObject edpObj = jsonObject["EDP"].toObject();
         if (theEDP_Selection->inputFromJSON(edpObj) == false)
-            this->errorMessage("EE_UQ: failed to read EDP data");
+            this->errorMessage("Hydro_UQ: failed to read EDP data");
     } else {
-        this->errorMessage("EE_UQ: failed to find EDP data");
+        this->errorMessage("Hydro_UQ: failed to find EDP data");
         return false;
     }
 
 
     if (theUQ_Selection->inputFromJSON(jsonObject) == false)
-       this->errorMessage("EE_UQ: failed to read UQ Method data");
+       this->errorMessage("Hydro_UQ: failed to read UQ Method data");
 
     if (theAnalysisSelection->inputFromJSON(jsonObject) == false)
-        this->errorMessage("EE_UQ: failed to read FEM Method data");
+        this->errorMessage("Hydro_UQ: failed to read FEM Method data");
 
     if (theSIM->inputFromJSON(jsonObject) == false)
-        this->errorMessage("EE_UQ: failed to read SIM Method data");
+        this->errorMessage("Hydro_UQ: failed to read SIM Method data");
 
     // sy - to display results
     auto* theNewResults = theUQ_Selection->getResults();
 
     if (theNewResults->inputFromJSON(jsonObject) == false)
-        this->errorMessage("EE_UQ: failed to read RES Method data");
+        this->errorMessage("Hydro_UQ: failed to read RES Method data");
     theResults->setResultWidget(theNewResults);
 
     this->statusMessage("Done Loading File");
@@ -464,7 +633,7 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
 
 void
 WorkflowAppHydroUQ::onRunButtonClicked() {
-    emit errorMessage("This app cannot be run locally. Please run remotely on DesignSafe");
+    emit errorMessage("The HydroUQ application cannot be run locally. Please run remotely on DesignSafe.");
 //    theRunWidget->hide();
 //    theRunWidget->setMinimumWidth(this->width()*0.5);
 //    theRunWidget->showLocalApplication();
@@ -483,7 +652,7 @@ WorkflowAppHydroUQ::onRemoteRunButtonClicked(){
         theRunWidget->showRemoteApplication();
 
     } else {
-        errorMessage("ERROR - You Need to Login");
+        errorMessage("ERROR - You Need to Login to DesignSafe to Run HydroUQ On TACC Super-Computers.");
     }
 
     GoogleAnalytics::ReportDesignSafeRun();
@@ -503,7 +672,7 @@ WorkflowAppHydroUQ::onRemoteGetButtonClicked(){
         theJobManager->show();
 
     } else {
-        errorMessage("ERROR - You Need to Login");
+        errorMessage("ERROR - You Need to Login to DesignSafe to Get HydroUQ Results From TACC Super-Computers.");
     }
 }
 
@@ -578,7 +747,7 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     file.close();
 
 
-    statusMessage("SetUp Done .. Now starting application");
+    statusMessage("Set-Up Done .. Now Starting HydroUQ Application");
     emit setUpForApplicationRunDone(tmpDirectory, inputFile);
 }
 

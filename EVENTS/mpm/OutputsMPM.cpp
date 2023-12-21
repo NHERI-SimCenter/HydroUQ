@@ -11,24 +11,24 @@ modification, are permitted provided that the following conditions are met:
    this list of conditions and the following disclaimer in the documentation
    and/or other materials provided with the distribution.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+THIS SSensorsTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+WARRANTIES Sensors MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPBodiesE ARE
 DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
 ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT Sensors SUBSTITUTE GOODS OR SERVICES;
+LBodiesS Sensors USE, DATA, OR PRSensorsITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY Sensors LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT Sensors THE USE Sensors THIS
+SSensorsTWARE, EVEN IF ADVISED Sensors THE PBodiesSIBILITY Sensors SUCH DAMAGE.
 
 The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 
 REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS 
+THE IMPLIED WARRANTIES Sensors MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPBodiesE.
+THE SSensorsTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS 
 PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, 
 UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -47,7 +47,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_TableEdit.h>
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
-
+#include <SC_CheckBox.h>
 
 
 OutputsMPM::OutputsMPM(QWidget *parent)
@@ -57,123 +57,108 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   //
   // create all little widgets
   //
-  
+  int numRow = 0;
   QStringList yesNo; yesNo << "Yes" << "No";
   QStringList particleExt; particleExt << "VTK" << "BGEO" << "GEO" << "CSV" << "TXT" << "PDB";
-  QStringList sensorExt; sensorExt << "VTK" << "BGEO" << "GEO" << "CSV" << "TXT" << "PDB";
+  QStringList checkpointsExt; checkpointsExt << "BGEO" << "GEO" << "VTK" << "CSV" << "TXT" << "PDB";
+  QStringList boundariesExt; boundariesExt << "OBJ" << "STL";
+  QStringList sensorExt; sensorExt << "CSV" << "TXT";
+  QStringList energiesExt; energiesExt << "CSV" << "TXT";
 
-  vtkOS_Output = new SC_ComboBox("save_suffix",particleExt);  
-  vtkOF_Output = new SC_ComboBox("sensor_save_suffix", sensorExt);;
-  outputOS_Dt  = new SC_DoubleLineEdit("fps", 10);
-  outputOF_Dt  = new SC_DoubleLineEdit("output_freq", 30);
-  
-  outputOF_FM  = new SC_ComboBox("freeSurfOut", yesNo);
-  outputOF_FSP = new SC_ComboBox("freeSurfProbes", yesNo);
-  outputOF_FP  = new SC_ComboBox("fieldProbes", yesNo);
-  outputOF_SC  = new SC_ComboBox("cutSurfaceOutput", yesNo);
-  
-  QStringList  listFSP; listFSP << "Origin X" << "Origin Y" << "Origin Z" << "tag";
-  QStringList  dataFSP; dataFSP << "16.0" << "2.0" << "0.5" << "WaveGauge1"
-				<< "24.0" << "2.0" << "0.5" << "WaveGauge2"
-				<< "36.0" << "2.0" << "0.5" << "WaveGauge3";
-  freeSurfaceProbes = new SC_TableEdit("freeSurfProbeLocs",  listFSP, 3, dataFSP);
-  
-  QStringList  listFP; listFP << "Origin X" << "Origin Y" << "Origin Z" << "tag"  << "Field(U,p, etc.)";
-  QStringList  dataFP; dataFP << "0.1"  << "0.3" << "0.45"  << "PressureProbe1" << "p"
-				<< "0.1"  << "0.3" << "0.425" << "PressureProbe1" << "p"
-				<< "0.1"  << "0.3" << "0.4"   << "PressureProbe1" << "p"
-				<< "0.05" << "0.2" << "0.4"   << "VelocityProbe1" << "u";			  
 
-  fieldProbes  = new SC_TableEdit("fieldProbeLocs", listFP, 4, dataFP);
+
+  vtkBodies_Output = new SC_ComboBox("bodies_save_suffix",particleExt);  
+  vtkCheckpoints_Output = new SC_ComboBox("checkpoints_save_suffix", checkpointsExt);
+  vtkBoundaries_Output = new SC_ComboBox("boundaries_save_suffix", boundariesExt);
+  vtkSensors_Output = new SC_ComboBox("sensors_save_suffix", sensorExt);
+  vtkEnergies_Output = new SC_ComboBox("energies_save_suffix", energiesExt);
+
+  outputBodies_Dt  = new SC_DoubleLineEdit("bodies_output_freq", 10);
+  outputBoundaries_Dt  = new SC_DoubleLineEdit("boundaries_output_freq", 30);
+  outputSensors_Dt  = new SC_DoubleLineEdit("sensors_output_freq", 30);
+  outputCheckpoints_Dt  = new SC_DoubleLineEdit("checkpoints_output_freq", 1);
+  outputEnergies_Dt = new SC_DoubleLineEdit("energies_output_freq", 30);
+
+  useKineticEnergy = new SC_CheckBox("useKineticEnergy");
+  usePotentialEnergy = new SC_CheckBox("usePotentialEnergy");
+  useStrainEnergy = new SC_CheckBox("useStrainEnergy");
+
+  // vtkSensors_Output = new SC_ComboBox("sensor_save_suffix", sensorExt);
+  // outputSensors_Dt  = new SC_DoubleLineEdit("output_freq", 30);
   
-  QStringList  listSC; listSC << "Origin X" << "Origin Y" << "Origin Z" << "Lenght X" << "Height Y" << "Width Z" << "tag" << "Field(U,p, etc.)";
-  QStringList  dataSC; dataSC << "0" << "0.1" << "0.25" << "0" << "1" << "0" << "XSec1" << "p,U,alpha,water";  
-  sectionCuts  = new SC_TableEdit("cutSurfaceLocsDirsFields", listSC, 1, dataSC);
 
   // 
   // now add the widgets to Grpup Boxes
   //
+  numRow = 0;
+  QGroupBox *bodiesBox = new QGroupBox("Bodies");
+  QGridLayout *bodiesLayout = new QGridLayout();  
+  bodiesBox->setLayout(bodiesLayout);
+  bodiesLayout->addWidget(new QLabel("Output File Type"),numRow,0);
+  bodiesLayout->addWidget(vtkBodies_Output,numRow++,1);  
+  bodiesLayout->addWidget(new QLabel("Output Frequency"),numRow,0);
+  bodiesLayout->addWidget(outputBodies_Dt,numRow,1);
+  bodiesLayout->addWidget(new QLabel("Hz"),numRow++,2);  
 
-  QGroupBox *openseesBox = new QGroupBox("Bodies' Full Geometry Output");
-  QGridLayout *openseesLayout = new QGridLayout();  
-  openseesBox->setLayout(openseesLayout);
-
-  QGroupBox *energyBox = new QGroupBox("Energy Output");
-  QGridLayout *energyLayout = new QGridLayout();  
-  energyBox->setLayout(energyLayout);
-
-  QGroupBox *checkpointBox = new QGroupBox("Checkpoint Output");
+  numRow = 0;
+  QGroupBox *checkpointBox = new QGroupBox("Checkpoint-Resume State");
   QGridLayout *checkpointLayout = new QGridLayout();  
   checkpointBox->setLayout(checkpointLayout);
+  checkpointLayout->addWidget(new QLabel("Output File Type"),numRow,0);
+  checkpointLayout->addWidget(vtkCheckpoints_Output,numRow++,1);
+  checkpointLayout->addWidget(new QLabel("Output Frequency"),numRow,0);
+  checkpointLayout->addWidget(outputCheckpoints_Dt,numRow,1);
+  checkpointLayout->addWidget(new QLabel("Hz"),numRow++,2);
+  checkpointLayout->setRowStretch(numRow, 1);
 
-  openseesLayout->addWidget(new QLabel("Output File Type"),0,0);
-  openseesLayout->addWidget(vtkOS_Output,0,1);  
-  openseesLayout->addWidget(new QLabel("Output Frequency"),1,0);
-  openseesLayout->addWidget(outputOS_Dt,1,1);
-  openseesLayout->addWidget(new QLabel("Hz"),1,2);  
-			    
-  QGroupBox *openfoamBox = new QGroupBox("Sensor Output");
-  QGridLayout *openfoamLayout = new QGridLayout();  
-  openfoamBox->setLayout(openfoamLayout);
+  numRow = 0;
+  QGroupBox *boundariesBox = new QGroupBox("Boundaries");
+  QGridLayout *boundariesLayout = new QGridLayout();  
+  boundariesBox->setLayout(boundariesLayout);
+  boundariesLayout->addWidget(new QLabel("Output File Type"),numRow,0);
+  boundariesLayout->addWidget(vtkBoundaries_Output,numRow++,1);    
+  boundariesLayout->addWidget(new QLabel("Output Frequency"),numRow,0);
+  boundariesLayout->addWidget(outputBoundaries_Dt,numRow,1);
+  boundariesLayout->addWidget(new QLabel("Hz"),numRow++,2);
+  boundariesLayout->setRowStretch(numRow, 1);
 
-  openfoamLayout->addWidget(new QLabel("Output File Type"),0,0);
-  openfoamLayout->addWidget(vtkOF_Output,0,1);    
-  openfoamLayout->addWidget(new QLabel("Output Frequency"),1,0);
-  openfoamLayout->addWidget(outputOF_Dt,1,1);
-  openfoamLayout->addWidget(new QLabel("sec."),1,2);
+  numRow = 0;
+  QGroupBox *sensorsBox = new QGroupBox("Sensors");
+  QGridLayout *sensorsLayout = new QGridLayout();  
+  sensorsBox->setLayout(sensorsLayout);
+  sensorsLayout->addWidget(new QLabel("Output File Type"),numRow,0);
+  sensorsLayout->addWidget(vtkSensors_Output,numRow++,1);    
+  sensorsLayout->setRowStretch(numRow, 1);
 
-  QWidget *fspWidget = new QWidget();
-  QGridLayout *fspLayout = new QGridLayout();
-  fspWidget->setLayout(fspLayout);
-  
-  fspLayout->addWidget(new QLabel("Free Surface Probes"),0,0);
-  fspLayout->addWidget(outputOF_FSP,0,1);
-  fspLayout->addWidget(freeSurfaceProbes,1,0,1,4);
+  numRow = 0;
+  QGroupBox *energiesBox = new QGroupBox("Energies");
+  QGridLayout *energiesLayout = new QGridLayout();  
+  energiesBox->setLayout(energiesLayout);
+  energiesLayout->addWidget(new QLabel("Output File Type"),numRow,0);
+  energiesLayout->addWidget(vtkEnergies_Output,numRow++,1);
+  energiesLayout->addWidget(new QLabel("Output Frequency"),numRow,0);
+  energiesLayout->addWidget(outputEnergies_Dt,numRow,1);
+  energiesLayout->addWidget(new QLabel("Hz"),numRow++,2);
 
-  QWidget *fpWidget = new QWidget();
-  QGridLayout *fpLayout = new QGridLayout();
-  fpWidget->setLayout(fpLayout);
-  
-  fpLayout->addWidget(new QLabel("Field Probes"),0,0);
-  fpLayout->addWidget(outputOF_FP,0,1);
-  fpLayout->addWidget(fieldProbes,1,0,1,4);
-
-
-  QWidget *scWidget = new QWidget();
-  QGridLayout *scLayout = new QGridLayout();
-  scWidget->setLayout(scLayout);
-  
-  scLayout->addWidget(new QLabel("Section Cuts"),0,0);
-  scLayout->addWidget(outputOF_SC,0,1);
-  scLayout->addWidget(sectionCuts,1,0,1,4);    
-
-  QTabWidget *theTabWidget = new QTabWidget();
-  theTabWidget->addTab(fspWidget, "Free Surface Probes");
-  theTabWidget->addTab(fpWidget, "FieldProbes");
-  theTabWidget->addTab(scWidget, "Section Cuts");  
-
-  openfoamLayout->addWidget(theTabWidget,2,0,1,4);
-  
-  /*
-  openfoamLayout->addWidget(new QLabel("Field Probes"),4,0);
-  openfoamLayout->addWidget(outputOF_FP,4,1);
-  openfoamLayout->addWidget(fieldProbes,5,0,1,4);  
-  openfoamLayout->addWidget(new QLabel("Section Cuts"),6,0);
-  openfoamLayout->addWidget(outputOF_SC,6,1);      
-  openfoamLayout->addWidget(sectionCuts,7,0,1, 4);    
-  */
+  energiesLayout->addWidget(new QLabel("Kinetic - Gravity - Strain?"),numRow,0);
+  energiesLayout->addWidget(useKineticEnergy,numRow,1);
+  energiesLayout->addWidget(usePotentialEnergy,numRow,2);
+  energiesLayout->addWidget(useStrainEnergy,numRow++,3);
+  energiesLayout->setRowStretch(numRow, 1);
+  // energiesLayout->addWidget(new QLabel("Output Gravity-Potential?"),numRow,0);
+  // energiesLayout->addWidget(new QLabel("Output Elastic-Strain?"),numRow,0);
   
   //
   // now boxes to this widget
   //
-  
+  numRow = 0;
   QGridLayout *layout = new QGridLayout;
-  layout->addWidget(openseesBox, 0,0);
-  layout->addWidget(checkpointBox, 1,0);
-  layout->addWidget(energyBox, 2,0);
-  layout->addWidget(openfoamBox, 3,0);
-
-  
+  layout->addWidget(bodiesBox, numRow++,0);
+  layout->addWidget(checkpointBox, numRow++,0);
+  layout->addWidget(boundariesBox, numRow++,0);
+  layout->addWidget(sensorsBox, numRow++,0);
+  layout->addWidget(energiesBox, numRow++,0);
+  layout->setRowStretch(numRow, 1);
   this->setLayout(layout);
 }
 
@@ -185,17 +170,17 @@ OutputsMPM::~OutputsMPM()
 bool
 OutputsMPM::outputToJSON(QJsonObject &jsonObject)
 {
-  vtkOS_Output->outputToJSON(jsonObject);  
-  vtkOF_Output->outputToJSON(jsonObject);
-  outputOS_Dt->outputToJSON(jsonObject);
-  outputOF_Dt->outputToJSON(jsonObject);
-  outputOF_FM->outputToJSON(jsonObject);
-  outputOF_FSP->outputToJSON(jsonObject);
-  outputOF_FP->outputToJSON(jsonObject);
-  outputOF_SC->outputToJSON(jsonObject);
-  freeSurfaceProbes->outputToJSON(jsonObject);
-  fieldProbes->outputToJSON(jsonObject);
-  sectionCuts->outputToJSON(jsonObject);
+  // vtkBodies_Output->outputToJSON(jsonObject);  
+  // vtkSensors_Output->outputToJSON(jsonObject);
+  // outputBodies_Dt->outputToJSON(jsonObject);
+  // outputSensors_Dt->outputToJSON(jsonObject);
+  // outputSensors_FM->outputToJSON(jsonObject);
+  // outputSensors_FSP->outputToJSON(jsonObject);
+  // outputSensors_FP->outputToJSON(jsonObject);
+  // outputSensors_SC->outputToJSON(jsonObject);
+  // freeSurfaceProbes->outputToJSON(jsonObject);
+  // fieldProbes->outputToJSON(jsonObject);
+  // sectionCuts->outputToJSON(jsonObject);
   
   return true;
 }
@@ -204,17 +189,17 @@ bool
 OutputsMPM::inputFromJSON(QJsonObject &jsonObject)
 {
 
-  vtkOS_Output->inputFromJSON(jsonObject);  
-  vtkOF_Output->inputFromJSON(jsonObject);
-  outputOS_Dt->inputFromJSON(jsonObject);
-  outputOF_Dt->inputFromJSON(jsonObject);
-  outputOF_FM->inputFromJSON(jsonObject);
-  outputOF_FSP->inputFromJSON(jsonObject);
-  outputOF_FP->inputFromJSON(jsonObject);
-  outputOF_SC->inputFromJSON(jsonObject);
-  freeSurfaceProbes->inputFromJSON(jsonObject);
-  fieldProbes->inputFromJSON(jsonObject);
-  sectionCuts->inputFromJSON(jsonObject);
+  // vtkBodies_Output->inputFromJSON(jsonObject);  
+  // vtkSensors_Output->inputFromJSON(jsonObject);
+  // outputBodies_Dt->inputFromJSON(jsonObject);
+  // outputSensors_Dt->inputFromJSON(jsonObject);
+  // outputSensors_FM->inputFromJSON(jsonObject);
+  // outputSensors_FSP->inputFromJSON(jsonObject);
+  // outputSensors_FP->inputFromJSON(jsonObject);
+  // outputSensors_SC->inputFromJSON(jsonObject);
+  // freeSurfaceProbes->inputFromJSON(jsonObject);
+  // fieldProbes->inputFromJSON(jsonObject);
+  // sectionCuts->inputFromJSON(jsonObject);
   
   return true;
 }

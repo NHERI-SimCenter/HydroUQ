@@ -40,6 +40,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written: fmckenna
 
 #include <QWidget>
+#include <QFrame>
 
 #include <WorkflowAppWidget.h>
 
@@ -101,6 +102,7 @@ public slots:
 private:
     // sidebar container selection
     SimCenterComponentSelection *theComponentSelection;
+    QFrame *sideBarIconFrame;
 
     // objects that go in sidebar
     GeneralInformationWidget *theGI;
