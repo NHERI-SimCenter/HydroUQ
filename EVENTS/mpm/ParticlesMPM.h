@@ -44,29 +44,69 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the OpenSees Tab for the CoupledDigitalTwin
+ *  This is the class providing the Particle Bodies Tab for mpm
  */
 
 #include <SimCenterWidget.h>
+#include <vector>
+#include <memory>
 
 class QJsonObject;
+class SC_DoubleLineEdit;
+class SC_IntLineEdit;
+class SC_StringLineEdit;
+class SC_ComboBox;
+class SC_TableEdit;
 class SC_FileEdit;
+class SC_CheckBox;
+
+class GeometryMPM;
+class MaterialMPM;
+class AlgorithmMPM;
+class PartitionMPM;
 
 class ParticlesMPM : public SimCenterWidget
 {
 public:
     ParticlesMPM(QWidget *parent = 0);
     virtual ~ParticlesMPM();
+
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
+    // bool outputAppDataToJSON(QJsonObject &rvObject);
+    // bool inputAppDataFromJSON(QJsonObject &rvObject);
     bool copyFiles(QString &dirName);
   
 signals:
 
 private:
-  SC_FileEdit *theOpenSeesPyScript;
-  SC_FileEdit *theSurfaceFile;
+  GeometryMPM       *fluidGeometry = nullptr;
+  MaterialMPM       *fluidMaterial = nullptr;
+  AlgorithmMPM      *fluidAlgorithm = nullptr;
+  PartitionMPM      *fluidPartition = nullptr;
+
+  GeometryMPM       *debrisGeometry = nullptr;
+  MaterialMPM       *debrisMaterial = nullptr;
+  AlgorithmMPM      *debrisAlgorithm = nullptr;
+  PartitionMPM      *debrisPartition = nullptr;
+
+  GeometryMPM       *structureGeometry = nullptr;
+  MaterialMPM       *structureMaterial = nullptr;
+  AlgorithmMPM      *structureAlgorithm = nullptr;
+  PartitionMPM      *structurePartition = nullptr;
+
+  // GeometryMPM       *customGeometry;
+  // MaterialMPM       *customMaterial;
+  // AlgorithmMPM      *customAlgorithm;
+  // PartitionMPM      *customPartition;
+
+  QVector<GeometryMPM*> addedGeometry {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  QVector<MaterialMPM*> addedMaterial {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  QVector<AlgorithmMPM*> addedAlgorithm {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  QVector<PartitionMPM*> addedPartition {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  int numReserveTabs = 8;
+  int numAddedTabs = 0;
 };
 
-#endif // OPENSEES_DIGITAL_TWIN_H
+#endif // PARTICLES_MPM_H
 

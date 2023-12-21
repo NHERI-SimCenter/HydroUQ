@@ -87,6 +87,7 @@ public slots:
 
 private:
    QComboBox   *eventSelection;
+   // QComboBox   *methodSelection;
    QStackedWidget *theStackedWidget;
    SimCenterAppWidget *theCurrentEvent;
 
@@ -95,7 +96,8 @@ private:
    SimCenterAppWidget *theWaveDigitalFlume;
    SimCenterAppWidget *theCoupledDigitalTwin;
    SimCenterAppWidget *theMPM;    
-  
+   SimCenterAppWidget *theSPH;    
+
    RandomVariablesContainer *theRandomVariablesContainer;
 };
 

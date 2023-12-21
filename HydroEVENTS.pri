@@ -39,6 +39,10 @@ SOURCES += \
     $$PWD/EVENTS/mpm/SensorsMPM.cpp \
     $$PWD/EVENTS/mpm/ParticlesMPM.cpp \
     $$PWD/EVENTS/mpm/SettingsMPM.cpp \
+    $$PWD/EVENTS/mpm/MaterialMPM.cpp \
+    $$PWD/EVENTS/mpm/GeometryMPM.cpp \
+    $$PWD/EVENTS/mpm/AlgorithmMPM.cpp \
+    $$PWD/EVENTS/mpm/PartitionMPM.cpp \
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.cpp \
     $$PWD/EVENTS/Common/projectsettings.cpp \
     $$PWD/EVENTS/Common/bathymetry.cpp
@@ -76,7 +80,11 @@ HEADERS += \
     $$PWD/EVENTS/mpm/OutputsMPM.h \
     $$PWD/EVENTS/mpm/SensorsMPM.h \
     $$PWD/EVENTS/mpm/ParticlesMPM.h \
-    $$PWD/EVENTS/mpm/SettingsMPM.h \    
+    $$PWD/EVENTS/mpm/SettingsMPM.h \   
+    $$PWD/EVENTS/mpm/MaterialMPM.h \
+    $$PWD/EVENTS/mpm/GeometryMPM.h \
+    $$PWD/EVENTS/mpm/AlgorithmMPM.h \
+    $$PWD/EVENTS/mpm/PartitionMPM.h \   
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.h \
     $$PWD/EVENTS/Common/projectsettings.h \
     $$PWD/EVENTS/Common/bathymetry.h \

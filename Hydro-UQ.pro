@@ -9,11 +9,11 @@
 CONFIG += conan_basic_setup
 include($$OUT_PWD/conanbuildinfo.pri)
 
-QT += core gui charts concurrent network qml
+QT += core gui charts concurrent network qml svg
 QT += webchannel webenginewidgets
 QT += 3dcore 3drender 3dextras
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets 
 greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
 
 TARGET = Hydro_UQ
@@ -56,6 +56,7 @@ HEADERS  += \
 
 RESOURCES += \
     images.qrc \
+    resources.qrc \
     $$PWD/styles.qrc
 
 DISTFILES += \

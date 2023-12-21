@@ -50,7 +50,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SimCenterWidget.h>
 
 class QJsonObject;
-class SC_FileEdit;
+// class SC_FileEdit;
+class SC_ComboBox;
+class SC_TableEdit;
+class SC_DoubleLineEdit;
 
 class SensorsMPM : public SimCenterWidget
 {
@@ -59,13 +62,37 @@ public:
     virtual ~SensorsMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-    bool copyFiles(QString &dirName);
+    // bool copyFiles(QString &dirName);
   
 signals:
 
 private:
-  SC_FileEdit *theOpenSeesPyScript;
-  SC_FileEdit *theSurfaceFile;
+  // Wave-gauges (WG), Velocimeters (VM), and Load-cells (LC)
+  SC_ComboBox       *toggleWG;
+  SC_ComboBox       *typeWG;
+  SC_ComboBox       *attributeWG;
+  SC_ComboBox       *operationWG;
+  SC_ComboBox       *directionWG;
+  SC_DoubleLineEdit *output_frequencyWG;
+  SC_TableEdit      *waveGaugesTable;
+  
+
+  SC_ComboBox       *toggleVM;
+  SC_ComboBox       *typeVM;
+  SC_ComboBox       *attributeVM;
+  SC_ComboBox       *operationVM;
+  SC_ComboBox       *directionVM;
+  SC_DoubleLineEdit *output_frequencyVM;
+  SC_TableEdit      *velociMetersTable;
+
+
+  SC_ComboBox       *toggleLC;
+  SC_ComboBox       *typeLC;
+  SC_ComboBox       *attributeLC;
+  SC_ComboBox       *operationLC;
+  SC_ComboBox       *directionLC;
+  SC_DoubleLineEdit *output_frequencyLC;
+  SC_TableEdit      *loadCellsTable;
 };
 
 #endif // OPENSEES_DIGITAL_TWIN_H

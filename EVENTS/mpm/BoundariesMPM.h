@@ -51,10 +51,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 class QJsonObject;
 class SC_DoubleLineEdit;
+class SC_IntLineEdit;
 class SC_ComboBox;
 class SC_TableEdit;
 class SC_FileEdit;
 class SC_CheckBox;
+class SC_ComboBox;
+class QStackedWidget;
+class QGroupBox;
 
 class BoundariesMPM : public SimCenterWidget
 {
@@ -78,6 +82,8 @@ private:
   SC_DoubleLineEdit *flumeOriginY;
   SC_DoubleLineEdit *flumeOriginZ;  
   SC_ComboBox       *bathymetryComboBox;
+
+  SC_FileEdit       *bathSTL;
   SC_TableEdit      *bathXZData;  
 
   // wave generation
@@ -85,6 +91,9 @@ private:
   SC_DoubleLineEdit   *paddleLength;    
   SC_DoubleLineEdit   *paddleHeight;
   SC_DoubleLineEdit   *paddleWidth;
+
+  SC_DoubleLineEdit   *waveMag;
+  SC_DoubleLineEdit   *waveCelerity;
   SC_DoubleLineEdit   *waveRepeatSpeed;
   SC_DoubleLineEdit   *paddleOriginX;
   SC_DoubleLineEdit   *paddleOriginY;;
@@ -93,9 +102,45 @@ private:
   SC_FileEdit         *paddleDisplacementFile;    
 
 
-  // obstacles
+  // structures
+  SC_ComboBox       *structPreset;
+  SC_ComboBox       *structObjectType;
+  SC_ComboBox       *structContactType;
+  SC_DoubleLineEdit *structLength;
+  SC_DoubleLineEdit *structHeight;
+  SC_DoubleLineEdit *structWidth;
+  SC_DoubleLineEdit *structRadius;
+  SC_DoubleLineEdit *structLongAxis;
+  SC_DoubleLineEdit *structOriginLength;
+  SC_DoubleLineEdit *structOriginHeight;
+  SC_DoubleLineEdit *structOriginWidth;
+  SC_CheckBox       *structApplyCoulombFriction;    
+  SC_DoubleLineEdit *structStaticFrictionWallX;
+  SC_DoubleLineEdit *structStaticFrictionWallY;
+  SC_DoubleLineEdit *structStaticFrictionWallZ;
+  SC_DoubleLineEdit *structDynamicFrictionWallX;
+  SC_DoubleLineEdit *structDynamicFrictionWallY;
+  SC_DoubleLineEdit *structDynamicFrictionWallZ;  
   
-  
+  SC_CheckBox      *autoCreateLoadCells;
+  SC_ComboBox      *loadCellFace;
+
+  SC_CheckBox         *applyArray;
+  SC_IntLineEdit      *structArrayX;
+  SC_IntLineEdit      *structArrayY;
+  SC_IntLineEdit      *structArrayZ;
+  SC_DoubleLineEdit   *structSpacingX;
+  SC_DoubleLineEdit   *structSpacingY;
+  SC_DoubleLineEdit   *structSpacingZ;
+
+  SC_CheckBox       *applyRotation;    
+  SC_DoubleLineEdit *structRotateAngleX;
+  SC_DoubleLineEdit *structRotateAngleY;
+  SC_DoubleLineEdit *structRotateAngleZ;
+  SC_DoubleLineEdit *structRotateFulcrumX;
+  SC_DoubleLineEdit *structRotateFulcrumY;
+  SC_DoubleLineEdit *structRotateFulcrumZ;
+
   // walls
   SC_ComboBox       *wallsContactType;
   SC_DoubleLineEdit *wallsLength;
@@ -104,13 +149,63 @@ private:
   SC_DoubleLineEdit *originLength;
   SC_DoubleLineEdit *originHeight;
   SC_DoubleLineEdit *originWidth;
+
   SC_CheckBox       *applyCoulombFriction;    
   SC_DoubleLineEdit *staticFrictionWallX;
-  SC_DoubleLineEdit *staticFrictionFloor;
+  SC_DoubleLineEdit *staticFrictionWallY;
   SC_DoubleLineEdit *staticFrictionWallZ;
   SC_DoubleLineEdit *dynamicFrictionWallX;
-  SC_DoubleLineEdit *dynamicFrictionFloor;
-  SC_DoubleLineEdit *dynamicFrictionWallZ;    
+  SC_DoubleLineEdit *dynamicFrictionWallY;
+  SC_DoubleLineEdit *dynamicFrictionWallZ;  
+
+  SC_CheckBox       *applyInletOutlet;
+  SC_ComboBox       *inletOutletTypeSubX;
+  SC_ComboBox       *inletOutletTypeSubY;
+  SC_ComboBox       *inletOutletTypeSubZ;
+  SC_ComboBox       *inletOutletTypePlusX;
+  SC_ComboBox       *inletOutletTypePlusY;
+  SC_ComboBox       *inletOutletTypePlusZ;
+  SC_FileEdit       *inletOutletFileSubX;
+  SC_FileEdit       *inletOutletFileSubY;
+  SC_FileEdit       *inletOutletFileSubZ;
+  SC_FileEdit       *inletOutletFilePlusX;
+  SC_FileEdit       *inletOutletFilePlusY;
+  SC_FileEdit       *inletOutletFilePlusZ;
+
+  // // custom
+  // SC_ComboBox       *structObjectType;
+  // SC_ComboBox       *structContactType;
+  // SC_DoubleLineEdit *structLength;
+  // SC_DoubleLineEdit *structHeight;
+  // SC_DoubleLineEdit *structWidth;
+  // SC_DoubleLineEdit *structOriginLength;
+  // SC_DoubleLineEdit *structOriginHeight;
+  // SC_DoubleLineEdit *structOriginWidth;
+  // SC_CheckBox       *structApplyCoulombFriction;    
+  // SC_DoubleLineEdit *structStaticFrictionWallX;
+  // SC_DoubleLineEdit *structStaticFrictionWallY;
+  // SC_DoubleLineEdit *structStaticFrictionWallZ;
+  // SC_DoubleLineEdit *structDynamicFrictionWallX;
+  // SC_DoubleLineEdit *structDynamicFrictionWallY;
+  // SC_DoubleLineEdit *structDynamicFrictionWallZ;  
+  // SC_CheckBox       *applyRotation;    
+  // SC_DoubleLineEdit *structRotateAngleX;
+  // SC_DoubleLineEdit *structRotateAngleY;
+  // SC_DoubleLineEdit *structRotateAngleZ;
+  // SC_DoubleLineEdit *structRotateFulcrumX;
+  // SC_DoubleLineEdit *structRotateFulcrumY;
+  // SC_DoubleLineEdit *structRotateFulcrumZ;
+  // SC_IntLineEdit      *structArrayX;
+  // SC_IntLineEdit      *structArrayY;
+  // SC_IntLineEdit      *structArrayZ;
+  // SC_DoubleLineEdit   *structSpacingX;
+  // SC_DoubleLineEdit   *structSpacingY;
+  // SC_DoubleLineEdit   *structSpacingZ;
+
+  // custom
+  // QVector<GeometryBoundariesMPM*> addedGeometry {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+
+
 };
 
 #endif // OPENFOAM_DIGITAL_TWIN_H

@@ -43,6 +43,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QJsonObject>
+#include <QSvgWidget>
+#include <QString>
+#include <QIcon>
 
 #include <SettingsMPM.h>
 #include <ParticlesMPM.h>
@@ -54,42 +57,52 @@ MPM::MPM(QWidget *parent)
     : SimCenterAppWidget(parent)
 {
     int windowWidth = 800;
-
+    int windowWidthMin = 250;
     QWidget     *mainGroup = new QWidget();
     QGridLayout *mainLayout = new QGridLayout();
 
-    QLabel *generalDescriptionLabel = new QLabel("Coupled Digital Twin Simulation of Structures within NHERI Experimental Facilities.: "
-                                                 "\n --> Specify Simulation Settings "						 
-                                                 "\n --> Define Objects to Model "
-                                                 "\n --> Set Wave-Maker, Wave-Flume and Obstacle Boundary Conditions. "
-                                                 "\n --> Specify Sensors/Istruments to place in Wave-Flume "
-                                                 "\n --> Run MPM and Visualize");
+    QLabel *generalDescriptionLabel = new QLabel("Digital Twins of NHERI Experimental Facilities in Multi-GPU Material Point Method (ClaymoreUW MPM): "
+                                                 "\n"
+                                                 "\n Place waterborne events (EVT) in NHERI Digital Twins to streamline your experimental research."
+                                                 "\n ClaymoreUW, a high-performance 3D Material Point Method code, is used."
+                                                 "\n"
+                                                 "\n 1.) Set general simulation Settings, e.g. the total simulation duration."						 
+                                                 "\n 2.) Define Bodies (e.g. fluid, debris, structures, etc) via materials and initial conditions."
+                                                 "\n 3.) Define Boundaries (Digital Twins, Structures, etc) as boundary conditions."
+                                                 "\n 4.) Specify Sensors (e.g. wave-gauges) to measure within simulations."
+                                                 "\n 5.) Select other Output settings (e.g. write simulation checkpoint-resume files).");
+                                                //  "\n 6.) If all side-bar pages are complete, click [RUN at DesignSafe] (bottom of the app) to simulate your Event.");
 
 
     mainLayout->addWidget(generalDescriptionLabel, 0, 0);
+    mpmSettings = new SettingsMPM();
+    mpmParticles = new ParticlesMPM();
+    mpmBoundaries = new BoundariesMPM();
+    mpmSensors = new SensorsMPM();
+    mpmOutputs = new OutputsMPM();
 
     QTabWidget *theTabWidget = new QTabWidget();
-    mpmSettings = new SettingsMPM();
-    theTabWidget->addTab(mpmSettings, "Settings");
-    mpmParticles = new ParticlesMPM();
-    theTabWidget->addTab(mpmParticles, "Particles");
-    mpmBoundaries = new BoundariesMPM();
-    theTabWidget->addTab(mpmBoundaries, "Boundaries");
-    mpmSensors = new SensorsMPM();
-    theTabWidget->addTab(mpmSensors, "Sensors");
-    mpmOutputs = new OutputsMPM();
-    theTabWidget->addTab(mpmOutputs, "Outputs");    
-    
+    theTabWidget->addTab(mpmSettings, QIcon(QString(":/icons/settings-black.svg")), "Settings");
+    theTabWidget->addTab(mpmParticles, QIcon(QString(":/icons/deform-black.svg")), "Bodies");
+    theTabWidget->addTab(mpmBoundaries, QIcon(QString(":/icons/man-door-black.svg")), "Boundaries");
+    theTabWidget->addTab(mpmSensors, QIcon(QString(":/icons/dashboard-black.svg")), "Sensors");
+    theTabWidget->addTab(mpmOutputs, QIcon(QString(":/icons/settings-black.svg")), "Outputs");    
+    int sizePrimaryTabs =20;
+    theTabWidget->setIconSize(QSize(sizePrimaryTabs,sizePrimaryTabs));
+    // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+
     mainLayout->addWidget(theTabWidget, 1, 0);
-    
     mainGroup->setLayout(mainLayout);
+    mainGroup->setMinimumWidth(windowWidthMin);
     mainGroup->setMaximumWidth(windowWidth);
-    
+    // mainGroup->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+
     QScrollArea *scrollArea = new QScrollArea();
     scrollArea->setWidgetResizable(true);
     scrollArea->setLineWidth(1);
     scrollArea->setFrameShape(QFrame::NoFrame);
     scrollArea->setWidget(mainGroup);
+    scrollArea->setMinimumWidth(windowWidthMin + 25);
     scrollArea->setMaximumWidth(windowWidth + 25);
 
     QVBoxLayout *layout = new QVBoxLayout();
@@ -182,8 +195,8 @@ bool MPM::copyFiles(QString &destDir) {
     return false;
   if (mpmBoundaries->copyFiles(destDir) == false)
     return false;
-  if (mpmSensors->copyFiles(destDir) == false)
-    return false;    
+  // if (mpmSensors->copyFiles(destDir) == false)
+  //   return false;    
 
   return true;
  }

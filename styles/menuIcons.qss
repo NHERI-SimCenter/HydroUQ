@@ -1,0 +1,27 @@
+/* ---   Styles for Hydro-UQ    --- */
+/* --- Written: Justin Bonus  --- */
+/* --- Written: Peter McKenzie --- */
+/* --- Written: charles.wang --- */
+/* --- Written: Ajay B Harish --- */
+
+
+/* --- The menu button icons on the left --- */
+QFrame#sideBarIconsOnTheLeft{
+    background: rgb(79, 83, 89);
+
+    /* set the font properties*/
+    font-size:17px;
+    color: white;
+}
+
+QFrame#sideBarIconsOnTheLeft::item:hover {
+    background: rgb(69, 187, 217);
+}
+
+QFrame#sideBarIconsOnTheLeft::item:selected:active{
+    background: rgb(63, 147, 168);
+}
+
+QFrame#sideBarIconsOnTheLeft::item:selected:!active {
+    background: rgb(63, 147, 168);
+}
