@@ -42,6 +42,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QTabWidget>
 #include <QStackedWidget>
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
@@ -62,7 +64,7 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
 
   int numRow = 0;
 
-  QStringList numericalMethodList; numericalMethodList << "Particles" << "Mesh" << "Grid";
+  QStringList numericalMethodList; numericalMethodList << "particles" << "meshes";
   numericalMethod = new SC_ComboBox("NumericalMethod", numericalMethodList);
   layout->addWidget(new QLabel("Simulated Body Type"),numRow, 0);
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
@@ -85,6 +87,7 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   useASFLIP = new SC_CheckBox("use_ASFLIP");
   useASFLIP->setChecked(true);
   particlesLayout->addWidget(new QLabel("Use ASFLIP Advection?"),numBodyRow, 0);
+  particlesLayout->itemAt(particlesLayout->count()-1)->setAlignment(Qt::AlignRight);
   particlesLayout->addWidget(useASFLIP, numBodyRow++, 1);
 
   QGroupBox *ASFLIPGroupBox = new QGroupBox();
@@ -114,6 +117,7 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   useFBAR = new SC_CheckBox("use_FBAR");
   useFBAR->setChecked(true);
   particlesLayout->addWidget(new QLabel("Use F-Bar Antilocking?"),numBodyRow, 0);
+  particlesLayout->itemAt(particlesLayout->count()-1)->setAlignment(Qt::AlignRight);
   particlesLayout->addWidget(useFBAR, numBodyRow++, 1);
 
   QGroupBox *FBARGroupBox = new QGroupBox();
@@ -123,12 +127,14 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   FBARGroupBox->setVisible(true);
 
   FBAR_psi = new SC_DoubleLineEdit("FBAR_ratio", 0.0);
-  FBARLayout->addWidget(new QLabel("Vol. Antilocking Ratio"),numBodyRow, 0);
+  FBARLayout->addWidget(new QLabel("Antilocking Ratio"),numBodyRow, 0);
+  FBARLayout->itemAt(FBARLayout->count()-1)->setAlignment(Qt::AlignRight);
   FBARLayout->addWidget(FBAR_psi, numBodyRow, 1);
   FBARLayout->addWidget(new QLabel("[0, 1], typ. in [0.5, 0.99999]"),numBodyRow++, 2);
 
   useFBAR_fusedG2P2G = new SC_CheckBox("FBAR_fused_kernel");
   FBARLayout->addWidget(new QLabel("Use Fused MPM (G2P + P2G)?"),numBodyRow, 0);
+  FBARLayout->itemAt(FBARLayout->count()-1)->setAlignment(Qt::AlignRight);
   FBARLayout->addWidget(useFBAR_fusedG2P2G, numBodyRow++, 1);
 
 
@@ -165,70 +171,6 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   // layout->setRowStretch(numRow, 2);
   layout->setColumnStretch(3, 1);
 
-  // // Connect the material preset  QComboBox to change entries to default values if selected
-  // connect(materialPreset, &QComboBox::currentTextChanged, [=](QString val) {
-  //   if (val == "Water") {
-  //     constitutive->setText("JFluid");
-  //     density->setText("1000");
-  //     bulkModulus->setText("2.2e9");
-  //     bulkModulusDerivative->setText("7.15");
-  //     viscosity->setText("1e-3");
-  //   } else if (val == "Water (Soft)") {
-  //     constitutive->setText("JFluid");
-  //     density->setText("1000");
-  //     bulkModulus->setText("2.2e7");
-  //     bulkModulusDerivative->setText("7.15");
-  //     viscosity->setText("1e-3");
-  //   } else if (val == "Plastic") {
-  //     constitutive->setText("FixedCorotated");
-  //     density->setText("981");
-  //     youngsModulus->setText("1e8");
-  //     poissonsRatio->setText("0.3");
-  //   } else if (val == "Rubber") {
-  //     constitutive->setText("FixedCorotated");
-  //     density->setText("950");
-  //     youngsModulus->setText("1e5");
-  //     poissonsRatio->setText("0.4");
-  //   } else if (val == "Aluminum") {
-  //     constitutive->setText("FixedCorotated");
-  //     density->setText("2700");
-  //     youngsModulus->setText("6.9e10");
-  //     poissonsRatio->setText("0.4");
-  //   } else if (val == "Wood") {
-  //     constitutive->setText("FixedCorotated");
-  //     density->setText("750");
-  //     youngsModulus->setText("2e9");
-  //     poissonsRatio->setText("0.25");
-  //   } else if (val == "Clay") {
-  //     constitutive->setText("CamClay");
-  //     density->setText("1400");
-  //     youngsModulus->setText("5e7");
-  //     poissonsRatio->setText("0.25");
-  //   } else if (val == "Concrete") {
-  //     constitutive->setText("NACC");
-  //     density->setText("2400");
-  //     youngsModulus->setText("2e7");
-  //     poissonsRatio->setText("0.15");
-  //   } else if (val == "Sand") {
-  //     constitutive->setText("DruckerPrager");
-  //     density->setText("1400");
-  //     youngsModulus->setText("1e8");
-  //     poissonsRatio->setText("0.2");
-  //   } 
-  // });
-
-
-
-  // Debris Geometry File = new SC_FileEdit("file");
-  // debrisGeometryLayout->addWidget(new QLabel("Debris Geometry File"),numRow, 0);
-  // debrisGeometryLayout->addWidget(Debris Geometry File,numRow++, 1);  
-
-
-  // // connext bathymetry to show correct widget
-  // connect(waveGenComboBox, QOverload<int>::of(&QComboBox::activated),
-	//   waveGenStack, &QStackedWidget::setCurrentIndex);
-  // */
-
 }
 
 AlgorithmMPM::~AlgorithmMPM()
@@ -241,6 +183,32 @@ AlgorithmMPM::outputToJSON(QJsonObject &jsonObject)
 {
   // theOpenSeesPyScript->outputToJSON(jsonObject);
   // theSurfaceFile->outputToJSON(jsonObject);  
+
+  // Note: ClaymoreUW will also need these defined in the JSON model/body object, not just the nested JSON partition/device object
+  // Future schema
+  QJsonObject algorithmObject;
+  algorithmObject["type"] = numericalMethod->currentText();
+  algorithmObject["ppc"] = particlesPerCell->text().toDouble();
+  algorithmObject["use_ASFLIP"] = useASFLIP->isChecked();
+  algorithmObject["use_FBAR"] = useFBAR->isChecked();
+  algorithmObject["FBAR_fused_kernel"] = useFBAR_fusedG2P2G->isChecked();
+  algorithmObject["ASFLIP_alpha"] = ASFLIP_alpha->text().toDouble();
+  algorithmObject["ASFLIP_beta_min"] = ASFLIP_betaMin->text().toDouble();
+  algorithmObject["ASFLIP_beta_max"] = ASFLIP_betaMax->text().toDouble();
+  algorithmObject["FBAR_psi"] = FBAR_psi->text().toDouble();
+  jsonObject["algorithm"] = algorithmObject;
+
+  // ClaymoreUW artifacts, Global algorithm settings. TODO: Deprecate
+  jsonObject["numerical_method"] = numericalMethod->currentText();
+  jsonObject["ppc"] = particlesPerCell->text().toDouble();
+  jsonObject["use_ASFLIP"] = useASFLIP->isChecked();
+  jsonObject["use_FBAR"] = useFBAR->isChecked();
+  jsonObject["FBAR_fused_kernel"] = useFBAR_fusedG2P2G->isChecked(); // TODO: Rename
+  jsonObject["alpha"] = ASFLIP_alpha->text().toDouble(); // TODO: Rename
+  jsonObject["beta_min"] = ASFLIP_betaMin->text().toDouble(); // TODO: Rename
+  jsonObject["beta_max"] = ASFLIP_betaMax->text().toDouble(); // TODO: Rename
+  jsonObject["FBAR_ratio"] = FBAR_psi->text().toDouble(); // TODO: Rename?
+
   return true;
 }
 

@@ -52,6 +52,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <memory>
 
 class QJsonObject;
+class QJsonArray;
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
 class SC_StringLineEdit;

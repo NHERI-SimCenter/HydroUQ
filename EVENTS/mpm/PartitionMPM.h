@@ -50,6 +50,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SimCenterWidget.h>
 
 class QJsonObject;
+class QJsonArray;
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
 class SC_StringLineEdit;
@@ -70,12 +71,15 @@ public:
 signals:
 
 private:
-
   SC_IntLineEdit    *deviceNumber; // GPU device ID
-  SC_IntLineEdit    *bodyNumber; // GPU model number
+  SC_IntLineEdit    *bodyNumber; // Model-body number-ID on GPU device
+  SC_DoubleLineEdit *partitionOrigin_X; // GPU domain start X
+  SC_DoubleLineEdit *partitionOrigin_Y; // GPU domain start Y
+  SC_DoubleLineEdit *partitionOrigin_Z; // GPU domain start Z
+  SC_DoubleLineEdit *partitionDimensions_X; // GPU domain end X
+  SC_DoubleLineEdit *partitionDimensions_Y; // GPU domain end Y
+  SC_DoubleLineEdit *partitionDimensions_Z; // GPU domain end Z
   SC_TableEdit      *devicePartitions; // GPU device partitions;  
-  
-
 };
 
 #endif // PARTITION_MPM_H

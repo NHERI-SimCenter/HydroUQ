@@ -50,6 +50,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SimCenterWidget.h>
 
 class QJsonObject;
+class QJsonArray;
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
 class SC_StringLineEdit;
@@ -98,7 +99,7 @@ private:
   SC_DoubleLineEdit   *rotateFulcrumY;
   SC_DoubleLineEdit   *rotateFulcrumZ;
 
-  
+
   SC_DoubleLineEdit   *standingWaterLevel;
   SC_CheckBox         *fillFlumeUptoSWL;
   SC_ComboBox         *facility;

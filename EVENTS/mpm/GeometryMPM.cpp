@@ -42,6 +42,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QTabWidget>
 #include <QStackedWidget>
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
@@ -432,7 +434,122 @@ bool
 GeometryMPM::outputToJSON(QJsonObject &jsonObject)
 {
   // theOpenSeesPyScript->outputToJSON(jsonObject);
-  // theSurfaceFile->outputToJSON(jsonObject);  
+  // theSurfaceFile->outputToJSON(jsonObject); 
+  QJsonArray geometriesArray;
+
+
+  {
+    QJsonObject geometryObject;
+
+
+    geometryObject["body_preset"] = bodyPreset->currentText();
+    geometryObject["object"] = objectType->currentText();
+
+    if (operationType->currentText() == "Add (OR)") {
+      geometryObject["operation"] = "add";
+    } else if (operationType->currentText() == "Subtract (NOT)") {
+      geometryObject["operation"] = "subtract";
+    } else if (operationType->currentText() == "Intersect (AND)") {
+      geometryObject["operation"] = "intersect";
+    } else if (operationType->currentText() == "Difference (XOR)") {
+      geometryObject["operation"] = "difference";
+    } else {
+      geometryObject["operation"] = "add";
+    }
+
+    geometryObject["facility"] = facility->currentText();
+    QJsonArray facilityDims;
+    facilityDims.append(facilityLength->text().toDouble());
+    facilityDims.append(facilityHeight->text().toDouble());
+    facilityDims.append(facilityWidth->text().toDouble());
+    geometryObject["facility_dimensions"] = facilityDims;
+
+    QJsonArray spanArray;
+    QJsonArray originArray;
+    if (bodyPreset->currentText() == "Fluid") {
+      // Crop fluid geometry to SWL and facility size if selected to fill flume up to SWL
+      geometryObject["standing_water_level"] = standingWaterLevel->text().toDouble();
+      geometryObject["fill_flume_upto_SWL"] = fillFlumeUptoSWL->isChecked();
+      if (fillFlumeUptoSWL->isChecked()) {
+        spanArray.append(length->text().toDouble() < facilityLength->text().toDouble() ? length->text().toDouble() : facilityLength->text().toDouble());
+        spanArray.append(standingWaterLevel->text().toDouble() < facilityHeight->text().toDouble() ? standingWaterLevel->text().toDouble() : facilityHeight->text().toDouble());
+        spanArray.append(width->text().toDouble() < facilityWidth->text().toDouble() ? width->text().toDouble() : facilityWidth->text().toDouble());
+      } else {
+        spanArray.append(length->text().toDouble());
+        spanArray.append(height->text().toDouble());
+        spanArray.append(width->text().toDouble());
+      }
+      if (0) geometryObject["dimensions"] = spanArray; // Future schema
+      else   geometryObject["span"] = spanArray; // ClayoreUW artifact, to be deprecated
+
+      originArray.append(originX->text().toDouble());
+      originArray.append(originY->text().toDouble());
+      originArray.append(originZ->text().toDouble());
+      if (0) geometryObject["origin"] = originArray; // Future schema
+      else   geometryObject["offset"] = originArray; // ClayoreUW artifact, to be deprecated
+
+      // User point-list input bathymetry
+      if (bathXZData->isEnabled()) {
+        QJsonObject tableBath;
+        bathXZData->outputToJSON(tableBath);
+        QJsonArray bathXZArray;
+        
+        for (int i = 0; i < tableBath["bathXZData"].toArray().size(); i++) {
+          bathXZArray.append(tableBath["bathXZData"].toArray()[i].toArray());
+        }
+        geometryObject["bathymetryXZ"] = bathXZArray;
+      }
+      // TODO: Add user file-input bathymetry to JSON 
+    } else {
+      spanArray.append(length->text().toDouble());
+      spanArray.append(height->text().toDouble());
+      spanArray.append(width->text().toDouble());
+      if (0) geometryObject["dimensions"] = spanArray; // Future schema
+      else   geometryObject["span"] = spanArray; // ClayoreUW artifact, to be deprecated
+
+      originArray.append(originX->text().toDouble());
+      originArray.append(originY->text().toDouble());
+      originArray.append(originZ->text().toDouble());
+      if (0) geometryObject["origin"] = originArray; // Future schema
+      else   geometryObject["offset"] = originArray; // ClayoreUW artifact, to be deprecated
+    }
+    
+    geometryObject["apply_array"] = applyArray->isChecked();
+    if (applyArray->isChecked()) {
+      QJsonArray arrayDims;
+      arrayDims.append(arrayX->text().toInt());
+      arrayDims.append(arrayY->text().toInt());
+      arrayDims.append(arrayZ->text().toInt());
+      geometryObject["array"] = arrayDims;
+
+      QJsonArray spacingArray;
+      spacingArray.append(spacingX->text().toDouble());
+      spacingArray.append(spacingY->text().toDouble());
+      spacingArray.append(spacingZ->text().toDouble());
+      geometryObject["spacing"] = spacingArray;
+    }
+
+    geometryObject["apply_rotation"] = applyRotation->isChecked();
+    if (applyRotation->isChecked()) {
+      QJsonArray rotateAngles;
+      rotateAngles.append(rotateAngleX->text().toDouble());
+      rotateAngles.append(rotateAngleY->text().toDouble());
+      rotateAngles.append(rotateAngleZ->text().toDouble());
+      geometryObject["rotate"] = rotateAngles;
+
+      QJsonArray rotateFulcrum;
+      rotateFulcrum.append(rotateFulcrumX->text().toDouble());
+      rotateFulcrum.append(rotateFulcrumY->text().toDouble());
+      rotateFulcrum.append(rotateFulcrumZ->text().toDouble());
+      geometryObject["fulcrum"] = rotateFulcrum;
+    }
+    
+    // geometriesArray.append(geometryObject);
+    QJsonArray tempGeometryArray = jsonObject["geometry"].toArray();
+    tempGeometryArray.append(geometryObject);
+    jsonObject["geometry"] = tempGeometryArray;
+  }
+
   return true;
 }
 

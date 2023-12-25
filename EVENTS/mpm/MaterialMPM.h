@@ -50,6 +50,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SimCenterWidget.h>
 
 class QJsonObject;
+class QJsonArray;
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
 class SC_StringLineEdit;
@@ -66,7 +67,8 @@ public:
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
-  
+    bool setMaterialPreset(int presetIndex);
+    // bool setMaterialPreset(QString &presetName);
 signals:
 
 private:
@@ -101,7 +103,7 @@ private:
   SC_CheckBox *useHardening = nullptr;
   SC_DoubleLineEdit   *xi = nullptr;
   SC_DoubleLineEdit   *beta = nullptr;
-  SC_DoubleLineEdit   *Msqr = nullptr;
+  SC_DoubleLineEdit   *Mohr = nullptr;
   // static constexpr PREC mohrColumbFriction =
   //     0.503599787772409; //< sqrt((T)2 / (T)3) * (T)2 * sin_phi / ((T)3 -
   //                        // sin_phi);

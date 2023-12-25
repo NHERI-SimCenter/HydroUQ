@@ -42,6 +42,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QTabWidget>
 #include <QStackedWidget>
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
@@ -62,23 +64,50 @@ PartitionMPM::PartitionMPM(QWidget *parent)
 
   int numRow = 0;
 
-
+  // Update to reflect the number of GPUs on the machine
   deviceNumber = new SC_IntLineEdit("gpu", 0);
   layout->addWidget(new QLabel("Set GPU Device ID"), numRow, 0);
+  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
   layout->addWidget(deviceNumber, numRow, 1);
   layout->addWidget(new QLabel("[0,8)"),numRow++, 2);
 
+  // Update to reflect the number of max material bodies ClaymoreUW is compiled for per GPU
   bodyNumber = new SC_IntLineEdit("model", 0);
-  layout->addWidget(new QLabel("Set Body ID on GPU Device"), numRow, 0);
+  layout->addWidget(new QLabel("Body ID on GPU Device"), numRow, 0);
+  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
   layout->addWidget(bodyNumber, numRow, 1);
   layout->addWidget(new QLabel("[0,3)"),numRow++, 2);
 
-  QStringList devicePartitionsHeadings; devicePartitionsHeadings << "Start [m]" << "End [m]";
-  QStringList devicePartitionsDimensions; devicePartitionsDimensions << "0" << "0" << "1" << "1" << "2" << "2" << "3" << "3";
-  devicePartitions = new SC_TableEdit("partition_start", devicePartitionsHeadings, 4, devicePartitionsDimensions);
+  // Update to constrain the partition origin to the simulation domain dimensions set in the settings tab
+  partitionOrigin_X = new SC_DoubleLineEdit("partition_origin_x", 0.0);
+  partitionOrigin_Y = new SC_DoubleLineEdit("partition_origin_y", 0.0);
+  partitionOrigin_Z = new SC_DoubleLineEdit("partition_origin_z", 0.0);
+  layout->addWidget(new QLabel("Partition Origin (X,Y,Z)"), numRow, 0);
+  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
+  layout->addWidget(partitionOrigin_X, numRow, 1);
+  layout->addWidget(partitionOrigin_Y, numRow, 2);
+  layout->addWidget(partitionOrigin_Z, numRow, 3);
+  layout->addWidget(new QLabel("m"),numRow++, 4);
 
-  layout->addWidget(new QLabel("GPU Device Partitions"),(numRow + 3),0,1,4);    
-  layout->addWidget(devicePartitions,(numRow + 4),0,1,4);  
+  // TODO: Update default to the simulation domain dimensions set in the settings tab
+  partitionDimensions_X = new SC_DoubleLineEdit("partition_dimensions_x", 90.0);
+  partitionDimensions_Y = new SC_DoubleLineEdit("partition_dimensions_y", 2.9);
+  partitionDimensions_Z = new SC_DoubleLineEdit("partition_dimensions_z", 3.65);
+  layout->addWidget(new QLabel("Partition Dimensions (X,Y,Z)"), numRow, 0);
+  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
+  layout->addWidget(partitionDimensions_X, numRow, 1);
+  layout->addWidget(partitionDimensions_Y, numRow, 2);
+  layout->addWidget(partitionDimensions_Z, numRow, 3);
+  layout->addWidget(new QLabel("m"),numRow++, 4);
+
+
+  layout->setRowStretch(numRow,1);
+  // QStringList devicePartitionsHeadings; devicePartitionsHeadings << "Start [m]" << "End [m]";
+  // QStringList devicePartitionsDimensions; devicePartitionsDimensions << "0" << "0" << "1" << "1" << "2" << "2" << "3" << "3";
+  // devicePartitions = new SC_TableEdit("partition_start", devicePartitionsHeadings, 4, devicePartitionsDimensions);
+
+  // layout->addWidget(new QLabel("GPU Device Partitions"),(numRow + 3),0,1,4);    
+  // layout->addWidget(devicePartitions,(numRow + 4),0,1,4);  
 
   // layout->setRowStretch(numRow,1);
 
@@ -103,6 +132,38 @@ PartitionMPM::outputToJSON(QJsonObject &jsonObject)
 {
   // theOpenSeesPyScript->outputToJSON(jsonObject);
   // theSurfaceFile->outputToJSON(jsonObject);  
+
+  // Note: ClaymoreUW will also need these defined in the JSON model/body object, not just the nested JSON partition/device object
+  jsonObject["gpu"] = deviceNumber->text().toDouble();
+  jsonObject["model"] = bodyNumber->text().toDouble();
+
+  // Future schema
+  if (0) {
+    QJsonArray partitionOrigin;
+    partitionOrigin.append(partitionOrigin_X->text().toDouble());
+    partitionOrigin.append(partitionOrigin_Y->text().toDouble());
+    partitionOrigin.append(partitionOrigin_Z->text().toDouble());
+    jsonObject["partition_origin"] = partitionOrigin;
+
+    QJsonArray partitionDimensions;
+    partitionDimensions.append(partitionDimensions_X->text().toDouble());
+    partitionDimensions.append(partitionDimensions_Y->text().toDouble());
+    partitionDimensions.append(partitionDimensions_Z->text().toDouble());
+    jsonObject["partition_dimensions"] = partitionDimensions;
+  }
+  // ClaymoreUW artifacts, to be deprecated
+  QJsonArray partition_start;
+  partition_start.append(partitionOrigin_X->text().toDouble());
+  partition_start.append(partitionOrigin_Y->text().toDouble());
+  partition_start.append(partitionOrigin_Z->text().toDouble());
+  jsonObject["partition_start"] = partition_start;
+
+  QJsonArray partition_end; 
+  partition_end.append(partitionOrigin_X->text().toDouble() + partitionDimensions_X->text().toDouble());
+  partition_end.append(partitionOrigin_Y->text().toDouble() + partitionDimensions_Y->text().toDouble());
+  partition_end.append(partitionOrigin_Z->text().toDouble() + partitionDimensions_Z->text().toDouble());
+  jsonObject["partition_end"] = partition_end;
+
   return true;
 }
 

@@ -50,6 +50,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SimCenterWidget.h>
 
 class QJsonObject;
+class QJsonArray;
 // class SC_FileEdit;
 class SC_ComboBox;
 class SC_TableEdit;

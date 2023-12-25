@@ -44,6 +44,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_DoubleLineEdit.h>
 #include <SC_IntLineEdit.h>
 #include <SC_StringLineEdit.h>
+#include <QJsonObject>
+#include <QJsonArray>
 
 
 
@@ -147,7 +149,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   timeBoxLayout->addWidget(timeStep, numRow, 1);
   timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 2);
 
-  QStringList timeIntegrationList ; timeIntegrationList << "Semi-Implicit (Symplectic Euler)" <<  "Explicit (Forward Euler)";
+  QStringList timeIntegrationList ; timeIntegrationList <<  "Explicit (Forward Euler)" << "Semi-Implicit (Symplectic Euler)";
   timeIntegration = new SC_ComboBox("time_integration", timeIntegrationList);    
   timeBoxLayout->addWidget(new QLabel("Time-Integration Style"), numRow, 0);
   timeBoxLayout->itemAt(timeBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
@@ -341,6 +343,8 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   layout->addWidget(gpuSettings,2,0);  
   layout->setRowStretch(3,1);
   // layout->setColumnStretch(1,1);
+  hpc->setCurrentIndex(1); // Start with "TACC - UT Austin - Lonestar6", as it is more powerful than Frontera in double-precision
+  hpc->setCurrentIndex(0); // For now, Default to "TACC - UT Austin - Frontera" for now, as Tapis apps are already made for Frontera over Lonestar6
 }
 
 SettingsMPM::~SettingsMPM()
@@ -351,38 +355,104 @@ SettingsMPM::~SettingsMPM()
 bool
 SettingsMPM::outputToJSON(QJsonObject &jsonObject)
 {
-  domainSizeX->outputToJSON(jsonObject);
-  domainSizeY->outputToJSON(jsonObject);
-  domainSizeZ->outputToJSON(jsonObject);
-  gridCellSize->outputToJSON(jsonObject);
-  mirrorDomainX->outputToJSON(jsonObject);
-  mirrorDomainY->outputToJSON(jsonObject);
-  mirrorDomainZ->outputToJSON(jsonObject);
+  QJsonObject settingsObject;
 
-  timeStep->outputToJSON(jsonObject);
-  timeIntegration->outputToJSON(jsonObject);
-  initialTime->outputToJSON(jsonObject);
-  duration->outputToJSON(jsonObject);
+  settingsObject["cfl"] = cflNumber->text().toDouble(); // Check not negative or zero
 
-  cflNumber->outputToJSON(jsonObject);
-  gravityX->outputToJSON(jsonObject);
-  gravityY->outputToJSON(jsonObject);
-  gravityZ->outputToJSON(jsonObject);
+  QJsonArray gravityArray;
+  gravityArray.append(gravityX->text().toDouble()); 
+  gravityArray.append(gravityY->text().toDouble());
+  gravityArray.append(gravityZ->text().toDouble());
+  settingsObject["gravity"] = gravityArray; 
 
-  froudeScaling->outputToJSON(jsonObject);
-  froudeLengthRatio->outputToJSON(jsonObject);
-  froudeTimeRatio->outputToJSON(jsonObject);
-  cauchyScaling->outputToJSON(jsonObject);
-  cauchyBulkRatio->outputToJSON(jsonObject);
+  QJsonArray domainArray;
+  domainArray.append(domainSizeX->text().toDouble());
+  domainArray.append(domainSizeY->text().toDouble());
+  domainArray.append(domainSizeZ->text().toDouble());
+  settingsObject["domain"] = domainArray; // Check not inverted, not zero volume, not too big relative to grid cell size and compiled ClaymoreUW limits
 
-  numGPUs->outputToJSON(jsonObject);
-  modelsPerGPU->outputToJSON(jsonObject);  
-  hpcCardName->outputToJSON(jsonObject);
-  hpcCardArchitecture->outputToJSON(jsonObject);
-  hpcCardGlobalMemory->outputToJSON(jsonObject);
-  hpcCardComputeCapability->outputToJSON(jsonObject);
-  hpcCardBrand->outputToJSON(jsonObject);
-  hpc->outputToJSON(jsonObject);
+  settingsObject["default_dx"] = gridCellSize->text().toDouble(); // Check not negative or zero
+
+  QJsonArray mirrorArray;
+  mirrorArray.append(mirrorDomainX->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool());
+  mirrorArray.append(mirrorDomainY->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool());
+  mirrorArray.append(mirrorDomainZ->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool());
+  settingsObject["mirror_domain"] = mirrorArray; // TODO: Fully implement this in ClaymoreUW
+
+  // Time settings
+  settingsObject["initial_time"] = initialTime->text().toDouble(); // future schema
+  settingsObject["time"] = initialTime->text().toDouble(); // Current schema in ClaymoreUW, TODO: update to initial_time
+  settingsObject["duration"] = duration->text().toDouble(); // Check not negative or zero, TODO: Remove ClaymoreUW's dependence on "frames" and "fps" to determine "duration" implicitly (artifact from computer graphics)
+  settingsObject["default_dt"] = timeStep->text().toDouble(); // Check not negative or zero
+  // settingsObject["frames"] = static_cast<int>(framesPerSecond->text().toInt() * duration->text().toDouble()); // TODO: Move to outputs
+  settingsObject["time_integration"] = QJsonValue(timeIntegration->currentText()).toString();
+  // settingsObject["fps"] = framesPerSecond->text().toInt(); // TODO: NOT YET INITIALIZED, also, Move to outputs
+
+  // // TODO: Move to a separate "scaling" object, or "similitude"
+  // // TODO: Remove dependency on "froude" and "cauchy" for "time_ratio", "length_ratio", etc., they should be handled by the UI and not the backend if we intend to extrapolate to hold many more scaling laws (e.g., Reynolds, Weber, etc.)
+  settingsObject["use_froude_scaling"] = froudeScaling->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool(); 
+  settingsObject["froude_scaling"] = froudeLengthRatio->text().toDouble(); // Note inconsistent naming, TODO: update to "froude_length_ratio" in ClaymoreUW
+  settingsObject["froude_time_ratio"] = froudeTimeRatio->text().toDouble();
+  settingsObject["use_cauchy_scaling"] = cauchyScaling->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
+  settingsObject["cauchy_bulk_ratio"] = cauchyBulkRatio->text().toDouble();
+
+  // // For future use, not in ClaymoreUW yet as a separate "scaling" object
+  QJsonObject scalingObject;
+  scalingObject["use_froude_scaling"] = froudeScaling->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
+  scalingObject["froude_length_ratio"] = froudeLengthRatio->text().toDouble();
+  scalingObject["froude_time_ratio"] = froudeTimeRatio->text().toDouble();
+  scalingObject["use_cauchy_scaling"] = cauchyScaling->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
+  scalingObject["cauchy_bulk_ratio"] = cauchyBulkRatio->text().toDouble();
+  jsonObject["scaling"] = scalingObject;
+
+  // // For future use, not in ClaymoreUW yet as a separate "computer" object
+  QJsonObject computerObject;
+  computerObject["num_gpus"] = numGPUs->text().toInt();
+  computerObject["models_per_gpu"] = modelsPerGPU->text().toInt();
+  computerObject["hpc_card_name"] = hpcCardName->text();
+  computerObject["hpc_card_architecture"] = hpcCardArchitecture->text();
+  computerObject["hpc_card_global_memory"] = hpcCardGlobalMemory->text().toInt();
+  computerObject["hpc_card_compute_capability"] = hpcCardComputeCapability->text().toInt();
+  computerObject["hpc_card_brand"] = hpcCardBrand->text();
+  computerObject["hpc"] = QJsonValue(hpc->currentText()).toString();
+  jsonObject["computer"] = computerObject;
+
+  jsonObject["simulation"] = settingsObject;
+
+
+
+  // domainSizeX->outputToJSON(jsonObject);
+  // domainSizeY->outputToJSON(jsonObject);
+  // domainSizeZ->outputToJSON(jsonObject);
+  // gridCellSize->outputToJSON(jsonObject);
+  // mirrorDomainX->outputToJSON(jsonObject);
+  // mirrorDomainY->outputToJSON(jsonObject);
+  // mirrorDomainZ->outputToJSON(jsonObject);
+
+  // timeStep->outputToJSON(jsonObject);
+  // timeIntegration->outputToJSON(jsonObject);
+  // initialTime->outputToJSON(jsonObject);
+  // duration->outputToJSON(jsonObject);
+
+  // cflNumber->outputToJSON(jsonObject);
+  // gravityX->outputToJSON(jsonObject);
+  // gravityY->outputToJSON(jsonObject);
+  // gravityZ->outputToJSON(jsonObject);
+
+  // froudeScaling->outputToJSON(jsonObject);
+  // froudeLengthRatio->outputToJSON(jsonObject);
+  // froudeTimeRatio->outputToJSON(jsonObject);
+  // cauchyScaling->outputToJSON(jsonObject);
+  // cauchyBulkRatio->outputToJSON(jsonObject);
+
+  // numGPUs->outputToJSON(jsonObject);
+  // modelsPerGPU->outputToJSON(jsonObject);  
+  // hpcCardName->outputToJSON(jsonObject);
+  // hpcCardArchitecture->outputToJSON(jsonObject);
+  // hpcCardGlobalMemory->outputToJSON(jsonObject);
+  // hpcCardComputeCapability->outputToJSON(jsonObject);
+  // hpcCardBrand->outputToJSON(jsonObject);
+  // hpc->outputToJSON(jsonObject);
   return true;
 }
 

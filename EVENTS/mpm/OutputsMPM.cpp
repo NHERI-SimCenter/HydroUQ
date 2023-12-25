@@ -41,6 +41,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QGroupBox>
 #include <QLabel>
 #include <QStringList>
+#include <QJsonObject>
 #include <QJsonArray>
 #include <QTabWidget>
 
@@ -59,7 +60,7 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   //
   int numRow = 0;
   QStringList yesNo; yesNo << "Yes" << "No";
-  QStringList particleExt; particleExt << "VTK" << "BGEO" << "GEO" << "CSV" << "TXT" << "PDB";
+  QStringList particleExt; particleExt << "BGEO" << "VTK" << "GEO" << "CSV" << "TXT" << "PDB";
   QStringList checkpointsExt; checkpointsExt << "BGEO" << "GEO" << "VTK" << "CSV" << "TXT" << "PDB";
   QStringList boundariesExt; boundariesExt << "OBJ" << "STL";
   QStringList sensorExt; sensorExt << "CSV" << "TXT";
@@ -67,7 +68,7 @@ OutputsMPM::OutputsMPM(QWidget *parent)
 
 
 
-  vtkBodies_Output = new SC_ComboBox("bodies_save_suffix",particleExt);  
+  vtkBodies_Output = new SC_ComboBox("bodies_save_suffix", particleExt);  
   vtkCheckpoints_Output = new SC_ComboBox("checkpoints_save_suffix", checkpointsExt);
   vtkBoundaries_Output = new SC_ComboBox("boundaries_save_suffix", boundariesExt);
   vtkSensors_Output = new SC_ComboBox("sensors_save_suffix", sensorExt);
@@ -170,18 +171,30 @@ OutputsMPM::~OutputsMPM()
 bool
 OutputsMPM::outputToJSON(QJsonObject &jsonObject)
 {
-  // vtkBodies_Output->outputToJSON(jsonObject);  
-  // vtkSensors_Output->outputToJSON(jsonObject);
-  // outputBodies_Dt->outputToJSON(jsonObject);
-  // outputSensors_Dt->outputToJSON(jsonObject);
-  // outputSensors_FM->outputToJSON(jsonObject);
-  // outputSensors_FSP->outputToJSON(jsonObject);
-  // outputSensors_FP->outputToJSON(jsonObject);
-  // outputSensors_SC->outputToJSON(jsonObject);
-  // freeSurfaceProbes->outputToJSON(jsonObject);
-  // fieldProbes->outputToJSON(jsonObject);
-  // sectionCuts->outputToJSON(jsonObject);
-  
+  QJsonObject outputsObject;
+
+  // New schema
+  outputsObject["bodies_save_suffix"] = vtkBodies_Output->itemText(vtkBodies_Output->currentIndex());
+  outputsObject["checkpoints_save_suffix"] = vtkCheckpoints_Output->itemText(vtkCheckpoints_Output->currentIndex());
+  outputsObject["boundaries_save_suffix"] = vtkBoundaries_Output->itemText(vtkBoundaries_Output->currentIndex());
+  outputsObject["sensors_save_suffix"] = vtkSensors_Output->itemText(vtkSensors_Output->currentIndex());
+  outputsObject["energies_save_suffix"] = vtkEnergies_Output->itemText(vtkEnergies_Output->currentIndex());
+
+  outputsObject["bodies_output_freq"] = outputBodies_Dt->text().toDouble();
+  outputsObject["checkpoints_output_freq"] = outputCheckpoints_Dt->text().toDouble();
+  outputsObject["boundaries_output_freq"] = outputBoundaries_Dt->text().toDouble();
+  // outputsObject["sensors_output_freq"] = outputSensors_Dt->text().toDouble(); // Defined by individual sensor
+  outputsObject["energies_output_freq"] = outputEnergies_Dt->text().toDouble();
+
+  outputsObject["useKineticEnergy"] = useKineticEnergy->isChecked();
+  outputsObject["usePotentialEnergy"] = usePotentialEnergy->isChecked();
+  outputsObject["useStrainEnergy"] = useStrainEnergy->isChecked();
+
+  jsonObject["outputs"] = outputsObject;
+
+  // ClaymoreUW artifacts, will deprecate. These are moved into the "simulation" settings object 
+  jsonObject["save_suffix"] = vtkBodies_Output->itemText(vtkBodies_Output->currentIndex());
+  jsonObject["fps"] = outputBodies_Dt->text().toDouble();
   return true;
 }
 

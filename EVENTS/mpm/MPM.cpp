@@ -43,6 +43,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QSvgWidget>
 #include <QString>
 #include <QIcon>
@@ -150,12 +151,169 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
   jsonObject["EventClassification"]="Hydro";
   jsonObject["Application"] = "MPM";
     
-  mpmSettings->outputToJSON(jsonObject);
-  mpmParticles->outputToJSON(jsonObject);
+  QJsonObject settingsObject;  
+  QJsonArray bodiesArray;
+  QJsonArray boundariesArray;
+  QJsonArray sensorsArray;
+  QJsonObject outputsObject;
+
+
+  // Pass in the QJsonObject wrappers to the outputToJSON functions, containing the arrays 
+  QJsonObject bodiesObjectWrapper;
+  QJsonObject boundariesObjectWrapper;
+  QJsonObject sensorsObjectWrapper;
+  QJsonArray  bodiesArrayWrapper;
+  QJsonArray  boundariesArrayWrapper;
+  QJsonArray  sensorsArrayWrapper;
+
+  bodiesObjectWrapper["bodies"] = bodiesArrayWrapper;  
+  boundariesObjectWrapper["boundaries"] = boundariesArrayWrapper;
+  sensorsObjectWrapper["sensors"] = sensorsArrayWrapper;
+
+
+  mpmSettings->outputToJSON(settingsObject);
+  mpmParticles->outputToJSON(bodiesObjectWrapper);
+  // mpmBoundaries->outputToJSON(boundariesObjectWrapper);
+  mpmSensors->outputToJSON(sensorsObjectWrapper);
+  mpmOutputs->outputToJSON(outputsObject);
+
+  // mpmSettings->outputToJSON(jsonObject);
+  // mpmParticles->outputToJSON(jsonObject);
   mpmBoundaries->outputToJSON(jsonObject);
-  mpmSensors->outputToJSON(jsonObject);
-  mpmOutputs->outputToJSON(jsonObject);
+  // mpmSensors->outputToJSON(jsonObject);
+  // mpmOutputs->outputToJSON(jsonObject);
   
+  // Settings (simulation in ClaymoreUW currently)
+  if (settingsObject.contains("simulation") && settingsObject["simulation"].isObject()) {
+    // Read in the simulation object from the settings object
+    jsonObject["simulation"] = settingsObject["simulation"];
+
+    // Move some values from the outputs object to the simulation settings object
+    QJsonObject my_sim = jsonObject["simulation"].toObject(); 
+    if (outputsObject.contains("save_suffix") && outputsObject["save_suffix"].isString()) {
+      my_sim["save_suffix"] = outputsObject["save_suffix"].toString(); // for ClaymoreUW, simulation:save_suffix = outputs:bodies_save_suffix
+    }
+    if (outputsObject.contains("fps") && outputsObject["fps"].isDouble()) {
+      my_sim["fps"] = outputsObject["fps"].toDouble(); // for ClaymoreUW, simulation:fps = outputs:outputBodies_Dt
+    }
+    jsonObject["simulation"] = my_sim;
+
+  }
+  if (settingsObject.contains("computer") && settingsObject["computer"].isObject()) {
+    jsonObject["computer"] = settingsObject["computer"];
+  }
+
+  if (settingsObject.contains("scaling") && settingsObject["scaling"].isObject()) {
+    jsonObject["scaling"] = settingsObject["scaling"];
+  }
+
+
+
+
+  // // Bodies (models in ClaymoreUW currently)
+  if (bodiesObjectWrapper.contains("bodies") && bodiesObjectWrapper["bodies"].toArray().size() > 0) {
+    bodiesArray = bodiesObjectWrapper["bodies"].toArray();
+    if (0) jsonObject["bodies"] = bodiesArray; // for the future schema
+    else   jsonObject["models"] = bodiesArray; // for ClaymoreUW, models = bodies
+  }
+  // if (bodiesArray.size() > 0) {
+  //   bool allBodiesAreObjects = false;
+  //   for (int i = 0; i < bodiesArray.size(); ++i) {
+  //     if (bodiesArray[i].isObject() == false) 
+  //       allBodiesAreObjects = false; 
+  //   }
+  //   if (allBodiesAreObjects) {
+  //     if (0) jsonObject["bodies"] = bodiesArray; // for the future schema
+  //     else   jsonObject["models"] = bodiesArray; // for ClaymoreUW, models = bodies
+  //   }
+  // }
+
+  // // Boundaries (grid-boundaries in ClaymoreUW currently)
+  // if (boundariesObjectWrapper.contains("boundaries") && boundariesObjectWrapper["boundaries"].toArray().size() > 0) {
+  //   boundariesArray = boundariesObjectWrapper["boundaries"].toArray();
+  // }
+  // if (boundariesArray.size() > 0) {
+  //   bool allBoundariesAreObjects = true;
+  //   for (int i = 0; i < boundariesArray.size(); ++i) {
+  //     // An individual boundary is an object
+  //     if (boundariesArray[i].isObject() == false) 
+  //         allBoundariesAreObjects = false; 
+  //   }
+  //   if (allBoundariesAreObjects) {
+  //     jsonObject["grid-boundaries"] = boundariesArray; // for ClaymoreUW, grid-boundaries = boundaries
+  //     // jsonObject["particle-boundaries"] = boundariesArray; // for ClaymoreUW, particle-boundaries = boundaries
+  //     jsonObject["boundaries"] = boundariesArray; // for the future schema
+  //   }
+  // }
+
+
+  // Sensors (grid-targets, particle-targets in ClaymoreUW currently)
+  // sensors is an array of objects, each is an individual sensor
+  if (0) {
+    if (sensorsObjectWrapper.contains("sensors") && sensorsObjectWrapper["sensors"].isArray()) {
+      jsonObject["sensors"] = sensorsObjectWrapper["sensors"];
+    }
+  }
+
+  if (sensorsObjectWrapper.contains("particle-sensors") && sensorsObjectWrapper["particle-sensors"].isArray()) {
+    jsonObject["particle-sensors"] = sensorsObjectWrapper["particle-sensors"];
+  }
+
+  if (sensorsObjectWrapper.contains("grid-sensors") && sensorsObjectWrapper["grid-sensors"].isArray()) {
+    jsonObject["grid-sensors"] = sensorsObjectWrapper["grid-sensors"];
+  }
+
+
+  // QJsonArray particleSensorsArray;
+  // QJsonArray gridSensorsArray;
+  // if (sensorsObjectWrapper.contains("sensors") && sensorsObjectWrapper["sensors"].toArray().size() > 0) {
+  //   sensorsArray = sensorsObjectWrapper["sensors"].toArray();
+  // }
+  // if (sensorsArray.size() > 0) {
+  //   bool allSensorsAreObjects = true;
+
+  //   for (int i = 0; i < sensorsArray.size(); ++i) {
+  //     // An individual sensor is an object
+  //     if (sensorsArray[i].isObject() == false) 
+  //         allSensorsAreObjects = false; 
+  //   }
+  //   for (int i = 0; i < sensorsArray.size(); ++i) {
+  //     bool isGridSensor = false;
+  //     bool isParticleSensor = false;
+  //     if (sensorsArray[i].isObject()) {
+  //       if (sensorsArray[i].toObject().contains("type")) {
+  //         QJsonValue theValue = sensorsArray[i].toObject()["type"];
+  //         QString selection = theValue.toString();
+
+  //         if (selection == "grid") {
+  //           isGridSensor = true;
+  //           gridSensorsArray.append(sensorsArray[i]);
+  //         }
+  //         else if (selection == "particle") {
+  //           isParticleSensor = true;
+  //           particleSensorsArray.append(sensorsArray[i]);
+  //         }
+
+  //       }
+  //     } 
+  //   }
+
+  //   if (allSensorsAreObjects) {
+  //     jsonObject["grid-targets"] = gridSensorsArray; // for ClaymoreUW, grid-sensors = sensors
+  //     jsonObject["particle-targets"] = particleSensorsArray; // for ClaymoreUW, particle-sensors = sensors
+  //     jsonObject["sensors"] = sensorsArray; // for the future schema
+  //   }
+  // }
+    
+
+  // Outputs (not a separate object in ClaymoreUW currently, must move some fields to other objects manually for ClaymoreUW)
+  if (outputsObject.contains("outputs") && outputsObject["outputs"].isObject()) {
+    jsonObject["outputs"] = outputsObject["outputs"]; // for future schema, not used in ClaymoreUW currently
+  }
+
+
+  // jsonObject["bodies"] = bodiesArray;
+
   /*
     if (jsonObject.contains("buildingWidth")) {
     QJsonValue theValue = jsonObject["buildingWidth"];

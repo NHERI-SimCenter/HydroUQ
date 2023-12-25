@@ -43,6 +43,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QStackedWidget>
 #include <QDebug>
 
+#include <QJsonObject>
+#include <QJsonArray>
+
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
 #include <SC_IntLineEdit.h>
@@ -63,12 +66,12 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   int numRow = 0;
 
 
-  QStringList fluidMaterialPresetList; fluidMaterialPresetList << "Water (Ocean)" << "Water (Pure)" << "Water (Soft)" << "Sand" << "Custom";  
+  QStringList fluidMaterialPresetList; fluidMaterialPresetList  << "Water (Fresh)" << "Water (Ocean)" << "Water (Soft)" << "Sand" << "Custom";  
   QStringList debrisMaterialPresetList; debrisMaterialPresetList << "Plastic" << "Rubber" <<  "Aluminum" << "Concrete" << "Wood" << "Custom";  
   QStringList structurePresetList; structurePresetList << "Aluminum" << "Concrete" << "Wood" << "Custom";  
-  QStringList geotechPresetList; geotechPresetList << "Sand" << "Clay" << "Concrete" << "Wood" << "Water (Ocean)" << "Water (Pure)" << "Water (Soft)" << "Custom";  
+  QStringList geotechPresetList; geotechPresetList << "Sand" << "Clay" << "Concrete" << "Wood" << "Water (Fresh)" << "Water (Ocean)" << "Water (Soft)" << "Custom";  
 
-  QStringList materialPresetList; materialPresetList << "Water (Ocean)" << "Water (Pure)" << "Water (Soft)" << "Plastic" << "Rubber" << "Aluminum" << "Concrete" << "Wood" << "Clay" << "Sand" << "Custom";  
+  QStringList materialPresetList; materialPresetList <<  "Water (Fresh)" << "Water (Ocean)" << "Water (Soft)" << "Plastic" << "Rubber" << "Aluminum" << "Concrete" << "Wood" << "Clay" << "Sand" << "Custom";  
   materialPreset = new SC_ComboBox("material_preset", materialPresetList);
   layout->addWidget(new QLabel("Material Preset"),numRow, 0);
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
@@ -80,10 +83,10 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
   layout->addWidget(constitutive, numRow++, 1);
 
-  density = new SC_DoubleLineEdit("CFL", 0.5);
+  CFL = new SC_DoubleLineEdit("CFL", 0.5);
   layout->addWidget(new QLabel("Courant-Friedrich-Lewy Number"),numRow, 0);
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
-  layout->addWidget(density, numRow, 1);
+  layout->addWidget(CFL, numRow, 1);
   layout->addWidget(new QLabel(""),numRow++, 2);
 
   density = new SC_DoubleLineEdit("rho", 1000.0);
@@ -92,16 +95,39 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   layout->addWidget(density, numRow, 1);
   layout->addWidget(new QLabel("kg/m^3"),numRow++, 2);
 
+  // --- Elastic Properties
+  QGroupBox *elasticBox = new QGroupBox("Elastic Properties");
+  QGridLayout *elasticLayout = new QGridLayout();
+  elasticBox->setLayout(elasticLayout);
+  layout->addWidget(elasticBox, numRow++, 0, 1, 3);
+
+  youngsModulus = new SC_DoubleLineEdit("youngs_modulus", 2.2e9);
+  elasticLayout->addWidget(new QLabel("Young's Modulus"),numRow, 0);
+  elasticLayout->itemAt(elasticLayout->count()-1)->setAlignment(Qt::AlignRight);
+  elasticLayout->addWidget(youngsModulus, numRow, 1);
+  elasticLayout->addWidget(new QLabel("Pa"),numRow++, 2);
+
+  poissonsRatio = new SC_DoubleLineEdit("poisson_ratio",0.4);
+  elasticLayout->addWidget(new QLabel("Poisson's Ratio"),numRow, 0);
+  elasticLayout->itemAt(elasticLayout->count()-1)->setAlignment(Qt::AlignRight);
+  elasticLayout->addWidget(poissonsRatio, numRow, 1);
+  elasticLayout->addWidget(new QLabel("[0, 0.5)"),numRow++, 2);
+  elasticLayout->setRowStretch(0,2);
+  // elasticLayout->setColumnStretch(0,3);
+
+
+
   // ========================
   QStackedWidget *materialStack = new QStackedWidget();
   layout->addWidget(materialStack, numRow++, 0, 1, 3);
-  layout->setRowStretch(numRow+1,1);
+  layout->setRowStretch(numRow+2,1);
 
   // layout->setRowStretch(0,numRow+1);
 
 
+
   // --- JFluid
-  QGroupBox *jfluidBox = new QGroupBox();
+  QGroupBox *jfluidBox = new QGroupBox("Constitutive Law Properties");
   QGridLayout *jfluidLayout = new QGridLayout();
   jfluidBox->setLayout(jfluidLayout);
   materialStack->addWidget(jfluidBox);
@@ -124,7 +150,7 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   jfluidLayout->addWidget(new QLabel("Bulk Modulus Derivative"),numRow, 0);
   jfluidLayout->itemAt(jfluidLayout->count()-1)->setAlignment(Qt::AlignRight);
   jfluidLayout->addWidget(bulkModulusDerivative, numRow++, 1);
-  jfluidLayout->setRowStretch(0,3);
+  jfluidLayout->setRowStretch(0,numRow);
   // jfluidLayout->setColumnStretch(0,1);
 
 
@@ -138,31 +164,36 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   // layout->addWidget(bulkModulus, numRow, 1);
   // layout->addWidget(new QLabel("Pa"),numRow++, 2);
 
+
   // --- Hyper-elastic (Fixed-Corotated, Neo-Hookean)
-  QGroupBox *hyperElasticBox = new QGroupBox();
+  QGroupBox *hyperElasticBox = new QGroupBox("Constitutive Law Properties");
   QGridLayout *hyperElasticLayout = new QGridLayout();
   hyperElasticBox->setLayout(hyperElasticLayout);
   materialStack->addWidget(hyperElasticBox);
 
   numRow = 0;
+  hyperElasticLayout->addWidget(new QLabel("Material is fully defined."),numRow++, 0);
+  hyperElasticLayout->itemAt(hyperElasticLayout->count()-1)->setAlignment(Qt::AlignCenter);
+  hyperElasticLayout->setRowStretch(0,numRow);
+  // Deprecated in favor of elastic properties box shared among materials
 
-  youngsModulus = new SC_DoubleLineEdit("youngs_modulus", 2.2e7);
-  hyperElasticLayout->addWidget(new QLabel("Young's Modulus"),numRow, 0);
-  hyperElasticLayout->itemAt(hyperElasticLayout->count()-1)->setAlignment(Qt::AlignRight);
-  hyperElasticLayout->addWidget(youngsModulus, numRow, 1);
-  hyperElasticLayout->addWidget(new QLabel("Pa"),numRow++, 2);
+  // youngsModulus = new SC_DoubleLineEdit("youngs_modulus", 2.2e7);
+  // hyperElasticLayout->addWidget(new QLabel("Young's Modulus"),numRow, 0);
+  // hyperElasticLayout->itemAt(hyperElasticLayout->count()-1)->setAlignment(Qt::AlignRight);
+  // hyperElasticLayout->addWidget(youngsModulus, numRow, 1);
+  // hyperElasticLayout->addWidget(new QLabel("Pa"),numRow++, 2);
 
-  poissonsRatio = new SC_DoubleLineEdit("poisson_ratio",0.4);
-  hyperElasticLayout->addWidget(new QLabel("Poisson's Ratio"),numRow, 0);
-  hyperElasticLayout->itemAt(hyperElasticLayout->count()-1)->setAlignment(Qt::AlignRight);
-  hyperElasticLayout->addWidget(poissonsRatio, numRow, 1);
-  hyperElasticLayout->addWidget(new QLabel("[0, 0.5)"),numRow++, 2);
-  hyperElasticLayout->setRowStretch(0,2);
+  // poissonsRatio = new SC_DoubleLineEdit("poisson_ratio",0.4);
+  // hyperElasticLayout->addWidget(new QLabel("Poisson's Ratio"),numRow, 0);
+  // hyperElasticLayout->itemAt(hyperElasticLayout->count()-1)->setAlignment(Qt::AlignRight);
+  // hyperElasticLayout->addWidget(poissonsRatio, numRow, 1);
+  // hyperElasticLayout->addWidget(new QLabel("[0, 0.5)"),numRow++, 2);
+  // hyperElasticLayout->setRowStretch(0,2);
   // hyperElasticLayout->setColumnStretch(0,1);
 
 
   // --- Drucker-Prager
-  QGroupBox *druckerPragerBox = new QGroupBox();
+  QGroupBox *druckerPragerBox = new QGroupBox("Constitutive Law Properties");
   QGridLayout *druckerPragerLayout = new QGridLayout();
   druckerPragerBox->setLayout(druckerPragerLayout);
   materialStack->addWidget(druckerPragerBox);
@@ -170,6 +201,7 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   numRow = 0;
 
   cohesion = new SC_DoubleLineEdit("cohesion",0.0001);
+  druckerPragerLayout->addWidget(new QLabel(""),numRow, 0);
   druckerPragerLayout->addWidget(new QLabel("Cohesion"),numRow, 0);
   druckerPragerLayout->itemAt(druckerPragerLayout->count()-1)->setAlignment(Qt::AlignRight);
   druckerPragerLayout->addWidget(cohesion, numRow, 1);
@@ -197,7 +229,7 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   druckerPragerLayout->itemAt(druckerPragerLayout->count()-1)->setAlignment(Qt::AlignRight);
   druckerPragerLayout->addWidget(dilationAngle, numRow, 1);
   druckerPragerLayout->addWidget(new QLabel("deg."),numRow++, 2);
-  druckerPragerLayout->setRowStretch(0,4);
+  druckerPragerLayout->setRowStretch(0,numRow);
   // druckerPragerLayout->setColumnStretch(0,1);
 
   // logJp = new SC_DoubleLineEdit("logJp0", -0.01);
@@ -207,7 +239,7 @@ MaterialMPM::MaterialMPM(QWidget *parent)
 
 
   // --- Non-Associative Cam-Clay (Wolper 2019, Gaume 2018, Klar 2016)
-  QGroupBox *camClayBox = new QGroupBox();
+  QGroupBox *camClayBox = new QGroupBox("Constitutive Law Properties");
   QGridLayout *camClayLayout = new QGridLayout();
   camClayBox->setLayout(camClayLayout);
   materialStack->addWidget(camClayBox);
@@ -220,10 +252,10 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   camClayLayout->addWidget(beta, numRow, 1);
   camClayLayout->addWidget(new QLabel(""),numRow++, 2);
 
-  Msqr = new SC_DoubleLineEdit("Msqr",5.57);
-  camClayLayout->addWidget(new QLabel("Friction Coef. Squared."),numRow, 0);
+  Mohr = new SC_DoubleLineEdit("Mohr",2.36);
+  camClayLayout->addWidget(new QLabel("Friction Coefficient"),numRow, 0);
   camClayLayout->itemAt(camClayLayout->count()-1)->setAlignment(Qt::AlignRight);
-  camClayLayout->addWidget(Msqr, numRow, 1);
+  camClayLayout->addWidget(Mohr, numRow, 1);
   camClayLayout->addWidget(new QLabel(""),numRow++, 2);
 
   useHardening = new SC_CheckBox("hardeningOn");
@@ -231,24 +263,25 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   camClayLayout->itemAt(camClayLayout->count()-1)->setAlignment(Qt::AlignRight);
   camClayLayout->addWidget(useHardening, numRow++, 1);
 
-  logJp = new SC_DoubleLineEdit("logJp0", -0.01);
-  camClayLayout->addWidget(new QLabel("Log. of Plastic Vol. Ratio"),numRow, 0);
-  camClayLayout->itemAt(camClayLayout->count()-1)->setAlignment(Qt::AlignRight);
-  camClayLayout->addWidget(logJp, numRow, 1);
-  camClayLayout->addWidget(new QLabel(""),numRow++, 2);
-
   xi = new SC_DoubleLineEdit("xi",0.8);
   camClayLayout->addWidget(new QLabel("Hardening Coefficient"),numRow, 0);
   camClayLayout->itemAt(camClayLayout->count()-1)->setAlignment(Qt::AlignRight);
   camClayLayout->addWidget(xi, numRow, 1);
   camClayLayout->addWidget(new QLabel(""),numRow++, 2);
 
-  camClayLayout->setRowStretch(0,5);
+  logJp = new SC_DoubleLineEdit("logJp0", -0.01);
+  camClayLayout->addWidget(new QLabel("Log. of Plastic Vol. Ratio"),numRow, 0);
+  camClayLayout->itemAt(camClayLayout->count()-1)->setAlignment(Qt::AlignRight);
+  camClayLayout->addWidget(logJp, numRow, 1);
+  camClayLayout->addWidget(new QLabel(""),numRow++, 2);
+
+
+  camClayLayout->setRowStretch(0,numRow);
   // camClayLayout->setColumnStretch(0,1);
 
 
   // --- Custom
-  QGroupBox *customBox = new QGroupBox();
+  QGroupBox *customBox = new QGroupBox("Constitutive Law Properties");
   QGridLayout *customLayout = new QGridLayout();
   customBox->setLayout(customLayout);
   materialStack->addWidget(customBox);
@@ -262,7 +295,7 @@ MaterialMPM::MaterialMPM(QWidget *parent)
 
   // Connect the material preset  QComboBox to change entries to default values if selected
   connect(materialPreset, &QComboBox::currentTextChanged, [=](QString val) {
-    if (val == "Water (Pure)") {
+    if (val == "Water (Fresh)") {
       QStringList shortConstitutiveList;  shortConstitutiveList << "JFluid";
       constitutive->clear();
       constitutive->addItems(shortConstitutiveList);
@@ -275,7 +308,8 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       QStringList shortConstitutiveList;  shortConstitutiveList << "JFluid";
       constitutive->clear();
       constitutive->addItems(shortConstitutiveList);
-      constitutive->setCurrentIndex(0);      density->setText("1000");
+      constitutive->setCurrentIndex(0);      
+      density->setText("1000");
       bulkModulus->setText("2.3e9");
       bulkModulusDerivative->setText("7.15");
       viscosity->setText("1.15e-3");
@@ -326,7 +360,7 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       logJp->setText("-0.01");
       xi->setText("0.8");
       beta->setText("1.0");
-      Msqr->setText("5.57");
+      Mohr->setText("2.36");
     } else if (val == "Clay") {
       QStringList shortConstitutiveList;  shortConstitutiveList << "CamClay" << "DruckerPrager" << "FixedCorotated" << "NeoHookean" ;
       constitutive->clear();
@@ -344,7 +378,7 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       logJp->setText("-0.01");
       xi->setText("0.8");
       beta->setText("1.0");
-      Msqr->setText("5.57");
+      Mohr->setText("2.36");
     } else if (val == "Concrete") {
       QStringList shortConstitutiveList;  shortConstitutiveList << "CamClay" << "DruckerPrager" << "FixedCorotated" << "NeoHookean";
       constitutive->clear();
@@ -362,7 +396,7 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       logJp->setText("-0.01");
       xi->setText("0.8");
       beta->setText("1.0");
-      Msqr->setText("5.57");
+      Mohr->setText("2.36");
     } else if (val == "Sand") {
       QStringList shortConstitutiveList;  shortConstitutiveList << "DruckerPrager" << "CamClay" ;
       constitutive->clear();
@@ -380,7 +414,7 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       logJp->setText("-0.01");
       xi->setText("0.8");
       beta->setText("1.0");
-      Msqr->setText("5.57");
+      Mohr->setText("2.36");
     } else {
       QStringList shortConstitutiveList;  shortConstitutiveList << "JFluid" << "FixedCorotated" << "NeoHookean" << "DruckerPrager" << "CamClay" << "Custom";  
       constitutive->clear();
@@ -403,52 +437,115 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       logJp->setText("-0.01");
       xi->setText("0.8");
       beta->setText("1.0");
-      Msqr->setText("5.57");
+      Mohr->setText("2.36");
     }
   });
 
 
   connect(constitutive, &QComboBox::currentTextChanged, [=](QString val) {
     if (val == "JFluid") {
+      // Hide all widgets in the elastic box for now
+      for (int i = 0; i < (2*3); ++i) elasticLayout->itemAt(i)->widget()->setVisible(false);
+      youngsModulus->setVisible(false);
+      poissonsRatio->setVisible(false);
+      bulkModulus->setVisible(true);
+      viscosity->setVisible(true);
       materialStack->setCurrentIndex(0);
     } else if (val == "FixedCorotated") {
+      elasticBox->setVisible(true);
+      for (int i = 0; i < (2*3); ++i) elasticLayout->itemAt(i)->widget()->setVisible(true);
+      youngsModulus->setVisible(true);
+      poissonsRatio->setVisible(true);
+      bulkModulus->setVisible(false);
+      viscosity->setVisible(false);
       materialStack->setCurrentIndex(1);
     } else if (val == "NeoHookean") {
+      elasticBox->setVisible(true);
+      for (int i = 0; i < (2*3); ++i) elasticLayout->itemAt(i)->widget()->setVisible(true);
+      youngsModulus->setVisible(true);
+      poissonsRatio->setVisible(true);
+      bulkModulus->setVisible(false);
+      viscosity->setVisible(false);
       materialStack->setCurrentIndex(1);
     } else if (val == "DruckerPrager") {
+      elasticBox->setVisible(true);
+      for (int i = 0; i < (2*3); ++i) elasticLayout->itemAt(i)->widget()->setVisible(true);
+      youngsModulus->setVisible(true);
+      poissonsRatio->setVisible(true);
+      bulkModulus->setVisible(false);
+      viscosity->setVisible(false);
       materialStack->setCurrentIndex(2);
     } else if (val == "CamClay") {
+      elasticBox->setVisible(true);
+      for (int i = 0; i < (2*3); ++i) elasticLayout->itemAt(i)->widget()->setVisible(true);
+      youngsModulus->setVisible(true);
+      poissonsRatio->setVisible(true);
+      bulkModulus->setVisible(false);
+      viscosity->setVisible(false);
       materialStack->setCurrentIndex(3);
     } else {
+      elasticBox->setVisible(true);
+      for (int i = 0; i < (2*3); ++i) elasticLayout->itemAt(i)->widget()->setVisible(true);
+      youngsModulus->setVisible(true);
+      poissonsRatio->setVisible(true);
+      bulkModulus->setVisible(false);
+      viscosity->setVisible(false);
       materialStack->setCurrentIndex(4);
     } 
   });
 
   connect(useHardening, &QCheckBox::stateChanged, [=](int val) {
     if (val == 2) {
+      xi->setVisible(true);
+      beta->setVisible(true);
+      Mohr->setVisible(true);
+      logJp->setVisible(true);
+
       xi->setEnabled(true);
       beta->setEnabled(true);
-      Msqr->setEnabled(true);
+      Mohr->setEnabled(true);
       logJp->setEnabled(true);
     } else {
+      xi->setVisible(false);
+      beta->setVisible(false);
+      Mohr->setVisible(false);
+      logJp->setVisible(false);
+
       xi->setEnabled(false);
       beta->setEnabled(false);
-      Msqr->setEnabled(false);
+      Mohr->setEnabled(false);
       logJp->setEnabled(false);
     }
   });
 
   connect(useVolumeCorrection, &QCheckBox::stateChanged, [=](int val) {
     if (val == 2) {
+      dilationAngle->setVisible(true);
+      logJp->setVisible(true);
+      beta->setVisible(true);
+
       dilationAngle->setEnabled(true);
       logJp->setEnabled(true);
       beta->setEnabled(true);
     } else {
+      dilationAngle->setVisible(false);
+      logJp->setVisible(false);
+      beta->setVisible(false);
+
       dilationAngle->setEnabled(false);
       logJp->setEnabled(false);
       beta->setEnabled(false);
     }
   });
+
+  // Set initial constitutive law
+  constitutive->setCurrentIndex(0);
+  constitutive->setCurrentIndex(0);
+
+  // Set initial material preset
+  materialPreset->setCurrentIndex(0);
+  materialPreset->setCurrentIndex(0);
+
 
 }
 
@@ -458,10 +555,71 @@ MaterialMPM::~MaterialMPM()
 }
 
 bool
+MaterialMPM::setMaterialPreset(int index)
+{
+  if (index < 0 || index > materialPreset->count()) {
+    // qDebug() << "MaterialMPM::setMaterialPreset() - Invalid index";
+    return false;
+  }
+  materialPreset->setCurrentIndex(index);
+  return true;
+}
+
+bool
 MaterialMPM::outputToJSON(QJsonObject &jsonObject)
 {
   // theOpenSeesPyScript->outputToJSON(jsonObject);
   // theSurfaceFile->outputToJSON(jsonObject);  
+
+  // Note: ClaymoreUW will also need these defined in the JSON model/body objects global space, not just the nested JSON material object
+  // Future schema
+  QJsonObject materialObject; 
+  materialObject["material_preset"] = QJsonValue(materialPreset->currentText()).toString();
+  materialObject["constitutive"] = QJsonValue(constitutive->currentText()).toString();
+  materialObject["CFL"] = CFL->text().toDouble(); // TODO: Rename? "cfl"? Might be reserved in other contexts
+  materialObject["rho"] = density->text().toDouble();
+  materialObject["bulk_modulus"] = bulkModulus->text().toDouble();
+  materialObject["youngs_modulus"] = youngsModulus->text().toDouble();
+  materialObject["poisson_ratio"] = poissonsRatio->text().toDouble();
+  materialObject["viscosity"] = viscosity->text().toDouble();
+  materialObject["gamma"] = bulkModulusDerivative->text().toDouble();
+  // materialObject["surface_tension"] = surfaceTension->text().toDouble();
+  materialObject["logJp0"] = logJp->text().toDouble();
+  materialObject["SandVolCorrection"] = useVolumeCorrection->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
+  materialObject["cohesion"] = cohesion->text().toDouble();
+  materialObject["friction_angle"] = frictionAngle->text().toDouble();
+  materialObject["dilation_angle"] = dilationAngle->text().toDouble();
+  materialObject["hardeningOn"] = useHardening->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
+  materialObject["hardening_ratio"] = xi->text().toDouble();
+  materialObject["cohesion_ratio"] = beta->text().toDouble(); 
+  materialObject["mohr_friction"] = Mohr->text().toDouble();
+  jsonObject["material"] = materialObject;
+
+  // ClaymoreUW artifacts, global material values. TODO: Deprecate
+  jsonObject["material_preset"] = QJsonValue(materialPreset->currentText()).toString();
+  jsonObject["constitutive"] = QJsonValue(constitutive->currentText()).toString();
+  jsonObject["CFL"] = CFL->text().toDouble(); // TODO: Rename? "cfl"? Might be reserved in other contexts
+  jsonObject["rho"] = density->text().toDouble();
+  jsonObject["bulk_modulus"] = bulkModulus->text().toDouble();
+  jsonObject["youngs_modulus"] = youngsModulus->text().toDouble();
+  jsonObject["poisson_ratio"] = poissonsRatio->text().toDouble();
+  jsonObject["viscosity"] = viscosity->text().toDouble();
+  // TODO: Equation of state options (Murnaghan-Tait, Cole, Birch, etc. or JFluid, PA-JB Fluid, etc.)
+  jsonObject["gamma"] = bulkModulusDerivative->text().toDouble(); // TODO: Rename
+  // jsonObject["surface_tension"] = surfaceTension->text().toDouble(); // TODO: Implement
+  jsonObject["logJp0"] = logJp->text().toDouble();
+  jsonObject["SandVolCorrection"] = useVolumeCorrection->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
+  jsonObject["cohesion"] = cohesion->text().toDouble(); // TODO: Specify units, I believe this is log(strain) currently hence small values
+  jsonObject["friction_angle"] = frictionAngle->text().toDouble();
+  jsonObject["dilation_angle"] = dilationAngle->text().toDouble(); // TODO: Check if this is used
+  jsonObject["hardeningOn"] = useHardening->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
+  jsonObject["xi"] = xi->text().toDouble(); // TODO: Rename
+  jsonObject["beta"] = beta->text().toDouble(); // TODO: Rename
+  jsonObject["Mohr"] = (Mohr->text().toDouble() * Mohr->text().toDouble()); // TODO: Rename
+
+
+
+
   return true;
 }
 
