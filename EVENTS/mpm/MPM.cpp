@@ -151,14 +151,14 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
   jsonObject["EventClassification"]="Hydro";
   jsonObject["Application"] = "MPM";
     
+  // The JSON object-or-array that defines each main tab (i.e. Settings, Bodies, Boundaries, Sensors, Outputs)
   QJsonObject settingsObject;  
   QJsonArray bodiesArray;
   QJsonArray boundariesArray;
   QJsonArray sensorsArray;
   QJsonObject outputsObject;
 
-
-  // Pass in the QJsonObject wrappers to the outputToJSON functions, containing the arrays 
+  // Pass in the objects or array object wrappers to the outputToJSON functions
   QJsonObject bodiesObjectWrapper;
   QJsonObject boundariesObjectWrapper;
   QJsonObject sensorsObjectWrapper;
@@ -166,23 +166,20 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
   QJsonArray  boundariesArrayWrapper;
   QJsonArray  sensorsArrayWrapper;
 
+  // Some of the outputToJSON functions will add to the arrays in the wrappers
+  // We pass in objects wrapping the arrays to avoid two outputToJSON functions per class (could also template)
   bodiesObjectWrapper["bodies"] = bodiesArrayWrapper;  
   boundariesObjectWrapper["boundaries"] = boundariesArrayWrapper;
   sensorsObjectWrapper["sensors"] = sensorsArrayWrapper;
 
-
+  // Call the outputToJSON functions in the sub-widget classes (i.e. tabs)
   mpmSettings->outputToJSON(settingsObject);
   mpmParticles->outputToJSON(bodiesObjectWrapper);
-  // mpmBoundaries->outputToJSON(boundariesObjectWrapper);
+  mpmBoundaries->outputToJSON(boundariesObjectWrapper);
   mpmSensors->outputToJSON(sensorsObjectWrapper);
   mpmOutputs->outputToJSON(outputsObject);
 
-  // mpmSettings->outputToJSON(jsonObject);
-  // mpmParticles->outputToJSON(jsonObject);
-  mpmBoundaries->outputToJSON(jsonObject);
-  // mpmSensors->outputToJSON(jsonObject);
-  // mpmOutputs->outputToJSON(jsonObject);
-  
+  // ==================== Settings ====================
   // Settings (simulation in ClaymoreUW currently)
   if (settingsObject.contains("simulation") && settingsObject["simulation"].isObject()) {
     // Read in the simulation object from the settings object
@@ -196,26 +193,60 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
     if (outputsObject.contains("fps") && outputsObject["fps"].isDouble()) {
       my_sim["fps"] = outputsObject["fps"].toDouble(); // for ClaymoreUW, simulation:fps = outputs:outputBodies_Dt
     }
+    // To be an output option, not a simulation option
+    if ((my_sim.contains("duration") && my_sim["duration"].isDouble()) && (my_sim.contains("fps") && my_sim["fps"].isDouble())) {
+      my_sim["frames"] = my_sim["duration"].toDouble() * my_sim["fps"].toDouble(); // for ClaymoreUW, simulation:frames = simulation:duration * simulation:fps
+    } else {
+      my_sim["frames"] = my_sim["fps"];
+    }
     jsonObject["simulation"] = my_sim;
-
   }
+  // Computer, as in hardware and how it is compiled for by application if relevant (e.g. number of GPUs)
   if (settingsObject.contains("computer") && settingsObject["computer"].isObject()) {
     jsonObject["computer"] = settingsObject["computer"];
   }
-
+  // Similitude scaling
   if (settingsObject.contains("scaling") && settingsObject["scaling"].isObject()) {
-    jsonObject["scaling"] = settingsObject["scaling"];
+    jsonObject["scaling"] = settingsObject["scaling"]; 
   }
 
-
-
-
-  // // Bodies (models in ClaymoreUW currently)
+  // ==================== Bodies ====================
+  // Bodies (models in ClaymoreUW currently)
   if (bodiesObjectWrapper.contains("bodies") && bodiesObjectWrapper["bodies"].toArray().size() > 0) {
     bodiesArray = bodiesObjectWrapper["bodies"].toArray();
     if (0) jsonObject["bodies"] = bodiesArray; // for the future schema
     else   jsonObject["models"] = bodiesArray; // for ClaymoreUW, models = bodies
   }
+
+  // ==================== Boundaries ====================
+  // Boundaries (grid-boundaries in ClaymoreUW currently, TODO: Deprecate and change to "boundaries")
+  if (boundariesObjectWrapper.contains("grid-boundaries") && boundariesObjectWrapper["grid-boundaries"].isArray()) {
+    jsonObject["grid-boundaries"] = boundariesObjectWrapper["grid-boundaries"]; // ClaymoreUW artifact, TODO: Deprecate
+  }
+
+  // ==================== Sensors ====================
+  // Sensors (grid-targets, particle-targets in ClaymoreUW currently, TODO: Deprecate and change to "sensors")
+  if (0) {
+    if (sensorsObjectWrapper.contains("sensors") && sensorsObjectWrapper["sensors"].isArray()) {
+      // sensors is an array of objects, each is an individual sensor
+      jsonObject["sensors"] = sensorsObjectWrapper["sensors"];
+    }
+  }
+  if (sensorsObjectWrapper.contains("particle-sensors") && sensorsObjectWrapper["particle-sensors"].isArray()) {
+    // jsonObject["particle-sensors"] = sensorsObjectWrapper["particle-sensors"];
+    jsonObject["particle-targets"] = sensorsObjectWrapper["particle-sensors"]; // ClaymoreUW artifact, TODO: Deprecate
+  }
+  if (sensorsObjectWrapper.contains("grid-sensors") && sensorsObjectWrapper["grid-sensors"].isArray()) {
+    // jsonObject["grid-sensors"] = sensorsObjectWrapper["grid-sensors"];
+    jsonObject["grid-targets"] = sensorsObjectWrapper["grid-sensors"]; // ClaymoreUW artifact, TODO: Deprecate
+  }
+
+  // ==================== Outputs ====================
+  // Outputs (not a separate object in ClaymoreUW currently, must move some fields to other objects manually for ClaymoreUW)
+  if (outputsObject.contains("outputs") && outputsObject["outputs"].isObject()) {
+    jsonObject["outputs"] = outputsObject["outputs"]; // for future schema, not used in ClaymoreUW currently
+  }
+
   // if (bodiesArray.size() > 0) {
   //   bool allBodiesAreObjects = false;
   //   for (int i = 0; i < bodiesArray.size(); ++i) {
@@ -245,24 +276,6 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
   //     jsonObject["boundaries"] = boundariesArray; // for the future schema
   //   }
   // }
-
-
-  // Sensors (grid-targets, particle-targets in ClaymoreUW currently)
-  // sensors is an array of objects, each is an individual sensor
-  if (0) {
-    if (sensorsObjectWrapper.contains("sensors") && sensorsObjectWrapper["sensors"].isArray()) {
-      jsonObject["sensors"] = sensorsObjectWrapper["sensors"];
-    }
-  }
-
-  if (sensorsObjectWrapper.contains("particle-sensors") && sensorsObjectWrapper["particle-sensors"].isArray()) {
-    jsonObject["particle-sensors"] = sensorsObjectWrapper["particle-sensors"];
-  }
-
-  if (sensorsObjectWrapper.contains("grid-sensors") && sensorsObjectWrapper["grid-sensors"].isArray()) {
-    jsonObject["grid-sensors"] = sensorsObjectWrapper["grid-sensors"];
-  }
-
 
   // QJsonArray particleSensorsArray;
   // QJsonArray gridSensorsArray;
@@ -304,13 +317,6 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
   //     jsonObject["sensors"] = sensorsArray; // for the future schema
   //   }
   // }
-    
-
-  // Outputs (not a separate object in ClaymoreUW currently, must move some fields to other objects manually for ClaymoreUW)
-  if (outputsObject.contains("outputs") && outputsObject["outputs"].isObject()) {
-    jsonObject["outputs"] = outputsObject["outputs"]; // for future schema, not used in ClaymoreUW currently
-  }
-
 
   // jsonObject["bodies"] = bodiesArray;
 

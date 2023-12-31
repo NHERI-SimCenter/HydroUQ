@@ -67,6 +67,7 @@ public:
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
+    bool setBodyPreset(int index);
   
 signals:
 

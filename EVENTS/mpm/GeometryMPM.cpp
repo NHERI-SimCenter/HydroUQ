@@ -70,7 +70,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   // numRow = 0;
 
   // -----------------------------------------------------------------------------------
-  QList <QString> objectList; objectList << "Box" << "Sphere" << "Cylinder" << "Cone" << "Ring" << "File" << "Checkpoint";
+  QList <QString> objectList; objectList << "Box" << "Sphere" << "Cylinder" << "Cone" << "Ring" << "File" << "Checkpoint" << "OSU LWF" << "OSU DWB" << "UW WASIRF" << "WU TWB" << "USGS DFF" << "NICHE" << "Custom";
   objectType = new SC_ComboBox("object_type", objectList);
   layout->addWidget(new QLabel("Object Type"), numRow,0);
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
@@ -108,7 +108,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
   layout->addWidget(applyArray,numRow++, 1);
 
-  QGroupBox *arrayBox = new QGroupBox();
+  QGroupBox *arrayBox = new QGroupBox("Array Operation");
   QGridLayout *arrayBoxLayout = new QGridLayout();
   arrayBox->setLayout(arrayBoxLayout);
 
@@ -156,7 +156,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
   layout->addWidget(applyRotation,numRow++, 1);
 
-  QGroupBox *rotateBox = new QGroupBox();
+  QGroupBox *rotateBox = new QGroupBox("Rotation Operation");
   QGridLayout *rotateBoxLayout = new QGridLayout();
   rotateBox->setLayout(rotateBoxLayout);
 
@@ -201,6 +201,8 @@ GeometryMPM::GeometryMPM(QWidget *parent)
 
 
   // -----------------------------------------------------------------------------------
+  numRow = numRow+1;
+
   int numDimRow = 0;
   QGroupBox *dimensionsBox = new QGroupBox("Digital Twin Geometry");
   QGridLayout *dimensionsBoxLayout = new QGridLayout();
@@ -210,7 +212,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   facility = new SC_ComboBox("domainSubType",facilityList);
   dimensionsBoxLayout->addWidget(new QLabel("Digital Twin Facility"),numDimRow,0);
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  dimensionsBoxLayout->addWidget(facility,numDimRow++,1);
+  dimensionsBoxLayout->addWidget(facility,numDimRow++,1, 1, 4);
 
   facilityLength = new SC_DoubleLineEdit("facility_span_x",104.0);  
   facilityHeight = new SC_DoubleLineEdit("facility_span_y",4.6);  
@@ -233,44 +235,143 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   dimensionsBoxLayout->addWidget(fillFlumeUptoSWL,numDimRow++, 1);
   
-  QStringList bathXZHeadings; bathXZHeadings << "Position Along Flume (X) [m]" << "Height (Y) [m]";
-  QStringList dataBathXZ; dataBathXZ << "35" << "0" << "42" << "1.75" << "56" << "2.5" << "105" << "2.5";
-  bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 4, dataBathXZ);
 
-  dimensionsBoxLayout->addWidget(new QLabel("Bathymetry"),numDimRow++,0,1,4);
+  // numDimRow+=1; // Vertical spacer
+  int numBathRow = 0;
+  dimensionsBoxLayout->addWidget(new QLabel("Flume Bathymetry Type"),numDimRow,0);
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  dimensionsBoxLayout->addWidget(bathXZData,numDimRow++,0,1,4);  
-  dimensionsBoxLayout->setRowStretch(numDimRow++,1);
-  dimensionsBoxLayout->setColumnStretch(5,1);
+  // dimensionsBoxLayout->addWidget(bathXZData,numDimRow++,0,4,4);  
 
-  layout->addWidget(dimensionsBox,(numRow+numDimRow),0,6,5);
-  numRow = numRow+numDimRow+1;
+  // QStackedWidget *bathStack = new QStackedWidget();
+  // bathStack->addWidget(ptWidget);
+  // bathStack->addWidget(stlWidget);
+  // Stack for bathymetry
+  // QStringList bathOptions; bathOptions << "Point List" << "STL File";
+  // bathymetryComboBox = new SC_ComboBox("bathType",bathOptions);
+  
+  QStringList bathOptions; bathOptions << "Point List" << "STL File";
+  bathymetryComboBox = new SC_ComboBox("bathymetryComboBox", bathOptions);
+  dimensionsBoxLayout->addWidget(bathymetryComboBox, numDimRow++, 1);
+  QStringList bathXZHeadings; bathXZHeadings << "Bathymetry Joint Position (X) [m]" << "Bathymetry Joint  Height (Y) [m]";
+  QStringList dataBathXZ; dataBathXZ << "35" << "0" << "42" << "1.75" << "56" << "2.5" << "105" << "2.5";
+  bathXZData = new SC_TableEdit("bathXZData", bathXZHeadings, 4, dataBathXZ);
+  bathSTL = new SC_FileEdit("bathSTL");
 
-  layout->setRowStretch(numRow ,1);
+  QWidget *ptWidget = new QWidget(); 
+  QGridLayout *ptLayout = new QGridLayout();
+  ptLayout->addWidget(bathXZData, 0, 0, 2, 2);
+  ptLayout->setRowStretch(1,1);
+  ptWidget->setLayout(ptLayout);
 
+  QWidget *stlWidget = new QWidget();
+  QGridLayout *stlLayout = new QGridLayout();
+  stlLayout->addWidget(new QLabel("Surface File (*.stl)"),0,0);
+  stlLayout->itemAt(stlLayout->count()-1)->setAlignment(Qt::AlignRight);
+  stlLayout->addWidget(bathSTL,0, 1, 1, 1);
+  stlLayout->setRowStretch(1,1);  
+  stlWidget->setLayout(stlLayout);
+
+  QStackedWidget *bathStack = new QStackedWidget();
+  bathStack->addWidget(ptWidget);
+  bathStack->addWidget(stlWidget);
+  
+  // numBathRow=4;
+  dimensionsBoxLayout->addWidget(bathStack,numDimRow++,0, 1, numBathRow);
+  dimensionsBoxLayout->setRowStretch(numDimRow,1);
+  layout->addWidget(dimensionsBox,numRow++,0,numDimRow,5);
+  // numRow = numRow+numDimRow;
+  numRow = numRow+numDimRow;
+
+  layout->setRowStretch(numRow, 1);
+  // int thisWidth = (*this).sizeHint().width(); // Probably 200
+  // layout->addItem(new QSpacerItem(thisWidth, 25, QSizePolicy::Fixed, QSizePolicy::Expanding), numRow, 0);
+
+
+  // connext bathymetry to show correct widget
+  // connect(bathymetryComboBox, QOverload<int>::of(&QComboBox::activated),
+	//   bathStack, &QStackedWidget::setCurrentIndex);
+
+
+  connect(bathymetryComboBox, &QComboBox::currentTextChanged, [=](QString val) {
+    if (val == "Point List") {
+      bathStack->setCurrentIndex(0);
+      bathXZData->show();
+      bathXZData->setVisible(true);
+      bathXZData->setEnabled(true);
+      ptWidget->show();
+      ptWidget->setEnabled(true);
+      ptWidget->setVisible(true);
+
+      // bathXZData->setTableData(4, dataBathXZ);
+      stlWidget->hide();
+      stlWidget->setEnabled(false);
+      stlWidget->setVisible(false);
+      // numBathRow = 4;
+    } else if (val == "STL File") {
+      //
+      bathStack->setCurrentIndex(1);
+      bathXZData->hide();
+      bathXZData->setVisible(false);
+      bathXZData->setEnabled(false);
+      ptWidget->hide();
+      ptWidget->setEnabled(false);
+      ptWidget->setVisible(false);
+
+      stlWidget->show();
+      stlWidget->setEnabled(true);
+      stlWidget->setVisible(true);
+    }
+  }
+  );
   // Connect the facility QComboBox to change entries to default values if selected
+  // If fluid, set default object type to match fluid object that fills flume digital twin
   connect(facility, &QComboBox::currentTextChanged, [=](QString val) {
     if (val == "Hinsdale Large Wave Flume (OSU LWF)") {
       facilityLength->setText("104.0");
       facilityHeight->setText("4.6");
       facilityWidth->setText("3.658");
+      if (bodyPreset->currentText() == "Fluid") {
+        objectType->setCurrentText("OSU LWF");
+      }
     } else if (val == "Hinsdale Directional Wave Basin (OSU DWB)") {
       facilityLength->setText("48.8");
       facilityHeight->setText("2.1");
       facilityWidth->setText("26.5");
+      if (bodyPreset->currentText() == "Fluid") {
+        objectType->setCurrentText("OSU DWB");
+      }
     } else if (val == "Wind-Air-Sea Interaction Facility (UW WASIRF)") {
       facilityLength->setText("12.19");
       facilityHeight->setText("1.22");
       facilityWidth->setText("0.914");
+      objectType->setCurrentText("UW WASIRF");
     } else if (val == "Waseda University's Tsunami Wave Basin (WU TWB)") {
       facilityLength->setText("9.0");
       facilityHeight->setText("1.0");
       facilityWidth->setText("4.0");
+      if (bodyPreset->currentText() == "Fluid") {
+        objectType->setCurrentText("WU TWB");
+      }
     } else if (val == "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)") {
       facilityLength->setText("90.0");
       facilityHeight->setText("2.0");
       facilityWidth->setText("2.0");
-    } 
+      if (bodyPreset->currentText() == "Fluid") {
+        objectType->setCurrentText("USGS DFF");
+      }
+    } else if (val == "NICHE Full-Scale Wind-Wave Flume") {
+      facilityLength->setText("300.0");
+      facilityHeight->setText("10.0");
+      facilityWidth->setText("100.0");
+      if (bodyPreset->currentText() == "Fluid") {
+        objectType->setCurrentText("NICHE");
+      }
+    } else if (val == "Custom") {
+      facilityLength->setText("0.0");
+      facilityHeight->setText("0.0");
+      facilityWidth->setText("0.0");
+      objectType->setCurrentText("Box");
+    }
   });
 
   connect(bodyPreset, &QComboBox::currentTextChanged, [=](QString val) {
@@ -290,8 +391,16 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       originX->setText("0.0");
       originY->setText("0.0");
       originZ->setText("0.0");
-      bathXZData->setEnabled(true);
-      bathXZData->show();
+      applyArray->setChecked(false);
+      // bathymetryComboBox->setCurrentText("Point List");
+      bathStack->setCurrentIndex(0);
+      bathStack->show();
+      bathStack->setEnabled(true);
+      bathymetryComboBox->setEnabled(true);
+      bathymetryComboBox->show();
+      bathSTL->setEnabled(true);
+      // bathXZData->setEnabled(true);
+      // bathXZData->show();
       // bathXZData->setTableData(4, dataBathXZ);
       dimensionsBox->show();
     } else if (val == "Debris") {
@@ -307,9 +416,17 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       originX->setText("43.8");
       originY->setText("2.0");
       originZ->setText("1.825");
+      applyArray->setChecked(true);
+      // bathymetryComboBox->setCurrentText("Point List");
+      bathymetryComboBox->setDisabled(true);
+      bathymetryComboBox->hide();
+      bathSTL->setDisabled(true);
+      bathStack->setCurrentIndex(1);
+      bathStack->hide();
+      bathStack->setDisabled(true);
       // bathXZData->setTableData(4, dataBathXZ);
-      bathXZData->setDisabled(true);
-      bathXZData->hide();
+      // bathXZData->setDisabled(true);
+      // bathXZData->hide();
       dimensionsBox->hide();
     } else if (val == "Structure") {
       facility->setCurrentText("Hinsdale Large Wave Flume (OSU LWF)");
@@ -324,9 +441,16 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       originX->setText("45.8");
       originY->setText("2.0");
       originZ->setText("1.325");
+      applyArray->setChecked(true);
+      bathStack->setCurrentIndex(1);
+      bathStack->hide();
+      bathStack->setDisabled(true);
+      bathymetryComboBox->setDisabled(true);
+      bathymetryComboBox->hide();
+      bathSTL->setDisabled(true);
       // bathXZData->setTableData(4, dataBathXZ);
-      bathXZData->setDisabled(true);
-      bathXZData->hide();
+      // bathXZData->setDisabled(true);
+      // bathXZData->hide();
       dimensionsBox->hide();
     } else if (val == "Custom") {
       facility->setCurrentText("Custom");
@@ -341,8 +465,15 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       originX->setText("0.0");
       originY->setText("0.0");
       originZ->setText("0.0");
-      bathXZData->setDisabled(true);
-      bathXZData->hide();
+
+      bathStack->setCurrentIndex(1);
+      bathStack->hide();
+      bathStack->setDisabled(true);
+      bathymetryComboBox->setDisabled(true);
+      bathymetryComboBox->hide();
+      bathSTL->setDisabled(true);
+      // bathXZData->setDisabled(true);
+      // bathXZData->hide();
       dimensionsBox->hide();
     }
   });
@@ -425,16 +556,57 @@ GeometryMPM::GeometryMPM(QWidget *parent)
 
 }
 
+
 GeometryMPM::~GeometryMPM()
 {
 
 }
 
 bool
+GeometryMPM::setBodyPreset(int index)
+{
+  // Way to set the body preset from higher levels, 
+  // e.g. to set the geometry body preset to "Debris" if the user adds a debris template in bodies
+  if (index < 0 || index > bodyPreset->count()) {
+    // QDebug() << "Error: Invalid body preset index";
+    return false;
+  }
+  bodyPreset->setCurrentIndex(index);
+  // Default Fluid template to OSU LWF water object
+  // Everything else starts as rectangular prism boxes for ease of use
+  if (bodyPreset->currentText() == "Fluid") {
+    objectType->setCurrentText("OSU LWF");
+    applyArray->setChecked(false);
+    applyRotation->setChecked(false);
+  } else if (bodyPreset->currentText() == "Debris") {
+    objectType->setCurrentText("Box");
+    applyArray->setChecked(true);
+    applyRotation->setChecked(true);
+  } else if (bodyPreset->currentText() == "Structure") {
+    objectType->setCurrentText("Box");
+    applyArray->setChecked(true);
+    applyRotation->setChecked(false);
+  } else if (bodyPreset->currentText() == "Custom") {
+    objectType->setCurrentText("Box");
+    applyArray->setChecked(true);
+    applyRotation->setChecked(true);
+  }
+  // Should probably make this a function, it checks array spacing vs dimensions
+  if (applyArray->isChecked()) {
+    // May prefer terniary operator here
+    if (spacingX->text().toDouble() < length->text().toDouble()) 
+      spacingX->setText(QString::number(1.0*length->text().toDouble()));
+    if (spacingY->text().toDouble() < height->text().toDouble()) 
+      spacingY->setText(QString::number(1.0*height->text().toDouble()));
+    if (spacingZ->text().toDouble() < width->text().toDouble()) 
+      spacingZ->setText(QString::number(1.0*width->text().toDouble()));
+  }
+  return true;
+}
+
+bool
 GeometryMPM::outputToJSON(QJsonObject &jsonObject)
 {
-  // theOpenSeesPyScript->outputToJSON(jsonObject);
-  // theSurfaceFile->outputToJSON(jsonObject); 
   QJsonArray geometriesArray;
 
 
@@ -462,7 +634,13 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
     facilityDims.append(facilityLength->text().toDouble());
     facilityDims.append(facilityHeight->text().toDouble());
     facilityDims.append(facilityWidth->text().toDouble());
-    geometryObject["facility_dimensions"] = facilityDims;
+    // Only show facility dimensions if they are non-zero, i.e. if the user has selected a 3D digital twin
+    if (facilityDims[0] != 0.0 && facilityDims[1] != 0.0 && facilityDims[2] != 0.0) {
+      geometryObject["facility_dimensions"] = facilityDims;
+      // facilityDims.append(length->text().toDouble());
+      // facilityDims.append(height->text().toDouble());
+      // facilityDims.append(width->text().toDouble());
+    }
 
     QJsonArray spanArray;
     QJsonArray originArray;

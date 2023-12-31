@@ -45,6 +45,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QIcon>
 #include <QSvgWidget>
 #include <QString> 
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
@@ -323,23 +325,17 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
 
   numRow = 0;
 
-  QStringList listObject; listObject << "Orange Box - OSU LWF" << "Grey Box - UW WASIRF" << "Square Columns - WU TWB" << "Rectangular Prism" << "Cylinder" << "Wedge" << "Custom";  
+  QStringList listObject; listObject << "Orange Box - OSU LWF" << "Grey Box - UW WASIRF" << "Square Columns - WU TWB" << "Box" << "Cylinder" << "Wedge" << "Sphere" << "Custom";  
   structObjectType = new SC_ComboBox("structObjectType",listObject);
   structLayout->addWidget(new QLabel("Object Type"),numRow,0);
   structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
   structLayout->addWidget(structObjectType,numRow++,1);
 
-  QStringList listContact; listContact << "Sticky" << "Slip" << "Separable";  
+  QStringList listContact; listContact << "Separable" << "Slip" << "Sticky";  
   structContactType = new SC_ComboBox("structContactType",listContact);
   structLayout->addWidget(new QLabel("Contact Type"),numRow,0);
   structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
   structLayout->addWidget(structContactType,numRow++,1);
-
-  autoCreateLoadCells = new SC_CheckBox("autoCreateLoadCells");
-  autoCreateLoadCells->setChecked(true);
-  structLayout->addWidget(new QLabel("Auto-Create Load-Cells (Sensors)?"),numRow, 0);
-  structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
-  structLayout->addWidget(autoCreateLoadCells,numRow++, 1);
 
   QStringList faceList; faceList << "X-" << "X+" << "Y-" << "Y+" << "Z-" << "Z+";
   loadCellFace = new SC_ComboBox("loadCellFace", faceList);
@@ -440,7 +436,13 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
 
   // numRow = 10;
   structLayout->addWidget(structArrayBox, numRow++, 0, 2, 5);
-  // numRow += 2; // Adjust for groupbox
+  numRow += 1; // Adjust for groupbox
+
+  autoCreateLoadCells = new SC_CheckBox("autoCreateLoadCells");
+  autoCreateLoadCells->setChecked(true);
+  structLayout->addWidget(new QLabel("Auto-Create Load-Cells (Sensors)?"),numRow, 0);
+  structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
+  structLayout->addWidget(autoCreateLoadCells,numRow++, 1);
 
   structLayout->setRowStretch(numRow+1,1);
 
@@ -733,9 +735,216 @@ BoundariesMPM::~BoundariesMPM()
 bool
 BoundariesMPM::outputToJSON(QJsonObject &jsonObject)
 {
+  QJsonArray boundariesArray;
+  boundariesArray = jsonObject["boundaries"].toArray();
+  
+  // Wave Flume Facility
+  {
+    QJsonObject boundariesObject;
+
+    // TODO: Add wave flume facility names to JSON to link to the name in ClaymoreUW enumerators
+    boundariesObject["object"] = QString("OSU LWF");
+    boundariesObject["contact"] = QString("Separable");
+    // boundariesObject["contact"] = QJsonValue(waveFlumeContactType->currentText()).toString();
+
+    QJsonArray originArray;
+    originArray.append(flumeOriginX->text().toDouble());
+    originArray.append(flumeOriginY->text().toDouble());
+    originArray.append(flumeOriginZ->text().toDouble());
+    if (0) boundariesObject["origin"] = originArray;
+    else boundariesObject["domain_start"] = originArray;
+
+    QJsonArray dimensionsArray;
+    QJsonArray dimensionsEndArray;
+    dimensionsArray.append(flumeLength->text().toDouble());
+    dimensionsArray.append(flumeHeight->text().toDouble());
+    dimensionsArray.append(flumeWidth->text().toDouble());
+    dimensionsEndArray.append(flumeLength->text().toDouble() + flumeOriginX->text().toDouble());
+    dimensionsEndArray.append(flumeHeight->text().toDouble() + flumeOriginY->text().toDouble());
+    dimensionsEndArray.append(flumeWidth->text().toDouble() + flumeOriginZ->text().toDouble());
+    if (0) boundariesObject["dimensions"] = dimensionsArray; // future schema
+    else boundariesObject["domain_end"] = dimensionsEndArray; // ClaymoreUW artifact, TODO: deprecate
+
+    // Maybe add SWL, bools, wave-maker neutral, etc. here
+    boundariesArray.append(boundariesObject);
+  }
+
+  // Wave Generation
+  {
+    QJsonObject boundariesObject;
+
+    // TODO: Add wave generator names to JSON to link to the name in ClaymoreUW enumerators
+    boundariesObject["object"] = QString("OSU Paddle");  
+    boundariesObject["contact"] = QJsonValue(paddleContactType->currentText()).toString();
+
+    QJsonArray originArray;
+
+    originArray.append(paddleOriginX->text().toDouble());
+    originArray.append(paddleOriginY->text().toDouble());
+    originArray.append(paddleOriginZ->text().toDouble());
+    if (0) boundariesObject["origin"] = originArray;
+    else boundariesObject["domain_start"] = originArray;
+
+    QJsonArray dimensionsArray;
+    QJsonArray dimensionsEndArray;
+    dimensionsArray.append(paddleLength->text().toDouble());
+    dimensionsArray.append(paddleHeight->text().toDouble());
+    dimensionsArray.append(paddleWidth->text().toDouble());
+    dimensionsEndArray.append(paddleLength->text().toDouble() + paddleOriginX->text().toDouble());
+    dimensionsEndArray.append(paddleHeight->text().toDouble() + paddleOriginY->text().toDouble());
+    dimensionsEndArray.append(paddleWidth->text().toDouble() + paddleOriginZ->text().toDouble());
+    if (0) boundariesObject["dimensions"] = dimensionsArray; // future schema
+    else boundariesObject["domain_end"] = dimensionsEndArray; // ClaymoreUW artifact, TODO: deprecate
+
+    boundariesObject["file"] = QString("WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv");
+    // TODOL: Custom file input
+    // paddleDisplacementFile->text(); // Paddle motion file
+    boundariesObject["output_freq"] = 1200.0; // TODO: Either be user set or read-in from motion_file
+
+    boundariesArray.append(boundariesObject);
+  }
+
+
+  // Rigid Structures
+  {
+    QJsonObject boundariesObject;
+
+    boundariesObject["object"] = "Box";
+    boundariesObject["contact"] = QJsonValue(structContactType->currentText()).toString();
+    
+    QJsonArray originArray;
+    originArray.append(structOriginLength->text().toDouble());
+    originArray.append(structOriginHeight->text().toDouble());
+    originArray.append(structOriginWidth->text().toDouble());
+    if (0) boundariesObject["origin"] = originArray;
+    else boundariesObject["domain_start"] = originArray;
+
+    QJsonArray dimensionsArray;
+    QJsonArray dimensionsEndArray;
+    dimensionsArray.append(structLength->text().toDouble());
+    dimensionsArray.append(structHeight->text().toDouble());
+    dimensionsArray.append(structWidth->text().toDouble());
+    dimensionsEndArray.append(structLength->text().toDouble() + structOriginLength->text().toDouble());
+    dimensionsEndArray.append(structHeight->text().toDouble() + structOriginHeight->text().toDouble());
+    dimensionsEndArray.append(structWidth->text().toDouble() + structOriginWidth->text().toDouble());
+    if (0) boundariesObject["dimensions"] = dimensionsArray; // future schema
+    else boundariesObject["domain_end"] = dimensionsEndArray; // ClaymoreUW artifact, TODO: deprecate
+
+
+
+    if (applyCoulombFriction->isChecked()) {
+      QJsonObject frictionObject;
+      QJsonArray staticFrictionArray;
+      QJsonArray dynamicFrictionArray;
+      frictionObject["type"] = "Coulomb";
+      staticFrictionArray.append(staticFrictionWallX->text().toDouble());
+      staticFrictionArray.append(staticFrictionWallY->text().toDouble());
+      staticFrictionArray.append(staticFrictionWallZ->text().toDouble());
+      frictionObject["static"] = staticFrictionArray;
+      dynamicFrictionArray.append(dynamicFrictionWallX->text().toDouble());
+      dynamicFrictionArray.append(dynamicFrictionWallY->text().toDouble());
+      dynamicFrictionArray.append(dynamicFrictionWallZ->text().toDouble());
+      frictionObject["dynamic"] = dynamicFrictionArray;
+      boundariesObject["friction"] = frictionObject;
+    }
+
+    if (applyArray->isChecked()) {
+      QJsonObject arrayObject;
+      QJsonArray arrayDimensionsArray;
+      QJsonArray arraySpacingArray;
+      arrayDimensionsArray.append(structArrayX->text().toInt());
+      arrayDimensionsArray.append(structArrayY->text().toInt());
+      arrayDimensionsArray.append(structArrayZ->text().toInt());
+      arraySpacingArray.append(structSpacingX->text().toDouble());
+      arraySpacingArray.append(structSpacingY->text().toDouble());
+      arraySpacingArray.append(structSpacingZ->text().toDouble());
+      boundariesObject["array"] = arrayDimensionsArray;
+      boundariesObject["spacing"] = arraySpacingArray;
+    }
+
+    // TODO: Add auto-load-cell portion of JSON to link to the name of created sensor
+
+    boundariesArray.append(boundariesObject);
+  }
+
+
+  // Walls
+  {
+    QJsonObject boundariesObject;
+    boundariesObject["object"] = "Walls";
+    boundariesObject["contact"] = QJsonValue(wallsContactType->currentText()).toString();
+
+    QJsonArray originArray;
+    originArray.append(originLength->text().toDouble());
+    originArray.append(originHeight->text().toDouble());
+    originArray.append(originWidth->text().toDouble());
+    if (0) boundariesObject["origin"] = originArray;
+    else boundariesObject["domain_start"] = originArray;
+
+    QJsonArray dimensionsArray;
+    QJsonArray dimensionsEndArray;
+    dimensionsArray.append(wallsLength->text().toDouble());
+    dimensionsArray.append(wallsHeight->text().toDouble());
+    dimensionsArray.append(wallsWidth->text().toDouble());
+    dimensionsEndArray.append(wallsLength->text().toDouble() + originLength->text().toDouble());
+    dimensionsEndArray.append(wallsHeight->text().toDouble() + originHeight->text().toDouble());
+    dimensionsEndArray.append(wallsWidth->text().toDouble() + originWidth->text().toDouble());
+    if (0) boundariesObject["dimensions"] = dimensionsArray; // future schema
+    else boundariesObject["domain_end"] = dimensionsEndArray; // ClaymoreUW artifact, TODO: deprecate
+
+    if (applyCoulombFriction->isChecked()) {
+      QJsonObject frictionObject;
+      QJsonArray staticFrictionArray;
+      QJsonArray dynamicFrictionArray;
+      frictionObject["type"] = "Coulomb";
+      staticFrictionArray.append(staticFrictionWallX->text().toDouble());
+      staticFrictionArray.append(staticFrictionWallY->text().toDouble());
+      staticFrictionArray.append(staticFrictionWallZ->text().toDouble());
+      frictionObject["static"] = staticFrictionArray;
+      dynamicFrictionArray.append(dynamicFrictionWallX->text().toDouble());
+      dynamicFrictionArray.append(dynamicFrictionWallY->text().toDouble());
+      dynamicFrictionArray.append(dynamicFrictionWallZ->text().toDouble());
+      frictionObject["dynamic"] = dynamicFrictionArray;
+      boundariesObject["friction"] = frictionObject;
+    }
+
+    // if (applyInletOutlet->isChecked()) {
+    //   QJsonObject inletOutletObject;
+    //   QJsonObject subXObject;
+    //   QJsonObject subYObject;
+    //   QJsonObject subZObject;
+    //   QJsonObject plusXObject;
+    //   QJsonObject plusYObject;
+    //   QJsonObject plusZObject;
+    //   subXObject["type"] = QJsonValue(inletOutletTypeSubX->currentText()).toString();
+    //   subYObject["type"] = QJsonValue(inletOutletTypeSubY->currentText()).toString();
+    //   subZObject["type"] = QJsonValue(inletOutletTypeSubZ->currentText()).toString();
+    //   plusXObject["type"] = QJsonValue(inletOutletTypePlusX->currentText()).toString();
+    //   plusYObject["type"] = QJsonValue(inletOutletTypePlusY->currentText()).toString();
+    //   plusZObject["type"] = QJsonValue(inletOutletTypePlusZ->currentText()).toString();
+    //   inletOutletObject["-X"] = subXObject;
+    //   inletOutletObject["-Y"] = subYObject;
+    //   inletOutletObject["-Z"] = subZObject;
+    //   inletOutletObject["+X"] = plusXObject;
+    //   inletOutletObject["+Y"] = plusYObject;
+    //   inletOutletObject["+Z"] = plusZObject;
+    //   boundariesObject["inlet-outlet"] = inletOutletObject;
+    // }
+
+    boundariesArray.append(boundariesObject);
+  }
+
+
+  if (0) jsonObject["boundaries"] = boundariesArray; // future schema
+  else jsonObject["grid-boundaries"] = boundariesArray; // ClaymoreUW artifact, TODO: Deprecate
+
+
   //  jsonObject["domainSubType"]=facility->currentText();
   bathSTL->outputToJSON(jsonObject);
   paddleDisplacementFile->outputToJSON(jsonObject);
+
+
+
   return true;
 }
 

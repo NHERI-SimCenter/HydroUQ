@@ -96,8 +96,11 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   QGridLayout *bodiesLayout = new QGridLayout();  
   bodiesBox->setLayout(bodiesLayout);
   bodiesLayout->addWidget(new QLabel("Output File Type"),numRow,0);
-  bodiesLayout->addWidget(vtkBodies_Output,numRow++,1);  
+  bodiesLayout->itemAt(bodiesLayout->count()-1)->setAlignment(Qt::AlignRight);
+  bodiesLayout->addWidget(vtkBodies_Output,numRow,1);  
+  bodiesLayout->addWidget(new QLabel("Suffix"),numRow++,2);
   bodiesLayout->addWidget(new QLabel("Output Frequency"),numRow,0);
+  bodiesLayout->itemAt(bodiesLayout->count()-1)->setAlignment(Qt::AlignRight);
   bodiesLayout->addWidget(outputBodies_Dt,numRow,1);
   bodiesLayout->addWidget(new QLabel("Hz"),numRow++,2);  
 
@@ -106,8 +109,11 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   QGridLayout *checkpointLayout = new QGridLayout();  
   checkpointBox->setLayout(checkpointLayout);
   checkpointLayout->addWidget(new QLabel("Output File Type"),numRow,0);
-  checkpointLayout->addWidget(vtkCheckpoints_Output,numRow++,1);
+  checkpointLayout->itemAt(checkpointLayout->count()-1)->setAlignment(Qt::AlignRight);
+  checkpointLayout->addWidget(vtkCheckpoints_Output,numRow,1);
+  checkpointLayout->addWidget(new QLabel("Suffix"),numRow++,2);
   checkpointLayout->addWidget(new QLabel("Output Frequency"),numRow,0);
+  checkpointLayout->itemAt(checkpointLayout->count()-1)->setAlignment(Qt::AlignRight);
   checkpointLayout->addWidget(outputCheckpoints_Dt,numRow,1);
   checkpointLayout->addWidget(new QLabel("Hz"),numRow++,2);
   checkpointLayout->setRowStretch(numRow, 1);
@@ -117,8 +123,11 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   QGridLayout *boundariesLayout = new QGridLayout();  
   boundariesBox->setLayout(boundariesLayout);
   boundariesLayout->addWidget(new QLabel("Output File Type"),numRow,0);
-  boundariesLayout->addWidget(vtkBoundaries_Output,numRow++,1);    
+  boundariesLayout->itemAt(boundariesLayout->count()-1)->setAlignment(Qt::AlignRight);
+  boundariesLayout->addWidget(vtkBoundaries_Output,numRow,1); 
+  boundariesLayout->addWidget(new QLabel("Suffix"),numRow++,2);   
   boundariesLayout->addWidget(new QLabel("Output Frequency"),numRow,0);
+  boundariesLayout->itemAt(boundariesLayout->count()-1)->setAlignment(Qt::AlignRight);
   boundariesLayout->addWidget(outputBoundaries_Dt,numRow,1);
   boundariesLayout->addWidget(new QLabel("Hz"),numRow++,2);
   boundariesLayout->setRowStretch(numRow, 1);
@@ -128,7 +137,9 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   QGridLayout *sensorsLayout = new QGridLayout();  
   sensorsBox->setLayout(sensorsLayout);
   sensorsLayout->addWidget(new QLabel("Output File Type"),numRow,0);
-  sensorsLayout->addWidget(vtkSensors_Output,numRow++,1);    
+  sensorsLayout->itemAt(sensorsLayout->count()-1)->setAlignment(Qt::AlignRight);
+  sensorsLayout->addWidget(vtkSensors_Output,numRow,1);    
+  sensorsLayout->addWidget(new QLabel("Suffix"),numRow++,2);
   sensorsLayout->setRowStretch(numRow, 1);
 
   numRow = 0;
@@ -136,19 +147,21 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   QGridLayout *energiesLayout = new QGridLayout();  
   energiesBox->setLayout(energiesLayout);
   energiesLayout->addWidget(new QLabel("Output File Type"),numRow,0);
-  energiesLayout->addWidget(vtkEnergies_Output,numRow++,1);
+  energiesLayout->itemAt(energiesLayout->count()-1)->setAlignment(Qt::AlignRight);
+  energiesLayout->addWidget(vtkEnergies_Output,numRow,1);
+  energiesLayout->addWidget(new QLabel("Suffix"),numRow++,2);
   energiesLayout->addWidget(new QLabel("Output Frequency"),numRow,0);
+  energiesLayout->itemAt(energiesLayout->count()-1)->setAlignment(Qt::AlignRight);
   energiesLayout->addWidget(outputEnergies_Dt,numRow,1);
   energiesLayout->addWidget(new QLabel("Hz"),numRow++,2);
 
   energiesLayout->addWidget(new QLabel("Kinetic - Gravity - Strain?"),numRow,0);
+  energiesLayout->itemAt(energiesLayout->count()-1)->setAlignment(Qt::AlignRight);
   energiesLayout->addWidget(useKineticEnergy,numRow,1);
   energiesLayout->addWidget(usePotentialEnergy,numRow,2);
   energiesLayout->addWidget(useStrainEnergy,numRow++,3);
   energiesLayout->setRowStretch(numRow, 1);
-  // energiesLayout->addWidget(new QLabel("Output Gravity-Potential?"),numRow,0);
-  // energiesLayout->addWidget(new QLabel("Output Elastic-Strain?"),numRow,0);
-  
+
   //
   // now boxes to this widget
   //

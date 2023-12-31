@@ -66,15 +66,15 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
 
   QStringList numericalMethodList; numericalMethodList << "particles" << "meshes";
   numericalMethod = new SC_ComboBox("NumericalMethod", numericalMethodList);
-  layout->addWidget(new QLabel("Simulated Body Type"),numRow, 0);
+  layout->addWidget(new QLabel("Numerical Representation"),numRow, 0);
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
-  layout->addWidget(numericalMethod, numRow++, 1);
+  layout->addWidget(numericalMethod, numRow++, 1, 1, 2);
 
   // --- Particles
-  QGroupBox *particlesGroupBox = new QGroupBox();
+  QGroupBox *particlesGroupBox = new QGroupBox("Particles");
   QGridLayout *particlesLayout = new QGridLayout();
   particlesGroupBox->setLayout(particlesLayout);
-  layout->addWidget(particlesGroupBox, numRow++, 0, 1, 3);
+  // layout->addWidget(particlesGroupBox, numRow++, 0, 1, 3);
 
   int numBodyRow = 0;
   particlesPerCell = new SC_DoubleLineEdit("ppc", 8);
@@ -89,8 +89,9 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   particlesLayout->addWidget(new QLabel("Use ASFLIP Advection?"),numBodyRow, 0);
   particlesLayout->itemAt(particlesLayout->count()-1)->setAlignment(Qt::AlignRight);
   particlesLayout->addWidget(useASFLIP, numBodyRow++, 1);
+  // particlesLayout->setRowStretch(numBodyRow,1);
 
-  QGroupBox *ASFLIPGroupBox = new QGroupBox();
+  QGroupBox *ASFLIPGroupBox = new QGroupBox("ASFLIP Advection");
   QGridLayout *ASFLIPLayout = new QGridLayout();
   ASFLIPGroupBox->setLayout(ASFLIPLayout);
   particlesLayout->addWidget(ASFLIPGroupBox, numBodyRow++, 0, 1, 3);
@@ -114,13 +115,14 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   ASFLIPLayout->addWidget(ASFLIP_betaMax, numBodyRow, 1);
   ASFLIPLayout->addWidget(new QLabel("[min(B), 1], typ. < 0.250"),numBodyRow++, 2);
 
+
   useFBAR = new SC_CheckBox("use_FBAR");
   useFBAR->setChecked(true);
   particlesLayout->addWidget(new QLabel("Use F-Bar Antilocking?"),numBodyRow, 0);
   particlesLayout->itemAt(particlesLayout->count()-1)->setAlignment(Qt::AlignRight);
   particlesLayout->addWidget(useFBAR, numBodyRow++, 1);
 
-  QGroupBox *FBARGroupBox = new QGroupBox();
+  QGroupBox *FBARGroupBox = new QGroupBox("FBAR Antilocking");
   QGridLayout *FBARLayout = new QGridLayout();
   FBARGroupBox->setLayout(FBARLayout);
   particlesLayout->addWidget(FBARGroupBox, numBodyRow++, 0, 1, 3);
@@ -137,6 +139,22 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   FBARLayout->itemAt(FBARLayout->count()-1)->setAlignment(Qt::AlignRight);
   FBARLayout->addWidget(useFBAR_fusedG2P2G, numBodyRow++, 1);
 
+
+  // --- Meshes
+  QGroupBox *meshesGroupBox = new QGroupBox("Meshes");
+  QGridLayout *meshesLayout = new QGridLayout();
+  meshesGroupBox->setLayout(meshesLayout);
+  // layout->addWidget(meshesGroupBox, numRow++, 0, 1, 3);
+  numBodyRow = 0;
+  // meshesLayout->addWidget(new QLabel("To be re-implemented."),numBodyRow++, 0);
+  meshesLayout->addWidget(new QLabel("To be re-implemented."),numBodyRow++, 0,1,3);
+  meshesLayout->itemAt(meshesLayout->count()-1)->setAlignment(Qt::AlignCenter);
+  meshesLayout->setRowStretch(0,numBodyRow);
+  // meshesLayout->setColumnStretch(2,1);
+  QStackedWidget *stackedWidget = new QStackedWidget();
+  stackedWidget->addWidget(particlesGroupBox);
+  stackedWidget->addWidget(meshesGroupBox);
+  layout->addWidget(stackedWidget, numRow++, 0, 1, 3);
 
 
   connect(useASFLIP, &QCheckBox::stateChanged, [=](int state) {
@@ -158,18 +176,25 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   });
 
   connect(numericalMethod, &QComboBox::currentTextChanged, [=](QString val) {
-    if (val == "Particles") {
+    if (val == "Particles" || val == "particles") {
       particlesGroupBox->setVisible(true);
     } else {
       particlesGroupBox->setVisible(false);
     }
+
+    if (val == "Meshes" || val == "meshes") {
+      meshesGroupBox->setVisible(true);
+    } else {
+      meshesGroupBox->setVisible(false);
+    }
+
   });
 
 
   layout->setRowStretch(numRow,1);
 
   // layout->setRowStretch(numRow, 2);
-  layout->setColumnStretch(3, 1);
+  layout->setColumnStretch(4, 1);
 
 }
 

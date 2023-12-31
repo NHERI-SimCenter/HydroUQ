@@ -50,6 +50,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SimCenterWidget.h>
 
 class QJsonObject;
+class QJsonArray;
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
 class SC_ComboBox;
@@ -82,6 +83,7 @@ private:
   SC_DoubleLineEdit *flumeOriginY;
   SC_DoubleLineEdit *flumeOriginZ;  
   SC_ComboBox       *bathymetryComboBox;
+  // SC_ComboBox       *flumeContactType; // TODO
 
   SC_FileEdit       *bathSTL;
   SC_TableEdit      *bathXZData;  

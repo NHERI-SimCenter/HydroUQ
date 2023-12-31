@@ -294,36 +294,39 @@ SensorsMPM::outputToJSON(QJsonObject &jsonObject)
   for (int i = 0; i < tableArraysWG["waveGaugeLocs"].toArray().size(); ++i) {
     QJsonObject waveGaugesObject;
     QJsonArray waveGaugeArray = tableArraysWG["waveGaugeLocs"].toArray()[i].toArray();
-    waveGaugesObject["toggle"] = QJsonValue(toggleWG->currentText()).toString();
+    // waveGaugesObject["toggle"] = QJsonValue(toggleWG->currentText()).toString();
+    waveGaugesObject["toggle"] = (QJsonValue(toggleWG->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
     waveGaugesObject["type"] = QJsonValue(typeWG->currentText()).toString();
     waveGaugesObject["attribute"] = QJsonValue(attributeWG->currentText()).toString();
     waveGaugesObject["operation"] = operationWG->itemText(operationWG->currentIndex());
     waveGaugesObject["output_frequency"] = output_frequencyWG->text().toDouble();
     waveGaugesObject["direction"] = directionWG->itemText(directionWG->currentIndex());
-
     waveGaugesObject["name"] = waveGaugeArray[0].toString();
 
     // Future schema
     QJsonArray origin;
     for (int j=1; j<4; ++j) origin.append(waveGaugeArray[j].toDouble());
-    waveGaugesObject["origin"] = origin;
 
     QJsonArray dimensions;
     for (int j=4; j<7; ++j) dimensions.append(waveGaugeArray[j].toDouble());
-    waveGaugesObject["dimensions"] = dimensions;
 
     // ClaymoreUW artifacts
     QJsonArray domain_start;
     domain_start.append(waveGaugeArray[1].toDouble());
     domain_start.append(waveGaugeArray[2].toDouble());
     domain_start.append(waveGaugeArray[3].toDouble());
-    waveGaugesObject["domain_start"] = domain_start;
 
     QJsonArray domain_end;
     domain_end.append(waveGaugeArray[1].toDouble() + waveGaugeArray[4].toDouble());
     domain_end.append(waveGaugeArray[2].toDouble() + waveGaugeArray[5].toDouble());
     domain_end.append(waveGaugeArray[3].toDouble() + waveGaugeArray[6].toDouble());
-    waveGaugesObject["domain_end"] = domain_end;
+    if (0) { // Future schema
+      waveGaugesObject["origin"] = origin;
+      waveGaugesObject["dimensions"] = dimensions;
+    } else { // ClaymoreUW artifacts, to be deprecated
+      waveGaugesObject["domain_start"] = domain_start;
+      waveGaugesObject["domain_end"] = domain_end;
+    }
 
     sensorsArray.append(waveGaugesObject);
     if (typeWG->currentText() == "grid") gridSensorsArray.append(waveGaugesObject);
@@ -333,36 +336,40 @@ SensorsMPM::outputToJSON(QJsonObject &jsonObject)
   for (int i = 0; i < tableArraysVM["velociMeterLocs"].toArray().size(); ++i) {
     QJsonObject velociMetersObject;
     QJsonArray velociMeterArray = tableArraysVM["velociMeterLocs"].toArray()[i].toArray();
-    velociMetersObject["toggle"] = QJsonValue(toggleVM->currentText()).toString();
+    // velociMetersObject["toggle"] = QJsonValue(toggleVM->currentText()).toString();
+    velociMetersObject["toggle"] = (QJsonValue(toggleVM->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
     velociMetersObject["type"] = QJsonValue(typeVM->currentText()).toString();
     velociMetersObject["attribute"] = QJsonValue(attributeVM->currentText()).toString();
     velociMetersObject["operation"] = operationVM->itemText(operationVM->currentIndex());
     velociMetersObject["output_frequency"] = output_frequencyVM->text().toDouble();
     velociMetersObject["direction"] = directionVM->itemText(directionVM->currentIndex());
-
     velociMetersObject["name"] = velociMeterArray[0].toString();
 
     // Future schema
     QJsonArray origin;
     for (int j=1; j<4; ++j) origin.append(velociMeterArray[j].toDouble());
-    velociMetersObject["origin"] = origin;
 
     QJsonArray dimensions;
     for (int j=4; j<7; ++j) dimensions.append(velociMeterArray[j].toDouble());
-    velociMetersObject["dimensions"] = dimensions;
     
     // ClaymoreUW artifacts
     QJsonArray domain_start;
     domain_start.append(velociMeterArray[1].toDouble());
     domain_start.append(velociMeterArray[2].toDouble());
     domain_start.append(velociMeterArray[3].toDouble());
-    velociMetersObject["domain_start"] = domain_start;
 
     QJsonArray domain_end;
     domain_end.append(velociMeterArray[1].toDouble() + velociMeterArray[4].toDouble());
     domain_end.append(velociMeterArray[2].toDouble() + velociMeterArray[5].toDouble());
     domain_end.append(velociMeterArray[3].toDouble() + velociMeterArray[6].toDouble());
-    velociMetersObject["domain_end"] = domain_end;
+
+    if (0) { // Future schema
+      velociMetersObject["origin"] = origin;
+      velociMetersObject["dimensions"] = dimensions;
+    } else { // ClaymoreUW artifacts, to be deprecated
+      velociMetersObject["domain_start"] = domain_start;
+      velociMetersObject["domain_end"] = domain_end;
+    }
 
     sensorsArray.append(velociMetersObject);
     if (typeVM->currentText() == "grid") gridSensorsArray.append(velociMetersObject);
@@ -373,70 +380,48 @@ SensorsMPM::outputToJSON(QJsonObject &jsonObject)
     QJsonObject loadCellsObject;
     QJsonArray loadCellArray = tableArraysLC["loadCellLocs"].toArray()[i].toArray();
     loadCellsObject["toggle"] = QJsonValue(toggleLC->currentText()).toString();
+    loadCellsObject["toggle"] = (QJsonValue(toggleLC->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
     loadCellsObject["type"] = QJsonValue(typeLC->currentText()).toString();
     loadCellsObject["attribute"] = QJsonValue(attributeLC->currentText()).toString();
     loadCellsObject["operation"] = operationLC->itemText(operationLC->currentIndex());
     loadCellsObject["output_frequency"] = output_frequencyLC->text().toDouble();
     loadCellsObject["direction"] = directionLC->itemText(directionLC->currentIndex());
-
     loadCellsObject["name"] = loadCellArray[0].toString();
 
     // Future schema
     QJsonArray origin;
     for (int j=1; j<4; ++j) origin.append(loadCellArray[j].toDouble());
-    loadCellsObject["origin"] = origin;
 
     QJsonArray dimensions;
     for (int j=4; j<7; ++j) dimensions.append(loadCellArray[j].toDouble());
-    loadCellsObject["dimensions"] = dimensions;
     
     // ClaymoreUW artifacts
     QJsonArray domain_start;
     domain_start.append(loadCellArray[1].toDouble());
     domain_start.append(loadCellArray[2].toDouble());
     domain_start.append(loadCellArray[3].toDouble());
-    loadCellsObject["domain_start"] = domain_start;
 
     QJsonArray domain_end;
     domain_end.append(loadCellArray[1].toDouble() + loadCellArray[4].toDouble());
     domain_end.append(loadCellArray[2].toDouble() + loadCellArray[5].toDouble());
     domain_end.append(loadCellArray[3].toDouble() + loadCellArray[6].toDouble());
-    loadCellsObject["domain_end"] = domain_end;
+
+    if (0) { // Future schema
+      loadCellsObject["origin"] = origin;
+      loadCellsObject["dimensions"] = dimensions;
+    } else { // ClaymoreUW artifacts, to be deprecated
+      loadCellsObject["domain_start"] = domain_start;
+      loadCellsObject["domain_end"] = domain_end;
+    }
 
     sensorsArray.append(loadCellsObject);
     if (typeLC->currentText() == "grid") gridSensorsArray.append(loadCellsObject);
     else particleSensorsArray.append(loadCellsObject);
   }
 
-  jsonObject["sensors"] = sensorsArray;
-  jsonObject["particle-sensors"] = particleSensorsArray;
-  jsonObject["grid-sensors"] = gridSensorsArray;
-
-
-  // toggleWG->outputToJSON(jsonObject);
-  // typeWG->outputToJSON(jsonObject);
-  // attributeWG->outputToJSON(jsonObject);
-  // operationWG->outputToJSON(jsonObject);
-  // directionWG->outputToJSON(jsonObject);
-  // output_frequencyWG->outputToJSON(jsonObject);
-  // waveGaugesTable->outputToJSON(jsonObject);
-
-  // toggleVM->outputToJSON(jsonObject);
-  // typeVM->outputToJSON(jsonObject);
-  // attributeVM->outputToJSON(jsonObject);
-  // operationVM->outputToJSON(jsonObject);
-  // directionVM->outputToJSON(jsonObject);
-  // output_frequencyVM->outputToJSON(jsonObject);
-  // velociMetersTable->outputToJSON(jsonObject);
-
-  // toggleLC->outputToJSON(jsonObject);
-  // typeLC->outputToJSON(jsonObject);
-  // attributeLC->outputToJSON(jsonObject);
-  // operationLC->outputToJSON(jsonObject);
-  // directionLC->outputToJSON(jsonObject);
-  // output_frequencyLC->outputToJSON(jsonObject);
-  // loadCellsTable->outputToJSON(jsonObject);
-
+  jsonObject["sensors"] = sensorsArray; // future schema
+  jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+  jsonObject["grid-sensors"] = gridSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
 
   return true;
 }
