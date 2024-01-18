@@ -1,5 +1,5 @@
-#ifndef BOUNDARIES_MPM_H
-#define BOUNDARIES_MPM_H
+#ifndef PARTITIONS_MPM_H
+#define PARTITIONS_MPM_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2023, The Regents of the University of California (Regents).
@@ -38,45 +38,55 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 /**
- *  @author  JustinBonus
+ *  @author  Justin Bonus
  *  @date    1/2024
  *  @version 3.0
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the set of Boundaries for MPM
+ *  This is the class providing the set of GPU partitions for an MPM body
  */
 
 #include <SimCenterWidget.h>
-
+#include <vector>
+#include <array>
 class QJsonObject;
 class QJsonArray;
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
+class SC_StringLineEdit;
 class SC_ComboBox;
 class SC_TableEdit;
 class SC_FileEdit;
 class SC_CheckBox;
-class SC_ComboBox;
-class QStackedWidget;
-class QGroupBox;
 
-class BoundaryMPM;
-class BoundariesMPM : public SimCenterWidget
+class PartitionMPM; // Individual GPU partitions
+class PartitionsMPM : public SimCenterWidget
 {
 public:
-    BoundariesMPM(QWidget *parent = 0);
-    virtual ~BoundariesMPM();
+    PartitionsMPM(QWidget *parent = 0);
+    virtual ~PartitionsMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-    bool copyFiles(QString &dirName);  
-    // bool setBoundaryType(int typeIdx);
+    bool copyFiles(QString &dirName);
+    bool setPartitionGPU(int partitionIndex, int gpuIndex);
+    bool setModel(int modelID);
+    bool setDefaultModelID(int modelID);
+    // bool updateOccupiedModelsOnGPUs(int gpuIndex, int modelIndex, bool occupied);
 signals:
 
 private:
+  int numPartitions = 0; // Number of partitions
+  int defaultModelID = 0; // Default model ID, updated in setModel
+  int maxNumGPUs = 4; //< Maximum number of GPUs supported, update according to settings:computer 
+  int maxNumModels = 3; //< Maximum number of models supported, update according to settings:computer
+  // TODO: Dynamic
+  std::vector<std::array<bool, 3>> occupiedModelsOnGPUs = {{false, false, false}, {false, false, false}, {false, false, false}, {false, false, false}}; //< Occupied models on GPUs 
+  // bool occupiedModelsOnGPUs[maxNumGPUs][maxNumModels] = {{false, false, false}, {false, false, false}, {false, false, false}, {false, false, false}}; //< Occupied models on GPUs
   int numReserveTabs = 8;
   int numAddedTabs = 0;
-  QVector<BoundaryMPM*> addedBoundary {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  QVector<PartitionMPM*> addedPartition {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 };
 
-#endif // BOUNDARIES_MPM_H
+#endif // PARTITIONS_MPM_H
+

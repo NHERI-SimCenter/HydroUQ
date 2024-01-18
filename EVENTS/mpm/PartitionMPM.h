@@ -67,10 +67,14 @@ public:
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
-  
+    bool setGPU(int gpuID);
+    bool setModel(int modelID);
+    bool setDefaultModelID(int modelID);
 signals:
 
 private:
+  int numPartitions = 0; // Number of partitions
+  int defaultModelID = 0; // Default model ID, updated in setModel
   SC_IntLineEdit    *deviceNumber; // GPU device ID
   SC_IntLineEdit    *bodyNumber; // Model-body number-ID on GPU device
   SC_DoubleLineEdit *partitionOrigin_X; // GPU domain start X

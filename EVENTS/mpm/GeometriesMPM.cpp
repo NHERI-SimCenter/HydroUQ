@@ -34,7 +34,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-#include "BoundariesMPM.h"
+#include "GeometriesMPM.h"
 #include <QLabel>
 #include <QComboBox>
 #include <QGroupBox>
@@ -48,28 +48,31 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QJsonObject>
 #include <QJsonArray>
 
-#include <BoundaryMPM.h>
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
 #include <SC_IntLineEdit.h>
+#include <SC_StringLineEdit.h>
 #include <SC_TableEdit.h>
 #include <SC_FileEdit.h>
 #include <SC_CheckBox.h>
 
+#include <GeometryMPM.h>
 
-BoundariesMPM::BoundariesMPM(QWidget *parent)
+#include <vector>
+#include <memory>
+
+GeometriesMPM::GeometriesMPM(QWidget *parent)
   :SimCenterWidget(parent)
 {
-  // --- Boundary
+  int numRow = 0;
+
   QGridLayout *layout = new QGridLayout();
   this->setLayout(layout);
-
-  int numRow = 0;
   
-  // Buttons for creating and removing individual boundary
-  // All geometries will be composed together for an individual body to form a single boundary
-  QPushButton *addB = new QPushButton("Create Boundary"); 
-  QPushButton *delB = new QPushButton("Remove Boundary");
+  // Buttons for creating and removing individual geometry
+  // All geometries will be composed together for an individual body to form a single geometry
+  QPushButton *addB = new QPushButton("Create Geometry"); 
+  QPushButton *delB = new QPushButton("Remove Geometry");
   addB->setIcon(QIcon(":/icons/pencil-plus-white.svg"));
   delB->setIcon(QIcon(":/icons/eraser-white.svg"));
   addB->setIconSize(QSize(24,24));
@@ -84,54 +87,32 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   layout->addWidget(theHeaderFrame);
 
   ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  // Add tab per boundary
+  // Add tab per Body
   QTabWidget *tabWidget = new QTabWidget();
-  int sizeTabIcon = 20;
-  tabWidget->setIconSize(QSize(sizeTabIcon,sizeTabIcon));
   tabWidget->setTabsClosable(true); // Close tabs with X mark via mouse (connect to tabCloseRequested)
   tabWidget->setMovable(true); // Move tabs with mouse
 
-  QVector<QWidget*> theAdded(numReserveTabs); // numReserveTabs is max number of added tabs
+  QVector<QWidget*> theAdded(numReserveTabs); // 16 is max number of added tabs
 
   int sizeBodyTabs = 20;
   layout->addWidget(tabWidget);
 
-  int numDefaultTabs = 1; // Need atleast one boundary tab, so dont allow last one to be deleted
+  int numDefaultTabs = 1; // Need atleast one geometry tab, so dont allow last one to be deleted
   QVector<QGridLayout*> theAddedLayout(numReserveTabs);
   QVector<QTabWidget*> modelAddedTabWidget(numReserveTabs); 
   for (int i = 0; i < numReserveTabs; i++) {
     theAdded[i] = new QWidget();
     theAddedLayout[i] = new QGridLayout();
-    addedBoundary[i] = new BoundaryMPM();
+    addedGeometry[i] = new GeometryMPM();
   }
 
-  // Init. first four boundaries automatically for digital twin configuration
-  // Wave Flume Facility
-  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/wash-black.svg")), "Flume Facility");
+  // Init. first geometry automatically
+  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/triangle-square-circle-black.svg")), "Custom " + QString::number(numAddedTabs + 1));
+  tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
   theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-  theAddedLayout[numAddedTabs]->addWidget(addedBoundary[numAddedTabs]);
+  theAddedLayout[numAddedTabs]->addWidget(addedGeometry[numAddedTabs]);
   numAddedTabs += 1;
-
-  // Wave Generator
-  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/wave-break-black.svg")), "Wave Generator");
-  theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-  theAddedLayout[numAddedTabs]->addWidget(addedBoundary[numAddedTabs]);
-  numAddedTabs += 1;
-
-  // Rigid Structure
-  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/home-black.svg")), "Rigid Structure");
-  theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-  theAddedLayout[numAddedTabs]->addWidget(addedBoundary[numAddedTabs]);
-  numAddedTabs += 1;
-
-  // Rigid Walls
-  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/wall-black.svg")), "Rigid Walls");
-  theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-  theAddedLayout[numAddedTabs]->addWidget(addedBoundary[numAddedTabs]);
-  numAddedTabs += 1;
-
-
-  // Create and Init. another boundary tab at user request (click create)
+  // Init. all extra geometry at user request (click create)
   connect(addB, &QPushButton::released, this, [=]() {
     // Concatenate string to say "Custom Body 1", "Custom Body 2", etc.
     if (numAddedTabs >= numReserveTabs) 
@@ -139,17 +120,18 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
     tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Custom " + QString::number(numAddedTabs + 1));
     tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
     theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-    theAddedLayout[numAddedTabs]->addWidget(addedBoundary[numAddedTabs]);
+    theAddedLayout[numAddedTabs]->addWidget(addedGeometry[numAddedTabs]);
+    addedGeometry[numAddedTabs]->setBodyPreset(3); // TODO: Use enum for body presets
     numAddedTabs += 1;
   });
 
-  // Remove boundary at user request (click remove)
+  // Remove geometry at user request (click remove)
   connect(delB, &QPushButton::released, this, [=]() {
     if (( tabWidget->currentIndex() == -1) || (tabWidget->count() <= numDefaultTabs) || (tabWidget->currentIndex() < numDefaultTabs)) 
       return;
     auto widget = tabWidget->widget(tabWidget->currentIndex());
     if (widget) {
-          // Delete the widget itself manually?
+          // Delete the widget itself
           // widget.deleteLater()
     }
     tabWidget->setCurrentIndex(tabWidget->currentIndex()-1);
@@ -157,14 +139,13 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
     // clean up
     numAddedTabs -= 1;
   }); 
-  // Remove boundary at user request (click the "X" mark on a tab)
+  // Remove geometry at user request (click the "X" mark on a tab)
   connect(tabWidget, &QTabWidget::tabCloseRequested, this, [=](int index) {
     if (( index == -1) || (tabWidget->count() <= numDefaultTabs) || (index < numDefaultTabs)) 
       return; 
     // tabWidget->setCurrentIndex(index-1);
     auto widget = tabWidget->widget(index);
     if (widget) {
-          // removes the widget
           // widget.deleteLater()
     }
     if (index > 0 && index < tabWidget->count()-1 && tabWidget->currentIndex() == index) {
@@ -176,87 +157,53 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
     
   });
 
-
-  // Enum to set tab's icons, titles, init values, etc.
-  enum boundaryEnum : int {CUSTOM = 0, WAVE_FLUME, WAVE_GENERATOR, RIGID_STRUCTURE, RIGID_WALLS, TOTAL};
-
-  // Set initial boundary type
+  // Set initial geometry body preset
   for (int i=0; i<numAddedTabs; i++) {
-    if (i >= numReserveTabs) break;
-    if (i == 0) addedBoundary[i]->setBoundaryType(WAVE_FLUME);
-    else if (i == 1) addedBoundary[i]->setBoundaryType(WAVE_GENERATOR);
-    else if (i == 2) addedBoundary[i]->setBoundaryType(RIGID_STRUCTURE);
-    else if (i == 3) addedBoundary[i]->setBoundaryType(RIGID_WALLS);
-    else addedBoundary[i]->setBoundaryType(CUSTOM);
+    this->setBodyPreset(3);
   }
+
 }
 
-BoundariesMPM::~BoundariesMPM()
+GeometriesMPM::~GeometriesMPM()
 {
 
 }
 
-// bool
-// BoundariesMPM::setBoundaryType(int typeIdx)
-// {
-//   int numInitialTabs = 4; // 4 default tabs
-//   for (int i=0; i<numInitialTabs; i++) {
-//     addedBoundary[i]->setBoundaryType(typeIdx);
-//   }
-//   return true;
-// }
+bool
+GeometriesMPM::setBodyPreset(int index)
+{
+  // int numInitialTabs = 3; // 3 default tabs
+  // for (int i=0; i<numInitialTabs; i++) {
+  //   addedGeometry[i]->setBodyPreset(index);
+  // }
+  addedGeometry[0]->setBodyPreset(index);
+  return true;
+}
 
 bool
-BoundariesMPM::outputToJSON(QJsonObject &jsonObject)
+GeometriesMPM::outputToJSON(QJsonObject &jsonObject)
 {
   // TODO: Basic safety checks
   // Iterate over all tabs, fill a unique JSON object, and add to a JSON array
-  QJsonArray theArray; // Holds array of boundary objects
-  QJsonObject theObject; // Passed to individual boundary objects to fill
+  QJsonArray theArray; // Holds array of geometry objects
   for (int i=0; i<numAddedTabs; i++) {
-    if (i >= numReserveTabs) break;
-    addedBoundary[i]->outputToJSON(theObject);
-    theArray.append(theObject["boundaries"].toArray());
+    QJsonObject theObject; // Passed to individual geometry objects to fill
+    addedGeometry[i]->outputToJSON(theObject);
+    theArray.append(theObject["geometry"].toObject());
   }
-  theArray = theObject["boundaries"].toArray();
-  jsonObject["boundaries"] = theArray; // Add array of boundary objects to the body object
+  jsonObject["geometry"] = theArray; // Add array of geometry objects to the body object
   return true;
 }
 
 bool
-BoundariesMPM::inputFromJSON(QJsonObject &jsonObject)
+GeometriesMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  // if (jsonObject.contains("domainSubType")) {
-  //   QJsonValue theValue = jsonObject["domainSubType"];
-  //   QString valueString = theValue.toString();
-  //   facility->setCurrentText(valueString);
-  // }
-  // bathSTL->inputFromJSON(jsonObject);
-  // paddleDisplacementFile->inputFromJSON(jsonObject);
-  for (int i=0; i<numAddedTabs; i++) {
-    if (i >= numReserveTabs) break; // Don't copy files for unreserved tabs
-    addedBoundary[i]->inputFromJSON(jsonObject);
-  }
-
-
   return true;
 }
 
-
 bool
-BoundariesMPM::copyFiles(QString &destDir)
+GeometriesMPM::copyFiles(QString &destDir)
 {
-  // Copy files for each boundary tab to the destination directory
-  bool flag = true; // copyFile returns false on error. So if any of these fail, flag will be false
-  for (int i=0; i<numAddedTabs; i++) {
-    if (i >= numReserveTabs) break; // Don't copy files for unreserved tabs
-    flag &= addedBoundary[i]->copyFiles(destDir);
-    
-    // Perform copyFile on each added boundary tab's contained files (e.g. velocity motion, STL/OBJ, bathymetry file, etc.)
-    // flag &= addedBoundary[i].velFile->copyFile(destDir);
-    // flag &= addedBoundary[i].paddleDisplacementFile->copyFile(destDir);
-    // flag &= addedBoundary[i].bathSTL->copyFile(destDir);
-  }
-  return flag; // True if all copyFile return true (i.e., no errors)
+  return true;
 }
 

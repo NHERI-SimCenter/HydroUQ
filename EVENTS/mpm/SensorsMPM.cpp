@@ -34,15 +34,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-#include <SensorsMPM.h>
+#include "SensorsMPM.h"
+#include <QLabel>
+#include <QComboBox>
 #include <QGroupBox>
 #include <QGridLayout>
-#include <QGroupBox>
-#include <QLabel>
-#include <QStringList>
+#include <QPushButton>
+#include <QTabWidget>
+#include <QStackedWidget>
+#include <QDebug>
+#include <QSvgWidget>
+#include <QVector>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QTabWidget>
+
+
+#include <SensorMPM.h>
 
 // #include <SC_FileEdit.h>
 #include <SC_TableEdit.h>
@@ -65,206 +72,149 @@ SensorsMPM::SensorsMPM(QWidget *parent)
   // They include wave gauges, velocity meters, and load cells
   //
 
-  //
-  // create widgets
-  //
-  
-  QStringList yesNo; yesNo <<  "Yes" << "No";
-  QStringList noYes; noYes <<  "No" << "Yes";
-  QStringList typeList; typeList <<  "particles" << "grid"; // << "nodes" << "elements" << "surface" << "edge";
-  QStringList typeGridParticleList; typeGridParticleList <<  "grid" << "particles" ; // << "nodes" << "elements" << "surface" << "edge";
-  QStringList typeGridList; typeGridList << "grid";
-  QStringList typeParticleList; typeParticleList << "particles";
+  QGridLayout *layout = new QGridLayout();
+  this->setLayout(layout);
 
-  // ===========================================================================
-  QStringList  listWG; listWG << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
-  QStringList  dataWG; dataWG << "WaveGauge1" << "16.0" << "1.75" << "0.4" << "0.05" << "1.00" << "0.05" 
-				                      << "WaveGauge2" << "26.0" << "1.75" << "0.4" << "0.05" << "1.00" << "0.05" 
-				                      << "WaveGauge3" << "38.0" << "1.75" << "0.4" << "0.05" << "1.00" << "0.05" ;
-  waveGaugesTable = new SC_TableEdit("waveGaugeLocs",  listWG, 3, dataWG);
-  
-  QStringList  listVM; listVM << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
-  QStringList  dataVM; dataVM << "VelocityMeter1" << "16.0" << "0.00" << "0.4" << "0.05" << "2.75" << "0.05" 
-				                      << "VelocityMeter2" << "43.8" << "1.75" << "0.4" << "0.05" << "1.00" << "0.05" ;
-  velociMetersTable  = new SC_TableEdit("velociMeterLocs", listVM, 2, dataVM);
-  
-  QStringList  listLC; listLC << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
-  QStringList  dataLC; dataLC << "LoadCell1" << "45.799" << "2.10" << "1.35" << "0.025" << "0.575" << "0.950" ;  
-  loadCellsTable  = new SC_TableEdit("loadCellLocs", listLC, 1, dataLC);
-
-  // QStringList  listLC; listLC<< "Name" << "Attributes" << "Operation" <<  "Sample Freq." <<  "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
-
-
-  // 
-  // now add the widgets to Grpup Boxes
-  //
-
-  // QGroupBox *openseesBox = new QGroupBox("Bodies' Geometry Output");
-  // QGridLayout *openseesLayout = new QGridLayout();  
-  // openseesBox->setLayout(openseesLayout);
-
-  // openseesLayout->addWidget(new QLabel("Output File Type"),0,0);
-  // openseesLayout->addWidget(vtkOS_Output,0,1);  
-  // openseesLayout->addWidget(new QLabel("Output Frequency"),1,0);
-  // openseesLayout->addWidget(outputOS_Dt,1,1);
-  // openseesLayout->addWidget(new QLabel("Hz"),1,2);  
-			    
-  QGroupBox *sensorBox = new QGroupBox("Specify Instrumentation");
-  QGridLayout *sensorLayout = new QGridLayout();  
-  sensorBox->setLayout(sensorLayout);
-
-  // sensorLayout->addWidget(new QLabel("Output File Type"),0,0);
-  // sensorLayout->addWidget(vtkSensor_Output,0,1);    
-  // sensorLayout->addWidget(new QLabel("Output Frequency"),1,0);
-  // sensorLayout->addWidget(outputSensor_Dt,1,1);
-  // sensorLayout->addWidget(new QLabel("sec."),1,2);
-
-  // sensorLayout->addWidget(new QLabel("Free Surface Probes"),0,0);
-  // sensorLayout->addWidget(toggleWG,0,1);
-
-
-  // ===========================================================================
-  toggleWG = new SC_ComboBox("toggleWG", yesNo); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
-  typeWG = new SC_ComboBox("typeWG", typeParticleList); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
-  attributeWG = new SC_ComboBox("attribute_WG", QStringList() << "Elevation" << "Position_Y");
-  operationWG = new SC_ComboBox("operation_WG", QStringList() << "Max");
-  output_frequencyWG = new SC_DoubleLineEdit("output_frequency_WG", 30);
-  directionWG = new SC_ComboBox("directionWG", QStringList() << "N/A");
-
-  toggleLC  = new SC_ComboBox("toggleLC", yesNo); // load cell (force on grid)
-  typeLC  = new SC_ComboBox("typeLC", typeGridList); // load cell (force on grid)
-  attributeLC = new SC_ComboBox("attribute_LC", QStringList() << "Force" << "Force_X" << "Force_Y" << "Force_Z" << "Force_Magnitude");
-  operationLC = new SC_ComboBox("operation_LC", QStringList() << "Sum");
-  output_frequencyLC = new SC_DoubleLineEdit("output_frequency_LC", 120);
-  directionLC = new SC_ComboBox("directionLC", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
-  directionLC->setCurrentIndex(3); // X+
-
-  toggleVM  = new SC_ComboBox("toggleVM", noYes); // velocity meter (velocity on grid)
-  typeVM  = new SC_ComboBox("typeVM", typeGridParticleList); // velocity meter (velocity on grid)
-  attributeVM = new SC_ComboBox("attribute_VM", QStringList() << "Velocity" << "Velocity_X" << "Velocity_Y" << "Velocity_Z" << "Velocity_Magnitude");
-  operationVM = new SC_ComboBox("operation_VM", QStringList() << "Average" << "Max" << "Min");
-  output_frequencyVM = new SC_DoubleLineEdit("output_frequency_VM", 30);
-  directionVM = new SC_ComboBox("directionVM", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
-  directionVM->setCurrentIndex(0); // X
-
-
+  int numRow = 0;
   // ===========================================================================
   QWidget *wgWidget = new QWidget();
-  QGridLayout *wgLayout = new QGridLayout();
-  wgWidget->setLayout(wgLayout);
-
-  // wgLayout->itemAt(wgLayout->count()-1)->widget()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding
-  wgLayout->addWidget(new QLabel("Use Wave-Gauges?"),0,0);
-  wgLayout->itemAt(wgLayout->count()-1)->setAlignment(Qt::AlignRight);
-  wgLayout->addWidget(toggleWG,0,1);
-  wgLayout->addWidget(new QLabel(""),0,2);
-  wgLayout->addWidget(new QLabel("Apply On"),1,0);
-  wgLayout->itemAt(wgLayout->count()-1)->setAlignment(Qt::AlignRight);
-  wgLayout->addWidget(typeWG,1,1);
-  wgLayout->addWidget(new QLabel(""),1,2);
-  wgLayout->addWidget(new QLabel("Measure Attribute"),2,0);
-  wgLayout->itemAt(wgLayout->count()-1)->setAlignment(Qt::AlignRight);
-  wgLayout->addWidget(attributeWG,2,1);
-  wgLayout->addWidget(new QLabel(""),2,2);
-  wgLayout->addWidget(new QLabel("Perform Operation"),3,0);
-  wgLayout->itemAt(wgLayout->count()-1)->setAlignment(Qt::AlignRight);
-  wgLayout->addWidget(operationWG,3,1);
-  wgLayout->addWidget(new QLabel(""),3,2);
-  wgLayout->addWidget(new QLabel("Sampling Frequency"),4,0);
-  wgLayout->itemAt(wgLayout->count()-1)->setAlignment(Qt::AlignRight);
-  wgLayout->addWidget(output_frequencyWG,4,1);
-  wgLayout->addWidget(new QLabel("Hz"),4,2);
-  wgLayout->addWidget(new QLabel("In Direction"),5,0);
-  wgLayout->itemAt(wgLayout->count()-1)->setAlignment(Qt::AlignRight);
-  wgLayout->addWidget(directionWG,5,1);
-  wgLayout->addWidget(waveGaugesTable,7,0,1,4);
-  // waveGaugesTable->setMinimumHeight(200);
-  // waveGaugesTable->setMaximumHeight(200);
-  // waveGaugesTable->setMinimumWidth(500);
-  // waveGaugesTable->setMaximumWidth(500);
-  // waveGaugesTable->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  wgLayout->setRowStretch(6,1);
-  // ===========================================================================
   QWidget *vmWidget = new QWidget();
-  QGridLayout *vmLayout = new QGridLayout();
-  vmWidget->setLayout(vmLayout);
-  
-  vmLayout->addWidget(new QLabel("Use Veloci-Meters?"),0,0);
-  vmLayout->itemAt(vmLayout->count()-1)->setAlignment(Qt::AlignRight);
-  vmLayout->addWidget(toggleVM,0,1);
-  vmLayout->addWidget(new QLabel(""),0,2);
-  vmLayout->addWidget(new QLabel("Apply On"),1,0);
-  vmLayout->itemAt(vmLayout->count()-1)->setAlignment(Qt::AlignRight);
-  vmLayout->addWidget(typeVM,1,1);
-  vmLayout->addWidget(new QLabel(""),1,2);
-  vmLayout->addWidget(new QLabel("Measure Attribute"),2,0);
-  vmLayout->itemAt(vmLayout->count()-1)->setAlignment(Qt::AlignRight);
-  vmLayout->addWidget(attributeVM,2,1);
-  vmLayout->addWidget(new QLabel(""),2,2);
-  vmLayout->addWidget(new QLabel("Perform Operation"),3,0);
-  vmLayout->itemAt(vmLayout->count()-1)->setAlignment(Qt::AlignRight);
-  vmLayout->addWidget(operationVM,3,1);
-  vmLayout->addWidget(new QLabel(""),3,2);
-  vmLayout->addWidget(new QLabel("Sampling Frequency"),4,0);
-  vmLayout->itemAt(vmLayout->count()-1)->setAlignment(Qt::AlignRight);
-  vmLayout->addWidget(output_frequencyVM,4,1);
-  vmLayout->addWidget(new QLabel("Hz"),4,2);
-  vmLayout->addWidget(new QLabel("In Direction"),5,0);
-  vmLayout->itemAt(vmLayout->count()-1)->setAlignment(Qt::AlignRight);
-  vmLayout->addWidget(directionVM,5,1);
-  vmLayout->addWidget(velociMetersTable,7,0,1,4);
-  vmLayout->setRowStretch(6,1);
-  // ===========================================================================
   QWidget *lcWidget = new QWidget();
+  QGridLayout *wgLayout = new QGridLayout();
+  QGridLayout *vmLayout = new QGridLayout();
   QGridLayout *lcLayout = new QGridLayout();
+  wgWidget->setLayout(wgLayout);
+  vmWidget->setLayout(vmLayout);
   lcWidget->setLayout(lcLayout);
   
-  lcLayout->addWidget(new QLabel("Use Load-Cells?"),0,0);
-  lcLayout->itemAt(lcLayout->count()-1)->setAlignment(Qt::AlignRight);
-  lcLayout->addWidget(toggleLC,0,1);
-  lcLayout->addWidget(new QLabel(""),0,2);
-  lcLayout->addWidget(new QLabel("Apply On"),1,0);
-  lcLayout->itemAt(lcLayout->count()-1)->setAlignment(Qt::AlignRight);
-  lcLayout->addWidget(typeLC,1,1);
-  lcLayout->addWidget(new QLabel(""),1,2);
-  lcLayout->addWidget(new QLabel("Measure Attribute"),2,0);
-  lcLayout->itemAt(lcLayout->count()-1)->setAlignment(Qt::AlignRight);
-  lcLayout->addWidget(attributeLC,2,1);
-  lcLayout->addWidget(new QLabel(""),2,2);
-  lcLayout->addWidget(new QLabel("Perform Operation"),3,0);
-  lcLayout->itemAt(lcLayout->count()-1)->setAlignment(Qt::AlignRight);
-  lcLayout->addWidget(operationLC,3,1);
-  lcLayout->addWidget(new QLabel(""),3,2);
-  lcLayout->addWidget(new QLabel("Sampling Frequency"),4,0);
-  lcLayout->itemAt(lcLayout->count()-1)->setAlignment(Qt::AlignRight);
-  lcLayout->addWidget(output_frequencyLC,4,1);
-  lcLayout->addWidget(new QLabel("Hz"),4,2);
-  lcLayout->addWidget(new QLabel("In Direction"),5,0);
-  lcLayout->itemAt(lcLayout->count()-1)->setAlignment(Qt::AlignRight);
-  lcLayout->addWidget(directionLC,5,1);
-  lcLayout->addWidget(loadCellsTable,7,0,1,4);    
-  lcLayout->setRowStretch(6,1);
   // ===========================================================================
   QTabWidget *theTabWidget = new QTabWidget();
   theTabWidget->addTab(wgWidget, "Wave-Gauges");
   theTabWidget->addTab(vmWidget, "Velocity-Meters");
   theTabWidget->addTab(lcWidget, "Load-Cells");  
-  sensorLayout->addWidget(theTabWidget,2,0,1,4);
-  sensorLayout->setRowStretch(3,1);
-  // int sizePrimaryTabs = 20;
-  // theTabWidget->setIconSize(QSize(sizePrimaryTabs,sizePrimaryTabs));
-  // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
   
-  //
-  // now boxes to this widget
-  //
-  
-  QGridLayout *layout = new QGridLayout;
-  layout->addWidget(sensorBox, 1,0);
+  // Buttons for creating and removing individual sensor
+  // All geometries will be composed together for an individual body to form a single sensor
+  QPushButton *addB = new QPushButton("Create Sensor"); 
+  QPushButton *delB = new QPushButton("Remove Sensor");
+  addB->setIcon(QIcon(":/icons/pencil-plus-white.svg"));
+  delB->setIcon(QIcon(":/icons/eraser-white.svg"));
+  addB->setIconSize(QSize(24,24));
+  delB->setIconSize(QSize(24,24));
 
-  this->setLayout(layout);
+  QFrame *theHeaderFrame = new QFrame();
+  QGridLayout *headerLayout = new QGridLayout();
+  theHeaderFrame->setLayout(headerLayout);
+  headerLayout->addWidget(addB,0,0);
+  headerLayout->addWidget(delB,0,1);  
+  headerLayout->setColumnStretch(2,1);
+  
+  ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  // Add tab per Body
+  QTabWidget *tabWidget = new QTabWidget();
+  int sizeBodyTabs = 20;
+  tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
+  tabWidget->setTabsClosable(true); // Close tabs with X mark via mouse (connect to tabCloseRequested)
+  tabWidget->setMovable(true); // Move tabs with mouse
+
+  // ===========================================================================
+  layout->addWidget(theHeaderFrame);
+  layout->addWidget(tabWidget);
   layout->setRowStretch(2,1);
+  // ===========================================================================
+
+  int numDefaultTabs = 1; // Need atleast one sensor tab, so dont allow last one to be deleted
+  QVector<QWidget*> theAdded(numReserveTabs); // 16 is max number of added tabs
+  QVector<QGridLayout*> theAddedLayout(numReserveTabs);
+  QVector<QTabWidget*> modelAddedTabWidget(numReserveTabs); 
+  for (int i = 0; i < numReserveTabs; i++) {
+    theAdded[i] = new QWidget();
+    theAddedLayout[i] = new QGridLayout();
+    addedSensor[i] = new SensorMPM();
+  }
+
+  // Init. default sensors automatically
+  // Wave-gauges
+  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Wave-Gauges");
+  theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
+  theAddedLayout[numAddedTabs]->addWidget(addedSensor[numAddedTabs]);
+  numAddedTabs += 1;
+
+  // Velocitmeters
+  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Velocimeters");
+  theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
+  theAddedLayout[numAddedTabs]->addWidget(addedSensor[numAddedTabs]);
+  numAddedTabs += 1;
+
+  // Load-cells
+  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Load-Cells");
+  theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
+  theAddedLayout[numAddedTabs]->addWidget(addedSensor[numAddedTabs]);
+  numAddedTabs += 1;
+
+  // // Piezometers
+  // tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Piezometers");
+  // theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
+  // theAddedLayout[numAddedTabs]->addWidget(addedSensor[numAddedTabs]);
+  // numAddedTabs += 1;
+
+
+  // Create and Init. another sensor tab at user request (click create)
+  connect(addB, &QPushButton::released, this, [=]() {
+    // Concatenate string to say "Custom Body 1", "Custom Body 2", etc.
+    if (numAddedTabs >= numReserveTabs) 
+      return;
+    tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Custom " + QString::number(numAddedTabs + 1));
+    theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
+    theAddedLayout[numAddedTabs]->addWidget(addedSensor[numAddedTabs]);
+    numAddedTabs += 1;
+  });
+
+  // Remove sensor at user request (click remove)
+  connect(delB, &QPushButton::released, this, [=]() {
+    if (( tabWidget->currentIndex() == -1) || (tabWidget->count() <= numDefaultTabs) || (tabWidget->currentIndex() < numDefaultTabs)) 
+      return;
+    auto widget = tabWidget->widget(tabWidget->currentIndex());
+    if (widget) {
+          // widget.deleteLater()
+    }
+    tabWidget->setCurrentIndex(tabWidget->currentIndex()-1);
+    tabWidget->removeTab(tabWidget->currentIndex()+1);
+    // clean up
+    numAddedTabs -= 1;
+  }); 
+  // Remove sensor at user request (click the "X" mark on a tab)
+  connect(tabWidget, &QTabWidget::tabCloseRequested, this, [=](int index) {
+    if (( index == -1) || (tabWidget->count() <= numDefaultTabs) || (index < numDefaultTabs)) 
+      return; 
+    // tabWidget->setCurrentIndex(index-1);
+    auto widget = tabWidget->widget(index);
+    if (widget) {
+          // widget.deleteLater()
+    }
+    if (index > 0 && index < tabWidget->count()-1 && tabWidget->currentIndex() == index) {
+      tabWidget->setCurrentIndex(index-1);
+    } 
+    tabWidget->removeTab(index);
+    // clean up
+    numAddedTabs -= 1;
+    
+  });
+
+  // Enum to set tab's icons, titles, init values, etc.
+  enum sensorEnum : int {CUSTOM = 0, WAVE_GAUGE, VELOCITY_METER, LOAD_CELL, PIEZO_METER, TOTAL};
+
+  // Set initial sensor body device preset
+  for (int i=0; i<numAddedTabs; i++) {
+    if (i >= numReserveTabs) break;
+    if (i == 0) addedSensor[i]->setSensorType(WAVE_GAUGE);
+    else if (i == 1) addedSensor[i]->setSensorType(VELOCITY_METER);
+    else if (i == 2) addedSensor[i]->setSensorType(LOAD_CELL);
+    // else if (i == 3) addedSensor[i]->setSensorType(PIEZO_METER);
+    else addedSensor[i]->setSensorType(CUSTOM);
+  }
+  
 }
 
 SensorsMPM::~SensorsMPM()
@@ -275,183 +225,37 @@ SensorsMPM::~SensorsMPM()
 bool
 SensorsMPM::outputToJSON(QJsonObject &jsonObject)
 {
-  QJsonArray sensorsArray = jsonObject["sensors"].toArray();
-  QJsonArray particleSensorsArray;
-  QJsonArray gridSensorsArray;
-  //
-  // create a json object per sensor
-  //
-  QJsonObject tableArraysWG;
-  QJsonObject tableArraysVM;
-  QJsonObject tableArraysLC;
-
-  waveGaugesTable->outputToJSON(tableArraysWG);
-  velociMetersTable->outputToJSON(tableArraysVM);
-  loadCellsTable->outputToJSON(tableArraysLC);
-
-
-  // Wave-gauges (WG), Velocimeters (VM), and Load-cells (LC)
-  for (int i = 0; i < tableArraysWG["waveGaugeLocs"].toArray().size(); ++i) {
-    QJsonObject waveGaugesObject;
-    QJsonArray waveGaugeArray = tableArraysWG["waveGaugeLocs"].toArray()[i].toArray();
-    // waveGaugesObject["toggle"] = QJsonValue(toggleWG->currentText()).toString();
-    waveGaugesObject["toggle"] = (QJsonValue(toggleWG->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
-    waveGaugesObject["type"] = QJsonValue(typeWG->currentText()).toString();
-    waveGaugesObject["attribute"] = QJsonValue(attributeWG->currentText()).toString();
-    waveGaugesObject["operation"] = operationWG->itemText(operationWG->currentIndex());
-    waveGaugesObject["output_frequency"] = output_frequencyWG->text().toDouble();
-    waveGaugesObject["direction"] = directionWG->itemText(directionWG->currentIndex());
-    waveGaugesObject["name"] = waveGaugeArray[0].toString();
-
-    // Future schema
-    QJsonArray origin;
-    for (int j=1; j<4; ++j) origin.append(waveGaugeArray[j].toDouble());
-
-    QJsonArray dimensions;
-    for (int j=4; j<7; ++j) dimensions.append(waveGaugeArray[j].toDouble());
-
-    // ClaymoreUW artifacts
-    QJsonArray domain_start;
-    domain_start.append(waveGaugeArray[1].toDouble());
-    domain_start.append(waveGaugeArray[2].toDouble());
-    domain_start.append(waveGaugeArray[3].toDouble());
-
-    QJsonArray domain_end;
-    domain_end.append(waveGaugeArray[1].toDouble() + waveGaugeArray[4].toDouble());
-    domain_end.append(waveGaugeArray[2].toDouble() + waveGaugeArray[5].toDouble());
-    domain_end.append(waveGaugeArray[3].toDouble() + waveGaugeArray[6].toDouble());
-    if (0) { // Future schema
-      waveGaugesObject["origin"] = origin;
-      waveGaugesObject["dimensions"] = dimensions;
-    } else { // ClaymoreUW artifacts, to be deprecated
-      waveGaugesObject["domain_start"] = domain_start;
-      waveGaugesObject["domain_end"] = domain_end;
+  // TODO: Basic safety checks
+  // Iterate over all tabs, fill a unique JSON object, and add to a JSON array
+  QJsonArray theArray;// = jsonObject["sensors"].toArray(); // Holds array of sensor objects
+  QJsonArray theGridArray;// = jsonObject["grid-sensors"].toArray(); // Holds array of sensor objects
+  QJsonArray theParticleArray;// = jsonObject["particle-sensors"].toArray(); // Holds array of sensor objects
+  QJsonObject theObject; // Passed to individual sensor objects to fill
+  for (int i=0; i<numAddedTabs; i++) {
+    if (i >= numReserveTabs) break;
+    addedSensor[i]->outputToJSON(theObject);
+    if (0) {
+      theArray.append(theObject["sensors"].toArray());
+    } else {
+      theGridArray.append(theObject["grid-sensors"].toArray());
+      theParticleArray.append(theObject["particle-sensors"].toArray());
     }
-
-    sensorsArray.append(waveGaugesObject);
-    if (typeWG->currentText() == "grid") gridSensorsArray.append(waveGaugesObject);
-    else particleSensorsArray.append(waveGaugesObject);
   }
-
-  for (int i = 0; i < tableArraysVM["velociMeterLocs"].toArray().size(); ++i) {
-    QJsonObject velociMetersObject;
-    QJsonArray velociMeterArray = tableArraysVM["velociMeterLocs"].toArray()[i].toArray();
-    // velociMetersObject["toggle"] = QJsonValue(toggleVM->currentText()).toString();
-    velociMetersObject["toggle"] = (QJsonValue(toggleVM->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
-    velociMetersObject["type"] = QJsonValue(typeVM->currentText()).toString();
-    velociMetersObject["attribute"] = QJsonValue(attributeVM->currentText()).toString();
-    velociMetersObject["operation"] = operationVM->itemText(operationVM->currentIndex());
-    velociMetersObject["output_frequency"] = output_frequencyVM->text().toDouble();
-    velociMetersObject["direction"] = directionVM->itemText(directionVM->currentIndex());
-    velociMetersObject["name"] = velociMeterArray[0].toString();
-
-    // Future schema
-    QJsonArray origin;
-    for (int j=1; j<4; ++j) origin.append(velociMeterArray[j].toDouble());
-
-    QJsonArray dimensions;
-    for (int j=4; j<7; ++j) dimensions.append(velociMeterArray[j].toDouble());
-    
-    // ClaymoreUW artifacts
-    QJsonArray domain_start;
-    domain_start.append(velociMeterArray[1].toDouble());
-    domain_start.append(velociMeterArray[2].toDouble());
-    domain_start.append(velociMeterArray[3].toDouble());
-
-    QJsonArray domain_end;
-    domain_end.append(velociMeterArray[1].toDouble() + velociMeterArray[4].toDouble());
-    domain_end.append(velociMeterArray[2].toDouble() + velociMeterArray[5].toDouble());
-    domain_end.append(velociMeterArray[3].toDouble() + velociMeterArray[6].toDouble());
-
-    if (0) { // Future schema
-      velociMetersObject["origin"] = origin;
-      velociMetersObject["dimensions"] = dimensions;
-    } else { // ClaymoreUW artifacts, to be deprecated
-      velociMetersObject["domain_start"] = domain_start;
-      velociMetersObject["domain_end"] = domain_end;
-    }
-
-    sensorsArray.append(velociMetersObject);
-    if (typeVM->currentText() == "grid") gridSensorsArray.append(velociMetersObject);
-    else particleSensorsArray.append(velociMetersObject);
+  if (0) {
+    theArray = theObject["sensors"].toArray();
+    jsonObject["sensors"] = theArray; // Add array of sensor objects to the body object
+  } else {
+    theGridArray = theObject["grid-sensors"].toArray();
+    theParticleArray = theObject["particle-sensors"].toArray();
+    jsonObject["grid-sensors"] = theGridArray; // Add array of sensor objects to the body object
+    jsonObject["particle-sensors"] = theParticleArray; // Add array of sensor objects to the body object
   }
-
-  for (int i = 0; i < tableArraysLC["loadCellLocs"].toArray().size(); ++i) {
-    QJsonObject loadCellsObject;
-    QJsonArray loadCellArray = tableArraysLC["loadCellLocs"].toArray()[i].toArray();
-    loadCellsObject["toggle"] = QJsonValue(toggleLC->currentText()).toString();
-    loadCellsObject["toggle"] = (QJsonValue(toggleLC->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
-    loadCellsObject["type"] = QJsonValue(typeLC->currentText()).toString();
-    loadCellsObject["attribute"] = QJsonValue(attributeLC->currentText()).toString();
-    loadCellsObject["operation"] = operationLC->itemText(operationLC->currentIndex());
-    loadCellsObject["output_frequency"] = output_frequencyLC->text().toDouble();
-    loadCellsObject["direction"] = directionLC->itemText(directionLC->currentIndex());
-    loadCellsObject["name"] = loadCellArray[0].toString();
-
-    // Future schema
-    QJsonArray origin;
-    for (int j=1; j<4; ++j) origin.append(loadCellArray[j].toDouble());
-
-    QJsonArray dimensions;
-    for (int j=4; j<7; ++j) dimensions.append(loadCellArray[j].toDouble());
-    
-    // ClaymoreUW artifacts
-    QJsonArray domain_start;
-    domain_start.append(loadCellArray[1].toDouble());
-    domain_start.append(loadCellArray[2].toDouble());
-    domain_start.append(loadCellArray[3].toDouble());
-
-    QJsonArray domain_end;
-    domain_end.append(loadCellArray[1].toDouble() + loadCellArray[4].toDouble());
-    domain_end.append(loadCellArray[2].toDouble() + loadCellArray[5].toDouble());
-    domain_end.append(loadCellArray[3].toDouble() + loadCellArray[6].toDouble());
-
-    if (0) { // Future schema
-      loadCellsObject["origin"] = origin;
-      loadCellsObject["dimensions"] = dimensions;
-    } else { // ClaymoreUW artifacts, to be deprecated
-      loadCellsObject["domain_start"] = domain_start;
-      loadCellsObject["domain_end"] = domain_end;
-    }
-
-    sensorsArray.append(loadCellsObject);
-    if (typeLC->currentText() == "grid") gridSensorsArray.append(loadCellsObject);
-    else particleSensorsArray.append(loadCellsObject);
-  }
-
-  jsonObject["sensors"] = sensorsArray; // future schema
-  jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
-  jsonObject["grid-sensors"] = gridSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
-
   return true;
 }
 
 bool
 SensorsMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  toggleWG->inputFromJSON(jsonObject);
-  typeWG->inputFromJSON(jsonObject);
-  attributeWG->inputFromJSON(jsonObject);
-  operationWG->inputFromJSON(jsonObject);
-  directionWG->inputFromJSON(jsonObject);
-  output_frequencyWG->inputFromJSON(jsonObject);  
-  waveGaugesTable->inputFromJSON(jsonObject);
-  
-  toggleVM->inputFromJSON(jsonObject);
-  typeVM->inputFromJSON(jsonObject);
-  attributeVM->inputFromJSON(jsonObject);
-  operationVM->inputFromJSON(jsonObject);
-  directionVM->inputFromJSON(jsonObject);
-  output_frequencyVM->inputFromJSON(jsonObject);
-  velociMetersTable->inputFromJSON(jsonObject);
-  
-  toggleLC->inputFromJSON(jsonObject);
-  typeLC->inputFromJSON(jsonObject);
-  attributeLC->inputFromJSON(jsonObject);
-  operationLC->inputFromJSON(jsonObject);
-  directionLC->inputFromJSON(jsonObject);
-  output_frequencyLC->inputFromJSON(jsonObject);
-  loadCellsTable->inputFromJSON(jsonObject);
 
   return true;
 }

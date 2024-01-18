@@ -38,13 +38,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 /**
- *  @author  fmckenna
- *  @date    2/2017
- *  @version 1.0
+ *  @author  JustinBonus
+ *  @date    1/2024
+ *  @version 3.0
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the Geometry Tab for mpm
+ *  This is the class providing the Geometry Tab for MPM
  */
 
 #include <SimCenterWidget.h>

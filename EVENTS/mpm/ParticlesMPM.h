@@ -38,13 +38,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 /**
- *  @author  fmckenna
- *  @date    2/2017
- *  @version 1.0
+ *  @author  JustinBonus
+ *  @date    1/2024
+ *  @version 3.0
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the Particle Bodies Tab for mpm
+ *  This is the class providing the Bodies Tab for the Material Point Method (MPM)
  */
 
 #include <SimCenterWidget.h>
@@ -61,10 +61,10 @@ class SC_TableEdit;
 class SC_FileEdit;
 class SC_CheckBox;
 
-class GeometryMPM;
+class GeometriesMPM;
 class MaterialMPM;
 class AlgorithmMPM;
-class PartitionMPM;
+class PartitionsMPM;
 
 class ParticlesMPM : public SimCenterWidget
 {
@@ -81,32 +81,30 @@ public:
 signals:
 
 private:
-  GeometryMPM       *fluidGeometry = nullptr;
+  // TODO: Get-rid of explicitly typed fluid, debris, structure specializations. Messy and hard to maintain
+  // Just use the general template but preset values with a setter function. Call in a higher scope at init.
+  GeometriesMPM       *fluidGeometries = nullptr;
   MaterialMPM       *fluidMaterial = nullptr;
   AlgorithmMPM      *fluidAlgorithm = nullptr;
-  PartitionMPM      *fluidPartition = nullptr;
+  PartitionsMPM      *fluidPartitions = nullptr;
 
-  GeometryMPM       *debrisGeometry = nullptr;
+  GeometriesMPM       *debrisGeometries = nullptr;
   MaterialMPM       *debrisMaterial = nullptr;
   AlgorithmMPM      *debrisAlgorithm = nullptr;
-  PartitionMPM      *debrisPartition = nullptr;
+  PartitionsMPM      *debrisPartitions = nullptr;
 
-  GeometryMPM       *structureGeometry = nullptr;
+  GeometriesMPM       *structureGeometries = nullptr;
   MaterialMPM       *structureMaterial = nullptr;
   AlgorithmMPM      *structureAlgorithm = nullptr;
-  PartitionMPM      *structurePartition = nullptr;
+  PartitionsMPM      *structurePartitions = nullptr;
 
-  // GeometryMPM       *customGeometry;
-  // MaterialMPM       *customMaterial;
-  // AlgorithmMPM      *customAlgorithm;
-  // PartitionMPM      *customPartition;
-
-  QVector<GeometryMPM*> addedGeometry {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  QVector<GeometriesMPM*> addedGeometries {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
   QVector<MaterialMPM*> addedMaterial {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
   QVector<AlgorithmMPM*> addedAlgorithm {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
-  QVector<PartitionMPM*> addedPartition {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
-  int numReserveTabs = 8;
-  int numAddedTabs = 0;
+  QVector<PartitionsMPM*> addedPartitions {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  int numReserveTabs = 8; // Assuming up-to 8 bodies for now so we pre-reserve. Will see how this fairs for users.
+  int numAddedTabs = 0; 
+  // TODO: include a vector of bools (C++ cav.) denoting tab activation so we can "shift left" if user deletes tab 3 of 8, etc.
 };
 
 #endif // PARTICLES_MPM_H

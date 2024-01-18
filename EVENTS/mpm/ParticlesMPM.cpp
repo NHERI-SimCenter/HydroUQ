@@ -56,10 +56,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_FileEdit.h>
 #include <SC_CheckBox.h>
 
-#include <GeometryMPM.h>
+#include <GeometriesMPM.h>
 #include <MaterialMPM.h>
 #include <AlgorithmMPM.h>
-#include <PartitionMPM.h>
+#include <PartitionsMPM.h>
 
 #include <vector>
 #include <memory>
@@ -103,9 +103,6 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
   tabWidget->addTab(theDebris,QIcon(QString(":/icons/car-black.svg")), "Debris");  
   tabWidget->addTab(theStructure,QIcon(QString(":/icons/home-black.svg")), "Structures");
   tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
-  // theFluid->setIconSize(QSize(24,24));
-  // theDebris->setIconSize(QSize(24,24));
-  // theStructure->setIconSize(QSize(24,24));
   layout->addWidget(tabWidget);
 
   int numDefaultTabs = 3; // Fluid, Debris, Structures. Specializations for digital twins. Add more after these
@@ -114,10 +111,10 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
   for (int i = 0; i < numReserveTabs; i++) {
     theAdded[i] = new QWidget();
     theAddedLayout[i] = new QGridLayout();
-    addedGeometry[i] = new GeometryMPM();
+    addedGeometries[i] = new GeometriesMPM();
     addedMaterial[i] = new MaterialMPM();
     addedAlgorithm[i] = new AlgorithmMPM();
-    addedPartition[i] = new PartitionMPM();
+    addedPartitions[i] = new PartitionsMPM();
     modelAddedTabWidget[i] = new QTabWidget();
   }
 
@@ -130,9 +127,9 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
     // theAdded.back()->setIconSize(QSize(24,24));
     theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
     modelAddedTabWidget[numAddedTabs]->addTab(addedMaterial[numAddedTabs], QIcon(QString(":/icons/squares-filled-black.svg")),"Material");
-    modelAddedTabWidget[numAddedTabs]->addTab(addedGeometry[numAddedTabs], QIcon(QString(":/icons/triangle-square-circle-black.svg")),"Geometry");
+    modelAddedTabWidget[numAddedTabs]->addTab(addedGeometries[numAddedTabs], QIcon(QString(":/icons/triangle-square-circle-black.svg")),"Geometry");
     modelAddedTabWidget[numAddedTabs]->addTab(addedAlgorithm[numAddedTabs], QIcon(QString(":/icons/engine-black.svg")),"Algorithm");
-    modelAddedTabWidget[numAddedTabs]->addTab(addedPartition[numAddedTabs], QIcon(QString(":/icons/cpu-black.svg")),"Partition");
+    modelAddedTabWidget[numAddedTabs]->addTab(addedPartitions[numAddedTabs], QIcon(QString(":/icons/cpu-black.svg")),"Partitions");
     modelAddedTabWidget[numAddedTabs]->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
     theAddedLayout[numAddedTabs]->addWidget(modelAddedTabWidget[numAddedTabs]);
     numAddedTabs += 1;
@@ -152,9 +149,9 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
     tabWidget->removeTab(tabWidget->currentIndex()+1);
     // clean up 
     // delete addedMaterial[numAddedTabs];
-    // delete addedGeometry[numAddedTabs];
+    // delete addedGeometries[numAddedTabs];
     // delete addedAlgorithm[numAddedTabs];
-    // delete addedPartition[numAddedTabs];
+    // delete addedPartitions[numAddedTabs];
     // delete modelAddedTabWidget[numAddedTabs];
     // delete theAddedLayout[numAddedTabs];
     // delete theAdded[numAddedTabs];
@@ -184,9 +181,9 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
   ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   fluidMaterial = new MaterialMPM();
-  fluidGeometry = new GeometryMPM();
+  fluidGeometries = new GeometriesMPM();
   fluidAlgorithm = new AlgorithmMPM();
-  fluidPartition = new PartitionMPM();
+  fluidPartitions = new PartitionsMPM();
 
   ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   QGridLayout *theFluidLayout = new QGridLayout();
@@ -195,9 +192,9 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
   // Per-model body tabs
   QTabWidget *modelFluidTabWidget = new QTabWidget();
   modelFluidTabWidget->addTab(fluidMaterial, QIcon(QString(":/icons/squares-filled-black.svg")), "Material");  
-  modelFluidTabWidget->addTab(fluidGeometry, QIcon(QString(":/icons/triangle-square-circle-black.svg")), "Geometry");
+  modelFluidTabWidget->addTab(fluidGeometries, QIcon(QString(":/icons/triangle-square-circle-black.svg")), "Geometry");
   modelFluidTabWidget->addTab(fluidAlgorithm, QIcon(QString(":/icons/engine-black.svg")),"Algorithm");
-  modelFluidTabWidget->addTab(fluidPartition, QIcon(QString(":/icons/cpu-black.svg")),"Partition");
+  modelFluidTabWidget->addTab(fluidPartitions, QIcon(QString(":/icons/cpu-black.svg")),"Partitions");
   modelFluidTabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
 
 
@@ -207,9 +204,9 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
   // Debris 
 
   debrisMaterial = new MaterialMPM();
-  debrisGeometry = new GeometryMPM();
+  debrisGeometries = new GeometriesMPM();
   debrisAlgorithm = new AlgorithmMPM();
-  debrisPartition = new PartitionMPM();
+  debrisPartitions = new PartitionsMPM();
 
   ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   QGridLayout *theDebrisLayout = new QGridLayout();
@@ -218,9 +215,9 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
   // Per-model body tabs
   QTabWidget *modelDebrisTabWidget = new QTabWidget();
   modelDebrisTabWidget->addTab(debrisMaterial, QIcon(QString(":/icons/squares-filled-black.svg")),"Material");  
-  modelDebrisTabWidget->addTab(debrisGeometry, QIcon(QString(":/icons/triangle-square-circle-black.svg")),"Geometry");
+  modelDebrisTabWidget->addTab(debrisGeometries, QIcon(QString(":/icons/triangle-square-circle-black.svg")),"Geometry");
   modelDebrisTabWidget->addTab(debrisAlgorithm, QIcon(QString(":/icons/engine-black.svg")),"Algorithm");
-  modelDebrisTabWidget->addTab(debrisPartition, QIcon(QString(":/icons/cpu-black.svg")),"Partition");
+  modelDebrisTabWidget->addTab(debrisPartitions, QIcon(QString(":/icons/cpu-black.svg")),"Partitions");
   modelDebrisTabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
 
   theDebrisLayout->addWidget(modelDebrisTabWidget);
@@ -228,9 +225,9 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
 
   // Structures
   structureMaterial = new MaterialMPM();
-  structureGeometry = new GeometryMPM();
+  structureGeometries = new GeometriesMPM();
   structureAlgorithm = new AlgorithmMPM();
-  structurePartition = new PartitionMPM();
+  structurePartitions = new PartitionsMPM();
 
   ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   QGridLayout *theStructureLayout = new QGridLayout();
@@ -239,9 +236,9 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
   // Per-model body tabs
   QTabWidget *modelStructureTabWidget = new QTabWidget();
   modelStructureTabWidget->addTab(structureMaterial, QIcon(QString(":/icons/squares-filled-black.svg")),"Material");  
-  modelStructureTabWidget->addTab(structureGeometry, QIcon(QString(":/icons/triangle-square-circle-black.svg")),"Geometry");
+  modelStructureTabWidget->addTab(structureGeometries, QIcon(QString(":/icons/triangle-square-circle-black.svg")),"Geometry");
   modelStructureTabWidget->addTab(structureAlgorithm, QIcon(QString(":/icons/engine-black.svg")),"Algorithm");
-  modelStructureTabWidget->addTab(structurePartition, QIcon(QString(":/icons/cpu-black.svg")),"Partition");
+  modelStructureTabWidget->addTab(structurePartitions, QIcon(QString(":/icons/cpu-black.svg")),"Partitions");
   modelStructureTabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
   theStructureLayout->addWidget(modelStructureTabWidget);
 
@@ -262,15 +259,38 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
     addedMaterial[i]->setMaterialPreset(10);
   }
   // Set initial material preset
-  fluidGeometry->setBodyPreset(0); // Fluid
-  fluidGeometry->setBodyPreset(0);
-  debrisGeometry->setBodyPreset(1); // Debris
-  debrisGeometry->setBodyPreset(1);
-  structureGeometry->setBodyPreset(2); // Structure
-  structureGeometry->setBodyPreset(2);
+  fluidGeometries->setBodyPreset(0); // Fluid
+  fluidGeometries->setBodyPreset(0);
+  debrisGeometries->setBodyPreset(1); // Debris
+  debrisGeometries->setBodyPreset(1);
+  structureGeometries->setBodyPreset(2); // Structure
+  structureGeometries->setBodyPreset(2);
   for (int i=0; i<numAddedTabs; i++) {
-    addedGeometry[i]->setBodyPreset(3); // Custom
-    addedGeometry[i]->setBodyPreset(3);
+    addedGeometries[i]->setBodyPreset(3); // Custom
+    addedGeometries[i]->setBodyPreset(3);
+  }
+
+
+  // Set initial partition preset
+  // Each bodies tab is, for now, assigned a unique model ID based on its tab index
+  // TODO: Model IDs on a GPU must be unique, so we can't have more than 8 bodies for now, or 4 on Frontera unless we adjust distribution
+  fluidPartitions->setDefaultModelID(0); // GPU 0
+  debrisPartitions->setDefaultModelID(1); // Debris
+  structurePartitions->setDefaultModelID(2); // Structure
+  fluidPartitions->setModel(0); // Fluid
+  fluidPartitions->setModel(0);
+  debrisPartitions->setModel(1); 
+  debrisPartitions->setModel(1);
+  structurePartitions->setModel(2); 
+  structurePartitions->setModel(2);
+  for (int i=0; i<numAddedTabs; i++) {
+    // TODO: Don't rely on hard-coded indices, probably add a map or use text labels
+    addedPartitions[i]->setDefaultModelID(i+(numDefaultTabs-1));
+    // TODO: Better distribute bodies as models across GPUs to allow for more bodies (i.e. 4+), as most are on just 1-2 GPUs and leave empty slots. 
+    // TODO: Also guarantee no empty model ID slots on a GPU or ClaymoreUW will crash
+    // TODO: Account for users manually changing the model ID on a body tab, i.e. limit their options to valid ones (change from numeric input to radio buttons)
+    addedPartitions[i]->setModel(i+(numDefaultTabs-1)); 
+    addedPartitions[i]->setModel(i+(numDefaultTabs-1));
   }
 }
 
@@ -285,26 +305,26 @@ ParticlesMPM::outputToJSON(QJsonObject &jsonObject)
   QJsonArray bodiesArray = jsonObject["bodies"].toArray();
   
   // Fluid Body Preset
-  if (fluidGeometry != nullptr && fluidMaterial != nullptr && fluidAlgorithm != nullptr && fluidPartition != nullptr) {
+  if (fluidGeometries != nullptr && fluidMaterial != nullptr && fluidAlgorithm != nullptr && fluidPartitions != nullptr) {
     QJsonObject bodyObject; // Holds geometry, material, algorithm, partition, and global values for fluid preset
 
-    QJsonObject fluidGeometryObject; // Object wrapper holding an array of geometry objects
+    QJsonObject fluidGeometriesObject; // Object wrapper holding an array of geometry objects
     QJsonObject fluidMaterialObject; // Object
     QJsonObject fluidAlgorithmObject; // Object
-    QJsonObject fluidPartitionObject; // Object, TODO: Make this an array of objects for multiple auto-partitions over GPUs
+    QJsonObject fluidPartitionsObject; // Object, TODO: Make this an array of objects for multiple auto-partitions over GPUs
 
     QJsonArray geometryArray;
-    fluidGeometryObject["geometry"] = geometryArray;
-    fluidGeometry->outputToJSON(fluidGeometryObject); 
+    fluidGeometriesObject["geometry"] = geometryArray;
+    fluidGeometries->outputToJSON(fluidGeometriesObject); 
     fluidMaterial->outputToJSON(fluidMaterialObject);
     fluidAlgorithm->outputToJSON(fluidAlgorithmObject);
-    fluidPartition->outputToJSON(fluidPartitionObject);
+    fluidPartitions->outputToJSON(fluidPartitionsObject);
 
     // Future schema
-    bodyObject["geometry"] = fluidGeometryObject["geometry"];
+    bodyObject["geometry"] = fluidGeometriesObject["geometry"];
     bodyObject["material"] = fluidMaterialObject["material"];
     bodyObject["algorithm"] = fluidAlgorithmObject["algorithm"];
-    bodyObject["partition"] = fluidPartitionObject;
+    bodyObject["partition"] = fluidPartitionsObject["partition"];
 
     bodyObject["constitutive"] = fluidMaterialObject["constitutive"]; // global
 
@@ -317,12 +337,12 @@ ParticlesMPM::outputToJSON(QJsonObject &jsonObject)
     bodyObject["FBAR_ratio"] = fluidAlgorithmObject["FBAR_ratio"]; // global
 
     // ClaymoreUW artifacts, TODO: Deprecate
-    if (0) bodyObject["device"] = fluidPartitionObject;
+    if (0) bodyObject["device"] = fluidPartitionsObject;
     else {
-      bodyObject["gpu"] = fluidPartitionObject["gpu"]; // global
-      bodyObject["model"] = fluidPartitionObject["model"]; // global
-      bodyObject["partition_start"] = fluidPartitionObject["partition_start"]; // global
-      bodyObject["partition_end"] = fluidPartitionObject["partition_end"]; // global
+      bodyObject["gpu"] = fluidPartitionsObject["gpu"]; // global
+      bodyObject["model"] = fluidPartitionsObject["model"]; // global
+      bodyObject["partition_start"] = fluidPartitionsObject["partition_start"]; // global
+      bodyObject["partition_end"] = fluidPartitionsObject["partition_end"]; // global
     }
     // ClaymoreUW, TODO: Deprecate in favor of MPM:bodies:outputs or MPM:outputs (latter preferred) 
     bodyObject["output_attribs"] = QJsonArray::fromStringList(QStringList() << "Velocity_X" << "Pressure" << "ID"); // global
@@ -346,26 +366,26 @@ ParticlesMPM::outputToJSON(QJsonObject &jsonObject)
   }
 
   // Debris Body Preset
-  if (debrisGeometry != nullptr && debrisMaterial != nullptr && debrisAlgorithm != nullptr && debrisPartition != nullptr) {
+  if (debrisGeometries != nullptr && debrisMaterial != nullptr && debrisAlgorithm != nullptr && debrisPartitions != nullptr) {
     QJsonObject bodyObject; // Holds geometry, material, algorithm, partition, and global values for fluid preset
 
-    QJsonObject debrisGeometryObject; // Object wrapper holding an array of geometry objects
+    QJsonObject debrisGeometriesObject; // Object wrapper holding an array of geometry objects
     QJsonObject debrisMaterialObject; // Object
     QJsonObject debrisAlgorithmObject; // Object
-    QJsonObject debrisPartitionObject; // Object, TODO: Make this an array of objects for multiple auto-partitions over GPUs
+    QJsonObject debrisPartitionsObject; // Object, TODO: Make this an array of objects for multiple auto-partitions over GPUs
 
     QJsonArray geometryArray;
-    debrisGeometryObject["geometry"] = geometryArray;
-    debrisGeometry->outputToJSON(debrisGeometryObject); 
+    debrisGeometriesObject["geometry"] = geometryArray;
+    debrisGeometries->outputToJSON(debrisGeometriesObject); 
     debrisMaterial->outputToJSON(debrisMaterialObject);
     debrisAlgorithm->outputToJSON(debrisAlgorithmObject);
-    debrisPartition->outputToJSON(debrisPartitionObject);
+    debrisPartitions->outputToJSON(debrisPartitionsObject);
 
     // Future schema
-    bodyObject["geometry"] = debrisGeometryObject["geometry"];
+    bodyObject["geometry"] = debrisGeometriesObject["geometry"];
     bodyObject["material"] = debrisMaterialObject["material"];
     bodyObject["algorithm"] = debrisAlgorithmObject["algorithm"];
-    bodyObject["partition"] = debrisPartitionObject;
+    bodyObject["partition"] = debrisPartitionsObject["partition"]; // device
 
     bodyObject["constitutive"] = debrisMaterialObject["constitutive"]; // global
 
@@ -378,12 +398,12 @@ ParticlesMPM::outputToJSON(QJsonObject &jsonObject)
     bodyObject["FBAR_ratio"] = debrisAlgorithmObject["FBAR_ratio"]; // global
 
     // ClaymoreUW artifacts, TODO: Deprecate
-    if (0) bodyObject["device"] = debrisPartitionObject; // device
+    if (0) bodyObject["device"] = debrisPartitionsObject; // device
     else {
-      bodyObject["gpu"] = debrisPartitionObject["gpu"]; // global
-      bodyObject["model"] = debrisPartitionObject["model"]; // global
-      bodyObject["partition_start"] = debrisPartitionObject["partition_start"]; // global
-      bodyObject["partition_end"] = debrisPartitionObject["partition_end"]; // global
+      bodyObject["gpu"] = debrisPartitionsObject["gpu"]; // global
+      bodyObject["model"] = debrisPartitionsObject["model"]; // global
+      bodyObject["partition_start"] = debrisPartitionsObject["partition_start"]; // global
+      bodyObject["partition_end"] = debrisPartitionsObject["partition_end"]; // global
     }
     // ClaymoreUW, TODO: Deprecate in favor of MPM:bodies:outputs or MPM:outputs (latter preferred) 
     bodyObject["output_attribs"] = QJsonArray::fromStringList(QStringList() << "Velocity_X" << "Pressure" << "ID"); // global
@@ -409,26 +429,26 @@ ParticlesMPM::outputToJSON(QJsonObject &jsonObject)
   }
 
   // Structure Body Preset
-  if (structureGeometry != nullptr && structureMaterial != nullptr && structureAlgorithm != nullptr && structurePartition != nullptr) {
+  if (structureGeometries != nullptr && structureMaterial != nullptr && structureAlgorithm != nullptr && structurePartitions != nullptr) {
     QJsonObject bodyObject; // Holds geometry, material, algorithm, partition, and global values for fluid preset
 
-    QJsonObject structureGeometryObject; // Object wrapper holding an array of geometry objects
+    QJsonObject structureGeometriesObject; // Object wrapper holding an array of geometry objects
     QJsonObject structureMaterialObject; // Object
     QJsonObject structureAlgorithmObject; // Object
-    QJsonObject structurePartitionObject; // Object, TODO: Make this an array of objects for multiple auto-partitions over GPUs
+    QJsonObject structurePartitionsObject; // Object, TODO: Make this an array of objects for multiple auto-partitions over GPUs
 
     QJsonArray geometryArray;
-    structureGeometryObject["geometry"] = geometryArray;
-    structureGeometry->outputToJSON(structureGeometryObject); 
+    structureGeometriesObject["geometry"] = geometryArray;
+    structureGeometries->outputToJSON(structureGeometriesObject); 
     structureMaterial->outputToJSON(structureMaterialObject);
     structureAlgorithm->outputToJSON(structureAlgorithmObject);
-    structurePartition->outputToJSON(structurePartitionObject);
+    structurePartitions->outputToJSON(structurePartitionsObject);
 
     // Future schema
-    bodyObject["geometry"] = structureGeometryObject["geometry"];
+    bodyObject["geometry"] = structureGeometriesObject["geometry"];
     bodyObject["material"] = structureMaterialObject["material"];
     bodyObject["algorithm"] = structureAlgorithmObject["algorithm"];
-    bodyObject["partition"] = structurePartitionObject;
+    bodyObject["partition"] = structurePartitionsObject["partition"];
 
     bodyObject["constitutive"] = structureMaterialObject["constitutive"]; // global
 
@@ -441,14 +461,14 @@ ParticlesMPM::outputToJSON(QJsonObject &jsonObject)
     bodyObject["FBAR_ratio"] = structureAlgorithmObject["FBAR_ratio"]; // global
 
     // ClaymoreUW artifacts, TODO: Deprecate
-    if (0) bodyObject["device"] = structurePartitionObject; // device
+    if (0) bodyObject["device"] = structurePartitionsObject; // device
     else {
-      bodyObject["gpu"] = structurePartitionObject["gpu"]; // global
-      bodyObject["model"] = structurePartitionObject["model"]; // global
-      bodyObject["partition_start"] = structurePartitionObject["partition_start"]; // global
-      bodyObject["partition_end"] = structurePartitionObject["partition_end"]; // global
+      bodyObject["gpu"] = structurePartitionsObject["gpu"]; // global
+      bodyObject["model"] = structurePartitionsObject["model"]; // global
+      bodyObject["partition_start"] = structurePartitionsObject["partition_start"]; // global
+      bodyObject["partition_end"] = structurePartitionsObject["partition_end"]; // global
     }
-    // bodyObject["output_attribs"] = structurePartitionOutputs; // global
+    // bodyObject["output_attribs"] = structurePartitionsOutputs; // global
 
     // ClaymoreUW, TODO: Deprecate in favor of MPM:bodies:outputs or MPM:outputs (latter preferred) 
     bodyObject["output_attribs"] = QJsonArray::fromStringList(QStringList() << "Velocity_X" << "Pressure" << "ID"); // global
@@ -476,26 +496,26 @@ ParticlesMPM::outputToJSON(QJsonObject &jsonObject)
   {
     for (int i=0; i<numAddedTabs; i++) {
       if (i >= numReserveTabs) break;
-      if (addedGeometry[i] != nullptr && addedMaterial[i] != nullptr && addedAlgorithm[i] != nullptr && addedPartition[i] != nullptr) {
+      if (addedGeometries[i] != nullptr && addedMaterial[i] != nullptr && addedAlgorithm[i] != nullptr && addedPartitions[i] != nullptr) {
         QJsonObject bodyObject; // Holds geometry, material, algorithm, partition, and global values for fluid preset
 
-        QJsonObject customGeometryObject; // Object wrapper holding an array of geometry objects
+        QJsonObject customGeometriesObject; // Object wrapper holding an array of geometry objects
         QJsonObject customMaterialObject; // Object
         QJsonObject customAlgorithmObject; // Object
-        QJsonObject customPartitionObject; // Object, TODO: Make this an array of objects for multiple auto-partitions over GPUs
+        QJsonObject customPartitionsObject; // Object, TODO: Make this an array of objects for multiple auto-partitions over GPUs
 
         QJsonArray geometryArray;
-        customGeometryObject["geometry"] = geometryArray;
-        addedGeometry[i]->outputToJSON(customGeometryObject); 
+        customGeometriesObject["geometry"] = geometryArray;
+        addedGeometries[i]->outputToJSON(customGeometriesObject); 
         addedMaterial[i]->outputToJSON(customMaterialObject);
         addedAlgorithm[i]->outputToJSON(customAlgorithmObject);
-        addedPartition[i]->outputToJSON(customPartitionObject);
+        addedPartitions[i]->outputToJSON(customPartitionsObject);
 
         // Future schema
-        bodyObject["geometry"] = customGeometryObject["geometry"]; // geometry
+        bodyObject["geometry"] = customGeometriesObject["geometry"]; // geometry
         bodyObject["material"] = customMaterialObject["material"]; // material
         bodyObject["algorithm"] = customAlgorithmObject["algorithm"]; // algorithm
-        bodyObject["partition"] = customPartitionObject; // partition
+        bodyObject["partition"] = customPartitionsObject["partition"]; // partition
 
         bodyObject["constitutive"] = customMaterialObject["constitutive"]; // global
 
@@ -508,14 +528,14 @@ ParticlesMPM::outputToJSON(QJsonObject &jsonObject)
         bodyObject["FBAR_ratio"] = customAlgorithmObject["FBAR_ratio"]; // global
 
         // ClaymoreUW artifacts, TODO: Deprecate
-        if (0) bodyObject["device"] = customPartitionObject; // device
+        if (0) bodyObject["device"] = customPartitionsObject; // device
         else {
-          bodyObject["gpu"] = customPartitionObject["gpu"]; // global
-          bodyObject["model"] = customPartitionObject["model"]; // global
-          bodyObject["partition_start"] = customPartitionObject["partition_start"]; // global
-          bodyObject["partition_end"] = customPartitionObject["partition_end"]; // global
+          bodyObject["gpu"] = customPartitionsObject["gpu"]; // global
+          bodyObject["model"] = customPartitionsObject["model"]; // global
+          bodyObject["partition_start"] = customPartitionsObject["partition_start"]; // global
+          bodyObject["partition_end"] = customPartitionsObject["partition_end"]; // global
         }
-        // bodyObject["output_attribs"] = customPartitionOutputs; // global
+        // bodyObject["output_attribs"] = customPartitionsOutputs; // global
 
         // ClaymoreUW, TODO: Deprecate in favor of MPM:bodies:outputs or MPM:outputs (latter preferred) 
         bodyObject["output_attribs"] = QJsonArray::fromStringList(QStringList() << "Velocity_X" << "Pressure" << "ID"); // global
@@ -553,10 +573,10 @@ ParticlesMPM::inputFromJSON(QJsonObject &jsonObject)
 {
   // theOpenSeesPyScript->inputFromJSON(jsonObject);
   // theSurfaceFile->inputFromJSON(jsonObject);    
-  fluidGeometry->inputFromJSON(jsonObject);
+  fluidGeometries->inputFromJSON(jsonObject);
   fluidMaterial->inputFromJSON(jsonObject);
   fluidAlgorithm->inputFromJSON(jsonObject);
-  fluidPartition->inputFromJSON(jsonObject);
+  fluidPartitions->inputFromJSON(jsonObject);
   // fluidOutputs->inputFromJSON(jsonObject);
   return true;
 }

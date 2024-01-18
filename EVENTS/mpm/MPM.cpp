@@ -87,7 +87,7 @@ MPM::MPM(QWidget *parent)
     theTabWidget->addTab(mpmParticles, QIcon(QString(":/icons/deform-black.svg")), "Bodies");
     theTabWidget->addTab(mpmBoundaries, QIcon(QString(":/icons/man-door-black.svg")), "Boundaries");
     theTabWidget->addTab(mpmSensors, QIcon(QString(":/icons/dashboard-black.svg")), "Sensors");
-    theTabWidget->addTab(mpmOutputs, QIcon(QString(":/icons/settings-black.svg")), "Outputs");    
+    theTabWidget->addTab(mpmOutputs, QIcon(QString(":/icons/file-settings-black.svg")), "Outputs");    
     int sizePrimaryTabs =20;
     theTabWidget->setIconSize(QSize(sizePrimaryTabs,sizePrimaryTabs));
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
@@ -127,15 +127,6 @@ void MPM::clear(void)
 bool MPM::inputFromJSON(QJsonObject &jsonObject)
 {
   this->clear();
-  
-  /*
-    if (jsonObject.contains("buildingWidth")) {
-    QJsonValue theValue = jsonObject["buildingWidth"];
-    QString selection = theValue.toString();
-    buildingWidthWidget->setText(selection);
-    } else
-    return false;
-  */
   
   mpmSettings->inputFromJSON(jsonObject);
   mpmParticles->inputFromJSON(jsonObject);
@@ -197,7 +188,7 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
     if ((my_sim.contains("duration") && my_sim["duration"].isDouble()) && (my_sim.contains("fps") && my_sim["fps"].isDouble())) {
       my_sim["frames"] = my_sim["duration"].toDouble() * my_sim["fps"].toDouble(); // for ClaymoreUW, simulation:frames = simulation:duration * simulation:fps
     } else {
-      my_sim["frames"] = my_sim["fps"];
+      my_sim["frames"] = my_sim["fps"]; // Assumes 1 second total simulation as a fallback
     }
     jsonObject["simulation"] = my_sim;
   }
@@ -214,120 +205,34 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
   // Bodies (models in ClaymoreUW currently)
   if (bodiesObjectWrapper.contains("bodies") && bodiesObjectWrapper["bodies"].toArray().size() > 0) {
     bodiesArray = bodiesObjectWrapper["bodies"].toArray();
-    if (0) jsonObject["bodies"] = bodiesArray; // for the future schema
-    else   jsonObject["models"] = bodiesArray; // for ClaymoreUW, models = bodies
+    jsonObject["bodies"] = bodiesArray; // for the future schema
   }
 
   // ==================== Boundaries ====================
   // Boundaries (grid-boundaries in ClaymoreUW currently, TODO: Deprecate and change to "boundaries")
-  if (boundariesObjectWrapper.contains("grid-boundaries") && boundariesObjectWrapper["grid-boundaries"].isArray()) {
-    jsonObject["grid-boundaries"] = boundariesObjectWrapper["grid-boundaries"]; // ClaymoreUW artifact, TODO: Deprecate
+  if (boundariesObjectWrapper.contains("boundaries") && boundariesObjectWrapper["boundaries"].isArray()) {
+    // boundaries is an array of objects, each is an individual boundary
+    jsonObject["boundaries"] = boundariesObjectWrapper["boundaries"]; // for the future schema
   }
 
   // ==================== Sensors ====================
   // Sensors (grid-targets, particle-targets in ClaymoreUW currently, TODO: Deprecate and change to "sensors")
+  // sensors is an array of objects, each is an individual sensor
   if (0) {
-    if (sensorsObjectWrapper.contains("sensors") && sensorsObjectWrapper["sensors"].isArray()) {
-      // sensors is an array of objects, each is an individual sensor
+    if (sensorsObjectWrapper.contains("sensors") && sensorsObjectWrapper["sensors"].isArray()) 
       jsonObject["sensors"] = sensorsObjectWrapper["sensors"];
-    }
+  } else {
+    if (sensorsObjectWrapper.contains("particle-sensors") && sensorsObjectWrapper["particle-sensors"].isArray()) 
+      jsonObject["particle-sensors"] = sensorsObjectWrapper["particle-sensors"]; // for the future schema
+    if (sensorsObjectWrapper.contains("grid-sensors") && sensorsObjectWrapper["grid-sensors"].isArray()) 
+      jsonObject["grid-sensors"] = sensorsObjectWrapper["grid-sensors"]; // for the future schema
   }
-  if (sensorsObjectWrapper.contains("particle-sensors") && sensorsObjectWrapper["particle-sensors"].isArray()) {
-    // jsonObject["particle-sensors"] = sensorsObjectWrapper["particle-sensors"];
-    jsonObject["particle-targets"] = sensorsObjectWrapper["particle-sensors"]; // ClaymoreUW artifact, TODO: Deprecate
-  }
-  if (sensorsObjectWrapper.contains("grid-sensors") && sensorsObjectWrapper["grid-sensors"].isArray()) {
-    // jsonObject["grid-sensors"] = sensorsObjectWrapper["grid-sensors"];
-    jsonObject["grid-targets"] = sensorsObjectWrapper["grid-sensors"]; // ClaymoreUW artifact, TODO: Deprecate
-  }
-
   // ==================== Outputs ====================
   // Outputs (not a separate object in ClaymoreUW currently, must move some fields to other objects manually for ClaymoreUW)
   if (outputsObject.contains("outputs") && outputsObject["outputs"].isObject()) {
     jsonObject["outputs"] = outputsObject["outputs"]; // for future schema, not used in ClaymoreUW currently
   }
 
-  // if (bodiesArray.size() > 0) {
-  //   bool allBodiesAreObjects = false;
-  //   for (int i = 0; i < bodiesArray.size(); ++i) {
-  //     if (bodiesArray[i].isObject() == false) 
-  //       allBodiesAreObjects = false; 
-  //   }
-  //   if (allBodiesAreObjects) {
-  //     if (0) jsonObject["bodies"] = bodiesArray; // for the future schema
-  //     else   jsonObject["models"] = bodiesArray; // for ClaymoreUW, models = bodies
-  //   }
-  // }
-
-  // // Boundaries (grid-boundaries in ClaymoreUW currently)
-  // if (boundariesObjectWrapper.contains("boundaries") && boundariesObjectWrapper["boundaries"].toArray().size() > 0) {
-  //   boundariesArray = boundariesObjectWrapper["boundaries"].toArray();
-  // }
-  // if (boundariesArray.size() > 0) {
-  //   bool allBoundariesAreObjects = true;
-  //   for (int i = 0; i < boundariesArray.size(); ++i) {
-  //     // An individual boundary is an object
-  //     if (boundariesArray[i].isObject() == false) 
-  //         allBoundariesAreObjects = false; 
-  //   }
-  //   if (allBoundariesAreObjects) {
-  //     jsonObject["grid-boundaries"] = boundariesArray; // for ClaymoreUW, grid-boundaries = boundaries
-  //     // jsonObject["particle-boundaries"] = boundariesArray; // for ClaymoreUW, particle-boundaries = boundaries
-  //     jsonObject["boundaries"] = boundariesArray; // for the future schema
-  //   }
-  // }
-
-  // QJsonArray particleSensorsArray;
-  // QJsonArray gridSensorsArray;
-  // if (sensorsObjectWrapper.contains("sensors") && sensorsObjectWrapper["sensors"].toArray().size() > 0) {
-  //   sensorsArray = sensorsObjectWrapper["sensors"].toArray();
-  // }
-  // if (sensorsArray.size() > 0) {
-  //   bool allSensorsAreObjects = true;
-
-  //   for (int i = 0; i < sensorsArray.size(); ++i) {
-  //     // An individual sensor is an object
-  //     if (sensorsArray[i].isObject() == false) 
-  //         allSensorsAreObjects = false; 
-  //   }
-  //   for (int i = 0; i < sensorsArray.size(); ++i) {
-  //     bool isGridSensor = false;
-  //     bool isParticleSensor = false;
-  //     if (sensorsArray[i].isObject()) {
-  //       if (sensorsArray[i].toObject().contains("type")) {
-  //         QJsonValue theValue = sensorsArray[i].toObject()["type"];
-  //         QString selection = theValue.toString();
-
-  //         if (selection == "grid") {
-  //           isGridSensor = true;
-  //           gridSensorsArray.append(sensorsArray[i]);
-  //         }
-  //         else if (selection == "particle") {
-  //           isParticleSensor = true;
-  //           particleSensorsArray.append(sensorsArray[i]);
-  //         }
-
-  //       }
-  //     } 
-  //   }
-
-  //   if (allSensorsAreObjects) {
-  //     jsonObject["grid-targets"] = gridSensorsArray; // for ClaymoreUW, grid-sensors = sensors
-  //     jsonObject["particle-targets"] = particleSensorsArray; // for ClaymoreUW, particle-sensors = sensors
-  //     jsonObject["sensors"] = sensorsArray; // for the future schema
-  //   }
-  // }
-
-  // jsonObject["bodies"] = bodiesArray;
-
-  /*
-    if (jsonObject.contains("buildingWidth")) {
-    QJsonValue theValue = jsonObject["buildingWidth"];
-    QString selection = theValue.toString();
-    buildingWidthWidget->setText(selection);
-    } else
-    return false;
-  */
   
   return true;
 }

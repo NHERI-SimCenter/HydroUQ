@@ -38,13 +38,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 /**
- *  @author  fmckenna
- *  @date    2/2017
- *  @version 1.0
+ *  @author  JustinBonus
+ *  @date    1/2024
+ *  @version 3.0
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the OpenSees Tab for the CoupledDigitalTwin
+ *  This is the class providing the Sensors Tab for MPM
  */
 
 #include <SimCenterWidget.h>
@@ -56,6 +56,7 @@ class SC_ComboBox;
 class SC_TableEdit;
 class SC_DoubleLineEdit;
 
+class SensorMPM;
 class SensorsMPM : public SimCenterWidget
 {
 public:
@@ -68,33 +69,10 @@ public:
 signals:
 
 private:
-  // Wave-gauges (WG), Velocimeters (VM), and Load-cells (LC)
-  SC_ComboBox       *toggleWG;
-  SC_ComboBox       *typeWG;
-  SC_ComboBox       *attributeWG;
-  SC_ComboBox       *operationWG;
-  SC_ComboBox       *directionWG;
-  SC_DoubleLineEdit *output_frequencyWG;
-  SC_TableEdit      *waveGaugesTable;
-  
-
-  SC_ComboBox       *toggleVM;
-  SC_ComboBox       *typeVM;
-  SC_ComboBox       *attributeVM;
-  SC_ComboBox       *operationVM;
-  SC_ComboBox       *directionVM;
-  SC_DoubleLineEdit *output_frequencyVM;
-  SC_TableEdit      *velociMetersTable;
-
-
-  SC_ComboBox       *toggleLC;
-  SC_ComboBox       *typeLC;
-  SC_ComboBox       *attributeLC;
-  SC_ComboBox       *operationLC;
-  SC_ComboBox       *directionLC;
-  SC_DoubleLineEdit *output_frequencyLC;
-  SC_TableEdit      *loadCellsTable;
+  int numReserveTabs = 8;
+  int numAddedTabs = 0;
+  QVector<SensorMPM*> addedSensor {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 };
 
-#endif // OPENSEES_DIGITAL_TWIN_H
+#endif // SENSORS_MPM_H
 

@@ -34,14 +34,18 @@ SOURCES += \
     $$PWD/EVENTS/coupledDigitalTwin/OpenFOAM_DigitalTwin.cpp \
     $$PWD/EVENTS/coupledDigitalTwin/VisualizeDigitalTwin.cpp \
     $$PWD/EVENTS/mpm/MPM.cpp \
+    $$PWD/EVENTS/mpm/BoundaryMPM.cpp \
     $$PWD/EVENTS/mpm/BoundariesMPM.cpp \
     $$PWD/EVENTS/mpm/OutputsMPM.cpp \
+    $$PWD/EVENTS/mpm/SensorMPM.cpp \
     $$PWD/EVENTS/mpm/SensorsMPM.cpp \
     $$PWD/EVENTS/mpm/ParticlesMPM.cpp \
     $$PWD/EVENTS/mpm/SettingsMPM.cpp \
     $$PWD/EVENTS/mpm/MaterialMPM.cpp \
+    $$PWD/EVENTS/mpm/GeometriesMPM.cpp \
     $$PWD/EVENTS/mpm/GeometryMPM.cpp \
     $$PWD/EVENTS/mpm/AlgorithmMPM.cpp \
+    $$PWD/EVENTS/mpm/PartitionsMPM.cpp \
     $$PWD/EVENTS/mpm/PartitionMPM.cpp \
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.cpp \
     $$PWD/EVENTS/Common/projectsettings.cpp \
@@ -76,14 +80,18 @@ HEADERS += \
     $$PWD/EVENTS/coupledDigitalTwin/OpenFOAM_DigitalTwin.h \
     $$PWD/EVENTS/coupledDigitalTwin/VisualizeDigitalTwin.h \
     $$PWD/EVENTS/mpm/MPM.h \
+    $$PWD/EVENTS/mpm/BoundaryMPM.h \
     $$PWD/EVENTS/mpm/BoundariesMPM.h \
     $$PWD/EVENTS/mpm/OutputsMPM.h \
+    $$PWD/EVENTS/mpm/SensorsMPM.h \
     $$PWD/EVENTS/mpm/SensorsMPM.h \
     $$PWD/EVENTS/mpm/ParticlesMPM.h \
     $$PWD/EVENTS/mpm/SettingsMPM.h \   
     $$PWD/EVENTS/mpm/MaterialMPM.h \
+    $$PWD/EVENTS/mpm/GeometriesMPM.h \
     $$PWD/EVENTS/mpm/GeometryMPM.h \
     $$PWD/EVENTS/mpm/AlgorithmMPM.h \
+    $$PWD/EVENTS/mpm/PartitionsMPM.h \   
     $$PWD/EVENTS/mpm/PartitionMPM.h \   
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.h \
     $$PWD/EVENTS/Common/projectsettings.h \

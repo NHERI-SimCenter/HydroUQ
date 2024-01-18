@@ -34,7 +34,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-#include "BoundariesMPM.h"
+#include "PartitionsMPM.h"
 #include <QLabel>
 #include <QComboBox>
 #include <QGroupBox>
@@ -48,28 +48,33 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QJsonObject>
 #include <QJsonArray>
 
-#include <BoundaryMPM.h>
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
 #include <SC_IntLineEdit.h>
+#include <SC_StringLineEdit.h>
 #include <SC_TableEdit.h>
 #include <SC_FileEdit.h>
 #include <SC_CheckBox.h>
 
+#include <PartitionMPM.h>
 
-BoundariesMPM::BoundariesMPM(QWidget *parent)
+#include <vector>
+#include <array>
+#include <memory>
+
+PartitionsMPM::PartitionsMPM(QWidget *parent)
   :SimCenterWidget(parent)
 {
-  // --- Boundary
+  // --- Partition
   QGridLayout *layout = new QGridLayout();
   this->setLayout(layout);
 
   int numRow = 0;
   
-  // Buttons for creating and removing individual boundary
-  // All geometries will be composed together for an individual body to form a single boundary
-  QPushButton *addB = new QPushButton("Create Boundary"); 
-  QPushButton *delB = new QPushButton("Remove Boundary");
+  // Buttons for creating and removing individual partition
+  // All geometries will be composed together for an individual body to form a single partition
+  QPushButton *addB = new QPushButton("Create Partition"); 
+  QPushButton *delB = new QPushButton("Remove Partition");
   addB->setIcon(QIcon(":/icons/pencil-plus-white.svg"));
   delB->setIcon(QIcon(":/icons/eraser-white.svg"));
   addB->setIconSize(QSize(24,24));
@@ -84,54 +89,32 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   layout->addWidget(theHeaderFrame);
 
   ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  // Add tab per boundary
+  // Add tab per Body
   QTabWidget *tabWidget = new QTabWidget();
-  int sizeTabIcon = 20;
-  tabWidget->setIconSize(QSize(sizeTabIcon,sizeTabIcon));
   tabWidget->setTabsClosable(true); // Close tabs with X mark via mouse (connect to tabCloseRequested)
   tabWidget->setMovable(true); // Move tabs with mouse
 
-  QVector<QWidget*> theAdded(numReserveTabs); // numReserveTabs is max number of added tabs
+  QVector<QWidget*> theAdded(numReserveTabs); // 16 is max number of added tabs
 
   int sizeBodyTabs = 20;
   layout->addWidget(tabWidget);
 
-  int numDefaultTabs = 1; // Need atleast one boundary tab, so dont allow last one to be deleted
+  int numDefaultTabs = 1; // Need atleast one partition tab, so dont allow last one to be deleted
   QVector<QGridLayout*> theAddedLayout(numReserveTabs);
   QVector<QTabWidget*> modelAddedTabWidget(numReserveTabs); 
   for (int i = 0; i < numReserveTabs; i++) {
     theAdded[i] = new QWidget();
     theAddedLayout[i] = new QGridLayout();
-    addedBoundary[i] = new BoundaryMPM();
+    addedPartition[i] = new PartitionMPM();
   }
 
-  // Init. first four boundaries automatically for digital twin configuration
-  // Wave Flume Facility
-  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/wash-black.svg")), "Flume Facility");
+  // Init. first partition automatically
+  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Custom " + QString::number(numAddedTabs + 1));
+  tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
   theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-  theAddedLayout[numAddedTabs]->addWidget(addedBoundary[numAddedTabs]);
+  theAddedLayout[numAddedTabs]->addWidget(addedPartition[numAddedTabs]);
   numAddedTabs += 1;
-
-  // Wave Generator
-  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/wave-break-black.svg")), "Wave Generator");
-  theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-  theAddedLayout[numAddedTabs]->addWidget(addedBoundary[numAddedTabs]);
-  numAddedTabs += 1;
-
-  // Rigid Structure
-  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/home-black.svg")), "Rigid Structure");
-  theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-  theAddedLayout[numAddedTabs]->addWidget(addedBoundary[numAddedTabs]);
-  numAddedTabs += 1;
-
-  // Rigid Walls
-  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/wall-black.svg")), "Rigid Walls");
-  theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-  theAddedLayout[numAddedTabs]->addWidget(addedBoundary[numAddedTabs]);
-  numAddedTabs += 1;
-
-
-  // Create and Init. another boundary tab at user request (click create)
+  // Create and Init. another partition tab at user request (click create)
   connect(addB, &QPushButton::released, this, [=]() {
     // Concatenate string to say "Custom Body 1", "Custom Body 2", etc.
     if (numAddedTabs >= numReserveTabs) 
@@ -139,11 +122,17 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
     tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Custom " + QString::number(numAddedTabs + 1));
     tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
     theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-    theAddedLayout[numAddedTabs]->addWidget(addedBoundary[numAddedTabs]);
+    theAddedLayout[numAddedTabs]->addWidget(addedPartition[numAddedTabs]);
     numAddedTabs += 1;
+
+    // Set the bodies new partition's GPU ID and Model ID (latter must be unique for the GPU ID)
+    setPartitionGPU(numAddedTabs-1, numAddedTabs-1); // Set the GPU to the partition index
+    // Note: setModel uses numAddedTabs for its iteration, so its position is important
+    setDefaultModelID(defaultModelID); // Set the default model ID to the default model ID
+    setModel(defaultModelID); // Set the model ID to the default model ID 
   });
 
-  // Remove boundary at user request (click remove)
+  // Remove partition at user request (click remove)
   connect(delB, &QPushButton::released, this, [=]() {
     if (( tabWidget->currentIndex() == -1) || (tabWidget->count() <= numDefaultTabs) || (tabWidget->currentIndex() < numDefaultTabs)) 
       return;
@@ -157,7 +146,7 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
     // clean up
     numAddedTabs -= 1;
   }); 
-  // Remove boundary at user request (click the "X" mark on a tab)
+  // Remove partition at user request (click the "X" mark on a tab)
   connect(tabWidget, &QTabWidget::tabCloseRequested, this, [=](int index) {
     if (( index == -1) || (tabWidget->count() <= numDefaultTabs) || (index < numDefaultTabs)) 
       return; 
@@ -177,86 +166,97 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   });
 
 
-  // Enum to set tab's icons, titles, init values, etc.
-  enum boundaryEnum : int {CUSTOM = 0, WAVE_FLUME, WAVE_GENERATOR, RIGID_STRUCTURE, RIGID_WALLS, TOTAL};
 
-  // Set initial boundary type
-  for (int i=0; i<numAddedTabs; i++) {
-    if (i >= numReserveTabs) break;
-    if (i == 0) addedBoundary[i]->setBoundaryType(WAVE_FLUME);
-    else if (i == 1) addedBoundary[i]->setBoundaryType(WAVE_GENERATOR);
-    else if (i == 2) addedBoundary[i]->setBoundaryType(RIGID_STRUCTURE);
-    else if (i == 3) addedBoundary[i]->setBoundaryType(RIGID_WALLS);
-    else addedBoundary[i]->setBoundaryType(CUSTOM);
-  }
 }
 
-BoundariesMPM::~BoundariesMPM()
+PartitionsMPM::~PartitionsMPM()
 {
 
 }
 
-// bool
-// BoundariesMPM::setBoundaryType(int typeIdx)
-// {
-//   int numInitialTabs = 4; // 4 default tabs
-//   for (int i=0; i<numInitialTabs; i++) {
-//     addedBoundary[i]->setBoundaryType(typeIdx);
-//   }
-//   return true;
-// }
+bool 
+PartitionsMPM::setPartitionGPU(int index, int gpu) 
+{
+  // Check if the index is valid
+  if (index < 0 || index > numAddedTabs) {
+    return false;
+  }
+  // Check if the GPU is valid
+  if (gpu < 0 || gpu >= maxNumGPUs) {
+    return false;
+  }
+  // Set the GPU
+  addedPartition[index]->setGPU(gpu);
+  
+  return true;
+}
+
+bool 
+PartitionsMPM::setModel(int model)
+{
+  // TODO: Better distribute models across GPUs relative to number of Bodies
+  // Set the Model ID, iterating through partitions
+  // Check model ID is valid (TODO: Fix upper-bound for diff. supercomputers / gpu-nodes)
+  if (model < 0 || model >= maxNumModels*maxNumGPUs) {
+    return false;
+  }
+  for (int i = 0; i < numAddedTabs; i++) {
+    addedPartition[i]->setDefaultModelID(model);
+    addedPartition[i]->setModel(model);
+  }
+  return true;
+}
+
+bool 
+PartitionsMPM::setDefaultModelID(int model) 
+{
+  // Tell all partitions for this Body to use a given model ID
+  defaultModelID = (model >= 0)  
+                    ? ( (model < maxNumModels*maxNumGPUs) 
+                      ? model 
+                      : maxNumModels*maxNumGPUs) 
+                    : 0;
+  return true;
+}
 
 bool
-BoundariesMPM::outputToJSON(QJsonObject &jsonObject)
+PartitionsMPM::outputToJSON(QJsonObject &jsonObject)
 {
   // TODO: Basic safety checks
   // Iterate over all tabs, fill a unique JSON object, and add to a JSON array
-  QJsonArray theArray; // Holds array of boundary objects
-  QJsonObject theObject; // Passed to individual boundary objects to fill
+  QJsonArray theArray; // Holds array of partition objects
   for (int i=0; i<numAddedTabs; i++) {
-    if (i >= numReserveTabs) break;
-    addedBoundary[i]->outputToJSON(theObject);
-    theArray.append(theObject["boundaries"].toArray());
+    QJsonObject theObject; // Passed to individual partition objects to fill
+    addedPartition[i]->outputToJSON(theObject);
+    theArray.append(theObject["partition"].toObject());
   }
-  theArray = theObject["boundaries"].toArray();
-  jsonObject["boundaries"] = theArray; // Add array of boundary objects to the body object
+  jsonObject["partition"] = theArray; // Add array of partition objects to the body object
+  jsonObject["gpu"] = 0; // TODO: ClaymoreUW has a single GPU ID per body, but will need to be updated to support multiple GPUs per body via unraveling the partition array
+  jsonObject["model"] = defaultModelID; // Add default model ID to the body object
+  // TODO: Same as for "gpu", get rid of ClaymoreUW global partition_start and partition_end
+  // This is a temp fix.
+  QJsonArray partition_start;
+  QJsonArray partition_end;
+  partition_start.append(0.0);
+  partition_start.append(0.0);
+  partition_start.append(0.0);
+  partition_end.append(100.0);
+  partition_end.append(4.5);
+  partition_end.append(3.75);
+  jsonObject["partition_start"] = partition_start;
+  jsonObject["partition_end"] = partition_end;
   return true;
 }
 
 bool
-BoundariesMPM::inputFromJSON(QJsonObject &jsonObject)
+PartitionsMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  // if (jsonObject.contains("domainSubType")) {
-  //   QJsonValue theValue = jsonObject["domainSubType"];
-  //   QString valueString = theValue.toString();
-  //   facility->setCurrentText(valueString);
-  // }
-  // bathSTL->inputFromJSON(jsonObject);
-  // paddleDisplacementFile->inputFromJSON(jsonObject);
-  for (int i=0; i<numAddedTabs; i++) {
-    if (i >= numReserveTabs) break; // Don't copy files for unreserved tabs
-    addedBoundary[i]->inputFromJSON(jsonObject);
-  }
-
-
   return true;
 }
 
-
 bool
-BoundariesMPM::copyFiles(QString &destDir)
+PartitionsMPM::copyFiles(QString &destDir)
 {
-  // Copy files for each boundary tab to the destination directory
-  bool flag = true; // copyFile returns false on error. So if any of these fail, flag will be false
-  for (int i=0; i<numAddedTabs; i++) {
-    if (i >= numReserveTabs) break; // Don't copy files for unreserved tabs
-    flag &= addedBoundary[i]->copyFiles(destDir);
-    
-    // Perform copyFile on each added boundary tab's contained files (e.g. velocity motion, STL/OBJ, bathymetry file, etc.)
-    // flag &= addedBoundary[i].velFile->copyFile(destDir);
-    // flag &= addedBoundary[i].paddleDisplacementFile->copyFile(destDir);
-    // flag &= addedBoundary[i].bathSTL->copyFile(destDir);
-  }
-  return flag; // True if all copyFile return true (i.e., no errors)
+  return true;
 }
 

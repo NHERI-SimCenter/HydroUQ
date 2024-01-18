@@ -76,7 +76,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
   layout->addWidget(objectType,numRow++, 1);
 
-  QList <QString> operationList;  operationList << "Add (OR)" << "Subtract (NOT)" << "Intersect (AND)" << "Difference (XOR)";
+  QList <QString> operationList;  operationList << "Add (OR) [|]" << "Subtract (NOT) [~]" << "Intersect (AND) [&]" << "Difference (XOR) [^]";
   operationType = new SC_ComboBox("operation_type", operationList);
   layout->addWidget(new QLabel("Operation With Prior Geometry"), numRow,0);
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
@@ -225,7 +225,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   dimensionsBoxLayout->addWidget(new QLabel("m"), numDimRow++, 4);
 
   standingWaterLevel = new SC_DoubleLineEdit("standingWaterLevel",2.0);
-  dimensionsBoxLayout->addWidget(new QLabel("Standing Water Level (SWL)"), numDimRow, 0);
+  dimensionsBoxLayout->addWidget(new QLabel("Still Water Level (SWL)"), numDimRow, 0);
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   dimensionsBoxLayout->addWidget(standingWaterLevel, numDimRow, 1);  
   dimensionsBoxLayout->addWidget(new QLabel("m"), numDimRow++, 2);
@@ -235,20 +235,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   dimensionsBoxLayout->addWidget(fillFlumeUptoSWL,numDimRow++, 1);
   
-
-  // numDimRow+=1; // Vertical spacer
   int numBathRow = 0;
   dimensionsBoxLayout->addWidget(new QLabel("Flume Bathymetry Type"),numDimRow,0);
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  // dimensionsBoxLayout->addWidget(bathXZData,numDimRow++,0,4,4);  
 
-  // QStackedWidget *bathStack = new QStackedWidget();
-  // bathStack->addWidget(ptWidget);
-  // bathStack->addWidget(stlWidget);
-  // Stack for bathymetry
-  // QStringList bathOptions; bathOptions << "Point List" << "STL File";
-  // bathymetryComboBox = new SC_ComboBox("bathType",bathOptions);
-  
   QStringList bathOptions; bathOptions << "Point List" << "STL File";
   bathymetryComboBox = new SC_ComboBox("bathymetryComboBox", bathOptions);
   dimensionsBoxLayout->addWidget(bathymetryComboBox, numDimRow++, 1);
@@ -275,21 +265,12 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   bathStack->addWidget(ptWidget);
   bathStack->addWidget(stlWidget);
   
-  // numBathRow=4;
   dimensionsBoxLayout->addWidget(bathStack,numDimRow++,0, 1, numBathRow);
   dimensionsBoxLayout->setRowStretch(numDimRow,1);
   layout->addWidget(dimensionsBox,numRow++,0,numDimRow,5);
-  // numRow = numRow+numDimRow;
   numRow = numRow+numDimRow;
 
   layout->setRowStretch(numRow, 1);
-  // int thisWidth = (*this).sizeHint().width(); // Probably 200
-  // layout->addItem(new QSpacerItem(thisWidth, 25, QSizePolicy::Fixed, QSizePolicy::Expanding), numRow, 0);
-
-
-  // connext bathymetry to show correct widget
-  // connect(bathymetryComboBox, QOverload<int>::of(&QComboBox::activated),
-	//   bathStack, &QStackedWidget::setCurrentIndex);
 
 
   connect(bathymetryComboBox, &QComboBox::currentTextChanged, [=](QString val) {
@@ -301,14 +282,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       ptWidget->show();
       ptWidget->setEnabled(true);
       ptWidget->setVisible(true);
-
-      // bathXZData->setTableData(4, dataBathXZ);
       stlWidget->hide();
       stlWidget->setEnabled(false);
       stlWidget->setVisible(false);
-      // numBathRow = 4;
     } else if (val == "STL File") {
-      //
       bathStack->setCurrentIndex(1);
       bathXZData->hide();
       bathXZData->setVisible(false);
@@ -316,7 +293,6 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       ptWidget->hide();
       ptWidget->setEnabled(false);
       ptWidget->setVisible(false);
-
       stlWidget->show();
       stlWidget->setEnabled(true);
       stlWidget->setVisible(true);
@@ -392,16 +368,12 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       originY->setText("0.0");
       originZ->setText("0.0");
       applyArray->setChecked(false);
-      // bathymetryComboBox->setCurrentText("Point List");
       bathStack->setCurrentIndex(0);
       bathStack->show();
       bathStack->setEnabled(true);
       bathymetryComboBox->setEnabled(true);
       bathymetryComboBox->show();
       bathSTL->setEnabled(true);
-      // bathXZData->setEnabled(true);
-      // bathXZData->show();
-      // bathXZData->setTableData(4, dataBathXZ);
       dimensionsBox->show();
     } else if (val == "Debris") {
       facility->setCurrentText("Hinsdale Large Wave Flume (OSU LWF)");
@@ -417,16 +389,12 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       originY->setText("2.0");
       originZ->setText("1.825");
       applyArray->setChecked(true);
-      // bathymetryComboBox->setCurrentText("Point List");
       bathymetryComboBox->setDisabled(true);
       bathymetryComboBox->hide();
       bathSTL->setDisabled(true);
       bathStack->setCurrentIndex(1);
       bathStack->hide();
       bathStack->setDisabled(true);
-      // bathXZData->setTableData(4, dataBathXZ);
-      // bathXZData->setDisabled(true);
-      // bathXZData->hide();
       dimensionsBox->hide();
     } else if (val == "Structure") {
       facility->setCurrentText("Hinsdale Large Wave Flume (OSU LWF)");
@@ -448,9 +416,6 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       bathymetryComboBox->setDisabled(true);
       bathymetryComboBox->hide();
       bathSTL->setDisabled(true);
-      // bathXZData->setTableData(4, dataBathXZ);
-      // bathXZData->setDisabled(true);
-      // bathXZData->hide();
       dimensionsBox->hide();
     } else if (val == "Custom") {
       facility->setCurrentText("Custom");
@@ -472,87 +437,9 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       bathymetryComboBox->setDisabled(true);
       bathymetryComboBox->hide();
       bathSTL->setDisabled(true);
-      // bathXZData->setDisabled(true);
-      // bathXZData->hide();
       dimensionsBox->hide();
     }
   });
-
-    
-  // -----------------------------------------------------------------------------------
-
-  // layout->addWidget(tabWidget);
-
-  // int numDefaultTabs = 3;
-
-  // QVector<QGridLayout*> theAddedLayout(numReserveTabs);
-  // QVector<QTabWidget*> modelAddedTabWidget(numReserveTabs); 
-
-  // for (int i = 0; i < numReserveTabs; i++) {
-  //   theAdded[i] = new QWidget();
-  //   addedGeometry[i] = new geometryBodiesMPM();
-  //   modelAddedTabWidget[i] = new QTabWidget();
-  // }
-
-  // connect(addB, &QPushButton::released, this, [=]() {
-  //   // if (curTab != -1)  // insert below selected
-  //   // Concatenate string to say "Custom Body 1", "Custom Body 2", etc.
-  //   if (numAddedTabs >= numReserveTabs) 
-  //     return;
-    
-  //   tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Custom " + QString::number(numAddedTabs + 1));
-
-  //   theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-  //   modelAddedTabWidget[numAddedTabs]->addTab(addedMaterial[numAddedTabs], QIcon(QString(":/icons/squares-filled-black.svg")),"Material");
-  //   modelAddedTabWidget[numAddedTabs]->addTab(addedGeometry[numAddedTabs], QIcon(QString(":/icons/triangle-square-circle-black.svg")),"Geometry");
-  //   modelAddedTabWidget[numAddedTabs]->addTab(addedAlgorithm[numAddedTabs], QIcon(QString(":/icons/engine-black.svg")),"Algorithm");
-  //   modelAddedTabWidget[numAddedTabs]->addTab(addedPartition[numAddedTabs], QIcon(QString(":/icons/cpu-black.svg")),"Partition");
-  //   modelAddedTabWidget[numAddedTabs]->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
-  //   theAddedLayout[numAddedTabs]->addWidget(modelAddedTabWidget[numAddedTabs]);
-  //   numAddedTabs += 1;
-  // });
-
-  // connect(delB, &QPushButton::released, this, [=]() {
-  //   if (( tabWidget->currentIndex() == -1) || (tabWidget->count() <= numDefaultTabs) || (tabWidget->currentIndex() < numDefaultTabs)) 
-  //     return;
-  //   auto widget = tabWidget->widget(tabWidget->currentIndex());
-  //   if (widget) {
-  //         // Delete the widget itself
-  //         // widget.deleteLater()
-  //   }
-  //   tabWidget->setCurrentIndex(tabWidget->currentIndex()-1);
-  //   tabWidget->removeTab(tabWidget->currentIndex()+1);
-  //   // clean up 
-  //   numAddedTabs -= 1;
-  // }); 
-
-  // connect(tabWidget, &QTabWidget::tabCloseRequested, this, [=](int index) {
-  //   if (( index == -1) || (tabWidget->count() <= numDefaultTabs) || (index < numDefaultTabs)) 
-  //     return; 
-  //   // tabWidget->setCurrentIndex(index-1);
-  //   auto widget = tabWidget->widget(index);
-  //   if (widget) {
-  //         // removes the widget
-  //         // widget.deleteLater()
-  //   }
-  //   if (index > 0 && index < tabWidget->count()-1 && tabWidget->currentIndex() == index) {
-  //     tabWidget->setCurrentIndex(index-1);
-  //   } 
-  //   tabWidget->removeTab(index);
-  //   // clean up
-  //   numAddedTabs -= 1;
-  // });
-
-
-  // Debris Geometry File = new SC_FileEdit("file");
-  // debrisGeometryLayout->addWidget(new QLabel("Debris Geometry File"),numRow, 0);
-  // debrisGeometryLayout->addWidget(Debris Geometry File,numRow++, 1);  
-
-
-  // // connext bathymetry to show correct widget
-  // connect(waveGenComboBox, QOverload<int>::of(&QComboBox::activated),
-	//   waveGenStack, &QStackedWidget::setCurrentIndex);
-  // */
 
 }
 
@@ -607,126 +494,119 @@ GeometryMPM::setBodyPreset(int index)
 bool
 GeometryMPM::outputToJSON(QJsonObject &jsonObject)
 {
-  QJsonArray geometriesArray;
+  QJsonObject geometryObject;
 
+  geometryObject["body_preset"] = bodyPreset->currentText();
+  geometryObject["object"] = objectType->currentText();
 
-  {
-    QJsonObject geometryObject;
+  if (operationType->currentText() == "Add (OR) [|]") {
+    geometryObject["operation"] = "add";
+  } else if (operationType->currentText() == "Subtract (NOT) [~]") {
+    geometryObject["operation"] = "subtract";
+  } else if (operationType->currentText() == "Intersect (AND) [&]") {
+    geometryObject["operation"] = "intersect";
+  } else if (operationType->currentText() == "Difference (XOR) [^]") {
+    geometryObject["operation"] = "difference";
+  } else {
+    geometryObject["operation"] = "add";
+  }
 
+  geometryObject["facility"] = facility->currentText();
+  QJsonArray facilityDims;
+  facilityDims.append(facilityLength->text().toDouble());
+  facilityDims.append(facilityHeight->text().toDouble());
+  facilityDims.append(facilityWidth->text().toDouble());
+  // Only show facility dimensions if they are non-zero, i.e. if the user has selected a 3D digital twin
+  if (facilityDims[0] != 0.0 && facilityDims[1] != 0.0 && facilityDims[2] != 0.0) {
+    geometryObject["facility_dimensions"] = facilityDims;
+  }
 
-    geometryObject["body_preset"] = bodyPreset->currentText();
-    geometryObject["object"] = objectType->currentText();
-
-    if (operationType->currentText() == "Add (OR)") {
-      geometryObject["operation"] = "add";
-    } else if (operationType->currentText() == "Subtract (NOT)") {
-      geometryObject["operation"] = "subtract";
-    } else if (operationType->currentText() == "Intersect (AND)") {
-      geometryObject["operation"] = "intersect";
-    } else if (operationType->currentText() == "Difference (XOR)") {
-      geometryObject["operation"] = "difference";
-    } else {
-      geometryObject["operation"] = "add";
-    }
-
-    geometryObject["facility"] = facility->currentText();
-    QJsonArray facilityDims;
-    facilityDims.append(facilityLength->text().toDouble());
-    facilityDims.append(facilityHeight->text().toDouble());
-    facilityDims.append(facilityWidth->text().toDouble());
-    // Only show facility dimensions if they are non-zero, i.e. if the user has selected a 3D digital twin
-    if (facilityDims[0] != 0.0 && facilityDims[1] != 0.0 && facilityDims[2] != 0.0) {
-      geometryObject["facility_dimensions"] = facilityDims;
-      // facilityDims.append(length->text().toDouble());
-      // facilityDims.append(height->text().toDouble());
-      // facilityDims.append(width->text().toDouble());
-    }
-
-    QJsonArray spanArray;
-    QJsonArray originArray;
-    if (bodyPreset->currentText() == "Fluid") {
-      // Crop fluid geometry to SWL and facility size if selected to fill flume up to SWL
-      geometryObject["standing_water_level"] = standingWaterLevel->text().toDouble();
-      geometryObject["fill_flume_upto_SWL"] = fillFlumeUptoSWL->isChecked();
-      if (fillFlumeUptoSWL->isChecked()) {
-        spanArray.append(length->text().toDouble() < facilityLength->text().toDouble() ? length->text().toDouble() : facilityLength->text().toDouble());
-        spanArray.append(standingWaterLevel->text().toDouble() < facilityHeight->text().toDouble() ? standingWaterLevel->text().toDouble() : facilityHeight->text().toDouble());
-        spanArray.append(width->text().toDouble() < facilityWidth->text().toDouble() ? width->text().toDouble() : facilityWidth->text().toDouble());
-      } else {
-        spanArray.append(length->text().toDouble());
-        spanArray.append(height->text().toDouble());
-        spanArray.append(width->text().toDouble());
-      }
-      if (0) geometryObject["dimensions"] = spanArray; // Future schema
-      else   geometryObject["span"] = spanArray; // ClayoreUW artifact, to be deprecated
-
-      originArray.append(originX->text().toDouble());
-      originArray.append(originY->text().toDouble());
-      originArray.append(originZ->text().toDouble());
-      if (0) geometryObject["origin"] = originArray; // Future schema
-      else   geometryObject["offset"] = originArray; // ClayoreUW artifact, to be deprecated
-
-      // User point-list input bathymetry
-      if (bathXZData->isEnabled()) {
-        QJsonObject tableBath;
-        bathXZData->outputToJSON(tableBath);
-        QJsonArray bathXZArray;
-        
-        for (int i = 0; i < tableBath["bathXZData"].toArray().size(); i++) {
-          bathXZArray.append(tableBath["bathXZData"].toArray()[i].toArray());
-        }
-        geometryObject["bathymetryXZ"] = bathXZArray;
-      }
-      // TODO: Add user file-input bathymetry to JSON 
+  QJsonArray spanArray;
+  QJsonArray originArray;
+  if (bodyPreset->currentText() == "Fluid") {
+    // Crop fluid geometry to SWL and facility size if selected to fill flume up to SWL
+    geometryObject["standing_water_level"] = standingWaterLevel->text().toDouble();
+    geometryObject["fill_flume_upto_SWL"] = fillFlumeUptoSWL->isChecked();
+    if (fillFlumeUptoSWL->isChecked()) {
+      spanArray.append(length->text().toDouble() < facilityLength->text().toDouble() ? length->text().toDouble() : facilityLength->text().toDouble());
+      spanArray.append(standingWaterLevel->text().toDouble() < facilityHeight->text().toDouble() ? standingWaterLevel->text().toDouble() : facilityHeight->text().toDouble());
+      spanArray.append(width->text().toDouble() < facilityWidth->text().toDouble() ? width->text().toDouble() : facilityWidth->text().toDouble());
     } else {
       spanArray.append(length->text().toDouble());
       spanArray.append(height->text().toDouble());
       spanArray.append(width->text().toDouble());
-      if (0) geometryObject["dimensions"] = spanArray; // Future schema
-      else   geometryObject["span"] = spanArray; // ClayoreUW artifact, to be deprecated
-
-      originArray.append(originX->text().toDouble());
-      originArray.append(originY->text().toDouble());
-      originArray.append(originZ->text().toDouble());
-      if (0) geometryObject["origin"] = originArray; // Future schema
-      else   geometryObject["offset"] = originArray; // ClayoreUW artifact, to be deprecated
     }
-    
-    geometryObject["apply_array"] = applyArray->isChecked();
-    if (applyArray->isChecked()) {
-      QJsonArray arrayDims;
-      arrayDims.append(arrayX->text().toInt());
-      arrayDims.append(arrayY->text().toInt());
-      arrayDims.append(arrayZ->text().toInt());
-      geometryObject["array"] = arrayDims;
+    if (0) geometryObject["dimensions"] = spanArray; // Future schema
+    else   geometryObject["span"] = spanArray; // ClayoreUW artifact, to be deprecated
 
-      QJsonArray spacingArray;
-      spacingArray.append(spacingX->text().toDouble());
-      spacingArray.append(spacingY->text().toDouble());
-      spacingArray.append(spacingZ->text().toDouble());
-      geometryObject["spacing"] = spacingArray;
+    originArray.append(originX->text().toDouble());
+    originArray.append(originY->text().toDouble());
+    originArray.append(originZ->text().toDouble());
+    if (0) geometryObject["origin"] = originArray; // Future schema
+    else   geometryObject["offset"] = originArray; // ClayoreUW artifact, to be deprecated
+
+    // User point-list input bathymetry
+    if (bathXZData->isEnabled()) {
+      QJsonObject tableBath;
+      bathXZData->outputToJSON(tableBath);
+      QJsonArray bathXZArray;
+      
+      for (int i = 0; i < tableBath["bathXZData"].toArray().size(); i++) {
+        bathXZArray.append(tableBath["bathXZData"].toArray()[i].toArray());
+      }
+      geometryObject["bathymetryXZ"] = bathXZArray;
     }
+    // TODO: Add user file-input bathymetry to JSON 
+  } else {
+    spanArray.append(length->text().toDouble());
+    spanArray.append(height->text().toDouble());
+    spanArray.append(width->text().toDouble());
+    if (0) geometryObject["dimensions"] = spanArray; // Future schema
+    else   geometryObject["span"] = spanArray; // ClayoreUW artifact, to be deprecated
 
-    geometryObject["apply_rotation"] = applyRotation->isChecked();
-    if (applyRotation->isChecked()) {
-      QJsonArray rotateAngles;
-      rotateAngles.append(rotateAngleX->text().toDouble());
-      rotateAngles.append(rotateAngleY->text().toDouble());
-      rotateAngles.append(rotateAngleZ->text().toDouble());
-      geometryObject["rotate"] = rotateAngles;
-
-      QJsonArray rotateFulcrum;
-      rotateFulcrum.append(rotateFulcrumX->text().toDouble());
-      rotateFulcrum.append(rotateFulcrumY->text().toDouble());
-      rotateFulcrum.append(rotateFulcrumZ->text().toDouble());
-      geometryObject["fulcrum"] = rotateFulcrum;
-    }
-    
-    // geometriesArray.append(geometryObject);
-    QJsonArray tempGeometryArray = jsonObject["geometry"].toArray();
-    tempGeometryArray.append(geometryObject);
-    jsonObject["geometry"] = tempGeometryArray;
+    originArray.append(originX->text().toDouble());
+    originArray.append(originY->text().toDouble());
+    originArray.append(originZ->text().toDouble());
+    if (0) geometryObject["origin"] = originArray; // Future schema
+    else   geometryObject["offset"] = originArray; // ClayoreUW artifact, to be deprecated
   }
+  
+  geometryObject["apply_array"] = applyArray->isChecked();
+  if (applyArray->isChecked()) {
+    QJsonArray arrayDims;
+    arrayDims.append(arrayX->text().toInt());
+    arrayDims.append(arrayY->text().toInt());
+    arrayDims.append(arrayZ->text().toInt());
+    geometryObject["array"] = arrayDims;
+
+    QJsonArray spacingArray;
+    spacingArray.append(spacingX->text().toDouble());
+    spacingArray.append(spacingY->text().toDouble());
+    spacingArray.append(spacingZ->text().toDouble());
+    geometryObject["spacing"] = spacingArray;
+  }
+
+  geometryObject["apply_rotation"] = applyRotation->isChecked();
+  if (applyRotation->isChecked()) {
+    QJsonArray rotateAngles;
+    rotateAngles.append(rotateAngleX->text().toDouble());
+    rotateAngles.append(rotateAngleY->text().toDouble());
+    rotateAngles.append(rotateAngleZ->text().toDouble());
+    geometryObject["rotate"] = rotateAngles;
+
+    QJsonArray rotateFulcrum;
+    rotateFulcrum.append(rotateFulcrumX->text().toDouble());
+    rotateFulcrum.append(rotateFulcrumY->text().toDouble());
+    rotateFulcrum.append(rotateFulcrumZ->text().toDouble());
+    geometryObject["fulcrum"] = rotateFulcrum;
+  }
+  
+  // geometriesArray.append(geometryObject);
+  // QJsonArray tempGeometryArray = jsonObject["geometry"].toArray();
+  // tempGeometryArray.append(geometryObject);
+  // jsonObject["geometry"] = tempGeometryArray;
+  jsonObject["geometry"] = geometryObject;
+
 
   return true;
 }

@@ -1,5 +1,5 @@
-#ifndef BOUNDARIES_MPM_H
-#define BOUNDARIES_MPM_H
+#ifndef SENSOR_MPM_H
+#define SENSOR_MPM_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2023, The Regents of the University of California (Regents).
@@ -44,13 +44,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the set of Boundaries for MPM
+ *  This is the class providing an individual Sensor for MPM
  */
 
 #include <SimCenterWidget.h>
 
 class QJsonObject;
 class QJsonArray;
+class QStackedWidget;
+class QGroupBox;
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
 class SC_ComboBox;
@@ -58,25 +60,54 @@ class SC_TableEdit;
 class SC_FileEdit;
 class SC_CheckBox;
 class SC_ComboBox;
-class QStackedWidget;
-class QGroupBox;
 
-class BoundaryMPM;
-class BoundariesMPM : public SimCenterWidget
+class SensorMPM : public SimCenterWidget
 {
 public:
-    BoundariesMPM(QWidget *parent = 0);
-    virtual ~BoundariesMPM();
+    SensorMPM(QWidget *parent = 0);
+    virtual ~SensorMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-    bool copyFiles(QString &dirName);  
-    // bool setBoundaryType(int typeIdx);
+    bool setSensorType(int type);
+    // bool copyFiles(QString &dirName);
+  
 signals:
 
 private:
-  int numReserveTabs = 8;
-  int numAddedTabs = 0;
-  QVector<BoundaryMPM*> addedBoundary {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  // Wave-gauges (WG), Velocimeters (VM), and Load-cells (LC)
+  SC_ComboBox       *sensorType; // Preset selector
+  QStackedWidget    *stackedWidget;
+
+  SC_ComboBox       *toggleWG;
+  SC_ComboBox       *typeWG;
+  SC_ComboBox       *attributeWG;
+  SC_ComboBox       *operationWG;
+  SC_ComboBox       *directionWG;
+  SC_DoubleLineEdit *output_frequencyWG;
+  SC_TableEdit      *waveGaugesTable;
+  
+  SC_ComboBox       *toggleVM;
+  SC_ComboBox       *typeVM;
+  SC_ComboBox       *attributeVM;
+  SC_ComboBox       *operationVM;
+  SC_ComboBox       *directionVM;
+  SC_DoubleLineEdit *output_frequencyVM;
+  SC_TableEdit      *velociMetersTable;
+
+  SC_ComboBox       *toggleLC;
+  SC_ComboBox       *typeLC;
+  SC_ComboBox       *attributeLC;
+  SC_ComboBox       *operationLC;
+  SC_ComboBox       *directionLC;
+  SC_DoubleLineEdit *output_frequencyLC;
+  SC_TableEdit      *loadCellsTable;
+
+  QWidget *theCustom;
+  QWidget *theWaveGauges;
+  QWidget *theVelocityMeters; 
+  QWidget *theLoadCells; 
+  QWidget *thePiezoMeters;
 };
 
-#endif // BOUNDARIES_MPM_H
+#endif // SENSOR_MPM_H
+

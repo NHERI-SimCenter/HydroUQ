@@ -1,5 +1,5 @@
-#ifndef BOUNDARIES_MPM_H
-#define BOUNDARIES_MPM_H
+#ifndef GEOMETRIES_MPM_H
+#define GEOMETRIES_MPM_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2023, The Regents of the University of California (Regents).
@@ -38,13 +38,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 /**
- *  @author  JustinBonus
+ *  @author  Justin Bonus
  *  @date    1/2024
  *  @version 3.0
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the set of Boundaries for MPM
+ *  This is the class providing the set of geometry for an MPM body
  */
 
 #include <SimCenterWidget.h>
@@ -53,30 +53,29 @@ class QJsonObject;
 class QJsonArray;
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
+class SC_StringLineEdit;
 class SC_ComboBox;
 class SC_TableEdit;
 class SC_FileEdit;
 class SC_CheckBox;
-class SC_ComboBox;
-class QStackedWidget;
-class QGroupBox;
 
-class BoundaryMPM;
-class BoundariesMPM : public SimCenterWidget
+class GeometryMPM; // Individual geometries
+class GeometriesMPM : public SimCenterWidget
 {
 public:
-    BoundariesMPM(QWidget *parent = 0);
-    virtual ~BoundariesMPM();
+    GeometriesMPM(QWidget *parent = 0);
+    virtual ~GeometriesMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-    bool copyFiles(QString &dirName);  
-    // bool setBoundaryType(int typeIdx);
+    bool copyFiles(QString &dirName);
+    bool setBodyPreset(int index);
+  
 signals:
 
 private:
   int numReserveTabs = 8;
   int numAddedTabs = 0;
-  QVector<BoundaryMPM*> addedBoundary {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  QVector<GeometryMPM*> addedGeometry {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 };
 
-#endif // BOUNDARIES_MPM_H
+#endif // GEOMETRIES_MPM_H
