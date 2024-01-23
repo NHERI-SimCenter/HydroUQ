@@ -1,5 +1,5 @@
-#ifndef PARTICLES_MPM_H
-#define PARTICLES_MPM_H
+#ifndef BODIES_MPM_H
+#define BODIES_MPM_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2023, The Regents of the University of California (Regents).
@@ -66,11 +66,11 @@ class MaterialMPM;
 class AlgorithmMPM;
 class PartitionsMPM;
 
-class ParticlesMPM : public SimCenterWidget
+class BodiesMPM : public SimCenterWidget
 {
 public:
-    ParticlesMPM(QWidget *parent = 0);
-    virtual ~ParticlesMPM();
+    BodiesMPM(QWidget *parent = 0);
+    virtual ~BodiesMPM();
 
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
@@ -107,5 +107,5 @@ private:
   // TODO: include a vector of bools (C++ cav.) denoting tab activation so we can "shift left" if user deletes tab 3 of 8, etc.
 };
 
-#endif // PARTICLES_MPM_H
+#endif // BODIES_MPM_H
 

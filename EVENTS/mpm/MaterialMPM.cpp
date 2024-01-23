@@ -101,13 +101,13 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   elasticBox->setLayout(elasticLayout);
   layout->addWidget(elasticBox, numRow++, 0, 1, 3);
 
-  youngsModulus = new SC_DoubleLineEdit("youngs_modulus", 2.2e9);
+  youngsModulus = new SC_DoubleLineEdit("youngs_modulus", 1e7);
   elasticLayout->addWidget(new QLabel("Young's Modulus"),numRow, 0);
   elasticLayout->itemAt(elasticLayout->count()-1)->setAlignment(Qt::AlignRight);
   elasticLayout->addWidget(youngsModulus, numRow, 1);
   elasticLayout->addWidget(new QLabel("Pa"),numRow++, 2);
 
-  poissonsRatio = new SC_DoubleLineEdit("poisson_ratio",0.4);
+  poissonsRatio = new SC_DoubleLineEdit("poisson_ratio",0.3);
   elasticLayout->addWidget(new QLabel("Poisson's Ratio"),numRow, 0);
   elasticLayout->itemAt(elasticLayout->count()-1)->setAlignment(Qt::AlignRight);
   elasticLayout->addWidget(poissonsRatio, numRow, 1);
@@ -322,6 +322,7 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       bulkModulus->setText("2.2e7");
       bulkModulusDerivative->setText("7.15");
       viscosity->setText("1.0e-3");
+
     } else if (val == "Plastic") {
       QStringList shortConstitutiveList;  shortConstitutiveList << "FixedCorotated" << "NeoHookean";
       constitutive->clear();
@@ -419,13 +420,14 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       QStringList shortConstitutiveList;  shortConstitutiveList << "JFluid" << "FixedCorotated" << "NeoHookean" << "DruckerPrager" << "CamClay" << "Custom";  
       constitutive->clear();
       constitutive->addItems(shortConstitutiveList);
-      constitutive->setCurrentIndex(0);      density->setText("1400");
+      constitutive->setCurrentIndex(0);      
+      density->setText("1400");
       
-      bulkModulus->setText("2.1e9");
+      bulkModulus->setText("1e7");
       bulkModulusDerivative->setText("7.15");
       viscosity->setText("1.0e-3");
 
-      youngsModulus->setText("1e8");
+      youngsModulus->setText("5e6");
       poissonsRatio->setText("0.2");
 
       useVolumeCorrection->setChecked(true);
@@ -448,10 +450,14 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       for (int i = 0; i < (2*3); ++i) elasticLayout->itemAt(i)->widget()->setVisible(false);
       youngsModulus->setVisible(false);
       poissonsRatio->setVisible(false);
+      elasticBox->setDisabled(true);
+      elasticBox->hide();
       bulkModulus->setVisible(true);
       viscosity->setVisible(true);
       materialStack->setCurrentIndex(0);
     } else if (val == "FixedCorotated") {
+      elasticBox->setEnabled(true);
+      elasticBox->show();
       elasticBox->setVisible(true);
       for (int i = 0; i < (2*3); ++i) elasticLayout->itemAt(i)->widget()->setVisible(true);
       youngsModulus->setVisible(true);
@@ -460,6 +466,8 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       viscosity->setVisible(false);
       materialStack->setCurrentIndex(1);
     } else if (val == "NeoHookean") {
+      elasticBox->setEnabled(true);
+      elasticBox->show();
       elasticBox->setVisible(true);
       for (int i = 0; i < (2*3); ++i) elasticLayout->itemAt(i)->widget()->setVisible(true);
       youngsModulus->setVisible(true);
@@ -468,6 +476,8 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       viscosity->setVisible(false);
       materialStack->setCurrentIndex(1);
     } else if (val == "DruckerPrager") {
+      elasticBox->setEnabled(true);
+      elasticBox->show();
       elasticBox->setVisible(true);
       for (int i = 0; i < (2*3); ++i) elasticLayout->itemAt(i)->widget()->setVisible(true);
       youngsModulus->setVisible(true);
@@ -476,6 +486,8 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       viscosity->setVisible(false);
       materialStack->setCurrentIndex(2);
     } else if (val == "CamClay") {
+      elasticBox->setEnabled(true);
+      elasticBox->show();
       elasticBox->setVisible(true);
       for (int i = 0; i < (2*3); ++i) elasticLayout->itemAt(i)->widget()->setVisible(true);
       youngsModulus->setVisible(true);
@@ -484,6 +496,8 @@ MaterialMPM::MaterialMPM(QWidget *parent)
       viscosity->setVisible(false);
       materialStack->setCurrentIndex(3);
     } else {
+      elasticBox->setEnabled(true);
+      elasticBox->show();
       elasticBox->setVisible(true);
       for (int i = 0; i < (2*3); ++i) elasticLayout->itemAt(i)->widget()->setVisible(true);
       youngsModulus->setVisible(true);
@@ -539,12 +553,12 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   });
 
   // Set initial constitutive law
-  constitutive->setCurrentIndex(0);
-  constitutive->setCurrentIndex(0);
+  constitutive->setCurrentIndex(1); // FixedCorotated
+  constitutive->setCurrentIndex(1); // FixedCorotated
 
   // Set initial material preset
-  materialPreset->setCurrentIndex(0);
-  materialPreset->setCurrentIndex(0);
+  materialPreset->setCurrentIndex(4); // Rubber for beginners/comp speed
+  materialPreset->setCurrentIndex(4); // Rubber for beginners/comp speed
 
 
 }

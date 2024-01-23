@@ -78,6 +78,14 @@ private:
   SC_ComboBox       *sensorType; // Preset selector
   QStackedWidget    *stackedWidget;
 
+  SC_ComboBox       *toggle;
+  SC_ComboBox       *type;
+  SC_ComboBox       *attribute;
+  SC_ComboBox       *operation;
+  SC_ComboBox       *direction;
+  SC_DoubleLineEdit *output_frequency;
+  SC_TableEdit      *customTable;
+
   SC_ComboBox       *toggleWG;
   SC_ComboBox       *typeWG;
   SC_ComboBox       *attributeWG;

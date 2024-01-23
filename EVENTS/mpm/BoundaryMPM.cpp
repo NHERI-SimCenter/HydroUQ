@@ -140,9 +140,11 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   QStringList bathOptions; bathOptions << "Point List" << "STL File";
   bathymetryComboBox = new SC_ComboBox("bathType",bathOptions);
   
-  QStringList bathXZHeadings; bathXZHeadings << "Position Along Flume (m)" << "Height (m)";
-  QStringList dataBathXZ; dataBathXZ << "35" << "0" << "42" << "1.75" << "56" << "2.5" << "105" << "2.5";
-  bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 4, dataBathXZ);
+  QStringList bathXZHeadings; bathXZHeadings << "Joint Position (X)" << "Joint Position (Y)";
+  QStringList dataBathXZ; dataBathXZ << "0" << "0" << "16.275" << "0.226" << "19.933" << "0.226" << "30.906" << "1.140" << "45.536" << "1.750" << "82.106" << "1.750" << "89.46" << "2.363";
+  // wmn = 2 or 1.91something for OSU LWF
+  int bathXZPairs = 7;
+  bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, bathXZPairs, dataBathXZ);
   bathSTL = new SC_FileEdit("bathSTL");
 
   QWidget *ptWidget = new QWidget(); // going to add figure which is why the layout
@@ -167,7 +169,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   numRow = 0;
   // QStringList facilityList; facilityList << "Hinsdale Large Wave Flume - Oregon State University (OSU LWF)" << "Hinsdale Directional Wave Basin (OSU DWB)" <<  "Wind-Air-Sea Interaction Facility (UW WASIRF)" << "Waseda University's Tsunami Wave Basin (WU TWB)" << "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)" << "CLOSED" << "INLETOUTLET";
-  QStringList facilityList; facilityList << "Hinsdale Large Wave Flume (OSU LWF)" << "Hinsdale Directional Wave Basin (OSU DWB)" <<  "Wind-Air-Sea Interaction Facility (UW WASIRF)" << "Waseda University's Tsunami Wave Basin (WU TWB)" << "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)" << "CLOSED" << "INLETOUTLET";
+  QStringList facilityList; facilityList << "Hinsdale Large Wave Flume (OSU LWF)" << "Hinsdale Directional Wave Basin (OSU DWB)" <<  "Wind-Air-Sea Interaction Facility (UW WASIRF)" << "Waseda University's Tsunami Wave Basin (WU TWB)" << "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)";
   facility = new SC_ComboBox("domainSubType",facilityList);
   waveFlumeLayout->addWidget(new QLabel("Digital Twin Facility"),numRow,0);
   waveFlumeLayout->itemAt(waveFlumeLayout->count()-1)->setAlignment(Qt::AlignRight);
@@ -189,32 +191,69 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   //
   
   connect(facility, &QComboBox::currentTextChanged, [=](QString val) {
-    if (val == "Hinsdale Large Wave Flume - Oregon State University (OSU LWF)") {
+    if (val == "Hinsdale Large Wave Flume (OSU LWF)") {
       flumeLength->setText("104.0");
       flumeHeight->setText("4.6");
       flumeWidth->setText("3.658");
-      // dataBathXZ << "0" << "0" << "35" << "0" << "42" << "1.75" << "56" << "2.5" << "105" << "2.5";
-    } else if (val == "Hinsdale Directional Wave Basin - Oregon State University (OSU DWB)") {
+      QStringList newDataBathXZ; newDataBathXZ << "0.0" << "0.0" 
+                 << "16.275" << "0.226" 
+                 << "19.933" << "0.226" 
+                 << "30.906" << "1.140" 
+                 << "45.536" << "1.750" 
+                 << "82.106" << "1.750" 
+                 << "89.46"  << "2.363";
+      delete bathXZData;
+      bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 7, newDataBathXZ);
+      ptLayout->addWidget(bathXZData, 0, 0);
+    } else if (val == "Hinsdale Directional Wave Basin (OSU DWB)") {
       flumeLength->setText("48.8");
-      flumeHeight->setText("26.5");
-      flumeWidth->setText("2.1");
-      // dataBathXZ << "0" << "0" << "11" << "0" << "31" << "2.0" << "45" << "2.0" << "45" << "0" << "48.8" << "0";
-    } else if (val == "Wind-Air-Sea Interaction Facility - University of Washington (UW WASIRF)") {
+      flumeHeight->setText("2.1");
+      flumeWidth->setText("26.5");      
+      QStringList newDataBathXZ; newDataBathXZ << "0.00" << "0.0" 
+                 << "11.0" << "0.0" 
+                 << "31.0" << "1.0" 
+                 << "45.0" << "1.0"
+                 << "45.0" << "0.0" 
+                 << "48.8" << "0.0";
+      delete bathXZData;
+      bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 6, newDataBathXZ);
+      ptLayout->addWidget(bathXZData, 0, 0);
+    } else if (val == "Wind-Air-Sea Interaction Facility (UW WASIRF)") {
       flumeLength->setText("12.19");
       flumeHeight->setText("1.22");
       flumeWidth->setText("0.914");
-      // dataBathXZ << "0" << "0" << "12" << "0";
-    } else if (val == "Tsunami Wave Basin - Waseda University (WU TWB)") {
+      QStringList newDataBathXZ; newDataBathXZ << "0.00" << "0.0" 
+                 << "12.0" << "0.0";
+      delete bathXZData;
+      bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 2, newDataBathXZ);
+      ptLayout->addWidget(bathXZData, 0, 0);
+    } else if (val == "Waseda University's Tsunami Wave Basin (WU TWB)") {
       flumeLength->setText("9.0");
       flumeHeight->setText("1.0");
       flumeWidth->setText("4.0");
-      // dataBathXZ << "0" << "0" << "3.95" << "0" << "3.95" << "0.255" << "9.0" << "0.255";
-    } else if (val == "Debris Flow Flume - U.S. Geological Survey (USGS DFF)") {
+      QStringList newDataBathXZ; newDataBathXZ << "0.00" << "0" 
+                 << "4.45" << "0" 
+                 << "4.45" << "0.255" 
+                 << "9.00" << "0.255";
+      delete bathXZData;
+      bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 4, newDataBathXZ);
+      ptLayout->addWidget(bathXZData, 0, 0);
+    } else if (val == "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)") {
       flumeLength->setText("90.0");
       flumeHeight->setText("2.0");
       flumeWidth->setText("2.0");
+      QStringList newDataBathXZ; newDataBathXZ << "0.00"  << "0.0" // Top of flume, or soil mass ?
+                 << "7.00"  << "0.0" // Gate ?
+                 << "80.00" << "0.0" // Bottom of initial flume slope, prior to catanary
+                 << "81.00" << "0.176" // 10 deg, 1:0.176 (ASSUME CATANARY JOINT AS LINEAR SEGMENTS TO FLATTEN 30DEG SLOPE REL TO ROTATED GRAVITY VECTOR)
+                 << "82.00" << "0.540" // 20 deg, 1:0.364
+                 << "100.0" << "10.926"; // 30deg, 1:0.577 
+      delete bathXZData;
+      bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 6, newDataBathXZ);
+      ptLayout->addWidget(bathXZData, 0, 0);
     } 
   });
+
 
   //
   // instead of more classes lets just do simple tabbed widgets
@@ -223,7 +262,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   // wave generator
   numRow = 0;
-  QStringList listWaveGeneration; listWaveGeneration << "Preset Paddle - OSU LWF" << "Periodic Waves - Custom" << "Preset Paddle - OSU DWB" << "Paddle - Custom" << "Preset Wave Pump - UW WASIRF"  <<  "Pump - Custom" << "Preset Vanishing Gate - WU TWB" << "Preset Swinging Gates - USGS DFF" << "Gate - Custom";
+  QStringList listWaveGeneration; listWaveGeneration << "Preset Paddle - OSU LWF" << "Periodic Waves" << "Preset Paddle - OSU DWB" << "Paddle - Custom" << "Preset Wave Pump - UW WASIRF"  <<  "Pump - Custom" << "Preset Gates - USGS DFF";
   generationMethod = new SC_ComboBox("generationMethod",listWaveGeneration);
 
   QStringList paddleContactTypeList; paddleContactTypeList <<  "Separable" << "Slip" << "Sticky";  
@@ -525,19 +564,21 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   QGridLayout *inletOutletBoxLayout = new QGridLayout();
   inletOutletBox->setLayout(inletOutletBoxLayout);
   int numInOutRow = 0;
-  QStringList inletOutletList; inletOutletList << "None" << "Inlet - Laminar" << "Inlet - Turbulent" << "Inlet - OpenFOAM" << "Inlet - Boussinesq" << "Inlet - GeoClaw" << "Inlet - SWE File" << "Outlet - Laminar" << "Outlet - Turbulent" << "Outlet - OpenFOAM" << "Outlet - Boussinesq" << "Outlet - GeoClaw" << "Outlet - SWE File";
+  QStringList inletOutletList; inletOutletList << "None" 
+                                               << "Inlet - Steady"  << "Inlet - OpenFOAM"  << "Inlet - GeoClaw"  << "Inlet - SWE File" 
+                                               << "Outlet - Steady" << "Outlet - OpenFOAM" << "Outlet - GeoClaw" << "Outlet - SWE File";
   inletOutletTypeSubX = new SC_ComboBox("inletOutletTypeSubX",inletOutletList);
   inletOutletTypeSubY = new SC_ComboBox("inletOutletTypeSubY",inletOutletList);
   inletOutletTypeSubZ = new SC_ComboBox("inletOutletTypeSubZ",inletOutletList);
   inletOutletTypePlusX = new SC_ComboBox("inletOutletTypePlusX",inletOutletList);
   inletOutletTypePlusY = new SC_ComboBox("inletOutletTypePlusY",inletOutletList);
   inletOutletTypePlusZ = new SC_ComboBox("inletOutletTypePlusZ",inletOutletList);
-  inletOutletBoxLayout->addWidget(new QLabel("Inlet-Outlet at (-X,-Y,-Z) Walls"),numInOutRow, 0);
+  inletOutletBoxLayout->addWidget(new QLabel("Inlet-Outlet at (X-,Y-,Z-) Walls"),numInOutRow, 0);
   inletOutletBoxLayout->itemAt(inletOutletBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   inletOutletBoxLayout->addWidget(inletOutletTypeSubX,numInOutRow,1);
   inletOutletBoxLayout->addWidget(inletOutletTypeSubY,numInOutRow,2);
   inletOutletBoxLayout->addWidget(inletOutletTypeSubZ,numInOutRow++,3);
-  inletOutletBoxLayout->addWidget(new QLabel("Inlet-Outlet at (+X,+Y,+Z) Walls"),numInOutRow, 0);
+  inletOutletBoxLayout->addWidget(new QLabel("Inlet-Outlet at (X+,Y+,Z+) Walls"),numInOutRow, 0);
   inletOutletBoxLayout->itemAt(inletOutletBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   inletOutletBoxLayout->addWidget(inletOutletTypePlusX,numInOutRow,1);
   inletOutletBoxLayout->addWidget(inletOutletTypePlusY,numInOutRow,2);
@@ -626,46 +667,51 @@ BoundaryMPM::~BoundaryMPM()
 bool
 BoundaryMPM::setBoundaryType(int type)
 {
-  enum BoundaryType {CUSTOM, WAVE_FLUME, WAVE_GENERATOR, RIGID_STRUCTURE, RIGID_WALLS};
-  if (type == BoundaryType::CUSTOM) {
+  enum BoundaryTypeEnum {CUSTOM, WAVE_FLUME, WAVE_GENERATOR, RIGID_STRUCTURE, RIGID_WALLS};
+  if (type == BoundaryTypeEnum::CUSTOM) {
     theCustom->setVisible(true);
     theWaveFlume->setVisible(false);
     theWaveGeneration->setVisible(false);
     theStructures->setVisible(false);
     theWalls->setVisible(false);
     stackedWidget->setCurrentIndex(0);
+    boundaryType->setCurrentIndex(0);
     return true;
-  } else if (type == BoundaryType::WAVE_FLUME) {
+  } else if (type == BoundaryTypeEnum::WAVE_FLUME) {
     theCustom->setVisible(false);
     theWaveFlume->setVisible(true);
     theWaveGeneration->setVisible(false);
     theStructures->setVisible(false);
     theWalls->setVisible(false);
     stackedWidget->setCurrentIndex(1);
+    boundaryType->setCurrentIndex(1);
     return true;
-  } else if (type == BoundaryType::WAVE_GENERATOR) {
+  } else if (type == BoundaryTypeEnum::WAVE_GENERATOR) {
     theCustom->setVisible(false);
     theWaveFlume->setVisible(false);
     theWaveGeneration->setVisible(true);
     theStructures->setVisible(false);
     theWalls->setVisible(false);
     stackedWidget->setCurrentIndex(2);
+    boundaryType->setCurrentIndex(2);
     return true;
-  } else if (type == BoundaryType::RIGID_STRUCTURE) {
+  } else if (type == BoundaryTypeEnum::RIGID_STRUCTURE) {
     theCustom->setVisible(false);
     theWaveFlume->setVisible(false);
     theWaveGeneration->setVisible(false);
     theStructures->setVisible(true);
     theWalls->setVisible(false);
     stackedWidget->setCurrentIndex(3);
+    boundaryType->setCurrentIndex(3);
     return true;
-  } else if (type == BoundaryType::RIGID_WALLS) {
+  } else if (type == BoundaryTypeEnum::RIGID_WALLS) {
     theCustom->setVisible(false);
     theWaveFlume->setVisible(false);
     theWaveGeneration->setVisible(false);
     theStructures->setVisible(false);
     theWalls->setVisible(true);
     stackedWidget->setCurrentIndex(4);
+    boundaryType->setCurrentIndex(4);
     return true;
   } else {
     return false; 
@@ -678,12 +724,12 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
   QJsonArray boundariesArray;
   boundariesArray = jsonObject["boundaries"].toArray();
 
-  enum BoundaryType : int {CUSTOM, WAVE_FLUME, WAVE_GENERATOR, RIGID_STRUCTURE, RIGID_WALLS};
+  enum BoundaryTypeEnum : int {CUSTOM, WAVE_FLUME, WAVE_GENERATOR, RIGID_STRUCTURE, RIGID_WALLS};
   // Wave Flume Facility
-  if (stackedWidget->currentIndex() == BoundaryType::CUSTOM) {
+  if (stackedWidget->currentIndex() == BoundaryTypeEnum::CUSTOM) {
     return true;
   }
-  else if (stackedWidget->currentIndex() == BoundaryType::WAVE_FLUME) {
+  else if (stackedWidget->currentIndex() == BoundaryTypeEnum::WAVE_FLUME) {
     QJsonObject boundariesObject;
 
     // TODO: Add wave flume facility names to JSON to link to the name in ClaymoreUW enumerators
@@ -714,7 +760,7 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
   }
 
   // Wave Generation
-  else if (stackedWidget->currentIndex() == BoundaryType::WAVE_GENERATOR) {
+  else if (stackedWidget->currentIndex() == BoundaryTypeEnum::WAVE_GENERATOR) {
     QJsonObject boundariesObject;
 
     // TODO: Add wave generator names to JSON to link to the name in ClaymoreUW enumerators
@@ -750,7 +796,7 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
 
 
   // Rigid Structures
-  else if (stackedWidget->currentIndex() == BoundaryType::RIGID_STRUCTURE) {
+  else if (stackedWidget->currentIndex() == BoundaryTypeEnum::RIGID_STRUCTURE) {
     QJsonObject boundariesObject;
 
     boundariesObject["object"] = "Box";
@@ -813,7 +859,7 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
 
 
   // Walls
-  else if (stackedWidget->currentIndex() == BoundaryType::RIGID_WALLS) {
+  else if (stackedWidget->currentIndex() == BoundaryTypeEnum::RIGID_WALLS) {
     QJsonObject boundariesObject;
     boundariesObject["object"] = "Walls";
     boundariesObject["contact"] = QJsonValue(wallsContactType->currentText()).toString();
@@ -866,12 +912,12 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
     //   plusXObject["type"] = QJsonValue(inletOutletTypePlusX->currentText()).toString();
     //   plusYObject["type"] = QJsonValue(inletOutletTypePlusY->currentText()).toString();
     //   plusZObject["type"] = QJsonValue(inletOutletTypePlusZ->currentText()).toString();
-    //   inletOutletObject["-X"] = subXObject;
-    //   inletOutletObject["-Y"] = subYObject;
-    //   inletOutletObject["-Z"] = subZObject;
-    //   inletOutletObject["+X"] = plusXObject;
-    //   inletOutletObject["+Y"] = plusYObject;
-    //   inletOutletObject["+Z"] = plusZObject;
+    //   inletOutletObject["X-"] = subXObject;
+    //   inletOutletObject["Y-"] = subYObject;
+    //   inletOutletObject["Z-"] = subZObject;
+    //   inletOutletObject["X+"] = plusXObject;
+    //   inletOutletObject["Y+"] = plusYObject;
+    //   inletOutletObject["Z+"] = plusZObject;
     //   boundariesObject["inlet-outlet"] = inletOutletObject;
     // }
 

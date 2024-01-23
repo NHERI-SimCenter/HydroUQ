@@ -117,6 +117,11 @@ SensorMPM::SensorMPM(QWidget *parent)
   QStringList typeParticleList; typeParticleList << "particles";
 
   // ===========================================================================
+  QStringList  list; list << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+  QStringList  data; data << "CustomSensor1" << "0.0" << "0.0" << "0.0" << "0.0" << "0.0" << "0.0" ;
+  customTable = new SC_TableEdit("customLocs", list, 1, data);
+
+
   QStringList  listWG; listWG << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
   QStringList  dataWG; dataWG << "WaveGauge1" << "16.0" << "1.75" << "0.4" << "0.05" << "1.00" << "0.05" 
 				                      << "WaveGauge2" << "26.0" << "1.75" << "0.4" << "0.05" << "1.00" << "0.05" 
@@ -131,6 +136,52 @@ SensorMPM::SensorMPM(QWidget *parent)
   QStringList  listLC; listLC << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
   QStringList  dataLC; dataLC << "LoadCell1" << "45.799" << "2.10" << "1.35" << "0.025" << "0.575" << "0.950" ;  
   loadCellsTable  = new SC_TableEdit("loadCellLocs", listLC, 1, dataLC);
+
+  toggle = new SC_ComboBox("toggle", yesNo); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
+  type = new SC_ComboBox("type", typeParticleList); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
+  QStringList attributesOnParticlesList; 
+  attributesOnParticlesList << "ID" << "Mass" << "Volume"
+                            << "Position_X" << "Position_Y" << "Position_Z" 
+                            << "Velocity_X" << "Velocity_Y" << "Velocity_Z" << "Velocity_Magnitude"
+                            << "DefGrad_XX" << "DefGrad_XY" << "DefGrad_XZ"
+                            << "DefGrad_YX" << "DefGrad_YY" << "DefGrad_YZ"
+                            << "DefGrad_ZX" << "DefGrad_ZY" << "DefGrad_ZZ"
+                            << "J" << "DefGrad_Determinant" << "JBar" << "DefGrad_Determinant_FBAR" 
+                            << "StressCauchy_XX" << "StressCauchy_XY" << "StressCauchy_XZ"
+                            << "StressCauchy_YX" << "StressCauchy_YY" << "StressCauchy_YZ"
+                            << "StressCauchy_ZX" << "StressCauchy_ZY" << "StressCauchy_ZZ"
+                            << "Pressure" << "VonMisesStress"
+                            << "DefGrad_Invariant1" << "DefGrad_Invariant2" << "DefGrad_Invariant3"
+                            << "DefGrad_1" << "DefGrad_2" << "DefGrad_3"
+                            << "StressCauchy_Invariant1" << "StressCauchy_Invariant2" << "StressCauchy_Invariant3"
+                            << "StressCauchy_1" << "StressCauchy_2" << "StressCauchy_3"
+                            << "StressPK1_XX" << "StressPK1_XY" << "StressPK1_XZ"
+                            << "StressPK1_YX" << "StressPK1_YY" << "StressPK1_YZ"
+                            << "StressPK1_ZX" << "StressPK1_ZY" << "StressPK1_ZZ"
+                            << "StressPK1_Invariant1" << "StressPK1_Invariant2" << "StressPK1_Invariant3"
+                            << "StressPK1_1" << "StressPK1_2" << "StressPK1_3"
+                            << "StressPK2_XX" << "StressPK2_XY" << "StressPK2_XZ"
+                            << "StressPK2_YX" << "StressPK2_YY" << "StressPK2_YZ"
+                            << "StressPK2_ZX" << "StressPK2_ZY" << "StressPK2_ZZ"
+                            << "StressPK2_Invariant1" << "StressPK2_Invariant2" << "StressPK2_Invariant3"
+                            << "StressPK2_1" << "StressPK2_2" << "StressPK2_3"
+                            << "StrainSmall_XX" << "StrainSmall_XY" << "StrainSmall_XZ"
+                            << "StrainSmall_YX" << "StrainSmall_YY" << "StrainSmall_YZ"
+                            << "StrainSmall_ZX" << "StrainSmall_ZY" << "StrainSmall_ZZ"
+                            << "StrainSmall_Invariant1" << "StrainSmall_Invariant2" << "StrainSmall_Invariant3"
+                            << "Dilation" << "StrainSmall_Determinant" 
+                            << "StrainSmall_1" << "StrainSmall_2" << "StrainSmall_3"
+                            << "VonMisesStrain"
+                            << "logJp";
+
+  QStringList attributesOnGridList;
+  attributesOnGridList << "Mass" << "Force" << "Momentum" << "Velocity"; // Acceleration, Pressure
+  attribute = new SC_ComboBox("attribute", attributesOnParticlesList);
+  QStringList operationList; operationList << "Sum" << "Max" << "Min" << "Count" << "Average" << "Variance";
+  operation = new SC_ComboBox("operation", operationList);
+  output_frequency = new SC_DoubleLineEdit("output_frequency", 30);
+  direction = new SC_ComboBox("direction", QStringList() << "N/A");
+
 
 
   toggleWG = new SC_ComboBox("toggleWG", yesNo); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
@@ -155,6 +206,34 @@ SensorMPM::SensorMPM(QWidget *parent)
   output_frequencyVM = new SC_DoubleLineEdit("output_frequency_VM", 30);
   directionVM = new SC_ComboBox("directionVM", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
   directionVM->setCurrentIndex(0); // X
+  // ===========================================================================
+  customLayout->addWidget(new QLabel("Use Sensors?"),0,0);
+  customLayout->itemAt(customLayout->count()-1)->setAlignment(Qt::AlignRight);
+  customLayout->addWidget(toggle,0,1);
+  customLayout->addWidget(new QLabel(""),0,2);
+  customLayout->addWidget(new QLabel("Apply On"),1,0);
+  customLayout->itemAt(customLayout->count()-1)->setAlignment(Qt::AlignRight);
+  customLayout->addWidget(type,1,1);
+  customLayout->addWidget(new QLabel(""),1,2);
+  customLayout->addWidget(new QLabel("Measure Attribute"),2,0);
+  customLayout->itemAt(customLayout->count()-1)->setAlignment(Qt::AlignRight);
+  customLayout->addWidget(attribute,2,1);
+  customLayout->addWidget(new QLabel(""),2,2);
+  customLayout->addWidget(new QLabel("Perform Operation"),3,0);
+  customLayout->itemAt(customLayout->count()-1)->setAlignment(Qt::AlignRight);
+  customLayout->addWidget(operation,3,1);
+  customLayout->addWidget(new QLabel(""),3,2);
+  customLayout->addWidget(new QLabel("Sampling Frequency"),4,0);
+  customLayout->itemAt(customLayout->count()-1)->setAlignment(Qt::AlignRight);
+  customLayout->addWidget(output_frequency,4,1);
+  customLayout->addWidget(new QLabel("Hz"),4,2);
+  customLayout->addWidget(new QLabel("In Direction"),5,0);
+  customLayout->itemAt(customLayout->count()-1)->setAlignment(Qt::AlignRight);
+  customLayout->addWidget(direction,5,1);
+  customLayout->addWidget(new QLabel(""),5,2);
+  customLayout->addWidget(customTable,7,0,1,4);
+  customLayout->setRowStretch(7,1);
+
 
   // ===========================================================================
   wgLayout->addWidget(new QLabel("Use Wave-Gauges?"),0,0);
@@ -236,6 +315,22 @@ SensorMPM::SensorMPM(QWidget *parent)
   lcLayout->setRowStretch(7,1);
   // ===========================================================================
 
+
+  connect(sensorType, &QComboBox::currentTextChanged, [=](QString val) {
+    enum SensorTypeEnum : int {CUSTOM = 0, WAVE_GAUGE, VELOCITY_METER, LOAD_CELL, PIEZO_METER, TOTAL};
+    if (val == "Custom") {
+      setSensorType(SensorTypeEnum::CUSTOM);
+    } else if (val == "Wave-Gauges") {
+      setSensorType(SensorTypeEnum::WAVE_GAUGE);
+    } else if (val == "Velocimeters") {
+      setSensorType(SensorTypeEnum::VELOCITY_METER);
+    } else if (val == "Load-Cells") {
+      setSensorType(SensorTypeEnum::LOAD_CELL);
+    } else if (val == "Piezometers") {
+      setSensorType(SensorTypeEnum::PIEZO_METER);
+    }
+  });
+  
 }
 
 SensorMPM::~SensorMPM()
@@ -248,9 +343,10 @@ bool
 SensorMPM::setSensorType(int type)
 {
   // Enum to set icons, titles, init values, etc.
-  enum SensorType : int {CUSTOM = 0, WAVE_GAUGE, VELOCITY_METER, LOAD_CELL, PIEZO_METER, TOTAL};
+  enum SensorTypeEnum : int {CUSTOM = 0, WAVE_GAUGE, VELOCITY_METER, LOAD_CELL, PIEZO_METER, TOTAL};
 
-  if (type == SensorType::CUSTOM) {
+  if (type == SensorTypeEnum::CUSTOM) {
+    sensorType->setCurrentIndex(0);
     theCustom->setVisible(true);
     theWaveGauges->setVisible(false);
     theVelocityMeters->setVisible(false);
@@ -258,7 +354,8 @@ SensorMPM::setSensorType(int type)
     thePiezoMeters->setVisible(false);
     stackedWidget->setCurrentIndex(0);
     return true;
-  } else if (type == SensorType::WAVE_GAUGE) {
+  } else if (type == SensorTypeEnum::WAVE_GAUGE) {
+    sensorType->setCurrentIndex(1);
     theCustom->setVisible(false);
     theWaveGauges->setVisible(true);
     theVelocityMeters->setVisible(false);
@@ -266,7 +363,8 @@ SensorMPM::setSensorType(int type)
     thePiezoMeters->setVisible(false);
     stackedWidget->setCurrentIndex(1);
     return true;
-  } else if (type == SensorType::VELOCITY_METER) {
+  } else if (type == SensorTypeEnum::VELOCITY_METER) {
+    sensorType->setCurrentIndex(2);
     theCustom->setVisible(false);
     theWaveGauges->setVisible(false);
     theVelocityMeters->setVisible(true);
@@ -274,7 +372,8 @@ SensorMPM::setSensorType(int type)
     thePiezoMeters->setVisible(false);
     stackedWidget->setCurrentIndex(2);
     return true;
-  } else if (type == SensorType::LOAD_CELL) {
+  } else if (type == SensorTypeEnum::LOAD_CELL) {
+    sensorType->setCurrentIndex(3);
     theCustom->setVisible(false);
     theWaveGauges->setVisible(false);
     theVelocityMeters->setVisible(false);
@@ -282,13 +381,15 @@ SensorMPM::setSensorType(int type)
     thePiezoMeters->setVisible(false);
     stackedWidget->setCurrentIndex(3);
     return true;
-  } else if (type == SensorType::PIEZO_METER) {
+  } else if (type == SensorTypeEnum::PIEZO_METER) {
+    sensorType->setCurrentIndex(4);
     theCustom->setVisible(false);
     theWaveGauges->setVisible(false);
     theVelocityMeters->setVisible(false);
     theLoadCells->setVisible(false);
     thePiezoMeters->setVisible(true);
     stackedWidget->setCurrentIndex(4);
+
     return true;
   } else {
     return false; 
@@ -303,12 +404,12 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
   QJsonArray gridSensorsArray = jsonObject["grid-sensors"].toArray();
 
   // create a json object per sensor default
-  // QJsonObject tableArraysCustom;
+  QJsonObject tableArraysCustom;
   QJsonObject tableArraysWG;
   QJsonObject tableArraysVM;
   QJsonObject tableArraysLC;
   // QJsonObject tableArraysPM;
-  // customTable->outputToJSON(tableArraysCustom);
+  customTable->outputToJSON(tableArraysCustom);
   waveGaugesTable->outputToJSON(tableArraysWG);
   velociMetersTable->outputToJSON(tableArraysVM);
   loadCellsTable->outputToJSON(tableArraysLC);
@@ -318,7 +419,53 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
 
   // Wave-gauges (WG), Velocimeters (VM), and Load-cells (LC)
   if (stackedWidget->currentIndex() == sensorEnum::CUSTOM) {
-    return true; // TODO: Implement custom
+    for (int i = 0; i < tableArraysCustom["customLocs"].toArray().size(); ++i) {
+      QJsonObject customObject;
+      QJsonArray customArray = tableArraysCustom["customLocs"].toArray()[i].toArray();
+      // customObject["toggle"] = QJsonValue(toggle->currentText()).toString();
+      customObject["toggle"] = (QJsonValue(toggle->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
+      customObject["type"] = QJsonValue(type->currentText()).toString();
+      customObject["attribute"] = QJsonValue(attribute->currentText()).toString();
+      customObject["operation"] = operation->itemText(operation->currentIndex());
+      customObject["output_frequency"] = output_frequency->text().toDouble();
+      customObject["direction"] = direction->itemText(direction->currentIndex());
+      customObject["name"] = customArray[0].toString();
+
+      // Future schema
+      QJsonArray origin;
+      for (int j=1; j<4; ++j) origin.append(customArray[j].toDouble());
+
+      QJsonArray dimensions;
+      for (int j=4; j<7; ++j) dimensions.append(customArray[j].toDouble());
+
+      // ClaymoreUW artifacts
+      QJsonArray domain_start;
+      domain_start.append(customArray[1].toDouble());
+      domain_start.append(customArray[2].toDouble());
+      domain_start.append(customArray[3].toDouble());
+
+      QJsonArray domain_end;
+      domain_end.append(customArray[1].toDouble() + customArray[4].toDouble());
+      domain_end.append(customArray[2].toDouble() + customArray[5].toDouble());
+      domain_end.append(customArray[3].toDouble() + customArray[6].toDouble());
+
+      if (0) { // Future schema
+        customObject["origin"] = origin;
+        customObject["dimensions"] = dimensions;
+      } else { // ClaymoreUW artifacts, to be deprecated
+        customObject["domain_start"] = domain_start;
+        customObject["domain_end"] = domain_end;
+      }
+
+      sensorsArray.append(customObject);
+      if (type->currentText() == "grid") {
+        gridSensorsArray.append(customObject);
+        jsonObject["grid-sensors"] = gridSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+      } else {
+        particleSensorsArray.append(customObject);
+        jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+      }
+    }
   } else if (stackedWidget->currentIndex() == sensorEnum::WAVE_GAUGE) {
     for (int i = 0; i < tableArraysWG["waveGaugeLocs"].toArray().size(); ++i) {
       QJsonObject waveGaugesObject;

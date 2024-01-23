@@ -42,11 +42,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SimCenterAppWidget.h>
 
 class SettingsMPM;
-class ParticlesMPM;
+class BodiesMPM;
 class BoundariesMPM;
 class SensorsMPM;
 class OutputsMPM; 
-
+// class SlidingStackedWidget;
 class MPM : public SimCenterAppWidget
 {
 public:
@@ -67,7 +67,7 @@ public slots:
 private:
 
   SettingsMPM   *mpmSettings;
-  ParticlesMPM  *mpmParticles;
+  BodiesMPM  *mpmBodies;
   BoundariesMPM *mpmBoundaries;
   SensorsMPM    *mpmSensors;
   OutputsMPM    *mpmOutputs; 

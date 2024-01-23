@@ -47,9 +47,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QSvgWidget>
 #include <QString>
 #include <QIcon>
+#include <QPixmap>
+#include <QToolButton>
+#include <QStackedWidget>
+#include "slidingstackedwidget.h"
 
 #include <SettingsMPM.h>
-#include <ParticlesMPM.h>
+#include <BodiesMPM.h>
 #include <BoundariesMPM.h>
 #include <SensorsMPM.h>
 #include <OutputsMPM.h>
@@ -62,29 +66,249 @@ MPM::MPM(QWidget *parent)
     QWidget     *mainGroup = new QWidget();
     QGridLayout *mainLayout = new QGridLayout();
 
-    QLabel *generalDescriptionLabel = new QLabel("Digital Twins of NHERI Experimental Facilities in Multi-GPU Material Point Method (ClaymoreUW MPM): "
-                                                 "\n"
-                                                 "\n Place waterborne events (EVT) in NHERI Digital Twins to streamline your experimental research."
-                                                 "\n ClaymoreUW, a high-performance 3D Material Point Method code, is used."
-                                                 "\n"
-                                                 "\n 1.) Set general simulation Settings, e.g. the total simulation duration."						 
-                                                 "\n 2.) Define Bodies (e.g. fluid, debris, structures, etc) via materials and initial conditions."
-                                                 "\n 3.) Define Boundaries (Digital Twins, Structures, etc) as boundary conditions."
-                                                 "\n 4.) Specify Sensors (e.g. wave-gauges) to measure within simulations."
-                                                 "\n 5.) Select other Output settings (e.g. write simulation checkpoint-resume files).");
+
+
+    QLabel *generalDescriptionLabel = new QLabel("\n Place waterborne events (EVT) in NHERI Digital Twins to streamline your experimental research."
+                                                 "\n ClaymoreUW, a high-performance 3D Material Point Method code, is used.");
+                                                //  "\n"
+                                                //  "\n 1.) Set general simulation Settings, e.g. the total simulation duration."						 
+                                                //  "\n 2.) Define Bodies (e.g. fluid, debris, structures, etc) via materials and initial conditions."
+                                                //  "\n 3.) Define Boundaries (Digital Twins, Structures, etc) as boundary conditions."
+                                                //  "\n 4.) Specify Sensors (e.g. wave-gauges) to measure within simulations."
+                                                //  "\n 5.) Select other Output settings (e.g. write simulation checkpoint-resume files).");
                                                 //  "\n 6.) If all side-bar pages are complete, click [RUN at DesignSafe] (bottom of the app) to simulate your Event.");
-
-
+    generalDescriptionLabel->setWordWrap(true);
     mainLayout->addWidget(generalDescriptionLabel, 0, 0);
+
+    // ==================== Digital Twin Description and Selection ====================
+    QStackedWidget *parentStackedWidget = new QStackedWidget();
+
+    SlidingStackedWidget *stackedWidget = new SlidingStackedWidget(parentStackedWidget);
+    stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+    stackedWidget->setMinimumWidth(windowWidthMin);
+    stackedWidget->setMaximumWidth(windowWidth);
+    stackedWidget->setStyleSheet("QStackedWidget {background-color:  rgb(79, 83, 89); color: #000000; border: 1px solid #000000; border-radius: 0px;}"
+                                 "QStackedWidget:disabled {background-color:  rgb(79, 83, 89); color: #000000; border: 1px solid #000000; border-radius: 0px;}");
+    QWidget *page1 = new QWidget();
+    QWidget *page2 = new QWidget();
+    QWidget *page3 = new QWidget();
+    QWidget *page4 = new QWidget();
+    QWidget *page5 = new QWidget();
+    stackedWidget->addWidget(page1);
+    stackedWidget->addWidget(page2);
+    stackedWidget->addWidget(page3);
+    stackedWidget->addWidget(page4);
+    stackedWidget->addWidget(page5);
+    stackedWidget->setCurrentIndex(0); // Open to OSU LWF
+
+    // Each page gets a different image pixmap and description of the digital twin in photo
+    QPixmap page1Pixmap(":/images/OSU_LWF_Pic_MTS_HighRes.png");
+    QPixmap page2Pixmap(":/images/OSU_DWB_Pic_Square.png");
+    QPixmap page3Pixmap(":/images/UW_WASIRF_Pic_Square.png");
+    QPixmap page4Pixmap(":/images/Waseda_Flume_Picture.jpg");
+    QPixmap page5Pixmap(":/images/USGS_Iverson_2020_RFI.PNG");
+    uint minWidthDigitalTwinPhoto  = 200;
+    uint minHeightDigitalTwinPhoto = 200;
+    uint maxWidthDigitalTwinPhoto  = 275;
+    uint maxHeightDigitalTwinPhoto = 275;
+
+    // OSU LWF (Winter 2019, Shekhar et al 2020, Mascarenas 2022, Bonus 2023)
+    QLabel *page1Label = new QLabel();
+    page1Label->setPixmap(page1Pixmap);
+    page1Label->setScaledContents(true);
+    page1Label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    page1Label->setMinimumHeight(minHeightDigitalTwinPhoto);
+    page1Label->setMinimumWidth(minWidthDigitalTwinPhoto);
+    page1Label->setMaximumHeight(maxHeightDigitalTwinPhoto);
+    page1Label->setMaximumWidth(maxWidthDigitalTwinPhoto);
+    page1Label->setAlignment(Qt::AlignCenter);
+    QLabel *page1DescriptionLabel = new QLabel(" Oregon State University's Large Wave Flume - OSU LWF"
+                                               "\n Supported by NSF Award No. 2037914 and the Pacific Marine Energy Center."
+                                               "\n "
+                                               "\n Largest of its kind in North America, operating in high Reynolds regimes"
+                                               "\n The flume is ideally suited for:"
+                                               "\n > Wave runup, reflection, and overtopping"
+                                               "\n > Wave forces on offshore and coastal structures"
+                                               "\n > Nearshore hydrodynamics, wave breaking, swash, and undertow"
+                                               "\n > Tsunami inundation and overland flow"
+                                               "\n > Tsunami structure impact, debris, and scour"
+                                               "\n "
+                                               "\n Wave Flume Size: 104 m (342ft), 3.7 m (12ft), 4.6 m (15ft)"
+                                               "\n Bathymetry:    Movable and adjustable"
+                                               "\n Max depth: 2 m (6.5 ft) for tsunami, 2.7 m (9 ft) for wind/storm waves"
+                                               "\n Wave Maker:    Piston-type, Hydraulic Actuator Assembly"
+                                               "\n Wave Types:    Regular, Irregular, Tsunami, and User-Defined"
+                                               "\n Max Wave:      1.7 m (5.6 ft) @ 5 sec in max 2.7 m water"
+                                               "\n Max Tsunami:   1.4 m (3.9ft) in max 2.0 m water"
+                                               "\n Max Stroke:    4 m (13.1 ft) at 4 m/s (13.1 ft/s)."
+                                               "\n Period Range: 0.8 to 12+ seconds");
+                                              //  "\n > Cross-shore sediment suspension and transport, pollutant mixing and transport"
+                                              //  "\n > Scour, pipeline stability, outfalls, liquefaction, and cohesive sediments"
+    
+    page1DescriptionLabel->setWordWrap(true);
+    page1DescriptionLabel->setStyleSheet("QLabel {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}"
+                                         "QLabel:disabled {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}");
+    
+    // OSU DWB (Park et al. 2021)
+    QLabel *page2Label = new QLabel();
+    page2Label->setPixmap(page2Pixmap);
+    page2Label->setScaledContents(true);
+    page2Label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    page2Label->setMinimumHeight(minHeightDigitalTwinPhoto);
+    page2Label->setMinimumWidth(minWidthDigitalTwinPhoto);
+    page2Label->setMaximumHeight(maxHeightDigitalTwinPhoto);
+    page2Label->setMaximumWidth(maxWidthDigitalTwinPhoto);
+    page2Label->setAlignment(Qt::AlignCenter);
+    QLabel *page2DescriptionLabel = new QLabel(" Oregon State University's Directional Wave Basin - OSU DWB"
+                                               "\n "
+                                               "\n Generate directional waves with a wide range of wave periods and heights."
+                                               "\n "
+                                               "\n Wave Flume Size: 48.8 m long, 26.5 m wide, 2.7 m deep." 
+                                               "\n Wave maker: 2 m wide, 1.2 m high piston-type wavemaker.");
+    page2DescriptionLabel->setWordWrap(true);
+    page2DescriptionLabel->setStyleSheet("QLabel {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}"
+                                         "QLabel:disabled {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}");
+    
+    // UW WASIRF (Lewis 2023)
+    QLabel *page3Label = new QLabel();
+    page3Label->setPixmap(page3Pixmap);
+    page3Label->setScaledContents(true);
+    page3Label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    page3Label->setMinimumHeight(minHeightDigitalTwinPhoto);
+    page3Label->setMinimumWidth(minWidthDigitalTwinPhoto);
+    page3Label->setMaximumHeight(maxHeightDigitalTwinPhoto);
+    page3Label->setMaximumWidth(maxWidthDigitalTwinPhoto);
+    page3Label->setAlignment(Qt::AlignCenter);
+    QLabel *page3DescriptionLabel = new QLabel(" University of Washington's Wind-Air-Sea Interatction Research Facility - UW WASIRF"
+                                               "\n "
+                                               "\n Steady and Quasi-Steady State Flows of Water and Wind with Stochastic Reproducibility."
+                                               "\n "
+                                               "\n Wave Flume Size: 12 m long, 1.2 m wide, 0.9 m deep"
+                                               "\n Wave Maker: Circulated, reversible, pump-driven flow");
+    page3DescriptionLabel->setWordWrap(true);
+    page3DescriptionLabel->setStyleSheet("QLabel {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}"
+                                         "QLabel:disabled {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}");
+
+    // WU TWB (Goseberg et al 2016, Nistor 2016)
+    QLabel *page4Label = new QLabel();
+    page4Label->setPixmap(page4Pixmap);
+    page4Label->setScaledContents(true);
+    page4Label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    page4Label->setMinimumHeight(minHeightDigitalTwinPhoto);
+    page4Label->setMinimumWidth(minWidthDigitalTwinPhoto);
+    page4Label->setMaximumHeight(maxHeightDigitalTwinPhoto);
+    page4Label->setMaximumWidth(maxWidthDigitalTwinPhoto);
+    page4Label->setAlignment(Qt::AlignCenter);
+    QLabel *page4DescriptionLabel = new QLabel(" Waseda University's Tsunami Wave Basin - WU TWB"
+                                               "\n "
+                                               "\n Vacuum-Pump Controlled Reservoir Tank for Tsunami-Like Wave Generation."
+                                               "\n "
+                                               "\n Wave Flume Size: 9 m long, 4 m wide, 1 m deep"
+                                               "\n Wave Maker: Vacuum-Pump Controlled Reservoir Tank."
+                                               "\n Includes a frictional harbor apron, quay wall, and square columns.");
+    page4DescriptionLabel->setWordWrap(true);
+    page4DescriptionLabel->setStyleSheet("QLabel {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}"
+                                         "QLabel:disabled {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}");
+
+    // USGS DFF (Iverson 2020)
+    QLabel *page5Label = new QLabel();
+    page5Label->setPixmap(page5Pixmap);
+    page5Label->setScaledContents(true);
+    page5Label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    page5Label->setMinimumHeight(minHeightDigitalTwinPhoto);
+    page5Label->setMinimumWidth(minWidthDigitalTwinPhoto);
+    page5Label->setMaximumHeight(maxHeightDigitalTwinPhoto);
+    page5Label->setMaximumWidth(maxWidthDigitalTwinPhoto);
+    page5Label->setAlignment(Qt::AlignCenter);
+    QLabel *page5DescriptionLabel = new QLabel(" United States Geological Survey's Debris Flow Flume - USGS DFF"
+                                               "\n "
+                                               "\n Large slope flume for studying granular flows and run-out."
+                                               "\n "
+                                               "\n Flow Flume Size: 100 m long, 2 m wide, 2 m deep"
+                                               "\n Flow Maker: Gravity-Driven after retaining gates release."
+                                               "\n Includes a 31 degree slope, swing gates, and run-out plane.");
+    page5DescriptionLabel->setWordWrap(true);
+    page5DescriptionLabel->setStyleSheet("QLabel {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}"
+                                         "QLabel:disabled {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}");
+
+    page1->setLayout(new QHBoxLayout());
+    page2->setLayout(new QHBoxLayout());
+    page3->setLayout(new QHBoxLayout());
+    page4->setLayout(new QHBoxLayout());
+    page5->setLayout(new QHBoxLayout());
+    page1->layout()->addWidget(page1Label);
+    page2->layout()->addWidget(page2Label);
+    page3->layout()->addWidget(page3Label);
+    page4->layout()->addWidget(page4Label);
+    page5->layout()->addWidget(page5Label);
+    page1->layout()->addWidget(page1DescriptionLabel);
+    page2->layout()->addWidget(page2DescriptionLabel);
+    page3->layout()->addWidget(page3DescriptionLabel);
+    page4->layout()->addWidget(page4DescriptionLabel);
+    page5->layout()->addWidget(page5DescriptionLabel);
+
+    // -- Previous slide button
+    QToolButton *prev = new QToolButton();
+    // prev->setText("Prev");
+    // prev->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    prev->setArrowType(Qt::LeftArrow);
+    prev->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    prev->setMinimumSize(25, 50);
+    prev->setMaximumSize(25, 50);
+    prev->setStyleSheet("QToolButton {background-color: #ffffff; color: #000000; border: 1px solid #000000; border-radius: 5px; font-size: 16px; font-weight: bold;}"
+                        "QToolButton:disabled {background-color: #d3d3d3; color: #000000; border: 1px solid #000000; border-radius: 5px; font-size: 16px; font-weight: bold;}");
+    
+    // -- Next slide button
+    QToolButton *next = new QToolButton();
+    // next->setText("Next");
+    // next->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    next->setArrowType(Qt::RightArrow);
+    next->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    next->setMinimumSize(25, 50);
+    next->setMaximumSize(25, 50);
+    next->setStyleSheet("QToolButton {background-color: #ffffff; color: #000000; border: 1px solid #000000; border-radius: 5px; font-size: 16px; font-weight: bold;}"
+                        "QToolButton:disabled {background-color: #d3d3d3; color: #000000; border: 1px solid #000000; border-radius: 5px; font-size: 16px; font-weight: bold;}");
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    buttonLayout->addWidget(prev);
+    buttonLayout->addWidget(stackedWidget);
+    buttonLayout->addWidget(next);
+    buttonLayout->setAlignment(Qt::AlignCenter);
+    buttonLayout->setSpacing(0);
+    buttonLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->addLayout(buttonLayout, 1, 0);
+
+    
+    stackedWidget->setAnimation(QEasingCurve::Type::OutQuart);
+    stackedWidget->setSpeed(500);
+    connect(prev,&QAbstractButton::clicked,[this, stackedWidget, prev, next]{
+        if(stackedWidget->slideInPrev()){
+            prev->setEnabled(false);
+            next->setEnabled(false);
+        }
+    });
+    connect(next,&QAbstractButton::clicked,[this, stackedWidget, prev, next]{
+        if(stackedWidget->slideInNext()){
+            prev->setEnabled(false);
+           next->setEnabled(false);
+        }
+    });
+    connect(stackedWidget,&SlidingStackedWidget::animationFinished,[this, prev, next]{
+        prev->setEnabled(true);
+        next->setEnabled(true);
+    });
+
+    mainLayout->setRowStretch(0, 4);
+
+    // ==================== Simulation Set-Up ====================
     mpmSettings = new SettingsMPM();
-    mpmParticles = new ParticlesMPM();
+    mpmBodies = new BodiesMPM();
     mpmBoundaries = new BoundariesMPM();
     mpmSensors = new SensorsMPM();
     mpmOutputs = new OutputsMPM();
 
     QTabWidget *theTabWidget = new QTabWidget();
     theTabWidget->addTab(mpmSettings, QIcon(QString(":/icons/settings-black.svg")), "Settings");
-    theTabWidget->addTab(mpmParticles, QIcon(QString(":/icons/deform-black.svg")), "Bodies");
+    theTabWidget->addTab(mpmBodies, QIcon(QString(":/icons/deform-black.svg")), "Bodies");
     theTabWidget->addTab(mpmBoundaries, QIcon(QString(":/icons/man-door-black.svg")), "Boundaries");
     theTabWidget->addTab(mpmSensors, QIcon(QString(":/icons/dashboard-black.svg")), "Sensors");
     theTabWidget->addTab(mpmOutputs, QIcon(QString(":/icons/file-settings-black.svg")), "Outputs");    
@@ -92,7 +316,7 @@ MPM::MPM(QWidget *parent)
     theTabWidget->setIconSize(QSize(sizePrimaryTabs,sizePrimaryTabs));
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
-    mainLayout->addWidget(theTabWidget, 1, 0);
+    mainLayout->addWidget(theTabWidget, 3, 0);
     mainGroup->setLayout(mainLayout);
     mainGroup->setMinimumWidth(windowWidthMin);
     mainGroup->setMaximumWidth(windowWidth);
@@ -129,7 +353,7 @@ bool MPM::inputFromJSON(QJsonObject &jsonObject)
   this->clear();
   
   mpmSettings->inputFromJSON(jsonObject);
-  mpmParticles->inputFromJSON(jsonObject);
+  mpmBodies->inputFromJSON(jsonObject);
   mpmBoundaries->inputFromJSON(jsonObject);
   mpmSensors->inputFromJSON(jsonObject);
   mpmOutputs->inputFromJSON(jsonObject);
@@ -165,7 +389,7 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
 
   // Call the outputToJSON functions in the sub-widget classes (i.e. tabs)
   mpmSettings->outputToJSON(settingsObject);
-  mpmParticles->outputToJSON(bodiesObjectWrapper);
+  mpmBodies->outputToJSON(bodiesObjectWrapper);
   mpmBoundaries->outputToJSON(boundariesObjectWrapper);
   mpmSensors->outputToJSON(sensorsObjectWrapper);
   mpmOutputs->outputToJSON(outputsObject);
@@ -260,7 +484,7 @@ bool MPM::inputAppDataFromJSON(QJsonObject &jsonObject) {
 
 bool MPM::copyFiles(QString &destDir) {
   
-  if (mpmParticles->copyFiles(destDir) == false)
+  if (mpmBodies->copyFiles(destDir) == false)
     return false;
   if (mpmBoundaries->copyFiles(destDir) == false)
     return false;

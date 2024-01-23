@@ -79,7 +79,7 @@ private:
   SC_DoubleLineEdit   *height;
   SC_DoubleLineEdit   *width;
   SC_DoubleLineEdit   *radius;
-  SC_DoubleLineEdit   *longAxis;
+  SC_ComboBox         *longAxis;
   SC_DoubleLineEdit   *originX;
   SC_DoubleLineEdit   *originY;
   SC_DoubleLineEdit   *originZ;  

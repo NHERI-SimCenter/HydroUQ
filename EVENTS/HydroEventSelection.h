@@ -96,7 +96,9 @@ private:
    SimCenterAppWidget *theWaveDigitalFlume;
    SimCenterAppWidget *theCoupledDigitalTwin;
    SimCenterAppWidget *theMPM;    
+   SimCenterAppWidget *theMPMDigitalTwin;    
    SimCenterAppWidget *theSPH;    
+   SimCenterAppWidget *theSPHDigitalTwin;;    
 
    RandomVariablesContainer *theRandomVariablesContainer;
 };

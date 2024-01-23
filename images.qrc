@@ -2,6 +2,14 @@
     <qresource prefix="/">
         <file>icons/NHERI-HydroUQ-Icon.icns</file>
         <file>resources/docs/textAboutHydroUQ.html</file>
+        <file>images/HydroUQ_TwoFlumes_Header_Pic.jpg</file>
+        <file>images/OSU_LWF_Photo_Person_InFlume_Debris_OrangeBox.jpg</file>
+        <file>images/Waseda_Flume_Picture.jpg</file>
+        <file>images/UW_WASIRF_Pic_Square.png</file>
+        <file>images/USGS_Iverson_2020_RFI.PNG</file>
+        <file>images/OSU_LWF_Pic_MTS_HighRes.png</file>
+        <file>images/OSU_DWB_Pic_HighRes_TwoStructures_KMTR.png</file>
+        <file>images/OSU_DWB_Pic_Square.png</file>
         <file>icons/NHERI-HydroUQ-Icon.png</file>
         <file>icons/NHERI-HydroUQ-Icon.ico</file>
         <file>icons/engine-white.svg</file>

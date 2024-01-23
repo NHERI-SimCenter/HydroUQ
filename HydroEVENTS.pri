@@ -4,7 +4,7 @@ INCLUDEPATH += $$PWD/EVENTS/WaveDigitalFlume
 INCLUDEPATH += $$PWD/EVENTS/coupledDigitalTwin
 INCLUDEPATH += $$PWD/EVENTS/mpm
 INCLUDEPATH += $$PWD/EVENTS/Common
-
+INCLUDEPATH += $$PWD/SlidingStackedWidget
 SOURCES += \
     $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.cpp \
     $$PWD/EVENTS/HydroEventSelection.cpp \
@@ -39,7 +39,7 @@ SOURCES += \
     $$PWD/EVENTS/mpm/OutputsMPM.cpp \
     $$PWD/EVENTS/mpm/SensorMPM.cpp \
     $$PWD/EVENTS/mpm/SensorsMPM.cpp \
-    $$PWD/EVENTS/mpm/ParticlesMPM.cpp \
+    $$PWD/EVENTS/mpm/BodiesMPM.cpp \
     $$PWD/EVENTS/mpm/SettingsMPM.cpp \
     $$PWD/EVENTS/mpm/MaterialMPM.cpp \
     $$PWD/EVENTS/mpm/GeometriesMPM.cpp \
@@ -50,6 +50,7 @@ SOURCES += \
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.cpp \
     $$PWD/EVENTS/Common/projectsettings.cpp \
     $$PWD/EVENTS/Common/bathymetry.cpp
+    # $$PWD/SlidingStackedWidget/slidingstackedwidget.cpp
 
 
 HEADERS += \
@@ -85,7 +86,7 @@ HEADERS += \
     $$PWD/EVENTS/mpm/OutputsMPM.h \
     $$PWD/EVENTS/mpm/SensorsMPM.h \
     $$PWD/EVENTS/mpm/SensorsMPM.h \
-    $$PWD/EVENTS/mpm/ParticlesMPM.h \
+    $$PWD/EVENTS/mpm/BodiesMPM.h \
     $$PWD/EVENTS/mpm/SettingsMPM.h \   
     $$PWD/EVENTS/mpm/MaterialMPM.h \
     $$PWD/EVENTS/mpm/GeometriesMPM.h \
@@ -395,7 +396,8 @@ HEADERS += \
     $$PWD/EVENTS/dependencies/Eigen/src/plugins/CommonCwiseBinaryOps.h \
     $$PWD/EVENTS/dependencies/Eigen/src/plugins/CommonCwiseUnaryOps.h \
     $$PWD/EVENTS/dependencies/Eigen/src/plugins/MatrixCwiseBinaryOps.h \
-    $$PWD/EVENTS/dependencies/Eigen/src/plugins/MatrixCwiseUnaryOps.h
+    $$PWD/EVENTS/dependencies/Eigen/src/plugins/MatrixCwiseUnaryOps.h 
+    # $$PWD/SlidingStackedWidget/slidingstackedwidget.h
 
 FORMS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/GeoClawOpenFOAM_copy.ui \

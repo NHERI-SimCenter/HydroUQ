@@ -82,6 +82,16 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
   layout->addWidget(operationType,numRow++, 1);
 
+  originX = new SC_DoubleLineEdit("origin_x",0.0);
+  originY = new SC_DoubleLineEdit("origin_y",0.0);
+  originZ = new SC_DoubleLineEdit("origin_z",0.0);
+  layout->addWidget(new QLabel("Origin (X,Y,Z)"), numRow, 0);  
+  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
+  layout->addWidget(originX, numRow,1);
+  layout->addWidget(originY, numRow,2);
+  layout->addWidget(originZ, numRow,3);
+  layout->addWidget(new QLabel("m"), numRow++, 4);  
+
   length = new SC_DoubleLineEdit("span_x",104.0);  
   height = new SC_DoubleLineEdit("span_y",4.6);  
   width = new SC_DoubleLineEdit("span_z",3.658);
@@ -92,15 +102,21 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   layout->addWidget(width, numRow, 3);  
   layout->addWidget(new QLabel("m"), numRow++, 4);
 
-  originX = new SC_DoubleLineEdit("origin_x",0.0);
-  originY = new SC_DoubleLineEdit("origin_y",0.0);
-  originZ = new SC_DoubleLineEdit("origin_z",0.0);
-  layout->addWidget(new QLabel("Origin (X,Y,Z)"), numRow, 0);  
+  radius = new SC_DoubleLineEdit("radius",0.0);
+  layout->addWidget(new QLabel("Radius"), numRow, 0);
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
-  layout->addWidget(originX, numRow,1);
-  layout->addWidget(originY, numRow,2);
-  layout->addWidget(originZ, numRow,3);
-  layout->addWidget(new QLabel("m"), numRow++, 4);  
+  layout->addWidget(radius, numRow, 1);
+  layout->addWidget(new QLabel("m"), numRow++, 2);
+
+  QStringList longAxisList; longAxisList << "" << "X" << "Y" << "Z";
+  longAxis = new SC_ComboBox("long_axis", longAxisList);
+  layout->addWidget(new QLabel("Long Axis"), numRow, 0);
+  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
+  layout->addWidget(longAxis, numRow++, 1);
+
+
+
+
 
   // -----------------------------------------------------------------------------------
   applyArray = new SC_CheckBox("apply_array");
@@ -118,7 +134,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   arrayX = new SC_IntLineEdit("array_x",1);
   arrayY = new SC_IntLineEdit("array_y",1);
   arrayZ = new SC_IntLineEdit("array_z",1);
-  arrayBoxLayout->addWidget(new QLabel("Array Elements (nX,nY,nZ)"), numArrayRow, 0);
+  arrayBoxLayout->addWidget(new QLabel("Array Elements (X,Y,Z)"), numArrayRow, 0);
   arrayBoxLayout->itemAt(arrayBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   arrayBoxLayout->addWidget(arrayX, numArrayRow, 1);
   arrayBoxLayout->addWidget(arrayY, numArrayRow, 2);
@@ -173,9 +189,9 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   rotateBoxLayout->addWidget(rotateAngleZ, numRotateRow, 3);
   rotateBoxLayout->addWidget(new QLabel("deg."), numRotateRow++, 4);
 
-  rotateFulcrumX = new SC_DoubleLineEdit("fulcrum_x",104.0);  
-  rotateFulcrumY = new SC_DoubleLineEdit("fulcrum_y",4.6);  
-  rotateFulcrumZ = new SC_DoubleLineEdit("fulcrum_z",3.658);
+  rotateFulcrumX = new SC_DoubleLineEdit("fulcrum_x",0.0);  
+  rotateFulcrumY = new SC_DoubleLineEdit("fulcrum_y",0.0);  
+  rotateFulcrumZ = new SC_DoubleLineEdit("fulcrum_z",0.0);
   rotateBoxLayout->addWidget(new QLabel("Rotation Center (X,Y,Z)"), numRotateRow, 0);
   rotateBoxLayout->itemAt(rotateBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   rotateBoxLayout->addWidget(rotateFulcrumX, numRotateRow, 1);  
@@ -242,9 +258,15 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   QStringList bathOptions; bathOptions << "Point List" << "STL File";
   bathymetryComboBox = new SC_ComboBox("bathymetryComboBox", bathOptions);
   dimensionsBoxLayout->addWidget(bathymetryComboBox, numDimRow++, 1);
-  QStringList bathXZHeadings; bathXZHeadings << "Bathymetry Joint Position (X) [m]" << "Bathymetry Joint  Height (Y) [m]";
-  QStringList dataBathXZ; dataBathXZ << "35" << "0" << "42" << "1.75" << "56" << "2.5" << "105" << "2.5";
-  bathXZData = new SC_TableEdit("bathXZData", bathXZHeadings, 4, dataBathXZ);
+  QStringList bathXZHeadings; bathXZHeadings << "Joint Position (X)" << "Joint Position (Y)";
+  QStringList dataBathXZ; dataBathXZ<< "0.0" << "0.0" 
+                 << "16.275" << "0.226" 
+                 << "19.933" << "0.226" 
+                 << "30.906" << "1.140" 
+                 << "45.536" << "1.750" 
+                 << "82.106" << "1.750" 
+                 << "89.46"  << "2.363";
+  bathXZData = new SC_TableEdit("bathXZData", bathXZHeadings, 7, dataBathXZ);
   bathSTL = new SC_FileEdit("bathSTL");
 
   QWidget *ptWidget = new QWidget(); 
@@ -309,6 +331,15 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       if (bodyPreset->currentText() == "Fluid") {
         objectType->setCurrentText("OSU LWF");
       }
+      QStringList newDataBathXZ; newDataBathXZ << "0.0" << "0.0" 
+                 << "16.275" << "0.226" 
+                 << "19.933" << "0.226" 
+                 << "30.906" << "1.140" 
+                 << "45.536" << "1.750" 
+                 << "82.106" << "1.750" 
+                 << "89.46"  << "2.363";
+      delete bathXZData; bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 7, newDataBathXZ);
+      ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "Hinsdale Directional Wave Basin (OSU DWB)") {
       facilityLength->setText("48.8");
       facilityHeight->setText("2.1");
@@ -316,11 +347,25 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       if (bodyPreset->currentText() == "Fluid") {
         objectType->setCurrentText("OSU DWB");
       }
+      QStringList newDataBathXZ; newDataBathXZ << "0.00" << "0.0" 
+                 << "11.0" << "0.0" 
+                 << "31.0" << "1.0" 
+                 << "45.0" << "1.0"
+                 << "45.0" << "0.0" 
+                 << "48.8" << "0.0";
+      delete bathXZData; bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 6, newDataBathXZ);
+      ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "Wind-Air-Sea Interaction Facility (UW WASIRF)") {
       facilityLength->setText("12.19");
       facilityHeight->setText("1.22");
       facilityWidth->setText("0.914");
-      objectType->setCurrentText("UW WASIRF");
+      if (bodyPreset->currentText() == "Fluid") {
+        objectType->setCurrentText("UW WASIRF");
+      }
+      QStringList newDataBathXZ; newDataBathXZ << "0.00" << "0.0" 
+                 << "12.0" << "0.0";
+      delete bathXZData; bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 2, newDataBathXZ);
+      ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "Waseda University's Tsunami Wave Basin (WU TWB)") {
       facilityLength->setText("9.0");
       facilityHeight->setText("1.0");
@@ -328,6 +373,12 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       if (bodyPreset->currentText() == "Fluid") {
         objectType->setCurrentText("WU TWB");
       }
+      QStringList newDataBathXZ; newDataBathXZ << "0.00" << "0" 
+                 << "4.45" << "0" 
+                 << "4.45" << "0.255" 
+                 << "9.00" << "0.255";
+      delete bathXZData; bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 4, newDataBathXZ);
+      ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)") {
       facilityLength->setText("90.0");
       facilityHeight->setText("2.0");
@@ -335,6 +386,14 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       if (bodyPreset->currentText() == "Fluid") {
         objectType->setCurrentText("USGS DFF");
       }
+      QStringList newDataBathXZ; newDataBathXZ << "0.00"  << "0.0" // Top of flume, or soil mass ?
+                 << "7.00"  << "0.0" // Gate ?
+                 << "80.00" << "0.0" // Bottom of initial flume slope, prior to catanary
+                 << "81.00" << "0.176" // 10 deg, 1:0.176 (ASSUME CATANARY JOINT AS LINEAR SEGMENTS TO FLATTEN 30DEG SLOPE REL TO ROTATED GRAVITY VECTOR)
+                 << "82.00" << "0.540" // 20 deg, 1:0.364
+                 << "100.0" << "10.926"; // 30deg, 1:0.577 
+      delete bathXZData; bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 6, newDataBathXZ);
+      ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "NICHE Full-Scale Wind-Wave Flume") {
       facilityLength->setText("300.0");
       facilityHeight->setText("10.0");
@@ -350,24 +409,236 @@ GeometryMPM::GeometryMPM(QWidget *parent)
     }
   });
 
+  connect(objectType, &QComboBox::currentTextChanged, [=](QString val) {
+    if (val == "Box") {
+      length->setEnabled(true);
+      length->show();
+      height->setEnabled(true);
+      height->show();
+      width->setEnabled(true);
+      width->show();
+      radius->setDisabled(true);
+      // radius->hide();
+      longAxis->setDisabled(true);
+      // longAxis->hide();
+      length->setText("1.0");
+      height->setText("1.0");
+      width->setText("1.0");
+    } else if (val == "Sphere") {
+      length->setDisabled(true);
+      // length->hide();
+      height->setDisabled(true);
+      // height->hide();
+      width->setDisabled(true);
+      // width->hide();
+      radius->setEnabled(true);
+      radius->show();
+      longAxis->setDisabled(true);
+      // longAxis->hide();
+      radius->setText("0.5");
+    } else if (val == "Cylinder") {
+      length->setEnabled(true);
+      length->show();
+      height->setDisabled(true);
+      // height->hide();
+      width->setDisabled(true);
+      // width->hide();
+      radius->setEnabled(true);
+      radius->show();
+      longAxis->setEnabled(true);
+      longAxis->show();
+      length->setText("1.0");
+      radius->setText("0.5");
+      longAxis->setCurrentText("X");
+    } else if (val == "Cone") {
+      length->setEnabled(true);
+      length->show();
+      height->setDisabled(true);
+      // height->hide();
+      width->setDisabled(true);
+      // width->hide();
+      radius->setEnabled(true);
+      radius->show();
+      longAxis->setEnabled(true);
+      longAxis->show();
+      length->setText("1.0");
+      radius->setText("0.5");
+      longAxis->setCurrentText("X");
+    } else if (val == "Ring") {
+      length->setEnabled(true);
+      length->show();
+      height->setDisabled(true);
+      // height->hide();
+      width->setDisabled(true);
+      // width->hide();
+      radius->setEnabled(true);
+      radius->show();
+      longAxis->setEnabled(true);
+      longAxis->show();
+      width->setText("0.25");
+      radius->setText("0.5");
+      longAxis->setCurrentText("X");
+    } else if (val == "File") {
+      length->setEnabled(true);
+      length->show();
+      height->setEnabled(true);
+      height->show();
+      width->setEnabled(true);
+      width->show();
+      length->setText("1.0");
+      height->setText("1.0");
+      width->setText("1.0");
+      radius->setDisabled(true);
+      // radius->hide();
+      longAxis->setDisabled(true);
+      // longAxis->hide();
+    } else if (val == "Checkpoint") {
+      length->setDisabled(true);
+      // length->hide();
+      height->setDisabled(true);
+      // height->hide();
+      width->setDisabled(true);
+      // width->hide();
+      radius->setDisabled(true);
+      // radius->hide();
+      longAxis->setDisabled(true);
+      // longAxis->hide();
+    } else if (val == "OSU LWF") {
+      facility->setCurrentText("Hinsdale Large Wave Flume (OSU LWF)");
+      length->setEnabled(true);
+      length->show();
+      height->setEnabled(true);
+      height->show();
+      width->setEnabled(true);
+      width->show();
+      radius->setDisabled(true);
+      // radius->hide();
+      longAxis->setDisabled(true);
+      // longAxis->hide();
+      if (bodyPreset->currentText() == "Fluid") {
+        length->setText("104.0");
+        height->setText("4.6");
+        width->setText("3.658");
+      }
+    } else if (val == "OSU DWB") {
+      facility->setCurrentText("Hinsdale Directional Wave Basin (OSU DWB)");
+      length->setEnabled(true);
+      length->show();
+      height->setEnabled(true);
+      height->show();
+      width->setEnabled(true);
+      width->show();
+      radius->setDisabled(true);
+      // radius->hide();
+      longAxis->setDisabled(true);
+      // longAxis->hide();
+      if (bodyPreset->currentText() == "Fluid") {
+        length->setText("48.8");
+        height->setText("2.1");
+        width->setText("26.5");
+      }
+    } else if (val == "UW WASIRF") {
+      facility->setCurrentText("Wind-Air-Sea Interaction Facility (UW WASIRF)");
+      length->setEnabled(true);
+      length->show();
+      height->setEnabled(true);
+      height->show();
+      width->setEnabled(true);
+      width->show();
+      radius->setDisabled(true);
+      // radius->hide();
+      longAxis->setDisabled(true);
+      // longAxis->hide();
+      if (bodyPreset->currentText() == "Fluid") {
+        length->setText("12.19");
+        height->setText("1.22");
+        width->setText("0.914");
+      }
+    } else if (val == "WU TWB") {
+      facility->setCurrentText("Waseda University's Tsunami Wave Basin (WU TWB)");
+      length->setEnabled(true);
+      length->show();
+      height->setEnabled(true);
+      height->show();
+      width->setEnabled(true);
+      width->show();
+      radius->setDisabled(true);
+      // radius->hide();
+      longAxis->setDisabled(true);
+      // longAxis->hide();
+      if (bodyPreset->currentText() == "Fluid") {
+        length->setText("9.0");
+        height->setText("1.0");
+        width->setText("4.0");
+      }
+    } else if (val == "USGS DFF") {
+      facility->setCurrentText("U.S. Geo. Survey's Debris Flow Flume (USGS DFF)");
+      length->setEnabled(true);
+      length->show();
+      height->setEnabled(true);
+      height->show();
+      width->setEnabled(true);
+      width->show();
+      radius->setDisabled(true);
+      // radius->hide();
+      longAxis->setDisabled(true);
+      // longAxis->hide();
+      if (bodyPreset->currentText() == "Fluid") {
+        length->setText("90.0");
+        height->setText("2.0");
+        width->setText("2.0");
+      }
+    } else if (val == "NICHE") {
+      facility->setCurrentText("NICHE Full-Scale Wind-Wave Flume");
+      length->setEnabled(true);
+      length->show();
+      height->setEnabled(true);
+      height->show();
+      width->setEnabled(true);
+      width->show();
+      radius->setDisabled(true);
+      // radius->hide();
+      longAxis->setDisabled(true);
+      // longAxis->hide();
+      if (bodyPreset->currentText() == "Fluid") {
+        length->setText("300.0");
+        height->setText("10.0");
+        width->setText("100.0");
+      }
+    } else if (val == "Custom") {
+      length->setEnabled(true);
+      length->show();
+      height->setEnabled(true);
+      height->show();
+      width->setEnabled(true);
+      width->show();
+      radius->setDisabled(true);
+      // radius->hide();
+      longAxis->setDisabled(true);
+      // longAxis->hide();
+    }
+  });
+
   connect(bodyPreset, &QComboBox::currentTextChanged, [=](QString val) {
     if (val == "Fluid") {
-      facility->setCurrentText("Hinsdale Large Wave Flume (OSU LWF)");
-
-      standingWaterLevel->setEnabled(true);
-      standingWaterLevel->show();
-      standingWaterLevel->setText("2.0");
-      fillFlumeUptoSWL->setEnabled(true);
-      fillFlumeUptoSWL->show();
-      fillFlumeUptoSWL->setChecked(true);
-
       length->setText("104.0");
-      height->setText("4.6");
+      height->setText("2.0");
       width->setText("3.658");
       originX->setText("0.0");
       originY->setText("0.0");
       originZ->setText("0.0");
       applyArray->setChecked(false);
+
+      facility->setCurrentText("Hinsdale Large Wave Flume (OSU LWF)");
+      facilityLength->setText("104.0");
+      facilityHeight->setText("4.6");
+      facilityWidth->setText("3.658");
+      standingWaterLevel->setEnabled(true);
+      standingWaterLevel->show();
+      standingWaterLevel->setText("2.0");
+      fillFlumeUptoSWL->setEnabled(true);
+      fillFlumeUptoSWL->setChecked(true);
+      fillFlumeUptoSWL->show();
       bathStack->setCurrentIndex(0);
       bathStack->show();
       bathStack->setEnabled(true);
@@ -378,10 +649,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
     } else if (val == "Debris") {
       facility->setCurrentText("Hinsdale Large Wave Flume (OSU LWF)");
       standingWaterLevel->setDisabled(true);
-      standingWaterLevel->hide();
+      // standingWaterLevel->hide();
       fillFlumeUptoSWL->setChecked(false);
       fillFlumeUptoSWL->setDisabled(true);
-      fillFlumeUptoSWL->hide();
+      // fillFlumeUptoSWL->hide();
       length->setText("0.5");
       height->setText("0.05");
       width->setText("0.1");
@@ -389,20 +660,20 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       originY->setText("2.0");
       originZ->setText("1.825");
       applyArray->setChecked(true);
-      bathymetryComboBox->setDisabled(true);
-      bathymetryComboBox->hide();
-      bathSTL->setDisabled(true);
       bathStack->setCurrentIndex(1);
       bathStack->hide();
       bathStack->setDisabled(true);
+      bathymetryComboBox->setDisabled(true);
+      bathymetryComboBox->hide();
+      bathSTL->setDisabled(true);
       dimensionsBox->hide();
     } else if (val == "Structure") {
       facility->setCurrentText("Hinsdale Large Wave Flume (OSU LWF)");
       standingWaterLevel->setDisabled(true);
-      standingWaterLevel->hide();
+      // standingWaterLevel->hide();
       fillFlumeUptoSWL->setChecked(false);
       fillFlumeUptoSWL->setDisabled(true);
-      fillFlumeUptoSWL->hide();
+      // fillFlumeUptoSWL->hide();
       length->setText("1.0");
       height->setText("0.625");
       width->setText("1.0");
@@ -420,10 +691,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
     } else if (val == "Custom") {
       facility->setCurrentText("Custom");
       standingWaterLevel->setDisabled(true);
-      standingWaterLevel->hide();
+      // standingWaterLevel->hide();
       fillFlumeUptoSWL->setChecked(false);
       fillFlumeUptoSWL->setDisabled(true);
-      fillFlumeUptoSWL->hide();
+      // fillFlumeUptoSWL->hide();
       length->setText("1.0");
       height->setText("1.0");
       width->setText("1.0");
@@ -440,7 +711,37 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       dimensionsBox->hide();
     }
   });
-
+  // Refresh SWL and geometry height when checkbox is toggled
+  connect(fillFlumeUptoSWL, &QCheckBox::stateChanged, [=](int state) {
+    if (state == 2) {
+      standingWaterLevel->setEnabled(true);
+      if (standingWaterLevel->text().toDouble() > facilityHeight->text().toDouble()) {
+        standingWaterLevel->setText(facilityHeight->text());
+      } else if (standingWaterLevel->text().toDouble() < 0.0) {
+        standingWaterLevel->setText("0.0");
+      }
+      double bounded_swl = (standingWaterLevel->text().toDouble() - originY->text().toDouble()) > 0.0 
+                                  ? (standingWaterLevel->text().toDouble() - originY->text().toDouble()) 
+                                  : 0.0;
+      height->setText(QString::number(bounded_swl));
+    } else {
+      standingWaterLevel->setDisabled(true);
+    }
+  });
+  // Refresh geometry height when SWL is changed and fill flume up to SWL is checked
+  connect(standingWaterLevel, &QLineEdit::textChanged, [=](QString val) {
+    if (fillFlumeUptoSWL->isChecked() && fillFlumeUptoSWL->isEnabled()) {
+      if (val.toDouble() > facilityHeight->text().toDouble()) {
+        standingWaterLevel->setText(facilityHeight->text());
+      } else if (val.toDouble() < 0.0) {
+        standingWaterLevel->setText("0.0");
+      }
+      double bounded_swl = (standingWaterLevel->text().toDouble() - originY->text().toDouble()) > 0.0 
+                                  ? (standingWaterLevel->text().toDouble() - originY->text().toDouble()) 
+                                  : 0.0;
+      height->setText(QString::number(bounded_swl));
+    }
+  });
 }
 
 

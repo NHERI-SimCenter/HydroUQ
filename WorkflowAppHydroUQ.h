@@ -57,7 +57,9 @@ class ResultsWidget;
 class GeneralInformationWidget;
 class HydroEventSelection;
 class QStackedWidget;
+class QSvgWidget;
 class UQ_Results;
+
 
 class RunLocalWidget;
 class RunWidget;
@@ -85,13 +87,14 @@ public:
     void onRemoteGetButtonClicked();
     void onExitButtonClicked();
     int getMaxNumParallelTasks();
-    
+
 signals:
     void setUpForApplicationRunDone(QString &tmpDirectory, QString &inputFile);
     void sendLoadFile(QString filename);
 
 public slots:  
 
+    void updateIcons(QString &name);
     void setUpForApplicationRun(QString &, QString &);
     void processResults(QString &resultsDir);
     //void processResults(QString dakotaOut, QString dakotaTab, QString inputFile);
@@ -113,6 +116,16 @@ private:
     FEA_Selection *theAnalysisSelection;
     EDP_Selection *theEDP_Selection;
     UQ_Results *theResults;
+
+    // Icons for sidebar
+    QSvgWidget *theSvgUQ;
+    QSvgWidget *theSvgGI;
+    QSvgWidget *theSvgSIM;
+    QSvgWidget *theSvgEVT;
+    QSvgWidget *theSvgFEM;
+    QSvgWidget *theSvgEDP;
+    QSvgWidget *theSvgRV;
+    QSvgWidget *theSvgRES;
 
     // objects for running the workflow and obtaining results
     RunWidget *theRunWidget;

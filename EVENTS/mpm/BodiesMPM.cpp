@@ -34,7 +34,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-#include "ParticlesMPM.h"
+#include "BodiesMPM.h"
 #include <QLabel>
 #include <QComboBox>
 #include <QGroupBox>
@@ -64,7 +64,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <vector>
 #include <memory>
 
-ParticlesMPM::ParticlesMPM(QWidget *parent)
+BodiesMPM::BodiesMPM(QWidget *parent)
   :SimCenterWidget(parent)
 {
   QGridLayout *layout = new QGridLayout();
@@ -158,8 +158,9 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
     numAddedTabs -= 1;
   }); 
 
+  int numRequiredTabs = 1; // Always keep one tab so the JSON output is valid 
   connect(tabWidget, &QTabWidget::tabCloseRequested, this, [=](int index) {
-    if (( index == -1) || (tabWidget->count() <= numDefaultTabs) || (index < numDefaultTabs)) 
+    if (( index == -1) || (tabWidget->count() <= 1) || (index < numDefaultTabs)) 
       return; 
 
     // tabWidget->setCurrentIndex(index-1);
@@ -294,13 +295,13 @@ ParticlesMPM::ParticlesMPM(QWidget *parent)
   }
 }
 
-ParticlesMPM::~ParticlesMPM()
+BodiesMPM::~BodiesMPM()
 {
 
 }
 
 bool
-ParticlesMPM::outputToJSON(QJsonObject &jsonObject)
+BodiesMPM::outputToJSON(QJsonObject &jsonObject)
 {
   QJsonArray bodiesArray = jsonObject["bodies"].toArray();
   
@@ -569,7 +570,7 @@ ParticlesMPM::outputToJSON(QJsonObject &jsonObject)
 }
 
 bool
-ParticlesMPM::inputFromJSON(QJsonObject &jsonObject)
+BodiesMPM::inputFromJSON(QJsonObject &jsonObject)
 {
   // theOpenSeesPyScript->inputFromJSON(jsonObject);
   // theSurfaceFile->inputFromJSON(jsonObject);    
@@ -582,7 +583,7 @@ ParticlesMPM::inputFromJSON(QJsonObject &jsonObject)
 }
 
 bool
-ParticlesMPM::copyFiles(QString &destDir)
+BodiesMPM::copyFiles(QString &destDir)
 {
   // if (theOpenSeesPyScript->copyFile(destDir) != true)
   //   return false;

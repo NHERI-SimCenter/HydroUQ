@@ -73,16 +73,17 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     eventSelection->addItem(tr("General Event (GeoClaw and OpenFOAM)"));
     eventSelection->addItem(tr("Digital Twin (GeoClaw and OpenFOAM)"));
     eventSelection->addItem(tr("Digital Twin (OpenFOAM and OpenSees)"));
+    eventSelection->addItem(tr("General Event (MPM)"));        
     eventSelection->addItem(tr("Digital Twin (MPM)"));        
-    eventSelection->addItem(tr("Digital Twin (SPH)"));        
-
+    // eventSelection->addItem(tr("Digital Twin (SPH)"));    
     // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     eventSelection->setItemData(0, "Shallow-Water-Equations -> Finite-Volume-Method (GeoClaw -> OpenFOAM) [Multi-CPU]", Qt::ToolTipRole);
     eventSelection->setItemData(1, "Shallow-Water-Equations -> Finite-Volume-Method -> Finite-Element-Analysis (GeoClaw -> OpenFOAM -> OpenSees) [Multi-CPU]", Qt::ToolTipRole);
     eventSelection->setItemData(2, "Finite-Volume-Method <-> Finite-Element-Analysis (OpenFOAM <-> OpenSees) [Multi-CPU]", Qt::ToolTipRole);
     eventSelection->setItemData(3, "Material-Point-Method (ClaymoreUW) [Multi-GPU]", Qt::ToolTipRole);    
-    eventSelection->setItemData(4, "Smoothed-Particle-Hydrodynamics (DualSPHysics) [CPU, GPU]", Qt::ToolTipRole);    
+    eventSelection->setItemData(4, "Material-Point-Method (ClaymoreUW) [Multi-GPU]", Qt::ToolTipRole);
+    // eventSelection->setItemData(5, "Smoothed-Particle-Hydrodynamics (DualSPHysics) [CPU, GPU]", Qt::ToolTipRole);    
 
     // eventSelection->addItem(tr("General Event"));
     // eventSelection->addItem(tr("Digital Twin"));
@@ -120,14 +121,15 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     theWaveDigitalFlume = new WaveDigitalFlume(theRandomVariablesContainer);
     theCoupledDigitalTwin = new CoupledDigitalTwin(theRandomVariablesContainer);
     theMPM = new MPM(theRandomVariablesContainer);
-    theSPH = new MPM(theRandomVariablesContainer);
+    theMPMDigitalTwin = new MPM(theRandomVariablesContainer);
+    // theSPH = new MPM(theRandomVariablesContainer);
     // TODO: Fully implement SPH without using MPM
 
     theStackedWidget->addWidget(theGeoClawOpenFOAM);
     theStackedWidget->addWidget(theWaveDigitalFlume);
     theStackedWidget->addWidget(theCoupledDigitalTwin);
     theStackedWidget->addWidget(theMPM);        
-    theStackedWidget->addWidget(theSPH);        
+    theStackedWidget->addWidget(theMPMDigitalTwin);        
     // --- 
 
 
@@ -138,13 +140,13 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     //theCurrentEvent=theGeoClawOpenFOAM;
     // --
     // Set the default event to select at boot-up. For now, it is MPM
-    int indexForMPM = 3;
+    int indexForMPM = 4;
     theStackedWidget->setCurrentIndex(indexForMPM);
     theStackedWidget->setCurrentIndex(indexForMPM);
     eventSelection->setCurrentIndex(indexForMPM);
     eventSelection->setCurrentIndex(indexForMPM);
-    theCurrentEvent = theMPM;
-    theCurrentEvent = theMPM;
+    theCurrentEvent = theMPMDigitalTwin;
+    theCurrentEvent = theMPMDigitalTwin;
 
     // Connect signal and slots
     connect(eventSelection, SIGNAL(currentIndexChanged(int)), this, SLOT(eventSelectionChanged(int)));
@@ -193,7 +195,7 @@ void HydroEventSelection::eventSelectionChanged(int arg1)
     else if (arg1 == 4)
     {
         theStackedWidget->setCurrentIndex(4);
-        theCurrentEvent = theSPH;
+        theCurrentEvent = theMPMDigitalTwin;
     }        
     else
     {
@@ -306,17 +308,23 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
       index = 2;
     }
     else if (((type == "MPM")
-	|| (type == "Material Point Method")) || (type == "Digital Twin (MPM)")) {
+	|| (type == "Material Point Method")) || (type == "General Event (MPM)")) {
       
       theCurrentEvent = theMPM;
       index = 3;
     }
-    else if (((type == "SPH")
-	|| (type == "Smoothed Particle Hydrodynamics")) || (type == "Digital Twin (SPH)")) {
+    else if (((type == "MPMDigitalTwin")
+	|| (type == "Digital Twin (Material Point Method)")) || (type == "Digital Twin (MPM)")) {
       
-      theCurrentEvent = theSPH;
+      theCurrentEvent = theMPMDigitalTwin;
       index = 4;
     }
+    // else if (((type == "SPH")
+	// || (type == "Smoothed Particle Hydrodynamics")) || (type == "Digital Twin (SPH)")) {
+      
+    //   theCurrentEvent = theSPH;
+    //   index = 5;
+    // }
     eventSelection->setCurrentIndex(index);
     
     eventSelection->setCurrentIndex(index);

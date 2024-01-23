@@ -57,7 +57,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QHostInfo>
 #include <QUuid>
 #include <QSvgWidget>
-
+#include <QFrame>
+#include <QVBoxLayout>
 
 #include <SimCenterComponentSelection.h>
 #include "GeneralInformationWidget.h"
@@ -162,14 +163,14 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     horizontalLayout->setMargin(0);
     horizontalLayout->setSpacing(0);
 
-    QSvgWidget *theSvgUQ  = new QSvgWidget();
-    QSvgWidget *theSvgGI  = new QSvgWidget();
-    QSvgWidget *theSvgSIM = new QSvgWidget();
-    QSvgWidget *theSvgEVT = new QSvgWidget();
-    QSvgWidget *theSvgFEM = new QSvgWidget();
-    QSvgWidget *theSvgEDP = new QSvgWidget();
-    QSvgWidget *theSvgRV  = new QSvgWidget();
-    QSvgWidget *theSvgRES = new QSvgWidget();
+    theSvgUQ  = new QSvgWidget();
+    theSvgGI  = new QSvgWidget();
+    theSvgSIM = new QSvgWidget();
+    theSvgEVT = new QSvgWidget();
+    theSvgFEM = new QSvgWidget();
+    theSvgEDP = new QSvgWidget();
+    theSvgRV  = new QSvgWidget();
+    theSvgRES = new QSvgWidget();
     theSvgUQ->load(QString(":/icons/question-dimensions-white.svg"));
     theSvgGI->load(QString(":/icons/building-white.svg"));
     theSvgSIM->load(QString(":/icons/shape-3-white.svg"));
@@ -209,31 +210,23 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theSvgRV->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     theSvgRES->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     // Set the contents margins of the SVG to be 0
-    theSvgUQ->setContentsMargins(0,10,0,10);
-    theSvgGI->setContentsMargins(0,10,0,10);
-    theSvgSIM->setContentsMargins(0,10,0,10);
-    theSvgEVT->setContentsMargins(0,10,0,10);
-    theSvgFEM->setContentsMargins(0,10,0,10);
-    theSvgEDP->setContentsMargins(0,10,0,10);
-    theSvgRV->setContentsMargins(0,10,0,10);
-    theSvgRES->setContentsMargins(0,10,0,10);
-    theSvgUQ->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    theSvgGI->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    theSvgSIM->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    theSvgEVT->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    theSvgFEM->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    theSvgEDP->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    theSvgRV->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    theSvgRES->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-
-    // theSvgUQ->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
-    // theSvgGI->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
-    // theSvgSIM->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
-    // theSvgEVT->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
-    // theSvgFEM->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
-    // theSvgEDP->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
-    // theSvgRV->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
-    // theSvgRES->setStyleSheet(":selected:active{background-color:  rgb(63, 147, 168)}");
+    // theSvgUQ->setContentsMargins(0,0,0,0);
+    // theSvgUQTest->setContentsMargins(0,10,0,9);
+    // theSvgGI->setContentsMargins(0,10,0,9);
+    // theSvgSIM->setContentsMargins(0,10,0,9);
+    // theSvgEVT->setContentsMargins(0,10,0,9);
+    // theSvgFEM->setContentsMargins(0,10,0,9);
+    // theSvgEDP->setContentsMargins(0,10,0,9);
+    // theSvgRV->setContentsMargins(0,10,0,9);
+    // theSvgRES->setContentsMargins(0,10,0,9);
+    // theSvgUQ->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    // theSvgGI->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    // theSvgSIM->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    // theSvgEVT->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    // theSvgFEM->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    // theSvgEDP->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    // theSvgRV->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    // theSvgRES->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
 
 
 // :active{
@@ -243,13 +236,6 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 // QTreeView#treeViewOnTheLeft::item:selected:!active {
 //     background: rgb(63, 147, 168);
 // }
-    // Now, place the SVG in a frame
-
-
-
-    // QDir dir("/home/");
-    // QString s;
-    // s = dir.relativeFilePath("images/file.jpg");     // s is "images/file.jpg"
 
 
     QVBoxLayout *verticalIconLayout = new QVBoxLayout();
@@ -261,25 +247,66 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     verticalIconLayout->addWidget(theSvgEDP);
     verticalIconLayout->addWidget(theSvgRV);
     verticalIconLayout->addWidget(theSvgRES);
-    verticalIconLayout->setAlignment(Qt::AlignTop);
-    verticalIconLayout->setSpacing(13.5);
-    verticalIconLayout->setContentsMargins(0,5,0,5);
+    verticalIconLayout->addStretch();
+    
+    // verticalIconLayout->setStretch(9,1);
+    verticalIconLayout->setAlignment(Qt::AlignCenter);
+    // verticalIconLayout->setSpacing(15);
 
     sideBarIconFrame = new QFrame();
     sideBarIconFrame->setLayout(verticalIconLayout);
     // sideBarIconFrame->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
-    sideBarIconFrame->setStyleSheet("background-color: rgb(79, 83, 89)");
-    sideBarIconFrame->setFrameShape(QFrame::NoFrame);
+    // sideBarIconFrame->setFrameShape(QFrame::NoFrame);
+    sideBarIconFrame->setFrameShape(QFrame::Box);
     sideBarIconFrame->setLineWidth(0);
-    sideBarIconFrame->setContentsMargins(0,10,0,10);
+    // Set color of frame border
+    sideBarIconFrame->setObjectName("sideBarIconFrame");
+    sideBarIconFrame->setStyleSheet("#sideBarIconFrame {background-color: rgb(63, 67, 73); border: 0px solid rgb(61, 65, 71); }");
+    // sideBarIconFrame->setStyleSheet("background-color: rgb(63, 67, 73)");
+    sideBarIconFrame->setContentsMargins(0,5,0,5);
+    sideBarIconFrame->layout()->setContentsMargins(0,5,0,5);
+    sideBarIconFrame->layout()->setSpacing(14);
+    // verticalIconLayout->setContentsMargins(0,5,0,5);
+
+    // Make sideBarIconFrame match the style of theComponentSelection
+    // First set its dimensions
+    sideBarIconFrame->setFixedWidth(50);
+    sideBarIconFrame->setMinimumHeight(600);
+    
+    // sideBarIconFrame->setFixedHeight(850);
+    // sideBarIconFrame->setMinimumHeight(600);
+    // Then set its position
+
+    // Set offest
+
+    sideBarIconFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    // sideBarIconFrame->setFixedWidth(25);
+    // sideBarIconFrame->setFixedHeight(800);
+
+    QVBoxLayout *wrapperVerticalIconLayout = new QVBoxLayout();
+    wrapperVerticalIconLayout->addWidget(sideBarIconFrame);
+
+    
+    QFrame *wrapperFrame = new QFrame();
+    wrapperFrame->setLayout(wrapperVerticalIconLayout);
+    wrapperFrame->setFrameShape(QFrame::NoFrame);
+    wrapperFrame->setLineWidth(0);
+    wrapperFrame->setContentsMargins(0,2.975,0,2.975);
+    wrapperFrame->layout()->setContentsMargins(0,2.975,0,2.975);
+
+    wrapperFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    // wrapperFrame->setFrameShape(QFrame::Box);
+    // wrapperFrame->setLineWidth(2);
+
+    
     // sideBarIconFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     // sideBarIconFrame->setFixedWidth(25);
     // sideBarIconFrame->setFixedHeight(800);
 
 
     // Now, place the frame in the side bar
-    horizontalLayout->addWidget(sideBarIconFrame);
-
+    // horizontalLayout->addWidget(sideBarIconFrame);
+    horizontalLayout->addWidget(wrapperFrame);
 
 
     //
@@ -289,6 +316,12 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection = new SimCenterComponentSelection();
     horizontalLayout->addWidget(theComponentSelection);
 
+    // QHBoxLayout *iconAndUQLayout = new QHBoxLayout();
+    // iconAndUQLayout->addWidget(theSvgUQTest);
+    // iconAndUQLayout->addWidget(theUQ_Selection);
+    // QFrame *iconAndUQFrame = new QFrame();
+    // iconAndUQFrame->setLayout(iconAndUQLayout);
+    // iconAndUQFrame->setFrameShape(QFrame::NoFrame);
     theComponentSelection->addComponent(QString("UQ"),  theUQ_Selection);
     theComponentSelection->addComponent(QString("GI"),  theGI);
     theComponentSelection->addComponent(QString("SIM"), theSIM);
@@ -299,55 +332,26 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("RES"), theResults);
     theComponentSelection->displayComponent("EVT"); // Initial page on startup
 
-
     horizontalLayout->setAlignment(Qt::AlignLeft);
-    // create the side bar icons in QT
-    // Need to place SVG in a frame to get it to display properly
-    // The frame is then placed in the side bar
-    // QSvgWidget *theSvg = new QSvgWidget();
-    // theSvg->load(QString("./icons/engine-white.svg"));
-    // theSvg->setFixedSize(50,50);
-    // theSvg->setStyleSheet("background-color: rgb(0,0,0,0)");
-    // theSvg->setContentsMargins(0,0,0,0);
-    // theSvg->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    // // Now, place the SVG in a frame
-    // QFrame *frame = new QFrame();
-    // frame->setFixedSize(50,50);
-    // frame->setStyleSheet("background-color: rgb(0,0,0,0)");
-    // frame->setContentsMargins(0,0,0,0);
-    // frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    // QVBoxLayout *verticalLayout = new QVBoxLayout();
-    // verticalLayout->setContentsMargins(0,0,0,0);
-    // verticalLayout->addWidget(theSvg);
-    // frame->setLayout(verticalLayout);
-
-    // // Now, place the frame in the side bar
-    // horizontalLayout->addWidget(frame);
-
-    // // Now, repeat for each icon
-    // theSvg = new QSvgWidget();
-    // theSvg->load(QString("./icons/building-white.svg"));
-    // theSvg->setFixedSize(50,50);
-    // theSvg->setStyleSheet("background-color: rgb(0,0,0,0)");
-    // theSvg->setContentsMargins(0,0,0,0);
-    // theSvg->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    // frame = new QFrame();
-    // frame->setFixedSize(50,50);
-    // frame->setStyleSheet("background-color: rgb(0,0,0,0)");
-    // frame->setContentsMargins(0,0,0,0);
-    // frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    // verticalLayout = new QVBoxLayout();
-    // verticalLayout->setContentsMargins(0,0,0,0);
-    // verticalLayout->addWidget(theSvg);
-    // frame->setLayout(verticalLayout);
-    // horizontalLayout->addWidget(frame);
+    // When theComponentSelection is changed, update the icon in the side bar to also be selected
+    // connect(theComponentSelection, SIGNAL(selectionChanged(QString &)), this, SLOT(updateIcons(QString &)));
 
     // access a web page which will increment the usage count for this tool
     manager = new QNetworkAccessManager(this);
     connect(manager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(replyFinished(QNetworkReply*)));
-    manager->get(QNetworkRequest(QUrl("http://opensees.berkeley.edu/OpenSees/developer/eeuq/use.php")));
+    manager->get(QNetworkRequest(QUrl("http://opensees.berkeley.edu/OpenSees/developer/hydrouq/use.php")));
+
+
+    // If theComponentSelection is changed, update the icon in sideBarIconFrame to also be selected
+    // updateIcon is called when theComponentSelection is changed
+    // It updates the icon in sideBarIconFrame to also be selected
+    // It does this by changing the background color of the icon to match the background color of theComponentSelection
+    // The background color of theComponentSelection is changed in SimCenterComponentSelection::displayComponent(QString componentName)
+    // This is done by changing the stylesheet of theComponentSelection
+    // The stylesheet is changed in SimCenterComponentSelection::displayComponent(QString componentName)
+    // The stylesheet is changed to match the stylesheet of the side bar icon
 
 
     //
@@ -356,6 +360,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     theGI->setDefaultProperties(1,144,360,360,37.8715,-122.2730);
 }
+
 
 WorkflowAppHydroUQ::~WorkflowAppHydroUQ()
 {
@@ -366,6 +371,76 @@ WorkflowAppHydroUQ::~WorkflowAppHydroUQ()
   //    QWidget *newUQ = new QWidget();
   //    theComponentSelection->swapComponent("RV",newUQ);
 }
+
+// TODO: Make this work, many issues in the signals and slots, etc
+void
+WorkflowAppHydroUQ::updateIcons(QString &componentName)
+{
+    // Update the icon in the side bar to also be selected
+    // It does this by changing the background color of the icon to match the background color of theComponentSelection
+    // The background color of theComponentSelection is changed in SimCenterComponentSelection::displayComponent(QString componentName)
+    // This is done by changing the stylesheet of theComponentSelection
+    // The stylesheet is changed in SimCenterComponentSelection::displayComponent(QString componentName)
+    // The stylesheet is changed to match the stylesheet of the side bar icon
+
+    // First, reset the background color of all icons to the default
+    // theSvgUQ->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
+    // theSvgGI->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
+    // theSvgSIM->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
+    // theSvgEVT->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
+    // theSvgFEM->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
+    // theSvgEDP->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
+    // theSvgRV->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
+    // theSvgRES->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
+
+    // print(componentName);
+    // Then, set the background color of the icon that was selected to match the background color of theComponentSelection
+    if (componentName == QString("UQ") || componentName ==  QString("UQ_Selection")) {
+        // Set active background
+        // theSvgUQ->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
+        // theSvgUQ->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
+        theSvgUQ->setStyleSheet(":inactive{background-color: rgb(63, 147, 168)}");
+        //redraw
+        theSvgUQ->update();
+
+    }
+    else if (componentName == QString("GI") || componentName ==  QString("GI_Selection")) {
+        theSvgGI->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
+        theSvgGI->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+        theSvgGI->update();
+    }
+    else if (componentName ==  QString("SIM")) {
+        theSvgSIM->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
+        theSvgSIM->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    }
+    else if (componentName ==  QString("EVT")) {
+        theSvgEVT->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
+        theSvgEVT->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    }
+    else if (componentName == "FEM") {
+        theSvgFEM->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
+        theSvgFEM->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    }
+    else if (componentName == "EDP") {
+        theSvgEDP->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
+        theSvgEDP->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    }
+    else if (componentName == "RV") {
+        theSvgRV->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
+        theSvgRV->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    }
+    else if (componentName == "RES") {
+        theSvgRES->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
+        theSvgRES->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
+    } else {
+        // Do nothing
+        qDebug() << "No match of Icon to Sidebar tab text.";
+    }
+
+    return;
+}
+
+
 
 void WorkflowAppHydroUQ::replyFinished(QNetworkReply *pReply)
 {

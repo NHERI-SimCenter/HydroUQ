@@ -134,11 +134,11 @@ int main(int argc, char *argv[])
     w.setAbout(aboutTitle, aboutSource);
 
     // Version
-    QString version("Version 2.0.0");
+    QString version("Version 3.0.0");
     w.setVersion(version);
 
     // Citation
-    QString citeText("1) Ajay B Harish, Frank McKenna, Justin Bonus. (2024, January). NHERI-SimCenter/HydroUQ: Version 2.0.0 (Version v2.0.0). Zenodo. http://doi.org/10.5281/zenodo.4731074\n\n 2) Deierlein GG, McKenna F, Zsarnóczay A, Kijewski-Correa T, Kareem A, Elhaddad W, Lowes L, Schoettler MJ and Govindjee S (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Front. Built Environ. 6:558706. doi: 10.3389/fbuil.2020.558706");
+    QString citeText("1) Ajay B Harish, Frank McKenna, Justin Bonus. (2024, January). NHERI-SimCenter/HydroUQ: Version 3.0.0 (Version v2.0.0). Zenodo. http://doi.org/10.5281/zenodo.4731074\n\n 2) Deierlein GG, McKenna F, Zsarnóczay A, Kijewski-Correa T, Kareem A, Elhaddad W, Lowes L, Schoettler MJ and Govindjee S (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Front. Built Environ. 6:558706. doi: 10.3389/fbuil.2020.558706");
     w.setCite(citeText);
 
     // Link to repository
