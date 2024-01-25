@@ -322,12 +322,32 @@ SensorMPM::SensorMPM(QWidget *parent)
       setSensorType(SensorTypeEnum::CUSTOM);
     } else if (val == "Wave-Gauges") {
       setSensorType(SensorTypeEnum::WAVE_GAUGE);
+      toggle->setCurrentText("Yes");
+      type->setCurrentIndex(0);
+      attribute->setCurrentText("Elevation");
+      operation->setCurrentText("Max");
+      direction->setCurrentText("N/A");
     } else if (val == "Velocimeters") {
       setSensorType(SensorTypeEnum::VELOCITY_METER);
+      toggle->setCurrentText("Yes");
+      type->setCurrentIndex(0);
+      attribute->setCurrentText("Velocity");
+      operation->setCurrentText("Average");
+      direction->setCurrentText("N/A");
     } else if (val == "Load-Cells") {
       setSensorType(SensorTypeEnum::LOAD_CELL);
+      toggle->setCurrentText("Yes");
+      type->setCurrentIndex(0);
+      attribute->setCurrentText("Force");
+      operation->setCurrentText("Sum");
+      direction->setCurrentText("X+");
     } else if (val == "Piezometers") {
       setSensorType(SensorTypeEnum::PIEZO_METER);
+      toggle->setCurrentText("Yes");
+      type->setCurrentIndex(0);
+      attribute->setCurrentText("Pressure");
+      operation->setCurrentText("Average");
+      direction->setCurrentText("N/A");
     }
   });
   

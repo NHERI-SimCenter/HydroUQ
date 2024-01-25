@@ -60,8 +60,8 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   //
   int numRow = 0;
   QStringList yesNo; yesNo << "Yes" << "No";
-  QStringList particleExt; particleExt << "BGEO" << "VTK" << "GEO" << "CSV" << "TXT" << "PDB";
-  QStringList checkpointsExt; checkpointsExt << "BGEO" << "GEO" << "VTK" << "CSV" << "TXT" << "PDB";
+  QStringList particleExt; particleExt << "BGEO" << "GEO" << "CSV" << "TXT" << "PDB"; // VTK
+  QStringList checkpointsExt; checkpointsExt << "BGEO" << "GEO" << "CSV" << "TXT" << "PDB"; // VTK
   QStringList boundariesExt; boundariesExt << "OBJ" << "STL";
   QStringList sensorExt; sensorExt << "CSV" << "TXT";
   QStringList energiesExt; energiesExt << "CSV" << "TXT";
@@ -84,6 +84,9 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   usePotentialEnergy = new SC_CheckBox("usePotentialEnergy");
   useStrainEnergy = new SC_CheckBox("useStrainEnergy");
 
+  bodies_OutputExteriorOnly = new SC_CheckBox("particles_output_exterior_only");
+  bodies_OutputExteriorOnly->setChecked(false);
+
   // vtkSensors_Output = new SC_ComboBox("sensor_save_suffix", sensorExt);
   // outputSensors_Dt  = new SC_DoubleLineEdit("output_freq", 30);
   
@@ -103,6 +106,10 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   bodiesLayout->itemAt(bodiesLayout->count()-1)->setAlignment(Qt::AlignRight);
   bodiesLayout->addWidget(outputBodies_Dt,numRow,1);
   bodiesLayout->addWidget(new QLabel("Hz"),numRow++,2);  
+  bodiesLayout->addWidget(new QLabel("Only Save Exterior Particles?"),numRow,0);
+  bodiesLayout->itemAt(bodiesLayout->count()-1)->setAlignment(Qt::AlignRight);
+  bodiesLayout->addWidget(bodies_OutputExteriorOnly,numRow++,1);
+  bodiesLayout->setRowStretch(numRow, 1);
 
   numRow = 0;
   QGroupBox *checkpointBox = new QGroupBox("Checkpoint-Resume State");
@@ -202,12 +209,13 @@ OutputsMPM::outputToJSON(QJsonObject &jsonObject)
   outputsObject["useKineticEnergy"] = useKineticEnergy->isChecked();
   outputsObject["usePotentialEnergy"] = usePotentialEnergy->isChecked();
   outputsObject["useStrainEnergy"] = useStrainEnergy->isChecked();
-
+  outputsObject["particles_output_exterior_only"] = bodies_OutputExteriorOnly->isChecked();
   jsonObject["outputs"] = outputsObject;
 
   // ClaymoreUW artifacts, will deprecate. These are moved into the "simulation" settings object 
   jsonObject["save_suffix"] = vtkBodies_Output->itemText(vtkBodies_Output->currentIndex());
   jsonObject["fps"] = outputBodies_Dt->text().toDouble();
+  jsonObject["particles_output_exterior_only"] = bodies_OutputExteriorOnly->isChecked();
   return true;
 }
 

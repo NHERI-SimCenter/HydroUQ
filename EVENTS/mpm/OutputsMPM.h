@@ -73,12 +73,13 @@ private:
   SC_ComboBox       *vtkBoundaries_Output;
   SC_ComboBox       *vtkCheckpoints_Output;
   SC_ComboBox       *vtkEnergies_Output;
-
   SC_DoubleLineEdit *outputBodies_Dt;
   SC_DoubleLineEdit *outputSensors_Dt;
   SC_DoubleLineEdit *outputCheckpoints_Dt;
   SC_DoubleLineEdit *outputBoundaries_Dt;
   SC_DoubleLineEdit *outputEnergies_Dt;
+  SC_CheckBox       *bodies_OutputExteriorOnly;
+  
 
   SC_CheckBox       *useKineticEnergy;
   SC_CheckBox       *useStrainEnergy;

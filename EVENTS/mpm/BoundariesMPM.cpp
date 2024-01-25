@@ -260,3 +260,14 @@ BoundariesMPM::copyFiles(QString &destDir)
   return flag; // True if all copyFile return true (i.e., no errors)
 }
 
+bool
+BoundariesMPM::setDigitalTwin(int twinIdx)
+{
+  // Set digital twin facility
+  for (int i=0; i<numAddedTabs; i++) {
+    if (i >= numReserveTabs) break;
+    // Wave flume facility tab, TODO: Refactor a bit
+    addedBoundary[i]->setDigitalTwin(twinIdx);
+  }
+  return true;
+}

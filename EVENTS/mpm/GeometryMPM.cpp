@@ -929,3 +929,128 @@ GeometryMPM::copyFiles(QString &destDir)
   return true;
 }
 
+bool
+GeometryMPM::setDigitalTwin(int twinIdx) 
+{
+  // Way to set the digital twin from higher levels,
+  // e.g. to set the geometry digital twin to "Hinsdale Large Wave Flume (OSU LWF)" if the user selects the OSU LWF digital twin
+  if (twinIdx < 0 || twinIdx > facility->count()) {
+    // QDebug() << "Error: Invalid digital twin index";
+    return false;
+  }
+  facility->setCurrentIndex(twinIdx);
+  // Default Fluid template to OSU LWF water object
+
+  if (bodyPreset->currentText() == "Fluid") {
+    if (twinIdx == 0) { // OSU LWF
+      fillFlumeUptoSWL->setChecked(true);
+      standingWaterLevel->setText("2.0");
+    } else if (twinIdx == 1) { // OSU DWB
+      fillFlumeUptoSWL->setChecked(true);
+      standingWaterLevel->setText("0.87");
+    } else if (twinIdx == 2) { // UW WASIRF
+      fillFlumeUptoSWL->setChecked(true);
+      standingWaterLevel->setText("0.2"); // Recheck Nikki's SWLs
+    } else if (twinIdx == 3) { // WU TWB
+      fillFlumeUptoSWL->setChecked(true);
+      standingWaterLevel->setText("0.23");
+    } else if (twinIdx == 4) { // USGS DFF
+      fillFlumeUptoSWL->setChecked(false);
+      standingWaterLevel->setText("0.0");
+    } 
+  } else if (bodyPreset->currentText() == "Debris") {
+    if (twinIdx == 0) { // OSU LWF
+      objectType->setCurrentIndex(twinIdx); 
+      length->setText(QString::number(0.5));
+      height->setText(QString::number(0.05));
+      width->setText(QString::number(0.1));
+      originX->setText(QString::number(42.8));
+      originY->setText(QString::number(2.0));
+      originZ->setText(QString::number(1.475));
+      applyArray->setChecked(true);
+      spacingX->setText(QString::number(0.6));
+      spacingY->setText(QString::number(0.0));
+      spacingZ->setText(QString::number(0.2));
+      arrayX->setText(QString::number(2));
+      arrayY->setText(QString::number(1));
+      arrayZ->setText(QString::number(4));
+    }
+    else if (twinIdx == 1) { // OSU DWB
+      objectType->setCurrentIndex(twinIdx); 
+      length->setText(QString::number(0.10));
+      height->setText(QString::number(0.05));
+      width->setText(QString::number(0.10));
+      originX->setText(QString::number(31.29));
+      originY->setText(QString::number(1.0));
+      originZ->setText(QString::number(0.4));
+      applyArray->setChecked(true);
+      spacingX->setText(QString::number(0.15));
+      spacingY->setText(QString::number(0.0));
+      spacingZ->setText(QString::number(0.15));
+      arrayX->setText(QString::number(4));
+      arrayY->setText(QString::number(1));
+      arrayZ->setText(QString::number(5));
+    }
+    else if (twinIdx == 2) { // UW WASIRF
+      objectType->setCurrentIndex(twinIdx); 
+      length->setText(QString::number(0.1016));
+      height->setText(QString::number(0.0254));
+      width->setText(QString::number(0.0254));
+      // TODO: Recheck specs of the debris from Nikkis work (4x1x1"?)
+      originX->setText(QString::number(4.0)); 
+      originY->setText(QString::number(0.2)); // Recheck the height
+      originZ->setText(QString::number(0.5873));
+      applyArray->setChecked(false);
+      spacingX->setText(QString::number(0.1016));
+      spacingY->setText(QString::number(0.0254));
+      spacingZ->setText(QString::number(0.0254));
+      arrayX->setText(QString::number(1));
+      arrayY->setText(QString::number(1));
+      arrayZ->setText(QString::number(1));
+    }
+    else if (twinIdx == 3) { // WU TWB
+      objectType->setCurrentIndex(twinIdx); 
+      length->setText(QString::number(0.06));
+      height->setText(QString::number(0.06));
+      width->setText(QString::number(0.15));
+      originX->setText(QString::number(5.05)); //Recheck
+      originY->setText(QString::number(0.255)); // Recheck the height
+      originZ->setText(QString::number(1.725));
+      applyArray->setChecked(true);
+      spacingX->setText(QString::number(0.0));
+      spacingY->setText(QString::number(0.12));
+      spacingZ->setText(QString::number(0.05));
+      arrayX->setText(QString::number(1));
+      arrayY->setText(QString::number(2));
+      arrayZ->setText(QString::number(3));
+    }
+    else if (twinIdx == 4) { // USGS DFF
+      // Placeholder structure 
+      objectType->setCurrentIndex(twinIdx); // Box?
+      length->setText(QString::number(0.5));
+      height->setText(QString::number(0.05));
+      width->setText(QString::number(0.1));
+      originX->setText(QString::number(2.0));
+      originY->setText(QString::number(2.0));
+      originZ->setText(QString::number(0.65));
+      applyArray->setChecked(true);
+      spacingX->setText(QString::number(0.6));
+      spacingY->setText(QString::number(0.0));
+      spacingZ->setText(QString::number(0.2));
+      arrayX->setText(QString::number(2));
+      arrayY->setText(QString::number(1));
+      arrayZ->setText(QString::number(4));
+      //Need to rotate these as well due to grav vector and sloped soil mass
+
+    }
+
+  } else if (bodyPreset->currentText() == "Structure") {
+    // objectType->setCurrentText("Box");
+    //TODO: Add structure presets
+    // TODO: Force constency for rigid/non-rigid selection of structure
+  } else if (bodyPreset->currentText() == "Custom") {
+    // Do nothing
+  }
+
+  return true;
+}

@@ -68,8 +68,8 @@ MPM::MPM(QWidget *parent)
 
 
 
-    QLabel *generalDescriptionLabel = new QLabel("\n Place waterborne events (EVT) in NHERI Digital Twins to streamline your experimental research."
-                                                 "\n ClaymoreUW, a high-performance 3D Material Point Method code, is used.");
+    QLabel *generalDescriptionLabel = new QLabel(" Create waterborne events (EVT) in NHERI SimCenter Digital Twins to streamline your experimental research."
+                                                 "\n ");
                                                 //  "\n"
                                                 //  "\n 1.) Set general simulation Settings, e.g. the total simulation duration."						 
                                                 //  "\n 2.) Define Bodies (e.g. fluid, debris, structures, etc) via materials and initial conditions."
@@ -78,6 +78,7 @@ MPM::MPM(QWidget *parent)
                                                 //  "\n 5.) Select other Output settings (e.g. write simulation checkpoint-resume files).");
                                                 //  "\n 6.) If all side-bar pages are complete, click [RUN at DesignSafe] (bottom of the app) to simulate your Event.");
     generalDescriptionLabel->setWordWrap(true);
+    generalDescriptionLabel->setAlignment(Qt::AlignCenter);
     mainLayout->addWidget(generalDescriptionLabel, 0, 0);
 
     // ==================== Digital Twin Description and Selection ====================
@@ -297,7 +298,11 @@ MPM::MPM(QWidget *parent)
         next->setEnabled(true);
     });
 
-    mainLayout->setRowStretch(0, 4);
+    QLabel *aboveTabs = new QLabel("\nSelect a Digital Twin Above To Begin\n");
+    aboveTabs->setAlignment(Qt::AlignCenter);
+    // aboveTabs->setStyleSheet("QLabel {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}"
+    //                          "QLabel:disabled {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}");
+    mainLayout->addWidget(aboveTabs, 2, 0);
 
     // ==================== Simulation Set-Up ====================
     mpmSettings = new SettingsMPM();
@@ -321,6 +326,7 @@ MPM::MPM(QWidget *parent)
     mainGroup->setMinimumWidth(windowWidthMin);
     mainGroup->setMaximumWidth(windowWidth);
     // mainGroup->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+    mainLayout->setRowStretch(0, 4);
 
     QScrollArea *scrollArea = new QScrollArea();
     scrollArea->setWidgetResizable(true);
@@ -333,6 +339,27 @@ MPM::MPM(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(scrollArea);
     this->setLayout(layout);
+
+
+  connect(stackedWidget, &SlidingStackedWidget::animationFinished, [=](void){
+    // if(index == 0){
+    //   aboveTabs->setText("\nOregon State University's Large Wave Flume - OSU LWF\n");
+    // } else if(index == 1){
+    //   aboveTabs->setText("\nOregon State University's Directional Wave Basin - OSU DWB\n");
+    // } else if(index == 2){
+    //   aboveTabs->setText("\nUniversity of Washington's Wind-Air-Sea Interatction Research Facility - UW WASIRF\n");
+    // } else if(index == 3){
+    //   aboveTabs->setText("\nWaseda University's Tsunami Wave Basin - WU TWB\n");
+    // } else if(index == 4){
+    //   aboveTabs->setText("\nUnited States Geological Survey's Debris Flow Flume - USGS DFF\n");
+    // }
+    // mpmBodies->setDigitalTwin(index);
+    int index = stackedWidget->currentIndex();
+    mpmBodies->setDigitalTwin(index);
+    mpmBoundaries->setDigitalTwin(index);
+  });
+
+
 }
 
 
@@ -407,6 +434,9 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
     }
     if (outputsObject.contains("fps") && outputsObject["fps"].isDouble()) {
       my_sim["fps"] = outputsObject["fps"].toDouble(); // for ClaymoreUW, simulation:fps = outputs:outputBodies_Dt
+    }
+    if (outputsObject.contains("particles_output_exterior_only") && outputsObject["particles_output_exterior_only"].isBool()) {
+      my_sim["particles_output_exterior_only"] = outputsObject["particles_output_exterior_only"].toBool(); // for ClaymoreUW, simulation:particles_output_exterior_only = outputs:bodies_OutputExteriorOnly
     }
     // To be an output option, not a simulation option
     if ((my_sim.contains("duration") && my_sim["duration"].isDouble()) && (my_sim.contains("fps") && my_sim["fps"].isDouble())) {

@@ -345,7 +345,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   numRow = 0;
 
-  QStringList listObject; listObject << "Orange Box - OSU LWF" << "Grey Box - UW WASIRF" << "Square Columns - WU TWB" << "Box" << "Cylinder" << "Wedge" << "Sphere" << "Custom";  
+  QStringList listObject; listObject << "Orange Box - OSU LWF" << "Square Columns - OSU DWB"<< "Grey Box - UW WASIRF" << "Square Columns - WU TWB" << "Box" << "Cylinder" << "Wedge" << "Sphere" << "Custom";  
   structObjectType = new SC_ComboBox("structObjectType",listObject);
   structLayout->addWidget(new QLabel("Object Type"),numRow,0);
   structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
@@ -959,3 +959,140 @@ BoundaryMPM::copyFiles(QString &destDir)
   return paddleDisplacementFile->copyFile(destDir);    
 }
 
+bool
+BoundaryMPM::setDigitalTwin(int twinIdx)
+{
+  // TODO: Refactor to rely more on "facility" for consistency, rather than hard-coding
+  int numTwins = 5; // Currently have 5 twins in prototype
+  if (twinIdx >= numTwins) return false;
+
+
+  if (boundaryType->currentIndex() == 1) {
+    facility->setCurrentIndex(twinIdx); // Change the digital twin facility 
+  }
+  else if (boundaryType->currentIndex() == 2) {
+    // Wave generator
+  }
+  else if (boundaryType->currentIndex() == 3) {
+    // Rigid structures
+    // Preset rigid structures for the digital twin experiments
+    if (twinIdx == 0) { // OSU LWF
+      structContactType->setCurrentIndex(0); // Separable
+      structObjectType->setCurrentIndex(twinIdx); // Orange Box - OSU LWF
+      structLength->setText(QString::number(1.0));
+      structHeight->setText(QString::number(0.625));
+      structWidth->setText(QString::number(1.0));
+      structOriginLength->setText(QString::number(45.8));
+      structOriginHeight->setText(QString::number(2.0));
+      structOriginWidth->setText(QString::number(1.325));
+      applyArray->setChecked(false);
+    }
+    else if (twinIdx == 1) { // OSU DWB
+      structContactType->setCurrentIndex(0); // Separable
+      structObjectType->setCurrentIndex(twinIdx); // Square Columns - OSU DWB
+      structLength->setText(QString::number(0.4));
+      structHeight->setText(QString::number(0.3));
+      structWidth->setText(QString::number(0.4));
+      structOriginLength->setText(QString::number(35.29));
+      structOriginHeight->setText(QString::number(1.0));
+      structOriginWidth->setText(QString::number(0.4));
+      applyArray->setChecked(true);
+      structSpacingX->setText(QString::number(0.0));
+      structSpacingY->setText(QString::number(0.0));
+      structSpacingZ->setText(QString::number(0.4));
+      structArrayX->setText(QString::number(1));
+      structArrayY->setText(QString::number(1));
+      structArrayZ->setText(QString::number(12));
+    }
+    else if (twinIdx == 2) { // UW WASIRF
+      structContactType->setCurrentIndex(0); // Separable
+      structObjectType->setCurrentIndex(twinIdx); // Grey Box?
+      structLength->setText(QString::number(0.254));
+      structHeight->setText(QString::number(0.1524));
+      structWidth->setText(QString::number(0.254));
+      // TODO: Recheck specs of the grey box from Nikkis work (10x6x10"?, 1:4 Froude of OSU-LWF)
+      structOriginLength->setText(QString::number(8.0));
+      structOriginHeight->setText(QString::number(0.1)); // Recheck the height
+      structOriginWidth->setText(QString::number(0.473));
+      applyArray->setChecked(false);
+    }
+    else if (twinIdx == 3) { // WU TWB
+      structContactType->setCurrentIndex(0); // Separable
+      structObjectType->setCurrentIndex(twinIdx); // Box?
+      structLength->setText(QString::number(0.1));
+      structHeight->setText(QString::number(0.2));
+      structWidth->setText(QString::number(0.1));
+      structOriginLength->setText(QString::number(5.11)); // 0.77 from quay, 0.66 rel to dim
+      structOriginHeight->setText(QString::number(0.255));
+      structOriginWidth->setText(QString::number(2.6));
+      applyArray->setChecked(true);
+      structSpacingX->setText(QString::number(0.45));
+      structSpacingY->setText(QString::number(0.0));
+      structSpacingZ->setText(QString::number(0.325));
+      structArrayX->setText(QString::number(2));
+      structArrayY->setText(QString::number(1));
+      structArrayZ->setText(QString::number(5));
+      // 0.325 centerline spacing transverse, 0.225 gap
+      // 0.45 centerline longitudinal, 0.35 gap
+    }
+    else if (twinIdx == 4) { // USGS DFF
+      structContactType->setCurrentIndex(0); // Separable
+      // Placeholder structure 
+      structLength->setText(QString::number(0.25));
+      structHeight->setText(QString::number(0.25));
+      structWidth->setText(QString::number(0.25));
+      structOriginLength->setText(QString::number(80.0));
+      structOriginHeight->setText(QString::number(0.0));
+      structOriginWidth->setText(QString::number(0.75));
+      applyArray->setChecked(false);
+
+    }
+  }
+  else if (boundaryType->currentIndex() == 4) {
+    // Rigid walls
+    // Make sure the walls fit the wave flume's dimensions
+    if (twinIdx == 0) { // OSU LWF
+      wallsContactType->setCurrentIndex(0); // Separable
+      wallsLength->setText(QString::number(90.0));
+      wallsHeight->setText(QString::number(4.5));
+      wallsWidth->setText(QString::number(3.65));
+    }
+    else if (twinIdx == 1) { // OSU DWB
+      wallsContactType->setCurrentIndex(0); // Separable
+      wallsLength->setText(QString::number(48.8));
+      wallsHeight->setText(QString::number(2.7));
+      wallsWidth->setText(QString::number(26.5));
+    }
+    else if (twinIdx == 2) { // UW WASIRF
+      wallsContactType->setCurrentIndex(0); // Separable
+      wallsLength->setText(QString::number(12));
+      wallsHeight->setText(QString::number(1.2));
+      wallsWidth->setText(QString::number(0.9));
+    }
+    else if (twinIdx == 3) { // WU TWB
+      wallsContactType->setCurrentIndex(0); // Separable
+      wallsLength->setText(QString::number(9.0));
+      wallsHeight->setText(QString::number(1.0));
+      wallsWidth->setText(QString::number(4.0));
+    }
+    else if (twinIdx == 4) { // USGS DFF
+      wallsContactType->setCurrentIndex(0); // Separable
+      wallsLength->setText(QString::number(100.0));
+      wallsHeight->setText(QString::number(2.0));
+      wallsWidth->setText(QString::number(2.0));
+    }
+    originLength->setText(QString::number(0.0));
+    originHeight->setText(QString::number(0.0));
+    originWidth->setText(QString::number(0.0));
+  }
+  else if (boundaryType->currentIndex() == 0) {
+    // Custom, so probably don't do anything
+  }
+  else {
+    qDebug() << "Boundary type not recognized";
+    return false;
+  }
+  return true;
+
+  // TODO: Change parameters for things other than wave flume boundary (e.g. rigid structure)
+}

@@ -207,3 +207,10 @@ GeometriesMPM::copyFiles(QString &destDir)
   return true;
 }
 
+bool GeometriesMPM::setDigitalTwin(int twinIdx)
+{
+  // TODO: Refactor because tabs can be moved around, etc.
+  addedGeometry[0]->setDigitalTwin(twinIdx); // Assume first geometry is for digital twin
+  return true;
+}
+

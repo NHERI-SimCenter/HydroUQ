@@ -70,6 +70,7 @@ public:
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);  
     bool setBoundaryType(int typeIdx);
+    bool setDigitalTwin(int typeIdx);
 signals:
 
 private:

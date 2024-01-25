@@ -135,8 +135,9 @@ BodiesMPM::BodiesMPM(QWidget *parent)
     numAddedTabs += 1;
   });
 
+  int numRequiredTabs = 1; // Always keep one tab so the JSON output is valid 
   connect(delB, &QPushButton::released, this, [=]() {
-    if (( tabWidget->currentIndex() == -1) || (tabWidget->count() <= numDefaultTabs) || (tabWidget->currentIndex() < numDefaultTabs)) 
+    if (( tabWidget->currentIndex() == -1) || (tabWidget->count() <= numDefaultTabs))
       return;
     
     auto widget = tabWidget->widget(tabWidget->currentIndex());
@@ -158,9 +159,8 @@ BodiesMPM::BodiesMPM(QWidget *parent)
     numAddedTabs -= 1;
   }); 
 
-  int numRequiredTabs = 1; // Always keep one tab so the JSON output is valid 
   connect(tabWidget, &QTabWidget::tabCloseRequested, this, [=](int index) {
-    if (( index == -1) || (tabWidget->count() <= 1) || (index < numDefaultTabs)) 
+    if (( index == -1) || (tabWidget->count() <= numDefaultTabs) ) 
       return; 
 
     // tabWidget->setCurrentIndex(index-1);
@@ -589,6 +589,22 @@ BodiesMPM::copyFiles(QString &destDir)
   //   return false;
   // return theSurfaceFile->copyFile(destDir);    
 
+  return true;
+}
+
+bool
+BodiesMPM::setDigitalTwin(int twinIdx)
+{
+  fluidGeometries->setDigitalTwin(twinIdx);
+  // fluidMaterial->setDigitalTwin(twinIdx);
+
+  debrisGeometries->setDigitalTwin(twinIdx);
+  // debrisMaterial->setDigitalTwin(twinIdx);
+
+  structureGeometries->setDigitalTwin(twinIdx);
+  // structureMaterial->setDigitalTwin(twinIdx);
+
+  // Assuming not apply twin to custom tabs
   return true;
 }
 
