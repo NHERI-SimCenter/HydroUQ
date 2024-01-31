@@ -121,7 +121,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   mirrorDomainX = new SC_CheckBox("mirrorDomainX",false);
   mirrorDomainY = new SC_CheckBox("mirrorDomainY",false);
   mirrorDomainZ = new SC_CheckBox("mirrorDomainZ",false);
-  dimensionsBoxLayout->addWidget(new QLabel("Mirror Domain Over YZ-XZ-XY?"), numRow, 0);
+  dimensionsBoxLayout->addWidget(new QLabel("Mirror Domain (Over YZ-XZ-XY)"), numRow, 0);
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   dimensionsBoxLayout->addWidget(mirrorDomainX, numRow, 1);  
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignCenter);
@@ -149,7 +149,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   timeBoxLayout->addWidget(timeStep, numRow, 1);
   timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 2);
 
-  QStringList timeIntegrationList ; timeIntegrationList <<  "Explicit (Forward Euler)" << "Semi-Implicit (Symplectic Euler)";
+  QStringList timeIntegrationList ; timeIntegrationList <<  "Explicit (Forward Euler)"; //<< "Semi-Implicit (Symplectic Euler)";
   timeIntegration = new SC_ComboBox("time_integration", timeIntegrationList);    
   timeBoxLayout->addWidget(new QLabel("Time-Integration Style"), numRow, 0);
   timeBoxLayout->itemAt(timeBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
@@ -276,15 +276,15 @@ SettingsMPM::SettingsMPM(QWidget *parent)
       numGPUs->setText("4");
       modelsPerGPU->setText("3");
       hpcCardBrand->setText("NVIDIA");
-      hpcCardName->setText("NVIDIA Quadro RTX 5000");
+      hpcCardName->setText("Quadro RTX 5000");
       hpcCardArchitecture->setText("Turing");
       hpcCardComputeCapability->setText("75");
       hpcCardGlobalMemory->setText("16");
     } else if (val == "TACC - UT Austin - Lonestar6") {
-      numGPUs->setText("4");
+      numGPUs->setText("3");
       modelsPerGPU->setText("3");
       hpcCardBrand->setText("NVIDIA");
-      hpcCardName->setText("NVIDIA A100");
+      hpcCardName->setText("A100");
       hpcCardArchitecture->setText("Ampere");
       hpcCardComputeCapability->setText("80");
       hpcCardGlobalMemory->setText("40");
@@ -302,7 +302,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
       numGPUs->setText("2");
       modelsPerGPU->setText("3");
       hpcCardBrand->setText("NVIDIA");
-      hpcCardName->setText("NVIDIA RTX 2080ti");
+      hpcCardName->setText("RTX 2080ti");
       hpcCardArchitecture->setText("Turing");
       hpcCardComputeCapability->setText("75");
       hpcCardGlobalMemory->setText("12");
@@ -311,7 +311,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
       numGPUs->setText("2");
       modelsPerGPU->setText("3");
       hpcCardBrand->setText("NVIDIA");
-      hpcCardName->setText("NVIDIA H100 PCIe");
+      hpcCardName->setText("H100");
       hpcCardArchitecture->setText("Hopper");
       hpcCardComputeCapability->setText("90");
       hpcCardGlobalMemory->setText("80");
@@ -320,19 +320,19 @@ SettingsMPM::SettingsMPM(QWidget *parent)
       numGPUs->setText("2");
       modelsPerGPU->setText("3");
       hpcCardBrand->setText("NVIDIA");
-      hpcCardName->setText("NVIDIA V100");
+      hpcCardName->setText("V100");
       hpcCardArchitecture->setText("Tesla");
       hpcCardComputeCapability->setText("70");
-      hpcCardGlobalMemory->setText("80");
+      hpcCardGlobalMemory->setText("32");
     } 
     else if ((val == "Your Computer") || (val == "Custom")) {
       numGPUs->setText("1"); // Assume 1 GPU on user's computer
       modelsPerGPU->setText("2"); // Assume just 2 models fit on user's GPU
-      hpcCardName->setText("Enter GPU Name"); 
-      hpcCardBrand->setText("Enter Brand");   
-      hpcCardArchitecture->setText("Enter Architecture");
-      hpcCardComputeCapability->setText("Enter Compute Capability (XY)");
-      hpcCardGlobalMemory->setText("Enter Global Memory");
+      hpcCardName->setText(""); 
+      hpcCardBrand->setText("");   
+      hpcCardArchitecture->setText("");
+      hpcCardComputeCapability->setText("");
+      hpcCardGlobalMemory->setText("");
       }
   });
 

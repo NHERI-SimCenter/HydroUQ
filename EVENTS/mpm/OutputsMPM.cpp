@@ -44,6 +44,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QTabWidget>
+#include <QVector>
+#include <QStringList>
 
 #include <SC_TableEdit.h>
 #include <SC_ComboBox.h>
@@ -60,9 +62,9 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   //
   int numRow = 0;
   QStringList yesNo; yesNo << "Yes" << "No";
-  QStringList particleExt; particleExt << "BGEO" << "GEO" << "CSV" << "TXT" << "PDB"; // VTK
-  QStringList checkpointsExt; checkpointsExt << "BGEO" << "GEO" << "CSV" << "TXT" << "PDB"; // VTK
-  QStringList boundariesExt; boundariesExt << "OBJ" << "STL";
+  QStringList particleExt; particleExt << "BGEO" << "GEO" << "CSV" << "TXT"; // VTK
+  QStringList checkpointsExt; checkpointsExt << "BGEO" << "GEO" << "CSV" << "TXT"; // VTK
+  QStringList boundariesExt; boundariesExt << "OBJ" ;
   QStringList sensorExt; sensorExt << "CSV" << "TXT";
   QStringList energiesExt; energiesExt << "CSV" << "TXT";
 
@@ -76,7 +78,7 @@ OutputsMPM::OutputsMPM(QWidget *parent)
 
   outputBodies_Dt  = new SC_DoubleLineEdit("bodies_output_freq", 10);
   outputBoundaries_Dt  = new SC_DoubleLineEdit("boundaries_output_freq", 30);
-  outputSensors_Dt  = new SC_DoubleLineEdit("sensors_output_freq", 30);
+  // outputSensors_Dt  = new SC_DoubleLineEdit("sensors_output_freq", 30);
   outputCheckpoints_Dt  = new SC_DoubleLineEdit("checkpoints_output_freq", 1);
   outputEnergies_Dt = new SC_DoubleLineEdit("energies_output_freq", 30);
 
@@ -109,6 +111,20 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   bodiesLayout->addWidget(new QLabel("Only Save Exterior Particles?"),numRow,0);
   bodiesLayout->itemAt(bodiesLayout->count()-1)->setAlignment(Qt::AlignRight);
   bodiesLayout->addWidget(bodies_OutputExteriorOnly,numRow++,1);
+
+  bodiesLayout->addWidget(new QLabel("Output Attributes"),numRow++,0);
+  bodiesLayout->itemAt(bodiesLayout->count()-1)->setAlignment(Qt::AlignRight);
+  QStringList bodiesAttribsHeadings; bodiesAttribsHeadings << "1st" << "2nd" << "3rd" << "4th" << "5th";
+  QStringList bodiesAttribsStrings; bodiesAttribsStrings << "ID" << "Pressure" << "" << "" << "" 
+                                     << "ID" << "Pressure" << "Velocity_X" << "Velocity_Y" << "Velocity_Z" 
+                                     << "ID" << "Pressure" << "VonMisesStress" << "DefGrad_Invariant2" << "DefGrad_Invariant3" ;
+  bodiesAttribsTable = new SC_TableEdit("bodiesAttribsTable", bodiesAttribsHeadings, 3, bodiesAttribsStrings);
+  bodiesLayout->addWidget(bodiesAttribsTable,numRow++,0,1,3);
+
+  
+
+
+
   bodiesLayout->setRowStretch(numRow, 1);
 
   numRow = 0;
@@ -203,13 +219,32 @@ OutputsMPM::outputToJSON(QJsonObject &jsonObject)
   outputsObject["bodies_output_freq"] = outputBodies_Dt->text().toDouble();
   outputsObject["checkpoints_output_freq"] = outputCheckpoints_Dt->text().toDouble();
   outputsObject["boundaries_output_freq"] = outputBoundaries_Dt->text().toDouble();
-  // outputsObject["sensors_output_freq"] = outputSensors_Dt->text().toDouble(); // Defined by individual sensor
   outputsObject["energies_output_freq"] = outputEnergies_Dt->text().toDouble();
 
   outputsObject["useKineticEnergy"] = useKineticEnergy->isChecked();
   outputsObject["usePotentialEnergy"] = usePotentialEnergy->isChecked();
   outputsObject["useStrainEnergy"] = useStrainEnergy->isChecked();
   outputsObject["particles_output_exterior_only"] = bodies_OutputExteriorOnly->isChecked();
+
+  // Each row of table becomes an array of strings, all arrays occupy a single array called "output_attribs"
+  // In-post, sort each array element (i.e. row of table) into the appropiate JSON body object based on the row order
+  // I.e., row 1 of table is added to the first JSON body object (should correspond to tab order I think)
+  // TODO: Refactor to better couple to bodies, not good to rely on sequential ordering
+  QJsonObject bodiesAttribsObject;
+  QJsonArray bodiesAttribsArray;
+  bodiesAttribsTable->outputToJSON(bodiesAttribsObject);
+  for (int i = 0; i < bodiesAttribsObject["bodiesAttribsTable"].toArray().size(); i++) {
+    QJsonArray temp_array = bodiesAttribsObject["bodiesAttribsTable"].toArray()[i].toArray();
+    for (int j = 0; j < temp_array.size(); j++) {
+      if (temp_array[j].toString().isEmpty()) {
+        temp_array.removeAt(j);
+        j--;
+      }
+    }
+    bodiesAttribsArray.append(temp_array);
+  }
+  outputsObject["output_attribs"] = bodiesAttribsArray;
+
   jsonObject["outputs"] = outputsObject;
 
   // ClaymoreUW artifacts, will deprecate. These are moved into the "simulation" settings object 

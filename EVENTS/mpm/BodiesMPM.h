@@ -83,25 +83,39 @@ signals:
 private:
   // TODO: Get-rid of explicitly typed fluid, debris, structure specializations. Messy and hard to maintain
   // Just use the general template but preset values with a setter function. Call in a higher scope at init.
-  GeometriesMPM       *fluidGeometries = nullptr;
-  MaterialMPM       *fluidMaterial = nullptr;
-  AlgorithmMPM      *fluidAlgorithm = nullptr;
-  PartitionsMPM      *fluidPartitions = nullptr;
+  GeometriesMPM     *fluidGeometries = nullptr;
+  MaterialMPM       *fluidMaterial   = nullptr;
+  AlgorithmMPM      *fluidAlgorithm  = nullptr;
+  PartitionsMPM     *fluidPartitions = nullptr;
+  SC_DoubleLineEdit *fluidVelocityX; 
+  SC_DoubleLineEdit *fluidVelocityY;
+  SC_DoubleLineEdit *fluidVelocityZ;
 
-  GeometriesMPM       *debrisGeometries = nullptr;
-  MaterialMPM       *debrisMaterial = nullptr;
-  AlgorithmMPM      *debrisAlgorithm = nullptr;
-  PartitionsMPM      *debrisPartitions = nullptr;
+  GeometriesMPM     *debrisGeometries = nullptr;
+  MaterialMPM       *debrisMaterial   = nullptr;
+  AlgorithmMPM      *debrisAlgorithm  = nullptr;
+  PartitionsMPM     *debrisPartitions = nullptr;
+  SC_DoubleLineEdit *debrisVelocityX; 
+  SC_DoubleLineEdit *debrisVelocityY;
+  SC_DoubleLineEdit *debrisVelocityZ;
 
-  GeometriesMPM       *structureGeometries = nullptr;
-  MaterialMPM       *structureMaterial = nullptr;
-  AlgorithmMPM      *structureAlgorithm = nullptr;
-  PartitionsMPM      *structurePartitions = nullptr;
+  GeometriesMPM     *structureGeometries = nullptr;
+  MaterialMPM       *structureMaterial   = nullptr;
+  AlgorithmMPM      *structureAlgorithm  = nullptr;
+  PartitionsMPM     *structurePartitions = nullptr;
+  SC_DoubleLineEdit *structureVelocityX; 
+  SC_DoubleLineEdit *structureVelocityY;
+  SC_DoubleLineEdit *structureVelocityZ;
 
   QVector<GeometriesMPM*> addedGeometries {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
-  QVector<MaterialMPM*> addedMaterial {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
-  QVector<AlgorithmMPM*> addedAlgorithm {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  QVector<MaterialMPM*>   addedMaterial   {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  QVector<AlgorithmMPM*>  addedAlgorithm  {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
   QVector<PartitionsMPM*> addedPartitions {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  // TODO: Vector of velocities for custom bodies
+  SC_DoubleLineEdit *addedVelocityX; 
+  SC_DoubleLineEdit *addedVelocityY;
+  SC_DoubleLineEdit *addedVelocityZ;
+
   int numReserveTabs = 8; // Assuming up-to 8 bodies for now so we pre-reserve. Will see how this fairs for users.
   int numAddedTabs = 0; 
   // TODO: include a vector of bools (C++ cav.) denoting tab activation so we can "shift left" if user deletes tab 3 of 8, etc.

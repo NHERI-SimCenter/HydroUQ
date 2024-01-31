@@ -459,6 +459,43 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
   // Bodies (models in ClaymoreUW currently)
   if (bodiesObjectWrapper.contains("bodies") && bodiesObjectWrapper["bodies"].toArray().size() > 0) {
     bodiesArray = bodiesObjectWrapper["bodies"].toArray();
+    int numBodies = bodiesArray.size();
+    
+    // Assign each body an output_attribs array (array of strings that define what attributes to output each frame per particle)
+    QJsonArray outputAttribsArray = outputsObject["outputs"].toObject()["output_attribs"].toArray(); // for ClaymoreUW, outputs:numOutputBodies = bodies:numBodies
+    int numOutputAttribs = outputAttribsArray.size();
+    for (int i = 0; i < numBodies; i++) {
+      // If there are more bodies than output attribs, just output IDs of particles
+      if (i >= numOutputAttribs) {
+        outputAttribsArray.append(QJsonArray::fromStringList(QStringList() << "ID"));
+      }
+      QJsonObject body = bodiesArray[i].toObject();
+      QJsonArray bodyAttribsArray = outputAttribsArray[i].toArray();
+      body["output_attribs"] = bodyAttribsArray;
+      bodiesArray[i] = body;
+    }
+
+    // Unravel partition array per body into additional bodies (maybe move this into ClaymoreUW itself)
+    for (int i = 0; i < numBodies; i++) {
+      QJsonObject body = bodiesArray[i].toObject();
+      
+      QJsonArray partitionArray = body["partition"].toArray();
+      int numPartitions = partitionArray.size();
+      for (int j = 0; j < numPartitions; j++) {
+        QJsonObject newBody = body;
+        QJsonObject partition = partitionArray[j].toObject();
+        newBody["gpu"] = partition["gpu"]; 
+        newBody["model"] = partition["model"]; // TODO: Update schema to body maybe
+        newBody["partition_start"] = partition["partition_start"]; // TODO: Update schema to body maybe
+        newBody["partition_end"] = partition["partition_end"]; // TODO: Update schema to body maybe
+        if (j == 0) {
+          bodiesArray[i] = newBody;
+          continue;
+        }
+        bodiesArray.append(newBody); // TODO: Insert instead of append
+      }
+    }
+    // Add the bodies array to the jsonObject
     jsonObject["bodies"] = bodiesArray; // for the future schema
   }
 

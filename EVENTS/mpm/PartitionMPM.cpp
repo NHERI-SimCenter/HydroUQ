@@ -138,13 +138,11 @@ PartitionMPM::setDefaultModelID(int model)
 bool
 PartitionMPM::outputToJSON(QJsonObject &jsonObject)
 {
-  // theOpenSeesPyScript->outputToJSON(jsonObject);
-  // theSurfaceFile->outputToJSON(jsonObject);  
   QJsonObject partitionObject;
 
   // Note: ClaymoreUW will also need these defined in the JSON model/body object, not just the nested JSON partition/device object
-  partitionObject["gpu"] = deviceNumber->text().toDouble();
-  partitionObject["model"] = bodyNumber->text().toDouble();
+  partitionObject["gpu"] = deviceNumber->text().toInt();
+  partitionObject["model"] = bodyNumber->text().toInt();
 
   // Future schema
   if (0) {

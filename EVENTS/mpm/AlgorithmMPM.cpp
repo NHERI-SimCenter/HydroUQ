@@ -224,15 +224,15 @@ AlgorithmMPM::outputToJSON(QJsonObject &jsonObject)
   jsonObject["algorithm"] = algorithmObject;
 
   // ClaymoreUW artifacts, Global algorithm settings. TODO: Deprecate
-  jsonObject["numerical_method"] = numericalMethod->currentText();
-  jsonObject["ppc"] = particlesPerCell->text().toDouble();
-  jsonObject["use_ASFLIP"] = useASFLIP->isChecked();
-  jsonObject["use_FBAR"] = useFBAR->isChecked();
-  jsonObject["FBAR_fused_kernel"] = useFBAR_fusedG2P2G->isChecked(); // TODO: Rename
-  jsonObject["alpha"] = ASFLIP_alpha->text().toDouble(); // TODO: Rename
-  jsonObject["beta_min"] = ASFLIP_betaMin->text().toDouble(); // TODO: Rename
-  jsonObject["beta_max"] = ASFLIP_betaMax->text().toDouble(); // TODO: Rename
-  jsonObject["FBAR_ratio"] = FBAR_psi->text().toDouble(); // TODO: Rename?
+  // jsonObject["type"] = numericalMethod->currentText();
+  // jsonObject["ppc"] = particlesPerCell->text().toDouble();
+  // jsonObject["use_ASFLIP"] = useASFLIP->isChecked();
+  // jsonObject["use_FBAR"] = useFBAR->isChecked();
+  // jsonObject["FBAR_fused_kernel"] = useFBAR_fusedG2P2G->isChecked(); // TODO: Rename
+  // jsonObject["alpha"] = ASFLIP_alpha->text().toDouble(); // TODO: Rename
+  // jsonObject["beta_min"] = ASFLIP_betaMin->text().toDouble(); // TODO: Rename
+  // jsonObject["beta_max"] = ASFLIP_betaMax->text().toDouble(); // TODO: Rename
+  // jsonObject["FBAR_ratio"] = FBAR_psi->text().toDouble(); // TODO: Rename?
 
   return true;
 }

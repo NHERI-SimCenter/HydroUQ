@@ -80,6 +80,7 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   QFrame *theHeaderFrame = new QFrame();
   QGridLayout *headerLayout = new QGridLayout();
   theHeaderFrame->setLayout(headerLayout);
+
   headerLayout->addWidget(addB,0,0);
   headerLayout->addWidget(delB,0,1);  
   headerLayout->setColumnStretch(2,1);
@@ -198,8 +199,15 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   modelFluidTabWidget->addTab(fluidPartitions, QIcon(QString(":/icons/cpu-black.svg")),"Partitions");
   modelFluidTabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
 
-
-  theFluidLayout->addWidget(modelFluidTabWidget);
+  fluidVelocityX = new SC_DoubleLineEdit("fluid_velocity_x", 0.0);
+  fluidVelocityY = new SC_DoubleLineEdit("fluid_velocity_y", 0.0);
+  fluidVelocityZ = new SC_DoubleLineEdit("fluid_velocity_z", 0.0);
+  theFluidLayout->addWidget(new QLabel("Fluid Velocity (X,Y,Z)"), 0, 0);
+  theFluidLayout->addWidget(fluidVelocityX, 0, 1);
+  theFluidLayout->addWidget(fluidVelocityY, 0, 2);
+  theFluidLayout->addWidget(fluidVelocityZ, 0, 3);
+  theFluidLayout->addWidget(new QLabel("m/s"), 0, 4);
+  theFluidLayout->addWidget(modelFluidTabWidget, 1, 0, 1, 5);
 
 
   // Debris 
@@ -221,7 +229,16 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   modelDebrisTabWidget->addTab(debrisPartitions, QIcon(QString(":/icons/cpu-black.svg")),"Partitions");
   modelDebrisTabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
 
-  theDebrisLayout->addWidget(modelDebrisTabWidget);
+  debrisVelocityX = new SC_DoubleLineEdit("debris_velocity_x", 0.0);
+  debrisVelocityY = new SC_DoubleLineEdit("debris_velocity_y", 0.0);
+  debrisVelocityZ = new SC_DoubleLineEdit("debris_velocity_z", 0.0);
+  theDebrisLayout->addWidget(new QLabel("Debris Velocity (X,Y,Z)"), 0, 0);
+  theDebrisLayout->addWidget(debrisVelocityX, 0, 1);
+  theDebrisLayout->addWidget(debrisVelocityY, 0, 2);
+  theDebrisLayout->addWidget(debrisVelocityZ, 0, 3);
+  theDebrisLayout->addWidget(new QLabel("m/s"), 0, 4);
+  theDebrisLayout->addWidget(modelDebrisTabWidget, 1, 0, 1, 5);
+  // theDebrisLayout->addWidget(modelDebrisTabWidget);
 
 
   // Structures
@@ -241,7 +258,17 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   modelStructureTabWidget->addTab(structureAlgorithm, QIcon(QString(":/icons/engine-black.svg")),"Algorithm");
   modelStructureTabWidget->addTab(structurePartitions, QIcon(QString(":/icons/cpu-black.svg")),"Partitions");
   modelStructureTabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
-  theStructureLayout->addWidget(modelStructureTabWidget);
+
+  structureVelocityX = new SC_DoubleLineEdit("structure_velocity_x", 0.0);
+  structureVelocityY = new SC_DoubleLineEdit("structure_velocity_y", 0.0);
+  structureVelocityZ = new SC_DoubleLineEdit("structure_velocity_z", 0.0);
+  theStructureLayout->addWidget(new QLabel("Structure Velocity (X,Y,Z)"), 0, 0);
+  theStructureLayout->addWidget(structureVelocityX, 0, 1);
+  theStructureLayout->addWidget(structureVelocityY, 0, 2);
+  theStructureLayout->addWidget(structureVelocityZ, 0, 3);
+  theStructureLayout->addWidget(new QLabel("m/s"), 0, 4);
+  theStructureLayout->addWidget(modelStructureTabWidget, 1, 0, 1, 5);
+  // theStructureLayout->addWidget(modelStructureTabWidget);
 
   //
   // Preset some specialized defaults
@@ -327,26 +354,13 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
     bodyObject["algorithm"] = fluidAlgorithmObject["algorithm"];
     bodyObject["partition"] = fluidPartitionsObject["partition"];
 
-    bodyObject["constitutive"] = fluidMaterialObject["constitutive"]; // global
-
-    bodyObject["ppc"]        = fluidAlgorithmObject["ppc"]; // global
-    bodyObject["use_ASFLIP"] = fluidAlgorithmObject["use_ASFLIP"]; // global
-    bodyObject["alpha"]      = fluidAlgorithmObject["alpha"]; // global
-    bodyObject["beta_min"]   = fluidAlgorithmObject["beta_min"]; // global
-    bodyObject["beta_max"]   = fluidAlgorithmObject["beta_max"]; // global
-    bodyObject["use_FBAR"]   = fluidAlgorithmObject["use_FBAR"]; // global
-    bodyObject["FBAR_ratio"] = fluidAlgorithmObject["FBAR_ratio"]; // global
-
-    // ClaymoreUW artifacts, TODO: Deprecate
-    if (0) bodyObject["device"] = fluidPartitionsObject;
-    else {
-      bodyObject["gpu"] = fluidPartitionsObject["gpu"]; // global
-      bodyObject["model"] = fluidPartitionsObject["model"]; // global
-      bodyObject["partition_start"] = fluidPartitionsObject["partition_start"]; // global
-      bodyObject["partition_end"] = fluidPartitionsObject["partition_end"]; // global
-    }
+    QJsonArray fluidVelocity = QJsonArray();
+    fluidVelocity.append(fluidVelocityX->text().toDouble());
+    fluidVelocity.append(fluidVelocityY->text().toDouble());
+    fluidVelocity.append(fluidVelocityZ->text().toDouble());
+    bodyObject["velocity"] = fluidVelocity; // global, TODO: Improve schema for Init Conditions rel. to Geometries
+  
     // ClaymoreUW, TODO: Deprecate in favor of MPM:bodies:outputs or MPM:outputs (latter preferred) 
-    bodyObject["output_attribs"] = QJsonArray::fromStringList(QStringList() << "Velocity_X" << "Pressure" << "ID"); // global
     bodyObject["target_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_Y"); // global
     bodyObject["track_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_X" << "Position_Z" << "Velocity_X" << "Velocity_Z" << "Pressure"); // global
     // Use initialize list for arrray
@@ -358,11 +372,6 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
     bodyObject["track_particle_id"] = trackParticleIdsArray; // global
     bodyObject["type"] = QJsonValue(QString("particles")); // global
 
-    QJsonArray bodyVelocityArray; // Need to find a spot for a bodies global initial conditions in the schema
-    bodyVelocityArray.append(QJsonValue(0.0).toDouble());
-    bodyVelocityArray.append(QJsonValue(0.0).toDouble());
-    bodyVelocityArray.append(QJsonValue(0.0).toDouble());
-    bodyObject["velocity"] = bodyVelocityArray; // global
     bodiesArray.append(bodyObject);
   }
 
@@ -388,26 +397,13 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
     bodyObject["algorithm"] = debrisAlgorithmObject["algorithm"];
     bodyObject["partition"] = debrisPartitionsObject["partition"]; // device
 
-    bodyObject["constitutive"] = debrisMaterialObject["constitutive"]; // global
-
-    bodyObject["ppc"]        = debrisAlgorithmObject["ppc"]; // global
-    bodyObject["use_ASFLIP"] = debrisAlgorithmObject["use_ASFLIP"]; // global
-    bodyObject["alpha"]      = debrisAlgorithmObject["alpha"]; // global
-    bodyObject["beta_min"]   = debrisAlgorithmObject["beta_min"]; // global
-    bodyObject["beta_max"]   = debrisAlgorithmObject["beta_max"]; // global
-    bodyObject["use_FBAR"]   = debrisAlgorithmObject["use_FBAR"]; // global
-    bodyObject["FBAR_ratio"] = debrisAlgorithmObject["FBAR_ratio"]; // global
-
-    // ClaymoreUW artifacts, TODO: Deprecate
-    if (0) bodyObject["device"] = debrisPartitionsObject; // device
-    else {
-      bodyObject["gpu"] = debrisPartitionsObject["gpu"]; // global
-      bodyObject["model"] = debrisPartitionsObject["model"]; // global
-      bodyObject["partition_start"] = debrisPartitionsObject["partition_start"]; // global
-      bodyObject["partition_end"] = debrisPartitionsObject["partition_end"]; // global
-    }
+    QJsonArray debrisVelocity = QJsonArray();
+    debrisVelocity.append(debrisVelocityX->text().toDouble());
+    debrisVelocity.append(debrisVelocityY->text().toDouble());
+    debrisVelocity.append(debrisVelocityZ->text().toDouble());
+    bodyObject["velocity"] = debrisVelocity; // global, TODO: Improve schema for Init Conditions rel. to Geometries
+  
     // ClaymoreUW, TODO: Deprecate in favor of MPM:bodies:outputs or MPM:outputs (latter preferred) 
-    bodyObject["output_attribs"] = QJsonArray::fromStringList(QStringList() << "Velocity_X" << "Pressure" << "ID"); // global
     bodyObject["target_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_Y"); // global
     bodyObject["track_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_X" << "Position_Z" << "Velocity_X" << "Velocity_Z" << "Pressure"); // global
     // Use initialize list for arrray
@@ -418,12 +414,6 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
     }
     bodyObject["track_particle_id"] = trackParticleIdsArray; // global
     bodyObject["type"] = QJsonValue(QString("particles")); // global
-
-    QJsonArray bodyVelocityArray; // Need to find a spot for a bodies global initial conditions in the schema
-    bodyVelocityArray.append(QJsonValue(0.0).toDouble());
-    bodyVelocityArray.append(QJsonValue(0.0).toDouble());
-    bodyVelocityArray.append(QJsonValue(0.0).toDouble());
-    bodyObject["velocity"] = bodyVelocityArray; // global    
     
     // Place the new body JSON object into the main bodies array
     bodiesArray.append(bodyObject);
@@ -451,28 +441,15 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
     bodyObject["algorithm"] = structureAlgorithmObject["algorithm"];
     bodyObject["partition"] = structurePartitionsObject["partition"];
 
-    bodyObject["constitutive"] = structureMaterialObject["constitutive"]; // global
-
-    bodyObject["ppc"]        = structureAlgorithmObject["ppc"]; // global
-    bodyObject["use_ASFLIP"] = structureAlgorithmObject["use_ASFLIP"]; // global
-    bodyObject["alpha"]      = structureAlgorithmObject["alpha"]; // global
-    bodyObject["beta_min"]   = structureAlgorithmObject["beta_min"]; // global
-    bodyObject["beta_max"]   = structureAlgorithmObject["beta_max"]; // global
-    bodyObject["use_FBAR"]   = structureAlgorithmObject["use_FBAR"]; // global
-    bodyObject["FBAR_ratio"] = structureAlgorithmObject["FBAR_ratio"]; // global
-
-    // ClaymoreUW artifacts, TODO: Deprecate
-    if (0) bodyObject["device"] = structurePartitionsObject; // device
-    else {
-      bodyObject["gpu"] = structurePartitionsObject["gpu"]; // global
-      bodyObject["model"] = structurePartitionsObject["model"]; // global
-      bodyObject["partition_start"] = structurePartitionsObject["partition_start"]; // global
-      bodyObject["partition_end"] = structurePartitionsObject["partition_end"]; // global
-    }
+    QJsonArray structureVelocity = QJsonArray();
+    structureVelocity.append(structureVelocityX->text().toDouble());
+    structureVelocity.append(structureVelocityY->text().toDouble());
+    structureVelocity.append(structureVelocityZ->text().toDouble());
+    bodyObject["velocity"] = structureVelocity; // global, TODO: Improve schema for Init Conditions rel. to Geometries
+  
     // bodyObject["output_attribs"] = structurePartitionsOutputs; // global
 
     // ClaymoreUW, TODO: Deprecate in favor of MPM:bodies:outputs or MPM:outputs (latter preferred) 
-    bodyObject["output_attribs"] = QJsonArray::fromStringList(QStringList() << "Velocity_X" << "Pressure" << "ID"); // global
     bodyObject["target_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_Y"); // global
     bodyObject["track_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_X" << "Position_Z" << "Velocity_X" << "Velocity_Z" << "Pressure"); // global
     // Use initialize list for arrray
@@ -484,11 +461,6 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
     bodyObject["track_particle_id"] = trackParticleIdsArray; // global
     bodyObject["type"] = QJsonValue(QString("particles")); // global
 
-    QJsonArray bodyVelocityArray; // Need to find a spot for a bodies global initial conditions in the schema
-    bodyVelocityArray.append(QJsonValue(0.0).toDouble());
-    bodyVelocityArray.append(QJsonValue(0.0).toDouble());
-    bodyVelocityArray.append(QJsonValue(0.0).toDouble());
-    bodyObject["velocity"] = bodyVelocityArray; // global
     bodiesArray.append(bodyObject);
   }
 
@@ -518,28 +490,19 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
         bodyObject["algorithm"] = customAlgorithmObject["algorithm"]; // algorithm
         bodyObject["partition"] = customPartitionsObject["partition"]; // partition
 
-        bodyObject["constitutive"] = customMaterialObject["constitutive"]; // global
+        // TODO : Make velocity usable for all added custom bodies
+        // if (i == 0) {
+        //   QJsonArray addedVelocity = QJsonArray();
+        //   addedVelocity.append(addedVelocityX->text().toDouble());
+        //   addedVelocity.append(addedVelocityY->text().toDouble());
+        //   addedVelocity.append(addedVelocityZ->text().toDouble());
+        //   bodyObject["velocity"] = addedVelocity; // global, TODO: Improve schema for Init Conditions rel. to Geometries
+        // }
 
-        bodyObject["ppc"]        = customAlgorithmObject["ppc"]; // global
-        bodyObject["use_ASFLIP"] = customAlgorithmObject["use_ASFLIP"]; // global
-        bodyObject["alpha"]      = customAlgorithmObject["alpha"]; // global
-        bodyObject["beta_min"]   = customAlgorithmObject["beta_min"]; // global
-        bodyObject["beta_max"]   = customAlgorithmObject["beta_max"]; // global
-        bodyObject["use_FBAR"]   = customAlgorithmObject["use_FBAR"]; // global
-        bodyObject["FBAR_ratio"] = customAlgorithmObject["FBAR_ratio"]; // global
 
-        // ClaymoreUW artifacts, TODO: Deprecate
-        if (0) bodyObject["device"] = customPartitionsObject; // device
-        else {
-          bodyObject["gpu"] = customPartitionsObject["gpu"]; // global
-          bodyObject["model"] = customPartitionsObject["model"]; // global
-          bodyObject["partition_start"] = customPartitionsObject["partition_start"]; // global
-          bodyObject["partition_end"] = customPartitionsObject["partition_end"]; // global
-        }
         // bodyObject["output_attribs"] = customPartitionsOutputs; // global
 
         // ClaymoreUW, TODO: Deprecate in favor of MPM:bodies:outputs or MPM:outputs (latter preferred) 
-        bodyObject["output_attribs"] = QJsonArray::fromStringList(QStringList() << "Velocity_X" << "Pressure" << "ID"); // global
         bodyObject["target_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_Y"); // global
         bodyObject["track_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_X" << "Position_Z" << "Velocity_X" << "Velocity_Z" << "Pressure"); // global
         // Use initialize list for arrray
@@ -563,8 +526,7 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
 
   // Add all bodies to the bodies array
   // -----------------
-  if (1) jsonObject["bodies"] = bodiesArray; // Future schema
-  else jsonObject["models"] = bodiesArray; // ClaymoreUW artifacts, TODO: Deprecate
+  jsonObject["bodies"] = bodiesArray; // Future schema
 
   return true;
 }

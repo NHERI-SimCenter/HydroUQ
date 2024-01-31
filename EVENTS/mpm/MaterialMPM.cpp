@@ -559,8 +559,6 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   // Set initial material preset
   materialPreset->setCurrentIndex(4); // Rubber for beginners/comp speed
   materialPreset->setCurrentIndex(4); // Rubber for beginners/comp speed
-
-
 }
 
 MaterialMPM::~MaterialMPM()
@@ -582,66 +580,75 @@ MaterialMPM::setMaterialPreset(int index)
 bool
 MaterialMPM::outputToJSON(QJsonObject &jsonObject)
 {
-  // theOpenSeesPyScript->outputToJSON(jsonObject);
-  // theSurfaceFile->outputToJSON(jsonObject);  
-
-  // Note: ClaymoreUW will also need these defined in the JSON model/body objects global space, not just the nested JSON material object
   // Future schema
   QJsonObject materialObject; 
   materialObject["material_preset"] = QJsonValue(materialPreset->currentText()).toString();
   materialObject["constitutive"] = QJsonValue(constitutive->currentText()).toString();
   materialObject["CFL"] = CFL->text().toDouble(); // TODO: Rename? "cfl"? Might be reserved in other contexts
   materialObject["rho"] = density->text().toDouble();
-  materialObject["bulk_modulus"] = bulkModulus->text().toDouble();
-  materialObject["youngs_modulus"] = youngsModulus->text().toDouble();
-  materialObject["poisson_ratio"] = poissonsRatio->text().toDouble();
-  materialObject["viscosity"] = viscosity->text().toDouble();
-  materialObject["gamma"] = bulkModulusDerivative->text().toDouble();
-  // materialObject["surface_tension"] = surfaceTension->text().toDouble();
-  materialObject["logJp0"] = logJp->text().toDouble();
-  materialObject["SandVolCorrection"] = useVolumeCorrection->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
-  materialObject["cohesion"] = cohesion->text().toDouble();
-  materialObject["friction_angle"] = frictionAngle->text().toDouble();
-  materialObject["dilation_angle"] = dilationAngle->text().toDouble();
-  materialObject["hardeningOn"] = useHardening->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
-  materialObject["hardening_ratio"] = xi->text().toDouble();
-  materialObject["cohesion_ratio"] = beta->text().toDouble(); 
-  materialObject["mohr_friction"] = Mohr->text().toDouble();
+  if (constitutive->currentText() == "JFluid") {
+    materialObject["bulk_modulus"] = bulkModulus->text().toDouble();
+    materialObject["viscosity"] = viscosity->text().toDouble();
+    materialObject["gamma"] = bulkModulusDerivative->text().toDouble();
+  }
+  else if (constitutive->currentText() == "FixedCorotated") {
+    materialObject["youngs_modulus"] = youngsModulus->text().toDouble();
+    materialObject["poisson_ratio"] = poissonsRatio->text().toDouble();
+  }
+  else if (constitutive->currentText() == "DruckerPrager") {
+    materialObject["youngs_modulus"] = youngsModulus->text().toDouble();
+    materialObject["poisson_ratio"] = poissonsRatio->text().toDouble();
+    materialObject["cohesion"] = cohesion->text().toDouble();
+    materialObject["friction_angle"] = frictionAngle->text().toDouble();
+    materialObject["dilation_angle"] = dilationAngle->text().toDouble(); // Needed ?
+    materialObject["beta"] = beta->text().toDouble(); // Needed ?
+    materialObject["SandVolCorrection"] = useVolumeCorrection->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
+  }
+  else if (constitutive->currentText() == "CamClay") {
+    materialObject["youngs_modulus"] = youngsModulus->text().toDouble();
+    materialObject["poisson_ratio"] = poissonsRatio->text().toDouble();
+    materialObject["cohesion"] = cohesion->text().toDouble(); // Needed ?
+    materialObject["friction_angle"] = frictionAngle->text().toDouble(); // Needed ?
+    materialObject["hardeningOn"] = useHardening->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
+    materialObject["logJp0"] = logJp->text().toDouble();
+    //
+    materialObject["xi"] = xi->text().toDouble();
+    materialObject["beta"] = beta->text().toDouble();
+    materialObject["Mohr"] = (Mohr->text().toDouble() * Mohr->text().toDouble());
+    //
+    materialObject["hardening_ratio"] = xi->text().toDouble();
+    materialObject["cohesion_ratio"] = beta->text().toDouble(); 
+    materialObject["mohr_friction"] = Mohr->text().toDouble();
+  }
   jsonObject["material"] = materialObject;
 
   // ClaymoreUW artifacts, global material values. TODO: Deprecate
-  jsonObject["material_preset"] = QJsonValue(materialPreset->currentText()).toString();
-  jsonObject["constitutive"] = QJsonValue(constitutive->currentText()).toString();
-  jsonObject["CFL"] = CFL->text().toDouble(); // TODO: Rename? "cfl"? Might be reserved in other contexts
-  jsonObject["rho"] = density->text().toDouble();
-  jsonObject["bulk_modulus"] = bulkModulus->text().toDouble();
-  jsonObject["youngs_modulus"] = youngsModulus->text().toDouble();
-  jsonObject["poisson_ratio"] = poissonsRatio->text().toDouble();
-  jsonObject["viscosity"] = viscosity->text().toDouble();
-  // TODO: Equation of state options (Murnaghan-Tait, Cole, Birch, etc. or JFluid, PA-JB Fluid, etc.)
-  jsonObject["gamma"] = bulkModulusDerivative->text().toDouble(); // TODO: Rename
-  // jsonObject["surface_tension"] = surfaceTension->text().toDouble(); // TODO: Implement
-  jsonObject["logJp0"] = logJp->text().toDouble();
-  jsonObject["SandVolCorrection"] = useVolumeCorrection->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
-  jsonObject["cohesion"] = cohesion->text().toDouble(); // TODO: Specify units, I believe this is log(strain) currently hence small values
-  jsonObject["friction_angle"] = frictionAngle->text().toDouble();
-  jsonObject["dilation_angle"] = dilationAngle->text().toDouble(); // TODO: Check if this is used
-  jsonObject["hardeningOn"] = useHardening->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
-  jsonObject["xi"] = xi->text().toDouble(); // TODO: Rename
-  jsonObject["beta"] = beta->text().toDouble(); // TODO: Rename
-  jsonObject["Mohr"] = (Mohr->text().toDouble() * Mohr->text().toDouble()); // TODO: Rename
-
-
-
-
+  // jsonObject["material_preset"] = QJsonValue(materialPreset->currentText()).toString();
+  // jsonObject["constitutive"] = QJsonValue(constitutive->currentText()).toString();
+  // jsonObject["CFL"] = CFL->text().toDouble(); // TODO: Rename? "cfl"? Might be reserved in other contexts
+  // jsonObject["rho"] = density->text().toDouble();
+  // jsonObject["bulk_modulus"] = bulkModulus->text().toDouble();
+  // jsonObject["youngs_modulus"] = youngsModulus->text().toDouble();
+  // jsonObject["poisson_ratio"] = poissonsRatio->text().toDouble();
+  // jsonObject["viscosity"] = viscosity->text().toDouble();
+  // // TODO: Equation of state options (Murnaghan-Tait, Cole, Birch, etc. or JFluid, PA-JB Fluid, etc.)
+  // jsonObject["gamma"] = bulkModulusDerivative->text().toDouble(); // TODO: Rename
+  // // jsonObject["surface_tension"] = surfaceTension->text().toDouble(); // TODO: Implement
+  // jsonObject["logJp0"] = logJp->text().toDouble();
+  // jsonObject["SandVolCorrection"] = useVolumeCorrection->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
+  // jsonObject["cohesion"] = cohesion->text().toDouble(); // TODO: Specify units, I believe this is log(strain) currently hence small values
+  // jsonObject["friction_angle"] = frictionAngle->text().toDouble();
+  // jsonObject["dilation_angle"] = dilationAngle->text().toDouble(); // TODO: Check if this is used
+  // jsonObject["hardeningOn"] = useHardening->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
+  // jsonObject["xi"] = xi->text().toDouble(); // TODO: Rename
+  // jsonObject["beta"] = beta->text().toDouble(); // TODO: Rename
+  // jsonObject["Mohr"] = (Mohr->text().toDouble() * Mohr->text().toDouble()); // TODO: Rename
   return true;
 }
 
 bool
 MaterialMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  // theOpenSeesPyScript->inputFromJSON(jsonObject);
-  // theSurfaceFile->inputFromJSON(jsonObject);    
   return true;
 }
 

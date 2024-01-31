@@ -92,6 +92,8 @@ private:
   SC_DoubleLineEdit   *spacingY;
   SC_DoubleLineEdit   *spacingZ;
   
+  SC_TableEdit        *trackerTable;  
+
   SC_CheckBox         *applyRotation;
   SC_DoubleLineEdit   *rotateAngleX;
   SC_DoubleLineEdit   *rotateAngleY;

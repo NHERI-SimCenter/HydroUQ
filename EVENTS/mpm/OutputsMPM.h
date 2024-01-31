@@ -74,29 +74,21 @@ private:
   SC_ComboBox       *vtkCheckpoints_Output;
   SC_ComboBox       *vtkEnergies_Output;
   SC_DoubleLineEdit *outputBodies_Dt;
-  SC_DoubleLineEdit *outputSensors_Dt;
+  //                 No sensor dt
   SC_DoubleLineEdit *outputCheckpoints_Dt;
   SC_DoubleLineEdit *outputBoundaries_Dt;
   SC_DoubleLineEdit *outputEnergies_Dt;
   SC_CheckBox       *bodies_OutputExteriorOnly;
-  
+
 
   SC_CheckBox       *useKineticEnergy;
   SC_CheckBox       *useStrainEnergy;
   SC_CheckBox       *usePotentialEnergy;
 
+  SC_TableEdit      *bodiesAttribsTable;  
+  // QVector<QStringList> outputAttribsBodies {{"ID"}, {"ID"}, {"ID"}, {"ID"}, {"ID"}, {"ID"}, {"ID"}, {"ID"}};
 
-  // SC_CheckBox       *outputBodies_Particle;
 
-  // SC_ComboBox       *outputSensors_FM;
-  // SC_ComboBox       *outputSensors_FSP;
-  // SC_ComboBox       *outputSensors_FP;
-  // SC_ComboBox       *outputSensors_SC;
-
-  // SC_TableEdit      *freeSurfaceProbes;
-  // SC_TableEdit      *fieldProbes;
-  // SC_TableEdit      *sectionCuts;
-  
 };
 
 #endif // OUTPUTS_DIGITAL_TWIN_H

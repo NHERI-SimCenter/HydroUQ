@@ -76,7 +76,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
   layout->addWidget(objectType,numRow++, 1);
 
-  QList <QString> operationList;  operationList << "Add (OR) [|]" << "Subtract (NOT) [~]" << "Intersect (AND) [&]" << "Difference (XOR) [^]";
+  QList <QString> operationList;  operationList << "Add (OR)" << "Subtract (NOT)" << "Intersect (AND)" << "Difference (XOR)";
   operationType = new SC_ComboBox("operation_type", operationList);
   layout->addWidget(new QLabel("Operation With Prior Geometry"), numRow,0);
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
@@ -292,7 +292,14 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   layout->addWidget(dimensionsBox,numRow++,0,numDimRow,5);
   numRow = numRow+numDimRow;
 
+  QStringList trackerHeadings; trackerHeadings << "1st" << "2nd" << "3rd" << "4th" << "5th";
+  QStringList trackerData; trackerData << "0" << "" << "" << "" << "";
+  trackerTable = new SC_TableEdit("trackerTable", trackerHeadings, 1, trackerData);
+  layout->addWidget(new QLabel("Identify Particle IDs to Place Trackers On"), numRow++, 0);
+  layout->addWidget(trackerTable, numRow++, 0, 1, 5);
+  
   layout->setRowStretch(numRow, 1);
+
 
 
   connect(bathymetryComboBox, &QComboBox::currentTextChanged, [=](QString val) {
@@ -800,13 +807,13 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
   geometryObject["body_preset"] = bodyPreset->currentText();
   geometryObject["object"] = objectType->currentText();
 
-  if (operationType->currentText() == "Add (OR) [|]") {
+  if (operationType->currentText() == "Add (OR)") {
     geometryObject["operation"] = "add";
-  } else if (operationType->currentText() == "Subtract (NOT) [~]") {
+  } else if (operationType->currentText() == "Subtract (NOT)") {
     geometryObject["operation"] = "subtract";
-  } else if (operationType->currentText() == "Intersect (AND) [&]") {
+  } else if (operationType->currentText() == "Intersect (AND)") {
     geometryObject["operation"] = "intersect";
-  } else if (operationType->currentText() == "Difference (XOR) [^]") {
+  } else if (operationType->currentText() == "Difference (XOR)") {
     geometryObject["operation"] = "difference";
   } else {
     geometryObject["operation"] = "add";
@@ -902,6 +909,23 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
     geometryObject["fulcrum"] = rotateFulcrum;
   }
   
+  if (trackerTable->isEnabled()) {
+    QJsonObject trackerObject;
+    trackerTable->outputToJSON(trackerObject);
+    QJsonArray trackerArray;
+    for (int i = 0; i < trackerObject["trackerTable"].toArray().size(); i++) {
+      QJsonArray temp_array = trackerObject["trackerTable"].toArray()[i].toArray();
+      for (int j = 0; j < temp_array.size(); j++) {
+        if (temp_array[j].toString().isEmpty() == false) continue; 
+        temp_array.removeAt(j);
+        j--;
+      }
+      trackerArray.append(temp_array);
+    }
+    // TODO : Merge all internal arrays into single array
+    geometryObject["track_particle_id"] = trackerArray[0].toArray();
+  }
+
   // geometriesArray.append(geometryObject);
   // QJsonArray tempGeometryArray = jsonObject["geometry"].toArray();
   // tempGeometryArray.append(geometryObject);
