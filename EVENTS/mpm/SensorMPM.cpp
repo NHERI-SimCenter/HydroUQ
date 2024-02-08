@@ -71,7 +71,7 @@ SensorMPM::SensorMPM(QWidget *parent)
   // These are common, pre-made instruments.
   // They include wave gauges, velocity meters, and load cells
   //
-  QGridLayout *layout = new QGridLayout;
+  QGridLayout *layout = new QGridLayout();
   this->setLayout(layout);
 
 
@@ -137,8 +137,13 @@ SensorMPM::SensorMPM(QWidget *parent)
   QStringList  dataLC; dataLC << "LoadCell1" << "45.799" << "2.10" << "1.35" << "0.025" << "0.575" << "0.950" ;  
   loadCellsTable  = new SC_TableEdit("loadCellLocs", listLC, 1, dataLC);
 
-  toggle = new SC_ComboBox("toggle", yesNo); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
-  type = new SC_ComboBox("type", typeParticleList); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
+  QStringList  listPM; listPM << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+  QStringList  dataPM; dataPM << "PiezoMeter1" << "16.0" << "1.00" << "0.4" << "0.05" << "0.05" << "0.05" 
+				                      << "PiezoMeter2" << "43.8" << "1.80" << "0.4" << "0.05" << "0.05" << "0.05" ;
+  piezoMetersTable  = new SC_TableEdit("piezoMeterLocs", listPM, 2, dataPM);
+
+
+
   QStringList attributesOnParticlesList; 
   attributesOnParticlesList << "ID" << "Mass" << "Volume"
                             << "Position_X" << "Position_Y" << "Position_Z" 
@@ -176,144 +181,152 @@ SensorMPM::SensorMPM(QWidget *parent)
 
   QStringList attributesOnGridList;
   attributesOnGridList << "Mass" << "Force" << "Momentum" << "Velocity"; // Acceleration, Pressure
-  attribute = new SC_ComboBox("attribute", attributesOnParticlesList);
   QStringList operationList; operationList << "Sum" << "Max" << "Min" << "Count" << "Average" << "Variance";
+
+  toggle = new SC_ComboBox("toggle", yesNo); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
+  type = new SC_ComboBox("type", typeParticleList); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
+  attribute = new SC_ComboBox("attribute", attributesOnParticlesList);
   operation = new SC_ComboBox("operation", operationList);
-  output_frequency = new SC_DoubleLineEdit("output_frequency", 30);
-  direction = new SC_ComboBox("direction", QStringList() << "N/A");
+  direction = new SC_ComboBox("direction", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
+  direction->setCurrentIndex(9); // N/A, non vector
+  output_frequency = new SC_DoubleLineEdit("output_frequency", 30.0);
 
+  toggleWG = new SC_ComboBox("toggle", yesNo); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
+  typeWG = new SC_ComboBox("type", typeParticleList); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
+  attributeWG = new SC_ComboBox("attribute", QStringList() << "Elevation" << "Position_Y");
+  operationWG = new SC_ComboBox("operation", QStringList() << "Max");
+  directionWG = new SC_ComboBox("direction", QStringList() << "N/A");
+  // directionWG->setCurrentIndex(0); // N/A, non vector
+  output_frequencyWG = new SC_DoubleLineEdit("output_frequency", 30.0);
 
-
-  toggleWG = new SC_ComboBox("toggleWG", yesNo); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
-  typeWG = new SC_ComboBox("typeWG", typeParticleList); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
-  attributeWG = new SC_ComboBox("attribute_WG", QStringList() << "Elevation" << "Position_Y");
-  operationWG = new SC_ComboBox("operation_WG", QStringList() << "Max");
-  output_frequencyWG = new SC_DoubleLineEdit("output_frequency_WG", 30);
-  directionWG = new SC_ComboBox("directionWG", QStringList() << "N/A");
-
-  toggleLC  = new SC_ComboBox("toggleLC", yesNo); // load cell (force on grid)
-  typeLC  = new SC_ComboBox("typeLC", typeGridList); // load cell (force on grid)
-  attributeLC = new SC_ComboBox("attribute_LC", QStringList() << "Force" << "Force_X" << "Force_Y" << "Force_Z" << "Force_Magnitude");
-  operationLC = new SC_ComboBox("operation_LC", QStringList() << "Sum");
-  output_frequencyLC = new SC_DoubleLineEdit("output_frequency_LC", 120);
-  directionLC = new SC_ComboBox("directionLC", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
-  directionLC->setCurrentIndex(3); // X+
-
-  toggleVM  = new SC_ComboBox("toggleVM", noYes); // velocity meter (velocity on grid)
-  typeVM  = new SC_ComboBox("typeVM", typeGridParticleList); // velocity meter (velocity on grid)
-  attributeVM = new SC_ComboBox("attribute_VM", QStringList() << "Velocity" << "Velocity_X" << "Velocity_Y" << "Velocity_Z" << "Velocity_Magnitude");
-  operationVM = new SC_ComboBox("operation_VM", QStringList() << "Average" << "Max" << "Min");
-  output_frequencyVM = new SC_DoubleLineEdit("output_frequency_VM", 30);
-  directionVM = new SC_ComboBox("directionVM", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
+  toggleVM  = new SC_ComboBox("toggle", noYes); // velocity meter (velocity on grid)
+  typeVM  = new SC_ComboBox("type", typeGridParticleList); // velocity meter (velocity on grid)
+  attributeVM = new SC_ComboBox("attribute", QStringList() << "Velocity" << "Velocity_X" << "Velocity_Y" << "Velocity_Z" << "Velocity_Magnitude");
+  operationVM = new SC_ComboBox("operation", QStringList() << "Average" << "Max" << "Min");
+  directionVM = new SC_ComboBox("direction", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
   directionVM->setCurrentIndex(0); // X
+  output_frequencyVM = new SC_DoubleLineEdit("output_frequency", 30.0);
+
+  toggleLC  = new SC_ComboBox("toggle", yesNo); // load cell (force on grid)
+  typeLC  = new SC_ComboBox("type", typeGridList); // load cell (force on grid)
+  attributeLC = new SC_ComboBox("attribute", QStringList() << "Force" << "Force_X" << "Force_Y" << "Force_Z" << "Force_Magnitude");
+  operationLC = new SC_ComboBox("operation", QStringList() << "Sum");
+  directionLC = new SC_ComboBox("direction", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
+  directionLC->setCurrentIndex(3); // X+
+  output_frequencyLC = new SC_DoubleLineEdit("output_frequency", 120.0);
+
+  togglePM = new SC_ComboBox("toggle", yesNo); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
+  typePM = new SC_ComboBox("type", typeParticleList); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
+  attributePM = new SC_ComboBox("attribute", QStringList() << "Pressure");
+  operationPM = new SC_ComboBox("operation", QStringList() << "Average");
+  directionPM = new SC_ComboBox("direction", QStringList() << "N/A");
+  // directionPM->setCurrentIndex(0); // N/A, non vector
+  output_frequencyPM = new SC_DoubleLineEdit("output_frequency", 30.0);
+
   // ===========================================================================
-  customLayout->addWidget(new QLabel("Use Sensors?"),0,0);
-  customLayout->itemAt(customLayout->count()-1)->setAlignment(Qt::AlignRight);
+  customLayout->addWidget(new QLabel("Use These Sensors?"),0,0, Qt::AlignRight);
   customLayout->addWidget(toggle,0,1);
   customLayout->addWidget(new QLabel(""),0,2);
-  customLayout->addWidget(new QLabel("Apply On"),1,0);
-  customLayout->itemAt(customLayout->count()-1)->setAlignment(Qt::AlignRight);
+  customLayout->addWidget(new QLabel("Apply On"),1,0, Qt::AlignRight);
   customLayout->addWidget(type,1,1);
   customLayout->addWidget(new QLabel(""),1,2);
-  customLayout->addWidget(new QLabel("Measure Attribute"),2,0);
-  customLayout->itemAt(customLayout->count()-1)->setAlignment(Qt::AlignRight);
+  customLayout->addWidget(new QLabel("Measure Attribute"),2,0, Qt::AlignRight);
   customLayout->addWidget(attribute,2,1);
   customLayout->addWidget(new QLabel(""),2,2);
-  customLayout->addWidget(new QLabel("Perform Operation"),3,0);
-  customLayout->itemAt(customLayout->count()-1)->setAlignment(Qt::AlignRight);
+  customLayout->addWidget(new QLabel("Perform Operation"),3,0, Qt::AlignRight);
   customLayout->addWidget(operation,3,1);
   customLayout->addWidget(new QLabel(""),3,2);
-  customLayout->addWidget(new QLabel("Sampling Frequency"),4,0);
-  customLayout->itemAt(customLayout->count()-1)->setAlignment(Qt::AlignRight);
+  customLayout->addWidget(new QLabel("Sampling Frequency"),4,0, Qt::AlignRight);
   customLayout->addWidget(output_frequency,4,1);
   customLayout->addWidget(new QLabel("Hz"),4,2);
-  customLayout->addWidget(new QLabel("In Direction"),5,0);
-  customLayout->itemAt(customLayout->count()-1)->setAlignment(Qt::AlignRight);
+  customLayout->addWidget(new QLabel("In Direction"),5,0, Qt::AlignRight);
   customLayout->addWidget(direction,5,1);
   customLayout->addWidget(new QLabel(""),5,2);
   customLayout->addWidget(customTable,7,0,1,4);
   customLayout->setRowStretch(7,1);
 
-
   // ===========================================================================
-  wgLayout->addWidget(new QLabel("Use Wave-Gauges?"),0,0);
-  wgLayout->itemAt(wgLayout->count()-1)->setAlignment(Qt::AlignRight);
+  wgLayout->addWidget(new QLabel("Use These Sensors?"),0,0, Qt::AlignRight);
   wgLayout->addWidget(toggleWG,0,1);
   wgLayout->addWidget(new QLabel(""),0,2);
-  wgLayout->addWidget(new QLabel("Apply On"),1,0);
-  wgLayout->itemAt(wgLayout->count()-1)->setAlignment(Qt::AlignRight);
+  wgLayout->addWidget(new QLabel("Apply On"),1,0, Qt::AlignRight);
   wgLayout->addWidget(typeWG,1,1);
   wgLayout->addWidget(new QLabel(""),1,2);
-  wgLayout->addWidget(new QLabel("Measure Attribute"),2,0);
-  wgLayout->itemAt(wgLayout->count()-1)->setAlignment(Qt::AlignRight);
+  wgLayout->addWidget(new QLabel("Measure Attribute"),2,0, Qt::AlignRight);
   wgLayout->addWidget(attributeWG,2,1);
   wgLayout->addWidget(new QLabel(""),2,2);
-  wgLayout->addWidget(new QLabel("Perform Operation"),3,0);
-  wgLayout->itemAt(wgLayout->count()-1)->setAlignment(Qt::AlignRight);
+  wgLayout->addWidget(new QLabel("Perform Operation"),3,0, Qt::AlignRight);
   wgLayout->addWidget(operationWG,3,1);
   wgLayout->addWidget(new QLabel(""),3,2);
-  wgLayout->addWidget(new QLabel("Sampling Frequency"),4,0);
-  wgLayout->itemAt(wgLayout->count()-1)->setAlignment(Qt::AlignRight);
+  wgLayout->addWidget(new QLabel("Sampling Frequency"),4,0, Qt::AlignRight);
   wgLayout->addWidget(output_frequencyWG,4,1);
   wgLayout->addWidget(new QLabel("Hz"),4,2);
-  wgLayout->addWidget(new QLabel("In Direction"),5,0);
-  wgLayout->itemAt(wgLayout->count()-1)->setAlignment(Qt::AlignRight);
+  wgLayout->addWidget(new QLabel("In Direction"),5,0, Qt::AlignRight);
   wgLayout->addWidget(directionWG,5,1);
   wgLayout->addWidget(waveGaugesTable,7,0,1,4);
   wgLayout->setRowStretch(7,1);
   // ===========================================================================
-  vmLayout->addWidget(new QLabel("Use Veloci-Meters?"),0,0);
-  vmLayout->itemAt(vmLayout->count()-1)->setAlignment(Qt::AlignRight);
+  vmLayout->addWidget(new QLabel("Use These Sensors?"),0,0, Qt::AlignRight);
   vmLayout->addWidget(toggleVM,0,1);
   vmLayout->addWidget(new QLabel(""),0,2);
-  vmLayout->addWidget(new QLabel("Apply On"),1,0);
-  vmLayout->itemAt(vmLayout->count()-1)->setAlignment(Qt::AlignRight);
+  vmLayout->addWidget(new QLabel("Apply On"),1,0, Qt::AlignRight);
   vmLayout->addWidget(typeVM,1,1);
   vmLayout->addWidget(new QLabel(""),1,2);
-  vmLayout->addWidget(new QLabel("Measure Attribute"),2,0);
-  vmLayout->itemAt(vmLayout->count()-1)->setAlignment(Qt::AlignRight);
+  vmLayout->addWidget(new QLabel("Measure Attribute"),2,0, Qt::AlignRight);
   vmLayout->addWidget(attributeVM,2,1);
   vmLayout->addWidget(new QLabel(""),2,2);
-  vmLayout->addWidget(new QLabel("Perform Operation"),3,0);
-  vmLayout->itemAt(vmLayout->count()-1)->setAlignment(Qt::AlignRight);
+  vmLayout->addWidget(new QLabel("Perform Operation"),3,0, Qt::AlignRight);
   vmLayout->addWidget(operationVM,3,1);
   vmLayout->addWidget(new QLabel(""),3,2);
-  vmLayout->addWidget(new QLabel("Sampling Frequency"),4,0);
-  vmLayout->itemAt(vmLayout->count()-1)->setAlignment(Qt::AlignRight);
+  vmLayout->addWidget(new QLabel("Sampling Frequency"),4,0, Qt::AlignRight);
   vmLayout->addWidget(output_frequencyVM,4,1);
   vmLayout->addWidget(new QLabel("Hz"),4,2);
-  vmLayout->addWidget(new QLabel("In Direction"),5,0);
-  vmLayout->itemAt(vmLayout->count()-1)->setAlignment(Qt::AlignRight);
+  vmLayout->addWidget(new QLabel("In Direction"),5,0, Qt::AlignRight);
   vmLayout->addWidget(directionVM,5,1);
   vmLayout->addWidget(velociMetersTable,7,0,1,4);
   vmLayout->setRowStretch(7,1);
   // ===========================================================================
-  lcLayout->addWidget(new QLabel("Use Load-Cells?"),0,0);
-  lcLayout->itemAt(lcLayout->count()-1)->setAlignment(Qt::AlignRight);
+  lcLayout->addWidget(new QLabel("Use These Sensors?"),0,0, Qt::AlignRight);
   lcLayout->addWidget(toggleLC,0,1);
   lcLayout->addWidget(new QLabel(""),0,2);
-  lcLayout->addWidget(new QLabel("Apply On"),1,0);
-  lcLayout->itemAt(lcLayout->count()-1)->setAlignment(Qt::AlignRight);
+  lcLayout->addWidget(new QLabel("Apply On"),1,0, Qt::AlignRight);
   lcLayout->addWidget(typeLC,1,1);
   lcLayout->addWidget(new QLabel(""),1,2);
-  lcLayout->addWidget(new QLabel("Measure Attribute"),2,0);
-  lcLayout->itemAt(lcLayout->count()-1)->setAlignment(Qt::AlignRight);
+  lcLayout->addWidget(new QLabel("Measure Attribute"),2,0, Qt::AlignRight);
   lcLayout->addWidget(attributeLC,2,1);
   lcLayout->addWidget(new QLabel(""),2,2);
-  lcLayout->addWidget(new QLabel("Perform Operation"),3,0);
-  lcLayout->itemAt(lcLayout->count()-1)->setAlignment(Qt::AlignRight);
+  lcLayout->addWidget(new QLabel("Perform Operation"),3,0, Qt::AlignRight);
   lcLayout->addWidget(operationLC,3,1);
   lcLayout->addWidget(new QLabel(""),3,2);
-  lcLayout->addWidget(new QLabel("Sampling Frequency"),4,0);
-  lcLayout->itemAt(lcLayout->count()-1)->setAlignment(Qt::AlignRight);
+  lcLayout->addWidget(new QLabel("Sampling Frequency"),4,0, Qt::AlignRight);
   lcLayout->addWidget(output_frequencyLC,4,1);
   lcLayout->addWidget(new QLabel("Hz"),4,2);
-  lcLayout->addWidget(new QLabel("In Direction"),5,0);
-  lcLayout->itemAt(lcLayout->count()-1)->setAlignment(Qt::AlignRight);
+  lcLayout->addWidget(new QLabel("In Direction"),5,0, Qt::AlignRight);
   lcLayout->addWidget(directionLC,5,1);
   lcLayout->addWidget(loadCellsTable,7,0,1,4);    
   lcLayout->setRowStretch(7,1);
   // ===========================================================================
+  pmLayout->addWidget(new QLabel("Use These Sensors?"),0,0, Qt::AlignRight);
+  pmLayout->addWidget(togglePM,0,1);
+  pmLayout->addWidget(new QLabel(""),0,2);
+  pmLayout->addWidget(new QLabel("Apply On"),1,0, Qt::AlignRight);
+  pmLayout->addWidget(typePM,1,1);
+  pmLayout->addWidget(new QLabel(""),1,2);
+  pmLayout->addWidget(new QLabel("Measure Attribute"),2,0, Qt::AlignRight);
+  pmLayout->addWidget(attributePM,2,1);
+  pmLayout->addWidget(new QLabel(""),2,2);
+  pmLayout->addWidget(new QLabel("Perform Operation"),3,0, Qt::AlignRight);
+  pmLayout->addWidget(operationPM,3,1);
+  pmLayout->addWidget(new QLabel(""),3,2);
+  pmLayout->addWidget(new QLabel("Sampling Frequency"),4,0, Qt::AlignRight);
+  pmLayout->addWidget(output_frequencyPM,4,1);
+  pmLayout->addWidget(new QLabel("Hz"),4,2);
+  pmLayout->addWidget(new QLabel("In Direction"),5,0, Qt::AlignRight);
+  pmLayout->addWidget(directionPM,5,1);
+  pmLayout->addWidget(piezoMetersTable,7,0,1,4);    
+  pmLayout->setRowStretch(7,1);
+  // ===========================================================================
+
 
 
   connect(sensorType, &QComboBox::currentTextChanged, [=](QString val) {
@@ -322,32 +335,36 @@ SensorMPM::SensorMPM(QWidget *parent)
       setSensorType(SensorTypeEnum::CUSTOM);
     } else if (val == "Wave-Gauges") {
       setSensorType(SensorTypeEnum::WAVE_GAUGE);
-      toggle->setCurrentText("Yes");
-      type->setCurrentIndex(0);
-      attribute->setCurrentText("Elevation");
-      operation->setCurrentText("Max");
-      direction->setCurrentText("N/A");
+      toggleWG->setCurrentText("Yes");
+      typeWG->setCurrentIndex(0);
+      attributeWG->setCurrentText("Elevation");
+      operationWG->setCurrentText("Max");
+      directionWG->setCurrentText("N/A");
+      output_frequencyWG->setText("30.0");
     } else if (val == "Velocimeters") {
       setSensorType(SensorTypeEnum::VELOCITY_METER);
-      toggle->setCurrentText("Yes");
-      type->setCurrentIndex(0);
-      attribute->setCurrentText("Velocity");
-      operation->setCurrentText("Average");
-      direction->setCurrentText("N/A");
+      toggleVM->setCurrentText("Yes");
+      typeVM->setCurrentIndex(0);
+      attributeVM->setCurrentText("Velocity");
+      operationVM->setCurrentText("Average");
+      directionVM->setCurrentText("N/A");
+      output_frequencyVM->setText("30.0");
     } else if (val == "Load-Cells") {
       setSensorType(SensorTypeEnum::LOAD_CELL);
-      toggle->setCurrentText("Yes");
-      type->setCurrentIndex(0);
-      attribute->setCurrentText("Force");
-      operation->setCurrentText("Sum");
-      direction->setCurrentText("X+");
+      toggleLC->setCurrentText("Yes");
+      typeLC->setCurrentIndex(0);
+      attributeLC->setCurrentText("Force");
+      operationLC->setCurrentText("Sum");
+      directionLC->setCurrentText("X+");
+      output_frequencyLC->setText("120.0");
     } else if (val == "Piezometers") {
       setSensorType(SensorTypeEnum::PIEZO_METER);
-      toggle->setCurrentText("Yes");
-      type->setCurrentIndex(0);
-      attribute->setCurrentText("Pressure");
-      operation->setCurrentText("Average");
-      direction->setCurrentText("N/A");
+      togglePM->setCurrentText("Yes");
+      typePM->setCurrentIndex(0);
+      attributePM->setCurrentText("Pressure");
+      operationPM->setCurrentText("Average");
+      directionPM->setCurrentText("N/A");
+      output_frequencyPM->setText("30.0");
     }
   });
   
@@ -365,55 +382,57 @@ SensorMPM::setSensorType(int type)
   // Enum to set icons, titles, init values, etc.
   enum SensorTypeEnum : int {CUSTOM = 0, WAVE_GAUGE, VELOCITY_METER, LOAD_CELL, PIEZO_METER, TOTAL};
 
+  if (type < SensorTypeEnum::TOTAL) {
+    if (sensorType->currentIndex() != type) {
+      sensorType->setCurrentIndex(type);
+    }
+    if (stackedWidget->currentIndex() != type) {
+      stackedWidget->setCurrentIndex(type);
+    }
+  }
   if (type == SensorTypeEnum::CUSTOM) {
-    sensorType->setCurrentIndex(0);
     theCustom->setVisible(true);
     theWaveGauges->setVisible(false);
     theVelocityMeters->setVisible(false);
     theLoadCells->setVisible(false);
     thePiezoMeters->setVisible(false);
-    stackedWidget->setCurrentIndex(0);
-    return true;
+    // stackedWidget->setCurrentIndex(0);
   } else if (type == SensorTypeEnum::WAVE_GAUGE) {
-    sensorType->setCurrentIndex(1);
+    // sensorType->setCurrentIndex(1);
     theCustom->setVisible(false);
     theWaveGauges->setVisible(true);
     theVelocityMeters->setVisible(false);
     theLoadCells->setVisible(false);
     thePiezoMeters->setVisible(false);
-    stackedWidget->setCurrentIndex(1);
-    return true;
+    // stackedWidget->setCurrentIndex(1);
   } else if (type == SensorTypeEnum::VELOCITY_METER) {
-    sensorType->setCurrentIndex(2);
+    // sensorType->setCurrentIndex(2);
     theCustom->setVisible(false);
     theWaveGauges->setVisible(false);
     theVelocityMeters->setVisible(true);
     theLoadCells->setVisible(false);
     thePiezoMeters->setVisible(false);
-    stackedWidget->setCurrentIndex(2);
-    return true;
+    // stackedWidget->setCurrentIndex(2);
   } else if (type == SensorTypeEnum::LOAD_CELL) {
-    sensorType->setCurrentIndex(3);
+    // sensorType->setCurrentIndex(3);
     theCustom->setVisible(false);
     theWaveGauges->setVisible(false);
     theVelocityMeters->setVisible(false);
     theLoadCells->setVisible(true);
     thePiezoMeters->setVisible(false);
-    stackedWidget->setCurrentIndex(3);
-    return true;
+    // stackedWidget->setCurrentIndex(3);
   } else if (type == SensorTypeEnum::PIEZO_METER) {
-    sensorType->setCurrentIndex(4);
+    // sensorType->setCurrentIndex(4);
     theCustom->setVisible(false);
     theWaveGauges->setVisible(false);
     theVelocityMeters->setVisible(false);
     theLoadCells->setVisible(false);
     thePiezoMeters->setVisible(true);
-    stackedWidget->setCurrentIndex(4);
-
-    return true;
+    // stackedWidget->setCurrentIndex(4);
   } else {
     return false; 
   }
+  return true;
 }
 
 bool
@@ -428,17 +447,19 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
   QJsonObject tableArraysWG;
   QJsonObject tableArraysVM;
   QJsonObject tableArraysLC;
-  // QJsonObject tableArraysPM;
+  QJsonObject tableArraysPM;
   customTable->outputToJSON(tableArraysCustom);
   waveGaugesTable->outputToJSON(tableArraysWG);
   velociMetersTable->outputToJSON(tableArraysVM);
   loadCellsTable->outputToJSON(tableArraysLC);
-  // piezoMetersTable->outputToJSON(tableArraysPM);
+  piezoMetersTable->outputToJSON(tableArraysPM);
 
   enum sensorEnum : int {CUSTOM = 0, WAVE_GAUGE, VELOCITY_METER, LOAD_CELL, PIEZO_METER, TOTAL};
 
+  int stackIndexToEnum = static_cast<sensorEnum>(stackedWidget->currentIndex());
+
   // Wave-gauges (WG), Velocimeters (VM), and Load-cells (LC)
-  if (stackedWidget->currentIndex() == sensorEnum::CUSTOM) {
+  if (stackIndexToEnum == sensorEnum::CUSTOM) {
     for (int i = 0; i < tableArraysCustom["customLocs"].toArray().size(); ++i) {
       QJsonObject customObject;
       QJsonArray customArray = tableArraysCustom["customLocs"].toArray()[i].toArray();
@@ -486,7 +507,8 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
         jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
       }
     }
-  } else if (stackedWidget->currentIndex() == sensorEnum::WAVE_GAUGE) {
+    return true;
+  } else if (stackIndexToEnum == sensorEnum::WAVE_GAUGE) {
     for (int i = 0; i < tableArraysWG["waveGaugeLocs"].toArray().size(); ++i) {
       QJsonObject waveGaugesObject;
       QJsonArray waveGaugeArray = tableArraysWG["waveGaugeLocs"].toArray()[i].toArray();
@@ -533,7 +555,8 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
         jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
       }
     }
-  } else if (stackedWidget->currentIndex() == sensorEnum::VELOCITY_METER) {
+    return true;
+  } else if (stackIndexToEnum == sensorEnum::VELOCITY_METER) {
     for (int i = 0; i < tableArraysVM["velociMeterLocs"].toArray().size(); ++i) {
       QJsonObject velociMetersObject;
       QJsonArray velociMeterArray = tableArraysVM["velociMeterLocs"].toArray()[i].toArray();
@@ -581,7 +604,8 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
         jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
       }
     }
-  } else if (stackedWidget->currentIndex() == sensorEnum::LOAD_CELL) {
+    return true;
+  } else if (stackIndexToEnum == sensorEnum::LOAD_CELL) {
     for (int i = 0; i < tableArraysLC["loadCellLocs"].toArray().size(); ++i) {
       QJsonObject loadCellsObject;
       QJsonArray loadCellArray = tableArraysLC["loadCellLocs"].toArray()[i].toArray();
@@ -629,8 +653,54 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
         jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
       }
     }
-  } else if (stackedWidget->currentIndex() == sensorEnum::PIEZO_METER) {
-    return true; // TODO: Implement piezo meter
+    return true;
+  } else if (stackIndexToEnum == sensorEnum::PIEZO_METER) {
+    for (int i = 0; i < tableArraysWG["piezoMeterLocs"].toArray().size(); ++i) {
+      QJsonObject piezoMetersObject;
+      QJsonArray piezoMeterArray = tableArraysPM["piezoMeterLocs"].toArray()[i].toArray();
+      piezoMetersObject["toggle"] = (QJsonValue(togglePM->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
+      piezoMetersObject["type"] = QJsonValue(typePM->currentText()).toString();
+      piezoMetersObject["attribute"] = QJsonValue(attributePM->currentText()).toString();
+      piezoMetersObject["operation"] = operationPM->itemText(operationPM->currentIndex());
+      piezoMetersObject["output_frequency"] = output_frequencyPM->text().toDouble();
+      piezoMetersObject["direction"] = directionPM->itemText(directionPM->currentIndex());
+      piezoMetersObject["name"] = piezoMeterArray[0].toString();
+
+      // Future schema
+      QJsonArray origin;
+      for (int j=1; j<4; ++j) origin.append(piezoMeterArray[j].toDouble());
+
+      QJsonArray dimensions;
+      for (int j=4; j<7; ++j) dimensions.append(piezoMeterArray[j].toDouble());
+
+      // ClaymoreUW artifacts
+      QJsonArray domain_start;
+      domain_start.append(piezoMeterArray[1].toDouble());
+      domain_start.append(piezoMeterArray[2].toDouble());
+      domain_start.append(piezoMeterArray[3].toDouble());
+
+      QJsonArray domain_end;
+      domain_end.append(piezoMeterArray[1].toDouble() + piezoMeterArray[4].toDouble());
+      domain_end.append(piezoMeterArray[2].toDouble() + piezoMeterArray[5].toDouble());
+      domain_end.append(piezoMeterArray[3].toDouble() + piezoMeterArray[6].toDouble());
+      if (0) { // Future schema
+        piezoMetersObject["origin"] = origin;
+        piezoMetersObject["dimensions"] = dimensions;
+      } else { // ClaymoreUW artifacts, to be deprecated
+        piezoMetersObject["domain_start"] = domain_start;
+        piezoMetersObject["domain_end"] = domain_end;
+      }
+
+      sensorsArray.append(piezoMetersObject);
+      if (typePM->currentText() == "grid") {
+        gridSensorsArray.append(piezoMetersObject);
+        jsonObject["grid-sensors"] = gridSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+      } else {
+        particleSensorsArray.append(piezoMetersObject);
+        jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+      }
+    }
+    return true;
   } else {
     // Debug
     qDebug() << "SensorMPM::outputToJSON() - Error: Invalid sensor type";
@@ -643,6 +713,9 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 SensorMPM::inputFromJSON(QJsonObject &jsonObject)
 {
+  
+  sensorType->setCurrentIndex(0); // Custom default
+
   toggleWG->inputFromJSON(jsonObject);
   typeWG->inputFromJSON(jsonObject);
   attributeWG->inputFromJSON(jsonObject);
@@ -666,6 +739,15 @@ SensorMPM::inputFromJSON(QJsonObject &jsonObject)
   directionLC->inputFromJSON(jsonObject);
   output_frequencyLC->inputFromJSON(jsonObject);
   loadCellsTable->inputFromJSON(jsonObject);
+
+  togglePM->inputFromJSON(jsonObject);
+  typePM->inputFromJSON(jsonObject);
+  attributePM->inputFromJSON(jsonObject);
+  operationPM->inputFromJSON(jsonObject);
+  directionPM->inputFromJSON(jsonObject);
+  output_frequencyPM->inputFromJSON(jsonObject);
+  piezoMetersTable->inputFromJSON(jsonObject);
+
 
   return true;
 }

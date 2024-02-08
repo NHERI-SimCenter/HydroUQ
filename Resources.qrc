@@ -93,6 +93,10 @@
         <file>icons/wind-black.svg</file>
         <file>icons/wiper-white.svg</file>
         <file>icons/wiper-black.svg</file>
+        <file>icons/union-black.svg</file>
+        <file>icons/subtract-black.svg</file>
+        <file>icons/intersect-black.svg</file>
+        <file>icons/difference-black.svg</file>
     </qresource>
     <qresource prefix="/icons">
         <file>icons/engine-white.svg</file>
@@ -181,5 +185,14 @@
         <file>icons/wind-black.svg</file>
         <file>icons/wiper-white.svg</file>
         <file>icons/wiper-black.svg</file>
+        <file>icons/union-black.svg</file>
+        <file>icons/subtract-black.svg</file>
+        <file>icons/intersect-black.svg</file>
+        <file>icons/difference-black.svg</file>
+        <file>icons/HydroUQ_Icon_Color_512x512.svg</file>
+    </qresource>
+    <qresource prefix="/objects">
+        <file>HydroUQ_Icon_Color.obj</file>
+        <file>OSU_LWF_Bathymetry.obj</file>
     </qresource>
 </RCC>

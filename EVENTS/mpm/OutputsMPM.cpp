@@ -60,6 +60,7 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   //
   // create all little widgets
   //
+  int maxWidth = 1280;
   int numRow = 0;
   QStringList yesNo; yesNo << "Yes" << "No";
   QStringList particleExt; particleExt << "BGEO" << "GEO" << "CSV" << "TXT"; // VTK
@@ -89,112 +90,121 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   bodies_OutputExteriorOnly = new SC_CheckBox("particles_output_exterior_only");
   bodies_OutputExteriorOnly->setChecked(false);
 
-  // vtkSensors_Output = new SC_ComboBox("sensor_save_suffix", sensorExt);
-  // outputSensors_Dt  = new SC_DoubleLineEdit("output_freq", 30);
-  
 
-  // 
-  // now add the widgets to Grpup Boxes
-  //
+
+  // --- Bodies
   numRow = 0;
   QGroupBox *bodiesBox = new QGroupBox("Bodies");
   QGridLayout *bodiesLayout = new QGridLayout();  
   bodiesBox->setLayout(bodiesLayout);
-  bodiesLayout->addWidget(new QLabel("Output File Type"),numRow,0);
-  bodiesLayout->itemAt(bodiesLayout->count()-1)->setAlignment(Qt::AlignRight);
-  bodiesLayout->addWidget(vtkBodies_Output,numRow,1);  
-  bodiesLayout->addWidget(new QLabel("Suffix"),numRow++,2);
-  bodiesLayout->addWidget(new QLabel("Output Frequency"),numRow,0);
-  bodiesLayout->itemAt(bodiesLayout->count()-1)->setAlignment(Qt::AlignRight);
-  bodiesLayout->addWidget(outputBodies_Dt,numRow,1);
-  bodiesLayout->addWidget(new QLabel("Hz"),numRow++,2);  
-  bodiesLayout->addWidget(new QLabel("Only Save Exterior Particles?"),numRow,0);
-  bodiesLayout->itemAt(bodiesLayout->count()-1)->setAlignment(Qt::AlignRight);
-  bodiesLayout->addWidget(bodies_OutputExteriorOnly,numRow++,1);
+  bodiesLayout->addWidget(new QLabel("Output File Type"), numRow, 0, 1, 1, Qt::AlignRight);
+  bodiesLayout->addWidget(vtkBodies_Output, numRow, 1, 1, 3);  
+  bodiesLayout->setColumnStretch(1, 1); // Expand the middle column
+  bodiesLayout->itemAt(bodiesLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  bodiesLayout->addWidget(new QLabel(""), numRow++, 4, 1, 1);
 
-  bodiesLayout->addWidget(new QLabel("Output Attributes"),numRow++,0);
-  bodiesLayout->itemAt(bodiesLayout->count()-1)->setAlignment(Qt::AlignRight);
+  bodiesLayout->addWidget(new QLabel("Output Frequency"), numRow, 0, 1, 1, Qt::AlignRight);
+  bodiesLayout->addWidget(outputBodies_Dt, numRow, 1, 1, 3);
+  bodiesLayout->itemAt(bodiesLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  bodiesLayout->addWidget(new QLabel("Hz"), numRow++, 4, 1, 1);  
+
+
   QStringList bodiesAttribsHeadings; bodiesAttribsHeadings << "1st" << "2nd" << "3rd" << "4th" << "5th";
   QStringList bodiesAttribsStrings; bodiesAttribsStrings << "ID" << "Pressure" << "" << "" << "" 
                                      << "ID" << "Pressure" << "Velocity_X" << "Velocity_Y" << "Velocity_Z" 
                                      << "ID" << "Pressure" << "VonMisesStress" << "DefGrad_Invariant2" << "DefGrad_Invariant3" ;
   bodiesAttribsTable = new SC_TableEdit("bodiesAttribsTable", bodiesAttribsHeadings, 3, bodiesAttribsStrings);
-  bodiesLayout->addWidget(bodiesAttribsTable,numRow++,0,1,3);
+  bodiesLayout->addWidget(new QLabel("Output Attributes"), numRow, 0, 1, 1, Qt::AlignRight);
+  bodiesLayout->addWidget(bodiesAttribsTable,numRow++, 1, 1, 3);
+  bodiesLayout->itemAt(bodiesLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
-  
+  bodiesLayout->addWidget(new QLabel("Only Save Exterior"), numRow, 0, 1, 1, Qt::AlignRight);
+  bodiesLayout->addWidget(bodies_OutputExteriorOnly, numRow++, 1, 1, 3);
+  bodiesLayout->itemAt(bodiesLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
+  // bodiesLayout->setRowStretch(numRow, 1);
 
-
-  bodiesLayout->setRowStretch(numRow, 1);
-
+  // --- Checkpoint-Resume
   numRow = 0;
   QGroupBox *checkpointBox = new QGroupBox("Checkpoint-Resume State");
   QGridLayout *checkpointLayout = new QGridLayout();  
   checkpointBox->setLayout(checkpointLayout);
-  checkpointLayout->addWidget(new QLabel("Output File Type"),numRow,0);
-  checkpointLayout->itemAt(checkpointLayout->count()-1)->setAlignment(Qt::AlignRight);
-  checkpointLayout->addWidget(vtkCheckpoints_Output,numRow,1);
-  checkpointLayout->addWidget(new QLabel("Suffix"),numRow++,2);
-  checkpointLayout->addWidget(new QLabel("Output Frequency"),numRow,0);
-  checkpointLayout->itemAt(checkpointLayout->count()-1)->setAlignment(Qt::AlignRight);
-  checkpointLayout->addWidget(outputCheckpoints_Dt,numRow,1);
-  checkpointLayout->addWidget(new QLabel("Hz"),numRow++,2);
+  checkpointLayout->addWidget(new QLabel("Output File Type"), numRow, 0, 1, 1, Qt::AlignRight);
+  checkpointLayout->addWidget(vtkCheckpoints_Output, numRow, 1, 1, 3);
+  checkpointLayout->setColumnStretch(1, 1); // Expand the middle column
+  checkpointLayout->itemAt(checkpointLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  checkpointLayout->addWidget(new QLabel(""), numRow++, 4, 1, 1);
+
+  checkpointLayout->addWidget(new QLabel("Output Frequency"), numRow, 0, 1, 1, Qt::AlignRight);
+  checkpointLayout->addWidget(outputCheckpoints_Dt, numRow, 1, 1, 3);
+  checkpointLayout->itemAt(checkpointLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  checkpointLayout->addWidget(new QLabel("Hz"), numRow++, 4, 1, 1);
   checkpointLayout->setRowStretch(numRow, 1);
 
+  // --- Boundaries
   numRow = 0;
   QGroupBox *boundariesBox = new QGroupBox("Boundaries");
   QGridLayout *boundariesLayout = new QGridLayout();  
   boundariesBox->setLayout(boundariesLayout);
-  boundariesLayout->addWidget(new QLabel("Output File Type"),numRow,0);
-  boundariesLayout->itemAt(boundariesLayout->count()-1)->setAlignment(Qt::AlignRight);
-  boundariesLayout->addWidget(vtkBoundaries_Output,numRow,1); 
-  boundariesLayout->addWidget(new QLabel("Suffix"),numRow++,2);   
-  boundariesLayout->addWidget(new QLabel("Output Frequency"),numRow,0);
-  boundariesLayout->itemAt(boundariesLayout->count()-1)->setAlignment(Qt::AlignRight);
-  boundariesLayout->addWidget(outputBoundaries_Dt,numRow,1);
-  boundariesLayout->addWidget(new QLabel("Hz"),numRow++,2);
+
+  boundariesLayout->addWidget(new QLabel("Output File Type"), numRow, 0, 1, 1, Qt::AlignRight);
+  boundariesLayout->addWidget(vtkBoundaries_Output, numRow, 1, 1, 3); 
+  boundariesLayout->setColumnStretch(1, 1); // Expand the middle column
+  boundariesLayout->itemAt(boundariesLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  boundariesLayout->addWidget(new QLabel(""), numRow++, 4, 1, 1);   
+
+  boundariesLayout->addWidget(new QLabel("Output Frequency"), numRow, 0, 1, 1, Qt::AlignRight);
+  boundariesLayout->addWidget(outputBoundaries_Dt, numRow, 1, 1, 3);
+  boundariesLayout->itemAt(boundariesLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  boundariesLayout->addWidget(new QLabel("Hz"), numRow++, 4, 1, 1);
   boundariesLayout->setRowStretch(numRow, 1);
 
+  // --- Sensors
   numRow = 0;
   QGroupBox *sensorsBox = new QGroupBox("Sensors");
   QGridLayout *sensorsLayout = new QGridLayout();  
   sensorsBox->setLayout(sensorsLayout);
-  sensorsLayout->addWidget(new QLabel("Output File Type"),numRow,0);
-  sensorsLayout->itemAt(sensorsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  sensorsLayout->addWidget(vtkSensors_Output,numRow,1);    
-  sensorsLayout->addWidget(new QLabel("Suffix"),numRow++,2);
+  sensorsLayout->addWidget(new QLabel("Output File Type"), numRow, 0, 1, 1, Qt::AlignRight);
+  sensorsLayout->addWidget(vtkSensors_Output, numRow, 1, 1, 3); 
+  sensorsLayout->setColumnStretch(1, 1); // Expand the middle column
+  sensorsLayout->itemAt(sensorsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);   
+  sensorsLayout->addWidget(new QLabel("  "), numRow++, 4, 1, 1);
   sensorsLayout->setRowStretch(numRow, 1);
 
+  // --- Energies
   numRow = 0;
   QGroupBox *energiesBox = new QGroupBox("Energies");
   QGridLayout *energiesLayout = new QGridLayout();  
   energiesBox->setLayout(energiesLayout);
-  energiesLayout->addWidget(new QLabel("Output File Type"),numRow,0);
-  energiesLayout->itemAt(energiesLayout->count()-1)->setAlignment(Qt::AlignRight);
-  energiesLayout->addWidget(vtkEnergies_Output,numRow,1);
-  energiesLayout->addWidget(new QLabel("Suffix"),numRow++,2);
-  energiesLayout->addWidget(new QLabel("Output Frequency"),numRow,0);
-  energiesLayout->itemAt(energiesLayout->count()-1)->setAlignment(Qt::AlignRight);
-  energiesLayout->addWidget(outputEnergies_Dt,numRow,1);
-  energiesLayout->addWidget(new QLabel("Hz"),numRow++,2);
+  energiesLayout->addWidget(new QLabel("Output File Type"), numRow, 0, 1, 1, Qt::AlignRight);
+  energiesLayout->addWidget(vtkEnergies_Output, numRow, 1, 1, 3);
+  energiesLayout->setColumnStretch(1, 1); // Expand the middle column
+  energiesLayout->itemAt(energiesLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  energiesLayout->addWidget(new QLabel(""), numRow++, 4, 1, 1);
 
-  energiesLayout->addWidget(new QLabel("Kinetic - Gravity - Strain?"),numRow,0);
-  energiesLayout->itemAt(energiesLayout->count()-1)->setAlignment(Qt::AlignRight);
-  energiesLayout->addWidget(useKineticEnergy,numRow,1);
-  energiesLayout->addWidget(usePotentialEnergy,numRow,2);
-  energiesLayout->addWidget(useStrainEnergy,numRow++,3);
+  energiesLayout->addWidget(new QLabel("Output Frequency"), numRow, 0, 1, 1, Qt::AlignRight);
+  energiesLayout->addWidget(outputEnergies_Dt, numRow, 1, 1, 3);
+  energiesLayout->itemAt(energiesLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  energiesLayout->addWidget(new QLabel("Hz"), numRow++, 4, 1, 1);
+
+  energiesLayout->addWidget(new QLabel("Output Kinetic?"), numRow, 0, 1, 1, Qt::AlignRight);
+  energiesLayout->addWidget(useKineticEnergy, numRow++, 1, 1, 3);
+  energiesLayout->addWidget(new QLabel("Output Gravity?"), numRow, 0, 1, 1, Qt::AlignRight);
+  energiesLayout->addWidget(usePotentialEnergy, numRow++, 1, 1, 3);
+  energiesLayout->addWidget(new QLabel("Output Strain?"),  numRow, 0, 1, 1, Qt::AlignRight);
+  energiesLayout->addWidget(useStrainEnergy, numRow++, 1, 1, 3);
   energiesLayout->setRowStretch(numRow, 1);
 
   //
   // now boxes to this widget
   //
   numRow = 0;
-  QGridLayout *layout = new QGridLayout;
-  layout->addWidget(bodiesBox, numRow++,0);
-  layout->addWidget(checkpointBox, numRow++,0);
-  layout->addWidget(boundariesBox, numRow++,0);
-  layout->addWidget(sensorsBox, numRow++,0);
-  layout->addWidget(energiesBox, numRow++,0);
+  QGridLayout *layout = new QGridLayout();
+  layout->addWidget(bodiesBox, numRow++, 0);
+  layout->addWidget(checkpointBox, numRow++, 0);
+  layout->addWidget(boundariesBox, numRow++, 0);
+  layout->addWidget(sensorsBox, numRow++, 0);
+  layout->addWidget(energiesBox, numRow++, 0);
   layout->setRowStretch(numRow, 1);
   this->setLayout(layout);
 }

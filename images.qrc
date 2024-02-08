@@ -98,5 +98,9 @@
         <file>icons/wind-black.svg</file>
         <file>icons/wiper-white.svg</file>
         <file>icons/wiper-black.svg</file>
+        <file>icons/union-black.svg</file>
+        <file>icons/subtract-black.svg</file>
+        <file>icons/intersect-black.svg</file>
+        <file>icons/difference-black.svg</file>
     </qresource>
 </RCC>

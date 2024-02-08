@@ -44,6 +44,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QDebug>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QSvgWidget>
+#include <QString>
+#include <QIcon>
 
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
@@ -53,67 +56,70 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_FileEdit.h>
 #include <SC_CheckBox.h>
 
-
 GeometryMPM::GeometryMPM(QWidget *parent)
   :SimCenterWidget(parent)
 {
+  int maxWidth = 1280;
   int numRow = 0;
 
   QGridLayout *layout = new QGridLayout();
   this->setLayout(layout);
   
   QStringList bodyList; bodyList << "Fluid" << "Debris" << "Structure" << "Custom";
-  bodyPreset = new SC_ComboBox("body_preset",bodyList);
-  layout->addWidget(new QLabel("Body Preset"),numRow,0);
-  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
-  layout->addWidget(bodyPreset,numRow++,1);
+  bodyPreset = new SC_ComboBox("body_preset", bodyList);
+  layout->addWidget(new QLabel("Body Preset"), numRow, 0, 1, 1, Qt::AlignRight);
+  layout->addWidget(bodyPreset,numRow++,1, 1, 3);
+  layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
   // numRow = 0;
 
   // -----------------------------------------------------------------------------------
   QList <QString> objectList; objectList << "Box" << "Sphere" << "Cylinder" << "Cone" << "Ring" << "File" << "Checkpoint" << "OSU LWF" << "OSU DWB" << "UW WASIRF" << "WU TWB" << "USGS DFF" << "NICHE" << "Custom";
   objectType = new SC_ComboBox("object_type", objectList);
-  layout->addWidget(new QLabel("Object Type"), numRow,0);
-  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
-  layout->addWidget(objectType,numRow++, 1);
+  layout->addWidget(new QLabel("Object Type"), numRow, 0, 1, 1, Qt::AlignRight);
+  layout->addWidget(objectType,numRow++, 1, 1, 3);
+  layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
   QList <QString> operationList;  operationList << "Add (OR)" << "Subtract (NOT)" << "Intersect (AND)" << "Difference (XOR)";
   operationType = new SC_ComboBox("operation_type", operationList);
-  layout->addWidget(new QLabel("Operation With Prior Geometry"), numRow,0);
-  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
-  layout->addWidget(operationType,numRow++, 1);
+  layout->addWidget(new QLabel("Operation On Prior Geometry"), numRow, 0, 1, 1, Qt::AlignRight);
+  layout->addWidget(operationType, numRow++, 1, 1, 3);
+  layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
-  originX = new SC_DoubleLineEdit("origin_x",0.0);
-  originY = new SC_DoubleLineEdit("origin_y",0.0);
-  originZ = new SC_DoubleLineEdit("origin_z",0.0);
-  layout->addWidget(new QLabel("Origin (X,Y,Z)"), numRow, 0);  
-  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
-  layout->addWidget(originX, numRow,1);
-  layout->addWidget(originY, numRow,2);
-  layout->addWidget(originZ, numRow,3);
-  layout->addWidget(new QLabel("m"), numRow++, 4);  
+  operationType->setItemIcon(0, QIcon(QString(":/icons/union-black.svg")));
+  operationType->setItemIcon(1, QIcon(QString(":/icons/subtract-black.svg")));
+  operationType->setItemIcon(2, QIcon(QString(":/icons/intersect-black.svg")));
+  operationType->setItemIcon(3, QIcon(QString(":/icons/difference-black.svg")));
 
-  length = new SC_DoubleLineEdit("span_x",104.0);  
-  height = new SC_DoubleLineEdit("span_y",4.6);  
-  width = new SC_DoubleLineEdit("span_z",3.658);
-  layout->addWidget(new QLabel("Dimensions (X,Y,Z)"), numRow, 0);
-  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
-  layout->addWidget(length, numRow, 1);  
-  layout->addWidget(height, numRow, 2);  
-  layout->addWidget(width, numRow, 3);  
-  layout->addWidget(new QLabel("m"), numRow++, 4);
 
-  radius = new SC_DoubleLineEdit("radius",0.0);
-  layout->addWidget(new QLabel("Radius"), numRow, 0);
-  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
-  layout->addWidget(radius, numRow, 1);
-  layout->addWidget(new QLabel("m"), numRow++, 2);
+  originX = new SC_DoubleLineEdit("origin_x", 0.0);
+  originY = new SC_DoubleLineEdit("origin_y", 0.0);
+  originZ = new SC_DoubleLineEdit("origin_z", 0.0);
+  layout->addWidget(new QLabel("Origin (X,Y,Z)"), numRow, 0, 1, 1, Qt::AlignRight);  
+  layout->addWidget(originX, numRow, 1, 1, 1);
+  layout->addWidget(originY, numRow, 2, 1, 1);
+  layout->addWidget(originZ, numRow, 3, 1, 1);
+  layout->addWidget(new QLabel("m"), numRow++, 4, 1, 1);  
+
+  length = new SC_DoubleLineEdit("span_x", 104.0);  
+  height = new SC_DoubleLineEdit("span_y", 4.6);  
+  width = new SC_DoubleLineEdit("span_z", 3.658);
+  layout->addWidget(new QLabel("Dimensions (X,Y,Z)"), numRow, 0, 1, 1, Qt::AlignRight);
+  layout->addWidget(length, numRow, 1, 1, 1);  
+  layout->addWidget(height, numRow, 2, 1, 1);  
+  layout->addWidget(width, numRow, 3, 1, 1);  
+  layout->addWidget(new QLabel("m"), numRow++, 4, 1, 1);
+
+  radius = new SC_DoubleLineEdit("radius", 0.0);
+  layout->addWidget(new QLabel("Radius"), numRow, 0, 1, 1, Qt::AlignRight);
+  layout->addWidget(radius, numRow, 1, 1, 3);
+  layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  layout->addWidget(new QLabel("m"), numRow++, 4, 1, 1);
 
   QStringList longAxisList; longAxisList << "" << "X" << "Y" << "Z";
   longAxis = new SC_ComboBox("long_axis", longAxisList);
-  layout->addWidget(new QLabel("Long Axis"), numRow, 0);
-  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
-  layout->addWidget(longAxis, numRow++, 1);
-
+  layout->addWidget(new QLabel("Long Axis"), numRow, 0, 1, 1, Qt::AlignRight);
+  layout->addWidget(longAxis, numRow++, 1, 1, 3);
+  layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
 
 
@@ -295,9 +301,12 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   QStringList trackerHeadings; trackerHeadings << "1st" << "2nd" << "3rd" << "4th" << "5th";
   QStringList trackerData; trackerData << "0" << "" << "" << "" << "";
   trackerTable = new SC_TableEdit("trackerTable", trackerHeadings, 1, trackerData);
-  layout->addWidget(new QLabel("Identify Particle IDs to Place Trackers On"), numRow++, 0);
+  layout->addWidget(new QLabel("Identify Particle IDs to Place Trackers On"), numRow++, 1, 1, 3);
   layout->addWidget(trackerTable, numRow++, 0, 1, 5);
   
+  // numRow = numRow+1; // check
+
+
   layout->setRowStretch(numRow, 1);
 
 

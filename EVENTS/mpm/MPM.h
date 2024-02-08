@@ -37,7 +37,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmk
+// Author: JustinBonus
+// Date: 1/2024
 
 #include <SimCenterAppWidget.h>
 
@@ -67,7 +68,7 @@ public slots:
 private:
 
   SettingsMPM   *mpmSettings;
-  BodiesMPM  *mpmBodies;
+  BodiesMPM     *mpmBodies;
   BoundariesMPM *mpmBoundaries;
   SensorsMPM    *mpmSensors;
   OutputsMPM    *mpmOutputs; 

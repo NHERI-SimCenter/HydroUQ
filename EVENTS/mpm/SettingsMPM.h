@@ -38,9 +38,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 /**
- *  @author  fmckenna
- *  @date    2/2017
- *  @version 1.0
+ *  @author  JustinBonus
+ *  @date    1/2024
+ *  @version 3.0
  *
  *  @section DESCRIPTION
  *
@@ -92,19 +92,31 @@ private:
   // similitude scaling
   SC_CheckBox       *froudeScaling; // apply Froude scaling to length, velocity
   SC_CheckBox       *cauchyScaling; // apply Cauchy scaling to bulk modulus, stress, pressure
+  // SC_CheckBox       *reynoldsScaling; // apply time scaling to time step, duration
   SC_DoubleLineEdit *froudeLengthRatio; // ratio of model length to prototype length
   SC_DoubleLineEdit *froudeTimeRatio; // ratio of model length to prototype length
   SC_DoubleLineEdit *cauchyBulkRatio; // ratio of model bulk modulus to prototype bulk modulus
+  // SC_DoubleLineEdit *reynoldsViscosityRatio; // ratio of model viscosity to prototype viscosity/kinematic viscosity
 
   // computational facility, CPU/GPU hardware, and precompiled ClaymoreUW software-hardware settings
   SC_ComboBox *hpc; // High-performance computing facility 
-  SC_StringLineEdit *hpcCardBrand; // Ratio of double-precision to single-precision performance
-  SC_StringLineEdit *hpcCardName; // GPU name
-  SC_StringLineEdit *hpcCardArchitecture; // GPU architecture
+  SC_StringLineEdit *hpcQueue; // Name of queue
+  // SC_StringLineEdit *hpcAllocation; // Name of allocation/partition
+  SC_StringLineEdit *hpcCardBrand; // GPU brand (e.g. NVIDIA)
+  SC_StringLineEdit *hpcCardName; // GPU name (e.g. A100)
+  SC_StringLineEdit *hpcCardArchitecture; // GPU architecture (e.g. Ampere)
   SC_IntLineEdit *hpcCardGlobalMemory; // GPU global memory (GB)
-  SC_IntLineEdit *hpcCardComputeCapability; // GPU compute capability (sm_XY)
+  SC_IntLineEdit *hpcCardComputeCapability; // GPU compute capability (sm_XY, arch_XY, e.g. XY=80)
   SC_IntLineEdit *numGPUs; // Number of GPUs to use
   SC_IntLineEdit *modelsPerGPU; // Number of models to run per GPU
+  // SC_ComboBox *hpcCPU; // CPU model
+  // SC_ComboBox *hpcCPUArchitecture; // CPU architecture
+  // SC_IntLineEdit *hpcCPUCores; // Number of CPU cores to use
+  // SC_IntLineEdit *hpcCPUCache; // CPU cache size (MB)
+  // SC_IntLineEdit *hpcCPUMemory; // CPU memory (GB)
+  // SC_StringLineEdit *hpcCPUBrand; // CPU brand
+  // SC_StringLineEdit *hpcCPUName; // CPU name
+  // SC_IntLineEdit *hpcRAMMemory; // RAM memory (GB)
 };
 
 #endif // SETTINGS_DIGITAL_TWIN_H

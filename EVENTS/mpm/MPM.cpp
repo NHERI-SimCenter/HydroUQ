@@ -34,7 +34,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmk
+// Written: fmk, JustinBonus
 
 #include "MPM.h"
 #include <QScrollArea>
@@ -57,6 +57,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <BoundariesMPM.h>
 #include <SensorsMPM.h>
 #include <OutputsMPM.h>
+
+#include <Qt3DExtras/QCuboidMesh>
+#include <Qt3DExtras/QPhongMaterial>
+#include <Qt3DExtras/Qt3DWindow>
+#include <Qt3DRender/QMesh>
+#include <Qt3DExtras/QForwardRenderer>
+#include <Qt3DRender/QCamera>
+#include <Qt3DCore/QTransform>
+#include <Qt3DCore/QEntity>
+#include <QQuaternion>
+#include <Qt3DExtras/QOrbitCameraController>
+#include <Qt3DRender/QAttribute>
+#include <Qt3DRender/QBuffer>
+#include <Qt3DRender/QGeometry>
+#include <Qt3DRender/QGeometryRenderer>
+
 
 MPM::MPM(QWidget *parent)
     : SimCenterAppWidget(parent)
@@ -321,13 +337,105 @@ MPM::MPM(QWidget *parent)
     theTabWidget->setIconSize(QSize(sizePrimaryTabs,sizePrimaryTabs));
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
+// #if 0
+    
+    // -----------------------------------------------------------------------------------
+    // Create a 3D window and container widget and set the 3D window as its layout
+    // Based on code by Alex44, 2018; https://stackoverflow.com/questions/23231012/how-to-render-in-qt3d-in-standard-gui-application)
+    auto rootEntity = new Qt3DCore::QEntity();
+    auto view = new Qt3DExtras::Qt3DWindow();
+    QWidget *container = QWidget::createWindowContainer(view);
+
+    // background color
+    view->defaultFrameGraph()->setClearColor(QColor(QRgb(0xFFFFFF)));
+
+    // Create a camera and set its position
+    // auto camera = new Qt3DRender::QCamera(rootEntity);
+    auto cameraEntity = view->camera();
+    cameraEntity->setUpVector(QVector3D(0, 1.f, 0));
+    cameraEntity->setPosition(QVector3D(-5.0f, 5.0f, 5.0f));
+    cameraEntity->setViewCenter(QVector3D(0.0f, 0.0f, 0.0f));
+    cameraEntity->viewAll();
+    // Create a cube mesh
+    Qt3DExtras::QCuboidMesh *cubeMesh = new Qt3DExtras::QCuboidMesh();
+    Qt3DRender::QMesh *twinMesh = new Qt3DRender::QMesh();
+    twinMesh->setSource(QUrl(QStringLiteral("qrc:/OSU_LWF_Bathymetry.obj")));
+    Qt3DRender::QMesh *hydroMesh = new Qt3DRender::QMesh();
+    hydroMesh->setSource(QUrl(QStringLiteral("qrc:/HydroUQ_Icon_Color.obj")));
+
+    // Create a transform and set its scale
+    auto cubeTransform = new Qt3DCore::QTransform();
+    auto twinTransform = new Qt3DCore::QTransform();
+    auto hydroTransform = new Qt3DCore::QTransform();
+    cubeTransform->setScale(1.f);
+    cubeTransform->setTranslation(QVector3D(45.8f, 2.0f, 1.825f));
+    cubeTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+
+    twinTransform->setScale(1.f);
+    twinTransform->setTranslation(QVector3D(0.0f, 0.0f, 0.0f));
+    twinTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+    twinTransform->setRotation(QQuaternion::fromEulerAngles(90.f, 0.f, 0.f));
+
+    hydroTransform->setScale(50.f);
+    hydroTransform->setTranslation(QVector3D(2.0f, 2.0f, 0.0f));
+    // hydroTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+    hydroTransform->setRotation(QQuaternion::fromEulerAngles(90.f, 0.f, 0.f));
+
+    // Allow for camera controls
+    auto camController = new Qt3DExtras::QOrbitCameraController(rootEntity);
+    camController->setCamera(cameraEntity);
+
+
+    // Create a material and set its color
+    auto cubeMaterial = new Qt3DExtras::QPhongMaterial();
+    auto twinMaterial = new Qt3DExtras::QPhongMaterial();
+    auto hydroMaterial = new Qt3DExtras::QPhongMaterial();
+    cubeMaterial->setDiffuse(QColor(QRgb(0xCC5500)));
+    twinMaterial->setDiffuse(QColor(QRgb(0xFFFFFF)));
+    hydroMaterial->setDiffuse(QColor(QRgb(0x005FFF)));
+
+    // Create a cube entity and add the mesh, transform and material components
+    auto cubeEntity = new Qt3DCore::QEntity(rootEntity);
+    auto twinEntity = new Qt3DCore::QEntity(rootEntity);
+    auto hydroEntity = new Qt3DCore::QEntity(rootEntity);
+
+    cubeEntity->addComponent(cubeMesh);
+    cubeEntity->addComponent(cubeMaterial);
+    cubeEntity->addComponent(cubeTransform);
+
+    twinEntity->addComponent(twinMesh);
+    twinEntity->addComponent(twinMaterial);
+    twinEntity->addComponent(twinTransform);
+
+    hydroEntity->addComponent(hydroMesh);
+    hydroEntity->addComponent(hydroMaterial);
+    hydroEntity->addComponent(hydroTransform);
+
+    // Set the root entity of the 3D window
+    view->setRootEntity(rootEntity);
+
+    // Format visualizer layout
+    // QVBoxLayout *visLayout = new QVBoxLayout();
+    // container->setLayout(visLayout);
+    // container->setMinimumWidth(250);
+    // container->setEnabled(true);
+    // container->setVisible(true);
+    // container->show();
+
+    // // Set the 3D window as the layout of the widget
+    // QVBoxLayout *visLayout = new QVBoxLayout();
+    // visLayout->addWidget(new QLabel("3D View of Digital Twin"));
+    // visLayout->addWidget(container);
+
+    // -----------------------------------------------------------------------------------
+    
+// #endif
     mainLayout->addWidget(theTabWidget, 3, 0);
     mainGroup->setLayout(mainLayout);
     mainGroup->setMinimumWidth(windowWidthMin);
     mainGroup->setMaximumWidth(windowWidth);
-    // mainGroup->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     mainLayout->setRowStretch(0, 4);
-
+    
     QScrollArea *scrollArea = new QScrollArea();
     scrollArea->setWidgetResizable(true);
     scrollArea->setLineWidth(1);
@@ -336,28 +444,37 @@ MPM::MPM(QWidget *parent)
     scrollArea->setMinimumWidth(windowWidthMin + 25);
     scrollArea->setMaximumWidth(windowWidth + 25);
 
+    // Add digital twin + scene builder on left. Add 3D visualizer on right
+    QHBoxLayout *horizontalPanelLayout = new QHBoxLayout();
+    QWidget *horizontalPanels = new QWidget();
+    horizontalPanels->setLayout(horizontalPanelLayout);
+    horizontalPanelLayout->addWidget(scrollArea);
+    horizontalPanelLayout->addWidget(container);
+
     QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(scrollArea);
     this->setLayout(layout);
 
+    // layout->addWidget(scrollArea);
+    layout->addWidget(horizontalPanels);
+    // layout->addWidget(container);
 
-  connect(stackedWidget, &SlidingStackedWidget::animationFinished, [=](void){
-    // if(index == 0){
-    //   aboveTabs->setText("\nOregon State University's Large Wave Flume - OSU LWF\n");
-    // } else if(index == 1){
-    //   aboveTabs->setText("\nOregon State University's Directional Wave Basin - OSU DWB\n");
-    // } else if(index == 2){
-    //   aboveTabs->setText("\nUniversity of Washington's Wind-Air-Sea Interatction Research Facility - UW WASIRF\n");
-    // } else if(index == 3){
-    //   aboveTabs->setText("\nWaseda University's Tsunami Wave Basin - WU TWB\n");
-    // } else if(index == 4){
-    //   aboveTabs->setText("\nUnited States Geological Survey's Debris Flow Flume - USGS DFF\n");
-    // }
-    // mpmBodies->setDigitalTwin(index);
-    int index = stackedWidget->currentIndex();
-    mpmBodies->setDigitalTwin(index);
-    mpmBoundaries->setDigitalTwin(index);
-  });
+    connect(stackedWidget, &SlidingStackedWidget::animationFinished, [=](void){
+      // if(index == 0){
+      //   aboveTabs->setText("\nOregon State University's Large Wave Flume - OSU LWF\n");
+      // } else if(index == 1){
+      //   aboveTabs->setText("\nOregon State University's Directional Wave Basin - OSU DWB\n");
+      // } else if(index == 2){
+      //   aboveTabs->setText("\nUniversity of Washington's Wind-Air-Sea Interatction Research Facility - UW WASIRF\n");
+      // } else if(index == 3){
+      //   aboveTabs->setText("\nWaseda University's Tsunami Wave Basin - WU TWB\n");
+      // } else if(index == 4){
+      //   aboveTabs->setText("\nUnited States Geological Survey's Debris Flow Flume - USGS DFF\n");
+      // }
+      // mpmBodies->setDigitalTwin(index);
+      int index = stackedWidget->currentIndex();
+      mpmBodies->setDigitalTwin(index);
+      mpmBoundaries->setDigitalTwin(index);
+    });
 
 
 }

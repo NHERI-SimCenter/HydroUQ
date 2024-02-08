@@ -62,7 +62,7 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   // --- Material
   QGridLayout *layout = new QGridLayout();
   this->setLayout(layout);
-
+  int maxWidth = 1280;
   int numRow = 0;
 
 
@@ -73,54 +73,55 @@ MaterialMPM::MaterialMPM(QWidget *parent)
 
   QStringList materialPresetList; materialPresetList <<  "Water (Fresh)" << "Water (Ocean)" << "Water (Soft)" << "Plastic" << "Rubber" << "Aluminum" << "Concrete" << "Wood" << "Clay" << "Sand" << "Custom";  
   materialPreset = new SC_ComboBox("material_preset", materialPresetList);
-  layout->addWidget(new QLabel("Material Preset"),numRow, 0);
-  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
+  layout->addWidget(new QLabel("Material Preset"),numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(materialPreset, numRow++, 1);
+  layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
   QStringList constitutiveList; constitutiveList << "JFluid" << "FixedCorotated" << "NeoHookean" << "DruckerPrager" << "CamClay" << "VonMises" <<"CoupleUP" << "Custom";  
   constitutive = new SC_ComboBox("constitutive", constitutiveList);
-  layout->addWidget(new QLabel("Constitutive Law"),numRow, 0);
-  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
+  layout->addWidget(new QLabel("Constitutive Law"),numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(constitutive, numRow++, 1);
+  layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
   CFL = new SC_DoubleLineEdit("CFL", 0.5);
-  layout->addWidget(new QLabel("Courant-Friedrich-Lewy Number"),numRow, 0);
-  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
+  layout->addWidget(new QLabel("CFL Number"),numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(CFL, numRow, 1);
+  layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
   layout->addWidget(new QLabel(""),numRow++, 2);
 
   density = new SC_DoubleLineEdit("rho", 1000.0);
-  layout->addWidget(new QLabel("Density"),numRow, 0);
-  layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
+  layout->addWidget(new QLabel("Density"),numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(density, numRow, 1);
+  layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
   layout->addWidget(new QLabel("kg/m^3"),numRow++, 2);
 
   // --- Elastic Properties
   QGroupBox *elasticBox = new QGroupBox("Elastic Properties");
   QGridLayout *elasticLayout = new QGridLayout();
   elasticBox->setLayout(elasticLayout);
-  layout->addWidget(elasticBox, numRow++, 0, 1, 3);
 
+  int elasticNumRow = 0;
   youngsModulus = new SC_DoubleLineEdit("youngs_modulus", 1e7);
-  elasticLayout->addWidget(new QLabel("Young's Modulus"),numRow, 0);
-  elasticLayout->itemAt(elasticLayout->count()-1)->setAlignment(Qt::AlignRight);
-  elasticLayout->addWidget(youngsModulus, numRow, 1);
-  elasticLayout->addWidget(new QLabel("Pa"),numRow++, 2);
+  elasticLayout->addWidget(new QLabel("Young's Modulus"), elasticNumRow, 0, 1, 1, Qt::AlignRight);
+  elasticLayout->addWidget(youngsModulus, elasticNumRow, 1);
+  elasticLayout->itemAt(elasticLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  elasticLayout->addWidget(new QLabel("Pa"), elasticNumRow++, 2);
 
   poissonsRatio = new SC_DoubleLineEdit("poisson_ratio",0.3);
-  elasticLayout->addWidget(new QLabel("Poisson's Ratio"),numRow, 0);
-  elasticLayout->itemAt(elasticLayout->count()-1)->setAlignment(Qt::AlignRight);
-  elasticLayout->addWidget(poissonsRatio, numRow, 1);
-  elasticLayout->addWidget(new QLabel("[0, 0.5)"),numRow++, 2);
-  elasticLayout->setRowStretch(0,2);
-  // elasticLayout->setColumnStretch(0,3);
+  elasticLayout->addWidget(new QLabel("Poisson's Ratio"), elasticNumRow, 0, 1, 1, Qt::AlignRight);
+  elasticLayout->addWidget(poissonsRatio, elasticNumRow, 1);
+  elasticLayout->itemAt(elasticLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  elasticLayout->addWidget(new QLabel("[0, 0.5)"), elasticNumRow++, 2);
+  elasticLayout->setRowStretch(elasticNumRow,1);
+  elasticLayout->setColumnStretch(1,1);
+  layout->addWidget(elasticBox, numRow++, 0, 1, 3);
 
 
 
   // ========================
   QStackedWidget *materialStack = new QStackedWidget();
   layout->addWidget(materialStack, numRow++, 0, 1, 3);
-  layout->setRowStretch(numRow+2,1);
+  layout->setRowStretch(numRow + elasticNumRow + 2, 1);
 
   // layout->setRowStretch(0,numRow+1);
 
@@ -135,22 +136,26 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   numRow = 0;
 
   bulkModulus = new SC_DoubleLineEdit("bulk_modulus", 2.2e9);
-  jfluidLayout->addWidget(new QLabel("Bulk Modulus"),numRow, 0);
-  jfluidLayout->itemAt(jfluidLayout->count()-1)->setAlignment(Qt::AlignRight);
+  jfluidLayout->addWidget(new QLabel("Bulk Modulus"),numRow, 0, 1, 1, Qt::AlignRight);
   jfluidLayout->addWidget(bulkModulus, numRow, 1);
+  jfluidLayout->itemAt(jfluidLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   jfluidLayout->addWidget(new QLabel("Pa"),numRow++, 2);
 
   viscosity = new SC_DoubleLineEdit("viscosity", 0.001);
-  jfluidLayout->addWidget(new QLabel("Viscosity"),numRow, 0);
-  jfluidLayout->itemAt(jfluidLayout->count()-1)->setAlignment(Qt::AlignRight);
+  jfluidLayout->addWidget(new QLabel("Viscosity"),numRow, 0, 1, 1, Qt::AlignRight);
   jfluidLayout->addWidget(viscosity, numRow, 1);
+  jfluidLayout->itemAt(jfluidLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   jfluidLayout->addWidget(new QLabel("Poise"),numRow++, 2);
 
   bulkModulusDerivative = new SC_DoubleLineEdit("gamma", 7.15);
-  jfluidLayout->addWidget(new QLabel("Bulk Modulus Derivative"),numRow, 0);
-  jfluidLayout->itemAt(jfluidLayout->count()-1)->setAlignment(Qt::AlignRight);
-  jfluidLayout->addWidget(bulkModulusDerivative, numRow++, 1);
-  jfluidLayout->setRowStretch(0,numRow);
+  jfluidLayout->addWidget(new QLabel("Bulk Derivative"),numRow, 0, 1, 1, Qt::AlignRight);
+  jfluidLayout->addWidget(bulkModulusDerivative, numRow, 1);
+  jfluidLayout->itemAt(jfluidLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  jfluidLayout->addWidget(new QLabel("  "),numRow++, 2);
+  for (int i=0; i<3; ++i) jfluidLayout->itemAt(jfluidLayout->count()-(i+1))->widget()->setToolTip("The bulk modulus derivative, gamma, is the rate of change of the bulk modulus with respect to pressure. It is related to the speed of sound in the material. Value of 7.15 common for water.");
+
+  jfluidLayout->setRowStretch(numRow,1);
+  jfluidLayout->setColumnStretch(1,1);
   // jfluidLayout->setColumnStretch(0,1);
 
 
@@ -172,9 +177,10 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   materialStack->addWidget(hyperElasticBox);
 
   numRow = 0;
-  hyperElasticLayout->addWidget(new QLabel("Material is fully defined."),numRow++, 0);
+  hyperElasticLayout->addWidget(new QLabel("Material is fully defined."), numRow++, 0);
   hyperElasticLayout->itemAt(hyperElasticLayout->count()-1)->setAlignment(Qt::AlignCenter);
-  hyperElasticLayout->setRowStretch(0,numRow);
+  hyperElasticLayout->setRowStretch(0, 1);
+  hyperElasticLayout->setColumnStretch(0,1);
   // Deprecated in favor of elastic properties box shared among materials
 
   // youngsModulus = new SC_DoubleLineEdit("youngs_modulus", 2.2e7);
@@ -200,37 +206,35 @@ MaterialMPM::MaterialMPM(QWidget *parent)
 
   numRow = 0;
 
-  cohesion = new SC_DoubleLineEdit("cohesion",0.0001);
-  druckerPragerLayout->addWidget(new QLabel(""),numRow, 0);
-  druckerPragerLayout->addWidget(new QLabel("Cohesion"),numRow, 0);
-  druckerPragerLayout->itemAt(druckerPragerLayout->count()-1)->setAlignment(Qt::AlignRight);
+  cohesion = new SC_DoubleLineEdit("cohesion", 0.0001);
+  druckerPragerLayout->addWidget(new QLabel("Cohesion"), numRow, 0, 1, 1, Qt::AlignRight);
   druckerPragerLayout->addWidget(cohesion, numRow, 1);
-  druckerPragerLayout->addWidget(new QLabel(""),numRow++, 2);
+  druckerPragerLayout->itemAt(druckerPragerLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  druckerPragerLayout->addWidget(new QLabel(""), numRow++, 2);
 
-  frictionAngle = new SC_DoubleLineEdit("friction_angle",30.0);
-  druckerPragerLayout->addWidget(new QLabel("Friction Angle"),numRow, 0);
-  druckerPragerLayout->itemAt(druckerPragerLayout->count()-1)->setAlignment(Qt::AlignRight);
+  frictionAngle = new SC_DoubleLineEdit("friction_angle", 30.0);
+  druckerPragerLayout->addWidget(new QLabel("Friction Angle"), numRow, 0, 1, 1, Qt::AlignRight);
   druckerPragerLayout->addWidget(frictionAngle, numRow, 1);
-  druckerPragerLayout->addWidget(new QLabel("deg."),numRow++, 2);
+  druckerPragerLayout->itemAt(druckerPragerLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  druckerPragerLayout->addWidget(new QLabel("deg."), numRow++, 2);
 
   useVolumeCorrection = new SC_CheckBox("SandVolCorrection");
-  druckerPragerLayout->addWidget(new QLabel("Adjust Volume?"),numRow, 0);
-  druckerPragerLayout->itemAt(druckerPragerLayout->count()-1)->setAlignment(Qt::AlignRight);
+  druckerPragerLayout->addWidget(new QLabel("Adjust Volume?"), numRow, 0, 1, 1, Qt::AlignRight);
   druckerPragerLayout->addWidget(useVolumeCorrection, numRow++, 1);
+
+  dilationAngle = new SC_DoubleLineEdit("dilation_angle", 0.0);
+  druckerPragerLayout->addWidget(new QLabel("Dilation Angle"),numRow, 0, 1, 1, Qt::AlignRight);
+  druckerPragerLayout->addWidget(dilationAngle, numRow, 1);
+  druckerPragerLayout->itemAt(druckerPragerLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  druckerPragerLayout->addWidget(new QLabel("deg."), numRow++, 2);
 
   // beta = new SC_DoubleLineEdit("beta",0.8);
   // druckerPragerLayout->addWidget(new QLabel("Cohesion Coefficient"),numRow, 0);
   // druckerPragerLayout->addWidget(beta, numRow, 1);
   // druckerPragerLayout->addWidget(new QLabel(""),numRow++, 2);
 
-
-  dilationAngle = new SC_DoubleLineEdit("dilation_angle",0.0);
-  druckerPragerLayout->addWidget(new QLabel("Dilation Angle"),numRow, 0);
-  druckerPragerLayout->itemAt(druckerPragerLayout->count()-1)->setAlignment(Qt::AlignRight);
-  druckerPragerLayout->addWidget(dilationAngle, numRow, 1);
-  druckerPragerLayout->addWidget(new QLabel("deg."),numRow++, 2);
-  druckerPragerLayout->setRowStretch(0,numRow);
-  // druckerPragerLayout->setColumnStretch(0,1);
+  druckerPragerLayout->setRowStretch(0, numRow);
+  druckerPragerLayout->setColumnStretch(1, 1);
 
   // logJp = new SC_DoubleLineEdit("logJp0", -0.01);
   // druckerPragerLayout->addWidget(new QLabel("Log. of Plastic Vol. Ratio"),numRow, 0);
@@ -247,37 +251,37 @@ MaterialMPM::MaterialMPM(QWidget *parent)
   numRow = 0;
 
   beta = new SC_DoubleLineEdit("beta",0.5);
-  camClayLayout->addWidget(new QLabel("Cohesion Coefficient"),numRow, 0);
-  camClayLayout->itemAt(camClayLayout->count()-1)->setAlignment(Qt::AlignRight);
+  camClayLayout->addWidget(new QLabel("Cohesion Coefficient"),numRow, 0, 1, 1, Qt::AlignRight);
   camClayLayout->addWidget(beta, numRow, 1);
+  camClayLayout->itemAt(camClayLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   camClayLayout->addWidget(new QLabel(""),numRow++, 2);
 
   Mohr = new SC_DoubleLineEdit("Mohr",2.36);
-  camClayLayout->addWidget(new QLabel("Friction Coefficient"),numRow, 0);
-  camClayLayout->itemAt(camClayLayout->count()-1)->setAlignment(Qt::AlignRight);
+  camClayLayout->addWidget(new QLabel("Friction Coefficient"),numRow, 0, 1, 1, Qt::AlignRight);
   camClayLayout->addWidget(Mohr, numRow, 1);
+  camClayLayout->itemAt(camClayLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   camClayLayout->addWidget(new QLabel(""),numRow++, 2);
 
   useHardening = new SC_CheckBox("hardeningOn");
-  camClayLayout->addWidget(new QLabel("Allow Material Hardening?"),numRow, 0);
-  camClayLayout->itemAt(camClayLayout->count()-1)->setAlignment(Qt::AlignRight);
+  camClayLayout->addWidget(new QLabel("Allow Hardening?"),numRow, 0, 1, 1, Qt::AlignRight);
   camClayLayout->addWidget(useHardening, numRow++, 1);
+  camClayLayout->itemAt(camClayLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
   xi = new SC_DoubleLineEdit("xi",0.8);
-  camClayLayout->addWidget(new QLabel("Hardening Coefficient"),numRow, 0);
-  camClayLayout->itemAt(camClayLayout->count()-1)->setAlignment(Qt::AlignRight);
+  camClayLayout->addWidget(new QLabel("Hardening Coefficient"),numRow, 0, 1, 1, Qt::AlignRight);
   camClayLayout->addWidget(xi, numRow, 1);
+  camClayLayout->itemAt(camClayLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   camClayLayout->addWidget(new QLabel(""),numRow++, 2);
 
   logJp = new SC_DoubleLineEdit("logJp0", -0.01);
-  camClayLayout->addWidget(new QLabel("Log. of Plastic Vol. Ratio"),numRow, 0);
-  camClayLayout->itemAt(camClayLayout->count()-1)->setAlignment(Qt::AlignRight);
+  camClayLayout->addWidget(new QLabel("ln(Plastic Vol. Ratio)"),numRow, 0, 1, 1, Qt::AlignRight);
   camClayLayout->addWidget(logJp, numRow, 1);
+  camClayLayout->itemAt(camClayLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   camClayLayout->addWidget(new QLabel(""),numRow++, 2);
 
 
   camClayLayout->setRowStretch(0,numRow);
-  // camClayLayout->setColumnStretch(0,1);
+  camClayLayout->setColumnStretch(1,1);
 
 
   // --- Custom

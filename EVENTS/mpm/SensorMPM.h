@@ -110,6 +110,15 @@ private:
   SC_DoubleLineEdit *output_frequencyLC;
   SC_TableEdit      *loadCellsTable;
 
+  SC_ComboBox       *togglePM;
+  SC_ComboBox       *typePM;
+  SC_ComboBox       *attributePM;
+  SC_ComboBox       *operationPM;
+  SC_ComboBox       *directionPM;
+  SC_DoubleLineEdit *output_frequencyPM;
+  SC_TableEdit      *piezoMetersTable;
+
+
   QWidget *theCustom;
   QWidget *theWaveGauges;
   QWidget *theVelocityMeters; 

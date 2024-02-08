@@ -75,25 +75,29 @@ SensorsMPM::SensorsMPM(QWidget *parent)
   QGridLayout *layout = new QGridLayout();
   this->setLayout(layout);
 
-  int numRow = 0;
+  // int numRow = 0;
   // ===========================================================================
   QWidget *wgWidget = new QWidget();
   QWidget *vmWidget = new QWidget();
   QWidget *lcWidget = new QWidget();
+  QWidget *pmWidget = new QWidget();
   QGridLayout *wgLayout = new QGridLayout();
   QGridLayout *vmLayout = new QGridLayout();
   QGridLayout *lcLayout = new QGridLayout();
+  QGridLayout *pmLayout = new QGridLayout();
   wgWidget->setLayout(wgLayout);
   vmWidget->setLayout(vmLayout);
   lcWidget->setLayout(lcLayout);
-  
+  pmWidget->setLayout(pmLayout);
+
+
   // ===========================================================================
   QTabWidget *theTabWidget = new QTabWidget();
   theTabWidget->addTab(wgWidget, "Wave-Gauges");
   theTabWidget->addTab(vmWidget, "Velocity-Meters");
   theTabWidget->addTab(lcWidget, "Load-Cells");  
+  theTabWidget->addTab(pmWidget, "Piezo-Meters");  
 
-  
   // Buttons for creating and removing individual sensor
   // All geometries will be composed together for an individual body to form a single sensor
   QPushButton *addB = new QPushButton("Create Sensor"); 
@@ -142,7 +146,7 @@ SensorsMPM::SensorsMPM(QWidget *parent)
   numAddedTabs += 1;
 
   // Velocitmeters
-  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Velocimeters");
+  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Velocity-Meters");
   theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
   theAddedLayout[numAddedTabs]->addWidget(addedSensor[numAddedTabs]);
   numAddedTabs += 1;
@@ -153,11 +157,12 @@ SensorsMPM::SensorsMPM(QWidget *parent)
   theAddedLayout[numAddedTabs]->addWidget(addedSensor[numAddedTabs]);
   numAddedTabs += 1;
 
-  // // Piezometers
-  // tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Piezometers");
-  // theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-  // theAddedLayout[numAddedTabs]->addWidget(addedSensor[numAddedTabs]);
-  // numAddedTabs += 1;
+  // Piezo-Meters
+  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Piezo-Meters");
+  theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
+  theAddedLayout[numAddedTabs]->addWidget(addedSensor[numAddedTabs]);
+  numAddedTabs += 1;
+
 
 
   // Create and Init. another sensor tab at user request (click create)
@@ -205,13 +210,14 @@ SensorsMPM::SensorsMPM(QWidget *parent)
   // Enum to set tab's icons, titles, init values, etc.
   enum sensorEnum : int {CUSTOM = 0, WAVE_GAUGE, VELOCITY_METER, LOAD_CELL, PIEZO_METER, TOTAL};
 
-  // Set initial sensor body device preset
+  // Set initial sensor preset
   for (int i=0; i<numAddedTabs; i++) {
+    auto j = static_cast<sensorEnum>(i+1);
     if (i >= numReserveTabs) break;
-    if (i == 0) addedSensor[i]->setSensorType(WAVE_GAUGE);
-    else if (i == 1) addedSensor[i]->setSensorType(VELOCITY_METER);
-    else if (i == 2) addedSensor[i]->setSensorType(LOAD_CELL);
-    // else if (i == 3) addedSensor[i]->setSensorType(PIEZO_METER);
+    if (j == sensorEnum::WAVE_GAUGE)          addedSensor[i]->setSensorType(WAVE_GAUGE);
+    else if (j == sensorEnum::VELOCITY_METER) addedSensor[i]->setSensorType(VELOCITY_METER);
+    else if (j == sensorEnum::LOAD_CELL)      addedSensor[i]->setSensorType(LOAD_CELL);
+    else if (j == sensorEnum::PIEZO_METER)    addedSensor[i]->setSensorType(PIEZO_METER);
     else addedSensor[i]->setSensorType(CUSTOM);
   }
   
@@ -256,7 +262,21 @@ SensorsMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 SensorsMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-
+  if (jsonObject.contains("sensors") == false) return false;
+  if (jsonObject["sensors"].isArray() == false) return false;
+  if (jsonObject["sensors"].toArray().size() == 0) return false;
+  QJsonArray theArray = jsonObject["sensors"].toArray();
+  numAddedTabs = (theArray.size() <= numReserveTabs) ? theArray.size() : numReserveTabs;
+  int shift = 0;
+  for (int i=0; i<theArray.size(); i++) {
+    int j = i - shift;
+    if (j >= numReserveTabs) break;
+    if (theArray[i].isObject() == false) { shift=shift+1; continue;}
+    if (addedSensor[j] == nullptr) addedSensor[j] = new SensorMPM();
+    QJsonObject theObject = theArray[i].toObject();
+    addedSensor[i]->inputFromJSON(theObject);
+    // numAddedTabs += 1; // May go out of bounds if it doesnt start at 0
+  }
   return true;
 }
 

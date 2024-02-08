@@ -47,7 +47,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QJsonObject>
 #include <QJsonArray>
 
-
+#include <cmath>
 
 SettingsMPM::SettingsMPM(QWidget *parent)
   :SimCenterWidget(parent)
@@ -55,10 +55,11 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   int numRow = 0;
   QGridLayout *layout = new QGridLayout();
   this->setLayout(layout);
-  QGroupBox *simSettings = new QGroupBox("Simulation Settings");
+  QGroupBox *simSettings = new QGroupBox("Simulation");
   QGridLayout *simSettingsLayout = new QGridLayout();  
   simSettings->setLayout(simSettingsLayout);
 
+  int maxWidth = 1280; 
 
   // -----------------------
   numRow = 0;
@@ -68,11 +69,14 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   ambientBox->setLayout(ambientBoxLayout);  
 
   cflNumber = new SC_DoubleLineEdit("cfl", 0.5);
-  ambientBoxLayout->addWidget(new QLabel("CFL Number"), numRow, 0);
-  ambientBoxLayout->itemAt(ambientBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  ambientBoxLayout->itemAt(ambientBoxLayout->count()-1)->widget()->setToolTip("Courant-Friedrichs-Lewy Number, Time-Step <= CFL * Grid-Cell-Size / P-Wave-Velocity. Controls simulation stability. CFL = 0.3 to 0.5 is a good range.");
-  ambientBoxLayout->addWidget(cflNumber, numRow, 1); 
-  ambientBoxLayout->addWidget(new QLabel(""), numRow++, 2);
+  ambientBoxLayout->addWidget(new QLabel("CFL Number"), numRow, 0, 1, 1, Qt::AlignRight);
+  ambientBoxLayout->addWidget(cflNumber, numRow, 1, 1, 3);
+  ambientBoxLayout->itemAt(ambientBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  ambientBoxLayout->addWidget(new QLabel(""), numRow++, 4, 1, 1);
+  for (int i=0; i<3; ++i) ambientBoxLayout->itemAt(ambientBoxLayout->count()-(i+1))->widget()->setToolTip("Courant-Friedrichs-Lewy Number, Time-Step <= CFL * Grid-Cell-Size / P-Wave-Velocity. Controls simulation stability. CFL = 0.3 to 0.5 is a good range.");
+  // ambientBoxLayout->setColumnStretch(numRow,3);
+  // ambientBoxLayout->itemAt(ambientBoxLayout->count()-1)->widget()->setToolTip("Courant-Friedrichs-Lewy Number, Time-Step <= CFL * Grid-Cell-Size / P-Wave-Velocity. Controls simulation stability. CFL = 0.3 to 0.5 is a good range.");
+
 
   // temperature = new SC_DoubleLineEdit("temperature", 0.5);
   // ambientBoxLayout->addWidget(new QLabel("Temperature"), numRow, 0);
@@ -84,14 +88,13 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   gravityX = new SC_DoubleLineEdit("gravityX", 0.0);
   gravityY = new SC_DoubleLineEdit("gravityY", -9.81);
   gravityZ = new SC_DoubleLineEdit("gravityZ", 0.0);
-  ambientBoxLayout->addWidget(new QLabel("Gravity (X,Y,Z)"), numRow, 0);
-  ambientBoxLayout->itemAt(ambientBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  ambientBoxLayout->addWidget(gravityX, numRow, 1);  
-  ambientBoxLayout->addWidget(gravityY, numRow, 2);  
-  ambientBoxLayout->addWidget(gravityZ, numRow, 3);  
-  ambientBoxLayout->addWidget(new QLabel("m/sec.^2"), numRow++, 4);
+  ambientBoxLayout->addWidget(new QLabel("Gravity (X,Y,Z)"), numRow, 0, 1, 1, Qt::AlignRight);
+  ambientBoxLayout->addWidget(gravityX, numRow, 1, 1, 1);  
+  ambientBoxLayout->addWidget(gravityY, numRow, 2, 1, 1);  
+  ambientBoxLayout->addWidget(gravityZ, numRow, 3, 1, 1);  
+  ambientBoxLayout->addWidget(new QLabel("m/s^2"), numRow++, 4, 1, 1);
 
-  ambientBoxLayout->setRowStretch(numRow,1);
+  // ambientBoxLayout->setRowStretch(numRow,1);
   // ambientBoxLayout->setColumnStretch(5,1);
   simSettingsLayout->addWidget(ambientBox, 0, 0, 2, 5);
   
@@ -103,37 +106,36 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   dimensionsBox->setLayout(dimensionsBoxLayout);  
 
   gridCellSize = new SC_DoubleLineEdit("defaultDx", 0.10);
-  dimensionsBoxLayout->addWidget(new QLabel("Grid Cell Size (dx)"), numRow, 0);
-  dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  dimensionsBoxLayout->addWidget(gridCellSize,numRow,1);
-  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 2);
+  dimensionsBoxLayout->addWidget(new QLabel("Grid Cell Size (dx)"), numRow, 0, 1, 1, Qt::AlignRight);
+  dimensionsBoxLayout->addWidget(gridCellSize, numRow, 1, 1, 3);
+  dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth); 
+  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 4, 1, 1);
+  for (int i=0; i<3; ++i) dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-(i+1))->widget()->setToolTip("Size of the Cartesian grid's cells. Assumed to be cubes, so volume is dx^3. Smaller values provide more accurate results, but require more computer memory, O(dx^3), and smaller time-steps, O(dx^-1).");
 
   domainSizeX = new SC_DoubleLineEdit("domain_X", 90);
   domainSizeY = new SC_DoubleLineEdit("domain_Y", 2.9);
   domainSizeZ = new SC_DoubleLineEdit("domain_Z", 3.65);  
-  dimensionsBoxLayout->addWidget(new QLabel("Simulation Domain (X, Y, Z)"), numRow, 0);  
-  dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  dimensionsBoxLayout->addWidget(domainSizeX, numRow, 1);
-  dimensionsBoxLayout->addWidget(domainSizeY, numRow, 2);
-  dimensionsBoxLayout->addWidget(domainSizeZ, numRow, 3);
-  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 4);
+  dimensionsBoxLayout->addWidget(new QLabel("Full Domain (X,Y,Z)"), numRow, 0, 1, 1, Qt::AlignRight);  
+  dimensionsBoxLayout->addWidget(domainSizeX, numRow, 1, 1, 1);
+  dimensionsBoxLayout->addWidget(domainSizeY, numRow, 2, 1, 1);
+  dimensionsBoxLayout->addWidget(domainSizeZ, numRow, 3, 1, 1);
+  dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 4, 1, 1);
 
   mirrorDomainX = new SC_CheckBox("mirrorDomainX",false);
   mirrorDomainY = new SC_CheckBox("mirrorDomainY",false);
   mirrorDomainZ = new SC_CheckBox("mirrorDomainZ",false);
-  dimensionsBoxLayout->addWidget(new QLabel("Mirror Domain (Over YZ-XZ-XY)"), numRow, 0);
-  dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  dimensionsBoxLayout->addWidget(mirrorDomainX, numRow, 1);  
+  dimensionsBoxLayout->addWidget(new QLabel("Mirror On YZ-XZ-XY"), numRow, 0, 1, 1, Qt::AlignRight);
+  dimensionsBoxLayout->addWidget(mirrorDomainX, numRow, 1, 1, 1);  
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignCenter);
-  dimensionsBoxLayout->addWidget(mirrorDomainY, numRow, 2);  
+  dimensionsBoxLayout->addWidget(mirrorDomainY, numRow, 2, 1, 1);  
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignCenter);
-  dimensionsBoxLayout->addWidget(mirrorDomainZ, numRow, 3);  
+  dimensionsBoxLayout->addWidget(mirrorDomainZ, numRow, 3, 1, 1);  
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignCenter);
-  dimensionsBoxLayout->addWidget(new QLabel(""), numRow++, 4);
-  dimensionsBoxLayout->setRowStretch(numRow,1);
-  dimensionsBoxLayout->setColumnStretch(5,1);
+  dimensionsBoxLayout->addWidget(new QLabel(""), numRow++, 4, 1, 1);
+  // dimensionsBoxLayout->setRowStretch(numRow,1);
+  // dimensionsBoxLayout->setColumnStretch(5,1);
 
-  simSettingsLayout->addWidget(dimensionsBox, 4, 0, 4, 5);
+  simSettingsLayout->addWidget(dimensionsBox, 3, 0, 3, 5);
 
 
   // -----------------------
@@ -144,39 +146,35 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   numRow = 0;
 
   timeStep = new SC_DoubleLineEdit("defaultDt", 1e-5);
-  timeBoxLayout->addWidget(new QLabel("Max Time Step (dt)"), numRow, 0);
-  timeBoxLayout->itemAt(timeBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  timeBoxLayout->addWidget(timeStep, numRow, 1);
-  timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 2);
+  timeBoxLayout->addWidget(new QLabel("Max Time Step (dt)"), numRow, 0, 1, 1, Qt::AlignRight);
+  timeBoxLayout->addWidget(timeStep, numRow, 1, 1, 3);
+  timeBoxLayout->setColumnStretch(1, 1); // Add this line to make the middle column expand
+  timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 4, 1, 1);
 
   QStringList timeIntegrationList ; timeIntegrationList <<  "Explicit (Forward Euler)"; //<< "Semi-Implicit (Symplectic Euler)";
   timeIntegration = new SC_ComboBox("time_integration", timeIntegrationList);    
-  timeBoxLayout->addWidget(new QLabel("Time-Integration Style"), numRow, 0);
-  timeBoxLayout->itemAt(timeBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  timeBoxLayout->addWidget(timeIntegration, numRow, 1);  
-  timeBoxLayout->addWidget(new QLabel(""), numRow++, 2);
+  timeBoxLayout->addWidget(new QLabel("Time-Integration"), numRow, 0, 1, 1, Qt::AlignRight);
+  timeBoxLayout->addWidget(timeIntegration, numRow, 1, 1, 3);
+  timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  timeBoxLayout->addWidget(new QLabel(""), numRow++, 4, 1, 1);
+
+
+  initialTime = new SC_DoubleLineEdit("initialTime", 0.0);
+  timeBoxLayout->addWidget(new QLabel("Initial Time (t0)"), numRow, 0, 1, 1, Qt::AlignRight);
+  timeBoxLayout->addWidget(initialTime, numRow, 1, 1, 3);  
+  timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 4, 1, 1);
+
   duration = new SC_DoubleLineEdit("duration",25.0);
-  timeBoxLayout->addWidget(new QLabel("Simulation Duration"), numRow, 0);
-  timeBoxLayout->itemAt(timeBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  timeBoxLayout->addWidget(duration,numRow, 1);  
-  timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 2);
-
-  initialTime = new SC_DoubleLineEdit("initialTime",0.0);
-  timeBoxLayout->addWidget(new QLabel("Initial Time"), numRow, 0);
-  timeBoxLayout->itemAt(timeBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  timeBoxLayout->addWidget(initialTime,numRow, 1);  
-  timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 2);
-  
-  timeBoxLayout->setRowStretch(numRow,1);
-  // timeBoxLayout->setColumnStretch(3,1);
-
-  simSettingsLayout->addWidget(timeBox, 9, 0, 4, 3);
-  simSettingsLayout->setRowStretch(13,1);
-  // simSettingsLayout->setColumnStretch(5,1);
+  timeBoxLayout->addWidget(new QLabel("Duration (tf-t0)"), numRow, 0, 1, 1, Qt::AlignRight);
+  timeBoxLayout->addWidget(duration, numRow, 1, 1, 3);  
+  timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 4, 1, 1);
   // -----------------------
+  simSettingsLayout->addWidget(timeBox, 6, 0, 4, 5);
   
-  numRow = 13;
-
 
   // -----------------------
   QGroupBox *scalingSettings = new QGroupBox("Scaling Laws");
@@ -185,35 +183,100 @@ SettingsMPM::SettingsMPM(QWidget *parent)
 
   numRow = 0;
 
+  // "Froude", "Cauchy", "Reynolds", "Weber", "Mach", "Strouhal", "Peclet", "Prandtl", "Nusselt", "Sherwood", "Grashof", "Rayleigh", "Eotvos", "Bond", "Capillary", "Ohnesorge", "Morton", "Froude", "Cauchy", "Reynolds", "Weber", "Mach", "Strouhal", "Peclet", "Prandtl", "Nusselt", "Sherwood", "Grashof", "Rayleigh", "Eotvos", "Bond", "Capillary", "Ohnesorge", "Morton"
+  SC_ComboBox* similitudePriority = new SC_ComboBox("similitudePriority", {"", "Froude", "Cauchy"});
+  scalingSettingsLayout->addWidget(new QLabel("Dominant Law"), numRow, 0, 1, 1, Qt::AlignRight);
+  scalingSettingsLayout->addWidget(similitudePriority, numRow++, 1, 1, 3);
+  scalingSettingsLayout->setColumnStretch(1, 1); // Add this line to make the middle column expand
+  scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+
   froudeScaling = new SC_CheckBox("froudeScaling",false);
-  scalingSettingsLayout->addWidget(new QLabel("Apply Froude Similitude?"), numRow, 0);
-  scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  scalingSettingsLayout->addWidget(froudeScaling, numRow++, 1);  
+  scalingSettingsLayout->addWidget(new QLabel("Apply Froude?"), numRow, 0, 1, 1, Qt::AlignRight);
+  scalingSettingsLayout->addWidget(froudeScaling, numRow++, 1, 1, 1);  
 
   froudeLengthRatio = new SC_DoubleLineEdit("lengthRatio",1.0);
-  scalingSettingsLayout->addWidget(new QLabel("Froude Scaling (Length Ratio)"), numRow, 0);
-  scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  scalingSettingsLayout->addWidget(froudeLengthRatio, numRow, 1);  
-  scalingSettingsLayout->addWidget(new QLabel("m/m"), numRow++, 2);
+  scalingSettingsLayout->addWidget(new QLabel("Length Ratio"), numRow, 0, 1, 1, Qt::AlignRight);
+  scalingSettingsLayout->addWidget(froudeLengthRatio, numRow, 1, 1, 3);  
+  scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  scalingSettingsLayout->addWidget(new QLabel("m/m"), numRow++, 4, 1, 1);
   
   froudeTimeRatio = new SC_DoubleLineEdit("timeRatio",1.0);
-  scalingSettingsLayout->addWidget(new QLabel("Froude Time Ratio"), numRow, 0);
-  scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  scalingSettingsLayout->addWidget(froudeTimeRatio, numRow, 1);  
-  scalingSettingsLayout->addWidget(new QLabel("s/s"), numRow++, 2);
+  scalingSettingsLayout->addWidget(new QLabel("Time Ratio"), numRow, 0, 1, 1, Qt::AlignRight);
+  scalingSettingsLayout->addWidget(froudeTimeRatio, numRow, 1, 1, 3);  
+  scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  scalingSettingsLayout->addWidget(new QLabel("s/s"), numRow++, 4, 1, 1);
   
   cauchyScaling = new SC_CheckBox("cauchyScaling",false);
-  scalingSettingsLayout->addWidget(new QLabel("Apply Cauchy Similitude?"), numRow, 0);
-  scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  scalingSettingsLayout->addWidget(cauchyScaling, numRow++, 1);  
+  scalingSettingsLayout->addWidget(new QLabel("Apply Cauchy?"), numRow, 0, 1, 1, Qt::AlignRight);
+  scalingSettingsLayout->addWidget(cauchyScaling, numRow++, 1, 1, 1);  
 
   cauchyBulkRatio = new SC_DoubleLineEdit("bulkRatio",1.0);
-  scalingSettingsLayout->addWidget(new QLabel("Cauchy Elasticity Ratio"), numRow, 0);
-  scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  scalingSettingsLayout->addWidget(cauchyBulkRatio, numRow, 1);  
-  scalingSettingsLayout->addWidget(new QLabel("Pa/Pa"), numRow++, 2);
-  scalingSettingsLayout->setRowStretch(numRow,1);
-  scalingSettingsLayout->setColumnStretch(3,1);
+  scalingSettingsLayout->addWidget(new QLabel("Elasticity Ratio"), numRow, 0, 1, 1, Qt::AlignRight);
+  scalingSettingsLayout->addWidget(cauchyBulkRatio, numRow, 1, 1, 3);  
+  scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  scalingSettingsLayout->addWidget(new QLabel("Pa/Pa"), numRow++, 4, 1, 1);
+  for (int i=0; i<3; ++i) scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-(i+1))->widget()->setStyleSheet("QLineEdit:disabled { background-color: #e0e0e0; }");
+
+  // Make disabled double line edits have a gray background
+  froudeLengthRatio->setStyleSheet("QLineEdit:disabled { background-color: #e0e0e0; }");
+  froudeTimeRatio->setStyleSheet("QLineEdit:disabled { background-color: #e0e0e0; }");
+  
+  froudeScaling->setChecked(false); // Default to off
+  cauchyScaling->setChecked(false); // Default to off
+  // If editable widget disabled, disable qlabel widgets before and after it
+  for (int i=-1; i<2; ++i) scalingSettingsLayout->itemAt(scalingSettingsLayout->indexOf(froudeLengthRatio)-i)->widget()->setEnabled(froudeScaling->isChecked());
+  for (int i=-1; i<2; ++i) scalingSettingsLayout->itemAt(scalingSettingsLayout->indexOf(froudeTimeRatio)-i)->widget()->setEnabled(froudeScaling->isChecked());
+  for (int i=-1; i<2; ++i) scalingSettingsLayout->itemAt(scalingSettingsLayout->indexOf(cauchyBulkRatio)-i)->widget()->setEnabled(cauchyScaling->isChecked());
+
+  // Make lambda that holds the internals of the connect function, so that it can be called from multiple places
+  auto updateFroudeLengthRatio = [=]() {
+    if (froudeLengthRatio->text().toDouble() <= 0.0) froudeLengthRatio->setText("1.0");
+    if (similitudePriority->currentText() == "Froude") {
+      cauchyBulkRatio->setText(QString::number(sqrt(froudeLengthRatio->text().toDouble())));
+    } else if (similitudePriority->currentText() == "Cauchy") {
+      froudeLengthRatio->setText(QString::number(cauchyBulkRatio->text().toDouble() * cauchyBulkRatio->text().toDouble()));
+    }
+    froudeTimeRatio->setText(QString::number(sqrt(froudeLengthRatio->text().toDouble())));
+  };
+
+  auto updateFroudeTimeRatio = [=]() {
+    if (froudeTimeRatio->text().toDouble() <= 0.0) froudeTimeRatio->setText("1.0");
+    if (similitudePriority->currentText() == "Froude") {
+      cauchyBulkRatio->setText(QString::number(froudeTimeRatio->text().toDouble()));
+    } else if (similitudePriority->currentText() == "Cauchy") {
+      froudeTimeRatio->setText(QString::number(cauchyBulkRatio->text().toDouble()));
+    } 
+    froudeLengthRatio->setText(QString::number(froudeTimeRatio->text().toDouble() * froudeTimeRatio->text().toDouble()));
+  };
+
+  auto updateCauchyBulkRatio = [=]() {
+    if (cauchyBulkRatio->text().toDouble() <= 0.0) cauchyBulkRatio->setText("1.0");
+    if (similitudePriority->currentText() == "Froude") {
+      cauchyBulkRatio->setText(QString::number(sqrt(froudeLengthRatio->text().toDouble())));
+    } else if (similitudePriority->currentText() == "Cauchy") {
+      froudeLengthRatio->setText(QString::number(cauchyBulkRatio->text().toDouble() * cauchyBulkRatio->text().toDouble()));
+      froudeTimeRatio->setText(QString::number(cauchyBulkRatio->text().toDouble()));
+    } 
+  };
+
+  connect(froudeScaling, &QCheckBox::toggled, [=](bool checked) {
+    // Find qlabel widget before and after froudeLengthRatio, and set their background color to gray if froudeLengthRatio is disabled
+    for (int i=-1; i<2; ++i) scalingSettingsLayout->itemAt(scalingSettingsLayout->indexOf(froudeLengthRatio)-i)->widget()->setEnabled(checked);
+    for (int i=-1; i<2; ++i) scalingSettingsLayout->itemAt(scalingSettingsLayout->indexOf(froudeTimeRatio)-i)->widget()->setEnabled(checked);
+    if (froudeLengthRatio->text().toDouble() <= 0.0) froudeLengthRatio->setText("1.0");
+    updateFroudeLengthRatio();
+  });
+
+  connect(cauchyScaling, &QCheckBox::toggled, [=](bool checked) {
+    for (int i=-1; i<2; ++i) scalingSettingsLayout->itemAt(scalingSettingsLayout->indexOf(cauchyBulkRatio)-i)->widget()->setEnabled(checked);
+    if (cauchyBulkRatio->text().toDouble() <= 0.0) cauchyBulkRatio->setText("1.0");
+    updateCauchyBulkRatio();
+  });
+
+  connect(similitudePriority, &QComboBox::currentTextChanged, updateFroudeLengthRatio);
+  connect(froudeLengthRatio, &QLineEdit::editingFinished, updateFroudeLengthRatio);
+  connect(froudeTimeRatio, &QLineEdit::editingFinished, updateFroudeTimeRatio);
+  connect(cauchyBulkRatio, &QLineEdit::editingFinished, updateCauchyBulkRatio);
 
 
   // -----------------------
@@ -223,56 +286,62 @@ SettingsMPM::SettingsMPM(QWidget *parent)
 
   numRow = 0;
 
-  QStringList hpcList; hpcList << "TACC - UT Austin - Frontera" << "TACC - UT Austin - Lonestar6" <<  "TACC - UT Austin - Stampede3" << "Hyak - UW Seattle - Klone" << "ACCESS - TAMU - ACES" << "ACCESS - TAMU - FASTER" << "Your Computer" <<  "Custom";
-  hpc = new SC_ComboBox("hpcSubType",hpcList);
-  gpuSettingsLayout->addWidget(new QLabel("Computing Facility"),numRow,0);
-  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  gpuSettingsLayout->addWidget(hpc,numRow++,1);
+  QStringList hpcList; hpcList  << "TACC - UT Austin - Lonestar6" << "TACC - UT Austin - Frontera" << "TACC - UT Austin - Stampede3" << "Hyak - UW Seattle - Klone" << "ACCESS - TAMU - ACES" << "Your Computer" ;
+  hpc = new SC_ComboBox("hpcSubType", hpcList);
+  gpuSettingsLayout->addWidget(new QLabel("Computing Facility"), numRow, 0, 1, 1, Qt::AlignRight);
+  gpuSettingsLayout->addWidget(hpc,numRow++,1, 1, 3);
+  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  gpuSettingsLayout->setColumnStretch(1, 1); // Add this line to make the middle column expand
+
+  hpcQueue = new SC_StringLineEdit("hpcQueue", "gpu-a100");
+  gpuSettingsLayout->addWidget(new QLabel("Queue"), numRow, 0, 1, 1, Qt::AlignRight);
+  gpuSettingsLayout->addWidget(hpcQueue, numRow++, 1, 1, 3);
+  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
 
   numGPUs = new SC_IntLineEdit("numGPUs", 3);  
-  gpuSettingsLayout->addWidget(new QLabel("Max Number of GPUs"), numRow, 0);
-  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  gpuSettingsLayout->addWidget(numGPUs, numRow++, 1);
+  gpuSettingsLayout->addWidget(new QLabel("Max Number of GPUs"), numRow, 0, 1, 1, Qt::AlignRight);
+  gpuSettingsLayout->addWidget(numGPUs, numRow++, 1, 1, 3);
+  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
-  modelsPerGPU = new SC_IntLineEdit("modelsPerGPU",3);
-  gpuSettingsLayout->addWidget(new QLabel("Max Material Bodies Per GPU"), numRow, 0);
-  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  gpuSettingsLayout->addWidget(modelsPerGPU, numRow++, 1);  
+  modelsPerGPU = new SC_IntLineEdit("modelsPerGPU", 3);
+  gpuSettingsLayout->addWidget(new QLabel("Max Bodies Per GPU"), numRow, 0, 1, 1, Qt::AlignRight);
+  gpuSettingsLayout->addWidget(modelsPerGPU, numRow++, 1, 1, 3);  
+  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
   hpcCardBrand = new SC_StringLineEdit("hpcCardBrand", "NVIDIA");
-  gpuSettingsLayout->addWidget(new QLabel("GPU Brand"), numRow, 0);
-  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  gpuSettingsLayout->addWidget(hpcCardBrand, numRow, 1); 
-  gpuSettingsLayout->addWidget(new QLabel(""), numRow++, 2);
+  gpuSettingsLayout->addWidget(new QLabel("GPU Brand"), numRow, 0, 1, 1, Qt::AlignRight);
+  gpuSettingsLayout->addWidget(hpcCardBrand, numRow, 1, 1, 3); 
+  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  gpuSettingsLayout->addWidget(new QLabel(""), numRow++, 4, 1, 1);
 
-  hpcCardName = new SC_StringLineEdit("hpcCardName","NVIDIA A100");
-  gpuSettingsLayout->addWidget(new QLabel("GPU Name"), numRow, 0);
-  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  gpuSettingsLayout->addWidget(hpcCardName, numRow++, 1); 
+  hpcCardName = new SC_StringLineEdit("hpcCardName","A100");
+  gpuSettingsLayout->addWidget(new QLabel("GPU Name"), numRow, 0, 1, 1, Qt::AlignRight);
+  gpuSettingsLayout->addWidget(hpcCardName, numRow++, 1, 1, 3); 
+  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
-  hpcCardArchitecture = new SC_StringLineEdit("hpcCardArchitecture","Ampere");
-  gpuSettingsLayout->addWidget(new QLabel("GPU Architecture"), numRow, 0);
-  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  gpuSettingsLayout->addWidget(hpcCardArchitecture, numRow++, 1); 
+  hpcCardArchitecture = new SC_StringLineEdit("hpcCardArchitecture", "Ampere");
+  gpuSettingsLayout->addWidget(new QLabel("GPU Architecture"), numRow, 0, 1, 1, Qt::AlignRight);
+  gpuSettingsLayout->addWidget(hpcCardArchitecture, numRow++, 1, 1, 3); 
+  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
-  hpcCardGlobalMemory = new SC_IntLineEdit("hpcCardGlobalMemory",40);
-  gpuSettingsLayout->addWidget(new QLabel("GPU Global Memory"), numRow, 0);
-  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  gpuSettingsLayout->addWidget(hpcCardGlobalMemory, numRow, 1); 
-  gpuSettingsLayout->addWidget(new QLabel("GB"), numRow++, 2);
+  hpcCardGlobalMemory = new SC_IntLineEdit("hpcCardGlobalMemory", 40);
+  gpuSettingsLayout->addWidget(new QLabel("GPU Global Memory"), numRow, 0, 1, 1, Qt::AlignRight);
+  gpuSettingsLayout->addWidget(hpcCardGlobalMemory, numRow, 1, 1, 3); 
+  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  gpuSettingsLayout->addWidget(new QLabel("GB"), numRow++, 4, 1, 1);
   
-  hpcCardComputeCapability = new SC_IntLineEdit("hpcCardComputeCapability",80);
-  gpuSettingsLayout->addWidget(new QLabel("GPU Compute Capability"), numRow, 0);
-  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  gpuSettingsLayout->addWidget(hpcCardComputeCapability, numRow, 1); 
-  gpuSettingsLayout->addWidget(new QLabel("XY <- arch_XY"), numRow++, 2);
+  hpcCardComputeCapability = new SC_IntLineEdit("hpcCardComputeCapability", 80);
+  gpuSettingsLayout->addWidget(new QLabel("GPU Compute Capability"), numRow, 0, 1, 1, Qt::AlignRight);
+  gpuSettingsLayout->addWidget(hpcCardComputeCapability, numRow, 1, 1, 3); 
+  gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  gpuSettingsLayout->addWidget(new QLabel("arch_{XY}"), numRow++, 4, 1, 1);
 
 
-
-
+  // HPC System Presets
   connect(hpc, &QComboBox::currentTextChanged, [=](QString val) {
     if (val == "TACC - UT Austin - Frontera") {
+      hpcQueue->setText("rtx");
       numGPUs->setText("4");
       modelsPerGPU->setText("3");
       hpcCardBrand->setText("NVIDIA");
@@ -281,6 +350,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
       hpcCardComputeCapability->setText("75");
       hpcCardGlobalMemory->setText("16");
     } else if (val == "TACC - UT Austin - Lonestar6") {
+      hpcQueue->setText("gpu-a100"); //gpu-a100-small, gpu-a100-dev, gpu-h100
       numGPUs->setText("3");
       modelsPerGPU->setText("3");
       hpcCardBrand->setText("NVIDIA");
@@ -290,15 +360,17 @@ SettingsMPM::SettingsMPM(QWidget *parent)
       hpcCardGlobalMemory->setText("40");
     } else if (val == "TACC - UT Austin - Stampede3") {
       // TODO: Make this for Stampeed3 and not Lonestar6
+      hpcQueue->setText("");
       numGPUs->setText("4");
       modelsPerGPU->setText("3");
-      hpcCardBrand->setText("NVIDIA");
-      hpcCardName->setText("Intel Max");
+      hpcCardBrand->setText("Intel");
+      hpcCardName->setText("Max");
       hpcCardArchitecture->setText("Ponte Vecchio");
       hpcCardComputeCapability->setText("80");
       hpcCardGlobalMemory->setText("80");
     } else if (val == "Hyak - UW Seattle - Klone") {
       // Note: Multiple partitions on this machine
+      hpcQueue->setText("");
       numGPUs->setText("2");
       modelsPerGPU->setText("3");
       hpcCardBrand->setText("NVIDIA");
@@ -308,6 +380,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
       hpcCardGlobalMemory->setText("12");
     } else if (val == "ACCESS - TAMU - ACES") {
       // Note: There is a 2 GPU and 4 GPU partition on this machine, assume 2 GPU needed
+      hpcQueue->setText("gpu-h100");
       numGPUs->setText("2");
       modelsPerGPU->setText("3");
       hpcCardBrand->setText("NVIDIA");
@@ -317,6 +390,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
       hpcCardGlobalMemory->setText("80");
     } else if (val == "ACCESS - TAMU - FASTER") {
       // TODO: Make this for FASTER and not ACES
+      hpcQueue->setText("");
       numGPUs->setText("2");
       modelsPerGPU->setText("3");
       hpcCardBrand->setText("NVIDIA");
@@ -336,13 +410,19 @@ SettingsMPM::SettingsMPM(QWidget *parent)
       }
   });
 
+  connect(numGPUs, &QLineEdit::editingFinished, [=]() {
+    if (numGPUs->text().toInt() <= 0) numGPUs->setText("1");
+  });
+
+  connect(modelsPerGPU, &QLineEdit::editingFinished, [=]() {
+    if (modelsPerGPU->text().toInt() <= 0) modelsPerGPU->setText("1");
+  });
 
   //  simSettings->setMaximumWidth(300);  
-  layout->addWidget(simSettings,0,0);
-  layout->addWidget(scalingSettings,1,0);  
-  layout->addWidget(gpuSettings,2,0);  
+  layout->addWidget(simSettings);
+  layout->addWidget(scalingSettings);  
+  layout->addWidget(gpuSettings);  
   layout->setRowStretch(3,1);
-  // layout->setColumnStretch(1,1);
   hpc->setCurrentIndex(1); // Start with "TACC - UT Austin - Lonestar6", as it is more powerful than Frontera in double-precision
   hpc->setCurrentIndex(0); // For now, Default to "TACC - UT Austin - Frontera" for now, as Tapis apps are already made for Frontera over Lonestar6
 }

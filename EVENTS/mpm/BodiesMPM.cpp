@@ -202,7 +202,7 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   fluidVelocityX = new SC_DoubleLineEdit("fluid_velocity_x", 0.0);
   fluidVelocityY = new SC_DoubleLineEdit("fluid_velocity_y", 0.0);
   fluidVelocityZ = new SC_DoubleLineEdit("fluid_velocity_z", 0.0);
-  theFluidLayout->addWidget(new QLabel("Fluid Velocity (X,Y,Z)"), 0, 0);
+  theFluidLayout->addWidget(new QLabel("Velocity (X,Y,Z)"), 0, 0);
   theFluidLayout->addWidget(fluidVelocityX, 0, 1);
   theFluidLayout->addWidget(fluidVelocityY, 0, 2);
   theFluidLayout->addWidget(fluidVelocityZ, 0, 3);
@@ -232,7 +232,7 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   debrisVelocityX = new SC_DoubleLineEdit("debris_velocity_x", 0.0);
   debrisVelocityY = new SC_DoubleLineEdit("debris_velocity_y", 0.0);
   debrisVelocityZ = new SC_DoubleLineEdit("debris_velocity_z", 0.0);
-  theDebrisLayout->addWidget(new QLabel("Debris Velocity (X,Y,Z)"), 0, 0);
+  theDebrisLayout->addWidget(new QLabel("Velocity (X,Y,Z)"), 0, 0);
   theDebrisLayout->addWidget(debrisVelocityX, 0, 1);
   theDebrisLayout->addWidget(debrisVelocityY, 0, 2);
   theDebrisLayout->addWidget(debrisVelocityZ, 0, 3);
@@ -262,7 +262,7 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   structureVelocityX = new SC_DoubleLineEdit("structure_velocity_x", 0.0);
   structureVelocityY = new SC_DoubleLineEdit("structure_velocity_y", 0.0);
   structureVelocityZ = new SC_DoubleLineEdit("structure_velocity_z", 0.0);
-  theStructureLayout->addWidget(new QLabel("Structure Velocity (X,Y,Z)"), 0, 0);
+  theStructureLayout->addWidget(new QLabel("Velocity (X,Y,Z)"), 0, 0);
   theStructureLayout->addWidget(structureVelocityX, 0, 1);
   theStructureLayout->addWidget(structureVelocityY, 0, 2);
   theStructureLayout->addWidget(structureVelocityZ, 0, 3);
