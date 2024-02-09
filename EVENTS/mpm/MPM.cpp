@@ -42,6 +42,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QPushButton>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QSvgWidget>
@@ -52,6 +53,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QStackedWidget>
 #include "slidingstackedwidget.h"
 
+#include <SC_DoubleLineEdit.h>
 #include <SettingsMPM.h>
 #include <BodiesMPM.h>
 #include <BoundariesMPM.h>
@@ -60,6 +62,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <Qt3DExtras/QCuboidMesh>
 #include <Qt3DExtras/QPhongMaterial>
+#include <Qt3DExtras/QPhongAlphaMaterial>
 #include <Qt3DExtras/Qt3DWindow>
 #include <Qt3DRender/QMesh>
 #include <Qt3DExtras/QForwardRenderer>
@@ -358,6 +361,8 @@ MPM::MPM(QWidget *parent)
     cameraEntity->viewAll();
     // Create a cube mesh
     Qt3DExtras::QCuboidMesh *cubeMesh = new Qt3DExtras::QCuboidMesh();
+    Qt3DExtras::QCuboidMesh *fluidMesh = new Qt3DExtras::QCuboidMesh();
+    Qt3DExtras::QCuboidMesh *pistonMesh = new Qt3DExtras::QCuboidMesh();
     Qt3DRender::QMesh *twinMesh = new Qt3DRender::QMesh();
     twinMesh->setSource(QUrl(QStringLiteral("qrc:/OSU_LWF_Bathymetry.obj")));
     Qt3DRender::QMesh *hydroMesh = new Qt3DRender::QMesh();
@@ -365,19 +370,39 @@ MPM::MPM(QWidget *parent)
 
     // Create a transform and set its scale
     auto cubeTransform = new Qt3DCore::QTransform();
+    auto fluidTransform = new Qt3DCore::QTransform();
+    auto pistonTransform = new Qt3DCore::QTransform();
     auto twinTransform = new Qt3DCore::QTransform();
     auto hydroTransform = new Qt3DCore::QTransform();
+    cubeMesh->setXExtent(1.016f);
+    cubeMesh->setYExtent(0.615f);
+    cubeMesh->setZExtent(1.016f);
     cubeTransform->setScale(1.f);
-    cubeTransform->setTranslation(QVector3D(45.8f, 2.0f, 1.825f));
+    cubeTransform->setTranslation(QVector3D(45.8f+1.016f/2.f, 2.0f+0.615f/2.f, 1.825f));
     cubeTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+
+    fluidMesh->setXExtent(84.0f);
+    fluidMesh->setYExtent(2.0f);
+    fluidMesh->setZExtent(3.65f);
+    fluidTransform->setScale(1.f);
+    fluidTransform->setTranslation(QVector3D(42.0f+1.915f, 1.0f, 1.825f));
+    fluidTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+
+    pistonMesh->setXExtent(0.25f);
+    pistonMesh->setYExtent(4.6f);
+    pistonMesh->setZExtent(3.65f);
+    pistonTransform->setScale(1.f);
+    pistonTransform->setTranslation(QVector3D(1.915f-0.25f/2.f, 4.6f/2.f, 3.65f/2.f));
+    pistonTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+
 
     twinTransform->setScale(1.f);
     twinTransform->setTranslation(QVector3D(0.0f, 0.0f, 0.0f));
     twinTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
     twinTransform->setRotation(QQuaternion::fromEulerAngles(90.f, 0.f, 0.f));
 
-    hydroTransform->setScale(50.f);
-    hydroTransform->setTranslation(QVector3D(2.0f, 2.0f, 0.0f));
+    hydroTransform->setScale(60.f);
+    hydroTransform->setTranslation(QVector3D(4.0f, 3.5f, -3.0f));
     // hydroTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
     hydroTransform->setRotation(QQuaternion::fromEulerAngles(90.f, 0.f, 0.f));
 
@@ -388,20 +413,50 @@ MPM::MPM(QWidget *parent)
 
     // Create a material and set its color
     auto cubeMaterial = new Qt3DExtras::QPhongMaterial();
+    auto fluidMaterial = new Qt3DExtras::QPhongAlphaMaterial();
+    auto pistonMaterial = new Qt3DExtras::QPhongMaterial();
     auto twinMaterial = new Qt3DExtras::QPhongMaterial();
     auto hydroMaterial = new Qt3DExtras::QPhongMaterial();
     cubeMaterial->setDiffuse(QColor(QRgb(0xCC5500)));
     twinMaterial->setDiffuse(QColor(QRgb(0xFFFFFF)));
-    hydroMaterial->setDiffuse(QColor(QRgb(0x005FFF)));
+    // Give twin an ambient conrete color
+    twinMaterial->setAmbient(QColor(QRgb(0xCCCCCC)));
 
+    // Give fluid material transparecny and blue color
+    fluidMaterial->setDiffuse(QColor(QRgb(0x0000FF)));
+    fluidMaterial->setAlpha(0.6f);
+    fluidMaterial->setAmbient(QColor(QRgb(0x0000FF)));
+
+
+    // Give piston material a teal color
+    pistonMaterial->setDiffuse(QColor(QRgb(0x00FFFF)));
+    // pistonMaterial->setAmbient(QColor(QRgb(0x00FFFF)));
+
+    // fluidMaterial->setAlphaBlendingEnabled(true);
+    // fluidMaterial->setAlpha(0.5f);
+
+    hydroMaterial->setDiffuse(QColor(QRgb(0x005FFF)));
+    hydroMaterial->setAmbient(QColor(QRgb(0x005FFF)));
+    
     // Create a cube entity and add the mesh, transform and material components
-    auto cubeEntity = new Qt3DCore::QEntity(rootEntity);
     auto twinEntity = new Qt3DCore::QEntity(rootEntity);
+    auto cubeEntity = new Qt3DCore::QEntity(rootEntity);
+    auto fluidEntity = new Qt3DCore::QEntity(rootEntity);
+    auto pistonEntity = new Qt3DCore::QEntity(rootEntity);
     auto hydroEntity = new Qt3DCore::QEntity(rootEntity);
 
     cubeEntity->addComponent(cubeMesh);
     cubeEntity->addComponent(cubeMaterial);
     cubeEntity->addComponent(cubeTransform);
+
+
+    fluidEntity->addComponent(fluidMesh);
+    fluidEntity->addComponent(fluidMaterial);
+    fluidEntity->addComponent(fluidTransform);
+
+    pistonEntity->addComponent(pistonMesh);
+    pistonEntity->addComponent(pistonMaterial);
+    pistonEntity->addComponent(pistonTransform);
 
     twinEntity->addComponent(twinMesh);
     twinEntity->addComponent(twinMaterial);
@@ -413,6 +468,9 @@ MPM::MPM(QWidget *parent)
 
     // Set the root entity of the 3D window
     view->setRootEntity(rootEntity);
+
+
+
 
     // Format visualizer layout
     // QVBoxLayout *visLayout = new QVBoxLayout();
@@ -426,6 +484,163 @@ MPM::MPM(QWidget *parent)
     // QVBoxLayout *visLayout = new QVBoxLayout();
     // visLayout->addWidget(new QLabel("3D View of Digital Twin"));
     // visLayout->addWidget(container);
+
+    auto updateBoundaryStructureSize = [=]() {
+      double lengthX = mpmBoundaries->getDimensionX(mpmBoundaries->getStructureBoundary());
+      double lengthY = mpmBoundaries->getDimensionY(mpmBoundaries->getStructureBoundary());
+      double lengthZ = mpmBoundaries->getDimensionZ(mpmBoundaries->getStructureBoundary());
+      cubeMesh->setXExtent(lengthX);
+      cubeMesh->setYExtent(lengthY);
+      cubeMesh->setZExtent(lengthZ);
+    };
+
+    // Make lambda function to update the position of cuboid design structure
+    auto updateBoundaryStructurePosition = [=]() {
+      double originX = mpmBoundaries->getOriginX(mpmBoundaries->getStructureBoundary());
+      double originY = mpmBoundaries->getOriginY(mpmBoundaries->getStructureBoundary());
+      double originZ = mpmBoundaries->getOriginZ(mpmBoundaries->getStructureBoundary());
+      double lengthX = mpmBoundaries->getDimensionX(mpmBoundaries->getStructureBoundary());
+      double lengthY = mpmBoundaries->getDimensionY(mpmBoundaries->getStructureBoundary());
+      double lengthZ = mpmBoundaries->getDimensionZ(mpmBoundaries->getStructureBoundary());
+      originX = lengthX/2.f + originX;  
+      originY = lengthY/2.f + originY;
+      originZ = lengthZ/2.f + originZ;
+      cubeTransform->setTranslation(QVector3D(originX, originY, originZ));
+    };
+
+
+    // Connect the signals to the lambda functions
+    // Connect structLength in BoundariesMPM to updateBoundaryStructureSize
+    // Connect structOriginLength in BoundariesMPM to updateBoundaryStructurePosition
+
+
+    // Make lambda function to update the position of cuboid design structure
+    auto updateFluid = [=]() {
+      QJsonObject bodiesObjectJSON; 
+      QJsonArray bodiesArrayJSON;
+      bodiesObjectJSON["bodies"] = bodiesArrayJSON;
+      mpmBodies->outputToJSON(bodiesObjectJSON);
+      int fluidBodyID = 0;
+      int fluidGeometryID = 0;
+      double swl = bodiesObjectJSON["bodies"].toArray()[fluidBodyID].toObject()["geometry"].toArray()[fluidGeometryID].toObject()["standing_water_level"].toDouble();
+      double originX = bodiesObjectJSON["bodies"].toArray()[fluidBodyID].toObject()["geometry"].toArray()[fluidGeometryID].toObject()["offset"].toArray()[0].toDouble();
+      double originY = bodiesObjectJSON["bodies"].toArray()[fluidBodyID].toObject()["geometry"].toArray()[fluidGeometryID].toObject()["offset"].toArray()[1].toDouble();
+      double originZ = bodiesObjectJSON["bodies"].toArray()[fluidBodyID].toObject()["geometry"].toArray()[fluidGeometryID].toObject()["offset"].toArray()[2].toDouble();
+      double lengthX = bodiesObjectJSON["bodies"].toArray()[fluidBodyID].toObject()["geometry"].toArray()[fluidGeometryID].toObject()["span"].toArray()[0].toDouble();
+      double lengthY = swl;
+      double lengthZ = bodiesObjectJSON["bodies"].toArray()[fluidBodyID].toObject()["geometry"].toArray()[fluidGeometryID].toObject()["span"].toArray()[2].toDouble();
+      originX = lengthX/2.f + originX;  
+      originY = swl/2.f + originY;
+      originZ = lengthZ/2.f + originZ;
+      fluidMesh->setXExtent(lengthX);
+      fluidMesh->setYExtent(lengthY);
+      fluidMesh->setZExtent(lengthZ);
+      double wave_maker_neutral = 1.915f;
+      fluidTransform->setTranslation(QVector3D(originX + wave_maker_neutral, originY, originZ));
+    };
+
+
+
+    // Add a push button that will redraw the bodies
+    QPushButton *updateBodiesButton = new QPushButton("Redraw Bodies");
+    connect(updateBodiesButton, &QPushButton::clicked, [=](void){
+      updateFluid();
+    });
+
+    // TODO: Refactor so that we just pass a reference to a container/rootEntity to each of the classes/subclasses. Using widget getters is tedious
+    // Could template this to avoid repeating code
+    connect(mpmBoundaries->getDimensionXWidget(mpmBoundaries->getStructureBoundary()), &QLineEdit::textChanged, [=](QString text){
+      updateBoundaryStructurePosition();
+      updateBoundaryStructureSize();
+    });
+    connect(mpmBoundaries->getDimensionYWidget(mpmBoundaries->getStructureBoundary()), &QLineEdit::textChanged, [=](QString text){
+      updateBoundaryStructurePosition();
+      updateBoundaryStructureSize();
+    });
+
+    connect(mpmBoundaries->getDimensionZWidget(mpmBoundaries->getStructureBoundary()), &QLineEdit::textChanged, [=](QString text){
+      updateBoundaryStructurePosition();
+      updateBoundaryStructureSize();
+    });
+
+    connect(mpmBoundaries->getOriginXWidget(mpmBoundaries->getStructureBoundary()), &QLineEdit::textChanged, [=](QString text){
+      updateBoundaryStructurePosition();
+      updateBoundaryStructureSize();
+    });
+
+    connect(mpmBoundaries->getOriginYWidget(mpmBoundaries->getStructureBoundary()), &QLineEdit::textChanged, [=](QString text){
+      updateBoundaryStructurePosition();
+      updateBoundaryStructureSize();
+    });
+
+    connect(mpmBoundaries->getOriginZWidget(mpmBoundaries->getStructureBoundary()), &QLineEdit::textChanged, [=](QString text){
+      updateBoundaryStructurePosition();
+      updateBoundaryStructureSize();
+    });
+
+
+
+    // Check the signal in mpmBoundaries, and connect to the lambda function 
+    //         void structDimensionChanged(void);
+
+    // connect(mpmBoundaries, &BoundariesMPM::structDimensionsChanged, [=](void){
+    //   updateBoundaryStructurePosition();
+    //   updateBoundaryStructureSize();
+    // });
+
+    // connect(mpmBoundaries, static_cast<void (BoundariesMPM::*)(void)>(&BoundariesMPM::structDimensionsChanged), [=](void){
+    //   updateBoundaryStructurePosition();
+    //   updateBoundaryStructureSize();
+    // });
+
+    // connect(mpmBoundaries, SIGNAL(&BoundariesMPM::structDimensionsChanged), this, [mpmBoundaries, this](){
+    //   updateBoundaryStructurePosition();
+    //   updateBoundaryStructureSize();
+    // });
+
+    // connect(mpmBoundaries, SIGNAL(&BoundariesMPM::structOriginChanged), this, [mpmBoundaries, this](){
+    //   updateBoundaryStructurePosition();
+    //   updateBoundaryStructureSize();
+    // });
+    // connect(mpmBoundaries, &BoundariesMPM::structOriginChanged, [=](void){
+    //   updateBoundaryStructurePosition();
+    //   updateBoundaryStructureSize();
+    // });
+
+    // connect(mpmBoundaries, &BoundariesMPM::structDimensionsChanged, [=](void){
+    //   updateBoundaryStructurePosition();
+    //   updateBoundaryStructureSize();
+    // });
+
+
+
+    // connect(mpmBoundaries, &BoundariesMPM::structOriginChanged, this, &MPM::updateStructureOriginSlot);
+    // connect(mpmBoundaries, &BoundariesMPM::structDimensionsChanged, this, &MPM::updateStructureOriginSlot);
+
+    // connect(mpmBoundaries->addedBoundary[2]->structLength, &QLineEdit::textChanged, [=](const QString &text){
+    //   updateBoundaryStructureSize();
+    //   updateBoundaryStructurePosition();
+    // });
+    // connect(mpmBoundaries->addedBoundary[2]->structWidth, &QLineEdit::textChanged, [=](const QString &text){
+    //   updateBoundaryStructureSize();
+    //   updateBoundaryStructurePosition();
+    // });
+    // connect(mpmBoundaries->addedBoundary[2]->structHeight, &QLineEdit::textChanged, [=](const QString &text){
+    //   updateBoundaryStructureSize();
+    //   updateBoundaryStructurePosition();
+    // });
+
+
+
+      // cubeTransform->setTranslation(originX, originY, originZ);
+  // SC_DoubleLineEdit *structLength;
+  // SC_DoubleLineEdit *structHeight;
+  // SC_DoubleLineEdit *structWidth;
+  // SC_DoubleLineEdit *structRadius;
+  // SC_DoubleLineEdit *structLongAxis;
+  // SC_DoubleLineEdit *structOriginLength;
+  // SC_DoubleLineEdit *structOriginHeight;
+  // SC_DoubleLineEdit *structOriginWidth;
 
     // -----------------------------------------------------------------------------------
     
@@ -456,6 +671,7 @@ MPM::MPM(QWidget *parent)
 
     // layout->addWidget(scrollArea);
     layout->addWidget(horizontalPanels);
+    layout->addWidget(updateBodiesButton);
     // layout->addWidget(container);
 
     connect(stackedWidget, &SlidingStackedWidget::animationFinished, [=](void){
@@ -485,6 +701,30 @@ MPM::~MPM()
 
 }
 
+
+// void MPM::updateStructureDimensionsSlot(QString val)
+// {
+//       double lengthX = mpmBoundaries->getDimensionX(mpmBoundaries->getStructureBoundary());
+//       double lengthY = mpmBoundaries->getDimensionY(mpmBoundaries->getStructureBoundary());
+//       double lengthZ = mpmBoundaries->getDimensionZ(mpmBoundaries->getStructureBoundary());
+//       // cubeMesh->setXExtent(lengthX);
+//       // cubeMesh->setYExtent(lengthY);
+//       // cubeMesh->setZExtent(lengthZ);
+// }
+
+// void MPM::updateStructureOriginSlot(QString val)
+// {
+//     double originX = mpmBoundaries->getOriginX(mpmBoundaries->getStructureBoundary());
+//     double originY = mpmBoundaries->getOriginY(mpmBoundaries->getStructureBoundary());
+//     double originZ = mpmBoundaries->getOriginZ(mpmBoundaries->getStructureBoundary());
+//     double lengthX = mpmBoundaries->getDimensionX(mpmBoundaries->getStructureBoundary());
+//     double lengthY = mpmBoundaries->getDimensionY(mpmBoundaries->getStructureBoundary());
+//     double lengthZ = mpmBoundaries->getDimensionZ(mpmBoundaries->getStructureBoundary());
+//     originX = lengthX/2.f + originX;  
+//     originY = lengthY/2.f + originY;
+//     originZ = lengthZ/2.f + originZ;
+//     // cubeTransform->setTranslation(QVector3D(originX, originY, originZ));
+// }
 
 void MPM::clear(void)
 {

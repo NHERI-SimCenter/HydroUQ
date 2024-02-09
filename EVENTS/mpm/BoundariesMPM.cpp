@@ -176,6 +176,35 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
     
   });
 
+  // connect(addedBoundary[2], &BoundaryMPM::structDimensionsChanged, this, &BoundariesMPM::structDimensionsChangedSlot);
+
+  connect(addedBoundary[2], SIGNAL(&BoundaryMPM::structOriginChanged(QString)), this, SIGNAL(structOriginChanged(QString)));
+
+  // connect(addedBoundary[2], &BoundaryMPM::structOriginChanged, this, &BoundariesMPM::structOriginChangedSlot);
+
+  // BoundaryMPM signals to BoundariesMPM when structDimensionsChanged and structOriginChanged
+  // are emitted. BoundariesMPM will then emit the same signals to the parent MPM widget
+  // connect(addedBoundary[2], &BoundaryMPM::structDimensionsChanged, this, &BoundariesMPM::structDimensionsChanged);
+
+
+  // Then we need to connect the signals from the addedBoundary[i] to the same signals in BoundariesMPM
+
+
+  // TODO: without using a hardcoded index
+  // connect(addedBoundary[0], &BoundaryMPM::structDimensionsChanged, this, &BoundariesMPM::structDimensionsChanged);
+  // connect(addedBoundary[0], &BoundaryMPM::structOriginChanged, this, &BoundariesMPM::structOriginChanged);
+
+  // Try to iterate over all addedBoundary[i] and connect to the same signal
+  // For loops are not allowed in signal/slot connections, so use a lambda function
+
+
+  // for loop version
+  // for (int i=0; i<numAddedTabs; i++) {
+  //   connect(addedBoundary[i], &BoundaryMPM::structDimensionChanged, this, &BoundariesMPM::structDimensionChanged);
+  //   connect(addedBoundary[i], &BoundaryMPM::structOriginChanged, this, &BoundariesMPM::structOriginChanged);
+  // }
+
+  // connect(addedBoundary[structureID], &BoundaryMPM::dimensionChanged, this, &BoundariesMPM::structDimensionChanged);
 
   // Enum to set tab's icons, titles, init values, etc.
   enum boundaryEnum : int {CUSTOM = 0, WAVE_FLUME, WAVE_GENERATOR, RIGID_STRUCTURE, RIGID_WALLS, TOTAL};
@@ -195,6 +224,126 @@ BoundariesMPM::~BoundariesMPM()
 {
 
 }
+
+
+
+// void BoundariesMPM::structDimensionsChangedSlot(void)
+// {
+//   emit structDimensionsChanged();
+// }
+// void BoundariesMPM::structOriginChangedSlot(void)
+// {
+//   emit structOriginChanged();
+// }
+
+int BoundariesMPM::getNumBoundaries()
+{
+  return numAddedTabs;
+}
+
+bool BoundariesMPM::getBoundary(int index, BoundaryMPM* &theBoundary)
+{
+  if (index < numAddedTabs) {
+    theBoundary = addedBoundary[index];
+    return true;
+  }
+  return false;
+}
+
+BoundaryMPM* BoundariesMPM::getBoundary(int index)
+{
+  if (index < numAddedTabs) {
+    return addedBoundary[index];
+  }
+  return nullptr;
+}
+
+BoundaryMPM* BoundariesMPM::getStructureBoundary()
+{
+  if (structureID < 0 || structureID >= numReserveTabs) return nullptr;
+  return addedBoundary[structureID];
+}
+
+// BoundaryMPM* BoundariesMPM::getBoundary(QString name)
+// {
+//   for (int i=0; i<numAddedTabs; i++) {
+//     if (addedBoundary[i]->objectName() == name) {
+//       return addedBoundary[i];
+//     }
+//   }
+//   return nullptr;
+// }
+
+int BoundariesMPM::getStructureID()
+{
+  return structureID;
+}
+
+double BoundariesMPM::getDimensionX(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getDimensionX();
+}
+
+double BoundariesMPM::getDimensionY(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getDimensionY();
+}
+
+double BoundariesMPM::getDimensionZ(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getDimensionZ();
+}
+
+SC_DoubleLineEdit* BoundariesMPM::getDimensionXWidget(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getDimensionXWidget();
+}
+
+SC_DoubleLineEdit* BoundariesMPM::getDimensionYWidget(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getDimensionYWidget();
+}
+
+SC_DoubleLineEdit* BoundariesMPM::getDimensionZWidget(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getDimensionZWidget();
+}
+
+double BoundariesMPM::getOriginX(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getOriginX();
+}
+
+double BoundariesMPM::getOriginY(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getOriginY();
+}
+
+double BoundariesMPM::getOriginZ(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getOriginZ();
+}
+
+SC_DoubleLineEdit* BoundariesMPM::getOriginXWidget(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getOriginXWidget();
+}
+
+SC_DoubleLineEdit* BoundariesMPM::getOriginYWidget(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getOriginYWidget();
+}
+
+SC_DoubleLineEdit* BoundariesMPM::getOriginZWidget(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getOriginZWidget();
+}
+
+
+
+// bool BoundariesMPM::addBoundary(BoundaryMPM* theBoundary)
+
+
 
 // bool
 // BoundariesMPM::setBoundaryType(int typeIdx)

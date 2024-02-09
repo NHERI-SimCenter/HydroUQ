@@ -71,7 +71,27 @@ public:
     bool copyFiles(QString &dirName);  
     bool setBoundaryType(int typeIdx);
     bool setDigitalTwin(int typeIdx);
+
+    // Refactor all (fluid, struct, etc.) to use same dimension and origin style
+    double getDimensionX();
+    double getDimensionY();
+    double getDimensionZ();
+    SC_DoubleLineEdit* getDimensionXWidget();
+    SC_DoubleLineEdit* getDimensionYWidget();
+    SC_DoubleLineEdit* getDimensionZWidget();
+    double getOriginX();
+    double getOriginY();
+    double getOriginZ();
+    SC_DoubleLineEdit* getOriginXWidget();
+    SC_DoubleLineEdit* getOriginYWidget();
+    SC_DoubleLineEdit* getOriginZWidget();
+
+// Need to let parent know if a dimension or origin has changed
 signals:
+    // void structDimensionsChanged(void);
+    // void structOriginChanged(void); 
+    void structDimensionsChanged(QString val);
+    void structOriginChanged(QString val); 
 
 private:
 

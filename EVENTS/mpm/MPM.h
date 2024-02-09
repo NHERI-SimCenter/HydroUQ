@@ -41,7 +41,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Date: 1/2024
 
 #include <SimCenterAppWidget.h>
-
+class SC_DoubleLineEdit;
 class SettingsMPM;
 class BodiesMPM;
 class BoundariesMPM;
@@ -64,6 +64,8 @@ signals:
 
 public slots:
    void clear(void);
+   // void  updateStructureDimensionsSlot(QString val);
+   // void  updateStructureOriginSlot(QString val);
 
 private:
 

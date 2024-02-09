@@ -72,11 +72,65 @@ public:
     bool copyFiles(QString &dirName);  
     // bool setBoundaryType(int typeIdx);
     bool setDigitalTwin(int twinIdx);
+    // bool setBoundary(int index, BoundaryMPM* theBoundary);
+    int getNumBoundaries();
+    bool getBoundary(int index, BoundaryMPM* &theBoundary);
+    BoundaryMPM* getBoundary(int index);
+    BoundaryMPM* getBoundary(QString name);
+    int getStructureID();
+    BoundaryMPM* getStructureBoundary();
+
+    double getDimensionX(BoundaryMPM* theBoundary);
+    double getDimensionY(BoundaryMPM* theBoundary);
+    double getDimensionZ(BoundaryMPM* theBoundary);
+    SC_DoubleLineEdit* getDimensionXWidget(BoundaryMPM* theBoundary);
+    SC_DoubleLineEdit* getDimensionYWidget(BoundaryMPM* theBoundary);
+    SC_DoubleLineEdit* getDimensionZWidget(BoundaryMPM* theBoundary);
+
+    double getOriginX(BoundaryMPM* theBoundary);
+    double getOriginY(BoundaryMPM* theBoundary);
+    double getOriginZ(BoundaryMPM* theBoundary);
+    SC_DoubleLineEdit* getOriginXWidget(BoundaryMPM* theBoundary);
+    SC_DoubleLineEdit* getOriginYWidget(BoundaryMPM* theBoundary);
+    SC_DoubleLineEdit* getOriginZWidget(BoundaryMPM* theBoundary);
+
+
+    // bool addBoundary(BoundaryMPM* theBoundary);
+    // bool removeBoundary(int index);
+    // bool removeBoundary(BoundaryMPM* theBoundary);
+    // // bool clearBoundaries();
+    // bool getBoundary(int index, BoundaryMPM* &theBoundary);
+    // bool setBoundary(int index, BoundaryMPM* theBoundary);
+
+// Whats the difference between signal and slot?
+// https://stackoverflow.com/questions/3322153/what-is-the-difference-between-a-slot-and-a-signal
+
 signals:
+    // void structDimensionsChanged(void);
+    // void structOriginChanged(void);
+    void structDimensionsChanged(QString val);
+    void structOriginChanged(QString val);
+
+public slots:
+    // void clear(void);
+    // void structDimensionsChangedSlot(void);
+    // void structOriginChangedSlot(void);
+
+//     // void setBoundaryType(int typeIdx);
+//     void setDigitalTwin(int twinIdx);
+//     void setDimensionX(double value);
+//     void setDimensionY(double value);
+//     void setDimensionZ(double value);
+//     void setOriginX(double value);
+//     void setOriginY(double value);
+//     void setOriginZ(double value);
+
+
 
 private:
   int numReserveTabs = 8;
   int numAddedTabs = 0;
+  int structureID = 2; // The specified design structure, 2 for default (3rd tab), -1 if the design structure is not specified / not a boundary (i.e. it is a body instead)
   QVector<BoundaryMPM*> addedBoundary {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 };
 

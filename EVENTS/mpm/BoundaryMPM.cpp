@@ -485,6 +485,63 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   });
 
 
+
+  // connect(structLength, &QLineEdit::textChanged, [=](QString val) {
+  //   emit structDimensionsChanged(val);
+  // });
+
+  // connect(structHeight, &QLineEdit::textChanged, [=](QString val) {
+  //   emit structDimensionsChanged(val);
+  // });
+
+  // connect(structWidth, &QLineEdit::textChanged, [=](QString val) {
+  //   emit structDimensionsChanged(val);
+  // });
+
+  // connect(structOriginLength, &QLineEdit::textChanged, [=](QString val) {
+  //   emit structOriginChanged(val);
+  // });
+
+  // connect(structOriginHeight, &QLineEdit::textChanged, [=](QString val) {
+  //   emit structOriginChanged(val);
+  // });
+
+  // connect(structOriginWidth, &QLineEdit::textChanged, [=](QString val) {
+  //   emit structOriginChanged(val);
+  // });
+
+  connect(structLength, SIGNAL(textChanged(QString)), this, SIGNAL(structDimensionsChanged(QString)));
+  connect(structHeight, SIGNAL(textChanged(QString)), this, SIGNAL(structDimensionsChanged(QString)));
+  connect(structWidth, SIGNAL(textChanged(QString)), this, SIGNAL(structDimensionsChanged(QString)));
+  connect(structOriginLength, SIGNAL(textChanged(QString)), this, SIGNAL(structOriginChanged(QString)));
+  connect(structOriginHeight, SIGNAL(textChanged(QString)), this, SIGNAL(structOriginChanged(QString)));
+  connect(structOriginWidth, SIGNAL(textChanged(QString)), this, SIGNAL(structOriginChanged(QString)));
+  
+
+  // connect(structLength, &QLineEdit::textChanged, this, &BoundaryMPM::structDimensionsChanged);
+  // connect(structHeight, &QLineEdit::textChanged, this, &BoundaryMPM::structDimensionsChanged);
+  // connect(structWidth, &QLineEdit::textChanged, this, &BoundaryMPM::structDimensionsChanged);
+  // connect(structOriginLength, &QLineEdit::textChanged, this, &BoundaryMPM::structOriginChanged);
+  // connect(structOriginHeight, &QLineEdit::textChanged, this, &BoundaryMPM::structOriginChanged);
+  // connect(structOriginWidth, &QLineEdit::textChanged, this, &BoundaryMPM::structOriginChanged);
+
+
+//Signal for dimensions change or origin change to be used in higher class
+
+
+  // If any change happens to any of the variables, the signal will be emitted and the slot will be called
+  // What do slots do? They emit signals to the higher class
+  // What do signals do? They call the slots in the higher class
+  // What do the higher class do? They emit signals to the main class
+  // What do the main class do? They call the slots in the main class
+  // connect(this, &BoundaryMPM::structDimensionsChanged, this, &BoundaryMPM::structDimensionsChangedSlot);
+  // connect(this, &BoundaryMPM::structOriginChanged, this, &BoundaryMPM::structOriginChangedSlot);
+
+
+  
+
+
+
   // -----
   // Walls
 
@@ -717,6 +774,128 @@ BoundaryMPM::setBoundaryType(int type)
     return false; 
   }
 }
+
+// Refactor these to not have specific length vars, etc per stacked widget
+double BoundaryMPM::getDimensionX() {
+  if (stackedWidget->currentIndex() == 0) return 0;
+  else if (stackedWidget->currentIndex() == 1) return flumeLength->text().toDouble();
+  else if (stackedWidget->currentIndex() == 2) return paddleLength->text().toDouble();
+  else if (stackedWidget->currentIndex() == 3) return structLength->text().toDouble();
+  else if (stackedWidget->currentIndex() == 4) return wallsLength->text().toDouble();
+  else
+  return 1.f;
+}
+
+double BoundaryMPM::getDimensionY() {
+  if (stackedWidget->currentIndex() == 0) return 0;
+  else if (stackedWidget->currentIndex() == 1) return flumeHeight->text().toDouble();
+  else if (stackedWidget->currentIndex() == 2) return paddleHeight->text().toDouble();
+  else if (stackedWidget->currentIndex() == 3) return structHeight->text().toDouble();
+  else if (stackedWidget->currentIndex() == 4) return wallsHeight->text().toDouble();
+  else
+  return 1.f;
+}
+
+double BoundaryMPM::getDimensionZ() {
+  if (stackedWidget->currentIndex() == 0) return 0;
+  else if (stackedWidget->currentIndex() == 1) return flumeWidth->text().toDouble();
+  else if (stackedWidget->currentIndex() == 2) return paddleWidth->text().toDouble();
+  else if (stackedWidget->currentIndex() == 3) return structWidth->text().toDouble();
+  else if (stackedWidget->currentIndex() == 4) return wallsWidth->text().toDouble();
+  else
+  return 1.f;
+}
+
+SC_DoubleLineEdit* BoundaryMPM::getDimensionXWidget() {
+  if (stackedWidget->currentIndex() == 0) return nullptr;
+  else if (stackedWidget->currentIndex() == 1) return flumeLength;
+  else if (stackedWidget->currentIndex() == 2) return paddleLength;
+  else if (stackedWidget->currentIndex() == 3) return structLength;
+  else if (stackedWidget->currentIndex() == 4) return wallsLength;
+  else
+  return nullptr;
+}
+
+SC_DoubleLineEdit* BoundaryMPM::getDimensionYWidget() {
+  if (stackedWidget->currentIndex() == 0) return nullptr;
+  else if (stackedWidget->currentIndex() == 1) return flumeHeight;
+  else if (stackedWidget->currentIndex() == 2) return paddleHeight;
+  else if (stackedWidget->currentIndex() == 3) return structHeight;
+  else if (stackedWidget->currentIndex() == 4) return wallsHeight;
+  else
+  return nullptr;
+}
+
+SC_DoubleLineEdit* BoundaryMPM::getDimensionZWidget() {
+  if (stackedWidget->currentIndex() == 0) return nullptr;
+  else if (stackedWidget->currentIndex() == 1) return flumeWidth;
+  else if (stackedWidget->currentIndex() == 2) return paddleWidth;
+  else if (stackedWidget->currentIndex() == 3) return structWidth;
+  else if (stackedWidget->currentIndex() == 4) return wallsWidth;
+  else
+  return nullptr;
+}
+
+double BoundaryMPM::getOriginX() {
+  if (stackedWidget->currentIndex() == 0) return 0;
+  else if (stackedWidget->currentIndex() == 1) return flumeOriginX->text().toDouble();
+  else if (stackedWidget->currentIndex() == 2) return paddleOriginX->text().toDouble();
+  else if (stackedWidget->currentIndex() == 3) return structOriginLength->text().toDouble();
+  else if (stackedWidget->currentIndex() == 4) return originLength->text().toDouble();
+  else
+  return 0.f;
+}
+
+double BoundaryMPM::getOriginY() {
+  if (stackedWidget->currentIndex() == 0) return 0;
+  else if (stackedWidget->currentIndex() == 1) return flumeOriginY->text().toDouble();
+  else if (stackedWidget->currentIndex() == 2) return paddleOriginY->text().toDouble();
+  else if (stackedWidget->currentIndex() == 3) return structOriginHeight->text().toDouble();
+  else if (stackedWidget->currentIndex() == 4) return originHeight->text().toDouble();
+  else
+  return 0.f;
+}
+
+double BoundaryMPM::getOriginZ() {
+  if (stackedWidget->currentIndex() == 0) return 0;
+  else if (stackedWidget->currentIndex() == 1) return flumeOriginZ->text().toDouble();
+  else if (stackedWidget->currentIndex() == 2) return paddleOriginZ->text().toDouble();
+  else if (stackedWidget->currentIndex() == 3) return structOriginWidth->text().toDouble();
+  else if (stackedWidget->currentIndex() == 4) return originWidth->text().toDouble();
+  else
+  return 0.f;
+}
+
+SC_DoubleLineEdit* BoundaryMPM::getOriginXWidget() {
+  if (stackedWidget->currentIndex() == 0) return nullptr;
+  else if (stackedWidget->currentIndex() == 1) return flumeOriginX;
+  else if (stackedWidget->currentIndex() == 2) return paddleOriginX;
+  else if (stackedWidget->currentIndex() == 3) return structOriginLength;
+  else if (stackedWidget->currentIndex() == 4) return originLength;
+  else
+  return nullptr;
+}
+
+SC_DoubleLineEdit* BoundaryMPM::getOriginYWidget() {
+  if (stackedWidget->currentIndex() == 0) return nullptr;
+  else if (stackedWidget->currentIndex() == 1) return flumeOriginY;
+  else if (stackedWidget->currentIndex() == 2) return paddleOriginY;
+  else if (stackedWidget->currentIndex() == 3) return structOriginHeight;
+  else if (stackedWidget->currentIndex() == 4) return originHeight;
+  else
+  return nullptr;
+}
+
+SC_DoubleLineEdit* BoundaryMPM::getOriginZWidget() {
+  if (stackedWidget->currentIndex() == 0) return nullptr;
+  else if (stackedWidget->currentIndex() == 1) return flumeOriginZ;
+  else if (stackedWidget->currentIndex() == 2) return paddleOriginZ;
+  else if (stackedWidget->currentIndex() == 3) return structOriginWidth;
+  else if (stackedWidget->currentIndex() == 4) return originWidth;
+  else
+  return nullptr;
+}
+
 
 bool
 BoundaryMPM::outputToJSON(QJsonObject &jsonObject)

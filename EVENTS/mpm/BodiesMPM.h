@@ -78,6 +78,17 @@ public:
     // bool inputAppDataFromJSON(QJsonObject &rvObject);
     bool copyFiles(QString &dirName);
     bool setDigitalTwin(int twinIdx);
+
+    // SC_DoubleLineEdit* getDimensionXWidget();
+    // SC_DoubleLineEdit* getDimensionYWidget();
+    // SC_DoubleLineEdit* getDimensionZWidget();
+    // SC_DoubleLineEdit* getOriginXWidget();
+    // SC_DoubleLineEdit* getOriginYWidget();
+    // SC_DoubleLineEdit* getOriginZWidget();
+
+    // bool getBodiesData(QJsonObject &jsonObject);
+
+
 signals:
 
 private:
