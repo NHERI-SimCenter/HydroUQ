@@ -41,6 +41,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <QWidget>
 #include <QFrame>
+#include <QStandardItemModel>
+#include <QHBoxLayout>
 
 #include <WorkflowAppWidget.h>
 
@@ -56,10 +58,9 @@ class UQOptions;
 class ResultsWidget;
 class GeneralInformationWidget;
 class HydroEventSelection;
+class UQ_Results;
 class QStackedWidget;
 class QSvgWidget;
-class UQ_Results;
-
 
 class RunLocalWidget;
 class RunWidget;
@@ -69,6 +70,7 @@ class RemoteJobManager;
 class QNetworkAccessManager;
 class QNetworkReply;
 class EDP_Selection;
+// class HydroEDP_Selection;
 
 class WorkflowAppHydroUQ : public WorkflowAppWidget
 {
@@ -77,6 +79,7 @@ public:
     explicit WorkflowAppHydroUQ(RemoteService *theService, QWidget *parent = 0);
     ~WorkflowAppHydroUQ();
 
+    void setMainWindow(MainWindowWorkflowApp* window); // From WE-UQ
     bool outputToJSON(QJsonObject &rvObject);
     bool inputFromJSON(QJsonObject &rvObject);
     void clear(void);
@@ -86,7 +89,7 @@ public:
     void onRemoteRunButtonClicked();
     void onRemoteGetButtonClicked();
     void onExitButtonClicked();
-    int getMaxNumParallelTasks();
+    int  getMaxNumParallelTasks();
 
 signals:
     void setUpForApplicationRunDone(QString &tmpDirectory, QString &inputFile);
@@ -105,7 +108,7 @@ public slots:
 private:
     // sidebar container selection
     SimCenterComponentSelection *theComponentSelection;
-    QFrame *sideBarIconFrame;
+    QFrame *sideBarIconFrame; // TODO: Merge into SimCenterComponentSelection in Common
 
     // objects that go in sidebar
     GeneralInformationWidget *theGI;
@@ -115,6 +118,7 @@ private:
     HydroEventSelection *theEventSelection;
     FEA_Selection *theAnalysisSelection;
     EDP_Selection *theEDP_Selection;
+    // HydroEDP_Selection *theEDP_Selection;
     UQ_Results *theResults;
 
     // Icons for sidebar
@@ -131,10 +135,13 @@ private:
     RunWidget *theRunWidget;
     Application *localApp;
     Application *remoteApp;
+    Application *currentApp; // From WE-UQ
     RemoteJobManager *theJobManager;
 
     QJsonObject *jsonObjOrig;
-    QNetworkAccessManager *manager;
+    QNetworkAccessManager *manager; // From WE-UQ
+
+    bool canRunLocally(); // From WE-UQ
 };
 
 #endif // WORKFLOW_APP_HYDRO_UQ_H

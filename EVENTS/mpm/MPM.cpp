@@ -77,6 +77,33 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <Qt3DRender/QGeometryRenderer>
 
 
+#include "QVector3D"
+#include <qcustomplot.h>
+#include <QJsonDocument>
+#include <QFileDialog>
+#include <SectionTitle.h>
+#include <QFileInfo>
+#include <QMovie>
+#include <QPixmap>
+#include <RandomVariablesContainer.h>
+#include <QRadioButton>
+#include <QButtonGroup>
+#include <QComboBox>
+#include <QSpinBox>
+#include <QGroupBox>
+#include <QVector>
+#include <LineEditRV.h>
+#include <QDebug>
+// #include <QOpenGLWidget>
+#include <SimCenterPreferences.h>
+#include <GeneralInformationWidget.h>
+#include <QProcess>
+#include <QDir>
+#include <QTextEdit>
+#include <QFormLayout>
+#include <Qt3DRender/QMesh>
+
+
 MPM::MPM(QWidget *parent)
     : SimCenterAppWidget(parent)
 {
@@ -85,6 +112,7 @@ MPM::MPM(QWidget *parent)
     QWidget     *mainGroup = new QWidget();
     QGridLayout *mainLayout = new QGridLayout();
 
+    mainWindowLayout = new QHBoxLayout(); // WE-UQ
 
 
     QLabel *generalDescriptionLabel = new QLabel(" Create waterborne events (EVT) in NHERI SimCenter Digital Twins to streamline your experimental research."
@@ -666,13 +694,13 @@ MPM::MPM(QWidget *parent)
     horizontalPanelLayout->addWidget(scrollArea);
     horizontalPanelLayout->addWidget(container);
 
-    QVBoxLayout *layout = new QVBoxLayout();
-    this->setLayout(layout);
+    // QVBoxLayout *layout = new QVBoxLayout();
 
-    // layout->addWidget(scrollArea);
-    layout->addWidget(horizontalPanels);
-    layout->addWidget(updateBodiesButton);
-    // layout->addWidget(container);
+    // mainWindowLayout->addWidget(scrollArea);
+    mainWindowLayout->addWidget(horizontalPanels);
+    mainWindowLayout->addWidget(updateBodiesButton);
+    // mainWindowLayout->addWidget(container);
+    this->setLayout(mainWindowLayout);
 
     connect(stackedWidget, &SlidingStackedWidget::animationFinished, [=](void){
       // if(index == 0){
@@ -725,6 +753,75 @@ MPM::~MPM()
 //     originZ = lengthZ/2.f + originZ;
 //     // cubeTransform->setTranslation(QVector3D(originX, originY, originZ));
 // }
+
+// From WE-UQ 
+void MPM::readCaseData()
+{
+    //Write it to JSON becase it is needed for the mesh generation before the final simulation is run.
+    //In future only one JSON file in temp.SimCenter directory might be enough
+    // QString inputFilePath = caseDir() + QDir::separator() + "constant" + QDir::separator() + "simCenter"
+    //                         + QDir::separator() + "input" + QDir::separator() + "EmptyDomainCFD.json";
+
+
+    // QFile jsonFile(inputFilePath);
+    // if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
+    // {
+    //    qDebug() << "Cannot find the path: " << inputFilePath;
+    // }
+
+
+    // QString val = jsonFile.readAll();
+    // QJsonDocument doc = QJsonDocument::fromJson(val.toUtf8());
+    // QJsonObject jsonObject = doc.object();
+
+    // inputFromJSON(jsonObject);
+
+    // // close file
+    // jsonFile.close();
+
+    // removeOldFiles();
+}
+
+void MPM::onBrowseCaseDirectoryButtonClicked(void)
+{
+    QString fileName = QFileDialog::getExistingDirectory(this, tr("Open Directory"), caseDir(),
+                                                    QFileDialog::ShowDirsOnly
+                                                    | QFileDialog::DontResolveSymlinks);
+    QDir newCaseDir(fileName);
+
+    if (!newCaseDir.exists())
+    {
+       return;
+    }
+
+    caseDirectoryPathWidget->setText(fileName);
+
+
+    if(!isCaseConfigured())
+    {
+        setupCase();
+        // snappyHexMesh->onRunBlockMeshClicked();
+        // snappyHexMesh->snappyHexMeshCompleted = false;
+        // reloadMesh();
+        return;
+    }
+    // if(!isMeshed())
+    // {
+    //     snappyHexMesh->onRunBlockMeshClicked();
+    //     snappyHexMesh->snappyHexMeshCompleted = false;
+    //     reloadMesh();
+    //     return;
+    // }
+    else
+    {
+        readCaseData();
+
+        //Change it back if the case file is pointing to somethings else
+        caseDirectoryPathWidget->setText(fileName);
+        // reloadMesh();
+        return;
+    }
+}
 
 void MPM::clear(void)
 {
@@ -908,13 +1005,286 @@ bool MPM::inputAppDataFromJSON(QJsonObject &jsonObject) {
 
 bool MPM::copyFiles(QString &destDir) {
   
+  // if (mpmSettings->copyFiles(destDir) == false)
+  //   return false;
   if (mpmBodies->copyFiles(destDir) == false)
     return false;
   if (mpmBoundaries->copyFiles(destDir) == false)
     return false;
   // if (mpmSensors->copyFiles(destDir) == false)
-  //   return false;    
+  //   return false;
+  // if (mpmOutputs->copyFiles(destDir) == false)
+  //   return false;
 
   return true;
  }
+
+// From WE-UQ EmptyDomainCFD
+bool MPM::cleanCase()
+{
+    // QDir zeroDir(caseDir() + QDir::separator() + "0");
+    // QDir constDir(caseDir() + QDir::separator() + "constant");
+    // QDir systemDir(caseDir() + QDir::separator() + "system");
+
+    // zeroDir.removeRecursively();
+    // constDir.removeRecursively();
+    // systemDir.removeRecursively();
+
+    // QFile logFile(caseDir() + QDir::separator() + "log.txt");
+
+    // logFile.remove();
+
+    return true;
+}
+
+// From WE-UQ EmptyDomainCFD
+bool MPM::removeOldFiles()
+{
+    // //Clean extra files if exist in 0 folder
+    // QFile nSurfaceLayersFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "nSurfaceLayers");
+    // QFile pointLevelFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "pointLevel");
+    // QFile thicknessFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "thickness");
+    // QFile thicknessFractionFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "thicknessFraction");
+    // QFile cellLevelFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "cellLevel");
+
+    // nSurfaceLayersFile.remove();
+    // pointLevelFile.remove();
+    // thicknessFile.remove();
+    // thicknessFractionFile.remove();
+    // cellLevelFile.remove();
+
+    return true;
+}
+
+// From WE-UQ EmptyDomainCFD
+bool MPM::setupCase()
+{
+    cleanCase();
+
+    // QDir targetDir(caseDir());
+
+    // if (!targetDir.exists())
+    // {
+    //     targetDir.mkpath(caseDir());
+    // }
+
+    // targetDir.mkpath("0");
+    // targetDir.mkpath("constant");
+    // targetDir.mkpath("constant/geometry");
+    // targetDir.mkpath("constant/simCenter");
+    // targetDir.mkpath("constant/simCenter/output");
+    // targetDir.mkpath("constant/simCenter/input");
+    // targetDir.mkpath("constant/boundaryData");
+    // targetDir.mkpath("constant/boundaryData/inlet");
+    // targetDir.mkpath("system");
+
+    // QFile visFoam(caseDir() + "/vis.foam");
+    // visFoam.open(QIODevice::WriteOnly);
+
+    // //Write dictionary files
+    // writeOpenFoamFiles();
+
+    return true;
+}
+
+// From WE-UQ EmptyDomainCFD
+QVector<QVector<double>> MPM::readTxtData(QString fileName)
+{
+    QVector<QVector<double>>  data;
+
+    int colCount  = 0;
+
+    QFile inputFileTest(fileName);
+
+    if (inputFileTest.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFileTest);
+
+
+       while (!in.atEnd())
+       {
+            QString line = in.readLine();
+
+            QStringList  fields = line.split(" ");
+
+            colCount  = fields.size();
+            break;
+       }
+       inputFileTest.close();
+    }
+
+    for (int i=0; i < colCount; i++)
+    {
+        QVector<double> row;
+        data.append(row);
+    }
+
+    int count  = 0;
+
+    QFile inputFile(fileName);
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+
+       while (!in.atEnd())
+       {
+            QString line = in.readLine();
+
+            QStringList  fields = line.split(" ");
+
+            for (int i=0; i < colCount; i++)
+            {
+                data[i].append(fields[i].toDouble());
+            }
+       }
+       inputFile.close();
+    }
+
+    return data;
+}
+
+// From WE-UQ EmptyDomainCFD
+bool MPM::isCaseConfigured()
+{
+    // QDir zeroDir(caseDir() + QDir::separator() +  "0");
+    // QDir constDir(caseDir() + QDir::separator() + "constant");
+    // QDir systemDir(caseDir() + QDir::separator() + "system");
+    // QFile contrlDict(caseDir() + QDir::separator() + "system" + QDir::separator() + "controlDict");
+    // QFile blockDict(caseDir() + QDir::separator() + "system" +  QDir::separator() + "blockMeshDict");
+    // QFile snappyDict(caseDir() + QDir::separator() + "system" + QDir::separator() + "snappyHexMeshDict");
+
+    // //Better if we check other files too, for now these are enougg to run a mesh
+    // return zeroDir.exists() && constDir.exists() && systemDir.exists() &&
+    //        contrlDict.exists() && blockDict.exists() && snappyDict.exists();
+    return true;
+}
+
+
+
+bool MPM::initialize()
+{
+    mainWindowLayout = new QHBoxLayout();
+    caseDirectoryGroup = new QGroupBox("Case Directory");
+    caseDirectoryLayout = new QGridLayout();
+
+    QLabel *casePathLabel = new QLabel("Path: ");
+    QPushButton* browseCaseDirectoryButton  = new QPushButton("Browse");
+
+    caseDirectoryPathWidget = new QLineEdit();
+    QString currentAppDir = QCoreApplication::applicationDirPath();
+
+    QDir workingDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+    if (!workingDir.exists())
+        workingDir.mkpath(".");
+
+    QString workingDirPath = workingDir.filePath(QCoreApplication::applicationName() + QDir::separator()
+                                                 + "LocalWorkDir" + QDir::separator()
+                                                 + "EmptyDomainCFD");
+
+    if (!workingDir.exists(workingDirPath))
+        workingDir.mkpath(workingDirPath);
+
+    caseDirectoryPathWidget->setText(workingDirPath);
+
+
+    caseDirectoryLayout->addWidget(casePathLabel, 0, 0);
+    caseDirectoryLayout->addWidget(caseDirectoryPathWidget, 0, 1);
+    caseDirectoryLayout->addWidget(browseCaseDirectoryButton, 0, 2);
+
+
+    QLabel *citeLabel = new QLabel("\n\Parts of the workflow for this event are developed based on the work of Wang et al. (2020) and Bonus (2023).\n"
+                                   "The user should cite the work as follows:\n"
+                                   "\nWang, Z., Zhang, Y., & Liu, H. (2020). “A high-performance multi-GPU material point method for large-deformation solid mechanics.”\n"
+                                   "\n\Bonus, Justin (2023). “Evaluation of Fluid-Driven Debris Impacts in a High-Performance Multi-GPU Material Point Method.”\n"
+                                   "PhD thesis, University of Washington, Seattle, WA.");
+
+    QFont citeFont("Arial", 8);
+    citeFont.setPointSize(7);
+    citeFont.setItalic(true);
+
+    citeLabel->setFont(citeFont);
+
+    caseDirectoryGroup->setLayout(caseDirectoryLayout);
+
+
+    //Populate each tab
+    // auto layout = this.layout();
+    // layout->addWidget(caseDirectoryGroup);
+    // layout->addWidget(citeLabel);
+    // layout->addStretch();
+    
+    mainWindowLayout->addWidget(caseDirectoryGroup);
+    mainWindowLayout->addWidget(citeLabel);
+    mainWindowLayout->addStretch();
+
+    connect(browseCaseDirectoryButton, SIGNAL(clicked()), this, SLOT(onBrowseCaseDirectoryButtonClicked()));
+
+    //=====================================================
+    // Setup the case directory
+    //=====================================================
+
+    if(!isCaseConfigured())
+    {
+        setupCase();
+    }
+
+    //Read all the case data from const/simCenter
+    readCaseData();
+
+
+    caseInitialized = true;
+
+    // Update the GI Tab once the data is read
+    GeneralInformationWidget *theGI = GeneralInformationWidget::getInstance();
+    theGI->setLengthUnit("m");
+//    theGI->setNumStoriesAndHeight(numberOfFloors(), buildingHeight());
+//    theGI->setBuildingDimensions(buildingWidth(), buildingDepth(), buildingWidth()*buildingDepth());
+
+    this->adjustSize();
+
+    return true;
+}
+
+
+QString MPM::caseDir()
+{
+    return caseDirectoryPathWidget->text();
+}
+
+QString MPM::pyScriptsPath()
+{
+    // QString backendAppDir = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
+    //          + QString("applications") + QDir::separator() + QString("createEVENT") + QDir::separator()
+    //          + QString("EmptyDomainCFD");
+    QString backendAppDir = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
+             + QString("applications") + QDir::separator() + QString("createEVENT") + QDir::separator()
+             + QString("mpm");
+    return backendAppDir;
+}
+
+QString MPM::templateDictDir()
+{
+    // QString templateDictsDir = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
+    //          + QString("applications") + QDir::separator() + QString("createEVENT") + QDir::separator()
+    //          + QString("EmptyDomainCFD") + QDir::separator() + QString("templateOF10Dicts");
+    QString templateDictsDir = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
+             + QString("applications") + QDir::separator() + QString("createEVENT") + QDir::separator()
+             + QString("mpm") + QDir::separator() + QString("templateOF10Dicts");
+
+    return templateDictsDir;
+}
+
+QString MPM::simulationType()
+{
+    // return turbulenceModeling->simulationType();
+    return QString("MPM");
+}
+
+
+
+ bool MPM::isInitialize()
+{
+    return caseInitialized;
+}
+
 

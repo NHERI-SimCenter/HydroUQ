@@ -42,6 +42,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <SimCenterAppWidget.h>
 class SC_DoubleLineEdit;
+
+//Forward declaration
+class InputWidgetParameters;
+class RandomVariablesContainer;
+class QComboBox;
+class QGridLayout;
+class QVBoxLayout;
+class QHBoxLayout;
+class QSpinBox;
+class QLineEdit;
+class QTabWidget;
+class LineEditRV;
+class QGroupBox;
+class QPushButton;
+class QCheckBox;
+class QFormLayout;
+class QLabel;
+
 class SettingsMPM;
 class BodiesMPM;
 class BoundariesMPM;
@@ -60,21 +78,55 @@ public:
     bool inputAppDataFromJSON(QJsonObject &rvObject);
     bool copyFiles(QString &dirName);
 
+    bool setupCase();
+    bool cleanCase();
+    bool removeOldFiles();
+    bool isCaseConfigured();
+    void readCaseData();
+
+    bool initialize(); // From WE-UQ
+    bool isInitialize(); // From WE-UQ
+
+    QVector<QVector<double>> readTxtData(QString fileName);
+
+
+    QString caseDir();
+   //  QString foamDictsPath();
+    QString templateDictDir();
+    QString pyScriptsPath();
+    QString simulationType();
+
 signals:
 
 public slots:
    void clear(void);
+   void onBrowseCaseDirectoryButtonClicked(void);
    // void  updateStructureDimensionsSlot(QString val);
    // void  updateStructureOriginSlot(QString val);
 
 private:
+   QHBoxLayout                  *mainWindowLayout;
 
-  SettingsMPM   *mpmSettings;
-  BodiesMPM     *mpmBodies;
-  BoundariesMPM *mpmBoundaries;
-  SensorsMPM    *mpmSensors;
-  OutputsMPM    *mpmOutputs; 
+   QVBoxLayout                  *inputWindowLayout;
+   QGroupBox                    *inputWindowGroup;
+
+   SettingsMPM   *mpmSettings;
+   BodiesMPM     *mpmBodies;
+   BoundariesMPM *mpmBoundaries;
+   SensorsMPM    *mpmSensors;
+   OutputsMPM    *mpmOutputs; 
   
+   QLineEdit                    *caseDirectoryPathWidget;
+   QGroupBox                    *caseDirectoryGroup;
+   QGridLayout                  *caseDirectoryLayout;
+
+   RandomVariablesContainer     *theRandomVariablesContainer;
+   QStringList                  varNamesAndValues;
+
+   QString                      workingDirPath;
+
+   bool caseInitialized = false; // From WE-UQ
+
 };
 
 #endif // MATERIAL_POINT_METHOD_H

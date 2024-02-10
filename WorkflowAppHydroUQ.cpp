@@ -37,6 +37,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written: fmckenna
 
 #include "WorkflowAppHydroUQ.h"
+#include <MainWindowWorkflowApp.h>
+
 #include <QPushButton>
 #include <QScrollArea>
 #include <QJsonArray>
@@ -86,11 +88,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QHostInfo>
+#include <GoogleAnalytics.h>
 
 #include <Utils/ProgramOutputDialog.h>
 #include <Utils/RelativePathResolver.h>
-#include <GoogleAnalytics.h>
+#include <SC_ToolDialog.h>
+#include <SC_RemoteAppTool.h>
+#include <QList>
+#include <RemoteAppTest.h>
+#include <QMenuBar>
 
+// For Tools
+// #include <EmptyDomainCFD/EmptyDomainCFD.h>
+#include <GeoClawOpenFOAM/GeoClawOpenFOAM.h>
+#include <WaveDigitalFlume/WaveDigitalFlume.h>
+#include <coupledDigitalTwin/CoupledDigitalTwin.h>
+#include <mpm/MPM.h>
 // static pointer for global procedure set in constructor
 static WorkflowAppHydroUQ *theApp = 0;
 
@@ -108,7 +121,6 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //
     // create the various widgets
     //
-
     theRVs = RandomVariablesContainer::getInstance();
     theGI = GeneralInformationWidget::getInstance();
     theSIM = new SIM_Selection(true, true);
@@ -116,18 +128,17 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theAnalysisSelection = new FEA_Selection(true);
     theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity);
     theEDP_Selection = new EDP_Selection(theRVs);
-
-    //theResults = new DakotaResultsSampling(theRVs);
     theResults = theUQ_Selection->getResults();
+    //theResults = new DakotaResultsSampling(theRVs);
 
     localApp = new LocalApplication("sWHALE.py");
     remoteApp = new RemoteApplication("sWHALE.py", theService);
-
-    //    localApp = new LocalApplication("Hydro-UQ workflow.py");
-    //   remoteApp = new RemoteApplication("Hydro-UQ workflow.py", theService);
-
+    // localApp = new LocalApplication("Hydro-UQ workflow.py");
+    // remoteApp = new RemoteApplication("Hydro-UQ workflow.py", theService);
     // localApp = new LocalApplication("Hydro-UQ.py");
     // remoteApp = new RemoteApplication("Hydro-UQ.py", theService);
+
+    //QStringList filesToDownload; filesToDownload << "inputRWHALE.json" << "input_data.zip" << "Results.zip";
     theJobManager = new RemoteJobManager(theService);
 
     SimCenterWidget *theWidgets[1];// =0;
@@ -136,10 +147,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //
     // connect signals and slots
     //
-
     // error messages and signals
-
-
     connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     connect(this,SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
     connect(localApp,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
@@ -150,6 +158,12 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     connect(remoteApp,SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));
        
     //connect(theRunLocalWidget, SIGNAL(runButtonPressed(QString, QString)), this, SLOT(runLocal(QString, QString)));
+
+    // // From WE-UQ, should probably implement
+    // connect(localApp,SIGNAL(runComplete()), this, SLOT(runComplete()));
+    // connect(remoteApp,SIGNAL(successfullJobStart()), this, SLOT(runComplete()));
+    // connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
+    // connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));   
 
 
     //
@@ -193,13 +207,6 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     // Set background color of SVG to match the background color of the side bar
     // theSvgUQ->setStyleSheet("background-color: rgb(79, 83, 89)");
-    // theSvgGI->setStyleSheet("background-color: rgb(79, 83, 89)");
-    // theSvgSIM->setStyleSheet("background-color: rgb(79, 83, 89)");
-    // theSvgEVT->setStyleSheet("background-color: rgb(79, 83, 89)");
-    // theSvgFEM->setStyleSheet("background-color: rgb(79, 83, 89)");
-    // theSvgEDP->setStyleSheet("background-color: rgb(79, 83, 89)");
-    // theSvgRV->setStyleSheet("background-color: rgb(79, 83, 89)");
-    // theSvgRES->setStyleSheet("background-color: rgb(79, 83, 89)");
     // Set the size policy of the SVG to be fixed
     theSvgUQ->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     theSvgGI->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -209,35 +216,8 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theSvgEDP->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     theSvgRV->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     theSvgRES->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    // Set the contents margins of the SVG to be 0
-    // theSvgUQ->setContentsMargins(0,0,0,0);
-    // theSvgUQTest->setContentsMargins(0,10,0,9);
-    // theSvgGI->setContentsMargins(0,10,0,9);
-    // theSvgSIM->setContentsMargins(0,10,0,9);
-    // theSvgEVT->setContentsMargins(0,10,0,9);
-    // theSvgFEM->setContentsMargins(0,10,0,9);
-    // theSvgEDP->setContentsMargins(0,10,0,9);
-    // theSvgRV->setContentsMargins(0,10,0,9);
-    // theSvgRES->setContentsMargins(0,10,0,9);
-    // theSvgUQ->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    // theSvgGI->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    // theSvgSIM->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    // theSvgEVT->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    // theSvgFEM->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    // theSvgEDP->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    // theSvgRV->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    // theSvgRES->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
 
-
-// :active{
-//     background: rgb(63, 147, 168);
-// }
-
-// QTreeView#treeViewOnTheLeft::item:selected:!active {
-//     background: rgb(63, 147, 168);
-// }
-
-
+    // Create a layout to hold the icons
     QVBoxLayout *verticalIconLayout = new QVBoxLayout();
     verticalIconLayout->addWidget(theSvgUQ);
     verticalIconLayout->addWidget(theSvgGI);
@@ -248,41 +228,25 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     verticalIconLayout->addWidget(theSvgRV);
     verticalIconLayout->addWidget(theSvgRES);
     verticalIconLayout->addStretch();
-    
-    // verticalIconLayout->setStretch(9,1);
     verticalIconLayout->setAlignment(Qt::AlignCenter);
-    // verticalIconLayout->setSpacing(15);
 
+    // Create a frame to hold the icons
     sideBarIconFrame = new QFrame();
     sideBarIconFrame->setLayout(verticalIconLayout);
-    // sideBarIconFrame->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
-    // sideBarIconFrame->setFrameShape(QFrame::NoFrame);
     sideBarIconFrame->setFrameShape(QFrame::Box);
     sideBarIconFrame->setLineWidth(0);
-    // Set color of frame border
     sideBarIconFrame->setObjectName("sideBarIconFrame");
     sideBarIconFrame->setStyleSheet("#sideBarIconFrame {background-color: rgb(63, 67, 73); border: 0px solid rgb(61, 65, 71); }");
-    // sideBarIconFrame->setStyleSheet("background-color: rgb(63, 67, 73)");
     sideBarIconFrame->setContentsMargins(0,5,0,5);
     sideBarIconFrame->layout()->setContentsMargins(0,5,0,5);
     sideBarIconFrame->layout()->setSpacing(14);
-    // verticalIconLayout->setContentsMargins(0,5,0,5);
 
     // Make sideBarIconFrame match the style of theComponentSelection
-    // First set its dimensions
     sideBarIconFrame->setFixedWidth(50);
     sideBarIconFrame->setMinimumHeight(600);
-    
-    // sideBarIconFrame->setFixedHeight(850);
-    // sideBarIconFrame->setMinimumHeight(600);
-    // Then set its position
-
-    // Set offest
-
     sideBarIconFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    // sideBarIconFrame->setFixedWidth(25);
-    // sideBarIconFrame->setFixedHeight(800);
 
+    // Create a layout to hold the frame
     QVBoxLayout *wrapperVerticalIconLayout = new QVBoxLayout();
     wrapperVerticalIconLayout->addWidget(sideBarIconFrame);
 
@@ -295,19 +259,9 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     wrapperFrame->layout()->setContentsMargins(0,2.975,0,2.975);
 
     wrapperFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    // wrapperFrame->setFrameShape(QFrame::Box);
-    // wrapperFrame->setLineWidth(2);
 
-    
-    // sideBarIconFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    // sideBarIconFrame->setFixedWidth(25);
-    // sideBarIconFrame->setFixedHeight(800);
-
-
-    // Now, place the frame in the side bar
-    // horizontalLayout->addWidget(sideBarIconFrame);
+    // Now, place the frame in the primary horizontal layout (before the component selection text)
     horizontalLayout->addWidget(wrapperFrame);
-
 
     //
     // create the component selection & add the components to it
@@ -315,13 +269,6 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     theComponentSelection = new SimCenterComponentSelection();
     horizontalLayout->addWidget(theComponentSelection);
-
-    // QHBoxLayout *iconAndUQLayout = new QHBoxLayout();
-    // iconAndUQLayout->addWidget(theSvgUQTest);
-    // iconAndUQLayout->addWidget(theUQ_Selection);
-    // QFrame *iconAndUQFrame = new QFrame();
-    // iconAndUQFrame->setLayout(iconAndUQLayout);
-    // iconAndUQFrame->setFrameShape(QFrame::NoFrame);
     theComponentSelection->addComponent(QString("UQ"),  theUQ_Selection);
     theComponentSelection->addComponent(QString("GI"),  theGI);
     theComponentSelection->addComponent(QString("SIM"), theSIM);
@@ -331,7 +278,6 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
     theComponentSelection->displayComponent("EVT"); // Initial page on startup
-
     horizontalLayout->setAlignment(Qt::AlignLeft);
 
     // When theComponentSelection is changed, update the icon in the side bar to also be selected
@@ -341,24 +287,95 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     manager = new QNetworkAccessManager(this);
     connect(manager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(replyFinished(QNetworkReply*)));
+    // TODO: Is this still functional? Check...
     manager->get(QNetworkRequest(QUrl("http://opensees.berkeley.edu/OpenSees/developer/hydrouq/use.php")));
-
-
-    // If theComponentSelection is changed, update the icon in sideBarIconFrame to also be selected
-    // updateIcon is called when theComponentSelection is changed
-    // It updates the icon in sideBarIconFrame to also be selected
-    // It does this by changing the background color of the icon to match the background color of theComponentSelection
-    // The background color of theComponentSelection is changed in SimCenterComponentSelection::displayComponent(QString componentName)
-    // This is done by changing the stylesheet of theComponentSelection
-    // The stylesheet is changed in SimCenterComponentSelection::displayComponent(QString componentName)
-    // The stylesheet is changed to match the stylesheet of the side bar icon
-
 
     //
     // set the defults in the General Info
     //
 
     theGI->setDefaultProperties(1,144,360,360,37.8715,-122.2730);
+
+    ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
+    theDialog->appendInfoMessage("Welcome to HydroUQ");    
+}
+
+// Imported from WE-UQ for EmptyDomainCFD Tool
+void
+WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
+
+  this->WorkflowAppWidget::setMainWindow(window);
+
+  auto menuBar = theMainWindow->menuBar();
+
+  //
+  // Add a Tool option to menu bar & add options to it
+  //
+  QMenu *toolsMenu = new QMenu(tr("&Tools"),menuBar);
+  SC_ToolDialog *theToolDialog = new SC_ToolDialog(this);
+
+  //
+  // Add empty domain to Tools
+  //
+  // EmptyDomainCFD *theEmptyDomain = new EmptyDomainCFD(theRVs);
+  MPM *theEmptyDomain = new MPM(theRVs); // TODO: Make an MPM EmptyDomainCFD class
+  QString appName = "ClaymoreUW.bonusj-1.0.0"; // Frontera
+  QList<QString> queues; queues << "rtx-dev" << "rtx";
+  SC_RemoteAppTool *theEmptyDomainTool = new SC_RemoteAppTool(appName, queues, theRemoteService, theEmptyDomain, theToolDialog);
+  theToolDialog->addTool(theEmptyDomainTool, "Digital Twin (MPM)");
+
+  // Set the path to the input file
+  QAction *showEmptyDomain = toolsMenu->addAction("&Digital Twin (MPM)");
+  connect(showEmptyDomain, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theEmptyDomain] {
+    theDialog->showTool("Digital Twin (MPM)");
+    if (!theEmp->isInitialize()) {
+	    theEmp->initialize();
+    }
+  });
+
+  
+  //
+  // Add SimpleTest Example
+  //
+
+
+//   RemoteAppTest *theTest = new RemoteAppTest();
+  CoupledDigitalTwin *theTest = new CoupledDigitalTwin(theRVs);
+  QString appNameTest = "simcenter-openfoam-frontera-1.0.0u3";
+  QList<QString> queuesTest; queuesTest << "normal" << "fast";
+  SC_RemoteAppTool *theTestTool = new SC_RemoteAppTool(appNameTest, queuesTest, theRemoteService, theTest, theToolDialog);
+  theToolDialog->addTool(theTestTool, "Digital Twin (OpenFOAM + OpenSees)");
+  
+  // Set the path to the input file
+  QAction *showTest = toolsMenu->addAction("&Build and Run MPI Program");
+  connect(showTest, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theTestTool] {
+    theDialog->showTool("Digital Twin (OpenFOAM + OpenSees)");
+    // if (!theEmp->isInitialize()) {
+    //     theEmp->initialize();
+    // }
+  });  
+
+
+  //
+  // Add Tools to menu bar
+  //
+
+  QAction* menuAfter = nullptr;
+  foreach (QAction *action, menuBar->actions()) {
+    // First check for an examples menu and if that does not exist put it before the help menu
+    auto actionText = action->text();
+    if(actionText.compare("&Examples") == 0)
+      {
+	menuAfter = action;
+	break;
+      }
+    else if(actionText.compare("&Help") == 0)
+      {
+	menuAfter = action;
+	break;
+      }
+  }
+  menuBar->insertMenu(menuAfter, toolsMenu);    
 }
 
 
@@ -372,7 +389,7 @@ WorkflowAppHydroUQ::~WorkflowAppHydroUQ()
   //    theComponentSelection->swapComponent("RV",newUQ);
 }
 
-// TODO: Make this work, many issues in the signals and slots, etc
+// TODO: Make this work
 void
 WorkflowAppHydroUQ::updateIcons(QString &componentName)
 {
@@ -447,6 +464,30 @@ void WorkflowAppHydroUQ::replyFinished(QNetworkReply *pReply)
     return;
 }
 
+bool WorkflowAppHydroUQ::canRunLocally()
+{
+    // TODO: Look into local run 
+    // QMessageBox msgBox;
+    // msgBox.setText("The current workflow cannot run locally, please run at DesignSafe instead.");
+    // msgBox.exec();
+    // return false;
+    // From WE-UQ:
+    QList<SimCenterAppWidget*> apps({theEventSelection, theEDP_Selection, theSIM});
+
+    foreach(SimCenterAppWidget* app, apps)
+    {
+        if(!app->supportsLocalRun())
+        {
+            theRunWidget->close();
+            QMessageBox msgBox;
+            msgBox.setText("The current workflow cannot run locally, please run at DesignSafe instead.");
+            msgBox.exec();
+            return false;
+        }
+    }
+    return true;
+}
+
 
 bool
 WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
@@ -460,7 +501,7 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
 
     //
     // get each of the main widgets to output themselves to top 
-    // and workflow widgets to outut appData to apps
+    // and workflow widgets to output appData to apps
     //
 
     // theGI
@@ -529,11 +570,14 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
     if (result == false)
         return result;
 
+    // --------------------------------------------
+    // Should this be deprecated? Its not in WE-UQ - but it is in the original HydroUQ, (JB)
     // theResults
     // sy - to save results
     result = theResults->outputToJSON(jsonObjectTop);
     if (result == false)
         return result;
+    // --------------------------------------------
 
     jsonObjectTop["Applications"]=apps;
 
@@ -563,13 +607,11 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
 
 void WorkflowAppHydroUQ::processResults(QString &dirName)
 {
-
-
   //
   // get results widget for currently selected UQ option
   //
 
-  theResults=theUQ_Selection->getResults();
+  theResults = theUQ_Selection->getResults();
   if (theResults == NULL) {
     this->errorMessage("FATAL - UQ option selected not returning results widget");
     return;
@@ -589,27 +631,52 @@ void WorkflowAppHydroUQ::processResults(QString &dirName)
   //
 
   QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
-  if (oldResults != NULL) {
+  if (oldResults != NULL && oldResults != theResults) {
     //disconnect(oldResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
     //disconnect(oldResults,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));  
     delete oldResults;
   }
 
   //
-  // proess results
+  // process results
   // 
 
   theResults->processResults(dirName);
-  theRunWidget->hide();
+//   theRunWidget->hide(); // Not in WE-UQ, so I removed it for now (JB)
   theComponentSelection->displayComponent("RES");
 }
 
 void
 WorkflowAppHydroUQ::clear(void)
 {
+    // theRVs->clear(); // WE-UQ
+    // theUQ_Selection->clear();  // WE-UQ
     theGI->clear();
     theSIM->clear();
-}
+    // theEventSelection->clear(); // WE-UQ
+    // theAnalysisSelection->clear(); // WE-UQ
+ 
+    // theResults=theUQ_Selection->getResults(); // WE-UQ
+    // if (theResults == NULL) {
+    //     this->errorMessage("FATAL - UQ option selected not returning results widget"); // WE-UQ
+    //     return; // WE-UQ
+    // }
+
+    // abiy - added results processing and template stuff for test setup
+    //
+    // swap current results with existing one in selection & disconnect signals
+    //
+
+    // QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
+    
+    // if (oldResults != NULL && oldResults != theResults) {
+    //     delete oldResults;
+    // }
+
+    //
+    // process results
+    //
+} 
 
 bool
 WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
@@ -727,7 +794,7 @@ WorkflowAppHydroUQ::onRemoteRunButtonClicked(){
         theRunWidget->showRemoteApplication();
 
     } else {
-        errorMessage("ERROR - You Need to Login to DesignSafe to Run HydroUQ On TACC Super-Computers.");
+        errorMessage("ERROR - You Need to Login to DesignSafe to Run HydroUQ Remotely.");
     }
 
     GoogleAnalytics::ReportDesignSafeRun();
@@ -747,7 +814,7 @@ WorkflowAppHydroUQ::onRemoteGetButtonClicked(){
         theJobManager->show();
 
     } else {
-        errorMessage("ERROR - You Need to Login to DesignSafe to Get HydroUQ Results From TACC Super-Computers.");
+        errorMessage("ERROR - You Need to Login to DesignSafe to Get HydroUQ Results From Remote Storage.");
     }
 }
 
@@ -821,6 +888,52 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     file.write(doc.toJson());
     file.close();
 
+
+    // This is in WE-UQ, maybe needed for some CFD...
+    // QJsonArray events = json["Applications"].toObject()["Events"].toArray();
+
+    // bool hasCFDEvent = false;
+    // QJsonObject eventAppData;
+    // for (QJsonValueRef eventJson: events)
+    // {
+    //     QString eventApp = eventJson.toObject()["Application"].toString();
+    //     if(0 == eventApp.compare("CFDEvent", Qt::CaseSensitivity::CaseInsensitive))
+    //     {
+    //         eventAppData = eventJson.toObject()["ApplicationData"].toObject();
+    //         hasCFDEvent = true;
+    //         break;
+    //     }
+    // }
+
+    // RemoteApplication* remoteApplication = static_cast<RemoteApplication*>(remoteApp);
+
+
+    // if(currentApp == remoteApp)
+    // {
+    //     remoteApplication->clearExtraInputs();
+    //     remoteApplication->clearExtraParameters();
+    // }
+    // else
+    // {
+    //     if (!canRunLocally())
+    //         return;
+    // }
+
+    // if(hasCFDEvent)
+    // {
+    //     //Adding extra job inputs for CFD
+    //     QMap<QString, QString> extraInputs;
+    //     if(eventAppData.contains("OpenFOAMCase"))
+    //         extraInputs.insert("OpenFOAMCase", eventAppData["OpenFOAMCase"].toString());
+    //     remoteApplication->setExtraInputs(extraInputs);
+
+    //     //Adding extra job parameters for CFD
+    //     QMap<QString, QString> extraParameters;
+    //     if(eventAppData.contains("OpenFOAMSolver"))
+    //         extraParameters.insert("OpenFOAMSolver", eventAppData["OpenFOAMSolver"].toString());
+    //     remoteApplication->setExtraParameters(extraParameters);
+    // }
+    //
 
     statusMessage("Set-Up Done .. Now Starting HydroUQ Application");
     emit setUpForApplicationRunDone(tmpDirectory, inputFile);
