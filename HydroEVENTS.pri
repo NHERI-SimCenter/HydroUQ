@@ -2,7 +2,7 @@ INCLUDEPATH += $$PWD/EVENTS
 INCLUDEPATH += $$PWD/EVENTS/GeoClawOpenFOAM
 INCLUDEPATH += $$PWD/EVENTS/WaveDigitalFlume
 INCLUDEPATH += $$PWD/EVENTS/coupledDigitalTwin
-INCLUDEPATH += $$PWD/EVENTS/mpm
+INCLUDEPATH += $$PWD/EVENTS/MPM
 INCLUDEPATH += $$PWD/EVENTS/Common
 INCLUDEPATH += $$PWD/SlidingStackedWidget
 SOURCES += \
@@ -33,20 +33,20 @@ SOURCES += \
     $$PWD/EVENTS/coupledDigitalTwin/OpenSeesDigitalTwin.cpp \
     $$PWD/EVENTS/coupledDigitalTwin/OpenFOAM_DigitalTwin.cpp \
     $$PWD/EVENTS/coupledDigitalTwin/VisualizeDigitalTwin.cpp \
-    $$PWD/EVENTS/mpm/MPM.cpp \
-    $$PWD/EVENTS/mpm/BoundaryMPM.cpp \
-    $$PWD/EVENTS/mpm/BoundariesMPM.cpp \
-    $$PWD/EVENTS/mpm/OutputsMPM.cpp \
-    $$PWD/EVENTS/mpm/SensorMPM.cpp \
-    $$PWD/EVENTS/mpm/SensorsMPM.cpp \
-    $$PWD/EVENTS/mpm/BodiesMPM.cpp \
-    $$PWD/EVENTS/mpm/SettingsMPM.cpp \
-    $$PWD/EVENTS/mpm/MaterialMPM.cpp \
-    $$PWD/EVENTS/mpm/GeometriesMPM.cpp \
-    $$PWD/EVENTS/mpm/GeometryMPM.cpp \
-    $$PWD/EVENTS/mpm/AlgorithmMPM.cpp \
-    $$PWD/EVENTS/mpm/PartitionsMPM.cpp \
-    $$PWD/EVENTS/mpm/PartitionMPM.cpp \
+    $$PWD/EVENTS/MPM/MPM.cpp \
+    $$PWD/EVENTS/MPM/BoundaryMPM.cpp \
+    $$PWD/EVENTS/MPM/BoundariesMPM.cpp \
+    $$PWD/EVENTS/MPM/OutputsMPM.cpp \
+    $$PWD/EVENTS/MPM/SensorMPM.cpp \
+    $$PWD/EVENTS/MPM/SensorsMPM.cpp \
+    $$PWD/EVENTS/MPM/BodiesMPM.cpp \
+    $$PWD/EVENTS/MPM/SettingsMPM.cpp \
+    $$PWD/EVENTS/MPM/MaterialMPM.cpp \
+    $$PWD/EVENTS/MPM/GeometriesMPM.cpp \
+    $$PWD/EVENTS/MPM/GeometryMPM.cpp \
+    $$PWD/EVENTS/MPM/AlgorithmMPM.cpp \
+    $$PWD/EVENTS/MPM/PartitionsMPM.cpp \
+    $$PWD/EVENTS/MPM/PartitionMPM.cpp \
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.cpp \
     $$PWD/EVENTS/Common/projectsettings.cpp \
     $$PWD/EVENTS/Common/bathymetry.cpp
@@ -80,20 +80,20 @@ HEADERS += \
     $$PWD/EVENTS/coupledDigitalTwin/OpenSeesDigitalTwin.h \
     $$PWD/EVENTS/coupledDigitalTwin/OpenFOAM_DigitalTwin.h \
     $$PWD/EVENTS/coupledDigitalTwin/VisualizeDigitalTwin.h \
-    $$PWD/EVENTS/mpm/MPM.h \
-    $$PWD/EVENTS/mpm/BoundaryMPM.h \
-    $$PWD/EVENTS/mpm/BoundariesMPM.h \
-    $$PWD/EVENTS/mpm/OutputsMPM.h \
-    $$PWD/EVENTS/mpm/SensorsMPM.h \
-    $$PWD/EVENTS/mpm/SensorsMPM.h \
-    $$PWD/EVENTS/mpm/BodiesMPM.h \
-    $$PWD/EVENTS/mpm/SettingsMPM.h \   
-    $$PWD/EVENTS/mpm/MaterialMPM.h \
-    $$PWD/EVENTS/mpm/GeometriesMPM.h \
-    $$PWD/EVENTS/mpm/GeometryMPM.h \
-    $$PWD/EVENTS/mpm/AlgorithmMPM.h \
-    $$PWD/EVENTS/mpm/PartitionsMPM.h \   
-    $$PWD/EVENTS/mpm/PartitionMPM.h \   
+    $$PWD/EVENTS/MPM/MPM.h \
+    $$PWD/EVENTS/MPM/BoundaryMPM.h \
+    $$PWD/EVENTS/MPM/BoundariesMPM.h \
+    $$PWD/EVENTS/MPM/OutputsMPM.h \
+    $$PWD/EVENTS/MPM/SensorsMPM.h \
+    $$PWD/EVENTS/MPM/SensorsMPM.h \
+    $$PWD/EVENTS/MPM/BodiesMPM.h \
+    $$PWD/EVENTS/MPM/SettingsMPM.h \   
+    $$PWD/EVENTS/MPM/MaterialMPM.h \
+    $$PWD/EVENTS/MPM/GeometriesMPM.h \
+    $$PWD/EVENTS/MPM/GeometryMPM.h \
+    $$PWD/EVENTS/MPM/AlgorithmMPM.h \
+    $$PWD/EVENTS/MPM/PartitionsMPM.h \   
+    $$PWD/EVENTS/MPM/PartitionMPM.h \   
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.h \
     $$PWD/EVENTS/Common/projectsettings.h \
     $$PWD/EVENTS/Common/bathymetry.h \

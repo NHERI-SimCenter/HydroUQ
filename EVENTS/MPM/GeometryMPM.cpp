@@ -100,9 +100,9 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   layout->addWidget(originZ, numRow, 3, 1, 1);
   layout->addWidget(new QLabel("m"), numRow++, 4, 1, 1);  
 
-  length = new SC_DoubleLineEdit("span_x", 104.0);  
+  length = new SC_DoubleLineEdit("span_x", 84.0);  
   height = new SC_DoubleLineEdit("span_y", 4.6);  
-  width = new SC_DoubleLineEdit("span_z", 3.658);
+  width = new SC_DoubleLineEdit("span_z", 3.65);
   layout->addWidget(new QLabel("Dimensions (X,Y,Z)"), numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(length, numRow, 1, 1, 1);  
   layout->addWidget(height, numRow, 2, 1, 1);  
@@ -110,6 +110,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   layout->addWidget(new QLabel("m"), numRow++, 4, 1, 1);
 
   radius = new SC_DoubleLineEdit("radius", 0.0);
+  radius->setEnabled(false);
   layout->addWidget(new QLabel("Radius"), numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(radius, numRow, 1, 1, 3);
   layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -117,7 +118,8 @@ GeometryMPM::GeometryMPM(QWidget *parent)
 
   QStringList longAxisList; longAxisList << "" << "X" << "Y" << "Z";
   longAxis = new SC_ComboBox("long_axis", longAxisList);
-  layout->addWidget(new QLabel("Long Axis"), numRow, 0, 1, 1, Qt::AlignRight);
+  longAxis->setEnabled(false);
+  layout->addWidget(new QLabel("Long Axis"), numRow, 0, 1, 1, Qt::AlignRight);  
   layout->addWidget(longAxis, numRow++, 1, 1, 3);
   layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
@@ -188,7 +190,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   rotateAngleX = new SC_DoubleLineEdit("rotate_x",0.0);
   rotateAngleY = new SC_DoubleLineEdit("rotate_y",0.0);
   rotateAngleZ = new SC_DoubleLineEdit("rotate_z",0.0);
-  rotateBoxLayout->addWidget(new QLabel("Rotation Angles (rX,rY,rZ)"), numRotateRow, 0);
+  rotateBoxLayout->addWidget(new QLabel("Rotation Angles (X,Y,Z)"), numRotateRow, 0);
   rotateBoxLayout->itemAt(rotateBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   rotateBoxLayout->addWidget(rotateAngleX, numRotateRow, 1);
   rotateBoxLayout->addWidget(rotateAngleY, numRotateRow, 2);
@@ -341,9 +343,9 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   // If fluid, set default object type to match fluid object that fills flume digital twin
   connect(facility, &QComboBox::currentTextChanged, [=](QString val) {
     if (val == "Hinsdale Large Wave Flume (OSU LWF)") {
-      facilityLength->setText("104.0");
+      facilityLength->setText("84.0");
       facilityHeight->setText("4.6");
-      facilityWidth->setText("3.658");
+      facilityWidth->setText("3.65");
       if (bodyPreset->currentText() == "Fluid") {
         objectType->setCurrentText("OSU LWF");
       }
@@ -532,9 +534,12 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       longAxis->setDisabled(true);
       // longAxis->hide();
       if (bodyPreset->currentText() == "Fluid") {
-        length->setText("104.0");
-        height->setText("4.6");
-        width->setText("3.658");
+        length->setText("84.0");
+        height->setText("2.0");
+        width->setText("3.65");
+        originX->setText("1.9");
+        originY->setText("0.0");
+        originZ->setText("0.0");
       }
     } else if (val == "OSU DWB") {
       facility->setCurrentText("Hinsdale Directional Wave Basin (OSU DWB)");
@@ -550,8 +555,11 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       // longAxis->hide();
       if (bodyPreset->currentText() == "Fluid") {
         length->setText("48.8");
-        height->setText("2.1");
+        height->setText("0.87");
         width->setText("26.5");
+        originX->setText("0.0");
+        originY->setText("0.0");
+        originZ->setText("0.0");
       }
     } else if (val == "UW WASIRF") {
       facility->setCurrentText("Wind-Air-Sea Interaction Facility (UW WASIRF)");
@@ -567,8 +575,11 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       // longAxis->hide();
       if (bodyPreset->currentText() == "Fluid") {
         length->setText("12.19");
-        height->setText("1.22");
+        height->setText("0.2");
         width->setText("0.914");
+        originX->setText("0.0");
+        originY->setText("0.0");
+        originZ->setText("0.0");
       }
     } else if (val == "WU TWB") {
       facility->setCurrentText("Waseda University's Tsunami Wave Basin (WU TWB)");
@@ -584,8 +595,11 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       // longAxis->hide();
       if (bodyPreset->currentText() == "Fluid") {
         length->setText("9.0");
-        height->setText("1.0");
+        height->setText("0.23");
         width->setText("4.0");
+        originX->setText("0.0");
+        originY->setText("0.0");
+        originZ->setText("0.0");
       }
     } else if (val == "USGS DFF") {
       facility->setCurrentText("U.S. Geo. Survey's Debris Flow Flume (USGS DFF)");
@@ -603,6 +617,9 @@ GeometryMPM::GeometryMPM(QWidget *parent)
         length->setText("90.0");
         height->setText("2.0");
         width->setText("2.0");
+        originX->setText("0.0");
+        originY->setText("0.0");
+        originZ->setText("0.0");
       }
     } else if (val == "NICHE") {
       facility->setCurrentText("NICHE Full-Scale Wind-Wave Flume");
@@ -620,6 +637,9 @@ GeometryMPM::GeometryMPM(QWidget *parent)
         length->setText("300.0");
         height->setText("10.0");
         width->setText("100.0");
+        originX->setText("0.0");
+        originY->setText("0.0");
+        originZ->setText("0.0");
       }
     } else if (val == "Custom") {
       length->setEnabled(true);
@@ -637,10 +657,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
 
   connect(bodyPreset, &QComboBox::currentTextChanged, [=](QString val) {
     if (val == "Fluid") {
-      length->setText("104.0");
+      length->setText("84.0");
       height->setText("2.0");
-      width->setText("3.658");
-      originX->setText("0.0");
+      width->setText("3.65");
+      originX->setText("1.9"); // wave-maker paddle neutral at OSU LWF
       originY->setText("0.0");
       originZ->setText("0.0");
       applyArray->setChecked(false);
@@ -674,7 +694,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       width->setText("0.1");
       originX->setText("43.8");
       originY->setText("2.0");
-      originZ->setText("1.825");
+      originZ->setText("1.325");
       applyArray->setChecked(true);
       bathStack->setCurrentIndex(1);
       bathStack->hide();
@@ -694,7 +714,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       height->setText("0.625");
       width->setText("1.0");
       originX->setText("45.8");
-      originY->setText("2.0");
+      originY->setText("2.10"); // 2.0 + buffer
       originZ->setText("1.325");
       applyArray->setChecked(true);
       bathStack->setCurrentIndex(1);
@@ -993,7 +1013,7 @@ GeometryMPM::setDigitalTwin(int twinIdx)
     } 
   } else if (bodyPreset->currentText() == "Debris") {
     if (twinIdx == 0) { // OSU LWF
-      objectType->setCurrentIndex(twinIdx); 
+      objectType->setCurrentIndex(0); // Just boxes for now, don't swap yet
       length->setText(QString::number(0.5));
       height->setText(QString::number(0.05));
       width->setText(QString::number(0.1));
@@ -1002,14 +1022,14 @@ GeometryMPM::setDigitalTwin(int twinIdx)
       originZ->setText(QString::number(1.475));
       applyArray->setChecked(true);
       spacingX->setText(QString::number(0.6));
-      spacingY->setText(QString::number(0.0));
+      spacingY->setText(QString::number(0.05));
       spacingZ->setText(QString::number(0.2));
       arrayX->setText(QString::number(2));
       arrayY->setText(QString::number(1));
       arrayZ->setText(QString::number(4));
     }
     else if (twinIdx == 1) { // OSU DWB
-      objectType->setCurrentIndex(twinIdx); 
+      objectType->setCurrentIndex(0); 
       length->setText(QString::number(0.10));
       height->setText(QString::number(0.05));
       width->setText(QString::number(0.10));
@@ -1025,7 +1045,7 @@ GeometryMPM::setDigitalTwin(int twinIdx)
       arrayZ->setText(QString::number(5));
     }
     else if (twinIdx == 2) { // UW WASIRF
-      objectType->setCurrentIndex(twinIdx); 
+      objectType->setCurrentIndex(0); 
       length->setText(QString::number(0.1016));
       height->setText(QString::number(0.0254));
       width->setText(QString::number(0.0254));
@@ -1042,7 +1062,7 @@ GeometryMPM::setDigitalTwin(int twinIdx)
       arrayZ->setText(QString::number(1));
     }
     else if (twinIdx == 3) { // WU TWB
-      objectType->setCurrentIndex(twinIdx); 
+      objectType->setCurrentIndex(0); 
       length->setText(QString::number(0.06));
       height->setText(QString::number(0.06));
       width->setText(QString::number(0.15));
@@ -1059,7 +1079,7 @@ GeometryMPM::setDigitalTwin(int twinIdx)
     }
     else if (twinIdx == 4) { // USGS DFF
       // Placeholder structure 
-      objectType->setCurrentIndex(twinIdx); // Box?
+      objectType->setCurrentIndex(0); // Box?
       length->setText(QString::number(0.5));
       height->setText(QString::number(0.05));
       width->setText(QString::number(0.1));

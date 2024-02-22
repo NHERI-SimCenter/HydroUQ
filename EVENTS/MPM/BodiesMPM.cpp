@@ -92,7 +92,8 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   // Add tab per Body
   QTabWidget *tabWidget = new QTabWidget();
   tabWidget->setTabsClosable(true); // Close tabs with X mark via mouse (connect to tabCloseRequested)
-  tabWidget->setMovable(true); // Move tabs with mouse
+  tabWidget->setMovable(false); // Move tabs with mouse
+
 
   QWidget *theFluid = new QWidget();
   QWidget *theDebris = new QWidget();
@@ -199,15 +200,19 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   modelFluidTabWidget->addTab(fluidPartitions, QIcon(QString(":/icons/cpu-black.svg")),"Partitions");
   modelFluidTabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
 
+  toggleFluid = new SC_CheckBox("toggleFluid", true);
+  theFluidLayout->addWidget(new QLabel("Enable Body"), 0, 0, Qt::AlignRight);
+  theFluidLayout->addWidget(toggleFluid, 0, 1);
+
   fluidVelocityX = new SC_DoubleLineEdit("fluid_velocity_x", 0.0);
   fluidVelocityY = new SC_DoubleLineEdit("fluid_velocity_y", 0.0);
   fluidVelocityZ = new SC_DoubleLineEdit("fluid_velocity_z", 0.0);
-  theFluidLayout->addWidget(new QLabel("Velocity (X,Y,Z)"), 0, 0);
-  theFluidLayout->addWidget(fluidVelocityX, 0, 1);
-  theFluidLayout->addWidget(fluidVelocityY, 0, 2);
-  theFluidLayout->addWidget(fluidVelocityZ, 0, 3);
-  theFluidLayout->addWidget(new QLabel("m/s"), 0, 4);
-  theFluidLayout->addWidget(modelFluidTabWidget, 1, 0, 1, 5);
+  theFluidLayout->addWidget(new QLabel("Velocity (X,Y,Z)"), 1, 0);
+  theFluidLayout->addWidget(fluidVelocityX, 1, 1);
+  theFluidLayout->addWidget(fluidVelocityY, 1, 2);
+  theFluidLayout->addWidget(fluidVelocityZ, 1, 3);
+  theFluidLayout->addWidget(new QLabel("m/s"), 1, 4);
+  theFluidLayout->addWidget(modelFluidTabWidget, 2, 0, 1, 5);
 
 
   // Debris 
@@ -229,15 +234,19 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   modelDebrisTabWidget->addTab(debrisPartitions, QIcon(QString(":/icons/cpu-black.svg")),"Partitions");
   modelDebrisTabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
 
+  toggleDebris = new SC_CheckBox("toggleDebris", true);
+  theDebrisLayout->addWidget(new QLabel("Enable Body"), 0, 0, Qt::AlignRight);
+  theDebrisLayout->addWidget(toggleDebris, 0, 1);
+
   debrisVelocityX = new SC_DoubleLineEdit("debris_velocity_x", 0.0);
   debrisVelocityY = new SC_DoubleLineEdit("debris_velocity_y", 0.0);
   debrisVelocityZ = new SC_DoubleLineEdit("debris_velocity_z", 0.0);
-  theDebrisLayout->addWidget(new QLabel("Velocity (X,Y,Z)"), 0, 0);
-  theDebrisLayout->addWidget(debrisVelocityX, 0, 1);
-  theDebrisLayout->addWidget(debrisVelocityY, 0, 2);
-  theDebrisLayout->addWidget(debrisVelocityZ, 0, 3);
-  theDebrisLayout->addWidget(new QLabel("m/s"), 0, 4);
-  theDebrisLayout->addWidget(modelDebrisTabWidget, 1, 0, 1, 5);
+  theDebrisLayout->addWidget(new QLabel("Velocity (X,Y,Z)"), 1, 0);
+  theDebrisLayout->addWidget(debrisVelocityX, 1, 1);
+  theDebrisLayout->addWidget(debrisVelocityY, 1, 2);
+  theDebrisLayout->addWidget(debrisVelocityZ, 1, 3);
+  theDebrisLayout->addWidget(new QLabel("m/s"), 1, 4);
+  theDebrisLayout->addWidget(modelDebrisTabWidget, 2, 0, 1, 5);
   // theDebrisLayout->addWidget(modelDebrisTabWidget);
 
 
@@ -259,15 +268,19 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   modelStructureTabWidget->addTab(structurePartitions, QIcon(QString(":/icons/cpu-black.svg")),"Partitions");
   modelStructureTabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
 
+  toggleStructure = new SC_CheckBox("toggleStructure", false);
+  theStructureLayout->addWidget(new QLabel("Enable Body"), 0, 0, Qt::AlignRight);
+  theStructureLayout->addWidget(toggleStructure, 0, 1);
+
   structureVelocityX = new SC_DoubleLineEdit("structure_velocity_x", 0.0);
   structureVelocityY = new SC_DoubleLineEdit("structure_velocity_y", 0.0);
   structureVelocityZ = new SC_DoubleLineEdit("structure_velocity_z", 0.0);
-  theStructureLayout->addWidget(new QLabel("Velocity (X,Y,Z)"), 0, 0);
-  theStructureLayout->addWidget(structureVelocityX, 0, 1);
-  theStructureLayout->addWidget(structureVelocityY, 0, 2);
-  theStructureLayout->addWidget(structureVelocityZ, 0, 3);
-  theStructureLayout->addWidget(new QLabel("m/s"), 0, 4);
-  theStructureLayout->addWidget(modelStructureTabWidget, 1, 0, 1, 5);
+  theStructureLayout->addWidget(new QLabel("Velocity (X,Y,Z)"), 1, 0);
+  theStructureLayout->addWidget(structureVelocityX, 1, 1);
+  theStructureLayout->addWidget(structureVelocityY, 1, 2);
+  theStructureLayout->addWidget(structureVelocityZ, 1, 3);
+  theStructureLayout->addWidget(new QLabel("m/s"), 1, 4);
+  theStructureLayout->addWidget(modelStructureTabWidget, 2, 0, 1, 5);
   // theStructureLayout->addWidget(modelStructureTabWidget);
 
   //
@@ -298,28 +311,41 @@ BodiesMPM::BodiesMPM(QWidget *parent)
     addedGeometries[i]->setBodyPreset(3);
   }
 
-
   // Set initial partition preset
-  // Each bodies tab is, for now, assigned a unique model ID based on its tab index
-  // TODO: Model IDs on a GPU must be unique, so we can't have more than 8 bodies for now, or 4 on Frontera unless we adjust distribution
-  fluidPartitions->setDefaultModelID(0); // GPU 0
-  debrisPartitions->setDefaultModelID(1); // Debris
-  structurePartitions->setDefaultModelID(2); // Structure
-  fluidPartitions->setModel(0); // Fluid
+  // TODO: Better distribute bodies as models across GPUs to allow for more bodies (i.e. 4+), as most are on just 1-2 GPUs and leave empty slots. 
+  // TODO: Also guarantee no empty model ID slots on a GPU or ClaymoreUW will crash
+  // TODO: Account for users manually changing the model ID on a body tab, i.e. limit their options to valid ones (change from numeric input to radio buttons)
+  
+  // Set the computer hardware limits
+  QString computerName = "Lonestar6";
+  QString queueName = "gpu-a100";
+  fluidPartitions->updateHardwareLimits(computerName, queueName);
+  debrisPartitions->updateHardwareLimits(computerName, queueName);
+  structurePartitions->updateHardwareLimits(computerName, queueName);
+
+  // Preset the default model ID for each body, helps avoid GPU:Model ID conflicts (must be unique)
+  fluidPartitions->setDefaultModelID(0); // GPU 0 : Model 0
+  debrisPartitions->setDefaultModelID(1); // GPU 0 : Model 1
+  structurePartitions->setDefaultModelID(2); // GPU 0 : Model 2
+  fluidPartitions->setModel(0);
   fluidPartitions->setModel(0);
   debrisPartitions->setModel(1); 
   debrisPartitions->setModel(1);
   structurePartitions->setModel(2); 
   structurePartitions->setModel(2);
+
+  // Initialize with multiple partitions on selected body presets if desired (e.g. for the water)
+  fluidPartitions->addPartition(1,0);    // GPU 1 : Model 0
+  fluidPartitions->addPartition(2,0);    // GPU 2 : Model 0
+
+  // Do the same for custom body partitions with a loop
   for (int i=0; i<numAddedTabs; i++) {
-    // TODO: Don't rely on hard-coded indices, probably add a map or use text labels
+    addedPartitions[i]->updateHardwareLimits(computerName, queueName);
     addedPartitions[i]->setDefaultModelID(i+(numDefaultTabs-1));
-    // TODO: Better distribute bodies as models across GPUs to allow for more bodies (i.e. 4+), as most are on just 1-2 GPUs and leave empty slots. 
-    // TODO: Also guarantee no empty model ID slots on a GPU or ClaymoreUW will crash
-    // TODO: Account for users manually changing the model ID on a body tab, i.e. limit their options to valid ones (change from numeric input to radio buttons)
     addedPartitions[i]->setModel(i+(numDefaultTabs-1)); 
     addedPartitions[i]->setModel(i+(numDefaultTabs-1));
   }
+
 }
 
 BodiesMPM::~BodiesMPM()
@@ -335,7 +361,7 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
   QJsonArray bodiesArray = jsonObject["bodies"].toArray();
   
   // Fluid Body Preset
-  if (fluidGeometries != nullptr && fluidMaterial != nullptr && fluidAlgorithm != nullptr && fluidPartitions != nullptr) {
+  if (toggleFluid->isChecked() && fluidGeometries != nullptr && fluidMaterial != nullptr && fluidAlgorithm != nullptr && fluidPartitions != nullptr) {
     QJsonObject bodyObject; // Holds geometry, material, algorithm, partition, and global values for fluid preset
 
     QJsonObject fluidGeometriesObject; // Object wrapper holding an array of geometry objects
@@ -378,7 +404,7 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
   }
 
   // Debris Body Preset
-  if (debrisGeometries != nullptr && debrisMaterial != nullptr && debrisAlgorithm != nullptr && debrisPartitions != nullptr) {
+  if (toggleDebris->isChecked() && debrisGeometries != nullptr && debrisMaterial != nullptr && debrisAlgorithm != nullptr && debrisPartitions != nullptr) {
     QJsonObject bodyObject; // Holds geometry, material, algorithm, partition, and global values for fluid preset
 
     QJsonObject debrisGeometriesObject; // Object wrapper holding an array of geometry objects
@@ -422,7 +448,7 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
   }
 
   // Structure Body Preset
-  if (structureGeometries != nullptr && structureMaterial != nullptr && structureAlgorithm != nullptr && structurePartitions != nullptr) {
+  if (toggleStructure->isChecked() && structureGeometries != nullptr && structureMaterial != nullptr && structureAlgorithm != nullptr && structurePartitions != nullptr) {
     QJsonObject bodyObject; // Holds geometry, material, algorithm, partition, and global values for fluid preset
 
     QJsonObject structureGeometriesObject; // Object wrapper holding an array of geometry objects
@@ -536,13 +562,17 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 BodiesMPM::inputFromJSON(QJsonObject &jsonObject)
 {
+  // TODO: Implement inputFromJSON for all bodies
   // theOpenSeesPyScript->inputFromJSON(jsonObject);
   // theSurfaceFile->inputFromJSON(jsonObject);    
-  fluidGeometries->inputFromJSON(jsonObject);
-  fluidMaterial->inputFromJSON(jsonObject);
-  fluidAlgorithm->inputFromJSON(jsonObject);
-  fluidPartitions->inputFromJSON(jsonObject);
+  // fluidGeometries->inputFromJSON(jsonObject);
+  // fluidMaterial->inputFromJSON(jsonObject);
+  // fluidAlgorithm->inputFromJSON(jsonObject);
+  // fluidPartitions->inputFromJSON(jsonObject);
   // fluidOutputs->inputFromJSON(jsonObject);
+  // toggleFluid->setChecked(true); // Enable body by default if it exists in the JSON
+  // toggleDebris->setChecked(true); // Enable body by default if it exists in the JSON
+  // toggleStructure->setChecked(true); // Enable body by default if it exists in the JSON
   return true;
 }
 
@@ -568,7 +598,7 @@ BodiesMPM::setDigitalTwin(int twinIdx)
   structureGeometries->setDigitalTwin(twinIdx);
   // structureMaterial->setDigitalTwin(twinIdx);
 
-  // Assuming not apply twin to custom tabs
+  // Assuming we do not apply twins to custom tabs
   return true;
 }
 

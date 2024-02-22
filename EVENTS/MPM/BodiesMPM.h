@@ -127,6 +127,12 @@ private:
   SC_DoubleLineEdit *addedVelocityY;
   SC_DoubleLineEdit *addedVelocityZ;
 
+  SC_CheckBox *toggleFluid; // Enable/Disable fluid body for output and simulation. Good for switching between body/boundary design structure
+  SC_CheckBox *toggleDebris; // Enable/Disable debris body for output and simulation. Good for switching between body/boundary design structure
+  SC_CheckBox *toggleStructure; // Enable/Disable structure body for output and simulation. Good for switching between body/boundary design structure
+  SC_CheckBox *toggleAdded; // Enable/Disable body for output and simulation. Good for switching between body/boundary design structure
+
+
   int numReserveTabs = 8; // Assuming up-to 8 bodies for now so we pre-reserve. Will see how this fairs for users.
   int numAddedTabs = 0; 
   // TODO: include a vector of bools (C++ cav.) denoting tab activation so we can "shift left" if user deletes tab 3 of 8, etc.

@@ -178,7 +178,7 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
 
   // connect(addedBoundary[2], &BoundaryMPM::structDimensionsChanged, this, &BoundariesMPM::structDimensionsChangedSlot);
 
-  connect(addedBoundary[2], SIGNAL(&BoundaryMPM::structOriginChanged(QString)), this, SIGNAL(structOriginChanged(QString)));
+  // connect(addedBoundary[2], SIGNAL(&BoundaryMPM::structOriginChanged(QString)), this, SIGNAL(structOriginChanged(QString)));
 
   // connect(addedBoundary[2], &BoundaryMPM::structOriginChanged, this, &BoundariesMPM::structOriginChangedSlot);
 
@@ -264,6 +264,12 @@ BoundaryMPM* BoundariesMPM::getStructureBoundary()
   return addedBoundary[structureID];
 }
 
+BoundaryMPM* BoundariesMPM::getPaddleBoundary()
+{
+  if (paddleID < 0 || paddleID >= numReserveTabs) return nullptr;
+  return addedBoundary[paddleID];
+}
+
 // BoundaryMPM* BoundariesMPM::getBoundary(QString name)
 // {
 //   for (int i=0; i<numAddedTabs; i++) {
@@ -278,6 +284,12 @@ int BoundariesMPM::getStructureID()
 {
   return structureID;
 }
+
+int BoundariesMPM::getPaddleID()
+{
+  return paddleID;
+}
+
 
 double BoundariesMPM::getDimensionX(BoundaryMPM* theBoundary)
 {

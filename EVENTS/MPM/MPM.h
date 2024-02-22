@@ -65,11 +65,16 @@ class BodiesMPM;
 class BoundariesMPM;
 class SensorsMPM;
 class OutputsMPM; 
+
+// Trying this
+// class SC_RemoteAppTool;
 // class SlidingStackedWidget;
+
 class MPM : public SimCenterAppWidget
 {
 public:
-    MPM(QWidget *parent = 0);
+   //  explicit MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent = 0);
+    MPM( QWidget *parent = 0);
     ~MPM();
 
     bool inputFromJSON(QJsonObject &rvObject);
@@ -89,7 +94,8 @@ public:
 
     QVector<QVector<double>> readTxtData(QString fileName);
 
-
+   void writeMPMFiles();
+   void updateJSON();
     QString caseDir();
    //  QString foamDictsPath();
     QString templateDictDir();
@@ -103,12 +109,11 @@ public slots:
    void onBrowseCaseDirectoryButtonClicked(void);
    // void  updateStructureDimensionsSlot(QString val);
    // void  updateStructureOriginSlot(QString val);
-
 private:
    QHBoxLayout                  *mainWindowLayout;
 
-   QVBoxLayout                  *inputWindowLayout;
-   QGroupBox                    *inputWindowGroup;
+   // QVBoxLayout                  *inputWindowLayout;
+   // QGroupBox                    *inputWindowGroup;
 
    SettingsMPM   *mpmSettings;
    BodiesMPM     *mpmBodies;

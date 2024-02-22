@@ -280,12 +280,12 @@ SensorsMPM::inputFromJSON(QJsonObject &jsonObject)
   return true;
 }
 
-// bool
-// SensorsMPM::copyFiles(QString &destDir)
-// {
-//   // if (theOpenSeesPyScript->copyFile(destDir) != true)
-//   //   return false;
-//   // return theSurfaceFile->copyFile(destDir);
-//   return false;    
-// }
+bool
+SensorsMPM::copyFiles(QString &destDir)
+{
+  // if (theOpenSeesPyScript->copyFile(destDir) != true)
+  //   return false;
+  // return theSurfaceFile->copyFile(destDir);
+  return true;    
+}
 

@@ -1,5 +1,5 @@
-#ifndef SENSORS_MPM_H
-#define SENSORS_MPM_H
+#ifndef PARTITION_MPM_H
+#define PARTITION_MPM_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2023, The Regents of the University of California (Regents).
@@ -38,41 +38,62 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 /**
- *  @author  JustinBonus
- *  @date    1/2024
- *  @version 3.0
+ *  @author  fmckenna
+ *  @date    2/2017
+ *  @version 1.0
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the Sensors Tab for MPM
+ *  This is the class providing the Partition Tab for mpm
  */
 
 #include <SimCenterWidget.h>
 
 class QJsonObject;
 class QJsonArray;
-// class SC_FileEdit;
+class SC_DoubleLineEdit;
+class SC_IntLineEdit;
+class SC_StringLineEdit;
 class SC_ComboBox;
 class SC_TableEdit;
-class SC_DoubleLineEdit;
+class SC_FileEdit;
+class SC_CheckBox;
 
-class SensorMPM;
-class SensorsMPM : public SimCenterWidget
+class PartitionMPM : public SimCenterWidget
 {
 public:
-    SensorsMPM(QWidget *parent = 0);
-    virtual ~SensorsMPM();
+    PartitionMPM(QWidget *parent = 0);
+    virtual ~PartitionMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-    // bool copyFiles(QString &dirName);
-  
+    bool copyFiles(QString &dirName);
+
+    bool setDefaultModelID(int modelID);
+    bool setModel(int modelID);
+    bool setDefaultGPUID(int gpuID);
+    bool setGPU(int gpuID);
+
+    int getModel();
+    int getGPU();
+
+    void constrainPartitionWithin(double origin[3], double dimenisions[3]);
+    void constrainPartitionOutside(double origin[3], double dimenisions[3]);
 signals:
 
 private:
-  int numReserveTabs = 8;
-  int numAddedTabs = 0;
-  QVector<SensorMPM*> addedSensor {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  int numPartitions = 0; // Partition number on body, used to set GPU ID initially
+  int defaultModelID = 0; // Default model ID, updated in setDefaultModelID
+  int defaultGPUID = 0; // Default GPU ID, updated in setDefaultGPUID
+  SC_IntLineEdit    *deviceNumber; // GPU device ID
+  SC_IntLineEdit    *bodyNumber; // Model-body number-ID on GPU device
+  SC_DoubleLineEdit *partitionOrigin_X; // GPU domain start X
+  SC_DoubleLineEdit *partitionOrigin_Y; // GPU domain start Y
+  SC_DoubleLineEdit *partitionOrigin_Z; // GPU domain start Z
+  SC_DoubleLineEdit *partitionDimensions_X; // GPU domain end X
+  SC_DoubleLineEdit *partitionDimensions_Y; // GPU domain end Y
+  SC_DoubleLineEdit *partitionDimensions_Z; // GPU domain end Z
+  SC_TableEdit      *devicePartitions; // GPU device partitions;  
 };
 
-#endif // SENSORS_MPM_H
+#endif // PARTITION_MPM_H
 

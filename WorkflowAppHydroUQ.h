@@ -49,12 +49,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 class SimCenterComponentSelection;
 
 class RandomVariablesContainer;
-class InputWidgetBIM;
 class InputWidgetUQ;
-class SIM_Selection;
-class UQ_EngineSelection;
-class FEA_Selection;
 class UQOptions;
+class UQ_EngineSelection;
+class InputWidgetBIM;
+class SIM_Selection;
+class FEA_Selection;
 class ResultsWidget;
 class GeneralInformationWidget;
 class HydroEventSelection;
@@ -70,6 +70,13 @@ class RemoteJobManager;
 class QNetworkAccessManager;
 class QNetworkReply;
 class EDP_Selection;
+
+// class GeoClawOpenFOAM;
+// class WaveDigitalFlume;
+// class CoupledDigitalTwin;
+// class MPM;
+
+
 // class HydroEDP_Selection;
 
 class WorkflowAppHydroUQ : public WorkflowAppWidget
@@ -97,9 +104,9 @@ signals:
 
 public slots:  
 
-    void updateIcons(QString &name);
+    // void updateIcons(QString &name);
     void setUpForApplicationRun(QString &, QString &);
-    void processResults(QString &resultsDir);
+    void processResults(QString &dirResults);
     //void processResults(QString dakotaOut, QString dakotaTab, QString inputFile);
 
     int loadFile(QString &filename);
@@ -137,6 +144,7 @@ private:
     Application *remoteApp;
     Application *currentApp; // From WE-UQ
     RemoteJobManager *theJobManager;
+
 
     QJsonObject *jsonObjOrig;
     QNetworkAccessManager *manager; // From WE-UQ

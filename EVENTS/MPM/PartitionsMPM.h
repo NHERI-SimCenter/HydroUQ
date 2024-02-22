@@ -1,5 +1,5 @@
-#ifndef PARTITION_MPM_H
-#define PARTITION_MPM_H
+#ifndef PARTITIONS_MPM_H
+#define PARTITIONS_MPM_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2023, The Regents of the University of California (Regents).
@@ -38,17 +38,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 /**
- *  @author  fmckenna
- *  @date    2/2017
- *  @version 1.0
+ *  @author  Justin Bonus
+ *  @date    1/2024
+ *  @version 3.0
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the Partition Tab for mpm
+ *  This is the class providing the set of GPU partitions for an MPM body
  */
 
 #include <SimCenterWidget.h>
-
+#include <vector>
+#include <array>
 class QJsonObject;
 class QJsonArray;
 class SC_DoubleLineEdit;
@@ -58,33 +59,48 @@ class SC_ComboBox;
 class SC_TableEdit;
 class SC_FileEdit;
 class SC_CheckBox;
-
-class PartitionMPM : public SimCenterWidget
+class QTabWidget;
+class QGridLayout;
+class QWidget;
+class PartitionMPM; // Individual GPU partitions
+class PartitionsMPM : public SimCenterWidget
 {
 public:
-    PartitionMPM(QWidget *parent = 0);
-    virtual ~PartitionMPM();
+    PartitionsMPM(QWidget *parent = 0);
+    virtual ~PartitionsMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
-    bool setGPU(int gpuID);
+
+    void updateHardwareLimits(int numGPUs, int numModels);
+    void updateHardwareLimits(QString computerName, QString queueName);
+    bool updateOccupiedModelsOnGPUs(int gpuIndex, int modelIndex, bool occupied);
+    bool addPartition(int gpuIndex, int modelIndex);
+
+    bool setPartitionGPU(int partitionIndex, int gpuIndex);
+    bool setPartitionModel(int partitionIndex, int modelIndex);
     bool setModel(int modelID);
+    bool setGPU(int gpuID);
     bool setDefaultModelID(int modelID);
+    bool setDefaultGPUID(int gpuID);
 signals:
 
 private:
-  int numPartitions = 0; // Number of partitions
+  // Should probably make these unsigned integers, but its convenient to use negatives for error checking
+  int maxNumGPUs = 3; //< Maximum number of GPUs supported, TODO: update according to settings:computer 
+  int maxNumModels = 3; //< Maximum number of models supported, update according to settings:computer
   int defaultModelID = 0; // Default model ID, updated in setModel
-  SC_IntLineEdit    *deviceNumber; // GPU device ID
-  SC_IntLineEdit    *bodyNumber; // Model-body number-ID on GPU device
-  SC_DoubleLineEdit *partitionOrigin_X; // GPU domain start X
-  SC_DoubleLineEdit *partitionOrigin_Y; // GPU domain start Y
-  SC_DoubleLineEdit *partitionOrigin_Z; // GPU domain start Z
-  SC_DoubleLineEdit *partitionDimensions_X; // GPU domain end X
-  SC_DoubleLineEdit *partitionDimensions_Y; // GPU domain end Y
-  SC_DoubleLineEdit *partitionDimensions_Z; // GPU domain end Z
-  SC_TableEdit      *devicePartitions; // GPU device partitions;  
+  int defaultGPUID = 0; // Default GPU ID, updated in setGPU
+  int numPartitions = 0; // Number of partitions, init. at 0
+  int numReserveTabs = 8;
+  int numAddedTabs = 0;
+  QTabWidget *tabWidget;
+  QVector<QWidget*> theAdded {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}; 
+  QVector<QGridLayout*> theAddedLayout {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  QVector<PartitionMPM*> addedPartition {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  std::vector<std::array<bool, 3>> occupiedModelsOnGPUs = {{false, false, false}, {false, false, false}, {false, false, false}, {false, false, false}}; //< Occupied models on GPUs 
+  // bool occupiedModelsOnGPUs[maxNumGPUs][maxNumModels] = {{false, false, false}, {false, false, false}, {false, false, false}, {false, false, false}}; //< Occupied models on GPUs
 };
 
-#endif // PARTITION_MPM_H
+#endif // PARTITIONS_MPM_H
 

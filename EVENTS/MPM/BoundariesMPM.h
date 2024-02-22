@@ -78,7 +78,9 @@ public:
     BoundaryMPM* getBoundary(int index);
     BoundaryMPM* getBoundary(QString name);
     int getStructureID();
+    int getPaddleID();
     BoundaryMPM* getStructureBoundary();
+    BoundaryMPM* getPaddleBoundary();
 
     double getDimensionX(BoundaryMPM* theBoundary);
     double getDimensionY(BoundaryMPM* theBoundary);
@@ -108,8 +110,8 @@ public:
 signals:
     // void structDimensionsChanged(void);
     // void structOriginChanged(void);
-    void structDimensionsChanged(QString val);
-    void structOriginChanged(QString val);
+    // void structDimensionsChanged(QString val);
+    // void structOriginChanged(QString val);
 
 public slots:
     // void clear(void);
@@ -130,6 +132,7 @@ public slots:
 private:
   int numReserveTabs = 8;
   int numAddedTabs = 0;
+  int paddleID = 1;   
   int structureID = 2; // The specified design structure, 2 for default (3rd tab), -1 if the design structure is not specified / not a boundary (i.e. it is a body instead)
   QVector<BoundaryMPM*> addedBoundary {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 };

@@ -142,7 +142,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   
   QStringList bathXZHeadings; bathXZHeadings << "Joint Position (X)" << "Joint Position (Y)";
   QStringList dataBathXZ; dataBathXZ << "0" << "0" << "16.275" << "0.226" << "19.933" << "0.226" << "30.906" << "1.140" << "45.536" << "1.750" << "82.106" << "1.750" << "89.46" << "2.363";
-  // wmn = 2 or 1.91something for OSU LWF
+  // wmn = 2 or 1.91 something for OSU LWF
   int bathXZPairs = 7;
   bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, bathXZPairs, dataBathXZ);
   bathSTL = new SC_FileEdit("bathSTL");
@@ -262,7 +262,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   // wave generator
   numRow = 0;
-  QStringList listWaveGeneration; listWaveGeneration << "Preset Paddle - OSU LWF" << "Periodic Waves" << "Preset Paddle - OSU DWB" << "Paddle - Custom" << "Preset Wave Pump - UW WASIRF"  <<  "Pump - Custom" << "Preset Gates - USGS DFF";
+  QStringList listWaveGeneration; listWaveGeneration << "Preset Paddle - OSU LWF" << "Periodic Waves" << "Preset Paddle - OSU DWB" ;
   generationMethod = new SC_ComboBox("generationMethod",listWaveGeneration);
 
   QStringList paddleContactTypeList; paddleContactTypeList <<  "Separable" << "Slip" << "Sticky";  
@@ -274,10 +274,10 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
   paddleLayout->addWidget(paddleContactType, numRow++, 1);  
   
-  paddleLength = new SC_DoubleLineEdit("paddleLength",0.2);
-  paddleHeight = new SC_DoubleLineEdit("paddleHeight",4.0);
-  paddleWidth  = new SC_DoubleLineEdit("paddleWidth",4.0);
-  paddleLayout->addWidget(new QLabel("Paddle Dimensions (X,Y,Z)"),numRow, 0);
+  paddleLength = new SC_DoubleLineEdit("paddleLength", 0.2);
+  paddleHeight = new SC_DoubleLineEdit("paddleHeight", 4.8);
+  paddleWidth  = new SC_DoubleLineEdit("paddleWidth", 3.85);
+  paddleLayout->addWidget(new QLabel("Dimensions (X,Y,Z)"),numRow, 0);
   paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
   paddleLayout->addWidget(paddleLength,numRow,1);
   paddleLayout->addWidget(paddleHeight,numRow,2);
@@ -285,20 +285,28 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   paddleLayout->addWidget(new QLabel("m"),numRow++, 4);
 
 
-  paddleOriginX = new SC_DoubleLineEdit("paddleOriginX",0.0);
-  paddleOriginY = new SC_DoubleLineEdit("paddleOriginY",0.0);
-  paddleOriginZ = new SC_DoubleLineEdit("paddleOriginZ",0.0);
-  paddleLayout->addWidget(new QLabel("Paddle Origin (X,Y,Z)"),numRow, 0);
+  paddleOriginX = new SC_DoubleLineEdit("paddleOriginX", 1.7);
+  paddleOriginY = new SC_DoubleLineEdit("paddleOriginY", -0.1);
+  paddleOriginZ = new SC_DoubleLineEdit("paddleOriginZ", -0.1);
+  paddleLayout->addWidget(new QLabel("Origin (X,Y,Z)"),numRow, 0);
   paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
   paddleLayout->addWidget(paddleOriginX,numRow,1);
   paddleLayout->addWidget(paddleOriginY,numRow,2);
   paddleLayout->addWidget(paddleOriginZ,numRow,3);
   paddleLayout->addWidget(new QLabel("m"),numRow++, 4);
-
+  
   paddleDisplacementFile = new SC_FileEdit("paddleDisplacementFile");
-  paddleLayout->addWidget(new QLabel("Paddle Displacement File"), numRow, 0);
+
+  // QString paddleDisplacementFilename = QString::fromAscii"WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv";
+  paddleLayout->addWidget(new QLabel("Paddle Motion File"), numRow, 0);
   paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
-  paddleLayout->addWidget(paddleDisplacementFile, numRow++, 1, 1, 4);  
+  char str[] = "WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv";
+  QString paddleDisplacementFilename(str);
+  paddleDisplacementFile->setFilename(paddleDisplacementFilename);
+  paddleLayout->addWidget(paddleDisplacementFile, numRow++, 1, 1, 4);
+  paddleDisplacementFile->setEnabled(false);
+  paddleDisplacementFile->setToolTip("This file is not editable, it is a default file for the OSU LWF");
+  paddleDisplacementFile->show();
   paddleLayout->setRowStretch(numRow,1);  
   
   paddleWidget = new QWidget();
@@ -320,9 +328,9 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   periodicLayout->addWidget(waveMag,0,1);
   periodicLayout->addWidget(waveCelerity,1,1);
   periodicLayout->addWidget(waveRepeatSpeed,2,1);
-  periodicLayout->addWidget(new QLabel("meters"),0,2);
-  periodicLayout->addWidget(new QLabel("meters/sec"),1,2);
-  periodicLayout->addWidget(new QLabel("sec."),2,2);
+  periodicLayout->addWidget(new QLabel("m"),0,2);
+  periodicLayout->addWidget(new QLabel("m/s"),1,2);
+  periodicLayout->addWidget(new QLabel("s"),2,2);
   periodicLayout->setRowStretch(3,1);
 
   QStackedWidget *waveGenStack = new QStackedWidget();
@@ -440,7 +448,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   structSpacingX = new SC_DoubleLineEdit("structSpacingX",0.0);
   structSpacingY = new SC_DoubleLineEdit("structSpacingY",0.0);
   structSpacingZ = new SC_DoubleLineEdit("structSpacingZ",0.0);
-  structArrayBoxLayout->addWidget(new QLabel("Array of Objects (nX, nY, nZ)"),numStructArrayRow, 0);
+  structArrayBoxLayout->addWidget(new QLabel("Array of Objects (X, Y, Z)"),numStructArrayRow, 0);
   structArrayBoxLayout->itemAt(structArrayBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   structArrayBoxLayout->addWidget(structArrayX,numStructArrayRow,1);
   structArrayBoxLayout->addWidget(structArrayY,numStructArrayRow,2);
@@ -510,12 +518,12 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   //   emit structOriginChanged(val);
   // });
 
-  connect(structLength, SIGNAL(textChanged(QString)), this, SIGNAL(structDimensionsChanged(QString)));
-  connect(structHeight, SIGNAL(textChanged(QString)), this, SIGNAL(structDimensionsChanged(QString)));
-  connect(structWidth, SIGNAL(textChanged(QString)), this, SIGNAL(structDimensionsChanged(QString)));
-  connect(structOriginLength, SIGNAL(textChanged(QString)), this, SIGNAL(structOriginChanged(QString)));
-  connect(structOriginHeight, SIGNAL(textChanged(QString)), this, SIGNAL(structOriginChanged(QString)));
-  connect(structOriginWidth, SIGNAL(textChanged(QString)), this, SIGNAL(structOriginChanged(QString)));
+  // connect(structLength, SIGNAL(textChanged(QString)), this, SIGNAL(structDimensionsChanged(QString)));
+  // connect(structHeight, SIGNAL(textChanged(QString)), this, SIGNAL(structDimensionsChanged(QString)));
+  // connect(structWidth, SIGNAL(textChanged(QString)), this, SIGNAL(structDimensionsChanged(QString)));
+  // connect(structOriginLength, SIGNAL(textChanged(QString)), this, SIGNAL(structOriginChanged(QString)));
+  // connect(structOriginHeight, SIGNAL(textChanged(QString)), this, SIGNAL(structOriginChanged(QString)));
+  // connect(structOriginWidth, SIGNAL(textChanged(QString)), this, SIGNAL(structOriginChanged(QString)));
   
 
   // connect(structLength, &QLineEdit::textChanged, this, &BoundaryMPM::structDimensionsChanged);
@@ -943,7 +951,6 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
     QJsonObject boundariesObject;
 
     // TODO: Add wave generator names to JSON to link to the name in ClaymoreUW enumerators
-    boundariesObject["object"] = QString("OSU Paddle");  
     boundariesObject["contact"] = QJsonValue(paddleContactType->currentText()).toString();
 
     QJsonArray originArray;
@@ -965,10 +972,18 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
     if (0) boundariesObject["dimensions"] = dimensionsArray; // future schema
     else boundariesObject["domain_end"] = dimensionsEndArray; // ClaymoreUW artifact, TODO: deprecate
 
-    boundariesObject["file"] = QString("WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv");
-    // TODOL: Custom file input
-    // paddleDisplacementFile->text(); // Paddle motion file
-    boundariesObject["output_freq"] = 1200.0; // TODO: Either be user set or read-in from motion_file
+    
+    boundariesObject["object"] = QString("OSU Paddle");  
+    
+    if (generationMethod->currentIndex() == 0) 
+    {
+      // TODOL: Custom file input
+      boundariesObject["object"] = QString("OSU Paddle");
+      // boundariesObject["file"] = QString("WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv");
+      boundariesObject["file"] = paddleDisplacementFile->getFilename(); // Paddle motion file
+      boundariesObject["output_freq"] = 1200.0; // TODO: Either be user set or read-in from motion_file
+    } 
+
 
     boundariesArray.append(boundariesObject);
   }
@@ -1014,7 +1029,9 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
       dynamicFrictionArray.append(dynamicFrictionWallY->text().toDouble());
       dynamicFrictionArray.append(dynamicFrictionWallZ->text().toDouble());
       frictionObject["dynamic"] = dynamicFrictionArray;
-      boundariesObject["friction"] = frictionObject;
+      // boundariesObject["friction"] = frictionObject;
+      boundariesObject["friction_static"] = staticFrictionArray[0];
+      boundariesObject["friction_dynamic"] = dynamicFrictionArray[0];
     }
 
     if (applyArray->isChecked()) {
@@ -1074,7 +1091,9 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
       dynamicFrictionArray.append(dynamicFrictionWallY->text().toDouble());
       dynamicFrictionArray.append(dynamicFrictionWallZ->text().toDouble());
       frictionObject["dynamic"] = dynamicFrictionArray;
-      boundariesObject["friction"] = frictionObject;
+      // boundariesObject["friction"] = frictionObject;
+      boundariesObject["friction_static"] = staticFrictionArray[0];
+      boundariesObject["friction_dynamic"] = dynamicFrictionArray[0];
     }
 
     // if (applyInletOutlet->isChecked()) {
@@ -1107,15 +1126,11 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
     return false;
   }
 
-  if (1) jsonObject["boundaries"] = boundariesArray; // future schema
-  else jsonObject["grid-boundaries"] = boundariesArray; // ClaymoreUW artifact, TODO: Deprecate
-
+  jsonObject["boundaries"] = boundariesArray; // future schema
 
   //  jsonObject["domainSubType"]=facility->currentText();
   bathSTL->outputToJSON(jsonObject);
   paddleDisplacementFile->outputToJSON(jsonObject);
-
-
 
   return true;
 }
@@ -1150,7 +1165,43 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
     facility->setCurrentIndex(twinIdx); // Change the digital twin facility 
   }
   else if (boundaryType->currentIndex() == 2) {
-    // Wave generator
+    if (twinIdx == 0) {
+      paddleOriginX->setText(QString::number(1.7));
+      paddleOriginY->setText(QString::number(-0.1));
+      paddleOriginZ->setText(QString::number(-0.1));
+      paddleLength->setText(QString::number(0.2));
+      paddleHeight->setText(QString::number(4.6));
+      paddleWidth->setText(QString::number(3.85));
+    } else if (twinIdx == 1) {
+      paddleOriginX->setText(QString::number(-0.1));
+      paddleOriginY->setText(QString::number(-0.1));
+      paddleOriginZ->setText(QString::number(-0.1));
+      paddleLength->setText(QString::number(0.2));
+      paddleHeight->setText(QString::number(4.6));
+      paddleWidth->setText(QString::number(3.85));
+    } else if (twinIdx == 2) {
+      paddleOriginX->setText(QString::number(0));
+      paddleOriginY->setText(QString::number(0));
+      paddleOriginZ->setText(QString::number(0));
+      paddleLength->setText(QString::number(0.2));
+      paddleHeight->setText(QString::number(4.6));
+      paddleWidth->setText(QString::number(3.85));
+    } else if (twinIdx == 3) {
+      paddleOriginX->setText(QString::number(0.5));
+      paddleOriginY->setText(QString::number(0.1));
+      paddleOriginZ->setText(QString::number(0.0));
+      paddleLength->setText(QString::number(0.05));
+      paddleHeight->setText(QString::number(0.9));
+      paddleWidth->setText(QString::number(4.0));
+    } else if (twinIdx == 4) {
+      paddleOriginX->setText(QString::number(7.0));
+      paddleOriginY->setText(QString::number(0.0));
+      paddleOriginZ->setText(QString::number(0.0));
+      paddleLength->setText(QString::number(0.2));
+      paddleHeight->setText(QString::number(2.0));
+      paddleWidth->setText(QString::number(2.0));
+    }
+
   }
   else if (boundaryType->currentIndex() == 3) {
     // Rigid structures

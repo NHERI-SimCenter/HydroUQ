@@ -69,7 +69,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <FEA_Selection.h>
 #include <QDir>
 #include <QFile>
-#include <UQ_EngineSelection.h>
 #include <LocalApplication.h>
 #include <RemoteApplication.h>
 #include <RemoteJobManager.h>
@@ -99,11 +98,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QMenuBar>
 
 // For Tools
-// #include <EmptyDomainCFD/EmptyDomainCFD.h>
 #include <GeoClawOpenFOAM/GeoClawOpenFOAM.h>
 #include <WaveDigitalFlume/WaveDigitalFlume.h>
 #include <coupledDigitalTwin/CoupledDigitalTwin.h>
-#include <mpm/MPM.h>
+#include <MPM/MPM.h>
+
 // static pointer for global procedure set in constructor
 static WorkflowAppHydroUQ *theApp = 0;
 
@@ -124,17 +123,19 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theRVs = RandomVariablesContainer::getInstance();
     theGI = GeneralInformationWidget::getInstance();
     theSIM = new SIM_Selection(true, true);
+
     theEventSelection = new HydroEventSelection(theRVs, theGI, this);
+    // theEventSelection = new HydroEventSelection(theRVs, theService); // WE-UQ
+    
     theAnalysisSelection = new FEA_Selection(true);
     theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity);
+
     theEDP_Selection = new EDP_Selection(theRVs);
     theResults = theUQ_Selection->getResults();
     //theResults = new DakotaResultsSampling(theRVs);
 
     localApp = new LocalApplication("sWHALE.py");
     remoteApp = new RemoteApplication("sWHALE.py", theService);
-    // localApp = new LocalApplication("Hydro-UQ workflow.py");
-    // remoteApp = new RemoteApplication("Hydro-UQ workflow.py", theService);
     // localApp = new LocalApplication("Hydro-UQ.py");
     // remoteApp = new RemoteApplication("Hydro-UQ.py", theService);
 
@@ -147,23 +148,33 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //
     // connect signals and slots
     //
-    // error messages and signals
-    connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
+
+    connect(localApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir)
+    {
+        currentApp = localApp;
+        setUpForApplicationRun(workingDir, subDir);
+    });
     connect(this,SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
     connect(localApp,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+    connect(remoteApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir)
+    {
+        currentApp = remoteApp;
+        setUpForApplicationRun(workingDir, subDir);
+    });
     connect(theJobManager,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
-    connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     connect(theJobManager,SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
-
+    // connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     connect(remoteApp,SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));
+    connect(localApp,SIGNAL(runComplete()), this, SLOT(runComplete()));
+    connect(remoteApp,SIGNAL(successfullJobStart()), this, SLOT(runComplete()));
+    connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
+    connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));   
+
+    // connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
        
     //connect(theRunLocalWidget, SIGNAL(runButtonPressed(QString, QString)), this, SLOT(runLocal(QString, QString)));
 
     // // From WE-UQ, should probably implement
-    // connect(localApp,SIGNAL(runComplete()), this, SLOT(runComplete()));
-    // connect(remoteApp,SIGNAL(successfullJobStart()), this, SLOT(runComplete()));
-    // connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
-    // connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));   
 
 
     //
@@ -206,7 +217,6 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theSvgRES->setFixedSize(iconSize,iconSize);
 
     // Set background color of SVG to match the background color of the side bar
-    // theSvgUQ->setStyleSheet("background-color: rgb(79, 83, 89)");
     // Set the size policy of the SVG to be fixed
     theSvgUQ->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     theSvgGI->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -277,7 +287,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("EDP"), theEDP_Selection);
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
-    theComponentSelection->displayComponent("EVT"); // Initial page on startup
+    theComponentSelection->displayComponent("UQ"); // Initial page on startup
     horizontalLayout->setAlignment(Qt::AlignLeft);
 
     // When theComponentSelection is changed, update the icon in the side bar to also be selected
@@ -288,7 +298,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     connect(manager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(replyFinished(QNetworkReply*)));
     // TODO: Is this still functional? Check...
-    manager->get(QNetworkRequest(QUrl("http://opensees.berkeley.edu/OpenSees/developer/hydrouq/use.php")));
+    manager->get(QNetworkRequest(QUrl("http://opensees.berkeley.edu/OpenSees/developer/eeuq/use.php")));
 
     //
     // set the defults in the General Info
@@ -296,84 +306,92 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     theGI->setDefaultProperties(1,144,360,360,37.8715,-122.2730);
 
-    ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
-    theDialog->appendInfoMessage("Welcome to HydroUQ");    
+    // ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
+    // theDialog->appendInfoMessage("Welcome to HydroUQ");    
 }
 
 // Imported from WE-UQ for EmptyDomainCFD Tool
 void
 WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
 
-  this->WorkflowAppWidget::setMainWindow(window);
+    this->WorkflowAppWidget::setMainWindow(window); // Call the parent class's function, which sets the main window
 
-  auto menuBar = theMainWindow->menuBar();
+    auto menuBar = theMainWindow->menuBar();
 
-  //
-  // Add a Tool option to menu bar & add options to it
-  //
-  QMenu *toolsMenu = new QMenu(tr("&Tools"),menuBar);
-  SC_ToolDialog *theToolDialog = new SC_ToolDialog(this);
+    //
+    // Add a Tool option to menu bar & add options to it
+    //
+    QMenu *toolsMenu = new QMenu(tr("&Tools"), menuBar);
+    SC_ToolDialog *theToolDialog = new SC_ToolDialog(this);
 
-  //
-  // Add empty domain to Tools
-  //
-  // EmptyDomainCFD *theEmptyDomain = new EmptyDomainCFD(theRVs);
-  MPM *theEmptyDomain = new MPM(theRVs); // TODO: Make an MPM EmptyDomainCFD class
-  QString appName = "ClaymoreUW.bonusj-1.0.0"; // Frontera
-  QList<QString> queues; queues << "rtx-dev" << "rtx";
-  SC_RemoteAppTool *theEmptyDomainTool = new SC_RemoteAppTool(appName, queues, theRemoteService, theEmptyDomain, theToolDialog);
-  theToolDialog->addTool(theEmptyDomainTool, "Digital Twin (MPM)");
+    //
+    // Add standalone events to tools menu
+    //
+    CoupledDigitalTwin *theCDT = new CoupledDigitalTwin();
+    QString appNameCDT = "simcenter-openfoam-frontera-1.0.0u6"; // u3
+    QList<QString> queuesCDT; queuesCDT << "normal" << "fast";
+    SC_RemoteAppTool *theCDTTool = new SC_RemoteAppTool(appNameCDT, queuesCDT, theRemoteService, theCDT, theToolDialog);
+    theToolDialog->addTool(theCDTTool, "Digital Twin (OpenFOAM + OpenSees)");
 
-  // Set the path to the input file
-  QAction *showEmptyDomain = toolsMenu->addAction("&Digital Twin (MPM)");
-  connect(showEmptyDomain, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theEmptyDomain] {
-    theDialog->showTool("Digital Twin (MPM)");
-    if (!theEmp->isInitialize()) {
-	    theEmp->initialize();
-    }
-  });
+    // Set the path to the input file
+    QAction *showCDT = toolsMenu->addAction("Digital Twin (&OpenFOAM + OpenSees)");
+    connect(showCDT, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theCDTTool] {
+        theDialog->showTool("Digital Twin (OpenFOAM + OpenSees)");
+    });  
+
+    // MPM *miniMPM = new MPM(theRVs, this); 
+    QString appName =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6
+    QList<QString> queues; queues << "gpu-a100-dev" << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    MPM *miniMPM = new MPM(); 
+    if (!miniMPM->isInitialize()) 
+    {
+        miniMPM->initialize();
+    }  
+    SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog);
+    theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");
+
+    // Set the path to the input file
+    QAction *showMPM = toolsMenu->addAction("Digital Twin (&MPM)");
+    connect(showMPM, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniMPMTool] {
+        theDialog->showTool("Digital Twin (MPM)");
+    });
 
   
-  //
-  // Add SimpleTest Example
-  //
+    //
+    // Add SimpleTest Example
+    //
+
+    RemoteAppTest *theTest = new RemoteAppTest();
+    QString appNameTest = "remoteAppTest-1.0.0";
+    QList<QString> queuesTest; queuesTest << "normal" << "fast";
+    SC_RemoteAppTool *theTestTool = new SC_RemoteAppTool(appNameTest, queuesTest, theRemoteService, theTest, theToolDialog);
+    theToolDialog->addTool(theTestTool, "Build and Run MPI Program");
+
+    // Set the path to the input file
+    QAction *showTest = toolsMenu->addAction("&Build and Run MPI Program");
+    connect(showTest, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theTestTool] {
+        theDialog->showTool("Build and Run MPI Program");
+    });  
 
 
-//   RemoteAppTest *theTest = new RemoteAppTest();
-  CoupledDigitalTwin *theTest = new CoupledDigitalTwin(theRVs);
-  QString appNameTest = "simcenter-openfoam-frontera-1.0.0u3";
-  QList<QString> queuesTest; queuesTest << "normal" << "fast";
-  SC_RemoteAppTool *theTestTool = new SC_RemoteAppTool(appNameTest, queuesTest, theRemoteService, theTest, theToolDialog);
-  theToolDialog->addTool(theTestTool, "Digital Twin (OpenFOAM + OpenSees)");
-  
-  // Set the path to the input file
-  QAction *showTest = toolsMenu->addAction("&Build and Run MPI Program");
-  connect(showTest, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theTestTool] {
-    theDialog->showTool("Digital Twin (OpenFOAM + OpenSees)");
-    // if (!theEmp->isInitialize()) {
-    //     theEmp->initialize();
-    // }
-  });  
-
-
-  //
-  // Add Tools to menu bar
-  //
+    //
+    // Add Tools to menu bar
+    //
 
   QAction* menuAfter = nullptr;
   foreach (QAction *action, menuBar->actions()) {
     // First check for an examples menu and if that does not exist put it before the help menu
     auto actionText = action->text();
     if(actionText.compare("&Examples") == 0)
-      {
-	menuAfter = action;
-	break;
-      }
+    {
+        menuAfter = action;
+        break;
+    }
     else if(actionText.compare("&Help") == 0)
-      {
-	menuAfter = action;
-	break;
-      }
+    {
+        menuAfter = action;
+        break;
+    }
   }
   menuBar->insertMenu(menuAfter, toolsMenu);    
 }
@@ -389,88 +407,24 @@ WorkflowAppHydroUQ::~WorkflowAppHydroUQ()
   //    theComponentSelection->swapComponent("RV",newUQ);
 }
 
-// TODO: Make this work
-void
-WorkflowAppHydroUQ::updateIcons(QString &componentName)
-{
-    // Update the icon in the side bar to also be selected
-    // It does this by changing the background color of the icon to match the background color of theComponentSelection
-    // The background color of theComponentSelection is changed in SimCenterComponentSelection::displayComponent(QString componentName)
-    // This is done by changing the stylesheet of theComponentSelection
-    // The stylesheet is changed in SimCenterComponentSelection::displayComponent(QString componentName)
-    // The stylesheet is changed to match the stylesheet of the side bar icon
-
-    // First, reset the background color of all icons to the default
-    // theSvgUQ->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
-    // theSvgGI->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
-    // theSvgSIM->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
-    // theSvgEVT->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
-    // theSvgFEM->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
-    // theSvgEDP->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
-    // theSvgRV->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
-    // theSvgRES->setStyleSheet(":hover{background-color: rgb(79, 83, 89)}");
-
-    // print(componentName);
-    // Then, set the background color of the icon that was selected to match the background color of theComponentSelection
-    if (componentName == QString("UQ") || componentName ==  QString("UQ_Selection")) {
-        // Set active background
-        // theSvgUQ->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
-        // theSvgUQ->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
-        theSvgUQ->setStyleSheet(":inactive{background-color: rgb(63, 147, 168)}");
-        //redraw
-        theSvgUQ->update();
-
-    }
-    else if (componentName == QString("GI") || componentName ==  QString("GI_Selection")) {
-        theSvgGI->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
-        theSvgGI->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-        theSvgGI->update();
-    }
-    else if (componentName ==  QString("SIM")) {
-        theSvgSIM->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
-        theSvgSIM->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    }
-    else if (componentName ==  QString("EVT")) {
-        theSvgEVT->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
-        theSvgEVT->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    }
-    else if (componentName == "FEM") {
-        theSvgFEM->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
-        theSvgFEM->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    }
-    else if (componentName == "EDP") {
-        theSvgEDP->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
-        theSvgEDP->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    }
-    else if (componentName == "RV") {
-        theSvgRV->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
-        theSvgRV->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    }
-    else if (componentName == "RES") {
-        theSvgRES->setStyleSheet(":active{background-color: rgb(63, 147, 168)}");
-        theSvgRES->setStyleSheet(":hover{background-color: rgb(69, 187, 217)}");
-    } else {
-        // Do nothing
-        qDebug() << "No match of Icon to Sidebar tab text.";
-    }
-
-    return;
-}
 
 
 
 void WorkflowAppHydroUQ::replyFinished(QNetworkReply *pReply)
 {
+    Q_UNUSED(pReply);
     return;
 }
 
 bool WorkflowAppHydroUQ::canRunLocally()
 {
+    // From old HydroUQ, assumes no local run and only checks event app
     // TODO: Look into local run 
     // QMessageBox msgBox;
     // msgBox.setText("The current workflow cannot run locally, please run at DesignSafe instead.");
     // msgBox.exec();
     // return false;
+
     // From WE-UQ:
     QList<SimCenterAppWidget*> apps({theEventSelection, theEDP_Selection, theSIM});
 
@@ -508,76 +462,76 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
     QJsonObject jsonObjGenInfo;
     result = theGI->outputToJSON(jsonObjGenInfo);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theGI->outputToJSON() returned false!"); return result; }
     jsonObjectTop["GeneralInformation"] = jsonObjGenInfo;
 
     // theRVs
     result = theRVs->outputToJSON(jsonObjectTop);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theRVs->outputToJSON() returned false!"); return result; }
 
     // theEDP
     QJsonObject jsonObjectEDP;
     result = theEDP_Selection->outputToJSON(jsonObjectEDP);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theEDP_Selection->outputToJSON() returned false!"); return result; }
     jsonObjectTop["EDP"] = jsonObjectEDP;
 
     QJsonObject appsEDP;
     result = theEDP_Selection->outputAppDataToJSON(appsEDP);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theEDP_Selection->outputAppDataToJSON() returned false!"); return result; }
     apps["EDP"]=appsEDP;
 
     // theUQ
     result = theUQ_Selection->outputAppDataToJSON(apps);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theUQ_Selection->outputAppDataToJSON() returned false!"); return result; }
     
     result = theUQ_Selection->outputToJSON(jsonObjectTop);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theUQ_Selection->outputToJSON() returned false!"); return result; }
 
     // theSIM
     result = theSIM->outputAppDataToJSON(apps);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theSIM->outputAppDataToJSON() returned false!"); return result; }
 
     result = theSIM->outputToJSON(jsonObjectTop);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theSIM->outputToJSON() returned false!"); return result; }
 
     // theAnalysis
     result = theAnalysisSelection->outputAppDataToJSON(apps);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theAnalysisSelection->outputAppDataToJSON() returned false!"); return result; }
 
     result = theAnalysisSelection->outputToJSON(jsonObjectTop);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theAnalysisSelectoin->outputToJSON() returned false!"); return result; }
 
     // theEventSelection
     // NOTE: Events treated differently, due to array nature of objects
     result = theEventSelection->outputToJSON(jsonObjectTop);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theEventSelection->outputToJSON() returned false!"); return result; }
 
     result = theEventSelection->outputAppDataToJSON(apps);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theEventSelection->outputAppDataToJSON() returned false!"); return result; }
 
     result = theRunWidget->outputToJSON(jsonObjectTop);
     if (result == false)
-        return result;
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theRunWidget->outputToJSON() returned false!"); return result; }
 
+    // theResults
     // --------------------------------------------
     // Should this be deprecated? Its not in WE-UQ - but it is in the original HydroUQ, (JB)
-    // theResults
     // sy - to save results
-    result = theResults->outputToJSON(jsonObjectTop);
-    if (result == false)
-        return result;
     // --------------------------------------------
+    // result = theResults->outputToJSON(jsonObjectTop);
+    // if (result == false)
+    //     { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theResults->outputToJSON() returned false!"); return result; }
 
     jsonObjectTop["Applications"]=apps;
 
@@ -605,7 +559,8 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
 }
 
 
-void WorkflowAppHydroUQ::processResults(QString &dirName)
+void 
+WorkflowAppHydroUQ::processResults(QString &dirName)
 {
   //
   // get results widget for currently selected UQ option
@@ -621,19 +576,19 @@ void WorkflowAppHydroUQ::processResults(QString &dirName)
   // connect signals for results widget
   //
 
-  /*
-  connect(theResults,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
-  connect(theResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-  */
+//   connect(theResults,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
+//   connect(theResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
+  
   
   //
   // swap current results with existing one in selection & disconnect signals
   //
 
   QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
-  if (oldResults != NULL && oldResults != theResults) {
-    //disconnect(oldResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-    //disconnect(oldResults,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));  
+  if (oldResults != NULL && oldResults != theResults) {;
+    this->errorMessage("WorkflowAppHydroUQ::processResults() - Deleting oldResults");
+    // disconnect(oldResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
+    // disconnect(oldResults,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));  
     delete oldResults;
   }
 
@@ -656,22 +611,23 @@ WorkflowAppHydroUQ::clear(void)
     // theEventSelection->clear(); // WE-UQ
     // theAnalysisSelection->clear(); // WE-UQ
  
-    // theResults=theUQ_Selection->getResults(); // WE-UQ
-    // if (theResults == NULL) {
-    //     this->errorMessage("FATAL - UQ option selected not returning results widget"); // WE-UQ
-    //     return; // WE-UQ
-    // }
+    theResults=theUQ_Selection->getResults(); // WE-UQ
+    if (theResults == NULL) {
+        this->errorMessage("FATAL - UQ option selected not returning results widget"); // WE-UQ
+        return; // WE-UQ
+    }
 
     // abiy - added results processing and template stuff for test setup
     //
     // swap current results with existing one in selection & disconnect signals
     //
 
-    // QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
+    QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
     
-    // if (oldResults != NULL && oldResults != theResults) {
-    //     delete oldResults;
-    // }
+    if (oldResults != NULL && oldResults != theResults) {
+        this->errorMessage("WorkflowAppHydroUQ::clear() - Deleting oldResults");
+        delete oldResults;
+    }
 
     //
     // process results
@@ -688,7 +644,7 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
     if (jsonObject.contains("GeneralInformation")) {
         QJsonObject jsonObjGeneralInformation = jsonObject["GeneralInformation"].toObject();
         if (theGI->inputFromJSON(jsonObjGeneralInformation) == false) {
-            this->errorMessage("_UQ: failed to read GeneralInformation");
+            this->errorMessage("Hydro_UQ: failed to read GeneralInformation");
         }
     } else {
         this->errorMessage("Hydro_UQ: failed to find GeneralInformation");
@@ -703,11 +659,11 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
         if (theApplicationObject.contains("Events")) {
             //  QJsonObject theObject = theApplicationObject["Events"].toObject(); it is null object, actually an array
             if (theEventSelection->inputAppDataFromJSON(theApplicationObject) == false) {
-                this->errorMessage("Hydro_UQ: failed to read Event Application");
+                this->errorMessage("Hydro_UQ: found Events in Applications but failed to read");
             }
 
         } else {
-            this->errorMessage("Hydro_UQ: failed to find Event Application");
+            this->errorMessage("Hydro_UQ: failed to find Events in Applications");
             return false;
         }
 
@@ -730,8 +686,12 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
             return false;
         }
 
-    } else
+    } 
+    else 
+    {
+        this->errorMessage("WorkflowAppHydroUQ::inputFromJSON failed to find Applications in JSON");
         return false;
+    }
 
     /*
     ** Note to me - RVs and Events treated differently as both use arrays .. rethink API!
@@ -760,26 +720,27 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
     if (theSIM->inputFromJSON(jsonObject) == false)
         this->errorMessage("Hydro_UQ: failed to read SIM Method data");
 
-    // sy - to display results
-    auto* theNewResults = theUQ_Selection->getResults();
-
-    if (theNewResults->inputFromJSON(jsonObject) == false)
-        this->errorMessage("Hydro_UQ: failed to read RES Method data");
-    theResults->setResultWidget(theNewResults);
-
-    this->statusMessage("Done Loading File");
-    
+    this->statusMessage("WorkflowAppHydroUQ::inputFromJSON - Done Loading File");
     return true;  
+
+
+    // // sy - to display results
+    // auto* theNewResults = theUQ_Selection->getResults();
+
+    // if (theNewResults->inputFromJSON(jsonObject) == false)
+    //     this->errorMessage("Hydro_UQ: failed to read RES Method data");
+    // theResults->setResultWidget(theNewResults);
 }
 
 
 void
 WorkflowAppHydroUQ::onRunButtonClicked() {
-    emit errorMessage("The HydroUQ application cannot be run locally. Please run remotely on DesignSafe.");
-//    theRunWidget->hide();
-//    theRunWidget->setMinimumWidth(this->width()*0.5);
-//    theRunWidget->showLocalApplication();
-//    GoogleAnalytics::ReportLocalRun();
+    if (canRunLocally())
+    emit errorMessage("HydroUQ cannot be run locally. Please run remotely on DesignSafe.");
+    theRunWidget->hide();
+    theRunWidget->setMinimumWidth(this->width()*0.5);
+    theRunWidget->showLocalApplication();
+    GoogleAnalytics::ReportLocalRun();
 }
 
 void
@@ -877,66 +838,133 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
         return;
     }
     QJsonObject json;
-    if (this->outputToJSON(json) == false)
+    // this->outputToJSON(json);
+    if (this->outputToJSON(json) == false) 
+    {
+        errorMessage("ERROR - WorkflowAppHydroUQ::setUpForApplicationRun recieved this->outputToJSON() as false");
         return;
-
+    }
     json["runDir"]=tmpDirectory;
     json["WorkflowType"]="Building Simulation";
-
+    // json["programFile"] = "fbar";
 
     QJsonDocument doc(json);
     file.write(doc.toJson());
     file.close();
 
 
-    // This is in WE-UQ, maybe needed for some CFD...
-    // QJsonArray events = json["Applications"].toObject()["Events"].toArray();
 
-    // bool hasCFDEvent = false;
-    // QJsonObject eventAppData;
-    // for (QJsonValueRef eventJson: events)
-    // {
-    //     QString eventApp = eventJson.toObject()["Application"].toString();
-    //     if(0 == eventApp.compare("CFDEvent", Qt::CaseSensitivity::CaseInsensitive))
-    //     {
-    //         eventAppData = eventJson.toObject()["ApplicationData"].toObject();
-    //         hasCFDEvent = true;
-    //         break;
-    //     }
-    // }
+    bool hasMPMEvent = false;
+    bool hasCFDEvent = false;
+    QJsonObject eventAppData;
+    QJsonArray events = json["Applications"].toObject()["Events"].toArray();
+    for (QJsonValueRef eventJson: events)
+    {
+        qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Found Event in Events with Application: " << eventJson.toObject()["Application"].toString();
+        QString eventApp = eventJson.toObject()["Application"].toString();
+        if(0 == eventApp.compare("MPM", Qt::CaseSensitivity::CaseInsensitive))
+        {
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Found Application MPM in Events, attaching AppData";
+            eventAppData = eventJson.toObject()["ApplicationData"].toObject();
+            hasMPMEvent = true;
+            break;
+        }
+        else if (0 == eventApp.compare("CFDEvent", Qt::CaseSensitivity::CaseInsensitive))
+        {
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Found Application CFDEvent in Events, attaching AppData";
+            eventAppData = eventJson.toObject()["ApplicationData"].toObject();
+            hasCFDEvent = true;
+            break;
+        }
+    }
+    
+    if (hasMPMEvent == false)
+        qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - No MPM Event found in Events, continuing";
+    
+    if (hasCFDEvent == false)
+        qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - No CFD Event found in Events, continuing";
+    
 
-    // RemoteApplication* remoteApplication = static_cast<RemoteApplication*>(remoteApp);
+
+    RemoteApplication* remoteApplication = static_cast<RemoteApplication*>(remoteApp);
 
 
-    // if(currentApp == remoteApp)
-    // {
-    //     remoteApplication->clearExtraInputs();
-    //     remoteApplication->clearExtraParameters();
-    // }
-    // else
-    // {
-    //     if (!canRunLocally())
-    //         return;
-    // }
+    if (currentApp == remoteApp)
+    {
+        remoteApplication->clearExtraInputs();
+        remoteApplication->clearExtraParameters();
+        qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Running Remotely. Cleared extra inputs and parameters key-value pairs for the JSON submission payload to the tapis application";
+    }
+    else
+    {
+        if (!canRunLocally()) {
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Cannot run locally, returning";
+            return;
+        }
+    }
 
-    // if(hasCFDEvent)
-    // {
-    //     //Adding extra job inputs for CFD
-    //     QMap<QString, QString> extraInputs;
-    //     if(eventAppData.contains("OpenFOAMCase"))
-    //         extraInputs.insert("OpenFOAMCase", eventAppData["OpenFOAMCase"].toString());
-    //     remoteApplication->setExtraInputs(extraInputs);
+    if(hasMPMEvent) 
+    {
+        //Adding extra job inputs for MPM
+        QMap<QString, QString> extraInputs;
+        //TODO: Reduce below redundancies with small function 
+        // statusMessage("WorkflowAppHydroUQ::setUpForApplicationRun - Setting extra tapis inputs for Event: MPM ...");
+        // if(eventAppData.contains("inputFile"))
+        // {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'inputFile' to inputs: " << eventAppData["inputFile"].toString();
+        //     extraInputs.insert("inputFile", eventAppData["inputFile"].toString());
+        // }
+        // else
+        // {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'inputFile' to inputs: " << "scInput.json";
+        //     extraInputs.insert("inputFile", "scInput.json");
+        // }
+        // remoteApplication->setExtraInputs(extraInputs);
 
-    //     //Adding extra job parameters for CFD
-    //     QMap<QString, QString> extraParameters;
-    //     if(eventAppData.contains("OpenFOAMSolver"))
-    //         extraParameters.insert("OpenFOAMSolver", eventAppData["OpenFOAMSolver"].toString());
-    //     remoteApplication->setExtraParameters(extraParameters);
-    // }
-    //
+        //Adding extra job parameters for MPM
+        QMap<QString, QString> extraParameters;
+        // if(eventAppData.contains("inputFile"))
+        // {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'inputFile' to parameters: " << eventAppData["inputFile"].toString();
+        //     extraParameters.insert("inputFile", eventAppData["inputFile"].toString());
+        // }
+        // else    
+        // {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'inputFile' to parameters: " << "scInput.json";
+        //     extraParameters.insert("inputFile", "scInput.json");
+        // }
+        if(eventAppData.contains("programFile"))
+        {
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'programFile' to parameters: " << eventAppData["programFile"].toString();
+            extraParameters.insert("programFile", eventAppData["programFile"].toString());
+        }
+        else
+        {
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'programFile' to parameters: " << "fbar";
+            extraParameters.insert("programFile", "fbar");
+        }
+        remoteApplication->setExtraParameters(extraParameters);
+    }
 
-    statusMessage("Set-Up Done .. Now Starting HydroUQ Application");
+    if(hasCFDEvent)
+    {
+        //Adding extra job inputs for CFD
+        QMap<QString, QString> extraInputs;
+        if(eventAppData.contains("OpenFOAMCase"))
+            extraInputs.insert("OpenFOAMCase", eventAppData["OpenFOAMCase"].toString());
+        remoteApplication->setExtraInputs(extraInputs);
+
+        //Adding extra job parameters for CFD
+        QMap<QString, QString> extraParameters;
+        if(eventAppData.contains("OpenFOAMSolver"))
+            extraParameters.insert("OpenFOAMSolver", eventAppData["OpenFOAMSolver"].toString());
+        remoteApplication->setExtraParameters(extraParameters);
+    }
+    
+
+    // statusMessage("Set-Up Done .. Now Starting HydroUQ Application");
     emit setUpForApplicationRunDone(tmpDirectory, inputFile);
+    return;
 }
 
 int
@@ -948,7 +976,7 @@ WorkflowAppHydroUQ::loadFile(QString &fileName){
 
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        emit errorMessage(QString("Could Not Open File: ") + fileName);
+        emit errorMessage(QString("ERROR: WorkflowAppHydroUQ::loadFile() Could Not Open File: ") + fileName);
         return -1; 
     }
 

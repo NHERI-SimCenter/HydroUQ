@@ -83,18 +83,18 @@ int main(int argc, char *argv[])
     QDir dirWork(logFilePath);
     if (!dirWork.exists())
         if (!dirWork.mkpath(logFilePath)) {
-            qDebug() << QString("Could not create Working Dir: ") << logFilePath;
+            qDebug() << QString("Could not create Working Dir: ") << logFilePath; 
         }
 
     // full path to debug.log file
-    logFilePath = logFilePath + QDir::separator() + QString("debug.log");
+    logFilePath = logFilePath + QDir::separator() + QString("debug.log"); 
 
     // remove old log file
-    QFile debugFile(logFilePath);
-    debugFile.remove();
+    QFile debugFile(logFilePath); 
+    debugFile.remove(); 
 
     //  check if the app is run in Qt Creator
-    QByteArray envVar = qgetenv("QTDIR");
+    QByteArray envVar = qgetenv("QTDIR"); 
 
     if (envVar.isEmpty())
         logToFile = true;
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
     // window scaling
     //
 
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling); 
 
     /******************  code to reset openGL version .. keep around in case need again
     QSurfaceFormat glFormat;
@@ -118,10 +118,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     // create a remote interface
-    QString tenant("designsafe");
-    QString storage("agave://designsafe.storage.default/");
-    QString dirName("Hydro-UQ");
-    AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName);
+    QString tenant("designsafe"); // this is the default tenant for the design safe community
+    QString storage("agave://designsafe.storage.default/"); // this is the default storage system for the design safe community
+    QString dirName("Hydro-UQ"); // this is the default directory for the application
+    AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName); // this is the remote service used by the application
 
 
     // create the main window
@@ -150,8 +150,8 @@ int main(int argc, char *argv[])
     w.setFeedbackURL(messageBoardURL);
 
     // Move remote interface to a thread
-    QThread *thread = new QThread();
-    theRemoteService->moveToThread(thread);
+    QThread *thread = new QThread(); 
+    theRemoteService->moveToThread(thread); 
     QWidget::connect(thread, SIGNAL(finished()), theRemoteService, SLOT(deleteLater()));
     QWidget::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();

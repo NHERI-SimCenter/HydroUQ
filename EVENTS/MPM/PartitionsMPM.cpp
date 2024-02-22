@@ -47,6 +47,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QVector>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QGridLayout>
+#include <QWidget>
 
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
@@ -90,17 +92,15 @@ PartitionsMPM::PartitionsMPM(QWidget *parent)
 
   ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   // Add tab per Body
-  QTabWidget *tabWidget = new QTabWidget();
+  tabWidget = new QTabWidget();
   tabWidget->setTabsClosable(true); // Close tabs with X mark via mouse (connect to tabCloseRequested)
   tabWidget->setMovable(true); // Move tabs with mouse
 
-  QVector<QWidget*> theAdded(numReserveTabs); // 16 is max number of added tabs
 
   int sizeBodyTabs = 20;
   layout->addWidget(tabWidget);
 
   int numDefaultTabs = 1; // Need atleast one partition tab, so dont allow last one to be deleted
-  QVector<QGridLayout*> theAddedLayout(numReserveTabs);
   QVector<QTabWidget*> modelAddedTabWidget(numReserveTabs); 
   for (int i = 0; i < numReserveTabs; i++) {
     theAdded[i] = new QWidget();
@@ -109,27 +109,15 @@ PartitionsMPM::PartitionsMPM(QWidget *parent)
   }
 
   // Init. first partition automatically
-  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Custom " + QString::number(numAddedTabs + 1));
+  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "GPU:Body " + QString::number(numAddedTabs + 1));
   tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
   theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
   theAddedLayout[numAddedTabs]->addWidget(addedPartition[numAddedTabs]);
   numAddedTabs += 1;
+  
   // Create and Init. another partition tab at user request (click create)
   connect(addB, &QPushButton::released, this, [=]() {
-    // Concatenate string to say "Custom Body 1", "Custom Body 2", etc.
-    if (numAddedTabs >= numReserveTabs) 
-      return;
-    tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Custom " + QString::number(numAddedTabs + 1));
-    tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
-    theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
-    theAddedLayout[numAddedTabs]->addWidget(addedPartition[numAddedTabs]);
-    numAddedTabs += 1;
-
-    // Set the bodies new partition's GPU ID and Model ID (latter must be unique for the GPU ID)
-    setPartitionGPU(numAddedTabs-1, numAddedTabs-1); // Set the GPU to the partition index
-    // Note: setModel uses numAddedTabs for its iteration, so its position is important
-    setDefaultModelID(defaultModelID); // Set the default model ID to the default model ID
-    setModel(defaultModelID); // Set the model ID to the default model ID 
+    addPartition(numAddedTabs, defaultModelID); // Add the partition to the body
   });
 
   // Remove partition at user request (click remove)
@@ -169,55 +157,199 @@ PartitionsMPM::PartitionsMPM(QWidget *parent)
 
 }
 
+
 PartitionsMPM::~PartitionsMPM()
 {
+}
 
+void
+PartitionsMPM::updateHardwareLimits(int maxGPUs = 1, int maxModels = 1)
+{
+  if (maxGPUs < 1) {
+    qDebug() << "Maximum number of GPUs must be >= 1, but is " << maxGPUs << ".";
+    return;
+  }
+  if (maxModels < 1) {
+    qDebug() << "Maximum number of models must be >= 1, but is " << maxModels << ".";
+    return;
+  }
+  maxNumGPUs = maxGPUs;
+  maxNumModels = maxModels;
+  return;
+}
+
+void 
+PartitionsMPM::updateHardwareLimits(QString systemName = "Lonestar6", QString queueName = "gpu-a100")
+{
+  // Defaults
+  maxNumGPUs = 1;
+  maxNumModels = 3;
+  // TODO: Account for --gres:gpu:N options on many HPC systems
+  // TODO: Account for different GPU types and models, e.g. A100, H100, etc. or NVIDIA vs Intel vs AMD
+  // Update the maximum number of GPUs and models based on the HPC system name
+  if (systemName == "Lonestar6" || systemName == "LS6" || systemName == "ls6") {
+    if (queueName == "gpu-a100" || queueName == "gpu-a100-dev" || queueName == "normal") {
+      maxNumGPUs = 3;
+      maxNumModels = 3;
+      return;
+    } else if (queueName == "gpu-a100-small" || queueName == "vm-small" || queueName == "small") {
+      maxNumGPUs = 1;
+      maxNumModels = 3;
+      return;
+    } else if (queueName == "gpu-h100") {
+      maxNumGPUs = 2;
+      maxNumModels = 3;
+      return;
+    }
+  } else if (systemName == "Frontera" || systemName == "frontera" || systemName == "FRONTERA") {
+    if (queueName == "rtx" || queueName == "rtx-dev") {
+      maxNumGPUs = 4;
+      maxNumModels = 3;
+      return;
+    } 
+  } else if (systemName == "ACES" || systemName == "aces" || systemName == "Aces") {
+    if (queueName == "gpu" || queueName == "gpu-h100" || queueName == "gpu-h100:2" || queueName == "normal") {
+      maxNumGPUs = 2;
+      maxNumModels = 3;
+      return;
+    } else if (queueName == "gpu-h100:4" || queueName == "large") {
+      maxNumGPUs = 4; 
+      maxNumModels = 3;
+      return;
+    }
+  } else {
+    qDebug() << "Requested unknown queue name: " << queueName << " for system: " << systemName << ". Using default values.";
+    return;
+  }
+}
+
+bool
+PartitionsMPM::updateOccupiedModelsOnGPUs(int gpuIndex, int modelIndex, bool occupied)
+{
+  // Update the occupied models on GPUs
+  if (gpuIndex < 0 || gpuIndex >= maxNumGPUs) {
+    return false;
+  }
+  if (modelIndex < 0 || modelIndex >= maxNumModels) {
+    return false;
+  }
+  occupiedModelsOnGPUs[gpuIndex][modelIndex] = occupied;
+  return true;
+}
+
+bool 
+PartitionsMPM::addPartition(int gpuID, int modelID)
+{
+  if (numAddedTabs >= numReserveTabs) 
+    return false;
+  
+  bool results = true;
+  // Add a partition to the body
+  int sizeBodyTabs = 20;
+  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "GPU:Model " + QString::number(numAddedTabs + 1));
+  tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
+  theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
+  theAddedLayout[numAddedTabs]->addWidget(addedPartition[numAddedTabs]);
+  numAddedTabs += 1;
+
+  // Set the bodies new partition's GPU ID and Model ID (latter must be unique for the GPU ID)
+  results &= setPartitionGPU(numAddedTabs - 1, gpuID % maxNumGPUs); // Set the GPU to the partition index
+
+  // Note: setModel uses numAddedTabs for its iteration, so its position is important
+  results &= setPartitionModel(numAddedTabs - 1, modelID % maxNumModels); // Set the model ID to the default model ID 
+  if (!results) 
+    qDebug() << "Failed to add partition to body.";
+  return results;
+}
+
+
+bool 
+PartitionsMPM::setPartitionModel(int index, int model)
+{
+  if (index >= numReserveTabs) {
+    qDebug() << "Partition index out of range of reserved tabs.";
+    return false;
+  }
+  if (index < 0 || index >= numAddedTabs) {
+    qDebug() << "Partition index out of range of added tabs.";
+    return false;
+  }
+  if (model < 0 || model >= maxNumModels) {
+    qDebug() << "Model index out of range of maximum models.";
+    return false;
+  }
+  addedPartition[index]->setDefaultModelID(model);
+  return addedPartition[index]->setModel(model);
 }
 
 bool 
 PartitionsMPM::setPartitionGPU(int index, int gpu) 
 {
-  // Check if the index is valid
-  if (index < 0 || index > numAddedTabs) {
+  if (index >= numReserveTabs) {
+    qDebug() << "Partition index out of range of reserved tabs.";
     return false;
   }
-  // Check if the GPU is valid
+  if (index < 0 || index >= numAddedTabs) {
+    qDebug() << "Partition index out of range of added tabs.";
+    return false;
+  }
   if (gpu < 0 || gpu >= maxNumGPUs) {
+    qDebug() << "GPU index out of range of maximum GPUs.";
     return false;
   }
-  // Set the GPU
-  addedPartition[index]->setGPU(gpu);
-  
-  return true;
+
+  return addedPartition[index]->setGPU(gpu);
 }
 
 bool 
 PartitionsMPM::setModel(int model)
 {
   // TODO: Better distribute models across GPUs relative to number of Bodies
-  // Set the Model ID, iterating through partitions
-  // Check model ID is valid (TODO: Fix upper-bound for diff. supercomputers / gpu-nodes)
-  if (model < 0 || model >= maxNumModels*maxNumGPUs) {
+  // Set the Model ID for a bodies' partitions, iterating through individual partition objects
+  if (model < 0 || model >= maxNumModels) {
+    qDebug() << "Model ID must be >= 0 and < " << maxNumModels << ", but is " << model << ".";
     return false;
   }
+  bool results = true;
   for (int i = 0; i < numAddedTabs; i++) {
     addedPartition[i]->setDefaultModelID(model);
-    addedPartition[i]->setModel(model);
+    results &= addedPartition[i]->setModel(model);
   }
-  return true;
+  return results;
 }
 
 bool 
-PartitionsMPM::setDefaultModelID(int model) 
+PartitionsMPM::setGPU(int gpu)
 {
-  // Tell all partitions for this Body to use a given model ID
-  defaultModelID = (model >= 0)  
-                    ? ( (model < maxNumModels*maxNumGPUs) 
-                      ? model 
-                      : maxNumModels*maxNumGPUs) 
-                    : 0;
-  return true;
+  if (gpu < 0 || gpu >= maxNumGPUs) {
+    qDebug() << "GPU ID must be >= 0 and < " << maxNumGPUs << ", but is " << gpu << ".";
+    return false;
+  } 
+  bool results = true;
+  for (int i = 0; i < numAddedTabs; i++) {
+    results &= addedPartition[i]->setGPU(gpu);
+  }
+  return results;
 }
+
+bool 
+PartitionsMPM::setDefaultModelID(int model = 0) 
+{
+  defaultModelID = (model >= 0)  
+                  ? ( (model < maxNumModels) ? model : maxNumModels - 1 ) // Assumes maxNumGPUs > 0
+                  : 0;
+  return (defaultModelID == model);
+}
+
+bool 
+PartitionsMPM::setDefaultGPUID(int gpu = 0) 
+{
+  defaultGPUID = (gpu >= 0)  
+                  ? ( (gpu < maxNumGPUs) ? gpu : maxNumGPUs - 1 ) // Assumes maxNumGPUs > 0
+                  : 0;
+  return (defaultGPUID == gpu);
+}
+
 
 bool
 PartitionsMPM::outputToJSON(QJsonObject &jsonObject)
@@ -234,15 +366,14 @@ PartitionsMPM::outputToJSON(QJsonObject &jsonObject)
   jsonObject["gpu"] = 0; // TODO: ClaymoreUW has a single GPU ID per body, but will need to be updated to support multiple GPUs per body via unraveling the partition array
   jsonObject["model"] = defaultModelID; // Add default model ID to the body object
   // TODO: Same as for "gpu", get rid of ClaymoreUW global partition_start and partition_end
-  // This is a temp fix.
   QJsonArray partition_start;
   QJsonArray partition_end;
   partition_start.append(0.0);
   partition_start.append(0.0);
   partition_start.append(0.0);
-  partition_end.append(100.0);
+  partition_end.append(90.0);
   partition_end.append(4.5);
-  partition_end.append(3.75);
+  partition_end.append(3.65);
   jsonObject["partition_start"] = partition_start;
   jsonObject["partition_end"] = partition_end;
   return true;

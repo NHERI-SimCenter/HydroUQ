@@ -107,13 +107,6 @@ PartitionMPM::~PartitionMPM()
 
 }
 
-bool
-PartitionMPM::setGPU(int gpu) 
-{
-  if (gpu < 0) return false;
-  deviceNumber->setText(QString::number(gpu));
-  return true;
-}
 
 bool
 PartitionMPM::setModel(int model) 
@@ -127,13 +120,98 @@ PartitionMPM::setModel(int model)
 }
 
 bool
-PartitionMPM::setDefaultModelID(int model) 
+PartitionMPM::setGPU(int gpu) 
 {
-  // Set partition to use a given model ID default, [0, whatever max compiled amount per GPU is in ClaymoreUW)
-  // Assume check for upper-bound done already
-  defaultModelID = (model >= 0) ? model : 0;
+  if (gpu < 0) {
+    qDebug() << "PartitionMPM::setGPU(), " << "Must have GPU ID >= 0, but ID is " << gpu << ".";
+    return false;
+  }
+  deviceNumber->setText(QString::number(gpu));
   return true;
 }
+
+bool
+PartitionMPM::setDefaultModelID(int model) 
+{
+  defaultModelID = (model >= 0) ? model : 0; // Assume check for upper-bound done in PartitionsMPM
+  return (defaultModelID == model);
+}
+
+bool
+PartitionMPM::setDefaultGPUID(int gpu) 
+{
+  defaultGPUID = (gpu >= 0) ? gpu : 0; // Assume check for upper-bound done in PartitionsMPM
+  return (defaultGPUID == gpu);
+}
+
+int PartitionMPM::getModel() 
+{
+  return bodyNumber->text().toInt();
+}
+
+int PartitionMPM::getGPU() 
+{
+  return deviceNumber->text().toInt();
+}
+
+void 
+PartitionMPM::constrainPartitionWithin(double origin[3], double dimensions[3])
+{
+  if (partitionOrigin_X->text().toDouble() < origin[0] || partitionOrigin_X->text().toDouble() > origin[0] + dimensions[0])
+    partitionOrigin_X->setText(QString::number(origin[0]));
+  if (partitionOrigin_Y->text().toDouble() < origin[1] || partitionOrigin_Y->text().toDouble() > origin[1] + dimensions[1])
+    partitionOrigin_Y->setText(QString::number(origin[1]));
+  if (partitionOrigin_Z->text().toDouble() < origin[2] || partitionOrigin_Z->text().toDouble() > origin[2] + dimensions[2])
+    partitionOrigin_Z->setText(QString::number(origin[2]));
+  
+  if (partitionOrigin_X->text().toDouble() + partitionDimensions_X->text().toDouble() > dimensions[0] || partitionDimensions_X->text().toDouble() < 0)
+    partitionDimensions_X->setText(QString::number(dimensions[0] - ( partitionOrigin_X->text().toDouble() - origin[0] ) ));
+  if (partitionOrigin_Y->text().toDouble() + partitionDimensions_Y->text().toDouble() > dimensions[1] || partitionDimensions_Y->text().toDouble() < 0)
+    partitionDimensions_Y->setText(QString::number(dimensions[1] - ( partitionOrigin_Y->text().toDouble() - origin[1] ) ));
+  if (partitionOrigin_Z->text().toDouble() + partitionDimensions_Z->text().toDouble() > dimensions[2] || partitionDimensions_Z->text().toDouble() < 0)
+    partitionDimensions_Z->setText(QString::number(dimensions[2] - ( partitionOrigin_Z->text().toDouble() - origin[2] ) ));
+  return;
+}
+
+void 
+PartitionMPM::constrainPartitionOutside(double origin[3], double dimensions[3])
+{
+  if (partitionOrigin_X->text().toDouble() < origin[0] || partitionOrigin_X->text().toDouble() > origin[0] + dimensions[0])
+  {
+    if (partitionOrigin_X->text().toDouble() < origin[0])
+    {
+      partitionOrigin_X->setText(QString::number(origin[0]));
+      if (partitionOrigin_X->text().toDouble() + partitionDimensions_X->text().toDouble() > origin[0] + dimensions[0] || partitionDimensions_X->text().toDouble() < 0)
+        partitionDimensions_X->setText(QString::number(origin[0] - partitionOrigin_X->text().toDouble()));
+    }
+    else
+      partitionOrigin_X->setText(QString::number(origin[0] + dimensions[0]));
+  }
+  if (partitionOrigin_Y->text().toDouble() < origin[1] || partitionOrigin_Y->text().toDouble() > origin[1] + dimensions[1])
+  {
+    if (partitionOrigin_Y->text().toDouble() < origin[1]) 
+    {
+      partitionOrigin_Y->setText(QString::number(origin[1]));
+      if (partitionOrigin_Y->text().toDouble() + partitionDimensions_Y->text().toDouble() > origin[1] + dimensions[1] || partitionDimensions_Y->text().toDouble() < 0)
+        partitionDimensions_Y->setText(QString::number(origin[1] - partitionOrigin_Y->text().toDouble()));
+    }
+    else
+      partitionOrigin_Y->setText(QString::number(origin[1] + dimensions[1]));
+  }
+  if (partitionOrigin_Z->text().toDouble() < origin[2] || partitionOrigin_Z->text().toDouble() > origin[2] + dimensions[2])
+  {
+    if (partitionOrigin_Z->text().toDouble() < origin[2]) 
+    {
+      partitionOrigin_Z->setText(QString::number(origin[2]));
+      if (partitionOrigin_Z->text().toDouble() + partitionDimensions_Z->text().toDouble() > origin[2] + dimensions[2] || partitionDimensions_Z->text().toDouble() < 0)
+        partitionDimensions_Z->setText( QString::number(origin[2] - partitionOrigin_Z->text().toDouble()));
+    }
+    else
+      partitionOrigin_Z->setText(QString::number(origin[2] + dimensions[2]));
+  }
+  return;
+}
+
 
 bool
 PartitionMPM::outputToJSON(QJsonObject &jsonObject)
