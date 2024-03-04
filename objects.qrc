@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>HydroUQ_Icon_Color.obj</file>
+        <file>OSU_LWF_Bathymetry.obj</file>
+    </qresource>
+</RCC>

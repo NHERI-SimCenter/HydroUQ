@@ -23,6 +23,8 @@
 #include <QDir>
 #include <QStatusBar>
 #include <QWebEngineView>
+#include <QSvgWidget>
+
 
 static QString logFilePath;
 static bool logToFile = false;
@@ -67,7 +69,7 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("2.0.0");
+    QCoreApplication::setApplicationVersion("3.0.0");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     // Q_INIT_RESOURCE(images1);
@@ -81,18 +83,18 @@ int main(int argc, char *argv[])
     QDir dirWork(logFilePath);
     if (!dirWork.exists())
         if (!dirWork.mkpath(logFilePath)) {
-            qDebug() << QString("Could not create Working Dir: ") << logFilePath;
+            qDebug() << QString("Could not create Working Dir: ") << logFilePath; 
         }
 
     // full path to debug.log file
-    logFilePath = logFilePath + QDir::separator() + QString("debug.log");
+    logFilePath = logFilePath + QDir::separator() + QString("debug.log"); 
 
     // remove old log file
-    QFile debugFile(logFilePath);
-    debugFile.remove();
+    QFile debugFile(logFilePath); 
+    debugFile.remove(); 
 
     //  check if the app is run in Qt Creator
-    QByteArray envVar = qgetenv("QTDIR");
+    QByteArray envVar = qgetenv("QTDIR"); 
 
     if (envVar.isEmpty())
         logToFile = true;
@@ -103,7 +105,7 @@ int main(int argc, char *argv[])
     // window scaling
     //
 
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling); 
 
     /******************  code to reset openGL version .. keep around in case need again
     QSurfaceFormat glFormat;
@@ -116,10 +118,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     // create a remote interface
-    QString tenant("designsafe");
-    QString storage("agave://designsafe.storage.default/");
-    QString dirName("Hydro-UQ");
-    AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName);
+    QString tenant("designsafe"); // this is the default tenant for the design safe community
+    QString storage("agave://designsafe.storage.default/"); // this is the default storage system for the design safe community
+    QString dirName("Hydro-UQ"); // this is the default directory for the application
+    AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName); // this is the remote service used by the application
 
 
     // create the main window
@@ -132,11 +134,11 @@ int main(int argc, char *argv[])
     w.setAbout(aboutTitle, aboutSource);
 
     // Version
-    QString version("Version 1.0.1");
+    QString version("Version 3.0.0");
     w.setVersion(version);
 
     // Citation
-    QString citeText("1) Ajay B Harish, & Frank McKenna. (2021, April 30). NHERI-SimCenter/HydroUQ: Version 1.0.0 (Version v1.0.0). Zenodo. http://doi.org/10.5281/zenodo.4731074\n\n 2) Deierlein GG, McKenna F, Zsarnóczay A, Kijewski-Correa T, Kareem A, Elhaddad W, Lowes L, Schoettler MJ and Govindjee S (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Front. Built Environ. 6:558706. doi: 10.3389/fbuil.2020.558706");
+    QString citeText("1) Ajay B Harish, Frank McKenna, Justin Bonus. (2024, January). NHERI-SimCenter/HydroUQ: Version 3.0.0 (Version v3.0.0). Zenodo. http://doi.org/10.5281/zenodo.4731074\n\n 2) Deierlein GG, McKenna F, Zsarnóczay A, Kijewski-Correa T, Kareem A, Elhaddad W, Lowes L, Schoettler MJ and Govindjee S (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Front. Built Environ. 6:558706. doi: 10.3389/fbuil.2020.558706");
     w.setCite(citeText);
 
     // Link to repository
@@ -148,8 +150,8 @@ int main(int argc, char *argv[])
     w.setFeedbackURL(messageBoardURL);
 
     // Move remote interface to a thread
-    QThread *thread = new QThread();
-    theRemoteService->moveToThread(thread);
+    QThread *thread = new QThread(); 
+    theRemoteService->moveToThread(thread); 
     QWidget::connect(thread, SIGNAL(finished()), theRemoteService, SLOT(deleteLater()));
     QWidget::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();

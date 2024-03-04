@@ -39,13 +39,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // Written: fmckenna
 // Modified: Ajay B Harish (May 2021)
+// Modified: Justin Bonus (Feb 2024)
+// #include <SimCenterAppWidget.h>
 
 #include <QGroupBox>
 #include <QVector>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QStackedWidget>
-#include <QComboBox>
+// #include <QStackedWidget>
+// #include <QComboBox>
 #include <QSpacerItem>
 #include <QPushButton>
 #include <QJsonObject>
@@ -56,15 +58,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QFileDialog>
 #include <QPushButton>
 #include <SectionTitle.h>
-#include <SimCenterAppWidget.h>
 #include <GeneralInformationWidget.h>
 #include <InputWidgetExistingEvent.h>
-#include <GeoClawOpenFOAM.h>
-#include <WaveDigitalFlume.h>
+// #include <GeoClawOpenFOAM.h>
+// #include <WaveDigitalFlume.h>
 
-//class QComboBox;
-class QStackedWidget;
+// #include <RemoteService.h>
+
+class QComboBox; // WE-UQ
+class QStackedWidget; // WE-UQ
+class UserDefinedApplication; // WE-UQ
 class RandomVariablesContainer;
+
 class HydroEventSelection : public  SimCenterAppWidget
 {
     Q_OBJECT
@@ -72,6 +77,7 @@ public:
     explicit HydroEventSelection(RandomVariablesContainer *,
 				 GeneralInformationWidget* generalInfoWidget,
 				 QWidget *parent = 0);
+   //  explicit HydroEventSelection(RandomVariablesContainer *, RemoteService* remoteService, QWidget *parent = 0); // WE-UQ
     ~HydroEventSelection();
 
     bool outputToJSON(QJsonObject &rvObject);
@@ -79,11 +85,19 @@ public:
     bool outputAppDataToJSON(QJsonObject &rvObject);
     bool inputAppDataFromJSON(QJsonObject &rvObject);
     bool copyFiles(QString &destName);
+    bool supportsLocalRun() override;
 
 signals:
+   //  void statusMessage(QString message);
+   //  void errorMessage(QString message);
+   //  void fatalMessage(QString message);
 
 public slots:
    void eventSelectionChanged(int arg1);
+   void eventSelectionChanged(const QString &arg1); // WE-UQ
+   // void sendStatusMessage(QString message); // WE-UQ
+   // void sendErrorMessage(QString message); // WE-UQ
+   // void sendFatalMessage(QString message); // WE-UQ
 
 private:
    QComboBox   *eventSelection;
@@ -93,8 +107,11 @@ private:
    //   SimCenterAppWidget *theSHA_MotionWidget;
    SimCenterAppWidget *theGeoClawOpenFOAM;
    SimCenterAppWidget *theWaveDigitalFlume;
-   SimCenterAppWidget *theCoupledDigitalTwin;  
-  
+   SimCenterAppWidget *theCoupledDigitalTwin;
+   SimCenterAppWidget *theMPM;    
+   SimCenterAppWidget *theSPH;
+   SimCenterAppWidget *theExistingEvents;
+
    RandomVariablesContainer *theRandomVariablesContainer;
 };
 

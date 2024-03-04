@@ -111,7 +111,7 @@ SettingsDigitalTwin::SettingsDigitalTwin(QWidget *parent)
   QStringList couplingList; couplingList << "Implicit" << "Explicit";
   couplingScheme = new SC_ComboBox("CouplingScheme", couplingList);
 
-  QStringList couplingMethod; couplingMethod << "Constant" << "Aitken" << "IQN-IMVJ" << "Broyden";  
+  QStringList couplingMethod; couplingMethod << "Constant" << "Aitken" << "IQN-ILS" << "IQN-IMVJ" << "Broyden";  
   couplingDataMethod = new SC_ComboBox("couplingDataAccelerationMethod", couplingMethod);
   
   initialRelaxationFactor = new SC_DoubleLineEdit("initialRelaxationFactor", 0.6);
