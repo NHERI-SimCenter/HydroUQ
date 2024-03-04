@@ -37,6 +37,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written: fmk, JustinBonus
 
 #include "MPM.h"
+#include <QVector>
 #include <QScrollArea>
 #include <QLineEdit>
 #include <QTabWidget>
@@ -54,6 +55,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "slidingstackedwidget.h"
 
 #include <SC_DoubleLineEdit.h>
+#include <SC_IntLineEdit.h>
 #include <SettingsMPM.h>
 #include <BodiesMPM.h>
 #include <BoundariesMPM.h>
@@ -398,7 +400,19 @@ MPM::MPM(QWidget *parent)
     cameraEntity->setViewCenter(QVector3D(0.0f, 0.0f, 0.0f));
     cameraEntity->viewAll();
     // Create a cube mesh
-    Qt3DExtras::QCuboidMesh *cubeMesh = new Qt3DExtras::QCuboidMesh();
+    // Qt3DExtras::QCuboidMesh *cubeMesh = new Qt3DExtras::QCuboidMesh();
+    // Qt3DExtras::QCuboidMesh *cubeMesh[16][2][16];
+    QVector < QVector < QVector < Qt3DExtras::QCuboidMesh* > > > cubeMesh(16,
+              QVector < QVector < Qt3DExtras::QCuboidMesh* > > (2,
+                        QVector < Qt3DExtras::QCuboidMesh* > (16, nullptr)));
+    for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+                cubeMesh[i][j][k] = new Qt3DExtras::QCuboidMesh();
+            }
+        }
+    }
+
     Qt3DExtras::QCuboidMesh *fluidMesh = new Qt3DExtras::QCuboidMesh();
     Qt3DExtras::QCuboidMesh *pistonMesh = new Qt3DExtras::QCuboidMesh();
     Qt3DRender::QMesh *twinMesh = new Qt3DRender::QMesh();
@@ -407,17 +421,36 @@ MPM::MPM(QWidget *parent)
     hydroMesh->setSource(QUrl(QStringLiteral("qrc:/HydroUQ_Icon_Color.obj")));
 
     // Create a transform and set its scale
-    auto cubeTransform = new Qt3DCore::QTransform();
+    // auto cubeTransform = new Qt3DCore::QTransform();
+    // Qt3DCore::QTransform *cubeTransform[16][2][16];
+    QVector < QVector < QVector < Qt3DCore::QTransform* > > > cubeTransform(16,
+              QVector < QVector < Qt3DCore::QTransform* > > (2,
+                        QVector < Qt3DCore::QTransform* > (16, nullptr)));
     auto fluidTransform = new Qt3DCore::QTransform();
     auto pistonTransform = new Qt3DCore::QTransform();
     auto twinTransform = new Qt3DCore::QTransform();
     auto hydroTransform = new Qt3DCore::QTransform();
-    cubeMesh->setXExtent(1.016f);
-    cubeMesh->setYExtent(0.615f);
-    cubeMesh->setZExtent(1.016f);
-    cubeTransform->setScale(1.f);
-    cubeTransform->setTranslation(QVector3D(45.8f+1.016f/2.f, 2.0f+0.615f/2.f, 1.825f));
-    cubeTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+    for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+                cubeTransform[i][j][k] = new Qt3DCore::QTransform();
+                cubeMesh[i][j][k]->setXExtent(1.016f);
+                cubeMesh[i][j][k]->setYExtent(0.615f);
+                cubeMesh[i][j][k]->setZExtent(1.016f);
+                cubeTransform[i][j][k]->setScale(1.f);
+                cubeTransform[i][j][k]->setTranslation(QVector3D(45.8f+1.016f/2.f, 2.0f+0.615f/2.f, 1.825f)); 
+                cubeTransform[i][j][k]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+
+
+            }
+        }
+    }
+    // cubeMesh->setXExtent(1.016f);
+    // cubeMesh->setYExtent(0.615f);
+    // cubeMesh->setZExtent(1.016f);
+    // cubeTransform->setScale(1.f);
+    // cubeTransform->setTranslation(QVector3D(45.8f+1.016f/2.f, 2.0f+0.615f/2.f, 1.825f));
+    // cubeTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
 
     fluidMesh->setXExtent(84.0f);
     fluidMesh->setYExtent(2.0f);
@@ -450,13 +483,27 @@ MPM::MPM(QWidget *parent)
 
 
     // Create a material and set its color
-    auto cubeMaterial = new Qt3DExtras::QPhongMaterial();
+    // auto cubeMaterial = new Qt3DExtras::QPhongMaterial();
+    // Qt3DExtras::QPhongMaterial *cubeMaterial[16][2][16];
+    QVector < QVector < QVector < Qt3DExtras::QPhongMaterial* > > > cubeMaterial(16,
+              QVector < QVector < Qt3DExtras::QPhongMaterial* > > (2,
+                        QVector < Qt3DExtras::QPhongMaterial* > (16, nullptr)));
     auto fluidMaterial = new Qt3DExtras::QPhongAlphaMaterial();
     auto pistonMaterial = new Qt3DExtras::QPhongMaterial();
     auto twinMaterial = new Qt3DExtras::QPhongMaterial();
     auto hydroMaterial = new Qt3DExtras::QPhongMaterial();
-    cubeMaterial->setDiffuse(QColor(QRgb(0xCC5500)));
-    twinMaterial->setDiffuse(QColor(QRgb(0xFFFFFF)));
+
+    for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+                cubeMaterial[i][j][k] = new Qt3DExtras::QPhongMaterial();
+                cubeMaterial[i][j][k]->setDiffuse(QColor(QRgb(0xCC5500)));
+            }
+        }
+    }
+    // cubeMaterial->setDiffuse(QColor(QRgb(0xCC5500)));
+    // twinMaterial->setDiffuse(QColor(QRgb(0xFFFFFF)));
+
     // Give twin an ambient conrete color
     twinMaterial->setAmbient(QColor(QRgb(0xCCCCCC)));
 
@@ -473,14 +520,29 @@ MPM::MPM(QWidget *parent)
     
     // Create a cube entity and add the mesh, transform and material components
     auto twinEntity = new Qt3DCore::QEntity(rootEntity);
-    auto cubeEntity = new Qt3DCore::QEntity(rootEntity);
+
+    QVector < QVector < QVector < Qt3DCore::QEntity* > > > cubeEntity(16,
+              QVector < QVector < Qt3DCore::QEntity* > > (2,
+                        QVector < Qt3DCore::QEntity* > (16, nullptr)));
     auto fluidEntity = new Qt3DCore::QEntity(rootEntity);
     auto pistonEntity = new Qt3DCore::QEntity(rootEntity);
     auto hydroEntity = new Qt3DCore::QEntity(rootEntity);
+    // Now disable the HydroUQ logo until its cleaned up
+    hydroEntity->setEnabled(false);
 
-    cubeEntity->addComponent(cubeMesh);
-    cubeEntity->addComponent(cubeMaterial);
-    cubeEntity->addComponent(cubeTransform);
+    for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+                cubeEntity[i][j][k] = new Qt3DCore::QEntity(rootEntity);
+                cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
+                cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
+                cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
+            }
+        }
+    }
+    // cubeEntity->addComponent(cubeMesh);
+    // cubeEntity->addComponent(cubeMaterial);
+    // cubeEntity->addComponent(cubeTransform);
 
 
     fluidEntity->addComponent(fluidMesh);
@@ -533,9 +595,28 @@ MPM::MPM(QWidget *parent)
       double lengthX = mpmBoundaries->getDimensionX(mpmBoundaries->getStructureBoundary());
       double lengthY = mpmBoundaries->getDimensionY(mpmBoundaries->getStructureBoundary());
       double lengthZ = mpmBoundaries->getDimensionZ(mpmBoundaries->getStructureBoundary());
-      cubeMesh->setXExtent(lengthX);
-      cubeMesh->setYExtent(lengthY);
-      cubeMesh->setZExtent(lengthZ);
+      int arrayX = mpmBoundaries->getArrayX(mpmBoundaries->getStructureBoundary());
+      int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
+      int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
+      arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
+      arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
+      for (int i = 0; i < arrayX; i++) {
+        for (int j = 0; j < arrayY; j++) {
+          for (int k = 0; k < arrayZ; k++) {
+            if (i < 16-1 && j < 2-1 && k < 16-1)
+            {
+              cubeMesh[i][j][k]->setXExtent(lengthX);
+              cubeMesh[i][j][k]->setYExtent(lengthY);
+              cubeMesh[i][j][k]->setZExtent(lengthZ);
+            }
+          }
+        }
+      }
+
+      // cubeMesh->setXExtent(lengthX);
+      // cubeMesh->setYExtent(lengthY);
+      // cubeMesh->setZExtent(lengthZ);
     };
 
     // Make lambda function to update the position of cuboid design structure
@@ -549,7 +630,134 @@ MPM::MPM(QWidget *parent)
       originX = lengthX/2.f + originX;  
       originY = lengthY/2.f + originY;
       originZ = lengthZ/2.f + originZ;
-      cubeTransform->setTranslation(QVector3D(originX, originY, originZ));
+
+      // cubeTransform->setTranslation(QVector3D(originX, originY, originZ));
+
+      int arrayX = mpmBoundaries->getArrayX(mpmBoundaries->getStructureBoundary());
+      int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
+      int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
+      arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
+      arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
+
+      double spacingX = mpmBoundaries->getSpacingX(mpmBoundaries->getStructureBoundary());
+      double spacingY = mpmBoundaries->getSpacingY(mpmBoundaries->getStructureBoundary());
+      double spacingZ = mpmBoundaries->getSpacingZ(mpmBoundaries->getStructureBoundary());
+      for (int i = 0; i < arrayX; i++) {
+        for (int j = 0; j < arrayY; j++) {
+          for (int k = 0; k < arrayZ; k++) {
+            if (i < 16-1 && j < 2-1 && k < 16-1)
+            {
+              cubeTransform[i][j][k]->setTranslation(QVector3D(originX + spacingX*i, originY + spacingY * j, originZ + spacingZ * k));
+            }
+          }
+        }
+      }
+
+
+    };
+
+    auto updateBoundaryStructureArray = [=]() {
+
+      double originX = mpmBoundaries->getOriginX(mpmBoundaries->getStructureBoundary());
+      double originY = mpmBoundaries->getOriginY(mpmBoundaries->getStructureBoundary());
+      double originZ = mpmBoundaries->getOriginZ(mpmBoundaries->getStructureBoundary());
+      double lengthX = mpmBoundaries->getDimensionX(mpmBoundaries->getStructureBoundary());
+      double lengthY = mpmBoundaries->getDimensionY(mpmBoundaries->getStructureBoundary());
+      double lengthZ = mpmBoundaries->getDimensionZ(mpmBoundaries->getStructureBoundary());
+      double spacingX = mpmBoundaries->getSpacingX(mpmBoundaries->getStructureBoundary());
+      double spacingY = mpmBoundaries->getSpacingY(mpmBoundaries->getStructureBoundary());
+      double spacingZ = mpmBoundaries->getSpacingZ(mpmBoundaries->getStructureBoundary());
+
+      originX = lengthX/2.f + originX;
+      originY = lengthY/2.f + originY;
+      originZ = lengthZ/2.f + originZ;
+
+      int arrayX = mpmBoundaries->getArrayX(mpmBoundaries->getStructureBoundary());
+      int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
+      int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
+      arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
+      arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
+      // cubeMesh is now a 3d array of cubeMesh
+      // Since arrayX, arrayY, and arrayZ updated, we need to update the size of the array
+      for (int i = 0; i < arrayX; i++) {
+        for (int j = 0; j < arrayY; j++) {
+          for (int k = 0; k < arrayZ; k++) {
+            cubeMesh[i][j][k]->setXExtent(lengthX);
+            cubeMesh[i][j][k]->setYExtent(lengthY);
+            cubeMesh[i][j][k]->setZExtent(lengthZ);
+            cubeTransform[i][j][k]->setTranslation(QVector3D(originX + spacingX*i, originY + spacingY * j, originZ + spacingZ * k));
+            
+            if (i < 16-1 && j < 2-1 && k < 16-1)
+            {
+              cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
+              cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
+              cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
+            }
+            // remove cubeEntity[i][j][k] from the view port
+            else 
+            {
+              cubeEntity[i][j][k]->removeComponent(cubeMesh[i][j][k]);
+              cubeEntity[i][j][k]->removeComponent(cubeMaterial[i][j][k]);
+              cubeEntity[i][j][k]->removeComponent(cubeTransform[i][j][k]);
+            }
+          }
+        }
+      }
+
+    };
+
+    auto updateBoundaryStructureSpacing = [=]() {
+
+      double originX = mpmBoundaries->getOriginX(mpmBoundaries->getStructureBoundary());
+      double originY = mpmBoundaries->getOriginY(mpmBoundaries->getStructureBoundary());
+      double originZ = mpmBoundaries->getOriginZ(mpmBoundaries->getStructureBoundary());
+      double lengthX = mpmBoundaries->getDimensionX(mpmBoundaries->getStructureBoundary());
+      double lengthY = mpmBoundaries->getDimensionY(mpmBoundaries->getStructureBoundary());
+      double lengthZ = mpmBoundaries->getDimensionZ(mpmBoundaries->getStructureBoundary());
+      double spacingX = mpmBoundaries->getSpacingX(mpmBoundaries->getStructureBoundary());
+      double spacingY = mpmBoundaries->getSpacingY(mpmBoundaries->getStructureBoundary());
+      double spacingZ = mpmBoundaries->getSpacingZ(mpmBoundaries->getStructureBoundary());
+
+      originX = lengthX/2.f + originX;
+      originY = lengthY/2.f + originY;
+      originZ = lengthZ/2.f + originZ;
+
+      int arrayX = mpmBoundaries->getArrayX(mpmBoundaries->getStructureBoundary());
+      int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
+      int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
+      // cubeMesh is now a 3d array of cubeMesh
+      // Since arrayX, arrayY, and arrayZ updated, we need to update the size of the array
+      arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
+      arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
+      
+      for (int i = 0; i < arrayX; i++) {
+        for (int j = 0; j < arrayY; j++) {
+          for (int k = 0; k < arrayZ; k++) {
+            cubeMesh[i][j][k]->setXExtent(lengthX);
+            cubeMesh[i][j][k]->setYExtent(lengthY);
+            cubeMesh[i][j][k]->setZExtent(lengthZ);
+            cubeTransform[i][j][k]->setTranslation(QVector3D(originX + spacingX*i, originY + spacingY * j, originZ + spacingZ * k));
+            
+            if (i < 16-1 && j < 2-1 && k < 16-1)
+            {
+              cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
+              cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
+              cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
+            }
+            // remove cubeEntity[i][j][k] from the view port
+            else 
+            {
+              cubeEntity[i][j][k]->removeComponent(cubeMesh[i][j][k]);
+              cubeEntity[i][j][k]->removeComponent(cubeMaterial[i][j][k]);
+              cubeEntity[i][j][k]->removeComponent(cubeTransform[i][j][k]);
+            }
+          }
+        }
+      }
+
     };
 
     auto updateBoundaryPaddleSize = [=]() {
@@ -578,37 +786,88 @@ MPM::MPM(QWidget *parent)
 
     auto updateDigitalTwin = [=](int index) {
       if (index == 0) {
-        twinEntity->setEnabled(true);
-        cubeEntity->setEnabled(true);
+        twinEntity->setEnabled(false);
+        for (int i = 0; i < 16; i++) {
+          for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+              if (i < 16-1 && j < 2-1 && k < 16-1)
+              {
+                cubeEntity[i][j][k]->setEnabled(false);
+                if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
+              }
+            }
+          }
+        }
+        // cubeEntity[i][j][k]->setEnabled(true);
         fluidEntity->setEnabled(true);
         pistonEntity->setEnabled(true);
         twinTransform->setScale3D(QVector3D(1.f,1.f,1.f));
-        // hydroEntity->setEnabled(true);
+        hydroEntity->setEnabled(false);
       } else if (index == 1) {
-        twinEntity->setEnabled(true);
-        cubeEntity->setEnabled(true);
+        twinEntity->setEnabled(false);
+        for (int i = 0; i < 1; i++) {
+          for (int j = 0; j < 1; j++) {
+            for (int k = 0; k < 1; k++) {
+              if (i < 16-1 && j < 2-1 && k < 16-1)
+              {
+                cubeEntity[i][j][k]->setEnabled(false);
+                if (i == 0 && j == 0 && k < 2) cubeEntity[i][j][k]->setEnabled(true);
+              }
+            }
+          }
+        }
         fluidEntity->setEnabled(true);
         pistonEntity->setEnabled(true);
         twinTransform->setScale3D(QVector3D(0.6f,7.25f,1.f/1.75f));
-        // hydroEntity->setEnabled(false);
+        hydroEntity->setEnabled(false);
       } else if (index == 2) {
         twinEntity->setEnabled(false);
-        cubeEntity->setEnabled(true);
+        for (int i = 0; i < 1; i++) {
+          for (int j = 0; j < 1; j++) {
+            for (int k = 0; k < 1; k++) {
+              if (i < 16-1 && j < 2-1 && k < 16-1)
+              {
+                cubeEntity[i][j][k]->setEnabled(false);
+                if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
+              }
+            }
+          }
+        }
         fluidEntity->setEnabled(true);
         pistonEntity->setEnabled(false);
-        // hydroEntity->setEnabled(false);
+        hydroEntity->setEnabled(false);
       } else if (index == 3) {
         twinEntity->setEnabled(false);
-        cubeEntity->setEnabled(true);
+        for (int i = 0; i < 1; i++) {
+          for (int j = 0; j < 1; j++) {
+            for (int k = 0; k < 1; k++) {
+              if (i < 16-1 && j < 2-1 && k < 16-1)
+              {
+                cubeEntity[i][j][k]->setEnabled(false);
+                if (i < 2 && j == 0 && k < 5) cubeEntity[i][j][k]->setEnabled(true);
+              }
+            }
+          }
+        }
         fluidEntity->setEnabled(true);
         pistonEntity->setEnabled(true);
-        // hydroEntity->setEnabled(false);
+        hydroEntity->setEnabled(false);
       } else if (index == 4) {
         twinEntity->setEnabled(false);
-        cubeEntity->setEnabled(false);
+        for (int i = 0; i < 1; i++) {
+          for (int j = 0; j < 1; j++) {
+            for (int k = 0; k < 1; k++) {
+              if (i < 16-1 && j < 2-1 && k < 16-1)
+              {
+                cubeEntity[i][j][k]->setEnabled(false);
+                // if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
+              }
+            }
+          }
+        }
         fluidEntity->setEnabled(false);
         pistonEntity->setEnabled(true);
-        // hydroEntity->setEnabled(true);
+        hydroEntity->setEnabled(false);
       }
       updateFluid();
       updateBoundaryStructureSize();
@@ -656,6 +915,30 @@ MPM::MPM(QWidget *parent)
       updateBoundaryStructureSize();
     });
 
+    connect(mpmBoundaries->getArrayXWidget(mpmBoundaries->getStructureBoundary()), &QLineEdit::textChanged, [=](QString text){
+      updateBoundaryStructureArray(); 
+    });
+
+    connect(mpmBoundaries->getArrayYWidget(mpmBoundaries->getStructureBoundary()), &QLineEdit::textChanged, [=](QString text){
+      updateBoundaryStructureArray();
+    });
+
+    connect(mpmBoundaries->getArrayZWidget(mpmBoundaries->getStructureBoundary()), &QLineEdit::textChanged, [=](QString text){
+      updateBoundaryStructureArray();
+    });
+
+    connect(mpmBoundaries->getSpacingXWidget(mpmBoundaries->getStructureBoundary()), &QLineEdit::textChanged, [=](QString text){
+      updateBoundaryStructureSpacing();
+    });
+
+    connect(mpmBoundaries->getSpacingYWidget(mpmBoundaries->getStructureBoundary()), &QLineEdit::textChanged, [=](QString text){
+      updateBoundaryStructureSpacing();
+    });
+
+    connect(mpmBoundaries->getSpacingZWidget(mpmBoundaries->getStructureBoundary()), &QLineEdit::textChanged, [=](QString text){
+      updateBoundaryStructureSpacing();
+    });
+
     // Paddle
     connect(mpmBoundaries->getDimensionXWidget(mpmBoundaries->getPaddleBoundary()), &QLineEdit::textChanged, [=](QString text){
       updateBoundaryPaddlePosition();
@@ -685,6 +968,9 @@ MPM::MPM(QWidget *parent)
       updateBoundaryPaddlePosition();
       updateBoundaryPaddleSize();
     });
+
+
+
 
     // -----------------------------------------------------------------------------------
     

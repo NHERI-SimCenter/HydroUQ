@@ -42,6 +42,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <SimCenterAppWidget.h>
 class SC_DoubleLineEdit;
+class SC_IntLineEdit;
 
 //Forward declaration
 class InputWidgetParameters;

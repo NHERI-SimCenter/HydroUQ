@@ -351,6 +351,67 @@ SC_DoubleLineEdit* BoundariesMPM::getOriginZWidget(BoundaryMPM* theBoundary)
   return theBoundary->getOriginZWidget();
 }
 
+int BoundariesMPM::getArrayX(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getArrayX();
+}
+
+int BoundariesMPM::getArrayY(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getArrayY();
+}
+
+int BoundariesMPM::getArrayZ(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getArrayZ();
+}
+
+
+SC_IntLineEdit* BoundariesMPM::getArrayXWidget(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getArrayXWidget();
+}
+
+SC_IntLineEdit* BoundariesMPM::getArrayYWidget(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getArrayYWidget();
+}
+
+SC_IntLineEdit* BoundariesMPM::getArrayZWidget(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getArrayZWidget();
+}
+
+double BoundariesMPM::getSpacingX(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getSpacingX();
+}
+
+double BoundariesMPM::getSpacingY(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getSpacingY();
+}
+
+double BoundariesMPM::getSpacingZ(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getSpacingZ();
+}
+
+SC_DoubleLineEdit* BoundariesMPM::getSpacingXWidget(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getSpacingXWidget();
+}
+
+SC_DoubleLineEdit* BoundariesMPM::getSpacingYWidget(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getSpacingYWidget();
+}
+
+SC_DoubleLineEdit* BoundariesMPM::getSpacingZWidget(BoundaryMPM* theBoundary)
+{
+  return theBoundary->getSpacingZWidget();
+}
+
 
 
 // bool BoundariesMPM::addBoundary(BoundaryMPM* theBoundary)

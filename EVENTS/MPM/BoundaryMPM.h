@@ -85,6 +85,19 @@ public:
     SC_DoubleLineEdit* getOriginXWidget();
     SC_DoubleLineEdit* getOriginYWidget();
     SC_DoubleLineEdit* getOriginZWidget();
+    
+    int getArrayX();
+    int getArrayY();
+    int getArrayZ();
+    SC_IntLineEdit* getArrayXWidget();
+    SC_IntLineEdit* getArrayYWidget();
+    SC_IntLineEdit* getArrayZWidget();
+    double getSpacingX();
+    double getSpacingY();
+    double getSpacingZ();
+    SC_DoubleLineEdit* getSpacingXWidget();
+    SC_DoubleLineEdit* getSpacingYWidget();
+    SC_DoubleLineEdit* getSpacingZWidget();
 
 // Need to let parent know if a dimension or origin has changed
 signals:
@@ -92,6 +105,8 @@ signals:
     // void structOriginChanged(void); 
     void structDimensionsChanged(QString val);
     void structOriginChanged(QString val); 
+    void structArrayChanged(QString val);
+    void structSpacingChanged(QString val);
 
 private:
 

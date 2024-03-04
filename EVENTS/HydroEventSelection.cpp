@@ -62,6 +62,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <WaveDigitalFlume/WaveDigitalFlume.h>
 #include <coupledDigitalTwin/CoupledDigitalTwin.h>
 #include <MPM/MPM.h>
+#include <MPM/SPH.h>
 //*********************************************************************************
 // Main Hydro event
 //*********************************************************************************
@@ -94,6 +95,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     eventSelection->addItem(tr("Digital Twin (GeoClaw and OpenFOAM)"));
     eventSelection->addItem(tr("Digital Twin (OpenFOAM and OpenSees)"));
     eventSelection->addItem(tr("Digital Twin (MPM)"));        
+    eventSelection->addItem(tr("Digital Twin (SPH)"));        
 
     // Datatips for the different event types
     eventSelection->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
@@ -101,6 +103,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     eventSelection->setItemData(1, "Shallow-Water-Equations -> Finite-Volume-Method -> Finite-Element-Analysis (GeoClaw -> OpenFOAM -> OpenSees) [Multi-CPU]", Qt::ToolTipRole);
     eventSelection->setItemData(2, "Finite-Volume-Method <-> Finite-Element-Analysis (OpenFOAM <-> OpenSees) [Multi-CPU]", Qt::ToolTipRole);
     eventSelection->setItemData(3, "Material-Point-Method (ClaymoreUW) [Multi-GPU]", Qt::ToolTipRole);    
+    eventSelection->setItemData(4, "Smoothed-Particle-Hydrodynamics (DualSPHysics) [CPU-GPU]", Qt::ToolTipRole);    
 
     theSelectionLayout->addWidget(label);
     QSpacerItem *spacer = new QSpacerItem(50,10);
@@ -119,11 +122,14 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     theWaveDigitalFlume = new WaveDigitalFlume(theRandomVariablesContainer);
     theCoupledDigitalTwin = new CoupledDigitalTwin(theRandomVariablesContainer);
     theMPM = new MPM(theRandomVariablesContainer);
+    theSPH = new SPH(theRandomVariablesContainer);
 
     theStackedWidget->addWidget(theGeoClawOpenFOAM);
     theStackedWidget->addWidget(theWaveDigitalFlume);
     theStackedWidget->addWidget(theCoupledDigitalTwin);
-    theStackedWidget->addWidget(theMPM);        
+    theStackedWidget->addWidget(theMPM);   
+    theStackedWidget->addWidget(theSPH);        
+
     // --- 
 
 
@@ -198,6 +204,18 @@ void HydroEventSelection::eventSelectionChanged(int arg1)
         }     
         theStackedWidget->setCurrentIndex(3);
     }        
+    else if (arg1 == 4) {
+        SPH* theM = dynamic_cast<SPH*>(theSPH);
+        
+        theCurrentEvent = theM->isInitialize() ? theSPH 
+                         : (theM->initialize() ? theSPH : nullptr); 
+        if (theCurrentEvent == nullptr) 
+        {
+            qDebug() << "ERROR: Hydro-EventSelection failed while attempting to initialize the SPH Event, index: " << arg1;
+            return;
+        }     
+        theStackedWidget->setCurrentIndex(4);
+    }        
     else {
         qDebug() << "ERROR: Hydro-EventSelection selection-type unknown: " << arg1;
         return;
@@ -235,6 +253,16 @@ void HydroEventSelection::eventSelectionChanged(const QString &arg1)
             return;
         }     
         theStackedWidget->setCurrentIndex(3);
+    }
+    else if(arg1 == "Digital Twin (SPH)" || arg1 == "SPH" || arg1 == "theSPH" || arg1 == "SPHDigitalTwin" || arg1 == "theSPHDigitalTwin" || arg1 == "SPH Digital Twin") {
+        SPH* theM = dynamic_cast<SPH*>(theSPH);
+        theCurrentEvent = theM->isInitialize() ? theSPH 
+                        : ( theM->initialize() ? theSPH : nullptr ); 
+        if (!theCurrentEvent) {
+            qDebug() << "ERROR: Hydro-EventSelection failed while attempting to initialize the SPH Event, label: " << arg1;
+            return;
+        }     
+        theStackedWidget->setCurrentIndex(4);
     }
     else {
         qDebug() << "ERROR .. HydroEventSelection selection .. type unknown: " << arg1;
@@ -308,6 +336,8 @@ bool HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
         index = 2;
     } else if ((type == QString("MPM")) || (type == QString("Material Point Method")) || (type == QString("Digital Twin (MPM)")) || (type == QString("MPMDigitalTwin")) || (type == QString("theMPM")) || (type == QString("MPM Digital Twin")) || (type == QString("MPMDigitalTwin")) || (type == QString("theMPMDigitalTwin"))){
         index = 3;
+    } else if ((type == QString("SPH")) || (type == QString("Smoothed Particled Hydrodynamics")) || (type == QString("Digital Twin (SPH)")) || (type == QString("SPHDigitalTwin")) || (type == QString("theSPH")) || (type == QString("SPH Digital Twin")) || (type == QString("SPHDigitalTwin")) || (type == QString("theSPHDigitalTwin"))){
+        index = 4;
     }
     else 
     {
@@ -413,7 +443,14 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
       
       theCurrentEvent = theMPM;
       index = 3;
-    } else {
+    }
+    else if (((type == "SPH")
+	|| (type == "Smoothed Particle Hydrodynamics")) || ((type == "General Event (SPH)") || (type == "Digital Twin (SPH)")) || (type == "SPHDigitalTwin") || (type == "theSPH")) {
+      
+      theCurrentEvent = theSPH;
+      index = 4;
+    }
+    else {
       qDebug() << "HydroEventSelection::inputAppDataFromJSON type unknown: " << type;
       theCurrentEvent = theMPM;
       index = 3;

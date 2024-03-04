@@ -97,6 +97,21 @@ public:
     SC_DoubleLineEdit* getOriginZWidget(BoundaryMPM* theBoundary);
 
 
+    int getArrayX(BoundaryMPM* theBoundary);
+    int getArrayY(BoundaryMPM* theBoundary);
+    int getArrayZ(BoundaryMPM* theBoundary);
+    SC_IntLineEdit* getArrayXWidget(BoundaryMPM* theBoundary);
+    SC_IntLineEdit* getArrayYWidget(BoundaryMPM* theBoundary);
+    SC_IntLineEdit* getArrayZWidget(BoundaryMPM* theBoundary);
+    
+    double getSpacingX(BoundaryMPM* theBoundary);
+    double getSpacingY(BoundaryMPM* theBoundary);
+    double getSpacingZ(BoundaryMPM* theBoundary);
+    SC_DoubleLineEdit* getSpacingXWidget(BoundaryMPM* theBoundary);
+    SC_DoubleLineEdit* getSpacingYWidget(BoundaryMPM* theBoundary);
+    SC_DoubleLineEdit* getSpacingZWidget(BoundaryMPM* theBoundary);
+
+
     // bool addBoundary(BoundaryMPM* theBoundary);
     // bool removeBoundary(int index);
     // bool removeBoundary(BoundaryMPM* theBoundary);

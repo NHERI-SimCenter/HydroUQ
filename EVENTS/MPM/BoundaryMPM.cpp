@@ -905,6 +905,129 @@ SC_DoubleLineEdit* BoundaryMPM::getOriginZWidget() {
 }
 
 
+int BoundaryMPM::getArrayX() {
+  if (stackedWidget->currentIndex() == 0) return 0;
+  else if (stackedWidget->currentIndex() == 1) return 0;
+  else if (stackedWidget->currentIndex() == 2) return 0;
+  else if (stackedWidget->currentIndex() == 3) return structArrayX->text().toInt();
+  else if (stackedWidget->currentIndex() == 4) return 0;
+  else
+  return 1;
+}
+
+int BoundaryMPM::getArrayY() {
+  if (stackedWidget->currentIndex() == 0) return 0;
+  else if (stackedWidget->currentIndex() == 1) return 0;
+  else if (stackedWidget->currentIndex() == 2) return 0;
+  else if (stackedWidget->currentIndex() == 3) return structArrayY->text().toInt();
+  else if (stackedWidget->currentIndex() == 4) return 0;
+  else
+  return 1;
+}
+
+int BoundaryMPM::getArrayZ() {
+  if (stackedWidget->currentIndex() == 0) return 0;
+  else if (stackedWidget->currentIndex() == 1) return 0;
+  else if (stackedWidget->currentIndex() == 2) return 0;
+  else if (stackedWidget->currentIndex() == 3) return structArrayZ->text().toInt();
+  else if (stackedWidget->currentIndex() == 4) return 0;
+  else
+  return 1;
+}
+
+SC_IntLineEdit* BoundaryMPM::getArrayXWidget() {
+  if (stackedWidget->currentIndex() == 0) return nullptr;
+  else if (stackedWidget->currentIndex() == 1) return nullptr;
+  else if (stackedWidget->currentIndex() == 2) return nullptr;
+  else if (stackedWidget->currentIndex() == 3) return structArrayX;
+  else if (stackedWidget->currentIndex() == 4) return nullptr;
+  else
+  return nullptr;
+}
+
+SC_IntLineEdit* BoundaryMPM::getArrayYWidget() {
+  if (stackedWidget->currentIndex() == 0) return nullptr;
+  else if (stackedWidget->currentIndex() == 1) return nullptr;
+  else if (stackedWidget->currentIndex() == 2) return nullptr;
+  else if (stackedWidget->currentIndex() == 3) return structArrayY;
+  else if (stackedWidget->currentIndex() == 4) return nullptr;
+  else
+  return nullptr;
+}
+
+SC_IntLineEdit* BoundaryMPM::getArrayZWidget() {
+  if (stackedWidget->currentIndex() == 0) return nullptr;
+  else if (stackedWidget->currentIndex() == 1) return nullptr;
+  else if (stackedWidget->currentIndex() == 2) return nullptr;
+  else if (stackedWidget->currentIndex() == 3) return structArrayZ;
+  else if (stackedWidget->currentIndex() == 4) return nullptr;
+  else
+  return nullptr;
+}
+
+double BoundaryMPM::getSpacingX() {
+  if (stackedWidget->currentIndex() == 0) return 0;
+  else if (stackedWidget->currentIndex() == 1) return 0;
+  else if (stackedWidget->currentIndex() == 2) return 0;
+  else if (stackedWidget->currentIndex() == 3) return structSpacingX->text().toDouble();
+  else if (stackedWidget->currentIndex() == 4) return 0;
+  else
+  return 0.f;
+}
+
+double BoundaryMPM::getSpacingY() {
+  if (stackedWidget->currentIndex() == 0) return 0;
+  else if (stackedWidget->currentIndex() == 1) return 0;
+  else if (stackedWidget->currentIndex() == 2) return 0;
+  else if (stackedWidget->currentIndex() == 3) return structSpacingY->text().toDouble();
+  else if (stackedWidget->currentIndex() == 4) return 0;
+  else
+  return 0.f;
+}
+
+double BoundaryMPM::getSpacingZ() {
+  if (stackedWidget->currentIndex() == 0) return 0;
+  else if (stackedWidget->currentIndex() == 1) return 0;
+  else if (stackedWidget->currentIndex() == 2) return 0;
+  else if (stackedWidget->currentIndex() == 3) return structSpacingZ->text().toDouble();
+  else if (stackedWidget->currentIndex() == 4) return 0;
+  else
+  return 0.f;
+}
+
+
+SC_DoubleLineEdit* BoundaryMPM::getSpacingXWidget() {
+  if (stackedWidget->currentIndex() == 0) return nullptr;
+  else if (stackedWidget->currentIndex() == 1) return nullptr;
+  else if (stackedWidget->currentIndex() == 2) return nullptr;
+  else if (stackedWidget->currentIndex() == 3) return structSpacingX;
+  else if (stackedWidget->currentIndex() == 4) return nullptr;
+  else
+  return nullptr;
+}
+
+SC_DoubleLineEdit* BoundaryMPM::getSpacingYWidget() {
+  if (stackedWidget->currentIndex() == 0) return nullptr;
+  else if (stackedWidget->currentIndex() == 1) return nullptr;
+  else if (stackedWidget->currentIndex() == 2) return nullptr;
+  else if (stackedWidget->currentIndex() == 3) return structSpacingY;
+  else if (stackedWidget->currentIndex() == 4) return nullptr;
+  else
+  return nullptr;
+}
+
+SC_DoubleLineEdit* BoundaryMPM::getSpacingZWidget() {
+  if (stackedWidget->currentIndex() == 0) return nullptr;
+  else if (stackedWidget->currentIndex() == 1) return nullptr;
+  else if (stackedWidget->currentIndex() == 2) return nullptr;
+  else if (stackedWidget->currentIndex() == 3) return structSpacingZ;
+  else if (stackedWidget->currentIndex() == 4) return nullptr;
+  else
+  return nullptr;
+}
+
+
+
 bool
 BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
 {
@@ -1177,15 +1300,15 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
       paddleOriginY->setText(QString::number(-0.1));
       paddleOriginZ->setText(QString::number(-0.1));
       paddleLength->setText(QString::number(0.2));
-      paddleHeight->setText(QString::number(4.6));
-      paddleWidth->setText(QString::number(3.85));
+      paddleHeight->setText(QString::number(2.7));
+      paddleWidth->setText(QString::number(26.7));
     } else if (twinIdx == 2) {
       paddleOriginX->setText(QString::number(0));
       paddleOriginY->setText(QString::number(0));
       paddleOriginZ->setText(QString::number(0));
       paddleLength->setText(QString::number(0.2));
-      paddleHeight->setText(QString::number(4.6));
-      paddleWidth->setText(QString::number(3.85));
+      paddleHeight->setText(QString::number(1.2));
+      paddleWidth->setText(QString::number(0.9));
     } else if (twinIdx == 3) {
       paddleOriginX->setText(QString::number(0.5));
       paddleOriginY->setText(QString::number(0.1));
@@ -1225,7 +1348,7 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
       structWidth->setText(QString::number(0.4));
       structOriginLength->setText(QString::number(35.29));
       structOriginHeight->setText(QString::number(1.0));
-      structOriginWidth->setText(QString::number(0.4));
+      structOriginWidth->setText(QString::number(10.4));
       applyArray->setChecked(true);
       structSpacingX->setText(QString::number(0.0));
       structSpacingY->setText(QString::number(0.0));

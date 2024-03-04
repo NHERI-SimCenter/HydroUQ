@@ -102,7 +102,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <WaveDigitalFlume/WaveDigitalFlume.h>
 #include <coupledDigitalTwin/CoupledDigitalTwin.h>
 #include <MPM/MPM.h>
-
+#include <MPM/SPH.h>
 // static pointer for global procedure set in constructor
 static WorkflowAppHydroUQ *theApp = 0;
 
@@ -287,7 +287,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("EDP"), theEDP_Selection);
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
-    theComponentSelection->displayComponent("UQ"); // Initial page on startup
+    theComponentSelection->displayComponent("EVT"); // Initial page on startup
     horizontalLayout->setAlignment(Qt::AlignLeft);
 
     // When theComponentSelection is changed, update the icon in the side bar to also be selected
@@ -356,6 +356,23 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         theDialog->showTool("Digital Twin (MPM)");
     });
 
+
+    // SPH *miniSPH = new SPH(theRVs, this); 
+    QString appNameSPH =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6
+    QList<QString> queuesSPH; queuesSPH << "gpu-a100-dev" << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    SPH *miniSPH = new SPH(); 
+    if (!miniSPH->isInitialize()) 
+    {
+        miniSPH->initialize();
+    }  
+    SC_RemoteAppTool *miniSPHTool = new SC_RemoteAppTool(appNameSPH, queuesSPH, theRemoteService, miniSPH, theToolDialog);
+    theToolDialog->addTool(miniSPHTool, "Digital Twin (SPH)");
+
+    // Set the path to the input file
+    QAction *showSPH = toolsMenu->addAction("Digital Twin (&SPH)");
+    connect(showSPH, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniSPHTool] {
+        theDialog->showTool("Digital Twin (SPH)");
+    });
   
     //
     // Add SimpleTest Example
@@ -617,7 +634,6 @@ WorkflowAppHydroUQ::clear(void)
         return; // WE-UQ
     }
 
-    // abiy - added results processing and template stuff for test setup
     //
     // swap current results with existing one in selection & disconnect signals
     //
