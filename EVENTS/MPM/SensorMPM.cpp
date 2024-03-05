@@ -347,7 +347,7 @@ SensorMPM::SensorMPM(QWidget *parent)
       typeVM->setCurrentIndex(0);
       attributeVM->setCurrentText("Velocity");
       operationVM->setCurrentText("Average");
-      directionVM->setCurrentText("N/A");
+      directionVM->setCurrentText("X+");
       output_frequencyVM->setText("30.0");
     } else if (val == "Load-Cells") {
       setSensorType(SensorTypeEnum::LOAD_CELL);

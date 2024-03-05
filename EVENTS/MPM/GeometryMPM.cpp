@@ -949,18 +949,26 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
         temp_array.removeAt(j);
         j--;
       }
+      if (temp_array.size() == 0) temp_array.append("0");
       trackerArray.append(temp_array);
     }
     // TODO : Merge all internal arrays into single array
     geometryObject["track_particle_id"] = trackerArray[0].toArray();
+  } else {
+    geometryObject["track_particle_id"] = QJsonArray() << "0";
   }
 
-  // geometriesArray.append(geometryObject);
-  // QJsonArray tempGeometryArray = jsonObject["geometry"].toArray();
-  // tempGeometryArray.append(geometryObject);
-  // jsonObject["geometry"] = tempGeometryArray;
-  jsonObject["geometry"] = geometryObject;
 
+  if (geometryObject["track_particle_id"].toArray().size() <= 0 ) {
+    geometryObject["track_particle_id"] = QJsonArray() << "0";
+  }
+  
+  jsonObject["geometry"] = geometryObject;
+  if (jsonObject.find("track_particle_id") == jsonObject.end()) 
+    jsonObject["track_particle_id"] = QJsonArray() << "0";
+  else if (jsonObject.find("track_particle_id") != jsonObject.end() && jsonObject["track_particle_id"].toArray().size() < 1)
+    jsonObject["track_particle_id"] =  QJsonArray() << "0";
+  
 
   return true;
 }

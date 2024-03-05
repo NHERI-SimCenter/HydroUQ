@@ -337,7 +337,11 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   // Initialize with multiple partitions on selected body presets if desired (e.g. for the water)
   fluidPartitions->addPartition(1,0);    // GPU 1 : Model 0
   fluidPartitions->addPartition(2,0);    // GPU 2 : Model 0
-
+  {
+    double fluidOrigin[3] = {1.9, 0.0, 0.0};
+    double fluidDimensions[3] = {90.0, 3.0, 3.65};
+    fluidPartitions->balance(fluidOrigin, fluidDimensions);  // Balance partitions, i.e. decompose the geometry at equal volume for each partition (no-overlap)
+  }
   // Do the same for custom body partitions with a loop
   for (int i=0; i<numAddedTabs; i++) {
     addedPartitions[i]->updateHardwareLimits(computerName, queueName);

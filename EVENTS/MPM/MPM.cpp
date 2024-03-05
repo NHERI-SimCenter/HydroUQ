@@ -405,10 +405,14 @@ MPM::MPM(QWidget *parent)
     QVector < QVector < QVector < Qt3DExtras::QCuboidMesh* > > > cubeMesh(16,
               QVector < QVector < Qt3DExtras::QCuboidMesh* > > (2,
                         QVector < Qt3DExtras::QCuboidMesh* > (16, nullptr)));
+    QVector < QVector < QVector < Qt3DExtras::QCuboidMesh* > > > debrisMesh(16,
+              QVector < QVector < Qt3DExtras::QCuboidMesh* > > (2,
+                        QVector < Qt3DExtras::QCuboidMesh* > (16, nullptr)));
     for (int i = 0; i < 16; i++) {
         for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 16; k++) {
                 cubeMesh[i][j][k] = new Qt3DExtras::QCuboidMesh();
+                debrisMesh[i][j][k] = new Qt3DExtras::QCuboidMesh();
             }
         }
     }
@@ -420,16 +424,28 @@ MPM::MPM(QWidget *parent)
     Qt3DRender::QMesh *hydroMesh = new Qt3DRender::QMesh();
     hydroMesh->setSource(QUrl(QStringLiteral("qrc:/HydroUQ_Icon_Color.obj")));
 
+    Qt3DExtras::QCuboidMesh *reservoirMesh = new Qt3DExtras::QCuboidMesh();
+    Qt3DExtras::QCuboidMesh *harborMesh = new Qt3DExtras::QCuboidMesh();
+    Qt3DExtras::QCuboidMesh *floorMesh = new Qt3DExtras::QCuboidMesh();
+    Qt3DExtras::QCuboidMesh *gateMesh = new Qt3DExtras::QCuboidMesh();
     // Create a transform and set its scale
     // auto cubeTransform = new Qt3DCore::QTransform();
     // Qt3DCore::QTransform *cubeTransform[16][2][16];
     QVector < QVector < QVector < Qt3DCore::QTransform* > > > cubeTransform(16,
               QVector < QVector < Qt3DCore::QTransform* > > (2,
                         QVector < Qt3DCore::QTransform* > (16, nullptr)));
+    QVector < QVector < QVector < Qt3DCore::QTransform* > > > debrisTransform(16,
+              QVector < QVector < Qt3DCore::QTransform* > > (2,
+                        QVector < Qt3DCore::QTransform* > (16, nullptr)));                        
     auto fluidTransform = new Qt3DCore::QTransform();
     auto pistonTransform = new Qt3DCore::QTransform();
     auto twinTransform = new Qt3DCore::QTransform();
     auto hydroTransform = new Qt3DCore::QTransform();
+    auto reservoirTransform = new Qt3DCore::QTransform();
+    auto harborTransform = new Qt3DCore::QTransform();
+    auto floorTransform = new Qt3DCore::QTransform();
+    // auto gateTransform = new Qt3DCore::QTransform();
+
     for (int i = 0; i < 16; i++) {
         for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 16; k++) {
@@ -441,7 +457,13 @@ MPM::MPM(QWidget *parent)
                 cubeTransform[i][j][k]->setTranslation(QVector3D(45.8f+1.016f/2.f, 2.0f+0.615f/2.f, 1.825f)); 
                 cubeTransform[i][j][k]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
 
-
+                debrisTransform[i][j][k] = new Qt3DCore::QTransform();
+                debrisMesh[i][j][k]->setXExtent(0.5f);
+                debrisMesh[i][j][k]->setYExtent(0.05f);
+                debrisMesh[i][j][k]->setZExtent(0.1f);
+                debrisTransform[i][j][k]->setScale(1.f);
+                debrisTransform[i][j][k]->setTranslation(QVector3D((42.8f + 0.5f/2.f - 0.5f*4 - 0.1f*3)/2.f + k*(0.5f + 0.1f), 2.0f+0.05f/2.f, (3.65f - 0.1f*(8) - 0.1f*(7)/2 + (0.1f+.1f)*(k)))); 
+                debrisTransform[i][j][k]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
             }
         }
     }
@@ -477,6 +499,31 @@ MPM::MPM(QWidget *parent)
     // hydroTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
     hydroTransform->setRotation(QQuaternion::fromEulerAngles(90.f, 0.f, 0.f));
 
+
+    reservoirMesh->setXExtent(0.5f);
+    reservoirMesh->setYExtent(0.67f);
+    reservoirMesh->setZExtent(4.0f);
+    reservoirTransform->setScale(1.f);
+    reservoirTransform->setTranslation(QVector3D(0.5f/2.f, 0.23f + 0.67f/2.f, 4.0f/2.f));
+    reservoirTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+
+
+    harborMesh->setXExtent(4.55f);
+    harborMesh->setYExtent(0.255f);
+    harborMesh->setZExtent(4.0f);
+    harborTransform->setScale(1.f);
+    harborTransform->setTranslation(QVector3D(4.45f + 4.55/2.f, 0.255f/2.f, 4.0f/2.0f));
+    harborTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+
+    floorMesh->setXExtent(9.0f);
+    floorMesh->setYExtent(0.125f);
+    floorMesh->setZExtent(4.0f);
+    floorTransform->setScale(1.f);
+    floorTransform->setTranslation(QVector3D(9.0f/2.f, -0.125f/2.f, 4.0f/2.f));
+    floorTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+
+
+
     // Allow for camera controls
     auto camController = new Qt3DExtras::QOrbitCameraController(rootEntity);
     camController->setCamera(cameraEntity);
@@ -488,16 +535,28 @@ MPM::MPM(QWidget *parent)
     QVector < QVector < QVector < Qt3DExtras::QPhongMaterial* > > > cubeMaterial(16,
               QVector < QVector < Qt3DExtras::QPhongMaterial* > > (2,
                         QVector < Qt3DExtras::QPhongMaterial* > (16, nullptr)));
+
+    QVector < QVector < QVector < Qt3DExtras::QPhongMaterial* > > > debrisMaterial(16,
+              QVector < QVector < Qt3DExtras::QPhongMaterial* > > (2,
+                        QVector < Qt3DExtras::QPhongMaterial* > (16, nullptr)));
+                        
     auto fluidMaterial = new Qt3DExtras::QPhongAlphaMaterial();
     auto pistonMaterial = new Qt3DExtras::QPhongMaterial();
     auto twinMaterial = new Qt3DExtras::QPhongMaterial();
     auto hydroMaterial = new Qt3DExtras::QPhongMaterial();
+    auto reservoirMaterial = new Qt3DExtras::QPhongMaterial();
+    auto harborMaterial = new Qt3DExtras::QPhongMaterial();
+    auto floorMaterial = new Qt3DExtras::QPhongMaterial();
+
 
     for (int i = 0; i < 16; i++) {
         for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 16; k++) {
                 cubeMaterial[i][j][k] = new Qt3DExtras::QPhongMaterial();
-                cubeMaterial[i][j][k]->setDiffuse(QColor(QRgb(0xCC5500)));
+                cubeMaterial[i][j][k]->setDiffuse(QColor(QRgb(0xCC5500))); // orange
+
+                debrisMaterial[i][j][k] = new Qt3DExtras::QPhongMaterial();
+                debrisMaterial[i][j][k]->setDiffuse(QColor(QRgb(0x00FF00))); // green
             }
         }
     }
@@ -518,15 +577,30 @@ MPM::MPM(QWidget *parent)
     hydroMaterial->setDiffuse(QColor(QRgb(0x005FFF)));
     hydroMaterial->setAmbient(QColor(QRgb(0x005FFF)));
     
+
+
+    reservoirMaterial->setAmbient(QColor(QRgb(0x0000FF))); // blue
+    harborMaterial->setAmbient(QColor(QRgb(0x8B4513))); // wood
+    floorMaterial->setAmbient(QColor(QRgb(0xCCCCCC)));
+    
+
     // Create a cube entity and add the mesh, transform and material components
     auto twinEntity = new Qt3DCore::QEntity(rootEntity);
 
     QVector < QVector < QVector < Qt3DCore::QEntity* > > > cubeEntity(16,
               QVector < QVector < Qt3DCore::QEntity* > > (2,
                         QVector < Qt3DCore::QEntity* > (16, nullptr)));
+    QVector < QVector < QVector < Qt3DCore::QEntity* > > > debrisEntity(16,
+              QVector < QVector < Qt3DCore::QEntity* > > (2,
+                        QVector < Qt3DCore::QEntity* > (16, nullptr)));    
     auto fluidEntity = new Qt3DCore::QEntity(rootEntity);
     auto pistonEntity = new Qt3DCore::QEntity(rootEntity);
     auto hydroEntity = new Qt3DCore::QEntity(rootEntity);
+    auto reservoirEntity = new Qt3DCore::QEntity(rootEntity);
+    auto harborEntity = new Qt3DCore::QEntity(rootEntity);
+    auto floorEntity = new Qt3DCore::QEntity(rootEntity);
+
+
     // Now disable the HydroUQ logo until its cleaned up
     hydroEntity->setEnabled(false);
 
@@ -537,9 +611,26 @@ MPM::MPM(QWidget *parent)
                 cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
                 cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
                 cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
+                cubeEntity[i][j][k]->setEnabled(false);
+                debrisEntity[i][j][k] = new Qt3DCore::QEntity(rootEntity);
+                debrisEntity[i][j][k]->addComponent(debrisMesh[i][j][k]);
+                debrisEntity[i][j][k]->addComponent(debrisMaterial[i][j][k]);
+                debrisEntity[i][j][k]->addComponent(debrisTransform[i][j][k]);
+                debrisEntity[i][j][k]->setEnabled(false);
             }
         }
     }
+    cubeEntity[0][0][0]->setEnabled(true);
+    for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+                if (i < 4 && j < 1 && k < 8) {
+                    cubeEntity[i][j][k]->setEnabled(true);
+                }
+            }
+        }
+    }
+
     // cubeEntity->addComponent(cubeMesh);
     // cubeEntity->addComponent(cubeMaterial);
     // cubeEntity->addComponent(cubeTransform);
@@ -560,6 +651,23 @@ MPM::MPM(QWidget *parent)
     hydroEntity->addComponent(hydroMesh);
     hydroEntity->addComponent(hydroMaterial);
     hydroEntity->addComponent(hydroTransform);
+
+    reservoirEntity->addComponent(reservoirMesh);
+    reservoirEntity->addComponent(reservoirMaterial);
+    reservoirEntity->addComponent(reservoirTransform);
+
+    harborEntity->addComponent(harborMesh);
+    harborEntity->addComponent(harborMaterial);
+    harborEntity->addComponent(harborTransform);
+
+    floorEntity->addComponent(floorMesh);
+    floorEntity->addComponent(floorMaterial);
+    floorEntity->addComponent(floorTransform);
+
+    reservoirEntity->setEnabled(false);
+    harborEntity->setEnabled(false);
+    floorEntity->setEnabled(false);
+
 
     // Set the root entity of the 3D window
     view->setRootEntity(rootEntity);
@@ -599,16 +707,18 @@ MPM::MPM(QWidget *parent)
       int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
       arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 2  ? arrayY : 2 ) : 1;
       arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
-      for (int i = 0; i < arrayX; i++) {
-        for (int j = 0; j < arrayY; j++) {
-          for (int k = 0; k < arrayZ; k++) {
-            if (i < 16-1 && j < 2-1 && k < 16-1)
-            {
+      for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+          for (int k = 0; k < 16; k++) {
+            if (i < arrayX && j < arrayY && k < arrayZ) {
               cubeMesh[i][j][k]->setXExtent(lengthX);
               cubeMesh[i][j][k]->setYExtent(lengthY);
               cubeMesh[i][j][k]->setZExtent(lengthZ);
+              if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(true);
+            } else {
+              if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(false);
             }
           }
         }
@@ -637,18 +747,20 @@ MPM::MPM(QWidget *parent)
       int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
       arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 2  ? arrayY : 2 ) : 1;
       arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
 
       double spacingX = mpmBoundaries->getSpacingX(mpmBoundaries->getStructureBoundary());
       double spacingY = mpmBoundaries->getSpacingY(mpmBoundaries->getStructureBoundary());
       double spacingZ = mpmBoundaries->getSpacingZ(mpmBoundaries->getStructureBoundary());
-      for (int i = 0; i < arrayX; i++) {
-        for (int j = 0; j < arrayY; j++) {
-          for (int k = 0; k < arrayZ; k++) {
-            if (i < 16-1 && j < 2-1 && k < 16-1)
-            {
+      for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+          for (int k = 0; k < 16; k++) {
+            if (i < arrayX && j < arrayY && k < arrayZ) {
               cubeTransform[i][j][k]->setTranslation(QVector3D(originX + spacingX*i, originY + spacingY * j, originZ + spacingZ * k));
+              if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(true);
+            } else {
+              if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(false);
             }
           }
         }
@@ -677,30 +789,30 @@ MPM::MPM(QWidget *parent)
       int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
       arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 2  ? arrayY : 2 ) : 1;
       arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
       // cubeMesh is now a 3d array of cubeMesh
       // Since arrayX, arrayY, and arrayZ updated, we need to update the size of the array
-      for (int i = 0; i < arrayX; i++) {
-        for (int j = 0; j < arrayY; j++) {
-          for (int k = 0; k < arrayZ; k++) {
+      for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+          for (int k = 0; k < 16; k++) {
             cubeMesh[i][j][k]->setXExtent(lengthX);
             cubeMesh[i][j][k]->setYExtent(lengthY);
             cubeMesh[i][j][k]->setZExtent(lengthZ);
             cubeTransform[i][j][k]->setTranslation(QVector3D(originX + spacingX*i, originY + spacingY * j, originZ + spacingZ * k));
-            
-            if (i < 16-1 && j < 2-1 && k < 16-1)
+            if (i < arrayX && j < arrayY && k < arrayZ)
             {
-              cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
-              cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
-              cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
+              // cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
+              // cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
+              // cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
+              cubeEntity[i][j][k]->setEnabled(true);
             }
-            // remove cubeEntity[i][j][k] from the view port
             else 
             {
-              cubeEntity[i][j][k]->removeComponent(cubeMesh[i][j][k]);
-              cubeEntity[i][j][k]->removeComponent(cubeMaterial[i][j][k]);
-              cubeEntity[i][j][k]->removeComponent(cubeTransform[i][j][k]);
+              cubeEntity[i][j][k]->setEnabled(false);
+              // cubeEntity[i][j][k]->removeComponent(cubeMesh[i][j][k]);
+              // cubeEntity[i][j][k]->removeComponent(cubeMaterial[i][j][k]);
+              // cubeEntity[i][j][k]->removeComponent(cubeTransform[i][j][k]);
             }
           }
         }
@@ -733,26 +845,23 @@ MPM::MPM(QWidget *parent)
       arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
       arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
       
-      for (int i = 0; i < arrayX; i++) {
-        for (int j = 0; j < arrayY; j++) {
-          for (int k = 0; k < arrayZ; k++) {
+      for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+          for (int k = 0; k <  16; k++) {
             cubeMesh[i][j][k]->setXExtent(lengthX);
             cubeMesh[i][j][k]->setYExtent(lengthY);
             cubeMesh[i][j][k]->setZExtent(lengthZ);
             cubeTransform[i][j][k]->setTranslation(QVector3D(originX + spacingX*i, originY + spacingY * j, originZ + spacingZ * k));
-            
-            if (i < 16-1 && j < 2-1 && k < 16-1)
-            {
-              cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
-              cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
-              cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
-            }
-            // remove cubeEntity[i][j][k] from the view port
-            else 
-            {
-              cubeEntity[i][j][k]->removeComponent(cubeMesh[i][j][k]);
-              cubeEntity[i][j][k]->removeComponent(cubeMaterial[i][j][k]);
-              cubeEntity[i][j][k]->removeComponent(cubeTransform[i][j][k]);
+            if (i < arrayX && j < arrayY && k < arrayZ) {
+              // cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
+              // cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
+              // cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
+              cubeEntity[i][j][k]->setEnabled(true);
+            } else {
+              cubeEntity[i][j][k]->setEnabled(false);
+              // cubeEntity[i][j][k]->removeComponent(cubeMesh[i][j][k]);
+              // cubeEntity[i][j][k]->removeComponent(cubeMaterial[i][j][k]);
+              // cubeEntity[i][j][k]->removeComponent(cubeTransform[i][j][k]);
             }
           }
         }
@@ -786,14 +895,17 @@ MPM::MPM(QWidget *parent)
 
     auto updateDigitalTwin = [=](int index) {
       if (index == 0) {
-        twinEntity->setEnabled(false);
+        twinEntity->setEnabled(true);
         for (int i = 0; i < 16; i++) {
           for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 16; k++) {
-              if (i < 16-1 && j < 2-1 && k < 16-1)
+              if (i < 16 && j < 2 && k < 16)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
+
+                debrisEntity[i][j][k]->setEnabled(false);
+                if (i < 4 && j < 1 && k < 8) debrisEntity[i][j][k]->setEnabled(true);
               }
             }
           }
@@ -803,8 +915,11 @@ MPM::MPM(QWidget *parent)
         pistonEntity->setEnabled(true);
         twinTransform->setScale3D(QVector3D(1.f,1.f,1.f));
         hydroEntity->setEnabled(false);
+        reservoirEntity->setEnabled(false);
+        harborEntity->setEnabled(false);
+        floorEntity->setEnabled(false);
       } else if (index == 1) {
-        twinEntity->setEnabled(false);
+        twinEntity->setEnabled(true);
         for (int i = 0; i < 1; i++) {
           for (int j = 0; j < 1; j++) {
             for (int k = 0; k < 1; k++) {
@@ -812,6 +927,7 @@ MPM::MPM(QWidget *parent)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i == 0 && j == 0 && k < 2) cubeEntity[i][j][k]->setEnabled(true);
+                debrisEntity[i][j][k]->setEnabled(false);
               }
             }
           }
@@ -820,15 +936,19 @@ MPM::MPM(QWidget *parent)
         pistonEntity->setEnabled(true);
         twinTransform->setScale3D(QVector3D(0.6f,7.25f,1.f/1.75f));
         hydroEntity->setEnabled(false);
+        reservoirEntity->setEnabled(false);
+        harborEntity->setEnabled(false);
+        floorEntity->setEnabled(false);
       } else if (index == 2) {
         twinEntity->setEnabled(false);
-        for (int i = 0; i < 1; i++) {
-          for (int j = 0; j < 1; j++) {
-            for (int k = 0; k < 1; k++) {
-              if (i < 16-1 && j < 2-1 && k < 16-1)
+        for (int i = 0; i < 16; i++) {
+          for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+              if (i < 16 && j < 2 && k < 16)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
+                debrisEntity[i][j][k]->setEnabled(false);
               }
             }
           }
@@ -836,15 +956,23 @@ MPM::MPM(QWidget *parent)
         fluidEntity->setEnabled(true);
         pistonEntity->setEnabled(false);
         hydroEntity->setEnabled(false);
+        reservoirEntity->setEnabled(false);
+        harborEntity->setEnabled(false);
+        floorEntity->setEnabled(true);
+        floorTransform->setTranslation(QVector3D(12.0f/2, -0.125f/2, 1.0f/2)); 
+        floorMesh->setXExtent(12.f);
+        floorMesh->setYExtent(0.125f);
+        floorMesh->setZExtent(1.f);
       } else if (index == 3) {
         twinEntity->setEnabled(false);
-        for (int i = 0; i < 1; i++) {
-          for (int j = 0; j < 1; j++) {
-            for (int k = 0; k < 1; k++) {
-              if (i < 16-1 && j < 2-1 && k < 16-1)
+        for (int i = 0; i < 16; i++) {
+          for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+              if (i < 16 && j < 2 && k < 16)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i < 2 && j == 0 && k < 5) cubeEntity[i][j][k]->setEnabled(true);
+                debrisEntity[i][j][k]->setEnabled(false);
               }
             }
           }
@@ -852,15 +980,22 @@ MPM::MPM(QWidget *parent)
         fluidEntity->setEnabled(true);
         pistonEntity->setEnabled(true);
         hydroEntity->setEnabled(false);
+        reservoirEntity->setEnabled(true);
+        harborEntity->setEnabled(true);
+        floorEntity->setEnabled(true);
+        floorTransform->setTranslation(QVector3D(9.0f/2, -0.125f/2, 4.0f/2)); 
+        floorMesh->setXExtent(9.f);
+        floorMesh->setYExtent(0.125f);
+        floorMesh->setZExtent(4.f);
       } else if (index == 4) {
         twinEntity->setEnabled(false);
-        for (int i = 0; i < 1; i++) {
-          for (int j = 0; j < 1; j++) {
-            for (int k = 0; k < 1; k++) {
-              if (i < 16-1 && j < 2-1 && k < 16-1)
+        for (int i = 0; i < 16; i++) {
+          for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+              if (i < 16 && j < 2 && k < 16)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
-                // if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
+                debrisEntity[i][j][k]->setEnabled(false);
               }
             }
           }
@@ -868,6 +1003,9 @@ MPM::MPM(QWidget *parent)
         fluidEntity->setEnabled(false);
         pistonEntity->setEnabled(true);
         hydroEntity->setEnabled(false);
+        reservoirEntity->setEnabled(false);
+        harborEntity->setEnabled(false);
+        floorEntity->setEnabled(false);
       }
       updateFluid();
       updateBoundaryStructureSize();
@@ -1218,7 +1356,20 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
     // Move some values from the outputs object to the simulation settings object
     QJsonObject my_sim = jsonObject["simulation"].toObject(); 
     if (outputsObject.contains("save_suffix") && outputsObject["save_suffix"].isString()) {
-      my_sim["save_suffix"] = outputsObject["save_suffix"].toString(); // for ClaymoreUW, simulation:save_suffix = outputs:bodies_save_suffix
+      if (outputsObject["save_suffix"].toString().isEmpty()) {
+        my_sim["save_suffix"] = ".bgeo"; 
+      } else {
+        // Force lowercase and add a period if it is not the first character
+        // If the string is only one character but it is a period, append "bgeo" to it (binary geometry file for Houdinie SideFX)
+        if (outputsObject["save_suffix"].toString().at(0) != '.') 
+          my_sim["save_suffix"] = "." + outputsObject["save_suffix"].toString(); 
+
+        if (outputsObject["save_suffix"].toString().length() > 1) {
+          my_sim["save_suffix"] = my_sim["save_suffix"].toString().left(1) + my_sim["save_suffix"].toString().mid(1).toLower();
+        } else {
+          my_sim["save_suffix"] = my_sim["save_suffix"].toString().left(1) + "bgeo";
+        }
+      } 
     }
     if (outputsObject.contains("fps") && outputsObject["fps"].isDouble()) {
       my_sim["fps"] = outputsObject["fps"].toDouble(); // for ClaymoreUW, simulation:fps = outputs:outputBodies_Dt
@@ -1251,12 +1402,19 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
     
     // Assign each body an output_attribs array (array of strings that define what attributes to output each frame per particle)
     QJsonArray outputAttribsArray = outputsObject["outputs"].toObject()["output_attribs"].toArray(); // for ClaymoreUW, outputs:numOutputBodies = bodies:numBodies
-    int numOutputAttribs = outputAttribsArray.size();
+
+    int numOutputAttribs = outputAttribsArray.size(); // Number of output attrib arrays (one per body)
     for (int i = 0; i < numBodies; i++) {
-      // If there are more bodies than output attribs, just output IDs of particles
-      if (i >= numOutputAttribs) {
+      // If the body ID exceeds rows of outputAttrisbArray (one-per-body), just have body output IDs of particles
+      // Else If there are no output attribs for a valid outputAttribsArray row's body, tell the body to output IDs of particles
+      if (i < numOutputAttribs) 
+        if (outputAttribsArray[i].toArray().size() == 0) 
+          outputAttribsArray[i] = QJsonArray::fromStringList(QStringList() << "ID");
+      else if (i >= numOutputAttribs) {
         outputAttribsArray.append(QJsonArray::fromStringList(QStringList() << "ID"));
-      }
+        numOutputAttribs++;
+      } 
+      
       QJsonObject body = bodiesArray[i].toObject();
       QJsonArray bodyAttribsArray = outputAttribsArray[i].toArray();
       body["output_attribs"] = bodyAttribsArray;
@@ -1281,6 +1439,58 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
           continue;
         }
         bodiesArray.append(newBody); // TODO: Insert instead of append
+      }
+
+      // Check that "gpu" and "model" are not both identical to another body's partition's "gpu" and "model"
+      // If they are, try to increment the "gpu" and "model" of the new body until it is unique, 
+      // remaining within "computer" object's "numGPUs" and "modelsPerGPU" values
+      // If it is not possible to increment the "gpu" and "model" to a unique value, remove the new body
+      // If it is possible to increment the "gpu" and "model" to a unique value, update the new body's "gpu" and "model"
+      // for (int j = numBodies; j < bodiesArray.size(); j++) {
+      for (int j = 0; j < bodiesArray.size(); j++) {
+        QJsonObject newBody = bodiesArray[j].toObject();
+        for (int k = 0; k < j; k++) {
+          QJsonObject existingBody = bodiesArray[k].toObject();
+          if (newBody["gpu"].toInt() == existingBody["gpu"].toInt() && newBody["model"].toInt() == existingBody["model"].toInt()) {
+            int numGPUs = jsonObject["computer"].toObject()["numGPUs"].toInt();
+            int modelsPerGPU = jsonObject["computer"].toObject()["modelsPerGPU"].toInt();
+            int newGPU = newBody["gpu"].toInt();
+            int newModel = newBody["model"].toInt();
+            bool unique = false;
+            while (!unique) {
+              if (newGPU < numGPUs && newModel < modelsPerGPU) {
+                newModel++;
+                unique = true;
+                for (int l = 0; l < j; l++) {
+                  QJsonObject existingBody = bodiesArray[l].toObject();
+                  if (newGPU == existingBody["gpu"].toInt() && newModel == existingBody["model"].toInt()) {
+                    unique = false;
+                    break;
+                  }
+                }
+              } else if (newGPU < numGPUs && newModel == modelsPerGPU) {
+                newGPU++;
+                newModel = 0;
+                unique = true;
+                for (int l = 0; l < j; l++) {
+                  QJsonObject existingBody = bodiesArray[l].toObject();
+                  if (newGPU == existingBody["gpu"].toInt() && newModel == existingBody["model"].toInt()) {
+                    unique = false;
+                    break;
+                  }
+                }
+              } else {
+                // Remove the new body if it is not possible to increment the "gpu" and "model" to a unique value
+                // Also remove if we exceed the number of GPUs and models per GPU specified in "computer"
+                bodiesArray.removeAt(j);
+                break;
+              }
+            }
+            newBody["gpu"] = newGPU;
+            newBody["model"] = newModel;
+            bodiesArray[j] = newBody;
+          }
+        }
       }
     }
     // Add the bodies array to the jsonObject
@@ -1327,7 +1537,7 @@ bool MPM::outputAppDataToJSON(QJsonObject &jsonObject) {
     // Default "parameters" : [driverFile, errorFile, modules, inputFile, outputFile]
     // Extra "parameters" : [..., programFile]
     // I only added the "programFile" parameter for my tapis app, don't add more unless the app json required parameters is changed or the app is changed
-    // ${programFile} --file=${inputFile}
+    // ${publicDirectory}/${programFile} --file=${inputDirectory}/${inputFile}
     //
     // per API, need to add name of application to be called in Application
     // and all data to be used in ApplicationDate

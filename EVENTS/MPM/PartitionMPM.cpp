@@ -212,6 +212,23 @@ PartitionMPM::constrainPartitionOutside(double origin[3], double dimensions[3])
   return;
 }
 
+bool
+PartitionMPM::balance(double origin[3], double dimensions[3], int count, int id)
+{
+  if (id < 0 || id >= count)
+  {
+    qDebug() << "PartitionMPM::balance(), " << "Partition ID must be in the range [0," << count << "), but ID is " << id << ".";
+    return false;
+  }
+  double partitionWidth = dimensions[0] / count;
+  partitionDimensions_X->setText(QString::number(partitionWidth));
+  partitionDimensions_Y->setText(QString::number(dimensions[1]));
+  partitionDimensions_Z->setText(QString::number(dimensions[2]));
+  partitionOrigin_X->setText(QString::number(origin[0] + id * partitionWidth));
+  partitionOrigin_Y->setText(QString::number(origin[1]));
+  partitionOrigin_Z->setText(QString::number(origin[2]));
+  return true;
+}
 
 bool
 PartitionMPM::outputToJSON(QJsonObject &jsonObject)
