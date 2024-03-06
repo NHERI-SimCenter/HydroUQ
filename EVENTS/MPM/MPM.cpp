@@ -462,7 +462,7 @@ MPM::MPM(QWidget *parent)
                 debrisMesh[i][j][k]->setYExtent(0.05f);
                 debrisMesh[i][j][k]->setZExtent(0.1f);
                 debrisTransform[i][j][k]->setScale(1.f);
-                debrisTransform[i][j][k]->setTranslation(QVector3D((42.8f + 0.5f/2.f - 0.5f*4 - 0.1f*3)/2.f + k*(0.5f + 0.1f), 2.0f+0.05f/2.f, (3.65f - 0.1f*(8) - 0.1f*(7)/2 + (0.1f+.1f)*(k)))); 
+                debrisTransform[i][j][k]->setTranslation(QVector3D((42.8f + 0.5f/2.f - 0.5f*4 - 0.1f*3)/2.f + i*(0.5f + 0.1f), 2.0f+0.05f/2.f + (0.05f + 0.1f)*j, (3.65f - 0.1f*(8) - 0.1f*(7)/2 + (0.1f+.1f)*(k)))); 
                 debrisTransform[i][j][k]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
             }
         }

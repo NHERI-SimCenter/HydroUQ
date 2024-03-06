@@ -284,7 +284,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("SIM"), theSIM);
     theComponentSelection->addComponent(QString("EVT"), theEventSelection);
     theComponentSelection->addComponent(QString("FEM"), theAnalysisSelection);
-    theComponentSelection->addComponent(QString("EDP"), theEDP_Selection);
+    theComponentSelection->addComponent(QString("EDP"), theEDP_Selection); // Using EDP_HydroSelection
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
     theComponentSelection->displayComponent("EVT"); // Initial page on startup
@@ -327,64 +327,52 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     //
     // Add standalone events to tools menu
     //
+
     CoupledDigitalTwin *theCDT = new CoupledDigitalTwin();
     QString appNameCDT = "simcenter-openfoam-frontera-1.0.0u6"; // u3
     QList<QString> queuesCDT; queuesCDT << "normal" << "fast";
     SC_RemoteAppTool *theCDTTool = new SC_RemoteAppTool(appNameCDT, queuesCDT, theRemoteService, theCDT, theToolDialog);
     theToolDialog->addTool(theCDTTool, "Digital Twin (OpenFOAM + OpenSees)");
-
-    // Set the path to the input file
     QAction *showCDT = toolsMenu->addAction("Digital Twin (&OpenFOAM + OpenSees)");
     connect(showCDT, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theCDTTool] {
         theDialog->showTool("Digital Twin (OpenFOAM + OpenSees)");
     });  
 
-    // MPM *miniMPM = new MPM(theRVs, this); 
-    QString appName =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6
-    QList<QString> queues; queues << "gpu-a100-dev" << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+
     MPM *miniMPM = new MPM(); 
     if (!miniMPM->isInitialize()) 
-    {
         miniMPM->initialize();
-    }  
-    SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog);
+    QString appName =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6
+    QString systemName = "lonestar6-gpu";
+    QList<QString> queues; queues << "gpu-a100-dev" << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog, systemName);
     theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");
-
-    // Set the path to the input file
     QAction *showMPM = toolsMenu->addAction("Digital Twin (&MPM)");
     connect(showMPM, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniMPMTool] {
         theDialog->showTool("Digital Twin (MPM)");
     });
 
 
-    // SPH *miniSPH = new SPH(theRVs, this); 
-    QString appNameSPH =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6
-    QList<QString> queuesSPH; queuesSPH << "gpu-a100-dev" << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
     SPH *miniSPH = new SPH(); 
     if (!miniSPH->isInitialize()) 
-    {
         miniSPH->initialize();
-    }  
-    SC_RemoteAppTool *miniSPHTool = new SC_RemoteAppTool(appNameSPH, queuesSPH, theRemoteService, miniSPH, theToolDialog);
+    QString appNameSPH =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6
+    QString systemNameSPH = "lonestar6-gpu";
+    QList<QString> queuesSPH; queuesSPH << "gpu-a100-dev" << "gpu-a100"; // TODO: Does not actually set the queue yet for the remote app
+    
+    SC_RemoteAppTool *miniSPHTool = new SC_RemoteAppTool(appNameSPH, queuesSPH, theRemoteService, miniSPH, theToolDialog, systemNameSPH);
     theToolDialog->addTool(miniSPHTool, "Digital Twin (SPH)");
-
-    // Set the path to the input file
     QAction *showSPH = toolsMenu->addAction("Digital Twin (&SPH)");
     connect(showSPH, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniSPHTool] {
         theDialog->showTool("Digital Twin (SPH)");
     });
-  
-    //
-    // Add SimpleTest Example
-    //
+
 
     RemoteAppTest *theTest = new RemoteAppTest();
     QString appNameTest = "remoteAppTest-1.0.0";
     QList<QString> queuesTest; queuesTest << "normal" << "fast";
     SC_RemoteAppTool *theTestTool = new SC_RemoteAppTool(appNameTest, queuesTest, theRemoteService, theTest, theToolDialog);
     theToolDialog->addTool(theTestTool, "Build and Run MPI Program");
-
-    // Set the path to the input file
     QAction *showTest = toolsMenu->addAction("&Build and Run MPI Program");
     connect(showTest, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theTestTool] {
         theDialog->showTool("Build and Run MPI Program");
@@ -395,22 +383,22 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     // Add Tools to menu bar
     //
 
-  QAction* menuAfter = nullptr;
-  foreach (QAction *action, menuBar->actions()) {
-    // First check for an examples menu and if that does not exist put it before the help menu
-    auto actionText = action->text();
-    if(actionText.compare("&Examples") == 0)
-    {
-        menuAfter = action;
-        break;
+    QAction* menuAfter = nullptr;
+    foreach (QAction *action, menuBar->actions()) {
+        // First check for an examples menu and if that does not exist put it before the help menu
+        auto actionText = action->text();
+        if(actionText.compare("&Examples") == 0)
+        {
+            menuAfter = action;
+            break;
+        }
+        else if(actionText.compare("&Help") == 0)
+        {
+            menuAfter = action;
+            break;
+        }
     }
-    else if(actionText.compare("&Help") == 0)
-    {
-        menuAfter = action;
-        break;
-    }
-  }
-  menuBar->insertMenu(menuAfter, toolsMenu);    
+    menuBar->insertMenu(menuAfter, toolsMenu);    
 }
 
 
