@@ -63,7 +63,8 @@ public:
     virtual ~OutputsMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-
+    bool copyFiles(QString &dirName);
+    
 signals:
 
 private:

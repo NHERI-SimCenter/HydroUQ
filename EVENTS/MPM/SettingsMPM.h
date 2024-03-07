@@ -64,6 +64,7 @@ public:
     virtual ~SettingsMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
+    bool copyFiles(QString &dirName);
 
 signals:
 

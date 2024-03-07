@@ -137,22 +137,25 @@ win32 {
 }
 
 
-include(./HydroEVENTS.pri)
 include(../SimCenterCommon/Common/Common.pri)
 include(../SimCenterCommon/Workflow/Workflow.pri)
 include(../SimCenterCommon/RandomVariables/RandomVariables.pri)
 include(../SimCenterCommon/InputSheetBM/InputSheetBM.pri)
+include(./HydroEVENTS.pri)
+include(./HydroEDP.pri)
+include(./HydroRESULTS.pri)
 include(./SlidingStackedWidget/SlidingStackedWidget.pri)
 
 SOURCES += main.cpp \
     EVENTS/H20plotwindow.cpp \
     WorkflowAppHydroUQ.cpp \
-    RunWidget.cpp
+    RunWidget.cpp 
 
 HEADERS  += \
     EVENTS/H20plotwindow.h \
     WorkflowAppHydroUQ.h\
-    RunWidget.h 
+    RunWidget.h
+
 
 RESOURCES += \
     images.qrc \

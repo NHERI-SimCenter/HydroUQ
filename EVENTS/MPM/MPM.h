@@ -41,25 +41,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Date: 1/2024
 
 #include <SimCenterAppWidget.h>
-class SC_DoubleLineEdit;
-class SC_IntLineEdit;
 
 //Forward declaration
 class InputWidgetParameters;
 class RandomVariablesContainer;
-class QComboBox;
-class QGridLayout;
-class QVBoxLayout;
-class QHBoxLayout;
-class QSpinBox;
-class QLineEdit;
-class QTabWidget;
 class LineEditRV;
-class QGroupBox;
-class QPushButton;
-class QCheckBox;
-class QFormLayout;
-class QLabel;
 
 class SettingsMPM;
 class BodiesMPM;
@@ -67,72 +53,82 @@ class BoundariesMPM;
 class SensorsMPM;
 class OutputsMPM; 
 
-// Trying this
-// class SC_RemoteAppTool;
-// class SlidingStackedWidget;
+class SC_DoubleLineEdit;
+class SC_IntLineEdit;
+
+class QGridLayout;
+class QVBoxLayout;
+class QHBoxLayout;
+
+class QComboBox;
+class QSpinBox;
+class QLineEdit;
+class QTabWidget;
+
+class QGroupBox;
+class QPushButton;
+class QCheckBox;
+class QFormLayout;
+class QLabel;
 
 class MPM : public SimCenterAppWidget
 {
 public:
    //  explicit MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent = 0);
-    MPM( QWidget *parent = 0);
-    ~MPM();
+   MPM( QWidget *parent = 0);
+   ~MPM();
 
-    bool inputFromJSON(QJsonObject &rvObject);
-    bool outputToJSON(QJsonObject &rvObject);  
-    bool outputAppDataToJSON(QJsonObject &rvObject);
-    bool inputAppDataFromJSON(QJsonObject &rvObject);
-    bool copyFiles(QString &dirName);
+   bool inputFromJSON(QJsonObject &rvObject);
+   bool outputToJSON(QJsonObject &rvObject);  
+   bool outputAppDataToJSON(QJsonObject &rvObject);
+   bool inputAppDataFromJSON(QJsonObject &rvObject);
+   bool copyFiles(QString &dirName);
 
-    bool setupCase();
-    bool cleanCase();
-    bool removeOldFiles();
-    bool isCaseConfigured();
-    void readCaseData();
+   bool setupCase();
+   bool cleanCase();
+   bool removeOldFiles();
+   bool isCaseConfigured();
+   void readCaseData();
 
-    bool initialize(); // From WE-UQ
-    bool isInitialize(); // From WE-UQ
+   bool initialize();
+   bool isInitialize();
 
-    QVector<QVector<double>> readTxtData(QString fileName);
+   QVector<QVector<double>> readTxtData(QString fileName);
 
-   void writeMPMFiles();
+   void executeBackendScript();
    void updateJSON();
-    QString caseDir();
+   QString caseDir();
+   QString templateDictDir();
+   QString pyScriptsPath();
+   QString simulationType();
    //  QString foamDictsPath();
-    QString templateDictDir();
-    QString pyScriptsPath();
-    QString simulationType();
 
 signals:
 
 public slots:
    void clear(void);
    void onBrowseCaseDirectoryButtonClicked(void);
-   // void  updateStructureDimensionsSlot(QString val);
-   // void  updateStructureOriginSlot(QString val);
+
 private:
+   bool caseInitialized = false; 
    QHBoxLayout                  *mainWindowLayout;
-
-   // QVBoxLayout                  *inputWindowLayout;
-   // QGroupBox                    *inputWindowGroup;
-
-   SettingsMPM   *mpmSettings;
-   BodiesMPM     *mpmBodies;
-   BoundariesMPM *mpmBoundaries;
-   SensorsMPM    *mpmSensors;
-   OutputsMPM    *mpmOutputs; 
+   SettingsMPM                  *mpmSettings;
+   BodiesMPM                    *mpmBodies;
+   BoundariesMPM                *mpmBoundaries;
+   SensorsMPM                   *mpmSensors;
+   OutputsMPM                   *mpmOutputs; 
   
-   QLineEdit                    *caseDirectoryPathWidget;
-   QGroupBox                    *caseDirectoryGroup;
-   QGridLayout                  *caseDirectoryLayout;
-
    RandomVariablesContainer     *theRandomVariablesContainer;
    QStringList                  varNamesAndValues;
 
    QString                      workingDirPath;
-
-   bool caseInitialized = false; // From WE-UQ
-
+   QLineEdit                    *caseDirectoryPathWidget;
+   QGroupBox                    *caseDirectoryGroup;
+   QGridLayout                  *caseDirectoryLayout;
+   // QVBoxLayout                  *visWindowLayout;
+   // QGroupBox                    *visWindowGroup;
+   // QVBoxLayout                  *inputWindowLayout;
+   // QGroupBox                    *inputWindowGroup;
 };
 
 #endif // MATERIAL_POINT_METHOD_H
