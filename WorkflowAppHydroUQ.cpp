@@ -341,7 +341,8 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     });  
 
 
-    MPM *miniMPM = new MPM(); 
+    MPM *miniMPM = new MPM(theRVs); 
+    // MPM *miniMPM = new MPM(); 
     if (!miniMPM->isInitialize()) 
         miniMPM->initialize();
     QString appName =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6

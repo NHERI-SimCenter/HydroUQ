@@ -40,7 +40,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written: fmckenna
 // Modified: Ajay B Harish (May 2021)
 // Modified: Justin Bonus (Feb 2024)
-// #include <SimCenterAppWidget.h>
+#include <SimCenterAppWidget.h>
 
 #include <QGroupBox>
 #include <QVector>

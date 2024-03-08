@@ -61,6 +61,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <BoundariesMPM.h>
 #include <SensorsMPM.h>
 #include <OutputsMPM.h>
+#include <ResultsMPM.h>
 
 #include <Qt3DExtras/QCuboidMesh>
 #include <Qt3DExtras/QPhongMaterial>
@@ -120,13 +121,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // #include <SC_ToolDialog.h>
 // #include <SC_RemoteAppTool.h>
 
-// MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
-//     :  SimCenterAppWidget(parent), theRandomVariablesContainer(theRandomVariableIW)
-// {
-
-MPM::MPM(QWidget *parent)
-    :  SimCenterAppWidget(parent)
+MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
+    :  SimCenterAppWidget(parent), theRandomVariablesContainer(theRandomVariableIW)
 {
+
+// MPM::MPM(QWidget *parent)
+//     :  SimCenterAppWidget(parent)
+// {
     int windowWidth = 800;
     int windowWidthMin = 250;
     QWidget     *mainGroup = new QWidget();
@@ -361,9 +362,22 @@ MPM::MPM(QWidget *parent)
 
     QLabel *aboveTabs = new QLabel("\nSelect a NHERI SimCenter Digital Twin Above To Begin\n");
     aboveTabs->setAlignment(Qt::AlignCenter);
+    mainLayout->addWidget(aboveTabs, 2, 0);
     // aboveTabs->setStyleSheet("QLabel {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}"
     //                          "QLabel:disabled {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}");
-    mainLayout->addWidget(aboveTabs, 2, 0);
+
+    // ==================== Results-View Set-Up ====================
+    QWidget* resultsWidget = new QWidget();
+    QVBoxLayout* resultsLayout  = new QVBoxLayout();
+    resultsWidget->setLayout(resultsLayout);
+    mpmResults = new ResultsMPM(this);
+    resultsLayout->addWidget(mpmResults);
+    resultsLayout->addStretch();
+
+    // ==================== CFD Results-View Set-Up ====================
+    // cfdResultsGroup = new QGroupBox("CFD Results", this);
+    // cfdResultsLayout = new QGridLayout();
+    // cfdResultsGroup->setLayout(cfdResultsLayout);
 
     // ==================== Simulation Set-Up ====================
     mpmSettings = new SettingsMPM();
@@ -371,13 +385,18 @@ MPM::MPM(QWidget *parent)
     mpmBoundaries = new BoundariesMPM();
     mpmSensors = new SensorsMPM();
     mpmOutputs = new OutputsMPM();
+    // mpmResults = new ResultsMPM();
 
-    QTabWidget *theTabWidget = new QTabWidget();
+    // theTabWidget = new QTabWidget();
+    theTabWidget = new QTabWidget(this);
     theTabWidget->addTab(mpmSettings, QIcon(QString(":/icons/settings-black.svg")), "Settings");
     theTabWidget->addTab(mpmBodies, QIcon(QString(":/icons/deform-black.svg")), "Bodies");
     theTabWidget->addTab(mpmBoundaries, QIcon(QString(":/icons/man-door-black.svg")), "Boundaries");
     theTabWidget->addTab(mpmSensors, QIcon(QString(":/icons/dashboard-black.svg")), "Sensors");
-    theTabWidget->addTab(mpmOutputs, QIcon(QString(":/icons/file-settings-black.svg")), "Outputs");    
+    theTabWidget->addTab(mpmOutputs, QIcon(QString(":/icons/file-settings-black.svg")), "Outputs");   
+    theTabWidget->addTab(resultsWidget, QIcon(QString(":/icons/flag-black.svg")), "Results");   
+    // theTabWidget->addTab(mpmResults, QIcon(QString(":/icons/flag-black.svg")), "Results");   
+
     int sizePrimaryTabs =20;
     theTabWidget->setIconSize(QSize(sizePrimaryTabs,sizePrimaryTabs));
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
@@ -1160,15 +1179,24 @@ MPM::~MPM()
 
 }
 
+bool MPM::isInitialize()
+{
+    return caseInitialized;
+}
 
 bool MPM::initialize()
 {
+    const int windowWidth = 850;
     // mainWindowLayout = new QHBoxLayout();
+
+    // ---------------------------------------------------
+
     caseDirectoryGroup = new QGroupBox("Case Directory");
     caseDirectoryLayout = new QGridLayout();
 
     QLabel *casePathLabel = new QLabel("Path: ");
     QPushButton* browseCaseDirectoryButton  = new QPushButton("Browse");
+
 
     caseDirectoryPathWidget = new QLineEdit();
     QString currentAppDir = QCoreApplication::applicationDirPath();
@@ -1203,6 +1231,7 @@ bool MPM::initialize()
 
     caseDirectoryGroup->setLayout(caseDirectoryLayout);
     caseDirectoryGroup->setMaximumWidth(200); // small test
+
 
     //Populate each tab
     // auto layout = this.layout();
@@ -1245,8 +1274,8 @@ bool MPM::initialize()
 
 void MPM::updateJSON()
 {
-    //Write it to JSON becase it is needed for the mesh generation before the final simulation is run.
-    //In future only one JSON file in temp.SimCenter directory might be enough
+    // Write most recent EVT state to JSON becase it is needed for pre-processing steps / mesh generation before the final simulation is run.
+    // In future only one JSON file in temp.SimCenter directory might be enough
     QString inputFilePath = caseDir() + QDir::separator() + "constant" + QDir::separator() + "simCenter"
                             + QDir::separator() + "input" + QDir::separator() + "MPM.json";
 
@@ -1258,13 +1287,10 @@ void MPM::updateJSON()
     }
 
     QJsonObject jsonObject;
-
     outputToJSON(jsonObject);
 
     QJsonDocument jsonDoc = QJsonDocument(jsonObject);
-
     jsonFile.write(jsonDoc.toJson());
-
     jsonFile.close();
     return;
 }
@@ -1297,16 +1323,16 @@ void MPM::executeBackendScript()
     return;
 }
 
-// From WE-UQ 
 void MPM::readCaseData()
 {
     //Write it to JSON becase it is needed for the mesh generation before the final simulation is run.
     //In future only one JSON file in temp.SimCenter directory might be enough
+    QString inputFileName = "MPM.json";
     QString inputFilePath = caseDir() + QDir::separator() 
                             + "constant" + QDir::separator() 
                             + "simCenter" + QDir::separator() 
                             + "input" + QDir::separator() 
-                            + "MPM.json";
+                            + inputFileName;
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
     {
@@ -1337,9 +1363,6 @@ void MPM::onBrowseCaseDirectoryButtonClicked(void)
     if (!isCaseConfigured())
     {
         setupCase();
-        // snappyHexMesh->onRunBlockMeshClicked();
-        // snappyHexMesh->snappyHexMeshCompleted = false;
-        // reloadMesh();
         return;
     }
 
@@ -1354,36 +1377,36 @@ void MPM::clear(void)
 
 }
 
-
-
 bool MPM::inputFromJSON(QJsonObject &jsonObject)
 {
   this->clear();
   caseDirectoryPathWidget->setText(jsonObject["caseDirectoryPath"].toString());
+  // openFoamVersion->setCurrentText(jsonObject["OpenFoamVersion"].toString());
 
-    // openFoamVersion->setCurrentText(jsonObject["OpenFoamVersion"].toString());
   // mpmSettings->inputFromJSON(jsonObject);
   // mpmBodies->inputFromJSON(jsonObject);
   // mpmBoundaries->inputFromJSON(jsonObject);
   // mpmSensors->inputFromJSON(jsonObject);
   // mpmOutputs->inputFromJSON(jsonObject);
-  
+  mpmResults->inputFromJSON(jsonObject);
   return true;
 }
 
 bool MPM::outputToJSON(QJsonObject &jsonObject)
 {
-  jsonObject["EventClassification"] = "Hydro";
-  jsonObject["Application"] = "MPM";
+  jsonObject["EventClassification"] = "Hydro"; // Important for workflow (Earthquake vs Wind vs Hydro, etc.)
   jsonObject["type"] = "MPM";
+
+  jsonObject["Application"] = "MPM"; // For accessing SimCenterBackendApplications/applications/createEVENTS/{Application}/*.py ?
   jsonObject["subtype"] = "MPM";
-  // jsonObject["programFile"] = "fbar"; 
+
   // The JSON object-or-array that defines each main tab (i.e. Settings, Bodies, Boundaries, Sensors, Outputs)
   QJsonObject settingsObject;  
   QJsonArray bodiesArray;
   QJsonArray boundariesArray;
   QJsonArray sensorsArray;
   QJsonObject outputsObject;
+  QJsonObject resultsObject;
 
   // Pass in the objects or array object wrappers to the outputToJSON functions
   QJsonObject bodiesObjectWrapper;
@@ -1405,6 +1428,7 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
   mpmBoundaries->outputToJSON(boundariesObjectWrapper);
   mpmSensors->outputToJSON(sensorsObjectWrapper);
   mpmOutputs->outputToJSON(outputsObject);
+  // mpmResults->outputToJSON(resultsObject); // For now, just pass the jsonObject to the results tab. Does nothing
 
   // ==================== Settings ====================
   // Settings (simulation in ClaymoreUW currently)
@@ -1549,24 +1573,22 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
         }
       }
     }
-    // Add the bodies array to the jsonObject
-    jsonObject["bodies"] = bodiesArray; // for the future schema
+    jsonObject["bodies"] = bodiesArray; // Add the bodies array to the jsonObject
   }
 
   // ==================== Boundaries ====================
   // Boundaries (grid-boundaries in ClaymoreUW currently, TODO: Deprecate and change to "boundaries")
   if (boundariesObjectWrapper.contains("boundaries") && boundariesObjectWrapper["boundaries"].isArray()) {
-    // boundaries is an array of objects, each is an individual boundary
-    jsonObject["boundaries"] = boundariesObjectWrapper["boundaries"]; // for the future schema
+    jsonObject["boundaries"] = boundariesObjectWrapper["boundaries"]; // boundaries is an array of objects, each is an individual boundary
   }
 
   // ==================== Sensors ====================
   // Sensors (grid-targets, particle-targets in ClaymoreUW currently, TODO: Deprecate and change to "sensors")
   // sensors is an array of objects, each is an individual sensor
   if (sensorsObjectWrapper.contains("particle-sensors") && sensorsObjectWrapper["particle-sensors"].isArray()) 
-    jsonObject["particle-sensors"] = sensorsObjectWrapper["particle-sensors"]; // for the future schema
+    jsonObject["particle-sensors"] = sensorsObjectWrapper["particle-sensors"];
   if (sensorsObjectWrapper.contains("grid-sensors") && sensorsObjectWrapper["grid-sensors"].isArray()) 
-    jsonObject["grid-sensors"] = sensorsObjectWrapper["grid-sensors"]; // for the future schema
+    jsonObject["grid-sensors"] = sensorsObjectWrapper["grid-sensors"];
 
   // ==================== Outputs ====================
   // Outputs (not a separate object in ClaymoreUW currently, must move some fields to other objects manually for ClaymoreUW)
@@ -1588,6 +1610,7 @@ bool MPM::outputAppDataToJSON(QJsonObject &jsonObject) {
     // jsonObject["Application"] = "MPM";
     // QJsonObject dataObj;
     // jsonObject["ApplicationData"] = dataObj;
+
     jsonObject["programFile"] = "fbar"; // <- ClaymoreUW MPM executable filename on remote machine. Can be changed depending on compiled optimizations, versions, digital twin, etc.
     return true;
 }
@@ -1611,7 +1634,7 @@ bool MPM::copyFiles(QString &destDir) {
     QDir destDirCaseDir(destDirCase);
     if (!destDirCaseDir.exists()) 
     {
-        destDirCaseDir.mkpath(".");
+        destDirCaseDir.mkpath("."); // Make the directory if it doesn't exist
     }
     bool result = this->copyPath(caseDir(), destDirCase, false); // False means don't copy the directory itself, just the contents
     if (!result) 
@@ -1651,6 +1674,12 @@ bool MPM::copyFiles(QString &destDir) {
       qDebug() << "MPM - failed to copy outputs files";
       return false;
     }
+    // if (mpmResults->copyFiles(destDir) == false)
+    // {
+    //   qDebug() << "MPM - failed to copy results files";
+    //   return false;
+    // }
+
     return true;
  }
 
@@ -1679,9 +1708,6 @@ bool MPM::removeOldFiles()
     //
     // Remove extra files if they exist in case directory's "0" folder
     //
-
-    // Return from a lambda function
-    // Us
     
     auto removeFile = [this](QString filePath) {
         QFile file(caseDir() + QDir::separator() + "0" + QDir::separator() + filePath);
@@ -1763,7 +1789,6 @@ QVector<QVector<double>> MPM::readTxtData(QString fileName)
     return data;
 }
 
-// From WE-UQ EmptyDomainCFD
 bool MPM::isCaseConfigured()
 {
     QDir zeroDir(caseDir() + QDir::separator() +  "0");
@@ -1792,13 +1817,15 @@ QString MPM::pyScriptsPath()
     return backendAppDir;
 }
 
+// Probably not needed for anything but OpenFOAM
 QString MPM::templateDictDir()
 {
-    // Probably not needed for anything but OpenFOAM
+    QString templateSubFolder = QString("templateOF10Dicts");// "templateMPMDicts";
     QString templateDictsDir = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
-             + QString("applications") + QDir::separator() + QString("createEVENT") + QDir::separator()
-             + QString("MPM") + QDir::separator() + QString("templateOF10Dicts");
-
+                                + QString("applications") + QDir::separator() 
+                                + QString("createEVENT") + QDir::separator()
+                                + QString("MPM") + QDir::separator() 
+                                + templateSubFolder;
     return templateDictsDir;
 }
 
@@ -1807,9 +1834,21 @@ QString MPM::simulationType()
     return QString("MPM"); // Yet to support turbulence models in MPM, so its just "MPM" (i.e. DNS)
 }
 
-bool MPM::isInitialize()
+SC_ResultsWidget* MPM::getResultsWidget(QWidget *parent)
 {
-    return caseInitialized;
+  theTabWidget->setCurrentIndex(5); // Switch to the results tab
+  statusMessage("MPM - Begin to post-process the downloaded results for visualization");
+  return mpmResults;
 }
 
+void MPM::importMainDomainJsonFile(QJsonObject &jsonObject)
+{
+    // openFoamVersion->setCurrentText(jsonObject["OpenFoamVersion"].toString());
+    // geometry->inputFromJSON(jsonObject);
+    // snappyHexMesh->inputFromJSON(jsonObject);
+    // windCharacteristics->inputFromJSON(jsonObject);
+    // boundaryConditions->inputFromJSON(jsonObject);
+    // turbulenceModeling->inputFromJSON(jsonObject);
+    // numericalSetup->inputFromJSON(jsonObject);
+}
 

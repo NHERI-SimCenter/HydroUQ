@@ -285,7 +285,6 @@ SensorsMPM::copyFiles(QString &destDir)
 {
   // if (theOpenSeesPyScript->copyFile(destDir) != true)
   //   return false;
-  // return theSurfaceFile->copyFile(destDir);
   return true;    
 }
 

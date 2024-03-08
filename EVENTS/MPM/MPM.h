@@ -42,7 +42,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <SimCenterAppWidget.h>
 
-//Forward declaration
+// Forward declaration
 class InputWidgetParameters;
 class RandomVariablesContainer;
 class LineEditRV;
@@ -52,6 +52,7 @@ class BodiesMPM;
 class BoundariesMPM;
 class SensorsMPM;
 class OutputsMPM; 
+class ResultsMPM;
 
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
@@ -70,12 +71,15 @@ class QPushButton;
 class QCheckBox;
 class QFormLayout;
 class QLabel;
+class QTabWidget;
 
 class MPM : public SimCenterAppWidget
 {
+      Q_OBJECT 
+
 public:
-   //  explicit MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent = 0);
-   MPM( QWidget *parent = 0);
+    explicit MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent = 0);
+   // MPM( QWidget *parent = 0);
    ~MPM();
 
    bool inputFromJSON(QJsonObject &rvObject);
@@ -84,15 +88,16 @@ public:
    bool inputAppDataFromJSON(QJsonObject &rvObject);
    bool copyFiles(QString &dirName);
 
+   bool initialize();
+   bool isInitialize();
+
    bool setupCase();
    bool cleanCase();
    bool removeOldFiles();
    bool isCaseConfigured();
    void readCaseData();
 
-   bool initialize();
-   bool isInitialize();
-
+   void importMainDomainJsonFile(QJsonObject &rvObject);
    QVector<QVector<double>> readTxtData(QString fileName);
 
    void executeBackendScript();
@@ -101,7 +106,9 @@ public:
    QString templateDictDir();
    QString pyScriptsPath();
    QString simulationType();
-   //  QString foamDictsPath();
+   //  QString foamDictsPath(); // For OpenFOAM from WE-UQ, not MPM
+
+   SC_ResultsWidget* getResultsWidget(QWidget *parent); // For vis of output data results 
 
 signals:
 
@@ -117,7 +124,8 @@ private:
    BoundariesMPM                *mpmBoundaries;
    SensorsMPM                   *mpmSensors;
    OutputsMPM                   *mpmOutputs; 
-  
+   ResultsMPM                   *mpmResults;
+
    RandomVariablesContainer     *theRandomVariablesContainer;
    QStringList                  varNamesAndValues;
 
@@ -125,6 +133,7 @@ private:
    QLineEdit                    *caseDirectoryPathWidget;
    QGroupBox                    *caseDirectoryGroup;
    QGridLayout                  *caseDirectoryLayout;
+   QTabWidget                   *theTabWidget;
    // QVBoxLayout                  *visWindowLayout;
    // QGroupBox                    *visWindowGroup;
    // QVBoxLayout                  *inputWindowLayout;

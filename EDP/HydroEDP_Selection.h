@@ -74,6 +74,7 @@ private:
    QComboBox   *edpSelection;
    QStackedWidget *theStackedWidget;
    SimCenterAppWidget *theCurrentEDP;
+
    SimCenterAppWidget *theStandardHydroEDPs;
    SimCenterAppWidget *theStandardTsunamiEDPs;
    SimCenterAppWidget *theStandardStormSurgeEDPs;

@@ -37,8 +37,8 @@ SOURCES += \
     $$PWD/EVENTS/MPM/BoundaryMPM.cpp \
     $$PWD/EVENTS/MPM/BoundariesMPM.cpp \
     $$PWD/EVENTS/MPM/OutputsMPM.cpp \
-    $$PWD/EVENTS/MPM/SensorMPM.cpp \
     $$PWD/EVENTS/MPM/SensorsMPM.cpp \
+    $$PWD/EVENTS/MPM/SensorMPM.cpp \
     $$PWD/EVENTS/MPM/BodiesMPM.cpp \
     $$PWD/EVENTS/MPM/SettingsMPM.cpp \
     $$PWD/EVENTS/MPM/MaterialMPM.cpp \
@@ -47,6 +47,7 @@ SOURCES += \
     $$PWD/EVENTS/MPM/AlgorithmMPM.cpp \
     $$PWD/EVENTS/MPM/PartitionsMPM.cpp \
     $$PWD/EVENTS/MPM/PartitionMPM.cpp \
+    $$PWD/EVENTS/MPM/ResultsMPM.cpp \
     $$PWD/EVENTS/MPM/SPH.cpp \
     $$PWD/EVENTS/MPM/CaseSPH.cpp \
     $$PWD/EVENTS/MPM/ExecutionSPH.cpp \
@@ -88,7 +89,7 @@ HEADERS += \
     $$PWD/EVENTS/MPM/BoundariesMPM.h \
     $$PWD/EVENTS/MPM/OutputsMPM.h \
     $$PWD/EVENTS/MPM/SensorsMPM.h \
-    $$PWD/EVENTS/MPM/SensorsMPM.h \
+    $$PWD/EVENTS/MPM/SensorMPM.h \
     $$PWD/EVENTS/MPM/BodiesMPM.h \
     $$PWD/EVENTS/MPM/SettingsMPM.h \   
     $$PWD/EVENTS/MPM/MaterialMPM.h \
@@ -97,6 +98,7 @@ HEADERS += \
     $$PWD/EVENTS/MPM/AlgorithmMPM.h \
     $$PWD/EVENTS/MPM/PartitionsMPM.h \   
     $$PWD/EVENTS/MPM/PartitionMPM.h \  
+    $$PWD/EVENTS/MPM/ResultsMPM.h \
     $$PWD/EVENTS/MPM/SPH.h \
     $$PWD/EVENTS/MPM/CaseSPH.h \
     $$PWD/EVENTS/MPM/ExecutionSPH.h \
