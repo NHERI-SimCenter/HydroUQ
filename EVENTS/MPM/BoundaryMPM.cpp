@@ -1339,6 +1339,12 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
       structOriginHeight->setText(QString::number(2.0));
       structOriginWidth->setText(QString::number(1.325));
       applyArray->setChecked(false);
+      structSpacingX->setText(QString::number(1.1));
+      structSpacingY->setText(QString::number(0.625));
+      structSpacingZ->setText(QString::number(1.1));
+      structArrayX->setText(QString::number(1));
+      structArrayY->setText(QString::number(1));
+      structArrayZ->setText(QString::number(1));
     }
     else if (twinIdx == 1) { // OSU DWB
       structContactType->setCurrentIndex(0); // Separable
@@ -1348,11 +1354,11 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
       structWidth->setText(QString::number(0.4));
       structOriginLength->setText(QString::number(35.29));
       structOriginHeight->setText(QString::number(1.0));
-      structOriginWidth->setText(QString::number(10.4));
+      structOriginWidth->setText(QString::number(8.2));
       applyArray->setChecked(true);
-      structSpacingX->setText(QString::number(0.0));
-      structSpacingY->setText(QString::number(0.0));
-      structSpacingZ->setText(QString::number(0.4));
+      structSpacingX->setText(QString::number(0.8));
+      structSpacingY->setText(QString::number(0.8));
+      structSpacingZ->setText(QString::number(0.8));
       structArrayX->setText(QString::number(1));
       structArrayY->setText(QString::number(1));
       structArrayZ->setText(QString::number(12));
@@ -1368,19 +1374,25 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
       structOriginHeight->setText(QString::number(0.1)); // Recheck the height
       structOriginWidth->setText(QString::number(0.473));
       applyArray->setChecked(false);
+      structSpacingX->setText(QString::number(0.3));
+      structSpacingY->setText(QString::number(0.2));
+      structSpacingZ->setText(QString::number(0.3));
+      structArrayX->setText(QString::number(1));
+      structArrayY->setText(QString::number(1));
+      structArrayZ->setText(QString::number(1));
     }
     else if (twinIdx == 3) { // WU TWB
       structContactType->setCurrentIndex(0); // Separable
       structObjectType->setCurrentIndex(twinIdx); // Box?
       structLength->setText(QString::number(0.1));
-      structHeight->setText(QString::number(0.2));
+      structHeight->setText(QString::number(0.3));
       structWidth->setText(QString::number(0.1));
-      structOriginLength->setText(QString::number(5.11)); // 0.77 from quay, 0.66 rel to dim
+      structOriginLength->setText(QString::number(5.11)); // 0.71 from quay, 0.66 rel to dim
       structOriginHeight->setText(QString::number(0.255));
-      structOriginWidth->setText(QString::number(2.6));
+      structOriginWidth->setText(QString::number(1.3));
       applyArray->setChecked(true);
       structSpacingX->setText(QString::number(0.45));
-      structSpacingY->setText(QString::number(0.0));
+      structSpacingY->setText(QString::number(0.4));
       structSpacingZ->setText(QString::number(0.325));
       structArrayX->setText(QString::number(2));
       structArrayY->setText(QString::number(1));
@@ -1398,6 +1410,12 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
       structOriginHeight->setText(QString::number(0.0));
       structOriginWidth->setText(QString::number(0.75));
       applyArray->setChecked(false);
+      structSpacingX->setText(QString::number(0.3));
+      structSpacingY->setText(QString::number(0.3));
+      structSpacingZ->setText(QString::number(0.3));
+      structArrayX->setText(QString::number(1));
+      structArrayY->setText(QString::number(1));
+      structArrayZ->setText(QString::number(1));
 
     }
   }

@@ -61,6 +61,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <BoundariesMPM.h>
 #include <SensorsMPM.h>
 #include <OutputsMPM.h>
+#include <ResultsMPM.h>
 
 #include <Qt3DExtras/QCuboidMesh>
 #include <Qt3DExtras/QPhongMaterial>
@@ -120,13 +121,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // #include <SC_ToolDialog.h>
 // #include <SC_RemoteAppTool.h>
 
-// MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
-//     :  SimCenterAppWidget(parent), theRandomVariablesContainer(theRandomVariableIW)
-// {
-
-MPM::MPM(QWidget *parent)
-    :  SimCenterAppWidget(parent)
+MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
+    :  SimCenterAppWidget(parent), theRandomVariablesContainer(theRandomVariableIW)
 {
+
+// MPM::MPM(QWidget *parent)
+//     :  SimCenterAppWidget(parent)
+// {
     int windowWidth = 800;
     int windowWidthMin = 250;
     QWidget     *mainGroup = new QWidget();
@@ -361,9 +362,22 @@ MPM::MPM(QWidget *parent)
 
     QLabel *aboveTabs = new QLabel("\nSelect a NHERI SimCenter Digital Twin Above To Begin\n");
     aboveTabs->setAlignment(Qt::AlignCenter);
+    mainLayout->addWidget(aboveTabs, 2, 0);
     // aboveTabs->setStyleSheet("QLabel {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}"
     //                          "QLabel:disabled {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}");
-    mainLayout->addWidget(aboveTabs, 2, 0);
+
+    // ==================== Results-View Set-Up ====================
+    QWidget* resultsWidget = new QWidget();
+    QVBoxLayout* resultsLayout  = new QVBoxLayout();
+    resultsWidget->setLayout(resultsLayout);
+    mpmResults = new ResultsMPM(this);
+    resultsLayout->addWidget(mpmResults);
+    resultsLayout->addStretch();
+
+    // ==================== CFD Results-View Set-Up ====================
+    // cfdResultsGroup = new QGroupBox("CFD Results", this);
+    // cfdResultsLayout = new QGridLayout();
+    // cfdResultsGroup->setLayout(cfdResultsLayout);
 
     // ==================== Simulation Set-Up ====================
     mpmSettings = new SettingsMPM();
@@ -371,13 +385,18 @@ MPM::MPM(QWidget *parent)
     mpmBoundaries = new BoundariesMPM();
     mpmSensors = new SensorsMPM();
     mpmOutputs = new OutputsMPM();
+    // mpmResults = new ResultsMPM();
 
-    QTabWidget *theTabWidget = new QTabWidget();
+    // theTabWidget = new QTabWidget();
+    theTabWidget = new QTabWidget(this);
     theTabWidget->addTab(mpmSettings, QIcon(QString(":/icons/settings-black.svg")), "Settings");
     theTabWidget->addTab(mpmBodies, QIcon(QString(":/icons/deform-black.svg")), "Bodies");
     theTabWidget->addTab(mpmBoundaries, QIcon(QString(":/icons/man-door-black.svg")), "Boundaries");
     theTabWidget->addTab(mpmSensors, QIcon(QString(":/icons/dashboard-black.svg")), "Sensors");
-    theTabWidget->addTab(mpmOutputs, QIcon(QString(":/icons/file-settings-black.svg")), "Outputs");    
+    theTabWidget->addTab(mpmOutputs, QIcon(QString(":/icons/file-settings-black.svg")), "Outputs");   
+    theTabWidget->addTab(resultsWidget, QIcon(QString(":/icons/flag-black.svg")), "Results");   
+    // theTabWidget->addTab(mpmResults, QIcon(QString(":/icons/flag-black.svg")), "Results");   
+
     int sizePrimaryTabs =20;
     theTabWidget->setIconSize(QSize(sizePrimaryTabs,sizePrimaryTabs));
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
@@ -405,10 +424,14 @@ MPM::MPM(QWidget *parent)
     QVector < QVector < QVector < Qt3DExtras::QCuboidMesh* > > > cubeMesh(16,
               QVector < QVector < Qt3DExtras::QCuboidMesh* > > (2,
                         QVector < Qt3DExtras::QCuboidMesh* > (16, nullptr)));
+    QVector < QVector < QVector < Qt3DExtras::QCuboidMesh* > > > debrisMesh(16,
+              QVector < QVector < Qt3DExtras::QCuboidMesh* > > (2,
+                        QVector < Qt3DExtras::QCuboidMesh* > (16, nullptr)));
     for (int i = 0; i < 16; i++) {
         for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 16; k++) {
                 cubeMesh[i][j][k] = new Qt3DExtras::QCuboidMesh();
+                debrisMesh[i][j][k] = new Qt3DExtras::QCuboidMesh();
             }
         }
     }
@@ -420,16 +443,28 @@ MPM::MPM(QWidget *parent)
     Qt3DRender::QMesh *hydroMesh = new Qt3DRender::QMesh();
     hydroMesh->setSource(QUrl(QStringLiteral("qrc:/HydroUQ_Icon_Color.obj")));
 
+    Qt3DExtras::QCuboidMesh *reservoirMesh = new Qt3DExtras::QCuboidMesh();
+    Qt3DExtras::QCuboidMesh *harborMesh = new Qt3DExtras::QCuboidMesh();
+    Qt3DExtras::QCuboidMesh *floorMesh = new Qt3DExtras::QCuboidMesh();
+    Qt3DExtras::QCuboidMesh *gateMesh = new Qt3DExtras::QCuboidMesh();
     // Create a transform and set its scale
     // auto cubeTransform = new Qt3DCore::QTransform();
     // Qt3DCore::QTransform *cubeTransform[16][2][16];
     QVector < QVector < QVector < Qt3DCore::QTransform* > > > cubeTransform(16,
               QVector < QVector < Qt3DCore::QTransform* > > (2,
                         QVector < Qt3DCore::QTransform* > (16, nullptr)));
+    QVector < QVector < QVector < Qt3DCore::QTransform* > > > debrisTransform(16,
+              QVector < QVector < Qt3DCore::QTransform* > > (2,
+                        QVector < Qt3DCore::QTransform* > (16, nullptr)));                        
     auto fluidTransform = new Qt3DCore::QTransform();
     auto pistonTransform = new Qt3DCore::QTransform();
     auto twinTransform = new Qt3DCore::QTransform();
     auto hydroTransform = new Qt3DCore::QTransform();
+    auto reservoirTransform = new Qt3DCore::QTransform();
+    auto harborTransform = new Qt3DCore::QTransform();
+    auto floorTransform = new Qt3DCore::QTransform();
+    // auto gateTransform = new Qt3DCore::QTransform();
+
     for (int i = 0; i < 16; i++) {
         for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 16; k++) {
@@ -441,7 +476,13 @@ MPM::MPM(QWidget *parent)
                 cubeTransform[i][j][k]->setTranslation(QVector3D(45.8f+1.016f/2.f, 2.0f+0.615f/2.f, 1.825f)); 
                 cubeTransform[i][j][k]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
 
-
+                debrisTransform[i][j][k] = new Qt3DCore::QTransform();
+                debrisMesh[i][j][k]->setXExtent(0.5f);
+                debrisMesh[i][j][k]->setYExtent(0.05f);
+                debrisMesh[i][j][k]->setZExtent(0.1f);
+                debrisTransform[i][j][k]->setScale(1.f);
+                debrisTransform[i][j][k]->setTranslation(QVector3D((42.8f + 0.5f/2.f - 0.5f*4 - 0.1f*3)/2.f + i*(0.5f + 0.1f), 2.0f+0.05f/2.f + (0.05f + 0.1f)*j, (3.65f - 0.1f*(8) - 0.1f*(7)/2 + (0.1f+.1f)*(k)))); 
+                debrisTransform[i][j][k]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
             }
         }
     }
@@ -477,6 +518,31 @@ MPM::MPM(QWidget *parent)
     // hydroTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
     hydroTransform->setRotation(QQuaternion::fromEulerAngles(90.f, 0.f, 0.f));
 
+
+    reservoirMesh->setXExtent(0.5f);
+    reservoirMesh->setYExtent(0.67f);
+    reservoirMesh->setZExtent(4.0f);
+    reservoirTransform->setScale(1.f);
+    reservoirTransform->setTranslation(QVector3D(0.5f/2.f, 0.23f + 0.67f/2.f, 4.0f/2.f));
+    reservoirTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+
+
+    harborMesh->setXExtent(4.55f);
+    harborMesh->setYExtent(0.255f);
+    harborMesh->setZExtent(4.0f);
+    harborTransform->setScale(1.f);
+    harborTransform->setTranslation(QVector3D(4.45f + 4.55/2.f, 0.255f/2.f, 4.0f/2.0f));
+    harborTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+
+    floorMesh->setXExtent(9.0f);
+    floorMesh->setYExtent(0.125f);
+    floorMesh->setZExtent(4.0f);
+    floorTransform->setScale(1.f);
+    floorTransform->setTranslation(QVector3D(9.0f/2.f, -0.125f/2.f, 4.0f/2.f));
+    floorTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+
+
+
     // Allow for camera controls
     auto camController = new Qt3DExtras::QOrbitCameraController(rootEntity);
     camController->setCamera(cameraEntity);
@@ -488,16 +554,28 @@ MPM::MPM(QWidget *parent)
     QVector < QVector < QVector < Qt3DExtras::QPhongMaterial* > > > cubeMaterial(16,
               QVector < QVector < Qt3DExtras::QPhongMaterial* > > (2,
                         QVector < Qt3DExtras::QPhongMaterial* > (16, nullptr)));
+
+    QVector < QVector < QVector < Qt3DExtras::QPhongMaterial* > > > debrisMaterial(16,
+              QVector < QVector < Qt3DExtras::QPhongMaterial* > > (2,
+                        QVector < Qt3DExtras::QPhongMaterial* > (16, nullptr)));
+                        
     auto fluidMaterial = new Qt3DExtras::QPhongAlphaMaterial();
     auto pistonMaterial = new Qt3DExtras::QPhongMaterial();
     auto twinMaterial = new Qt3DExtras::QPhongMaterial();
     auto hydroMaterial = new Qt3DExtras::QPhongMaterial();
+    auto reservoirMaterial = new Qt3DExtras::QPhongMaterial();
+    auto harborMaterial = new Qt3DExtras::QPhongMaterial();
+    auto floorMaterial = new Qt3DExtras::QPhongMaterial();
+
 
     for (int i = 0; i < 16; i++) {
         for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 16; k++) {
                 cubeMaterial[i][j][k] = new Qt3DExtras::QPhongMaterial();
-                cubeMaterial[i][j][k]->setDiffuse(QColor(QRgb(0xCC5500)));
+                cubeMaterial[i][j][k]->setDiffuse(QColor(QRgb(0xCC5500))); // orange
+
+                debrisMaterial[i][j][k] = new Qt3DExtras::QPhongMaterial();
+                debrisMaterial[i][j][k]->setDiffuse(QColor(QRgb(0x00FF00))); // green
             }
         }
     }
@@ -518,15 +596,30 @@ MPM::MPM(QWidget *parent)
     hydroMaterial->setDiffuse(QColor(QRgb(0x005FFF)));
     hydroMaterial->setAmbient(QColor(QRgb(0x005FFF)));
     
+
+
+    reservoirMaterial->setAmbient(QColor(QRgb(0x0000FF))); // blue
+    harborMaterial->setAmbient(QColor(QRgb(0x8B4513))); // wood
+    floorMaterial->setAmbient(QColor(QRgb(0xCCCCCC)));
+    
+
     // Create a cube entity and add the mesh, transform and material components
     auto twinEntity = new Qt3DCore::QEntity(rootEntity);
 
     QVector < QVector < QVector < Qt3DCore::QEntity* > > > cubeEntity(16,
               QVector < QVector < Qt3DCore::QEntity* > > (2,
                         QVector < Qt3DCore::QEntity* > (16, nullptr)));
+    QVector < QVector < QVector < Qt3DCore::QEntity* > > > debrisEntity(16,
+              QVector < QVector < Qt3DCore::QEntity* > > (2,
+                        QVector < Qt3DCore::QEntity* > (16, nullptr)));    
     auto fluidEntity = new Qt3DCore::QEntity(rootEntity);
     auto pistonEntity = new Qt3DCore::QEntity(rootEntity);
     auto hydroEntity = new Qt3DCore::QEntity(rootEntity);
+    auto reservoirEntity = new Qt3DCore::QEntity(rootEntity);
+    auto harborEntity = new Qt3DCore::QEntity(rootEntity);
+    auto floorEntity = new Qt3DCore::QEntity(rootEntity);
+
+
     // Now disable the HydroUQ logo until its cleaned up
     hydroEntity->setEnabled(false);
 
@@ -537,9 +630,26 @@ MPM::MPM(QWidget *parent)
                 cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
                 cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
                 cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
+                cubeEntity[i][j][k]->setEnabled(false);
+                debrisEntity[i][j][k] = new Qt3DCore::QEntity(rootEntity);
+                debrisEntity[i][j][k]->addComponent(debrisMesh[i][j][k]);
+                debrisEntity[i][j][k]->addComponent(debrisMaterial[i][j][k]);
+                debrisEntity[i][j][k]->addComponent(debrisTransform[i][j][k]);
+                debrisEntity[i][j][k]->setEnabled(false);
             }
         }
     }
+    cubeEntity[0][0][0]->setEnabled(true);
+    for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+                if (i < 4 && j < 1 && k < 8) {
+                    cubeEntity[i][j][k]->setEnabled(true);
+                }
+            }
+        }
+    }
+
     // cubeEntity->addComponent(cubeMesh);
     // cubeEntity->addComponent(cubeMaterial);
     // cubeEntity->addComponent(cubeTransform);
@@ -560,6 +670,23 @@ MPM::MPM(QWidget *parent)
     hydroEntity->addComponent(hydroMesh);
     hydroEntity->addComponent(hydroMaterial);
     hydroEntity->addComponent(hydroTransform);
+
+    reservoirEntity->addComponent(reservoirMesh);
+    reservoirEntity->addComponent(reservoirMaterial);
+    reservoirEntity->addComponent(reservoirTransform);
+
+    harborEntity->addComponent(harborMesh);
+    harborEntity->addComponent(harborMaterial);
+    harborEntity->addComponent(harborTransform);
+
+    floorEntity->addComponent(floorMesh);
+    floorEntity->addComponent(floorMaterial);
+    floorEntity->addComponent(floorTransform);
+
+    reservoirEntity->setEnabled(false);
+    harborEntity->setEnabled(false);
+    floorEntity->setEnabled(false);
+
 
     // Set the root entity of the 3D window
     view->setRootEntity(rootEntity);
@@ -599,16 +726,18 @@ MPM::MPM(QWidget *parent)
       int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
       arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 2  ? arrayY : 2 ) : 1;
       arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
-      for (int i = 0; i < arrayX; i++) {
-        for (int j = 0; j < arrayY; j++) {
-          for (int k = 0; k < arrayZ; k++) {
-            if (i < 16-1 && j < 2-1 && k < 16-1)
-            {
+      for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+          for (int k = 0; k < 16; k++) {
+            if (i < arrayX && j < arrayY && k < arrayZ) {
               cubeMesh[i][j][k]->setXExtent(lengthX);
               cubeMesh[i][j][k]->setYExtent(lengthY);
               cubeMesh[i][j][k]->setZExtent(lengthZ);
+              if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(true);
+            } else {
+              if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(false);
             }
           }
         }
@@ -637,18 +766,20 @@ MPM::MPM(QWidget *parent)
       int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
       arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 2  ? arrayY : 2 ) : 1;
       arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
 
       double spacingX = mpmBoundaries->getSpacingX(mpmBoundaries->getStructureBoundary());
       double spacingY = mpmBoundaries->getSpacingY(mpmBoundaries->getStructureBoundary());
       double spacingZ = mpmBoundaries->getSpacingZ(mpmBoundaries->getStructureBoundary());
-      for (int i = 0; i < arrayX; i++) {
-        for (int j = 0; j < arrayY; j++) {
-          for (int k = 0; k < arrayZ; k++) {
-            if (i < 16-1 && j < 2-1 && k < 16-1)
-            {
+      for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+          for (int k = 0; k < 16; k++) {
+            if (i < arrayX && j < arrayY && k < arrayZ) {
               cubeTransform[i][j][k]->setTranslation(QVector3D(originX + spacingX*i, originY + spacingY * j, originZ + spacingZ * k));
+              if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(true);
+            } else {
+              if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(false);
             }
           }
         }
@@ -677,30 +808,30 @@ MPM::MPM(QWidget *parent)
       int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
       arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 2  ? arrayY : 2 ) : 1;
       arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
       // cubeMesh is now a 3d array of cubeMesh
       // Since arrayX, arrayY, and arrayZ updated, we need to update the size of the array
-      for (int i = 0; i < arrayX; i++) {
-        for (int j = 0; j < arrayY; j++) {
-          for (int k = 0; k < arrayZ; k++) {
+      for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+          for (int k = 0; k < 16; k++) {
             cubeMesh[i][j][k]->setXExtent(lengthX);
             cubeMesh[i][j][k]->setYExtent(lengthY);
             cubeMesh[i][j][k]->setZExtent(lengthZ);
             cubeTransform[i][j][k]->setTranslation(QVector3D(originX + spacingX*i, originY + spacingY * j, originZ + spacingZ * k));
-            
-            if (i < 16-1 && j < 2-1 && k < 16-1)
+            if (i < arrayX && j < arrayY && k < arrayZ)
             {
-              cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
-              cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
-              cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
+              // cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
+              // cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
+              // cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
+              cubeEntity[i][j][k]->setEnabled(true);
             }
-            // remove cubeEntity[i][j][k] from the view port
             else 
             {
-              cubeEntity[i][j][k]->removeComponent(cubeMesh[i][j][k]);
-              cubeEntity[i][j][k]->removeComponent(cubeMaterial[i][j][k]);
-              cubeEntity[i][j][k]->removeComponent(cubeTransform[i][j][k]);
+              cubeEntity[i][j][k]->setEnabled(false);
+              // cubeEntity[i][j][k]->removeComponent(cubeMesh[i][j][k]);
+              // cubeEntity[i][j][k]->removeComponent(cubeMaterial[i][j][k]);
+              // cubeEntity[i][j][k]->removeComponent(cubeTransform[i][j][k]);
             }
           }
         }
@@ -733,26 +864,23 @@ MPM::MPM(QWidget *parent)
       arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
       arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
       
-      for (int i = 0; i < arrayX; i++) {
-        for (int j = 0; j < arrayY; j++) {
-          for (int k = 0; k < arrayZ; k++) {
+      for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 2; j++) {
+          for (int k = 0; k <  16; k++) {
             cubeMesh[i][j][k]->setXExtent(lengthX);
             cubeMesh[i][j][k]->setYExtent(lengthY);
             cubeMesh[i][j][k]->setZExtent(lengthZ);
             cubeTransform[i][j][k]->setTranslation(QVector3D(originX + spacingX*i, originY + spacingY * j, originZ + spacingZ * k));
-            
-            if (i < 16-1 && j < 2-1 && k < 16-1)
-            {
-              cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
-              cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
-              cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
-            }
-            // remove cubeEntity[i][j][k] from the view port
-            else 
-            {
-              cubeEntity[i][j][k]->removeComponent(cubeMesh[i][j][k]);
-              cubeEntity[i][j][k]->removeComponent(cubeMaterial[i][j][k]);
-              cubeEntity[i][j][k]->removeComponent(cubeTransform[i][j][k]);
+            if (i < arrayX && j < arrayY && k < arrayZ) {
+              // cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
+              // cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
+              // cubeEntity[i][j][k]->addComponent(cubeTransform[i][j][k]);
+              cubeEntity[i][j][k]->setEnabled(true);
+            } else {
+              cubeEntity[i][j][k]->setEnabled(false);
+              // cubeEntity[i][j][k]->removeComponent(cubeMesh[i][j][k]);
+              // cubeEntity[i][j][k]->removeComponent(cubeMaterial[i][j][k]);
+              // cubeEntity[i][j][k]->removeComponent(cubeTransform[i][j][k]);
             }
           }
         }
@@ -786,14 +914,17 @@ MPM::MPM(QWidget *parent)
 
     auto updateDigitalTwin = [=](int index) {
       if (index == 0) {
-        twinEntity->setEnabled(false);
+        twinEntity->setEnabled(true);
         for (int i = 0; i < 16; i++) {
           for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 16; k++) {
-              if (i < 16-1 && j < 2-1 && k < 16-1)
+              if (i < 16 && j < 2 && k < 16)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
+
+                debrisEntity[i][j][k]->setEnabled(false);
+                if (i < 4 && j < 1 && k < 8) debrisEntity[i][j][k]->setEnabled(true);
               }
             }
           }
@@ -803,8 +934,11 @@ MPM::MPM(QWidget *parent)
         pistonEntity->setEnabled(true);
         twinTransform->setScale3D(QVector3D(1.f,1.f,1.f));
         hydroEntity->setEnabled(false);
+        reservoirEntity->setEnabled(false);
+        harborEntity->setEnabled(false);
+        floorEntity->setEnabled(false);
       } else if (index == 1) {
-        twinEntity->setEnabled(false);
+        twinEntity->setEnabled(true);
         for (int i = 0; i < 1; i++) {
           for (int j = 0; j < 1; j++) {
             for (int k = 0; k < 1; k++) {
@@ -812,6 +946,7 @@ MPM::MPM(QWidget *parent)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i == 0 && j == 0 && k < 2) cubeEntity[i][j][k]->setEnabled(true);
+                debrisEntity[i][j][k]->setEnabled(false);
               }
             }
           }
@@ -820,15 +955,19 @@ MPM::MPM(QWidget *parent)
         pistonEntity->setEnabled(true);
         twinTransform->setScale3D(QVector3D(0.6f,7.25f,1.f/1.75f));
         hydroEntity->setEnabled(false);
+        reservoirEntity->setEnabled(false);
+        harborEntity->setEnabled(false);
+        floorEntity->setEnabled(false);
       } else if (index == 2) {
         twinEntity->setEnabled(false);
-        for (int i = 0; i < 1; i++) {
-          for (int j = 0; j < 1; j++) {
-            for (int k = 0; k < 1; k++) {
-              if (i < 16-1 && j < 2-1 && k < 16-1)
+        for (int i = 0; i < 16; i++) {
+          for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+              if (i < 16 && j < 2 && k < 16)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
+                debrisEntity[i][j][k]->setEnabled(false);
               }
             }
           }
@@ -836,15 +975,23 @@ MPM::MPM(QWidget *parent)
         fluidEntity->setEnabled(true);
         pistonEntity->setEnabled(false);
         hydroEntity->setEnabled(false);
+        reservoirEntity->setEnabled(false);
+        harborEntity->setEnabled(false);
+        floorEntity->setEnabled(true);
+        floorTransform->setTranslation(QVector3D(12.0f/2, -0.125f/2, 1.0f/2)); 
+        floorMesh->setXExtent(12.f);
+        floorMesh->setYExtent(0.125f);
+        floorMesh->setZExtent(1.f);
       } else if (index == 3) {
         twinEntity->setEnabled(false);
-        for (int i = 0; i < 1; i++) {
-          for (int j = 0; j < 1; j++) {
-            for (int k = 0; k < 1; k++) {
-              if (i < 16-1 && j < 2-1 && k < 16-1)
+        for (int i = 0; i < 16; i++) {
+          for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+              if (i < 16 && j < 2 && k < 16)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i < 2 && j == 0 && k < 5) cubeEntity[i][j][k]->setEnabled(true);
+                debrisEntity[i][j][k]->setEnabled(false);
               }
             }
           }
@@ -852,15 +999,22 @@ MPM::MPM(QWidget *parent)
         fluidEntity->setEnabled(true);
         pistonEntity->setEnabled(true);
         hydroEntity->setEnabled(false);
+        reservoirEntity->setEnabled(true);
+        harborEntity->setEnabled(true);
+        floorEntity->setEnabled(true);
+        floorTransform->setTranslation(QVector3D(9.0f/2, -0.125f/2, 4.0f/2)); 
+        floorMesh->setXExtent(9.f);
+        floorMesh->setYExtent(0.125f);
+        floorMesh->setZExtent(4.f);
       } else if (index == 4) {
         twinEntity->setEnabled(false);
-        for (int i = 0; i < 1; i++) {
-          for (int j = 0; j < 1; j++) {
-            for (int k = 0; k < 1; k++) {
-              if (i < 16-1 && j < 2-1 && k < 16-1)
+        for (int i = 0; i < 16; i++) {
+          for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 16; k++) {
+              if (i < 16 && j < 2 && k < 16)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
-                // if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
+                debrisEntity[i][j][k]->setEnabled(false);
               }
             }
           }
@@ -868,6 +1022,9 @@ MPM::MPM(QWidget *parent)
         fluidEntity->setEnabled(false);
         pistonEntity->setEnabled(true);
         hydroEntity->setEnabled(false);
+        reservoirEntity->setEnabled(false);
+        harborEntity->setEnabled(false);
+        floorEntity->setEnabled(false);
       }
       updateFluid();
       updateBoundaryStructureSize();
@@ -1017,17 +1174,108 @@ MPM::MPM(QWidget *parent)
 
 }
 
-
 MPM::~MPM()
 {
 
 }
 
+bool MPM::isInitialize()
+{
+    return caseInitialized;
+}
+
+bool MPM::initialize()
+{
+    const int windowWidth = 850;
+    // mainWindowLayout = new QHBoxLayout();
+
+    // ---------------------------------------------------
+
+    caseDirectoryGroup = new QGroupBox("Case Directory");
+    caseDirectoryLayout = new QGridLayout();
+
+    QLabel *casePathLabel = new QLabel("Path: ");
+    QPushButton* browseCaseDirectoryButton  = new QPushButton("Browse");
+
+
+    caseDirectoryPathWidget = new QLineEdit();
+    QString currentAppDir = QCoreApplication::applicationDirPath();
+
+    QDir workingDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+    if (!workingDir.exists()) 
+    {
+      workingDir.mkpath(".");
+    }
+    QString workingDirPath = workingDir.filePath(QCoreApplication::applicationName() + QDir::separator()
+                                                 + "LocalWorkDir" + QDir::separator()
+                                                 + "MPM");
+    if (!workingDir.exists(workingDirPath)) {
+        workingDir.mkpath(workingDirPath);
+    }
+    caseDirectoryPathWidget->setText(workingDirPath);
+    caseDirectoryLayout->addWidget(casePathLabel, 0, 0);
+    caseDirectoryLayout->addWidget(caseDirectoryPathWidget, 0, 1);
+    caseDirectoryLayout->addWidget(browseCaseDirectoryButton, 0, 2);
+
+    // QLabel *citeLabel = new QLabel("\nParts of the workflow for this MPM event are developed based on the work of Wang et al. (2020) and Bonus (2023).\n"
+    //                                "The user should cite the work as follows:\n"
+    //                                "\nWang, Xinlei and Qiu Yuxing, et al. (2020). “A massively parallel and scalable multi-GPU material point method.”\n"
+    //                                "\nBonus, Justin (2023). “Evaluation of Fluid-Driven Debris Impacts in a High-Performance Multi-GPU Material Point Method.”\n"
+    //                                "PhD thesis, University of Washington, Seattle, WA.");
+
+    // QFont citeFont("Arial", 8);
+    // citeFont.setPointSize(7);
+    // citeFont.setItalic(true);
+
+    // citeLabel->setFont(citeFont);
+
+    caseDirectoryGroup->setLayout(caseDirectoryLayout);
+    caseDirectoryGroup->setMaximumWidth(200); // small test
+
+
+    //Populate each tab
+    // auto layout = this.layout();
+    // layout->addWidget(caseDirectoryGroup);
+    // layout->addWidget(citeLabel);
+    // layout->addStretch();
+    
+    // mainWindowLayout->addWidget(caseDirectoryGroup); // Before ?
+    // connect(browseCaseDirectoryButton, SIGNAL(clicked()), this, SLOT(onBrowseCaseDirectoryButtonClicked()));
+
+
+
+    // mainWindowLayout->addWidget(caseDirectoryGroup);
+    // mainWindowLayout->addWidget(citeLabel);
+    // mainWindowLayout->addStretch();
+
+    // connect(browseCaseDirectoryButton, SIGNAL(clicked()), this, SLOT(onBrowseCaseDirectoryButtonClicked()));
+    //=====================================================
+    // Setup the case directory
+    //=====================================================
+
+    if(!isCaseConfigured())
+    {
+        setupCase(); // Check if directories for the case files exist, if not create them
+    }
+    readCaseData(); // Read the case data from the JSON file
+    caseInitialized = true;
+
+    // Update the GI Tab once the data is read
+    // GeneralInformationWidget *theGI = GeneralInformationWidget::getInstance();
+    // theGI->setLengthUnit("m");
+    // theGI->setNumStoriesAndHeight(numberOfFloors(), buildingHeight());
+    // theGI->setBuildingDimensions(buildingWidth(), buildingDepth(), buildingWidth()*buildingDepth());
+
+    this->adjustSize();
+
+    return true;
+}
+
 
 void MPM::updateJSON()
 {
-    //Write it to JSON becase it is needed for the mesh generation before the final simulation is run.
-    //In future only one JSON file in temp.SimCenter directory might be enough
+    // Write most recent EVT state to JSON becase it is needed for pre-processing steps / mesh generation before the final simulation is run.
+    // In future only one JSON file in temp.SimCenter directory might be enough
     QString inputFilePath = caseDir() + QDir::separator() + "constant" + QDir::separator() + "simCenter"
                             + QDir::separator() + "input" + QDir::separator() + "MPM.json";
 
@@ -1039,72 +1287,64 @@ void MPM::updateJSON()
     }
 
     QJsonObject jsonObject;
-
     outputToJSON(jsonObject);
 
     QJsonDocument jsonDoc = QJsonDocument(jsonObject);
-
     jsonFile.write(jsonDoc.toJson());
-
     jsonFile.close();
     return;
 }
 
-void MPM::writeMPMFiles()
+void MPM::executeBackendScript()
 {
+    //
+    //  Update JSON input file and then pass arguments to a python script. Runs script to prepare case directory.
+    //  Python scripts hosted remotely by SimCenterBackendApplications/modules/createEVENT/*
+    // 
 
-    updateJSON();
-
-    // //Run python script to prepare case directory
-    QString scriptPath = pyScriptsPath() + "MPM.py";// "/setup_case.py";
-    QString jsonPath = caseDir() + QDir::separator() + "constant" + QDir::separator() + "simCenter" + QDir::separator() + "input";
+    updateJSON(); 
+    QString scriptPath = pyScriptsPath() + "MPM.py"; // "/setup_case.py";
     QString templatePath = templateDictDir();
+    QString jsonPath = caseDir() + QDir::separator() + "constant" + QDir::separator() + "simCenter" + QDir::separator() + "input";
     QString outputPath = caseDir();
-
-    // QString program = SimCenterPreferences::getInstance()->getPython();
-    // QStringList arguments;
-
-    // arguments << scriptPath << jsonPath << templatePath << outputPath;
-
-    // QProcess *process = new QProcess(this);
-
-    // process->start(program, arguments);
-
-    // process->waitForFinished(-1);
-
-    // QMessageBox msgBox;
-    // msgBox.setText(process->readAllStandardOutput() + "\n" + process->readAllStandardError());
-    // msgBox.exec();
-
-    // process->close();
+    if (QFileInfo(scriptPath).exists())
+    {
+      QString program = SimCenterPreferences::getInstance()->getPython();
+      QStringList arguments; arguments << scriptPath << jsonPath << templatePath << outputPath;
+      QProcess *process = new QProcess(this);
+      process->start(program, arguments);
+      process->waitForFinished(-1);
+      process->close();
+    } 
+    else 
+    {
+      qDebug() << "Cannot find the script path: " << scriptPath;
+    }
     return;
 }
 
-// From WE-UQ 
 void MPM::readCaseData()
 {
     //Write it to JSON becase it is needed for the mesh generation before the final simulation is run.
     //In future only one JSON file in temp.SimCenter directory might be enough
-    QString inputFilePath = caseDir() + QDir::separator() + "constant" + QDir::separator() + "simCenter"
-                            + QDir::separator() + "input" + QDir::separator() + "MPM.json";
-
-
+    QString inputFileName = "MPM.json";
+    QString inputFilePath = caseDir() + QDir::separator() 
+                            + "constant" + QDir::separator() 
+                            + "simCenter" + QDir::separator() 
+                            + "input" + QDir::separator() 
+                            + inputFileName;
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
     {
-       qDebug() << "Cannot find the path: " << inputFilePath;
+      qDebug() << "Cannot find/read input-file path: " << inputFilePath;
+      return;
     }
-
 
     QString val = jsonFile.readAll();
     QJsonDocument doc = QJsonDocument::fromJson(val.toUtf8());
     QJsonObject jsonObject = doc.object();
-
     inputFromJSON(jsonObject);
-
-    // // close file
     jsonFile.close();
-
     removeOldFiles();
 }
 
@@ -1114,41 +1354,21 @@ void MPM::onBrowseCaseDirectoryButtonClicked(void)
                                                     QFileDialog::ShowDirsOnly
                                                     | QFileDialog::DontResolveSymlinks);
     QDir newCaseDir(fileName);
-
     if (!newCaseDir.exists())
     {
        return;
     }
-
     caseDirectoryPathWidget->setText(fileName);
 
-
-    if(!isCaseConfigured())
+    if (!isCaseConfigured())
     {
         setupCase();
-        // snappyHexMesh->onRunBlockMeshClicked();
-        // snappyHexMesh->snappyHexMeshCompleted = false;
-        // reloadMesh();
-        return;
-    }
-    // if(!isMeshed())
-    // {
-    //     snappyHexMesh->onRunBlockMeshClicked();
-    //     snappyHexMesh->snappyHexMeshCompleted = false;
-    //     reloadMesh();
-    //     return;
-    // }
-    else
-    {
-        // Need to have MPM.json in LocalWorkDir/MPM/constant/simCenter/input
-        // readCaseData();
-
-        //Change it back if the case file is pointing to somethings else
-        caseDirectoryPathWidget->setText(fileName);
-        // reloadMesh();
         return;
     }
 
+    // Need to have JSON (MPM.json) in LocalWorkDir/MPM/constant/simCenter/input
+    readCaseData();
+    caseDirectoryPathWidget->setText(fileName);
     return;
 }
 
@@ -1157,36 +1377,36 @@ void MPM::clear(void)
 
 }
 
-
-
 bool MPM::inputFromJSON(QJsonObject &jsonObject)
 {
   this->clear();
   caseDirectoryPathWidget->setText(jsonObject["caseDirectoryPath"].toString());
+  // openFoamVersion->setCurrentText(jsonObject["OpenFoamVersion"].toString());
 
-    // openFoamVersion->setCurrentText(jsonObject["OpenFoamVersion"].toString());
   // mpmSettings->inputFromJSON(jsonObject);
   // mpmBodies->inputFromJSON(jsonObject);
   // mpmBoundaries->inputFromJSON(jsonObject);
   // mpmSensors->inputFromJSON(jsonObject);
   // mpmOutputs->inputFromJSON(jsonObject);
-  
+  mpmResults->inputFromJSON(jsonObject);
   return true;
 }
 
 bool MPM::outputToJSON(QJsonObject &jsonObject)
 {
-  jsonObject["EventClassification"] = "Hydro";
-  jsonObject["Application"] = "MPM";
+  jsonObject["EventClassification"] = "Hydro"; // Important for workflow (Earthquake vs Wind vs Hydro, etc.)
   jsonObject["type"] = "MPM";
+
+  jsonObject["Application"] = "MPM"; // For accessing SimCenterBackendApplications/applications/createEVENTS/{Application}/*.py ?
   jsonObject["subtype"] = "MPM";
-  // jsonObject["programFile"] = "fbar"; 
+
   // The JSON object-or-array that defines each main tab (i.e. Settings, Bodies, Boundaries, Sensors, Outputs)
   QJsonObject settingsObject;  
   QJsonArray bodiesArray;
   QJsonArray boundariesArray;
   QJsonArray sensorsArray;
   QJsonObject outputsObject;
+  QJsonObject resultsObject;
 
   // Pass in the objects or array object wrappers to the outputToJSON functions
   QJsonObject bodiesObjectWrapper;
@@ -1208,6 +1428,7 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
   mpmBoundaries->outputToJSON(boundariesObjectWrapper);
   mpmSensors->outputToJSON(sensorsObjectWrapper);
   mpmOutputs->outputToJSON(outputsObject);
+  // mpmResults->outputToJSON(resultsObject); // For now, just pass the jsonObject to the results tab. Does nothing
 
   // ==================== Settings ====================
   // Settings (simulation in ClaymoreUW currently)
@@ -1218,7 +1439,20 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
     // Move some values from the outputs object to the simulation settings object
     QJsonObject my_sim = jsonObject["simulation"].toObject(); 
     if (outputsObject.contains("save_suffix") && outputsObject["save_suffix"].isString()) {
-      my_sim["save_suffix"] = outputsObject["save_suffix"].toString(); // for ClaymoreUW, simulation:save_suffix = outputs:bodies_save_suffix
+      if (outputsObject["save_suffix"].toString().isEmpty()) {
+        my_sim["save_suffix"] = ".bgeo"; 
+      } else {
+        // Force lowercase and add a period if it is not the first character
+        // If the string is only one character but it is a period, append "bgeo" to it (binary geometry file for Houdinie SideFX)
+        if (outputsObject["save_suffix"].toString().at(0) != '.') 
+          my_sim["save_suffix"] = "." + outputsObject["save_suffix"].toString(); 
+
+        if (outputsObject["save_suffix"].toString().length() > 1) {
+          my_sim["save_suffix"] = my_sim["save_suffix"].toString().left(1) + my_sim["save_suffix"].toString().mid(1).toLower();
+        } else {
+          my_sim["save_suffix"] = my_sim["save_suffix"].toString().left(1) + "bgeo";
+        }
+      } 
     }
     if (outputsObject.contains("fps") && outputsObject["fps"].isDouble()) {
       my_sim["fps"] = outputsObject["fps"].toDouble(); // for ClaymoreUW, simulation:fps = outputs:outputBodies_Dt
@@ -1251,12 +1485,17 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
     
     // Assign each body an output_attribs array (array of strings that define what attributes to output each frame per particle)
     QJsonArray outputAttribsArray = outputsObject["outputs"].toObject()["output_attribs"].toArray(); // for ClaymoreUW, outputs:numOutputBodies = bodies:numBodies
-    int numOutputAttribs = outputAttribsArray.size();
+    int numOutputAttribs = outputAttribsArray.size(); // Number of output attrib arrays (one per body)
     for (int i = 0; i < numBodies; i++) {
-      // If there are more bodies than output attribs, just output IDs of particles
-      if (i >= numOutputAttribs) {
+      // If the body ID exceeds rows of outputAttrisbArray (one-per-body), just have body output IDs of particles
+      // Else If there are no output attribs for a valid outputAttribsArray row's body, tell the body to output IDs of particles
+      if (i < numOutputAttribs) {
+        if (outputAttribsArray[i].toArray().size() == 0) 
+          outputAttribsArray[i] = QJsonArray::fromStringList(QStringList() << "ID");
+      } else if (i >= numOutputAttribs) {
         outputAttribsArray.append(QJsonArray::fromStringList(QStringList() << "ID"));
-      }
+        numOutputAttribs++;
+      } 
       QJsonObject body = bodiesArray[i].toObject();
       QJsonArray bodyAttribsArray = outputAttribsArray[i].toArray();
       body["output_attribs"] = bodyAttribsArray;
@@ -1266,7 +1505,6 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
     // Unravel partition array per body into additional bodies (maybe move this into ClaymoreUW itself)
     for (int i = 0; i < numBodies; i++) {
       QJsonObject body = bodiesArray[i].toObject();
-      
       QJsonArray partitionArray = body["partition"].toArray();
       int numPartitions = partitionArray.size();
       for (int j = 0; j < numPartitions; j++) {
@@ -1282,71 +1520,98 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
         }
         bodiesArray.append(newBody); // TODO: Insert instead of append
       }
+
+      // Check that "gpu" and "model" are not both identical to another body's partition's "gpu" and "model"
+      // If they are, try to increment the "gpu" and "model" of the new body until it is unique, 
+      // remaining within "computer" object's "numGPUs" and "modelsPerGPU" values
+      // If it is not possible to increment the "gpu" and "model" to a unique value, remove the new body
+      // If it is possible to increment the "gpu" and "model" to a unique value, update the new body's "gpu" and "model"
+      // for (int j = numBodies; j < bodiesArray.size(); j++) {
+      for (int j = 0; j < bodiesArray.size(); j++) {
+        QJsonObject newBody = bodiesArray[j].toObject();
+        for (int k = 0; k < j; k++) {
+          QJsonObject existingBody = bodiesArray[k].toObject();
+          if (newBody["gpu"].toInt() == existingBody["gpu"].toInt() && newBody["model"].toInt() == existingBody["model"].toInt()) {
+            int numGPUs = jsonObject["computer"].toObject()["numGPUs"].toInt();
+            int modelsPerGPU = jsonObject["computer"].toObject()["modelsPerGPU"].toInt();
+            int newGPU = newBody["gpu"].toInt();
+            int newModel = newBody["model"].toInt();
+            bool unique = false;
+            while (!unique) {
+              if (newGPU < numGPUs && newModel < modelsPerGPU) {
+                newModel++;
+                unique = true;
+                for (int l = 0; l < j; l++) {
+                  QJsonObject existingBody = bodiesArray[l].toObject();
+                  if (newGPU == existingBody["gpu"].toInt() && newModel == existingBody["model"].toInt()) {
+                    unique = false;
+                    break;
+                  }
+                }
+              } else if (newGPU < numGPUs && newModel == modelsPerGPU) {
+                newGPU++;
+                newModel = 0;
+                unique = true;
+                for (int l = 0; l < j; l++) {
+                  QJsonObject existingBody = bodiesArray[l].toObject();
+                  if (newGPU == existingBody["gpu"].toInt() && newModel == existingBody["model"].toInt()) {
+                    unique = false;
+                    break;
+                  }
+                }
+              } else {
+                // Remove the new body if it is not possible to increment the "gpu" and "model" to a unique value
+                // Also remove if we exceed the number of GPUs and models per GPU specified in "computer"
+                bodiesArray.removeAt(j);
+                break;
+              }
+            }
+            newBody["gpu"] = newGPU;
+            newBody["model"] = newModel;
+            bodiesArray[j] = newBody;
+          }
+        }
+      }
     }
-    // Add the bodies array to the jsonObject
-    jsonObject["bodies"] = bodiesArray; // for the future schema
+    jsonObject["bodies"] = bodiesArray; // Add the bodies array to the jsonObject
   }
 
   // ==================== Boundaries ====================
   // Boundaries (grid-boundaries in ClaymoreUW currently, TODO: Deprecate and change to "boundaries")
   if (boundariesObjectWrapper.contains("boundaries") && boundariesObjectWrapper["boundaries"].isArray()) {
-    // boundaries is an array of objects, each is an individual boundary
-    jsonObject["boundaries"] = boundariesObjectWrapper["boundaries"]; // for the future schema
+    jsonObject["boundaries"] = boundariesObjectWrapper["boundaries"]; // boundaries is an array of objects, each is an individual boundary
   }
 
   // ==================== Sensors ====================
   // Sensors (grid-targets, particle-targets in ClaymoreUW currently, TODO: Deprecate and change to "sensors")
   // sensors is an array of objects, each is an individual sensor
-  if (0) {
-    if (sensorsObjectWrapper.contains("sensors") && sensorsObjectWrapper["sensors"].isArray()) 
-      jsonObject["sensors"] = sensorsObjectWrapper["sensors"];
-  } else {
-    if (sensorsObjectWrapper.contains("particle-sensors") && sensorsObjectWrapper["particle-sensors"].isArray()) 
-      jsonObject["particle-sensors"] = sensorsObjectWrapper["particle-sensors"]; // for the future schema
-    if (sensorsObjectWrapper.contains("grid-sensors") && sensorsObjectWrapper["grid-sensors"].isArray()) 
-      jsonObject["grid-sensors"] = sensorsObjectWrapper["grid-sensors"]; // for the future schema
-  }
+  if (sensorsObjectWrapper.contains("particle-sensors") && sensorsObjectWrapper["particle-sensors"].isArray()) 
+    jsonObject["particle-sensors"] = sensorsObjectWrapper["particle-sensors"];
+  if (sensorsObjectWrapper.contains("grid-sensors") && sensorsObjectWrapper["grid-sensors"].isArray()) 
+    jsonObject["grid-sensors"] = sensorsObjectWrapper["grid-sensors"];
+
   // ==================== Outputs ====================
   // Outputs (not a separate object in ClaymoreUW currently, must move some fields to other objects manually for ClaymoreUW)
   if (outputsObject.contains("outputs") && outputsObject["outputs"].isObject()) {
     jsonObject["outputs"] = outputsObject["outputs"]; // for future schema, not used in ClaymoreUW currently
   }
 
-  
   return true;
 }
 
 bool MPM::outputAppDataToJSON(QJsonObject &jsonObject) {
 
     //
-    // Only the "parameters" that are needed for the tapis apps (e.g. ClaymoreUW-ls6.bonusj.json for app ClaymoreUW-ls6.bonusj-1.0.0) wrapper script (e.g. wrapper-ls6.sh) to run should be added
-    // To see the parameter list for a tapis app, try: 
-    // > tapis apps show ClaymoreUW-ls6.bonusj-1.0.0 -f json
-    // 
-    // Everything output by this function is going to become a key-value pair in the "parameters" array
-    // Default "parameters" : [driverFile, errorFile, modules, inputFile, outputFile]
-    // Extra "parameters" : [..., programFile]
-    // I only added the "programFile" parameter for my tapis app, don't add more unless the app json required parameters is changed or the app is changed
-    // ${programFile} --file=${inputFile}
-    //
-    // per API, need to add name of application to be called in Application
-    // and all data to be used in ApplicationDate
-    // See SimCenterCommon/Workflow/TOOLS/SC_RemoteAppTool.cpp (should be folder adjacent to HydroUQ, i.e. typically in ~/SimCenter/)
+    // Per API, need to add name of application to be called in Application
+    // and all data to be used in ApplicationData
     //
 
     // jsonObject["EventClassification"] = "Hydro";
     // jsonObject["Application"] = "MPM";
-    jsonObject["programFile"] = "fbar"; // <- ClaymoreUW MPM executable filename on remote machine. Can be changed depending on compiled optimizations, versions, digital twin, etc.
-  
-
     // QJsonObject dataObj;
-    // dataObj["modules"] = "python3";
-    // dataObj["sceneFile"] = "scene-OSU_LWF-ls6.json";
-    // dataObj["programFile"] = "fbar";
-    // dataObj["inputFile"] = "scInput.json";
-    
     // jsonObject["ApplicationData"] = dataObj;
 
+    jsonObject["programFile"] = "fbar"; // <- ClaymoreUW MPM executable filename on remote machine. Can be changed depending on compiled optimizations, versions, digital twin, etc.
     return true;
 }
 bool MPM::inputAppDataFromJSON(QJsonObject &jsonObject) {
@@ -1357,92 +1622,112 @@ bool MPM::inputAppDataFromJSON(QJsonObject &jsonObject) {
 
 
 bool MPM::copyFiles(QString &destDir) {
-  
-    writeMPMFiles();
+    //
+    //  Copy the files in the case directory to the destination directory
+    //  This is the directory where the simulations will be run / staged
+    //  Should pull together any files needed for the simulation, e.g. specified input files
+    //
 
+    executeBackendScript();
     QString caseName = "MPM";
-
-    bool result = this->copyPath(caseDir(), destDir + QDir::separator() + caseName, false);
-    //Remove the 'constant/polyMesh' directory
-    // Makes it slow to transfer the mesh to DesignSafe
-    // The mesh will be run on the remote machine anyway
-    // QDir polyMeshDir(destDir + QDir::separator() + caseName + QDir::separator() + "constant" + QDir::separator() + "polyMesh");
-    // polyMeshDir.removeRecursively();
-
-    if (result == false) {
-        QString errorMessage; errorMessage = "MPM - failed to copy file: " + caseDir() + " to: " + destDir;
+    QString destDirCase = destDir + QDir::separator() + caseName;
+    QDir destDirCaseDir(destDirCase);
+    if (!destDirCaseDir.exists()) 
+    {
+        destDirCaseDir.mkpath("."); // Make the directory if it doesn't exist
+    }
+    bool result = this->copyPath(caseDir(), destDirCase, false); // False means don't copy the directory itself, just the contents
+    if (!result) 
+    {
+        QString errorMessage; errorMessage = "MPM - failed to copy files in: " + caseDir() + " to: " + destDirCase;
         emit sendFatalMessage(errorMessage);
         qDebug() << errorMessage;
+        return false;
     }
 
+    //
+    //  Copy files from all the major sub-widgets
+    //
 
-  // if (mpmSettings->copyFiles(destDir) == false)
-  //   return false;
-  // if (mpmBodies->copyFiles(destDir) == false)
-  //   return false;
-  // if (mpmBoundaries->copyFiles(destDir) == false)
-  //   return false;
-  // if (mpmSensors->copyFiles(destDir) == false)
-  //   return false;
-  // if (mpmOutputs->copyFiles(destDir) == false)
-  //   return false;
+    if (mpmSettings->copyFiles(destDir) == false) 
+    {
+      qDebug() << "MPM - failed to copy settings files";
+      return false;
+    }
+    if (mpmBodies->copyFiles(destDir) == false)
+    {
+      qDebug() << "MPM - failed to copy bodies files";
+      return false;
+    }
+    if (mpmBoundaries->copyFiles(destDir) == false)
+    {
+      qDebug() << "MPM - failed to copy boundaries files";
+      return false;
+    }
+    if (mpmSensors->copyFiles(destDir) == false)
+    {
+      qDebug() << "MPM - failed to copy sensors files";
+      return false;
+    }
+    if (mpmOutputs->copyFiles(destDir) == false)
+    {
+      qDebug() << "MPM - failed to copy outputs files";
+      return false;
+    }
+    // if (mpmResults->copyFiles(destDir) == false)
+    // {
+    //   qDebug() << "MPM - failed to copy results files";
+    //   return false;
+    // }
 
-  // return result;
     return true;
-
  }
 
-// From WE-UQ EmptyDomainCFD
+
 bool MPM::cleanCase()
 {
+    // 
+    //  Remove the primary folders and log file within the case directory recursively
+    // 
+
     QDir zeroDir(caseDir() + QDir::separator() + "0");
     QDir constDir(caseDir() + QDir::separator() + "constant");
     QDir systemDir(caseDir() + QDir::separator() + "system");
-
     zeroDir.removeRecursively();
     constDir.removeRecursively();
     systemDir.removeRecursively();
-
     QFile logFile(caseDir() + QDir::separator() + "log.txt");
-
-    logFile.remove();
-
+    if (logFile.exists()) {
+      logFile.remove();
+    }
     return true;
 }
 
-// From WE-UQ EmptyDomainCFD
 bool MPM::removeOldFiles()
 {
-    // //Clean extra files if exist in 0 folder
-    // QFile nSurfaceLayersFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "nSurfaceLayers");
-    // QFile pointLevelFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "pointLevel");
-    // QFile thicknessFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "thickness");
-    // QFile thicknessFractionFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "thicknessFraction");
-    // QFile cellLevelFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "cellLevel");
-
-    // nSurfaceLayersFile.remove();
-    // pointLevelFile.remove();
-    // thicknessFile.remove();
-    // thicknessFractionFile.remove();
-    // cellLevelFile.remove();
-
+    //
+    // Remove extra files if they exist in case directory's "0" folder
+    //
+    
+    auto removeFile = [this](QString filePath) {
+        QFile file(caseDir() + QDir::separator() + "0" + QDir::separator() + filePath);
+        if (file.exists()) { 
+            qDebug() << "Removing old file: " << filePath;
+            file.remove();
+        }
+    };
+    removeFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "oldFile");
     return true;
 }
 
-
-
-// From WE-UQ EmptyDomainCFD
 bool MPM::setupCase()
 {
     cleanCase();
-
     QDir targetDir(caseDir());
-
     if (!targetDir.exists())
     {
         targetDir.mkpath(caseDir());
     }
-
     targetDir.mkpath("0");
     targetDir.mkpath("constant");
     targetDir.mkpath("constant/geometry");
@@ -1453,35 +1738,25 @@ bool MPM::setupCase()
     targetDir.mkpath("constant/boundaryData/inlet");
     targetDir.mkpath("system");
 
-    // QFile visFoam(caseDir() + "/vis.foam");
-    // visFoam.open(QIODevice::WriteOnly);
-
-    // //Write dictionary files
-    writeMPMFiles();
-
+    // Write setup files using the backend python script
+    executeBackendScript();
     return true;
 }
 
 // From WE-UQ EmptyDomainCFD
 QVector<QVector<double>> MPM::readTxtData(QString fileName)
 {
-    QVector<QVector<double>>  data;
-
     int colCount  = 0;
-
+    QVector<QVector<double>>  data;
     QFile inputFileTest(fileName);
-
     if (inputFileTest.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFileTest);
 
-
        while (!in.atEnd())
        {
             QString line = in.readLine();
-
             QStringList  fields = line.split(" ");
-
             colCount  = fields.size();
             break;
        }
@@ -1495,18 +1770,14 @@ QVector<QVector<double>> MPM::readTxtData(QString fileName)
     }
 
     int count  = 0;
-
     QFile inputFile(fileName);
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
-
        while (!in.atEnd())
        {
             QString line = in.readLine();
-
             QStringList  fields = line.split(" ");
-
             for (int i=0; i < colCount; i++)
             {
                 data[i].append(fields[i].toDouble());
@@ -1518,7 +1789,6 @@ QVector<QVector<double>> MPM::readTxtData(QString fileName)
     return data;
 }
 
-// From WE-UQ EmptyDomainCFD
 bool MPM::isCaseConfigured()
 {
     QDir zeroDir(caseDir() + QDir::separator() +  "0");
@@ -1534,100 +1804,6 @@ bool MPM::isCaseConfigured()
     return zeroDir.exists() && constDir.exists() && systemDir.exists();
 }
 
-
-
-bool MPM::initialize()
-{
-    // mainWindowLayout = new QHBoxLayout();
-    caseDirectoryGroup = new QGroupBox("Case Directory");
-    caseDirectoryLayout = new QGridLayout();
-
-    QLabel *casePathLabel = new QLabel("Path: ");
-    QPushButton* browseCaseDirectoryButton  = new QPushButton("Browse");
-
-    caseDirectoryPathWidget = new QLineEdit();
-    QString currentAppDir = QCoreApplication::applicationDirPath();
-
-    QDir workingDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-    if (!workingDir.exists())
-        workingDir.mkpath(".");
-
-    QString workingDirPath = workingDir.filePath(QCoreApplication::applicationName() + QDir::separator()
-                                                 + "LocalWorkDir" + QDir::separator()
-                                                 + "MPM");
-
-    if (!workingDir.exists(workingDirPath))
-        workingDir.mkpath(workingDirPath);
-
-    caseDirectoryPathWidget->setText(workingDirPath);
-
-
-    caseDirectoryLayout->addWidget(casePathLabel, 0, 0);
-    caseDirectoryLayout->addWidget(caseDirectoryPathWidget, 0, 1);
-    caseDirectoryLayout->addWidget(browseCaseDirectoryButton, 0, 2);
-
-
-
-    // QLabel *citeLabel = new QLabel("\nParts of the workflow for this MPM event are developed based on the work of Wang et al. (2020) and Bonus (2023).\n"
-    //                                "The user should cite the work as follows:\n"
-    //                                "\nWang, Xinlei and Qiu Yuxing, et al. (2020). “A massively parallel and scalable multi-GPU material point method.”\n"
-    //                                "\nBonus, Justin (2023). “Evaluation of Fluid-Driven Debris Impacts in a High-Performance Multi-GPU Material Point Method.”\n"
-    //                                "PhD thesis, University of Washington, Seattle, WA.");
-
-    // QFont citeFont("Arial", 8);
-    // citeFont.setPointSize(7);
-    // citeFont.setItalic(true);
-
-    // citeLabel->setFont(citeFont);
-
-    caseDirectoryGroup->setLayout(caseDirectoryLayout);
-    caseDirectoryGroup->setMaximumWidth(200); // small test
-
-    //Populate each tab
-    // auto layout = this.layout();
-    // layout->addWidget(caseDirectoryGroup);
-    // layout->addWidget(citeLabel);
-    // layout->addStretch();
-    
-    // mainWindowLayout->addWidget(caseDirectoryGroup); // Before ?
-    // connect(browseCaseDirectoryButton, SIGNAL(clicked()), this, SLOT(onBrowseCaseDirectoryButtonClicked()));
-
-
-
-    // mainWindowLayout->addWidget(caseDirectoryGroup);
-    // mainWindowLayout->addWidget(citeLabel);
-    // mainWindowLayout->addStretch();
-
-    // connect(browseCaseDirectoryButton, SIGNAL(clicked()), this, SLOT(onBrowseCaseDirectoryButtonClicked()));
-    //=====================================================
-    // Setup the case directory
-    //=====================================================
-
-    if(!isCaseConfigured())
-    {
-        setupCase(); // Check if directories for the case files exist, if not create them
-    }
-
-    //Read all the case data from const/simCenter
-
-    // readCaseData();
-    
-    // caseInitialized = true;
-    caseInitialized = true; 
-
-
-    // Update the GI Tab once the data is read
-    // GeneralInformationWidget *theGI = GeneralInformationWidget::getInstance();
-    // theGI->setLengthUnit("m");
-//    theGI->setNumStoriesAndHeight(numberOfFloors(), buildingHeight());
-//    theGI->setBuildingDimensions(buildingWidth(), buildingDepth(), buildingWidth()*buildingDepth());
-
-    this->adjustSize();
-
-    return true;
-}
-
-
 QString MPM::caseDir()
 {
     return caseDirectoryPathWidget->text();
@@ -1641,27 +1817,38 @@ QString MPM::pyScriptsPath()
     return backendAppDir;
 }
 
+// Probably not needed for anything but OpenFOAM
 QString MPM::templateDictDir()
 {
-    // Probably not needed for anything but OpenFOAM
+    QString templateSubFolder = QString("templateOF10Dicts");// "templateMPMDicts";
     QString templateDictsDir = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
-             + QString("applications") + QDir::separator() + QString("createEVENT") + QDir::separator()
-             + QString("MPM") + QDir::separator() + QString("templateOF10Dicts");
-
+                                + QString("applications") + QDir::separator() 
+                                + QString("createEVENT") + QDir::separator()
+                                + QString("MPM") + QDir::separator() 
+                                + templateSubFolder;
     return templateDictsDir;
 }
 
 QString MPM::simulationType()
 {
-    // return turbulenceModeling->simulationType();
-    return QString("MPM");
+    return QString("MPM"); // Yet to support turbulence models in MPM, so its just "MPM" (i.e. DNS)
 }
 
-
-
- bool MPM::isInitialize()
+SC_ResultsWidget* MPM::getResultsWidget(QWidget *parent)
 {
-    return caseInitialized;
+  theTabWidget->setCurrentIndex(5); // Switch to the results tab
+  statusMessage("MPM - Begin to post-process the downloaded results for visualization");
+  return mpmResults;
 }
 
+void MPM::importMainDomainJsonFile(QJsonObject &jsonObject)
+{
+    // openFoamVersion->setCurrentText(jsonObject["OpenFoamVersion"].toString());
+    // geometry->inputFromJSON(jsonObject);
+    // snappyHexMesh->inputFromJSON(jsonObject);
+    // windCharacteristics->inputFromJSON(jsonObject);
+    // boundaryConditions->inputFromJSON(jsonObject);
+    // turbulenceModeling->inputFromJSON(jsonObject);
+    // numericalSetup->inputFromJSON(jsonObject);
+}
 

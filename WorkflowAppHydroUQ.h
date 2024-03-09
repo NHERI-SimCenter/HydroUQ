@@ -49,17 +49,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 class SimCenterComponentSelection;
 
 class RandomVariablesContainer;
-class InputWidgetUQ;
-class UQOptions;
-class UQ_EngineSelection;
 class InputWidgetBIM;
+class InputWidgetUQ;
 class SIM_Selection;
+class UQ_EngineSelection;
 class FEA_Selection;
+class UQOptions;
 class ResultsWidget;
 class GeneralInformationWidget;
 class HydroEventSelection;
-class UQ_Results;
 class QStackedWidget;
+class UQ_Results;
 class QSvgWidget;
 
 class RunLocalWidget;
@@ -69,7 +69,8 @@ class RemoteService;
 class RemoteJobManager;
 class QNetworkAccessManager;
 class QNetworkReply;
-class EDP_Selection;
+class HydroEDP_Selection;
+// class EDP_Selection;
 
 // class GeoClawOpenFOAM;
 // class WaveDigitalFlume;
@@ -77,7 +78,6 @@ class EDP_Selection;
 // class MPM;
 // class SPH;
 
-// class HydroEDP_Selection;
 
 class WorkflowAppHydroUQ : public WorkflowAppWidget
 {
@@ -104,10 +104,8 @@ signals:
 
 public slots:  
 
-    // void updateIcons(QString &name);
     void setUpForApplicationRun(QString &, QString &);
     void processResults(QString &dirResults);
-    //void processResults(QString dakotaOut, QString dakotaTab, QString inputFile);
 
     int loadFile(QString &filename);
     void replyFinished(QNetworkReply*);
@@ -124,8 +122,8 @@ private:
     UQ_EngineSelection *theUQ_Selection;
     HydroEventSelection *theEventSelection;
     FEA_Selection *theAnalysisSelection;
-    EDP_Selection *theEDP_Selection;
-    // HydroEDP_Selection *theEDP_Selection;
+    // EDP_Selection *theEDP_Selection;
+    HydroEDP_Selection *theEDP_Selection;
     UQ_Results *theResults;
 
     // Icons for sidebar
@@ -142,14 +140,14 @@ private:
     RunWidget *theRunWidget;
     Application *localApp;
     Application *remoteApp;
-    Application *currentApp; // From WE-UQ
+    Application *currentApp;
     RemoteJobManager *theJobManager;
 
 
     QJsonObject *jsonObjOrig;
-    QNetworkAccessManager *manager; // From WE-UQ
+    QNetworkAccessManager *manager; 
 
-    bool canRunLocally(); // From WE-UQ
+    bool canRunLocally(); 
 };
 
 #endif // WORKFLOW_APP_HYDRO_UQ_H

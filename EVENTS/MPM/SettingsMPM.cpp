@@ -574,3 +574,9 @@ SettingsMPM::inputFromJSON(QJsonObject &jsonObject)
   return true;
 }
 
+bool
+SettingsMPM::copyFiles(QString& destDir)
+{
+  return true;
+}
+

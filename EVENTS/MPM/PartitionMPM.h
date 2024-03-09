@@ -76,8 +76,9 @@ public:
     int getModel();
     int getGPU();
 
-    void constrainPartitionWithin(double origin[3], double dimenisions[3]);
-    void constrainPartitionOutside(double origin[3], double dimenisions[3]);
+    void constrainPartitionWithin(double origin[3], double dimensions[3]);
+    void constrainPartitionOutside(double origin[3], double dimensions[3]);
+    bool balance(double origin[3], double dimensions[3], int count, int id);
 signals:
 
 private:

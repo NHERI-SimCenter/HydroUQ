@@ -350,6 +350,15 @@ PartitionsMPM::setDefaultGPUID(int gpu = 0)
   return (defaultGPUID == gpu);
 }
 
+bool
+PartitionsMPM::balance(double origin[3], double dimensions[3])
+{
+  bool results = true;
+  for (int i=0; i<numAddedTabs; i++) {
+    results &= addedPartition[i]->balance(origin, dimensions, numAddedTabs, i);
+  }
+  return results;
+}
 
 bool
 PartitionsMPM::outputToJSON(QJsonObject &jsonObject)

@@ -83,6 +83,7 @@ public:
     bool setGPU(int gpuID);
     bool setDefaultModelID(int modelID);
     bool setDefaultGPUID(int gpuID);
+    bool balance(double origin[3], double dimensions[3]);
 signals:
 
 private:

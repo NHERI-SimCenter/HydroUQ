@@ -283,3 +283,7 @@ OutputsMPM::inputFromJSON(QJsonObject &jsonObject)
   return true;
 }
 
+bool
+OutputsMPM::copyFiles(QString &dirName) {
+  return true;
+}
