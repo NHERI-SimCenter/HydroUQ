@@ -370,9 +370,6 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     QWidget* resultsWidget = new QWidget();
     QVBoxLayout* resultsLayout  = new QVBoxLayout();
     resultsWidget->setLayout(resultsLayout);
-    mpmResults = new ResultsMPM(this);
-    resultsLayout->addWidget(mpmResults);
-    resultsLayout->addStretch();
 
     // ==================== CFD Results-View Set-Up ====================
     // cfdResultsGroup = new QGroupBox("CFD Results", this);
@@ -385,7 +382,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     mpmBoundaries = new BoundariesMPM();
     mpmSensors = new SensorsMPM();
     mpmOutputs = new OutputsMPM();
-    // mpmResults = new ResultsMPM();
+    mpmResults = new ResultsMPM(this);
+
+    // ==================== Results-View Set-Up Part II ====================
+    resultsLayout->addWidget(mpmResults);
+    resultsLayout->addStretch();
+
 
     // theTabWidget = new QTabWidget();
     theTabWidget = new QTabWidget(this);

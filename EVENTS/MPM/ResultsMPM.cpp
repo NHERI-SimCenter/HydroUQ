@@ -43,6 +43,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "MPM.h"
 #include "ResultsMPM.h"
 #include <GeneralInformationWidget.h>
+#include <RandomVariablesContainer.h>
+#include <LineEditRV.h>
+#include <SimCenterPreferences.h>
+#include <GeneralInformationWidget.h>
+#include <SectionTitle.h>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QJsonArray>
@@ -52,25 +57,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QDebug>
 #include <QFileDialog>
 #include <QPushButton>
-#include <SectionTitle.h>
 #include <QFileInfo>
 #include <QMovie>
 #include <QPixmap>
 #include <QIcon>
-#include <RandomVariablesContainer.h>
 #include <QRadioButton>
 #include <QButtonGroup>
 #include <QMessageBox>
 #include <QComboBox>
+#include <QGridLayout>
 #include <QSpinBox>
 #include <QGroupBox>
 #include <QVBoxLayout>
 #include <QVector>
-#include <LineEditRV.h>
 #include <QProcess>
 #include <QJsonArray>
 #include <QJsonObject>
-#include <QJsonDocument>
 // #include "vtkGenericOpenGLRenderWindow.h"
 // #include "vtkSmartPointer.h"
 // #include <vtkDataObjectToTable.h>
@@ -101,10 +103,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // #include <vtkTestUtilities.h>
 // #include <vtkSimplePointsReader.h>
 #include <QVector3D>
-#include <SimCenterPreferences.h>
-#include <GeneralInformationWidget.h>
-#include <QFile>
 #include <QTextStream>
+#include <QString>
 #include <QtMath>
 #include <QWebEngineView>
 
@@ -138,16 +138,16 @@ ResultsMPM::ResultsMPM(MPM *parent)
     //==================================================================
     QLabel* profileNameULabel = new QLabel("Name of the Profile: ");
     profileNameU = new QComboBox();
-
     profileNameU->addItem("Profile1");
     profileNameU->addItem("Profile2");
     profileNameU->setToolTip("Name of the profile to show.");
+    profileNameU->setCurrentIndex(1);
 
     plotProfile = new QPushButton("Plot Profile");
     plotProfile->setToolTip("Plots the wave profiles for a given line probe.");
 
-    plotProfileLayout->addWidget(profileNameULabel, 0, 0);
-    plotProfileLayout->addWidget(profileNameU, 0, 1);
+    plotProfileLayout->addWidget(profileNameULabel, 0, 0, Qt::AlignRight);
+    plotProfileLayout->addWidget(profileNameU, 0, 1, Qt::AlignLeft);
     plotProfileLayout->addWidget(plotProfile, 0, 2);
 
     //==================================================================
@@ -158,6 +158,7 @@ ResultsMPM::ResultsMPM(MPM *parent)
     profileNameS->addItem("Profile1");
     profileNameS->addItem("Profile2");
     profileNameS->setToolTip("Location of the profile to show.");
+    profileNameS->setCurrentIndex(1);
 
     QLabel* locationSLabel = new QLabel("Location:");
     locationS = new QComboBox();
@@ -165,14 +166,14 @@ ResultsMPM::ResultsMPM(MPM *parent)
     locationS->addItem("1/2Href");
     locationS->addItem("1Href");
     locationS->addItem("2Href");
-    locationS->setCurrentIndex(2);
     locationS->setToolTip("Location of the profile to show.");
+    locationS->setCurrentIndex(2);
 
     plotSpectra = new QPushButton("Plot Spectra");
     plotSpectra->setToolTip("Plots the velocity spectra for a given line probe.");
 
-    plotSpectraLayout->addWidget(profileNameSLabel, 0, 0);
-    plotSpectraLayout->addWidget(profileNameS, 0, 1);
+    plotSpectraLayout->addWidget(profileNameSLabel, 0, 0, Qt::AlignRight);
+    plotSpectraLayout->addWidget(profileNameS, 0, 1, Qt::AlignLeft);
     plotSpectraLayout->addWidget(locationSLabel, 0, 2, Qt::AlignRight);
     plotSpectraLayout->addWidget(locationS, 0, 3);
     plotSpectraLayout->addWidget(plotSpectra, 0, 4, 1,2);
@@ -182,15 +183,15 @@ ResultsMPM::ResultsMPM(MPM *parent)
     //==================================================================
     QLabel* profileNamePLabel = new QLabel("Name of the Profile: ");
     profileNameP = new QComboBox();
-
     profileNameP->addItem("Profile3");
-    profileNameP->setToolTip("Location of the profile to show.");
+    profileNameP->setToolTip("Name of the profile to show.");
+    profileNameP->setCurrentIndex(0);
 
     plotPressure = new QPushButton("Plot Pressure");
     plotPressure->setToolTip("Plots the pressure fluctuation on a given line probe.");
 
-    plotPressureLayout->addWidget(profileNamePLabel, 0, 0);
-    plotPressureLayout->addWidget(profileNameP, 0, 1);
+    plotPressureLayout->addWidget(profileNamePLabel, 0, 0, Qt::AlignRight);
+    plotPressureLayout->addWidget(profileNameP, 0, 1, Qt::AlignLeft);
     plotPressureLayout->addWidget(plotPressure, 0, 2);
 
     //==================================================================
@@ -198,31 +199,31 @@ ResultsMPM::ResultsMPM(MPM *parent)
     //==================================================================
     QLabel* profileNameELabel = new QLabel("Name of the Profile: ");
     profileNameE = new QComboBox();
-
     profileNameE->addItem("Profile4");
-    profileNameE->setToolTip("Location of the profile to show.");
+    profileNameE->setToolTip("Name of the profile to show.");
+    profileNameE->setCurrentIndex(0);
 
     plotElevation = new QPushButton("Plot Elevation");
     plotElevation->setToolTip("Plots the elevation profile for a given line probe.");
 
-    plotProfileLayout->addWidget(profileNameELabel, 0, 0);
-    plotProfileLayout->addWidget(profileNameE, 0, 1);
-    plotProfileLayout->addWidget(plotElevation, 0, 2);
+    plotElevationLayout->addWidget(profileNameELabel, 0, 0, Qt::AlignRight);
+    plotElevationLayout->addWidget(profileNameE, 0, 1, Qt::AlignLeft);
+    plotElevationLayout->addWidget(plotElevation, 0, 2);
 
     //==================================================================
     //              Plot Force Profiles
     //==================================================================
     QLabel* profileNameFLabel = new QLabel("Name of the Profile: ");
     profileNameF = new QComboBox();
-
     profileNameF->addItem("Profile5");
-    profileNameF->setToolTip("Location of the profile to show.");
+    profileNameF->setToolTip("Name of the profile to show.");
+    profileNameF->setCurrentIndex(0);
 
     plotForce = new QPushButton("Plot Force");
     plotForce->setToolTip("Plots the force profile for a given line probe.");
     
-    plotForceLayout->addWidget(profileNameFLabel, 0, 0);
-    plotForceLayout->addWidget(profileNameF, 0, 1);
+    plotForceLayout->addWidget(profileNameFLabel, 0, 0, Qt::AlignRight);
+    plotForceLayout->addWidget(profileNameF, 0, 1, Qt::AlignLeft);
     plotForceLayout->addWidget(plotForce, 0, 2);
 
     //==================================================================
@@ -276,7 +277,7 @@ ResultsMPM::onPlotProfileClicked(void)
                         + "simCenter" + QDir::separator() 
                         + "output" + QDir::separator() 
                         + "hydroProfiles" + QDir::separator()
-                        + profileNameU->currentText() 
+                        + profileNameS->currentText() 
                         + ext;
 
     if(QFileInfo::exists(plotPath))
@@ -311,13 +312,9 @@ ResultsMPM::onPlotSpectraClicked(void)
                         + "simCenter" + QDir::separator() 
                         + "output" + QDir::separator() 
                         + "hydroProfiles" + QDir::separator()
-                        + "spectra_" + profileNameS->currentText()
+                        + "spectra_" + QString(profileNameS->currentText())
                         + "_H" + QString::number(locationS->currentIndex() + 1) 
                         + ext;
-
-//    QMessageBox msgBox;
-//    msgBox.setText(plotPath);
-//    msgBox.exec();
 
     if(QFileInfo::exists(plotPath))
     {
@@ -353,10 +350,6 @@ ResultsMPM::onPlotPressureClicked(void)
                         + "pressure_" + profileNameP->currentText() 
                         + ext;
 
-    //    QMessageBox msgBox;
-    //    msgBox.setText(plotPath);
-    //    msgBox.exec();
-
     if(QFileInfo::exists(plotPath))
     {
         plotView->load(QUrl::fromLocalFile(plotPath));
@@ -391,10 +384,6 @@ ResultsMPM::onPlotElevationClicked(void)
                         + "elevation_" + profileNameE->currentText() 
                         + ext;
 
-    //    QMessageBox msgBox;
-    //    msgBox.setText(plotPath);
-    //    msgBox.exec();
-
     if(QFileInfo::exists(plotPath))
     {
         plotView->load(QUrl::fromLocalFile(plotPath));
@@ -428,10 +417,6 @@ ResultsMPM::onPlotForceClicked(void)
                         + "hydroProfiles" + QDir::separator()
                         + "force_" + profileNameF->currentText() 
                         + ext;
-
-    //    QMessageBox msgBox;
-    //    msgBox.setText(plotPath);
-    //    msgBox.exec();
 
     if(QFileInfo::exists(plotPath))
     {
@@ -496,11 +481,11 @@ ResultsMPM::inputFromJSON(QJsonObject &jsonObject)
     QJsonObject resMonitoringJson = jsonObject["resultMonitoring"].toObject();
     QJsonArray profiles = resMonitoringJson["hydroProfiles"].toArray();
 
-    profileNameU->clear();
-    profileNameS->clear();
-    profileNameP->clear();
-    profileNameE->clear();
-    profileNameF->clear();
+    // profileNameU->clear();
+    // profileNameS->clear();
+    // profileNameP->clear();
+    // profileNameE->clear();
+    // profileNameF->clear();
 
     QString key = "field";
     for (int i = 0; i < profiles.size(); i++)

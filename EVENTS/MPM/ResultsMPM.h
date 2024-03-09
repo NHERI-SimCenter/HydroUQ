@@ -55,11 +55,11 @@ class QTabWidget;
 class QTableWidget;
 class QGroupBox;
 class QPushButton;
-class MPM;
 class QDoubleSpinBox;
 class QLabel;
 class QRadioButton;
-
+class QString;
+class MPM;
 class ResultsMPM: public SC_ResultsWidget
 {
     friend class MPM; // Allow MPM to access private members. TODO: use a better vis architecture (e.g. MVC, VIPER, etc.) 
@@ -104,17 +104,17 @@ private:
     QComboBox            *profileNameS;
     QComboBox            *locationS;
 
-    // E - Elevation
-    QGroupBox            *plotElevationGroup;
-    QGridLayout          *plotElevationLayout;
-    QPushButton          *plotElevation;
-    QComboBox            *profileNameE;
-
     // P - Pressure
     QGroupBox            *plotPressureGroup;
     QGridLayout          *plotPressureLayout;
     QPushButton          *plotPressure;
     QComboBox            *profileNameP;
+
+    // E - Elevation
+    QGroupBox            *plotElevationGroup;
+    QGridLayout          *plotElevationLayout;
+    QPushButton          *plotElevation;
+    QComboBox            *profileNameE;
 
     // F - Force
     QGroupBox            *plotForceGroup;
