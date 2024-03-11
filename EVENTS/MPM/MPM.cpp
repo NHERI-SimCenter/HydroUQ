@@ -37,6 +37,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written: fmk, JustinBonus
 
 #include "MPM.h"
+#include <SettingsMPM.h>
+#include <BodiesMPM.h>
+#include <BoundariesMPM.h>
+#include <SensorsMPM.h>
+#include <OutputsMPM.h>
+// #include <ResultsMPM.h>
 #include <QVector>
 #include <QScrollArea>
 #include <QLineEdit>
@@ -56,12 +62,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <SC_DoubleLineEdit.h>
 #include <SC_IntLineEdit.h>
-#include <SettingsMPM.h>
-#include <BodiesMPM.h>
-#include <BoundariesMPM.h>
-#include <SensorsMPM.h>
-#include <OutputsMPM.h>
-#include <ResultsMPM.h>
 
 #include <Qt3DExtras/QCuboidMesh>
 #include <Qt3DExtras/QPhongMaterial>
@@ -131,7 +131,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     int windowWidth = 800;
     int windowWidthMin = 250;
     QWidget     *mainGroup = new QWidget();
-    QGridLayout *mainLayout = new QGridLayout();
+    mainLayout = new QGridLayout();
 
     mainWindowLayout = new QHBoxLayout(); // WE-UQ
 
@@ -367,9 +367,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     //                          "QLabel:disabled {background-color:  rgb(79, 83, 89); color: #ffffff; border: 0px solid #000000; border-radius: 0px;}");
 
     // ==================== Results-View Set-Up ====================
-    QWidget* resultsWidget = new QWidget();
-    QVBoxLayout* resultsLayout  = new QVBoxLayout();
-    resultsWidget->setLayout(resultsLayout);
+    // QWidget* resultsWidget = new QWidget();
+    // QVBoxLayout* resultsLayout  = new QVBoxLayout();
+    // resultsWidget->setLayout(resultsLayout);
 
     // ==================== CFD Results-View Set-Up ====================
     // cfdResultsGroup = new QGroupBox("CFD Results", this);
@@ -382,11 +382,11 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     mpmBoundaries = new BoundariesMPM();
     mpmSensors = new SensorsMPM();
     mpmOutputs = new OutputsMPM();
-    mpmResults = new ResultsMPM(this);
+    // mpmResults = new ResultsMPM(this);
 
     // ==================== Results-View Set-Up Part II ====================
-    resultsLayout->addWidget(mpmResults);
-    resultsLayout->addStretch();
+    // resultsLayout->addWidget(mpmResults);
+    // resultsLayout->addStretch();
 
 
     // theTabWidget = new QTabWidget();
@@ -396,8 +396,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     theTabWidget->addTab(mpmBoundaries, QIcon(QString(":/icons/man-door-black.svg")), "Boundaries");
     theTabWidget->addTab(mpmSensors, QIcon(QString(":/icons/dashboard-black.svg")), "Sensors");
     theTabWidget->addTab(mpmOutputs, QIcon(QString(":/icons/file-settings-black.svg")), "Outputs");   
-    theTabWidget->addTab(resultsWidget, QIcon(QString(":/icons/flag-black.svg")), "Results");   
-    // theTabWidget->addTab(mpmResults, QIcon(QString(":/icons/flag-black.svg")), "Results");   
+    // theTabWidget->addTab(resultsWidget, QIcon(QString(":/icons/flag-black.svg")), "Results");   
 
     int sizePrimaryTabs =20;
     theTabWidget->setIconSize(QSize(sizePrimaryTabs,sizePrimaryTabs));
@@ -1138,7 +1137,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     mainGroup->setLayout(mainLayout);
     mainGroup->setMinimumWidth(windowWidthMin);
     mainGroup->setMaximumWidth(windowWidth);
-    mainLayout->setRowStretch(0, 5);
+
     
     QScrollArea *scrollArea = new QScrollArea();
     scrollArea->setWidgetResizable(true);
@@ -1193,6 +1192,7 @@ bool MPM::initialize()
 
     // ---------------------------------------------------
 
+
     caseDirectoryGroup = new QGroupBox("Case Directory");
     caseDirectoryLayout = new QGridLayout();
 
@@ -1232,7 +1232,10 @@ bool MPM::initialize()
     // citeLabel->setFont(citeFont);
 
     caseDirectoryGroup->setLayout(caseDirectoryLayout);
-    caseDirectoryGroup->setMaximumWidth(200); // small test
+    // caseDirectoryGroup->setMaximumWidth(200); // small test
+    const int citeRow = 0;
+    mainLayout->addWidget(caseDirectoryGroup, citeRow, 0);
+    mainLayout->setRowStretch(0, 5);
 
 
     //Populate each tab
@@ -1242,7 +1245,7 @@ bool MPM::initialize()
     // layout->addStretch();
     
     // mainWindowLayout->addWidget(caseDirectoryGroup); // Before ?
-    // connect(browseCaseDirectoryButton, SIGNAL(clicked()), this, SLOT(onBrowseCaseDirectoryButtonClicked()));
+    connect(browseCaseDirectoryButton, SIGNAL(clicked()), this, SLOT(onBrowseCaseDirectoryButtonClicked()));
 
 
 
@@ -1261,14 +1264,25 @@ bool MPM::initialize()
     }
     readCaseData(); // Read the case data from the JSON file
     caseInitialized = true;
+    // ==================== Results-View Set-Up ====================
+    QWidget* resultsWidget = new QWidget();
+    QVBoxLayout* resultsLayout  = new QVBoxLayout();
+    resultsWidget->setLayout(resultsLayout);
+    mpmResults = new ResultsMPM(this);
+    resultsLayout->addWidget(mpmResults);
+    resultsLayout->addStretch();
+    theTabWidget->addTab(resultsWidget, QIcon(QString(":/icons/flag-black.svg")), "Results");   
+
 
     // Update the GI Tab once the data is read
-    // GeneralInformationWidget *theGI = GeneralInformationWidget::getInstance();
-    // theGI->setLengthUnit("m");
+    GeneralInformationWidget *theGI = GeneralInformationWidget::getInstance();
+    theGI->setLengthUnit("m");
     // theGI->setNumStoriesAndHeight(numberOfFloors(), buildingHeight());
     // theGI->setBuildingDimensions(buildingWidth(), buildingDepth(), buildingWidth()*buildingDepth());
 
     this->adjustSize();
+
+
 
     return true;
 }
@@ -1305,7 +1319,8 @@ void MPM::executeBackendScript()
     // 
 
     updateJSON(); 
-    QString scriptPath = pyScriptsPath() + "MPM.py"; // "/setup_case.py";
+    QString scriptName = "MPM.py"; // "setup_case.py";
+    QString scriptPath = pyScriptsPath() + QDir::separator() + scriptName; 
     QString templatePath = templateDictDir();
     QString jsonPath = caseDir() + QDir::separator() + "constant" + QDir::separator() + "simCenter" + QDir::separator() + "input";
     QString outputPath = caseDir();
@@ -1382,7 +1397,26 @@ void MPM::clear(void)
 bool MPM::inputFromJSON(QJsonObject &jsonObject)
 {
   this->clear();
+  
+  QString newCaseDirectoryPath(jsonObject["caseDirectoryPath"].toString());
+
+  if (newCaseDirectoryPath.isEmpty()) {
+    qDebug() << "MPM::inputFromJSON: newCaseDirectoryPath is empty in JSON input.";
+    return false;
+  }
+
+  QDir newCaseDir(newCaseDirectoryPath);
+  if (!newCaseDir.exists()) {
+    qDebug() << "MPM::inputFromJSON: newCaseDir does not exist in folder structure: " << newCaseDirectoryPath;
+    return false;
+  }
+
+  if (newCaseDirectoryPath != caseDirectoryPathWidget->text()) {
+    caseDirectoryPathWidget->setText(newCaseDirectoryPath);
+  }
+
   caseDirectoryPathWidget->setText(jsonObject["caseDirectoryPath"].toString());
+
   // openFoamVersion->setCurrentText(jsonObject["OpenFoamVersion"].toString());
 
   // mpmSettings->inputFromJSON(jsonObject);
@@ -1390,7 +1424,7 @@ bool MPM::inputFromJSON(QJsonObject &jsonObject)
   // mpmBoundaries->inputFromJSON(jsonObject);
   // mpmSensors->inputFromJSON(jsonObject);
   // mpmOutputs->inputFromJSON(jsonObject);
-  mpmResults->inputFromJSON(jsonObject);
+  // mpmResults->inputFromJSON(jsonObject);
   return true;
 }
 
@@ -1838,8 +1872,26 @@ QString MPM::simulationType()
 
 SC_ResultsWidget* MPM::getResultsWidget(QWidget *parent)
 {
-  theTabWidget->setCurrentIndex(5); // Switch to the results tab
-  statusMessage("MPM - Begin to post-process the downloaded results for visualization");
+  // theTabWidget.setCurrentIndex(theTabWidget.indexOf("Results"));
+  // Set theTabWidget to show the "Results" tab using its text
+  if (mpmResults)
+  {
+    theTabWidget->setCurrentIndex(theTabWidget->count() - 1);
+  }
+  else 
+  {
+    QWidget* resultsWidget = new QWidget();
+    QVBoxLayout* resultsLayout  = new QVBoxLayout();
+    resultsWidget->setLayout(resultsLayout);
+    mpmResults = new ResultsMPM(this);
+
+    resultsLayout->addWidget(mpmResults);
+    resultsLayout->addStretch();
+    theTabWidget->addTab(resultsWidget, QIcon(QString(":/icons/flag-black.svg")), "Results");
+    theTabWidget->setCurrentIndex(theTabWidget->count() - 1);
+  }  
+
+  statusMessage("HydroUQ EVENTS MPM - Get results widget for the EVT to allow us to post-process the downloaded results (or locally saved results) for visualization.");
   return mpmResults;
 }
 

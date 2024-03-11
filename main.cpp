@@ -8,22 +8,35 @@
 #include <QFile>
 #include <QThread>
 #include <QObject>
+#include <QDebug>
 
 #include <AgaveCurl.h>
 #include <WorkflowAppHydroUQ.h>
+
 #include <QCoreApplication>
 
-#include <QApplication>
-#include <QFile>
+
 #include <QTime>
 #include <QTextStream>
 #include <GoogleAnalytics.h>
-#include <QOpenGLWidget>
 #include <QStandardPaths>
 #include <QDir>
-#include <QStatusBar>
+#include <SimCenterPreferences.h>
 #include <QWebEngineView>
+#include <QStatusBar>
 #include <QSvgWidget>
+// #include <QOpenGLWidget>
+
+
+#ifdef ENDLN
+#undef ENDLN
+#endif
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+#define ENDLN endl
+#else
+#define ENDLN Qt::endl
+#endif
 
 
 static QString logFilePath;
@@ -72,7 +85,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion("3.0.0");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
-    // Q_INIT_RESOURCE(images1);
+    Q_INIT_RESOURCE(images1);
     // Q_INIT_RESOURCE(Resources);
 
     // Set up logging of output messages for user debugging
@@ -89,9 +102,18 @@ int main(int argc, char *argv[])
     // full path to debug.log file
     logFilePath = logFilePath + QDir::separator() + QString("debug.log"); 
 
+
+    //
+    // window scaling
+    //
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling); 
+
+
     // remove old log file
-    QFile debugFile(logFilePath); 
-    debugFile.remove(); 
+    // QFile debugFile(logFilePath); 
+    // debugFile.remove(); 
+
+    QApplication a(argc, argv);
 
     //  check if the app is run in Qt Creator
     QByteArray envVar = qgetenv("QTDIR"); 
@@ -101,11 +123,9 @@ int main(int argc, char *argv[])
 
     qInstallMessageHandler(customMessageOutput);
 
-    //
-    // window scaling
-    //
+    qDebug() << "logFile: " << logFilePath;
 
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling); 
+
 
     /******************  code to reset openGL version .. keep around in case need again
     QSurfaceFormat glFormat;
@@ -115,7 +135,7 @@ int main(int argc, char *argv[])
     ***********************************************************************************/
 
     // regular Qt startup
-    QApplication a(argc, argv);
+    // QApplication a(argc, argv);
 
     // create a remote interface
     QString tenant("designsafe"); // this is the default tenant for the design safe community
@@ -134,7 +154,7 @@ int main(int argc, char *argv[])
     w.setAbout(aboutTitle, aboutSource);
 
     // Version
-    QString version("Version 3.0.0");
+    QString version = QString("Version ") + QCoreApplication::applicationVersion();
     w.setVersion(version);
 
     // Citation
@@ -186,17 +206,19 @@ int main(int argc, char *argv[])
     //Setting Google Analytics Tracking Information
     //GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
     //GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
+    GoogleAnalytics::SetMeasurementId("G-SQHRGYDZ0H");
+    GoogleAnalytics::SetAPISecret("SCg4ry-WRee780Oen2WBUA");
     GoogleAnalytics::CreateSessionId();
     GoogleAnalytics::StartSession();
 
-    /************** TRY LATER
+    // /************** TRY LATER
     // Opening a QWebEngineView and using github to get app geographic usage
     QWebEngineView view;
     view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
     view.resize(1024, 750);
     view.show();
     view.hide();
-    ************************/    
+    // ************************/    
     
     // Result of execution
     int res = a.exec();

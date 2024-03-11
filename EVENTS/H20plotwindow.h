@@ -1,6 +1,7 @@
 #ifndef H20PLOTWINDOW_H
 #define H20PLOTWINDOW_H
 
+// #include <QWidget>
 #include <QWidget>
 
 namespace Ui {

@@ -44,26 +44,26 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <QGroupBox>
 #include <QVector>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+// #include <QHBoxLayout>
+// #include <QVBoxLayout>
 // #include <QStackedWidget>
 // #include <QComboBox>
-#include <QSpacerItem>
-#include <QPushButton>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QLabel>
-#include <QLineEdit>
-#include <QDebug>
-#include <QFileDialog>
-#include <QPushButton>
-#include <SectionTitle.h>
-#include <GeneralInformationWidget.h>
-#include <InputWidgetExistingEvent.h>
+// #include <QSpacerItem>
+// #include <QPushButton>
+// #include <QJsonObject>
+// #include <QJsonArray>
+// #include <QLabel>
+// #include <QLineEdit>
+// #include <QDebug>
+// #include <QFileDialog>
+// #include <QPushButton>
+// #include <SectionTitle.h>
+// #include <GeneralInformationWidget.h>
+// #include <InputWidgetExistingEvent.h>
 // #include <GeoClawOpenFOAM.h>
 // #include <WaveDigitalFlume.h>
 
-// #include <RemoteService.h>
+#include <RemoteService.h>
 
 class QComboBox; // WE-UQ
 class QStackedWidget; // WE-UQ
@@ -74,10 +74,10 @@ class HydroEventSelection : public  SimCenterAppWidget
 {
     Q_OBJECT
 public:
-    explicit HydroEventSelection(RandomVariablesContainer *,
-				 GeneralInformationWidget* generalInfoWidget,
-				 QWidget *parent = 0);
-   //  explicit HydroEventSelection(RandomVariablesContainer *, RemoteService* remoteService, QWidget *parent = 0); // WE-UQ
+   //  explicit HydroEventSelection(RandomVariablesContainer *,
+	// 			 GeneralInformationWidget* generalInfoWidget,
+	// 			 QWidget *parent = 0);
+    explicit HydroEventSelection(RandomVariablesContainer *, RemoteService* remoteService, QWidget *parent = 0); // WE-UQ
     ~HydroEventSelection();
 
     bool outputToJSON(QJsonObject &rvObject);
@@ -88,16 +88,16 @@ public:
     bool supportsLocalRun() override;
 
 signals:
-   //  void statusMessage(QString message);
-   //  void errorMessage(QString message);
-   //  void fatalMessage(QString message);
+    void statusMessage(QString message);
+    void errorMessage(QString message);
+    void fatalMessage(QString message);
 
 public slots:
    void eventSelectionChanged(int arg1);
    void eventSelectionChanged(const QString &arg1); // WE-UQ
-   // void sendStatusMessage(QString message); // WE-UQ
-   // void sendErrorMessage(QString message); // WE-UQ
-   // void sendFatalMessage(QString message); // WE-UQ
+   void sendStatusMessage(QString message); // WE-UQ
+   void sendErrorMessage(QString message); // WE-UQ
+   void sendFatalMessage(QString message); // WE-UQ
 
 private:
    QComboBox   *eventSelection;

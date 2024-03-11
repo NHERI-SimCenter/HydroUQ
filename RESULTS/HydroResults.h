@@ -41,8 +41,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <SimCenterAppWidget.h>
 
-class RandomVariablesContainer;
 class InputWidgetParameters;
+class RandomVariablesContainer;
 
 class HydroResults: public SimCenterWidget
 {

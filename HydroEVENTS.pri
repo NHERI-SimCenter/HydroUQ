@@ -1,4 +1,8 @@
 INCLUDEPATH += $$PWD/EVENTS
+INCLUDEPATH += EVENTS
+INCLUDEPATH += $$PWD/EDP
+INCLUDEPATH += EDP
+INCLUDEPATH += ../SimCenterCommon/Common
 INCLUDEPATH += $$PWD/EVENTS/GeoClawOpenFOAM
 INCLUDEPATH += $$PWD/EVENTS/WaveDigitalFlume
 INCLUDEPATH += $$PWD/EVENTS/coupledDigitalTwin
@@ -6,8 +10,8 @@ INCLUDEPATH += $$PWD/EVENTS/MPM
 INCLUDEPATH += $$PWD/EVENTS/Common
 INCLUDEPATH += $$PWD/SlidingStackedWidget
 SOURCES += \
-    $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.cpp \
     $$PWD/EVENTS/HydroEventSelection.cpp \
+    $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/GeoClawOpenFOAM.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/H20utilities/h20utilities.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundary.cpp \
@@ -58,8 +62,8 @@ SOURCES += \
 
 
 HEADERS += \
-    $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.h \
     $$PWD/EVENTS/HydroEventSelection.h \
+    $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/H20utilities/h20utilities.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundary.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundarydata.h \

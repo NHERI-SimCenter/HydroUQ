@@ -58,6 +58,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QtNetwork/QNetworkRequest>
 #include <QHostInfo>
 #include <QUuid>
+
 #include <QSvgWidget>
 #include <QFrame>
 #include <QVBoxLayout>
@@ -69,13 +70,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <FEA_Selection.h>
 #include <QDir>
 #include <QFile>
+#include <UQ_EngineSelection.h>
+#include <UQ_Results.h>
 #include <LocalApplication.h>
 #include <RemoteApplication.h>
 #include <RemoteJobManager.h>
 #include <RunWidget.h>
 #include <InputWidgetBIM.h>
-#include <UQ_EngineSelection.h>
-#include <UQ_Results.h>
 
 #include <HydroEDP_Selection.h>
 // #include <EDP_Selection.h>
@@ -88,15 +89,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QHostInfo>
-#include <GoogleAnalytics.h>
-
+#include <DakotaResultsSampling.h>
 #include <Utils/ProgramOutputDialog.h>
 #include <Utils/RelativePathResolver.h>
 #include <SC_ToolDialog.h>
 #include <SC_RemoteAppTool.h>
 #include <QList>
 #include <RemoteAppTest.h>
+
 #include <QMenuBar>
+
+#include <GoogleAnalytics.h>
 
 // For Tools
 #include <GeoClawOpenFOAM/GeoClawOpenFOAM.h>
@@ -125,14 +128,14 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theGI = GeneralInformationWidget::getInstance();
     theSIM = new SIM_Selection(true, true);
 
-    theEventSelection = new HydroEventSelection(theRVs, theGI, this);
-    // theEventSelection = new HydroEventSelection(theRVs, theService); // WE-UQ
+    // theEventSelection = new HydroEventSelection(theRVs, theGI, this);
+    theEventSelection = new HydroEventSelection(theRVs, theService); // WE-UQ
     
     theAnalysisSelection = new FEA_Selection(true);
+    theEDP_Selection = new HydroEDP_Selection(theRVs);
     theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity);
 
     // theEDP_Selection = new EDP_Selection(theRVs);
-    theEDP_Selection = new HydroEDP_Selection(theRVs);
     theResults = theUQ_Selection->getResults();
     //theResults = new DakotaResultsSampling(theRVs);
 
@@ -183,10 +186,10 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //
 
     QHBoxLayout *horizontalLayout = new QHBoxLayout();
-    this->setLayout(horizontalLayout);
-    this->setContentsMargins(0,5,0,5);
     horizontalLayout->setMargin(0);
-    horizontalLayout->setSpacing(0);
+    this->setLayout(horizontalLayout);
+    // horizontalLayout->setSpacing(0);
+    // this->setContentsMargins(0,5,0,5);
 
     // Work-in-progress: Add icons to the side bar to represent the components. May be redone as a sliding shelf using component selection widget in SimCenterCommon repository. (JB)
     /*
@@ -282,6 +285,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     theComponentSelection = new SimCenterComponentSelection();
     horizontalLayout->addWidget(theComponentSelection);
+    horizontalLayout->setAlignment(Qt::AlignLeft);
     theComponentSelection->addComponent(QString("UQ"),  theUQ_Selection);
     theComponentSelection->addComponent(QString("GI"),  theGI);
     theComponentSelection->addComponent(QString("SIM"), theSIM);
@@ -291,7 +295,6 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
     theComponentSelection->displayComponent("EVT"); // Initial page on startup
-    horizontalLayout->setAlignment(Qt::AlignLeft);
 
     /*
     // When theComponentSelection is changed, update the icon in the side bar to also be selected
@@ -311,8 +314,8 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     theGI->setDefaultProperties(1,144,360,360,37.8715,-122.2730);
 
-    // ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
-    // theDialog->appendInfoMessage("Welcome to HydroUQ");    
+    ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
+    theDialog->appendInfoMessage("Welcome to HydroUQ");    
 }
 
 // Imported from WE-UQ for EmptyDomainCFD Tool

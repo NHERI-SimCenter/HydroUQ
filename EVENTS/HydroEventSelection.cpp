@@ -68,14 +68,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 //*********************************************************************************
 
 
-// HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVariableIW, RemoteService* remoteService, QWidget *parent)
-//     : SimCenterAppWidget(parent), theCurrentEvent(0), theRandomVariablesContainer(theRandomVariableIW)
-HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVariableIW,
-					 GeneralInformationWidget* generalInfoWidget,
-					 QWidget *parent)  : SimCenterAppWidget(parent), theCurrentEvent(0), theRandomVariablesContainer(theRandomVariableIW)
+HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVariableIW, RemoteService* remoteService, QWidget *parent)
+    : SimCenterAppWidget(parent), theCurrentEvent(0), theRandomVariablesContainer(theRandomVariableIW)
+// HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVariableIW,
+// 					 GeneralInformationWidget* generalInfoWidget,
+// 					 QWidget *parent)  : SimCenterAppWidget(parent), theCurrentEvent(0), theRandomVariablesContainer(theRandomVariableIW)
 {
     // Unused variables
-    (void) generalInfoWidget;
+    // (void) generalInfoWidget;
 
     // Create layout
     QVBoxLayout *layout = new QVBoxLayout();
@@ -138,7 +138,8 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     this->setLayout(layout);
     // --
     // Set the default event to select at boot-up. For now, it is MPM
-    theStackedWidget->setCurrentIndex(0);
+    theStackedWidget->setCurrentIndex(3);
+    theCurrentEvent = theMPM;
     
     connect(eventSelection, SIGNAL(currentIndexChanged(int)), this, SLOT(eventSelectionChanged(int)));
     connect(eventSelection,SIGNAL(currentTextChanged(QString)),this,SLOT(eventSelectionChanged(QString))); // WE-UQ
@@ -155,7 +156,9 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 
     // Connect signal and slots
     
-    // connect(theMPM, SIGNAL(errorMessage(QString)), this, SIGNAL(errorMessage(QString))); // WE-UQ
+    connect(theMPM, SIGNAL(errorMessage(QString)), this, SIGNAL(sendErrorMessage(QString))); // WE-UQ
+    connect(theMPM, SIGNAL(statusMessage(QString)), this, SIGNAL(sendStatusMessage(QString))); // WE-UQ
+    connect(theMPM, SIGNAL(fatalMessage(QString)), this, SIGNAL(sendFatalMessage(QString))); // WE-UQ
 
 
     /*
@@ -271,25 +274,23 @@ void HydroEventSelection::eventSelectionChanged(const QString &arg1)
 }
 
 
+void
+HydroEventSelection::sendStatusMessage(QString message) {
+    ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
+    theDialog->appendInfoMessage(message);
+}
 
+void
+HydroEventSelection::sendErrorMessage(QString message) {
+    ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
+    theDialog->appendErrorMessage(message);
+}
 
-// void
-// HydroEventSelection::sendStatusMessage(QString message) {
-//     ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
-//     theDialog->appendInfoMessage(message);
-// }
-
-// void
-// HydroEventSelection::sendErrorMessage(QString message) {
-//     ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
-//     theDialog->appendErrorMessage(message);
-// }
-
-// void
-// HydroEventSelection::sendFatalMessage(QString message) {
-//     ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
-//     theDialog->appendErrorMessage(message);
-// }
+void
+HydroEventSelection::sendFatalMessage(QString message) {
+    ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
+    theDialog->appendErrorMessage(message);
+}
 
 
 //*********************************************************************************

@@ -42,6 +42,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <SimCenterAppWidget.h>
 
+#include <ResultsMPM.h>
+
 // Forward declaration
 class InputWidgetParameters;
 class RandomVariablesContainer;
@@ -71,7 +73,6 @@ class QPushButton;
 class QCheckBox;
 class QFormLayout;
 class QLabel;
-class QTabWidget;
 
 class MPM : public SimCenterAppWidget
 {
@@ -82,11 +83,13 @@ public:
    // MPM( QWidget *parent = 0);
    ~MPM();
 
-   bool inputFromJSON(QJsonObject &rvObject);
-   bool outputToJSON(QJsonObject &rvObject);  
-   bool outputAppDataToJSON(QJsonObject &rvObject);
+   friend class ResultsMPM; // Allow ResultsMPM to access private members. TODO: use a better vis architecture
+
+   bool inputFromJSON(QJsonObject &rvObject) override;
+   bool outputToJSON(QJsonObject &rvObject) override;  
+   bool outputAppDataToJSON(QJsonObject &rvObject) ;
    bool inputAppDataFromJSON(QJsonObject &rvObject);
-   bool copyFiles(QString &dirName);
+   bool copyFiles(QString &dirName) override;
 
    bool initialize();
    bool isInitialize();
@@ -108,17 +111,17 @@ public:
    QString simulationType();
    //  QString foamDictsPath(); // For OpenFOAM from WE-UQ, not MPM
 
-   SC_ResultsWidget* getResultsWidget(QWidget *parent); // For vis of output data results 
+   SC_ResultsWidget* getResultsWidget(QWidget *parent) override; // For vis of output data results 
 
 signals:
 
 public slots:
-   void clear(void);
+   void clear(void) override;
    void onBrowseCaseDirectoryButtonClicked(void);
 
 private:
-   bool caseInitialized = false; 
    QHBoxLayout                  *mainWindowLayout;
+   QGridLayout                  *mainLayout;
    SettingsMPM                  *mpmSettings;
    BodiesMPM                    *mpmBodies;
    BoundariesMPM                *mpmBoundaries;
@@ -138,6 +141,7 @@ private:
    // QGroupBox                    *visWindowGroup;
    // QVBoxLayout                  *inputWindowLayout;
    // QGroupBox                    *inputWindowGroup;
+   bool caseInitialized = false; 
 };
 
 #endif // MATERIAL_POINT_METHOD_H

@@ -39,6 +39,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <QJsonObject>
 #include "StandardTsunamiEDP.h"
+// #include <QWidget>
 
 StandardTsunamiEDP::StandardTsunamiEDP(QWidget *parent)
     : SimCenterAppWidget(parent)
