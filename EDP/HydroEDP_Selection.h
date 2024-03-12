@@ -46,9 +46,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 class QComboBox;
 class QStackedWidget;
 class UserDefinedApplication;
-// class StandardHydroEDP;
-// class StandardTsunamiEDP;
-// class StandardStormSurgeEDP;
+class StandardHydroEDP;
+class StandardTsunamiEDP;
+class StandardStormSurgeEDP;
 
 class HydroEDP_Selection : public  SimCenterAppWidget
 {

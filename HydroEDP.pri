@@ -7,8 +7,9 @@
 #message($$_PRO_FILE_PWD_)
 #message($$PWD)
 
-
+INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/EDP
+INCLUDEPATH += EDP
 
 SOURCES += \
     $$PWD/EDP/HydroEDP_Selection.cpp \

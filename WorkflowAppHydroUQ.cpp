@@ -58,6 +58,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QtNetwork/QNetworkRequest>
 #include <QHostInfo>
 #include <QUuid>
+
 #include <QSvgWidget>
 #include <QFrame>
 #include <QVBoxLayout>
@@ -69,13 +70,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <FEA_Selection.h>
 #include <QDir>
 #include <QFile>
+#include <UQ_EngineSelection.h>
+#include <UQ_Results.h>
 #include <LocalApplication.h>
 #include <RemoteApplication.h>
 #include <RemoteJobManager.h>
 #include <RunWidget.h>
 #include <InputWidgetBIM.h>
-#include <UQ_EngineSelection.h>
-#include <UQ_Results.h>
 
 #include <HydroEDP_Selection.h>
 // #include <EDP_Selection.h>
@@ -88,15 +89,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QHostInfo>
-#include <GoogleAnalytics.h>
-
+#include <DakotaResultsSampling.h>
 #include <Utils/ProgramOutputDialog.h>
 #include <Utils/RelativePathResolver.h>
 #include <SC_ToolDialog.h>
 #include <SC_RemoteAppTool.h>
 #include <QList>
 #include <RemoteAppTest.h>
+
 #include <QMenuBar>
+
+#include <GoogleAnalytics.h>
 
 // For Tools
 #include <GeoClawOpenFOAM/GeoClawOpenFOAM.h>
@@ -125,14 +128,14 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theGI = GeneralInformationWidget::getInstance();
     theSIM = new SIM_Selection(true, true);
 
-    theEventSelection = new HydroEventSelection(theRVs, theGI, this);
-    // theEventSelection = new HydroEventSelection(theRVs, theService); // WE-UQ
+    // theEventSelection = new HydroEventSelection(theRVs, theGI, this);
+    theEventSelection = new HydroEventSelection(theRVs, theService); // WE-UQ
     
     theAnalysisSelection = new FEA_Selection(true);
+    theEDP_Selection = new HydroEDP_Selection(theRVs);
     theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity);
 
     // theEDP_Selection = new EDP_Selection(theRVs);
-    theEDP_Selection = new HydroEDP_Selection(theRVs);
     theResults = theUQ_Selection->getResults();
     //theResults = new DakotaResultsSampling(theRVs);
 
@@ -148,16 +151,20 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theRunWidget = new RunWidget(localApp, remoteApp, theWidgets, 0);
 
     //
-    // connect signals and slots
+    // connect signals and slots for (1) local and (2) remote application runs. NOTE: Only remote is fully implemented
     //
 
+    // connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     connect(localApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir)
     {
         currentApp = localApp;
         setUpForApplicationRun(workingDir, subDir);
     });
     connect(this,SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
+    connect(localApp,SIGNAL(runComplete()), this, SLOT(runComplete()));
     connect(localApp,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+
+    // connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     connect(remoteApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir)
     {
         currentApp = remoteApp;
@@ -165,31 +172,27 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     });
     connect(theJobManager,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
     connect(theJobManager,SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
-    // connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     connect(remoteApp,SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));
-    connect(localApp,SIGNAL(runComplete()), this, SLOT(runComplete()));
     connect(remoteApp,SIGNAL(successfullJobStart()), this, SLOT(runComplete()));
     connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
     connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));   
+    
+    // connect(theRunLocalWidget, SIGNAL(runButtonPressed(QString, QString)), this, SLOT(runLocal(QString, QString)));
 
-    // connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
-       
-    //connect(theRunLocalWidget, SIGNAL(runButtonPressed(QString, QString)), this, SLOT(runLocal(QString, QString)));
-
-    // // From WE-UQ, should probably implement
 
 
     //
-    // create layout to hold component selectio
+    // create layout to hold component selection
     //
-
 
     QHBoxLayout *horizontalLayout = new QHBoxLayout();
-    this->setLayout(horizontalLayout);
-    this->setContentsMargins(0,5,0,5);
     horizontalLayout->setMargin(0);
-    horizontalLayout->setSpacing(0);
+    this->setLayout(horizontalLayout);
+    // horizontalLayout->setSpacing(0);
+    // this->setContentsMargins(0,5,0,5);
 
+    // Work-in-progress: Add icons to the side bar to represent the components. May be redone as a sliding shelf using component selection widget in SimCenterCommon repository. (JB)
+    /*
     theSvgUQ  = new QSvgWidget();
     theSvgGI  = new QSvgWidget();
     theSvgSIM = new QSvgWidget();
@@ -274,6 +277,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     // Now, place the frame in the primary horizontal layout (before the component selection text)
     horizontalLayout->addWidget(wrapperFrame);
+    */
 
     //
     // create the component selection & add the components to it
@@ -281,6 +285,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     theComponentSelection = new SimCenterComponentSelection();
     horizontalLayout->addWidget(theComponentSelection);
+    horizontalLayout->setAlignment(Qt::AlignLeft);
     theComponentSelection->addComponent(QString("UQ"),  theUQ_Selection);
     theComponentSelection->addComponent(QString("GI"),  theGI);
     theComponentSelection->addComponent(QString("SIM"), theSIM);
@@ -290,10 +295,11 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
     theComponentSelection->displayComponent("EVT"); // Initial page on startup
-    horizontalLayout->setAlignment(Qt::AlignLeft);
 
+    /*
     // When theComponentSelection is changed, update the icon in the side bar to also be selected
     // connect(theComponentSelection, SIGNAL(selectionChanged(QString &)), this, SLOT(updateIcons(QString &)));
+    */
 
     // access a web page which will increment the usage count for this tool
     manager = new QNetworkAccessManager(this);
@@ -308,8 +314,8 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     theGI->setDefaultProperties(1,144,360,360,37.8715,-122.2730);
 
-    // ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
-    // theDialog->appendInfoMessage("Welcome to HydroUQ");    
+    ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
+    theDialog->appendInfoMessage("Welcome to HydroUQ");    
 }
 
 // Imported from WE-UQ for EmptyDomainCFD Tool
@@ -323,12 +329,33 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     //
     // Add a Tool option to menu bar & add options to it
     //
+
     QMenu *toolsMenu = new QMenu(tr("&Tools"), menuBar);
     SC_ToolDialog *theToolDialog = new SC_ToolDialog(this);
 
     //
     // Add standalone events to tools menu
     //
+
+    GeoClawOpenFOAM *theGeoClaw = new GeoClawOpenFOAM(theRVs);
+    QString appNameGeoClaw = "simcenter-openfoam-frontera-1.0.0u6";
+    QList<QString> queuesGeoClaw; queuesGeoClaw << "normal" << "fast";
+    SC_RemoteAppTool *theGeoClawTool = new SC_RemoteAppTool(appNameGeoClaw, queuesGeoClaw, theRemoteService, theGeoClaw, theToolDialog);
+    theToolDialog->addTool(theGeoClawTool, "GeoClaw OpenFOAM");
+    QAction *showGeoClaw = toolsMenu->addAction("GeoClaw (&OpenFOAM)");
+    connect(showGeoClaw, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theGeoClawTool] {
+        theDialog->showTool("GeoClaw OpenFOAM");
+    });
+
+    WaveDigitalFlume *theFlume = new WaveDigitalFlume(theRVs);
+    QString appNameFlume =  "simcenter-openfoam-frontera-1.0.0u6";
+    QList<QString> queuesFlume; queuesFlume << "normal" << "fast";
+    SC_RemoteAppTool *theFlumeTool = new SC_RemoteAppTool(appNameFlume, queuesFlume, theRemoteService, theFlume, theToolDialog);
+    theToolDialog->addTool(theFlumeTool, "Wave Digital Flume");
+    QAction *showFlume = toolsMenu->addAction("Wave Digital (&Flume)");
+    connect(showFlume, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theFlumeTool] {
+        theDialog->showTool("Wave Digital Flume");
+    });
 
     CoupledDigitalTwin *theCDT = new CoupledDigitalTwin();
     QString appNameCDT = "simcenter-openfoam-frontera-1.0.0u6"; // u3
@@ -341,10 +368,11 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     });  
 
 
-    MPM *miniMPM = new MPM(theRVs); 
     // MPM *miniMPM = new MPM(); 
-    if (!miniMPM->isInitialize()) 
-        miniMPM->initialize();
+    MPM *miniMPM = new MPM(theRVs); 
+    if (!miniMPM->isInitialize()) { 
+        miniMPM->initialize(); 
+    }
     QString appName =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6
     QString systemName = "lonestar6-gpu";
     QList<QString> queues; queues << "gpu-a100-dev" << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
@@ -355,22 +383,7 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         theDialog->showTool("Digital Twin (MPM)");
     });
 
-
-    SPH *miniSPH = new SPH(); 
-    if (!miniSPH->isInitialize()) 
-        miniSPH->initialize();
-    QString appNameSPH =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6
-    QString systemNameSPH = "lonestar6-gpu";
-    QList<QString> queuesSPH; queuesSPH << "gpu-a100-dev" << "gpu-a100"; // TODO: Does not actually set the queue yet for the remote app
-    
-    SC_RemoteAppTool *miniSPHTool = new SC_RemoteAppTool(appNameSPH, queuesSPH, theRemoteService, miniSPH, theToolDialog, systemNameSPH);
-    theToolDialog->addTool(miniSPHTool, "Digital Twin (SPH)");
-    QAction *showSPH = toolsMenu->addAction("Digital Twin (&SPH)");
-    connect(showSPH, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniSPHTool] {
-        theDialog->showTool("Digital Twin (SPH)");
-    });
-
-
+    /*
     RemoteAppTest *theTest = new RemoteAppTest();
     QString appNameTest = "remoteAppTest-1.0.0";
     QList<QString> queuesTest; queuesTest << "normal" << "fast";
@@ -380,7 +393,7 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     connect(showTest, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theTestTool] {
         theDialog->showTool("Build and Run MPI Program");
     });  
-
+    */
 
     //
     // Add Tools to menu bar
@@ -408,14 +421,12 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
 WorkflowAppHydroUQ::~WorkflowAppHydroUQ()
 {
     // hack to get around a sometimes occuring seg fault
-    // as some classes in destructur remove RV from the RVCOntainer
+    // as some classes in destructor remove RV from the RVContainer
     // which may already have been destructed .. so removing so no destructor called
 
-  //    QWidget *newUQ = new QWidget();
-  //    theComponentSelection->swapComponent("RV",newUQ);
+    //    QWidget *newUQ = new QWidget();
+    //    theComponentSelection->swapComponent("RV",newUQ);
 }
-
-
 
 
 void WorkflowAppHydroUQ::replyFinished(QNetworkReply *pReply)
@@ -423,6 +434,7 @@ void WorkflowAppHydroUQ::replyFinished(QNetworkReply *pReply)
     Q_UNUSED(pReply);
     return;
 }
+
 
 bool WorkflowAppHydroUQ::canRunLocally()
 {
@@ -433,7 +445,6 @@ bool WorkflowAppHydroUQ::canRunLocally()
     // msgBox.exec();
     // return false;
 
-    // From WE-UQ:
     QList<SimCenterAppWidget*> apps({theEventSelection, theEDP_Selection, theSIM});
 
     foreach(SimCenterAppWidget* app, apps)
@@ -528,13 +539,15 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
     if (result == false)
         { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theEventSelection->outputAppDataToJSON() returned false!"); return result; }
 
+
+    // theRunWidget
     result = theRunWidget->outputToJSON(jsonObjectTop);
     if (result == false)
         { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theRunWidget->outputToJSON() returned false!"); return result; }
 
     // theResults
+    // Should this output be reimplemented Its not in WE-UQ - but it is in the original HydroUQ, (JB)
     // --------------------------------------------
-    // Should this be deprecated? Its not in WE-UQ - but it is in the original HydroUQ, (JB)
     // sy - to save results
     // --------------------------------------------
     // result = theResults->outputToJSON(jsonObjectTop);
@@ -570,55 +583,56 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
 void 
 WorkflowAppHydroUQ::processResults(QString &dirName)
 {
-  //
-  // get results widget for currently selected UQ option
-  //
+    //
+    // get results widget for currently selected UQ option
+    //
 
-  theResults = theUQ_Selection->getResults();
-  if (theResults == NULL) {
-    this->errorMessage("FATAL - UQ option selected not returning results widget");
-    return;
-  }
+    theResults = theUQ_Selection->getResults();
+    if (theResults == NULL) {
+        this->errorMessage("FATAL - UQ option selected not returning results widget");
+        return;
+    }
 
-  //
-  // connect signals for results widget
-  //
+    //
+    // connect signals for results widget
+    //
 
-//   connect(theResults,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
-//   connect(theResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-  
-  
-  //
-  // swap current results with existing one in selection & disconnect signals
-  //
+    //   connect(theResults,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
+    //   connect(theResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
+    
+    
+    //
+    // swap current results with existing one in selection & disconnect signals
+    //
 
-  QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
-  if (oldResults != NULL && oldResults != theResults) {;
-    this->errorMessage("WorkflowAppHydroUQ::processResults() - Deleting oldResults");
-    // disconnect(oldResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-    // disconnect(oldResults,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));  
-    delete oldResults;
-  }
+    QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
+    if (oldResults != NULL && oldResults != theResults) {;
+        this->errorMessage("WorkflowAppHydroUQ::processResults() - Deleting oldResults");
+        // disconnect(oldResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
+        // disconnect(oldResults,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));  
+        delete oldResults;
+    }
 
-  //
-  // process results
-  // 
+    //
+    // process results
+    // 
 
-  theResults->processResults(dirName);
-//   theRunWidget->hide(); // Not in WE-UQ, so I removed it for now (JB)
-  theComponentSelection->displayComponent("RES");
+    theResults->processResults(dirName);
+    // theRunWidget->hide(); // Hide the run widget after the results are processed, as the results are now displayed
+    theComponentSelection->displayComponent("RES");
 }
 
 void
 WorkflowAppHydroUQ::clear(void)
 {
-    theRVs->clear(); // WE-UQ
-    theUQ_Selection->clear();  // WE-UQ
+    theRVs->clear();
+    theUQ_Selection->clear();
     theGI->clear();
     theSIM->clear();
-    theEventSelection->clear(); // WE-UQ
-    theAnalysisSelection->clear(); // WE-UQ
- 
+    theEventSelection->clear();
+    theAnalysisSelection->clear();
+
+    // Function theUQ_Selection->getResults returns UQ simulation results to the theResults from a "Workflow" perspective. I.e., it will host the results after retrieving the data from a completed workflow simulation on a remote HPC system (or local if that is implemented). It won't contain the results from an "individual" app/tool perspective, i.e. if just EVT is ran to perform a normal CFD simulation, the results will be in the EVT app in its own results widget. Depending on the EVT implementation, this widget can be theResults if it is "passed" to it. (JB)
     theResults=theUQ_Selection->getResults();
     if (theResults == NULL) {
         this->errorMessage("FATAL - UQ option selected not returning results widget");
@@ -629,7 +643,7 @@ WorkflowAppHydroUQ::clear(void)
     // swap current results with existing one in selection & disconnect signals
     //
 
-    QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
+    QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults); // The "swap" takes care of deleting the oldResults widget that was swapped out from theComponentSelection. theResults is the new widget that was swapped in and is now owned by theComponentSelection. oldResults is the old widget that was swapped out and is now owned by this function so it needs to be deleted, though smart pointers could take care of this if we refactor the code to use them.
     if (oldResults != NULL && oldResults != theResults) {
         this->errorMessage("WorkflowAppHydroUQ::clear() - Deleting oldResults");
         delete oldResults;
@@ -691,10 +705,7 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
             this->errorMessage("Hydro_UQ: failed to find EDP application");
             return false;
         }
-
-    } 
-    else 
-    {
+    } else {
         this->errorMessage("WorkflowAppHydroUQ::inputFromJSON failed to find Applications in JSON");
         return false;
     }
@@ -746,13 +757,13 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
     // this->statusMessage("WorkflowAppHydroUQ::inputFromJSON - Done Loading File");
     // return true;  
     // ---
-    
-    // // sy - to display results
-    // auto* theNewResults = theUQ_Selection->getResults();
 
-    // if (theNewResults->inputFromJSON(jsonObject) == false)
-    //     this->errorMessage("Hydro_UQ: failed to read RES Method data");
-    // theResults->setResultWidget(theNewResults);
+    // Below allows users to load in existing results from a previous run / example. Appear in RES tab.
+    // sy - to display results
+    auto* theNewResults = theUQ_Selection->getResults();
+    if (theNewResults->inputFromJSON(jsonObject) == false)
+        this->errorMessage("Hydro_UQ: failed to read RES Method data");
+    theResults->setResultWidget(theNewResults);
 }
 
 
@@ -943,13 +954,13 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
 
     if (hasCFDEvent)
     {
-        //Adding extra job inputs for CFD
+        // Adding extra job inputs for CFD
         QMap<QString, QString> extraInputs;
         if(eventAppData.contains("OpenFOAMCase"))
             extraInputs.insert("OpenFOAMCase", eventAppData["OpenFOAMCase"].toString());
         remoteApplication->setExtraInputs(extraInputs);
 
-        //Adding extra job parameters for CFD
+        // Adding extra job parameters for CFD
         QMap<QString, QString> extraParameters;
         if(eventAppData.contains("OpenFOAMSolver"))
             extraParameters.insert("OpenFOAMSolver", eventAppData["OpenFOAMSolver"].toString());

@@ -8,12 +8,16 @@
 #message($$PWD)
 
 INCLUDEPATH += $$PWD/EVENTS
+INCLUDEPATH += $$PWD/GeoClawOpenFOAM
+INCLUDEPATH += $$PWD/WaveDigitalFlume
+INCLUDEPATH += $$PWD/coupledDigitalTwin
+INCLUDEPATH += $$PWD/MPM
 INCLUDEPATH += $$PWD/RESULTS
 
 
 SOURCES += \
-    $$PWD/RESULTS/HydroResults.cpp \
+    $$PWD/RESULTS/HydroResults.cpp 
 
 
 HEADERS  += \
-    $$PWD/RESULTS/HydroResults.h \
+    $$PWD/RESULTS/HydroResults.h 

@@ -34,7 +34,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
+// #include <SimCenterWidget.h>
 #include <SettingsMPM.h>
+#include <SimCenterAppWidget.h>
+
 #include <QLabel>
 #include <QComboBox>
 #include <QGroupBox>

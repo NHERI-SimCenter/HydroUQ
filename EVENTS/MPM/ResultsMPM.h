@@ -40,7 +40,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written by: JustinBonus
 
 #include <SC_ResultsWidget.h>
-
+#include <QList>
+// #include <MPM.h>
+class MPM;
 class InputWidgetParameters;
 class RandomVariablesContainer;
 class QComboBox;
@@ -55,10 +57,11 @@ class QTabWidget;
 class QTableWidget;
 class QGroupBox;
 class QPushButton;
-class MPM;
 class QDoubleSpinBox;
 class QLabel;
 class QRadioButton;
+class QString;
+
 
 class ResultsMPM: public SC_ResultsWidget
 {
@@ -67,24 +70,27 @@ class ResultsMPM: public SC_ResultsWidget
     Q_OBJECT
 public:
     explicit ResultsMPM(MPM *parent = 0);
-    ~ResultsMPM();
+    ~ResultsMPM() override;
 
-    int processResults(QString &outputFile, QString &dirName);    
-    bool inputFromJSON(QJsonObject &jsonObject);
-    // bool outputToJSON(QJsonObject &jsonObject); // This class isn't for JSON output (it's for viewing results), though there may be creative ways to use the plots, processed outputs, etc. as input to other workflows.
-    void updateWidgets(); // This is a virtual function in SC_ResultsWidget, so it must be implemented here.
+    void processResults(QString &dirName);     
+    int processResults(QString &outputFile, QString &dirName, QString &assetType, QList<QString> typesInAssetType) override;
+    int processResults(QString &outputFile, QString &dirName) override;   
+    bool inputFromJSON(QJsonObject &jsonObject) override;
+    bool outputToJSON(QJsonObject &jsonObject) override; 
+    void clear(void) override;  // This is a virtual function in SC_ResultsWidget, so it must be implemented here.
+    void updateWidgets(); 
 
 signals:
 
 public slots:
-   void clear(void);
-   void onPlotProfileClicked(void); // U
-   void onPlotSpectraClicked(void); // S
-   void onPlotPressureClicked(void); // P
-   void onPlotElevationClicked(void); // E
-   void onPlotForceClicked(void); // F
-   bool simulationCompleted();
-
+    void onPlotProfileClicked(void); // U
+    void onPlotSpectraClicked(void); // S
+    void onPlotPressureClicked(void); // P
+    void onPlotElevationClicked(void); // E
+    void onPlotForceClicked(void); // F
+    bool simulationCompleted();
+    void onProcessSensorsClicked(void);
+    void plotSensors(MPM *host);
 
 private:
 
@@ -97,24 +103,32 @@ private:
     QPushButton          *plotProfile;
     QComboBox            *profileNameU;
 
+    // U - Hydro Profile
+    QGroupBox            *plotProfileGroup;
+    QGridLayout          *plotProfileLayout;
+    QPushButton          *processSensorsButton;
+    QComboBox            *profileNameU;
+
     // S - Spectra
     QGroupBox            *plotSpectraGroup;
     QGridLayout          *plotSpectraLayout;
     QPushButton          *plotSpectra;
     QComboBox            *profileNameS;
-    QComboBox            *locationS;
-
-    // E - Elevation
-    QGroupBox            *plotElevationGroup;
-    QGridLayout          *plotElevationLayout;
-    QPushButton          *plotElevation;
-    QComboBox            *profileNameE;
+    QComboBox            *sensorNumS;
+    QComboBox            *bodyNumS;
+    QComboBox            *deviceNumS;
 
     // P - Pressure
     QGroupBox            *plotPressureGroup;
     QGridLayout          *plotPressureLayout;
     QPushButton          *plotPressure;
     QComboBox            *profileNameP;
+
+    // E - Elevation
+    QGroupBox            *plotElevationGroup;
+    QGridLayout          *plotElevationLayout;
+    QPushButton          *plotElevation;
+    QComboBox            *profileNameE;
 
     // F - Force
     QGroupBox            *plotForceGroup;

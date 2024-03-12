@@ -10,6 +10,7 @@ CONFIG += conan_basic_setup
 include($$OUT_PWD/conanbuildinfo.pri)
 
 QT += core gui charts concurrent network qml svg
+QT += printsupport opengl widgets webenginewidgets
 QT += webchannel webenginewidgets
 QT += 3dcore 3drender 3dextras
 
@@ -40,9 +41,9 @@ win32 {
     # Windows
     LIBS +=  -lAdvapi32
     RC_ICONS = icons/NHERI-HydroUQ-Icon.ico
-    DEPENDPATH += $$PWD/../VTK/Release/bin
-    INCLUDEPATH += $$PWD/../VTK/Release/include/vtk-9.2
-    LIBS += -L$$PWD/../VTK/Release/lib \
+    DEPENDPATH += $$PWD/../VTK/bin
+    INCLUDEPATH += $$PWD/../VTK/include/vtk-9.2
+    LIBS += -L$$PWD/../VTK/lib \
     -lvtkViewsCore-9.2 \
     -lvtkFiltersCore-9.2 \
     -lvtkFiltersSources-9.2 \
@@ -142,20 +143,27 @@ include(../SimCenterCommon/Workflow/Workflow.pri)
 include(../SimCenterCommon/RandomVariables/RandomVariables.pri)
 include(../SimCenterCommon/InputSheetBM/InputSheetBM.pri)
 include(./HydroEVENTS.pri)
-include(./HydroEDP.pri)
 include(./HydroRESULTS.pri)
 include(./SlidingStackedWidget/SlidingStackedWidget.pri)
 
 SOURCES += main.cpp \
-    EVENTS/H20plotwindow.cpp \
     WorkflowAppHydroUQ.cpp \
-    RunWidget.cpp 
+    RunWidget.cpp \
+    EVENTS/H20plotwindow.cpp \
+    EDP/HydroEDP_Selection.cpp \
+    EDP/StandardHydroEDP.cpp \
+    EDP/StandardTsunamiEDP.cpp \
+    EDP/StandardStormSurgeEDP.cpp 
 
 HEADERS  += \
-    EVENTS/H20plotwindow.h \
     WorkflowAppHydroUQ.h\
-    RunWidget.h
-
+    EVENTS/H20plotwindow.h \
+    RunWidget.h \
+    EDP/StandardStormSurgeEDP.h \
+    EDP/StandardTsunamiEDP.h \
+    EDP/StandardHydroEDP.h \
+    EDP/HydroEDP_Selection.h 
+    
 
 RESOURCES += \
     images.qrc \

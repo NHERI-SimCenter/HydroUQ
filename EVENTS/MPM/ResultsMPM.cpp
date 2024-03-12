@@ -40,9 +40,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QFile>
 #include <QJsonDocument>
 
-#include "MPM.h"
 #include "ResultsMPM.h"
+#include "MPM.h"
 #include <GeneralInformationWidget.h>
+#include <RandomVariablesContainer.h>
+#include <LineEditRV.h>
+#include <SimCenterPreferences.h>
+#include <GeneralInformationWidget.h>
+#include <SectionTitle.h>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QJsonArray>
@@ -52,25 +57,23 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QDebug>
 #include <QFileDialog>
 #include <QPushButton>
-#include <SectionTitle.h>
 #include <QFileInfo>
 #include <QMovie>
 #include <QPixmap>
 #include <QIcon>
-#include <RandomVariablesContainer.h>
 #include <QRadioButton>
 #include <QButtonGroup>
 #include <QMessageBox>
 #include <QComboBox>
+#include <QGridLayout>
 #include <QSpinBox>
 #include <QGroupBox>
 #include <QVBoxLayout>
 #include <QVector>
-#include <LineEditRV.h>
 #include <QProcess>
 #include <QJsonArray>
 #include <QJsonObject>
-#include <QJsonDocument>
+#include <QList>
 // #include "vtkGenericOpenGLRenderWindow.h"
 // #include "vtkSmartPointer.h"
 // #include <vtkDataObjectToTable.h>
@@ -101,16 +104,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // #include <vtkTestUtilities.h>
 // #include <vtkSimplePointsReader.h>
 #include <QVector3D>
-#include <SimCenterPreferences.h>
-#include <GeneralInformationWidget.h>
-#include <QFile>
 #include <QTextStream>
+#include <QString>
 #include <QtMath>
 #include <QWebEngineView>
 
 ResultsMPM::ResultsMPM(MPM *parent)
     : SC_ResultsWidget(parent), mainModel(parent)
 {
+    if (mainModel == nullptr)
+    {
+        qDebug() << "ResultsMPM: parent MPM mainModel is nullptr with the constructor of ResultsMPM.";
+    }
+    if (!mainModel->isInitialize())
+    {
+        qDebug() << "ResultsMPM: mainModel is not initialized";
+        // mainModel->initialize();
+    }
+
     layout = new QVBoxLayout();
 
     plotProfileGroup = new QGroupBox("Wave Profiles");
@@ -138,58 +149,77 @@ ResultsMPM::ResultsMPM(MPM *parent)
     //==================================================================
     QLabel* profileNameULabel = new QLabel("Name of the Profile: ");
     profileNameU = new QComboBox();
-
     profileNameU->addItem("Profile1");
     profileNameU->addItem("Profile2");
     profileNameU->setToolTip("Name of the profile to show.");
+    profileNameU->setCurrentIndex(1);
 
-    plotProfile = new QPushButton("Plot Profile");
-    plotProfile->setToolTip("Plots the wave profiles for a given line probe.");
+    processSensorsButton = new QPushButton("Process Sensor Data");
+    processSensorsButton->setToolTip("Processes the simulated sensor / instrument recordings to a suitable format for interpretation using Python scripts as the back-end process.");
 
-    plotProfileLayout->addWidget(profileNameULabel, 0, 0);
+    plotProfileLayout->addWidget(profileNameULabel, 0, 0, Qt::AlignRight);
     plotProfileLayout->addWidget(profileNameU, 0, 1);
-    plotProfileLayout->addWidget(plotProfile, 0, 2);
+    plotProfileLayout->addWidget(processSensorsButton, 0, 2);
 
     //==================================================================
     //              Plot Velocity Spectra
     //==================================================================
-    QLabel* profileNameSLabel = new QLabel("Name of the Profile: ");
+    QLabel* profileNameSLabel = new QLabel("Sensor Style: ");
     profileNameS = new QComboBox();
-    profileNameS->addItem("Profile1");
-    profileNameS->addItem("Profile2");
-    profileNameS->setToolTip("Location of the profile to show.");
+    profileNameS->addItem("particle");
+    // profileNameS->addItem("grid");
+    profileNameS->setToolTip("Sensors may record on different numerical bodies, so you must specify the type to dispaly data for.");
+    profileNameS->setCurrentIndex(0);
 
-    QLabel* locationSLabel = new QLabel("Location:");
-    locationS = new QComboBox();
-    locationS->addItem("1/4Href");
-    locationS->addItem("1/2Href");
-    locationS->addItem("1Href");
-    locationS->addItem("2Href");
-    locationS->setCurrentIndex(2);
-    locationS->setToolTip("Location of the profile to show.");
+    QLabel* locationSLabel = new QLabel("Sensor ID, Body ID, Device ID:");
+    sensorNumS = new QComboBox();
+    sensorNumS->addItem("Wave-Gauge:1");
+    sensorNumS->addItem("Wave-Gauge:2");
+    sensorNumS->addItem("Wave-Gauge:3");
+    sensorNumS->addItem("Wave-Gauge:4");
+    sensorNumS->setToolTip("ID of the sensor to display results for.");
+    sensorNumS->setCurrentIndex(0);
 
-    plotSpectra = new QPushButton("Plot Spectra");
-    plotSpectra->setToolTip("Plots the velocity spectra for a given line probe.");
+    bodyNumS = new QComboBox();
+    bodyNumS->addItem("Body:0");
+    bodyNumS->addItem("Body:1");
+    bodyNumS->addItem("Body:2");
+    bodyNumS->addItem("Body:3");
+    bodyNumS->setToolTip("ID of the body to display results for.");
+    bodyNumS->setCurrentIndex(0);
 
-    plotSpectraLayout->addWidget(profileNameSLabel, 0, 0);
+    deviceNumS = new QComboBox();
+    deviceNumS->addItem("GPU:0");
+    deviceNumS->addItem("GPU:1");
+    deviceNumS->addItem("GPU:2");
+    deviceNumS->addItem("GPU:3");
+    deviceNumS->setToolTip("ID of the device to display results for.");
+    deviceNumS->setCurrentIndex(0);
+
+    plotSpectra = new QPushButton("Plot Sensor");
+    plotSpectra->setToolTip("Plots the sensor measurements for a given ID.");
+
+    plotSpectraLayout->addWidget(profileNameSLabel, 0, 0, Qt::AlignRight);
     plotSpectraLayout->addWidget(profileNameS, 0, 1);
     plotSpectraLayout->addWidget(locationSLabel, 0, 2, Qt::AlignRight);
-    plotSpectraLayout->addWidget(locationS, 0, 3);
-    plotSpectraLayout->addWidget(plotSpectra, 0, 4, 1,2);
+    plotSpectraLayout->addWidget(sensorNumS, 0, 3);
+    plotSpectraLayout->addWidget(bodyNumS, 0, 4);
+    plotSpectraLayout->addWidget(deviceNumS, 0, 5);
+    plotSpectraLayout->addWidget(plotSpectra, 0, 6, 1,2);
 
     //==================================================================
     //              Plot Pressure Profiles
     //==================================================================
     QLabel* profileNamePLabel = new QLabel("Name of the Profile: ");
     profileNameP = new QComboBox();
-
     profileNameP->addItem("Profile3");
-    profileNameP->setToolTip("Location of the profile to show.");
+    profileNameP->setToolTip("Name of the profile to show.");
+    profileNameP->setCurrentIndex(0);
 
     plotPressure = new QPushButton("Plot Pressure");
     plotPressure->setToolTip("Plots the pressure fluctuation on a given line probe.");
 
-    plotPressureLayout->addWidget(profileNamePLabel, 0, 0);
+    plotPressureLayout->addWidget(profileNamePLabel, 0, 0, Qt::AlignRight);
     plotPressureLayout->addWidget(profileNameP, 0, 1);
     plotPressureLayout->addWidget(plotPressure, 0, 2);
 
@@ -198,37 +228,38 @@ ResultsMPM::ResultsMPM(MPM *parent)
     //==================================================================
     QLabel* profileNameELabel = new QLabel("Name of the Profile: ");
     profileNameE = new QComboBox();
-
     profileNameE->addItem("Profile4");
-    profileNameE->setToolTip("Location of the profile to show.");
+    profileNameE->setToolTip("Name of the profile to show.");
+    profileNameE->setCurrentIndex(0);
 
     plotElevation = new QPushButton("Plot Elevation");
     plotElevation->setToolTip("Plots the elevation profile for a given line probe.");
 
-    plotProfileLayout->addWidget(profileNameELabel, 0, 0);
-    plotProfileLayout->addWidget(profileNameE, 0, 1);
-    plotProfileLayout->addWidget(plotElevation, 0, 2);
+    plotElevationLayout->addWidget(profileNameELabel, 0, 0, Qt::AlignRight);
+    plotElevationLayout->addWidget(profileNameE, 0, 1, Qt::AlignLeft);
+    plotElevationLayout->addWidget(plotElevation, 0, 2);
 
     //==================================================================
     //              Plot Force Profiles
     //==================================================================
     QLabel* profileNameFLabel = new QLabel("Name of the Profile: ");
     profileNameF = new QComboBox();
-
     profileNameF->addItem("Profile5");
-    profileNameF->setToolTip("Location of the profile to show.");
+    profileNameF->setToolTip("Name of the profile to show.");
+    profileNameF->setCurrentIndex(0);
 
     plotForce = new QPushButton("Plot Force");
     plotForce->setToolTip("Plots the force profile for a given line probe.");
     
-    plotForceLayout->addWidget(profileNameFLabel, 0, 0);
-    plotForceLayout->addWidget(profileNameF, 0, 1);
+    plotForceLayout->addWidget(profileNameFLabel, 0, 0, Qt::AlignRight);
+    plotForceLayout->addWidget(profileNameF, 0, 1, Qt::AlignLeft);
     plotForceLayout->addWidget(plotForce, 0, 2);
 
     //==================================================================
     //              Connect Signals and Slots
     //==================================================================
-    connect(plotProfile, SIGNAL(clicked()), this, SLOT(onPlotProfileClicked()));
+    connect(processSensorsButton, SIGNAL(clicked()), this, SLOT(onProcessSensorsClicked()));
+    connect(processSensorsButton, SIGNAL(clicked()), this, SLOT(onPlotProfileClicked()));
     connect(plotSpectra, SIGNAL(clicked()), this, SLOT(onPlotSpectraClicked()));
     connect(plotPressure, SIGNAL(clicked()), this, SLOT(onPlotPressureClicked()));
     connect(plotElevation, SIGNAL(clicked()), this, SLOT(onPlotElevationClicked()));
@@ -272,11 +303,8 @@ ResultsMPM::onPlotProfileClicked(void)
 
     QString ext = ".html"; // ".csv"
     QString plotPath = mainModel->caseDir() + QDir::separator() 
-                        + "constant" + QDir::separator() 
-                        + "simCenter" + QDir::separator() 
                         + "output" + QDir::separator() 
-                        + "hydroProfiles" + QDir::separator()
-                        + profileNameU->currentText() 
+                        + profileNameS->currentText() 
                         + ext;
 
     if(QFileInfo::exists(plotPath))
@@ -296,6 +324,8 @@ ResultsMPM::onPlotSpectraClicked(void)
     int dialogHeight = 500;
     int dialogWidth = 1550;
 
+
+
     QVBoxLayout *plotLayout = new QVBoxLayout();
 
     QWebEngineView *plotView = new QWebEngineView();
@@ -306,18 +336,16 @@ ResultsMPM::onPlotSpectraClicked(void)
     plotView->setMinimumHeight(dialogHeight);
 
     QString ext = ".html"; // ".csv"
+    QString pre = "Target"; // "Sensor"
+    QString bodyLabel = "model"; // "body";
+    QString deviceLabel = "dev"; // "gpu";
     QString plotPath = mainModel->caseDir() + QDir::separator() 
-                        + "constant" + QDir::separator() 
-                        + "simCenter" + QDir::separator() 
                         + "output" + QDir::separator() 
-                        + "hydroProfiles" + QDir::separator()
-                        + "spectra_" + profileNameS->currentText()
-                        + "_H" + QString::number(locationS->currentIndex() + 1) 
+                        + profileNameS->currentText()
+                        + pre + "[" + QString::number(sensorNumS->currentIndex()) + "]_" 
+                        + bodyLabel + "[" + QString::number(bodyNumS->currentIndex()) + "]_"
+                        + deviceLabel + "[" + QString::number(deviceNumS->currentIndex()) + "]"
                         + ext;
-
-//    QMessageBox msgBox;
-//    msgBox.setText(plotPath);
-//    msgBox.exec();
 
     if(QFileInfo::exists(plotPath))
     {
@@ -326,8 +354,13 @@ ResultsMPM::onPlotSpectraClicked(void)
         plotView->show();
         plotView->activateWindow();
         plotView->raise();
+    } else {
+        QMessageBox::warning(this, tr("File Not Found: "), plotPath);        
     }
+
 }
+
+
 
 void 
 ResultsMPM::onPlotPressureClicked(void)
@@ -344,18 +377,11 @@ ResultsMPM::onPlotPressureClicked(void)
     plotView->setMinimumWidth(dialogWidth);
     plotView->setMinimumHeight(dialogHeight);
 
-    QString ext = ".html"; // ".csv"
+    QString ext = ".html";
     QString plotPath = mainModel->caseDir() + QDir::separator() 
-                        + "constant" + QDir::separator() 
-                        + "simCenter" + QDir::separator() 
                         + "output" + QDir::separator() 
-                        + "hydroProfiles" + QDir::separator()
-                        + "pressure_" + profileNameP->currentText() 
+                        + profileNameP->currentText() 
                         + ext;
-
-    //    QMessageBox msgBox;
-    //    msgBox.setText(plotPath);
-    //    msgBox.exec();
 
     if(QFileInfo::exists(plotPath))
     {
@@ -382,18 +408,14 @@ ResultsMPM::onPlotElevationClicked(void)
     plotView->setMinimumWidth(dialogWidth);
     plotView->setMinimumHeight(dialogHeight);
 
-    QString ext = ".html"; // ".csv"
+    QString ext = ".html";
     QString plotPath = mainModel->caseDir() + QDir::separator() 
                         + "constant" + QDir::separator() 
                         + "simCenter" + QDir::separator() 
                         + "output" + QDir::separator() 
-                        + "hydroProfiles" + QDir::separator()
-                        + "elevation_" + profileNameE->currentText() 
+                        + "sensors" + QDir::separator()
+                        + profileNameE->currentText() 
                         + ext;
-
-    //    QMessageBox msgBox;
-    //    msgBox.setText(plotPath);
-    //    msgBox.exec();
 
     if(QFileInfo::exists(plotPath))
     {
@@ -420,18 +442,14 @@ ResultsMPM::onPlotForceClicked(void)
     plotView->setMinimumWidth(dialogWidth);
     plotView->setMinimumHeight(dialogHeight);
 
-    QString ext = ".html"; // ".csv"
+    QString ext =  ".html"; // ".html"; 
     QString plotPath = mainModel->caseDir() + QDir::separator() 
                         + "constant" + QDir::separator() 
                         + "simCenter" + QDir::separator() 
                         + "output" + QDir::separator() 
-                        + "hydroProfiles" + QDir::separator()
-                        + "force_" + profileNameF->currentText() 
+                        + "sensors" + QDir::separator()
+                        + profileNameF->currentText() 
                         + ext;
-
-    //    QMessageBox msgBox;
-    //    msgBox.setText(plotPath);
-    //    msgBox.exec();
 
     if(QFileInfo::exists(plotPath))
     {
@@ -446,22 +464,164 @@ ResultsMPM::onPlotForceClicked(void)
 
 
 
-// bool 
-// ResultsMPM::outputToJSON(QJsonObject &jsonObject)
-// {
-//     // Writes wind load monitoring options JSON file.  
-//     // QJsonObject resDisplayJson = QJsonObject();
-//     // QJsonArray spectralPlotLocations = {0.25, 0.5, 1.0, 2.0};
-//     // resDisplayJson["spectralPlotLocations"] = spectralPlotLocations;
-//     // jsonObject["resultDisplay"] = resDisplayJson;
-//     return true;
-// }
+bool 
+ResultsMPM::outputToJSON(QJsonObject &jsonObject)
+{
+    // Writes wind load monitoring options JSON file.  
+    // QJsonObject resDisplayJson = QJsonObject();
+    // QJsonArray spectralPlotLocations = {0.25, 0.5, 1.0, 2.0};
+    // resDisplayJson["spectralPlotLocations"] = spectralPlotLocations;
+    // jsonObject["resultDisplay"] = resDisplayJson;
+    return true;
+}
 
 
+void 
+ResultsMPM::plotSensors(MPM* host)
+{
+    //
+    //  Python scripts hosted remotely by SimCenterBackendApplications/modules/createEVENT/*
+    // 
+
+    QString scriptName = "post_process_sensors.py"; // "MPM.py";
+    QString scriptPath = mainModel->pyScriptsPath() + QDir::separator() + scriptName; 
+    QString sensorsPath = mainModel->caseDir() + QDir::separator() + "output" + QDir::separator() ;
+    QString outputPath = mainModel->caseDir() + QDir::separator() + "output" + QDir::separator() ;
+    // Find all the sensors in the sensorsPath folder if it exists, make them into one QString that is comma separated.
+
+    qDebug() << "ResultsMPM::plotSensors - sensorsPath: " << sensorsPath;
+    qDebug() << "ResultsMPM::plotSensors - outputPath: " << outputPath;
+    qDebug() << "ResultsMPM::plotSensors - scriptPath: " << scriptPath;
+    qDebug() << "ResultsMPM::plotSensors - scriptName: " << scriptName;
+
+    QString sensorsList =  "";
+    QDir sensorsDir(sensorsPath);
+    if (sensorsDir.exists())
+    {
+
+        // Print all the files in the directory (max 64 files for now, to avoid spamming the console)
+        qDebug() << "Files in the sensors directory: "; 
+        for (int i = 0; i < sensorsDir.count() && i < 64; i++)
+        {
+            qDebug() << sensorsDir[i];
+        }
+
+        QStringList filters("*.csv"); // This is the file extension of the sensor files, it may change in the future.
+        // entryList returns a QStringList of all the files in the directory that match the filters.
+        QStringList sensorFiles = sensorsDir.entryList(filters); //, QDir::Files, QDir::Name); 
+        if (sensorFiles.size() == 0)
+        {
+            qDebug() << "Sensor directory exists, but no sensor files found in the output directory. Cannot run the post_process_sensors.py script. Dir: " << sensorsPath;
+            return;
+        }
+        for (int i = 0; i < sensorFiles.size(); i++)
+        {
+            // Turn StringList into a comma separated QString
+            sensorsList += sensorFiles[i]; 
+            if (i < sensorFiles.size() - 1)
+            {
+                sensorsList += ","; // For QString , is this the correct way to do this? 
+            }
+            qDebug() << "Sensor file: " << sensorFiles[i];
+        }
+    } else {
+        qDebug() << "The sensor's measurement files directory does not exist: " << sensorsPath;
+    }
+    
+    qDebug() << "ResultsMPM::plotSensors - sensorsList: " << sensorsList;
+
+    if (sensorsList.isEmpty())
+    {
+        qDebug() << "No sensor files found in the output directory. Cannot run the post_process_sensors.py script. Dir: " << sensorsPath << " sensorsList: " << sensorsList; 
+        return;
+    }
+
+    if (!QDir(outputPath).exists())
+    {
+        qDebug() << "ResultsMPM::plotSensors - Creating the output directory: " << outputPath;
+        QDir().mkdir(outputPath);
+    } 
+
+
+    if (QFileInfo(scriptPath).exists() && QFileInfo(scriptPath).isFile())
+    {
+        QString program = SimCenterPreferences::getInstance()->getPython();
+        qDebug() << "ResultsMPM::plotSensors - Python program path: " << program;
+        QProcess *process = new QProcess();
+        QStringList arguments; 
+        arguments << scriptPath << sensorsPath << outputPath << sensorsList;
+
+        // Catch python print statements and errors and display them in through the qDebug() stream.
+        QObject::connect(process, &QProcess::readyRead, [process] () {
+            QByteArray a = process->readAll();
+            qDebug() <<  a;
+        });
+
+        // Delete process instance / thread when done (later), and get the exit status to handle errors.
+        QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                        [=](int exitCode, QProcess::ExitStatus /*exitStatus*/){
+            qDebug()<< "process exited with code " << exitCode;
+            process->deleteLater();
+        });
+        process->start(program, arguments);
+        process->waitForStarted(); 
+        process->waitForFinished(-1);
+        if (process->exitStatus() == QProcess::CrashExit)
+        {
+            qDebug() << "ResultsMPM::plotSensors - The post_process_sensors.py script has crashed.";
+        } 
+        else if (process->exitStatus() == QProcess::NormalExit)
+        {
+            qDebug() << "ResultsMPM::plotSensors - The post_process_sensors.py script has finished running.";
+        }
+        else 
+        {
+            qDebug() << "ResultsMPM::plotSensors - The post_process_sensors.py script has finished running with an unknown exit status.";
+        }
+        // process->close();
+        qDebug() << "ResultsMPM::plotSensors - Finished running the post_process_sensors.py script.";
+    } 
+    else 
+    {
+        qDebug() << "ERROR: Cannot find the post-process-sensors.py script path file, consider changing SimCenterBackendApplications path preference under the file drop-down to alter this to be valid: " << scriptPath;
+    }
+    return;
+}
+
+
+void
+ResultsMPM::processResults(QString &dirName)
+{
+  QDir resultsDir(dirName);
+  QString resultsPath = resultsDir.absolutePath() + QDir::separator() + "results";
+  QString inputFileName = "MPM.json"; // "ResultsMPM.json"
+  QString inputFilePath = resultsPath + QDir::separator() 
+                            + "constant" + QDir::separator() 
+                            + "simCenter" + QDir::separator() 
+                            + "input" + QDir::separator() 
+                            + inputFileName;
+  QFile jsonFile(inputFilePath);
+  if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
+  {
+        qDebug() << "Cannot find the path: " << inputFilePath;
+        return;
+  }
+
+  QString val = jsonFile.readAll();
+  QJsonDocument doc = QJsonDocument::fromJson(val.toUtf8());
+  QJsonObject jsonObject = doc.object();
+  jsonFile.close();
+
+  jsonObject["caseDirectoryPath"] = resultsPath;
+  mainModel->inputFromJSON(jsonObject);
+
+  return;  
+}
 
 int
 ResultsMPM::processResults(QString &inputFile, QString &dirName)
 {
+  qDebug() << "ResultsMPM::processResults - dirName: " << dirName;
   QDir resultsDir(dirName);
   QString resultsPath = resultsDir.absolutePath() + QDir::separator() + "results";
   QString inputFileName = "MPM.json"; // "ResultsMPM.json"
@@ -482,37 +642,70 @@ ResultsMPM::processResults(QString &inputFile, QString &dirName)
   QJsonObject jsonObject = doc.object();
   jsonFile.close();
 
-  jsonObject["caseDirectoryPath"] = resultsPath;
+//   jsonObject["caseDirectoryPath"] = resultsPath;
   mainModel->inputFromJSON(jsonObject);
 
   return 0;  
 }
 
+int
+ResultsMPM::processResults(QString &inputFile, QString &dirName, QString &assetType, QList<QString> typesInAssetType)
+{
+  qDebug() << "ResultsMPM::processResults - dirName: " << dirName;
+  QDir resultsDir(dirName);
+  QString resultsPath = resultsDir.absolutePath() + QDir::separator() + "results";
+  QString inputFileName = "MPM.json"; // "ResultsMPM.json"
+  QString inputFilePath = resultsPath + QDir::separator() 
+                            + "constant" + QDir::separator() 
+                            + "simCenter" + QDir::separator() 
+                            + "input" + QDir::separator() 
+                            + inputFileName;
+  QFile jsonFile(inputFilePath);
+  if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
+  {
+        qDebug() << "Cannot find the path: " << inputFilePath;
+        return -1;
+  }
+
+  QString val = jsonFile.readAll();
+  QJsonDocument doc = QJsonDocument::fromJson(val.toUtf8());
+  QJsonObject jsonObject = doc.object();
+  jsonFile.close();
+
+//   jsonObject["caseDirectoryPath"] = resultsPath;
+
+    mainModel->inputFromJSON(jsonObject);
+    
+    return 0;  
+}
 
 bool 
 ResultsMPM::inputFromJSON(QJsonObject &jsonObject)
 {
     // Writes Event load (IMs/EDPs) monitoring options JSON file.
-    QJsonObject resMonitoringJson = jsonObject["resultMonitoring"].toObject();
-    QJsonArray profiles = resMonitoringJson["hydroProfiles"].toArray();
+    // QJsonObject resMonitoringJson = jsonObject["resultMonitoring"].toObject();
+    // QJsonArray profiles = resMonitoringJson["hydroProfiles"].toArray();
+    QJsonArray profiles = jsonObject["particle-sensors"].toArray();
+    // QJsonArray profiles = resMonitoringJson["hydroProfiles"].toArray();
+    // profileNameU->clear();
+    // profileNameS->clear();
+    // profileNameP->clear();
+    // profileNameE->clear();
+    // profileNameF->clear();
 
-    profileNameU->clear();
-    profileNameS->clear();
-    profileNameP->clear();
-    profileNameE->clear();
-    profileNameF->clear();
-
-    QString key = "field";
+    QString key = "attribute";
     for (int i = 0; i < profiles.size(); i++)
     {
         QJsonObject profile  = profiles[i].toObject();
+
+        profileNameS->addItem(QString::number(i)); 
 
         if (profile[key].toString() == "Velocity")
         {
             profileNameU->addItem(profile["name"].toString()); // Wave Profile
             profileNameS->addItem(profile["name"].toString()); // Wave Spectra
+            // profileNameS->addItem(QString("0")); // Wave Spectra
         }
-
         if (profile[key].toString() == "Pressure")
         {
             profileNameP->addItem(profile["name"].toString());
