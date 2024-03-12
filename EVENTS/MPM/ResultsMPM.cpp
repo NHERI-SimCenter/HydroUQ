@@ -154,12 +154,12 @@ ResultsMPM::ResultsMPM(MPM *parent)
     profileNameU->setToolTip("Name of the profile to show.");
     profileNameU->setCurrentIndex(1);
 
-    plotProfile = new QPushButton("Plot Profile");
-    plotProfile->setToolTip("Plots the wave profiles for a given line probe.");
+    processSensorsButton = new QPushButton("Process Sensor Data");
+    processSensorsButton->setToolTip("Processes the simulated sensor / instrument recordings to a suitable format for interpretation using Python scripts as the back-end process.");
 
     plotProfileLayout->addWidget(profileNameULabel, 0, 0, Qt::AlignRight);
     plotProfileLayout->addWidget(profileNameU, 0, 1);
-    plotProfileLayout->addWidget(plotProfile, 0, 2);
+    plotProfileLayout->addWidget(processSensorsButton, 0, 2);
 
     //==================================================================
     //              Plot Velocity Spectra
@@ -258,7 +258,8 @@ ResultsMPM::ResultsMPM(MPM *parent)
     //==================================================================
     //              Connect Signals and Slots
     //==================================================================
-    connect(plotProfile, SIGNAL(clicked()), this, SLOT(onPlotProfileClicked()));
+    connect(processSensorsButton, SIGNAL(clicked()), this, SLOT(onProcessSensorsClicked()));
+    connect(processSensorsButton, SIGNAL(clicked()), this, SLOT(onPlotProfileClicked()));
     connect(plotSpectra, SIGNAL(clicked()), this, SLOT(onPlotSpectraClicked()));
     connect(plotPressure, SIGNAL(clicked()), this, SLOT(onPlotPressureClicked()));
     connect(plotElevation, SIGNAL(clicked()), this, SLOT(onPlotElevationClicked()));
@@ -356,9 +357,6 @@ ResultsMPM::onPlotSpectraClicked(void)
     } else {
         QMessageBox::warning(this, tr("File Not Found: "), plotPath);        
     }
-
-    plotSensors(); // Temp location for doing this, should have its own function and buttons
-    qDebug() << "ResultsMPM - Called plotSensors().";
 
 }
 
@@ -479,7 +477,7 @@ ResultsMPM::outputToJSON(QJsonObject &jsonObject)
 
 
 void 
-ResultsMPM::plotSensors()
+ResultsMPM::plotSensors(MPM* host)
 {
     //
     //  Python scripts hosted remotely by SimCenterBackendApplications/modules/createEVENT/*
@@ -530,6 +528,8 @@ ResultsMPM::plotSensors()
         qDebug() << "The sensor's measurement files directory does not exist: " << sensorsPath;
     }
     
+    qDebug() << "ResultsMPM::plotSensors - sensorsList: " << sensorsList;
+
     if (sensorsList.isEmpty())
     {
         qDebug() << "No sensor files found in the output directory. Cannot run the post_process_sensors.py script. Dir: " << sensorsPath << " sensorsList: " << sensorsList; 
@@ -543,19 +543,47 @@ ResultsMPM::plotSensors()
     } 
 
 
-    if (QFileInfo(scriptPath).exists())
+    if (QFileInfo(scriptPath).exists() && QFileInfo(scriptPath).isFile())
     {
-      QString program = SimCenterPreferences::getInstance()->getPython();
-      QStringList arguments; arguments << scriptPath << sensorsPath << outputPath << sensorsList;
-      QProcess *process = new QProcess(this);
-      process->start(program, arguments);
-      process->waitForFinished(-1);
-      process->close();
-      qDebug() << "ResultsMPM::plotSensors - Finished running the post_process_sensors.py script.";
+        QString program = SimCenterPreferences::getInstance()->getPython();
+        qDebug() << "ResultsMPM::plotSensors - Python program path: " << program;
+        QProcess *process = new QProcess();
+        QStringList arguments; 
+        arguments << scriptPath << sensorsPath << outputPath << sensorsList;
+
+        // Catch python print statements and errors and display them in through the qDebug() stream.
+        QObject::connect(process, &QProcess::readyRead, [process] () {
+            QByteArray a = process->readAll();
+            qDebug() <<  a;
+        });
+
+        // Delete process instance / thread when done (later), and get the exit status to handle errors.
+        QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                        [=](int exitCode, QProcess::ExitStatus /*exitStatus*/){
+            qDebug()<< "process exited with code " << exitCode;
+            process->deleteLater();
+        });
+        process->start(program, arguments);
+        process->waitForStarted(); 
+        process->waitForFinished(-1);
+        if (process->exitStatus() == QProcess::CrashExit)
+        {
+            qDebug() << "ResultsMPM::plotSensors - The post_process_sensors.py script has crashed.";
+        } 
+        else if (process->exitStatus() == QProcess::NormalExit)
+        {
+            qDebug() << "ResultsMPM::plotSensors - The post_process_sensors.py script has finished running.";
+        }
+        else 
+        {
+            qDebug() << "ResultsMPM::plotSensors - The post_process_sensors.py script has finished running with an unknown exit status.";
+        }
+        // process->close();
+        qDebug() << "ResultsMPM::plotSensors - Finished running the post_process_sensors.py script.";
     } 
     else 
     {
-      qDebug() << "ERROR: Cannot find the post-process-sensors.py script path, consider changing SimCenterBackendApplications path preference under the file drop-down to alter this to be valid: " << scriptPath;
+        qDebug() << "ERROR: Cannot find the post-process-sensors.py script path file, consider changing SimCenterBackendApplications path preference under the file drop-down to alter this to be valid: " << scriptPath;
     }
     return;
 }

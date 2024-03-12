@@ -564,7 +564,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto pistonMaterial = new Qt3DExtras::QPhongMaterial();
     auto twinMaterial = new Qt3DExtras::QPhongMaterial();
     auto hydroMaterial = new Qt3DExtras::QPhongMaterial();
-    auto reservoirMaterial = new Qt3DExtras::QPhongMaterial();
+    auto reservoirMaterial = new Qt3DExtras::QPhongAlphaMaterial();
     auto harborMaterial = new Qt3DExtras::QPhongMaterial();
     auto floorMaterial = new Qt3DExtras::QPhongMaterial();
 
@@ -588,7 +588,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     // Give fluid material transparecny and blue color
     fluidMaterial->setDiffuse(QColor(QRgb(0x0000FF)));
-    fluidMaterial->setAlpha(0.6f);
+    fluidMaterial->setAlpha(0.65f);
     fluidMaterial->setAmbient(QColor(QRgb(0x0000FF)));
 
     // Give piston material a teal color
@@ -599,9 +599,14 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     
 
 
+    reservoirMaterial->setDiffuse(QColor(QRgb(0x0000FF)));
+    reservoirMaterial->setAlpha(0.6f);
     reservoirMaterial->setAmbient(QColor(QRgb(0x0000FF))); // blue
+
     harborMaterial->setAmbient(QColor(QRgb(0x8B4513))); // wood
     floorMaterial->setAmbient(QColor(QRgb(0xCCCCCC)));
+    auto floorEntity = new Qt3DCore::QEntity(rootEntity);
+    auto harborEntity = new Qt3DCore::QEntity(rootEntity);
     
 
     // Create a cube entity and add the mesh, transform and material components
@@ -614,11 +619,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
               QVector < QVector < Qt3DCore::QEntity* > > (2,
                         QVector < Qt3DCore::QEntity* > (16, nullptr)));    
     auto fluidEntity = new Qt3DCore::QEntity(rootEntity);
+    auto reservoirEntity = new Qt3DCore::QEntity(rootEntity);
     auto pistonEntity = new Qt3DCore::QEntity(rootEntity);
     auto hydroEntity = new Qt3DCore::QEntity(rootEntity);
-    auto reservoirEntity = new Qt3DCore::QEntity(rootEntity);
-    auto harborEntity = new Qt3DCore::QEntity(rootEntity);
-    auto floorEntity = new Qt3DCore::QEntity(rootEntity);
 
 
     // Now disable the HydroUQ logo until its cleaned up
@@ -671,18 +674,18 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     hydroEntity->addComponent(hydroMesh);
     hydroEntity->addComponent(hydroMaterial);
     hydroEntity->addComponent(hydroTransform);
-
-    reservoirEntity->addComponent(reservoirMesh);
-    reservoirEntity->addComponent(reservoirMaterial);
-    reservoirEntity->addComponent(reservoirTransform);
+    
+    floorEntity->addComponent(floorMesh);
+    floorEntity->addComponent(floorMaterial);
+    floorEntity->addComponent(floorTransform);
 
     harborEntity->addComponent(harborMesh);
     harborEntity->addComponent(harborMaterial);
     harborEntity->addComponent(harborTransform);
 
-    floorEntity->addComponent(floorMesh);
-    floorEntity->addComponent(floorMaterial);
-    floorEntity->addComponent(floorTransform);
+    reservoirEntity->addComponent(reservoirMesh);
+    reservoirEntity->addComponent(reservoirMaterial);
+    reservoirEntity->addComponent(reservoirTransform);
 
     reservoirEntity->setEnabled(false);
     harborEntity->setEnabled(false);
@@ -997,16 +1000,16 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
             }
           }
         }
-        fluidEntity->setEnabled(true);
-        pistonEntity->setEnabled(true);
         hydroEntity->setEnabled(false);
-        reservoirEntity->setEnabled(true);
-        harborEntity->setEnabled(true);
         floorEntity->setEnabled(true);
         floorTransform->setTranslation(QVector3D(9.0f/2, -0.125f/2, 4.0f/2)); 
         floorMesh->setXExtent(9.f);
         floorMesh->setYExtent(0.125f);
         floorMesh->setZExtent(4.f);
+        harborEntity->setEnabled(true);
+        fluidEntity->setEnabled(true);
+        pistonEntity->setEnabled(true);
+        reservoirEntity->setEnabled(true);
       } else if (index == 4) {
         twinEntity->setEnabled(false);
         for (int i = 0; i < 16; i++) {

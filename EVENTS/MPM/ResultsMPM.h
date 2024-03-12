@@ -83,13 +83,14 @@ public:
 signals:
 
 public slots:
-   void onPlotProfileClicked(void); // U
-   void onPlotSpectraClicked(void); // S
-   void onPlotPressureClicked(void); // P
-   void onPlotElevationClicked(void); // E
-   void onPlotForceClicked(void); // F
-   bool simulationCompleted();
-   void plotSensors();
+    void onPlotProfileClicked(void); // U
+    void onPlotSpectraClicked(void); // S
+    void onPlotPressureClicked(void); // P
+    void onPlotElevationClicked(void); // E
+    void onPlotForceClicked(void); // F
+    bool simulationCompleted();
+    void onProcessSensorsClicked(void);
+    void plotSensors(MPM *host);
 
 private:
 
@@ -100,6 +101,12 @@ private:
     QGroupBox            *plotProfileGroup;
     QGridLayout          *plotProfileLayout;
     QPushButton          *plotProfile;
+    QComboBox            *profileNameU;
+
+    // U - Hydro Profile
+    QGroupBox            *plotProfileGroup;
+    QGridLayout          *plotProfileLayout;
+    QPushButton          *processSensorsButton;
     QComboBox            *profileNameU;
 
     // S - Spectra
