@@ -65,6 +65,7 @@ class QWidget;
 class PartitionMPM; // Individual GPU partitions
 class PartitionsMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     PartitionsMPM(QWidget *parent = 0);
     virtual ~PartitionsMPM();

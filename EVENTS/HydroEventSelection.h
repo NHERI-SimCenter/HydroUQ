@@ -44,6 +44,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <QGroupBox>
 #include <QVector>
+#include <RemoteService.h>
+
 // #include <QHBoxLayout>
 // #include <QVBoxLayout>
 // #include <QStackedWidget>
@@ -62,9 +64,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // #include <InputWidgetExistingEvent.h>
 // #include <GeoClawOpenFOAM.h>
 // #include <WaveDigitalFlume.h>
-
-#include <RemoteService.h>
-
 class QComboBox; // WE-UQ
 class QStackedWidget; // WE-UQ
 class UserDefinedApplication; // WE-UQ

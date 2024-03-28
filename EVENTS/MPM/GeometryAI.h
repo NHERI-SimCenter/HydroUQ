@@ -1,5 +1,5 @@
-#ifndef RESULTS_MPM_H
-#define RESULTS_MPM_H
+#ifndef GEOMETRY_AI_H
+#define GEOMETRY_AI_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
@@ -39,10 +39,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // Written by: JustinBonus
 
-#include <SC_ResultsWidget.h>
-#include <QList>
-// #include <MPM.h>
-class MPM;
+#include <SimCenterWidget.h>
+
+// #include <QList>
+class QJsonObject;
+class QJsonArray;
 class InputWidgetParameters;
 class RandomVariablesContainer;
 class QComboBox;
@@ -61,75 +62,80 @@ class QDoubleSpinBox;
 class QLabel;
 class QRadioButton;
 class QString;
+class QStringList;
 
+class SC_DoubleLineEdit;
+class SC_IntLineEdit;
+class SC_StringLineEdit;
+class SC_ComboBox;
+class SC_TableEdit;
+class SC_FileEdit;
+class SC_CheckBox;
 
-class ResultsMPM: public SC_ResultsWidget
+class GeometryAI: public SimCenterWidget
 {
     Q_OBJECT
-    friend class MPM; // Allow MPM to access private members. TODO: use a better vis architecture (e.g. MVC, VIPER, etc.) 
+
 public:
-    explicit ResultsMPM(MPM *parent = 0);
-    ~ResultsMPM() override;
+    explicit GeometryAI(QWidget *parent = 0);
+    ~GeometryAI(); // override // virtual
 
-    void processResults(QString &dirName);     
-    int processResults(QString &outputFile, QString &dirName, QString &assetType, QList<QString> typesInAssetType) override;
-    int processResults(QString &outputFile, QString &dirName) override;   
-    bool inputFromJSON(QJsonObject &jsonObject) override;
-    bool outputToJSON(QJsonObject &jsonObject) override; 
-    void clear(void) override;  // This is a virtual function in SC_ResultsWidget, so it must be implemented here.
-    void updateWidgets(); 
-
+    bool inputFromJSON(QJsonObject &jsonObject); // override
+    bool outputToJSON(QJsonObject &jsonObject); // override 
+    bool executeTextPromptsScripts(QString &dirName);     
+    bool executeImagePromptsScripts(QString &dirName);     
+    // void clear(void); 
+    bool showImage (QString &fileName);
 signals:
 
 public slots:
-    void onProcessSensorsClicked(void);
-    void onPlotSpectraClicked(void); // S
-    void onPlotPressureClicked(void); // P
-    void onPlotElevationClicked(void); // E
-    void onPlotForceClicked(void); // F
-    bool simulationCompleted();
-    void plotSensors(MPM *host);
+    // void onExecuteScriptClicked(void);
+    void onProcessTextPromptsClicked(void);
+    void onProcessImagePromptsClicked(void);
+    // void onPointCloudToMeshClicked(void);
+    // void onSurfaceToVolumeClicked(void);
+    // void onPointCloudToSignedDistanceFieldClicked(void);
+
+    bool text2pointcloud();
+    bool image2pointcloud();
+    // bool pointcloud2mesh();
+    // bool text2pointcloud();
+    // bool text2mesh();
+    // bool image2mesh();
+    bool simulationCompleted();    
 
 private:
 
-    MPM                  *mainModel;
-    QVBoxLayout          *layout;
+//     QWidget *container;
+    QVBoxLayout         *layout;
 
-    // A - Process Sensors
-    QGroupBox            *processSensorsGroup;
-    QGridLayout          *processSensorsLayout;
-    QPushButton          *processSensorsButton;
-    QComboBox            *processSensorsName;
+    // text2pointcloud
+    QGroupBox            *textPromptsGroup;
+    QGridLayout          *textPromptsLayout;
+    QPushButton          *textPromptsButton;
+    QComboBox            *textScriptName;
+    QLineEdit            *textPrompt;
+    QStringList          *textsList;
 
-    // S - Plot Selected Sensor
-    QGroupBox            *plotSpectraGroup;
-    QGridLayout          *plotSpectraLayout;
-    QPushButton          *plotSpectra;
-    QComboBox            *profileNameS;
-    QComboBox            *sensorNumS;
-    QComboBox            *bodyNumS;
-    QComboBox            *deviceNumS;
 
-    // E - Plot Elevation
-    QGroupBox            *plotElevationGroup;
-    QGridLayout          *plotElevationLayout;
-    QPushButton          *plotElevation;
-    QComboBox            *profileNameE;
+    // image2pointcloud
+    QGroupBox            *imagePromptsGroup;
+    QGridLayout          *imagePromptsLayout;
+    QPushButton          *imagePromptsButton;
+    QComboBox            *imageScriptName;
+    QLineEdit            *imagePrompt;
+    QStringList          *imagesList;
 
-    // F - Plot Force
-    QGroupBox            *plotForceGroup;
-    QGridLayout          *plotForceLayout;
-    QPushButton          *plotForce;
-    QComboBox            *profileNameF;
 
-    // P - Plot Pressure
-    QGroupBox            *plotPressureGroup;
-    QGridLayout          *plotPressureLayout;
-    QPushButton          *plotPressure;
-    QComboBox            *profileNameP;
+    // QStringList         *promptsList;
+    // QString             *scriptName;
+    // QString             *scriptPath;
+    // QString             *promptPath;
+    // QString             *outputPath;
+    // QDir                *promptsDir;
 
 public:
 
 };
 
-#endif // RESULTS_MPM_H
+#endif // GEOMETRY_AI_H

@@ -61,6 +61,7 @@ class SC_CheckBox;
 
 class PartitionMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     PartitionMPM(QWidget *parent = 0);
     virtual ~PartitionMPM();

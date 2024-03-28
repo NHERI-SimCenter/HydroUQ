@@ -57,6 +57,7 @@ class SC_DoubleLineEdit;
 class SC_CheckBox;
 class OutputsMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
   
     OutputsMPM(QWidget *parent = 0);

@@ -68,6 +68,7 @@ class PartitionsMPM;
 
 class BodiesMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     BodiesMPM(QWidget *parent = 0);
     virtual ~BodiesMPM();

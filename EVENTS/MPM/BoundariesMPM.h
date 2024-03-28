@@ -64,6 +64,7 @@ class QGroupBox;
 class BoundaryMPM;
 class BoundariesMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     BoundariesMPM(QWidget *parent = 0);
     virtual ~BoundariesMPM();

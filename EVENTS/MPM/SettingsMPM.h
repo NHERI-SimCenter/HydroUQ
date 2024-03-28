@@ -59,6 +59,7 @@ class SC_ComboBox;
 
 class SettingsMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     SettingsMPM(QWidget *parent = 0);
     virtual ~SettingsMPM();
@@ -69,55 +70,55 @@ public:
 signals:
 
 private:
-  // domain settings
-  SC_DoubleLineEdit *domainSizeX; // MPM background grid absolute max domain size
-  SC_DoubleLineEdit *domainSizeY; 
-  SC_DoubleLineEdit *domainSizeZ;  
-  SC_CheckBox       *mirrorDomainX; // Mirror X- domain over YZ plane  
-  SC_CheckBox       *mirrorDomainY; // Mirror Y- domain over XZ plane  
-  SC_CheckBox       *mirrorDomainZ; // Mirror Z- domain over XY plane 
-  SC_DoubleLineEdit *gridCellSize; // MPM background grid cell size 
-  
-  // time settings
-  SC_DoubleLineEdit *initialTime; // MPM simulation start time
-  SC_DoubleLineEdit *duration; // MPM simulation duration, [initialTime, initialTime + duration]
-  SC_DoubleLineEdit *timeStep; // MPM time step size 
-  SC_DoubleLineEdit *cflNumber; // Courant-Friedrichs-Lewy number (typically 0.5), dt = CFL * dx / v_max
-  SC_IntLineEdit    *framesPerSecond; // Number of frames per second for full animation output
-  SC_ComboBox       *timeIntegration; // Time integration scheme, e.g., Explicit, Semi-implicit, etc.
-  // external field settings
-  SC_DoubleLineEdit *gravityX; 
-  SC_DoubleLineEdit *gravityY;
-  SC_DoubleLineEdit *gravityZ;
+    // domain settings
+    SC_DoubleLineEdit *domainSizeX; // MPM background grid absolute max domain size
+    SC_DoubleLineEdit *domainSizeY; 
+    SC_DoubleLineEdit *domainSizeZ;  
+    SC_CheckBox       *mirrorDomainX; // Mirror X- domain over YZ plane  
+    SC_CheckBox       *mirrorDomainY; // Mirror Y- domain over XZ plane  
+    SC_CheckBox       *mirrorDomainZ; // Mirror Z- domain over XY plane 
+    SC_DoubleLineEdit *gridCellSize; // MPM background grid cell size 
+    
+    // time settings
+    SC_DoubleLineEdit *initialTime; // MPM simulation start time
+    SC_DoubleLineEdit *duration; // MPM simulation duration, [initialTime, initialTime + duration]
+    SC_DoubleLineEdit *timeStep; // MPM time step size 
+    SC_DoubleLineEdit *cflNumber; // Courant-Friedrichs-Lewy number (typically 0.5), dt = CFL * dx / v_max
+    SC_IntLineEdit    *framesPerSecond; // Number of frames per second for full animation output
+    SC_ComboBox       *timeIntegration; // Time integration scheme, e.g., Explicit, Semi-implicit, etc.
+    // external field settings
+    SC_DoubleLineEdit *gravityX; 
+    SC_DoubleLineEdit *gravityY;
+    SC_DoubleLineEdit *gravityZ;
 
-  // similitude scaling
-  SC_CheckBox       *froudeScaling; // apply Froude scaling to length, velocity
-  SC_CheckBox       *cauchyScaling; // apply Cauchy scaling to bulk modulus, stress, pressure
-  // SC_CheckBox       *reynoldsScaling; // apply time scaling to time step, duration
-  SC_DoubleLineEdit *froudeLengthRatio; // ratio of model length to prototype length
-  SC_DoubleLineEdit *froudeTimeRatio; // ratio of model length to prototype length
-  SC_DoubleLineEdit *cauchyBulkRatio; // ratio of model bulk modulus to prototype bulk modulus
-  // SC_DoubleLineEdit *reynoldsViscosityRatio; // ratio of model viscosity to prototype viscosity/kinematic viscosity
+    // similitude scaling
+    SC_CheckBox       *froudeScaling; // apply Froude scaling to length, velocity
+    SC_CheckBox       *cauchyScaling; // apply Cauchy scaling to bulk modulus, stress, pressure
+    // SC_CheckBox       *reynoldsScaling; // apply time scaling to time step, duration
+    SC_DoubleLineEdit *froudeLengthRatio; // ratio of model length to prototype length
+    SC_DoubleLineEdit *froudeTimeRatio; // ratio of model length to prototype length
+    SC_DoubleLineEdit *cauchyBulkRatio; // ratio of model bulk modulus to prototype bulk modulus
+    // SC_DoubleLineEdit *reynoldsViscosityRatio; // ratio of model viscosity to prototype viscosity/kinematic viscosity
 
-  // computational facility, CPU/GPU hardware, and precompiled ClaymoreUW software-hardware settings
-  SC_ComboBox *hpc; // High-performance computing facility 
-  SC_StringLineEdit *hpcQueue; // Name of queue
-  // SC_StringLineEdit *hpcAllocation; // Name of allocation/partition
-  SC_StringLineEdit *hpcCardBrand; // GPU brand (e.g. NVIDIA)
-  SC_StringLineEdit *hpcCardName; // GPU name (e.g. A100)
-  SC_StringLineEdit *hpcCardArchitecture; // GPU architecture (e.g. Ampere)
-  SC_IntLineEdit *hpcCardGlobalMemory; // GPU global memory (GB)
-  SC_IntLineEdit *hpcCardComputeCapability; // GPU compute capability (sm_XY, arch_XY, e.g. XY=80)
-  SC_IntLineEdit *numGPUs; // Number of GPUs to use
-  SC_IntLineEdit *modelsPerGPU; // Number of models to run per GPU
-  // SC_ComboBox *hpcCPU; // CPU model
-  // SC_ComboBox *hpcCPUArchitecture; // CPU architecture
-  // SC_IntLineEdit *hpcCPUCores; // Number of CPU cores to use
-  // SC_IntLineEdit *hpcCPUCache; // CPU cache size (MB)
-  // SC_IntLineEdit *hpcCPUMemory; // CPU memory (GB)
-  // SC_StringLineEdit *hpcCPUBrand; // CPU brand
-  // SC_StringLineEdit *hpcCPUName; // CPU name
-  // SC_IntLineEdit *hpcRAMMemory; // RAM memory (GB)
+    // computational facility, CPU/GPU hardware, and precompiled ClaymoreUW software-hardware settings
+    SC_ComboBox *hpc; // High-performance computing facility 
+    SC_StringLineEdit *hpcQueue; // Name of queue
+    // SC_StringLineEdit *hpcAllocation; // Name of allocation/partition
+    SC_StringLineEdit *hpcCardBrand; // GPU brand (e.g. NVIDIA)
+    SC_StringLineEdit *hpcCardName; // GPU name (e.g. A100)
+    SC_StringLineEdit *hpcCardArchitecture; // GPU architecture (e.g. Ampere)
+    SC_IntLineEdit *hpcCardGlobalMemory; // GPU global memory (GB)
+    SC_IntLineEdit *hpcCardComputeCapability; // GPU compute capability (sm_XY, arch_XY, e.g. XY=80)
+    SC_IntLineEdit *numGPUs; // Number of GPUs to use
+    SC_IntLineEdit *modelsPerGPU; // Number of models to run per GPU
+    // SC_ComboBox *hpcCPU; // CPU model
+    // SC_ComboBox *hpcCPUArchitecture; // CPU architecture
+    // SC_IntLineEdit *hpcCPUCores; // Number of CPU cores to use
+    // SC_IntLineEdit *hpcCPUCache; // CPU cache size (MB)
+    // SC_IntLineEdit *hpcCPUMemory; // CPU memory (GB)
+    // SC_StringLineEdit *hpcCPUBrand; // CPU brand
+    // SC_StringLineEdit *hpcCPUName; // CPU name
+    // SC_IntLineEdit *hpcRAMMemory; // RAM memory (GB)
 };
 
 #endif // SETTINGS_DIGITAL_TWIN_H

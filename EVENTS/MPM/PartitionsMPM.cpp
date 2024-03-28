@@ -246,7 +246,7 @@ PartitionsMPM::addPartition(int gpuID, int modelID)
   bool results = true;
   // Add a partition to the body
   int sizeBodyTabs = 20;
-  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "GPU:Model " + QString::number(numAddedTabs + 1));
+  tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "GPU:Body " + QString::number(numAddedTabs + 1));
   tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
   theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
   theAddedLayout[numAddedTabs]->addWidget(addedPartition[numAddedTabs]);
@@ -363,6 +363,8 @@ PartitionsMPM::balance(double origin[3], double dimensions[3])
 bool
 PartitionsMPM::outputToJSON(QJsonObject &jsonObject)
 {
+  const bool useUpdatedSchema = false; // TODO: Update to new schema
+
   // TODO: Basic safety checks
   // Iterate over all tabs, fill a unique JSON object, and add to a JSON array
   QJsonArray theArray; // Holds array of partition objects
@@ -372,8 +374,15 @@ PartitionsMPM::outputToJSON(QJsonObject &jsonObject)
     theArray.append(theObject["partition"].toObject());
   }
   jsonObject["partition"] = theArray; // Add array of partition objects to the body object
-  jsonObject["gpu"] = 0; // TODO: ClaymoreUW has a single GPU ID per body, but will need to be updated to support multiple GPUs per body via unraveling the partition array
-  jsonObject["model"] = defaultModelID; // Add default model ID to the body object
+
+  if (useUpdatedSchema) {
+    jsonObject["device"] = 0; // TODO: ClaymoreUW has a single GPU ID per body, but will need to be updated to support multiple GPUs per body via unraveling the partition array
+    jsonObject["body"] = defaultModelID; // Add default model ID to the body object
+  } else {
+    jsonObject["gpu"] = 0; // TODO: ClaymoreUW has a single GPU ID per body, but will need to be updated to support multiple GPUs per body via unraveling the partition array
+    jsonObject["model"] = defaultModelID; // Add default model ID to the body object
+  }
+
   // TODO: Same as for "gpu", get rid of ClaymoreUW global partition_start and partition_end
   QJsonArray partition_start;
   QJsonArray partition_end;
@@ -391,7 +400,186 @@ PartitionsMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 PartitionsMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  return true;
+  const bool useUpdatedSchema = false; // TODO: Update to new schema
+  QJsonArray partition_start;  
+  QJsonArray partition_end;
+  QJsonArray partitions;
+  
+  // lambda
+  auto lambdaInputFromJSON = [&](QJsonObject jsonRef) {
+    QJsonObject jsonThing = jsonRef;
+    // Following call of this lambda, the updated jsonThing is passed to inputFromJson() for an appropriate partition. Note we captured it as a reference
+    jsonThing["valid"] = true; // Mark the partition as valid
+    const int absMaxNumGPUs = 256; // Based on the NVIDIA H100 NV-Switch - NVLink topology, 256 values representable by one byte during multi-gpu communications
+    const int absMaxNumModels = 8; // Based on fact that few GPUs have enough memory to allow more than 8 bodies to a device
+    
+    if (jsonThing.contains("partition") || jsonThing.contains("partitions")) {
+      qDebug() << "ERROR: PartitionsMPM - Partition object or array found double-nested in input JSON partition or partitions. Not valid schema! Ignoring double-nested partitions...";
+      // return false; // Not a big deal, should just ignore and move on to check for actual schema reqs
+    } 
+    // TODO: full schema migration for these keys, must be handled on external simulation application side as well or we will need to output all keys values for both schemas
+    // TODO: QVariant for handling int, double, long, etc. types for numerical input along with string input (i.e. char) of '1', or 'one'
+    if (useUpdatedSchema) {
+      if (jsonThing.contains("device") && jsonThing["device"].isDouble()) {
+        defaultGPUID = jsonThing["device"].toInt();
+        defaultGPUID = (defaultGPUID < absMaxNumGPUs) ? defaultGPUID : absMaxNumGPUs - 1; // We may set the maxNumGPUs after inputJSON, so use an upper-bound check only here
+        defaultGPUID = (defaultGPUID >= 0) ? defaultGPUID : 0;
+      }
+      if (jsonThing.contains("body") && jsonThing["body"].isDouble()) {
+        defaultModelID = jsonThing["body"].toInt();
+        defaultModelID = (defaultModelID < absMaxNumModels) ? defaultModelID : absMaxNumModels - 1;
+      }
+    } else {
+      if (jsonThing.contains("gpu") && jsonThing["gpu"].isDouble()) {
+        defaultGPUID = jsonThing["gpu"].toInt();
+        defaultGPUID = (defaultGPUID < absMaxNumGPUs) ? defaultGPUID : absMaxNumGPUs - 1;
+        defaultGPUID = (defaultGPUID >= 0) ? defaultGPUID : 0;
+      } else {
+        defaultGPUID = (defaultModelID < absMaxNumGPUs) ? defaultModelID : absMaxNumGPUs - 1;
+        defaultGPUID = (defaultGPUID >= 0) ? defaultGPUID : 0;
+      }
+
+      if (jsonThing.contains("model") && jsonThing["model"].isDouble()) {
+        defaultModelID = jsonThing["model"].toInt();
+        defaultModelID = (defaultModelID < absMaxNumModels) ? defaultModelID : absMaxNumModels - 1;
+        defaultModelID = (defaultModelID >= 0) ? defaultModelID : 0;
+      } else {
+        defaultModelID = (defaultGPUID < absMaxNumModels) ? defaultGPUID : absMaxNumModels - 1;
+        defaultModelID = (defaultModelID >= 0) ? defaultModelID : 0;
+      }
+    }
+    // Must have both partition_start and partition_end, and they must be arrays, or we will just assume a default domain partition to be safe
+    if (jsonThing.contains("partition_start") && jsonThing.contains("partition_end") && jsonThing["partition_start"].isArray() && jsonThing["partition_end"].isArray()) {
+      partition_start = jsonThing["partition_start"].toArray();
+      partition_end = jsonThing["partition_end"].toArray();
+      // Check invalid partition start and end values
+      const int reqDims = 3;
+      if (partition_start.size() < reqDims) {
+        // Append 0.0 to the end of the array until it has 3 elements
+        while (partition_start.size() < reqDims) {
+          partition_start.append(0.0);
+        }
+      } else if (partition_start.size() > reqDims) {
+        for (int i = partition_start.size() - 1; i > reqDims-1; i--) {
+          partition_start.removeLast();
+        }
+      }
+      if (partition_end.size() < reqDims) {
+        // Append associated partition_start element + 1 to the end of the array until it has 3 elements
+        const double bufferVal = 1.0; // Ensure non-inverted partition start and end values when appending synth. values
+        while (partition_end.size() < reqDims) {
+          partition_end.append(partition_start[partition_end.size()].toDouble() + bufferVal); // Ideally have bufferVal be the grid-cell size or particle spacing
+        }
+      } else if (partition_end.size() > reqDims) {
+        for (int i = partition_end.size() - 1; i > reqDims-1; i--) {
+          partition_end.removeLast();
+        }
+      }
+
+      for (int i = 0; i < 3; i++) {
+        // Check inverted partition start and end values
+        if (partition_start[i].toDouble() > partition_end[i].toDouble()) {
+          // Swap the values
+          double temp = partition_start[i].toDouble();
+          partition_start[i] = partition_end[i].toDouble();
+          partition_end[i] = temp;
+        }
+      }
+    } else {
+      // OSU LWF default values
+      qDebug() << "WARNING: PartitionsMPM - Pair of valid partition start and end values not found in input JSON partition. Using default partition start and end values for full domain...";
+      partition_start = {0.0, 0.0, 0.0};
+      partition_end = {90.0, 4.5, 3.65}; 
+    }
+    // ---
+    // Set the values in the jsonObject that is passed to inputFromJson() for each partition
+    // TODO: Only use device:body or gpu:model, etc., not both as schemas are updating
+    jsonThing["device"] = defaultGPUID   % maxNumGPUs;
+    jsonThing["body"]   = defaultModelID % maxNumModels;
+    jsonThing["gpu"]    = defaultGPUID   % maxNumGPUs;
+    jsonThing["model"]  = defaultModelID % maxNumModels;
+    jsonThing["partition_start"] = partition_start;
+    jsonThing["partition_end"]   = partition_end;
+    jsonThing["valid"] = true; // Mark the partition as valid
+    jsonRef = jsonThing; // Update the reference to the updated jsonThing
+    // return jsonRef;
+  }; // End lambda
+
+  // Figure out if we are taking an array of partitions, a single one, none (i.e. default init), and check various boudnds
+
+  if (jsonObject.contains("partition")) {
+    jsonObject["partitions"] = jsonObject["partition"];
+    if (jsonObject["partitions"].isArray()) {
+      partitions = jsonObject["partitions"].toArray();
+    } else if (jsonObject["partitions"].isObject()) {
+      partitions.append(jsonObject["partitions"].toObject());
+    } else {
+      qDebug() << "ERROR: PartitionsMPM - No partition array or object found in input JSON object. It is non valid type: " << jsonObject["partitions"].type();
+      return false; // Incorrect type in input JSON-- something went wrong, return a false as error marker
+    }
+  } else if (jsonObject.contains("partitions")) {
+    if (jsonObject["partitions"].isArray()) {
+      partitions = jsonObject["partitions"].toArray();
+    } else if (jsonObject["partitions"].isObject()) {
+      partitions.append(jsonObject["partitions"].toObject());
+    } else {
+      qDebug() << "ERROR: PartitionsMPM - No partition array or object found in input JSON object. It is non valid type: " << jsonObject["partitions"].type();
+      return false; // Incorrect type in input JSON-- something went wrong, return a false as error marker
+    }
+  } else {
+    qDebug() << "WARNING: PartitionsMPM - No partitions found in input JSON object.";
+    // Not bad, assume no partition means default domain size and GPU/Device 0, Model/Body 0
+  }
+
+
+  if (!partitions.size()) {
+    qDebug() << "WARNING: PartitionsMPM - No entries within partitions of JSON file. Use default partition on Device 0 : Body 0 over simulation domain";
+    QJsonObject tmpPartition = QJsonObject();
+    if (useUpdatedSchema) {
+      tmpPartition["device"] = 0;
+      tmpPartition["body"] = 0;
+    } else {
+      tmpPartition["gpu"] = 0;
+      tmpPartition["model"] = 0;
+    }
+    tmpPartition["partition_start"] = partition_start;
+    tmpPartition["partition_end"] = partition_end;
+    partitions.append(tmpPartition);
+    // Not bad, assume no partition means default domain size and GPU/Device 0, Model/Body 0
+  } 
+  
+  if (numAddedTabs > partitions.size()) {
+    for (int i = numAddedTabs; i > partitions.size(); i--) {
+      tabWidget->removeTab(i); // Remove the exterior tab from the tabWidget
+      numAddedTabs -= 1;
+    }
+  } else if (numAddedTabs < partitions.size()) {
+    for (int i = numAddedTabs; i < partitions.size(); i++) {
+      addPartition(defaultGPUID, defaultModelID); // Add the partition to the body
+    }
+  }
+  bool result = true;
+  for (int i = 0; i < partitions.size(); i++) {
+    result &= partitions[i].isObject() ? true : false;
+    if (!result) {
+      qDebug() << "ERROR: PartitionsMPM - Partition " << i << " out of [0, " << partitions.size() << ") entries within JSON partitions array for this body is not an object. Type: " << partitions[i].type();
+      return result;
+    }
+    // cast away 
+    lambdaInputFromJSON(partitions[i].toObject());
+    result &= partitions[i].toObject()["valid"].toBool();
+    if (!result) {
+      qDebug() << "ERROR: PartitionsMPM - Failed to load using lambdaInputFromJSON for partition" << i << " out of [0, " << partitions.size() << ") entries within JSON partitions array for this body.";
+      return result;
+    } 
+    QJsonObject uniquePartitionObject = partitions[i].toObject();
+    result &= addedPartition[i]->inputFromJSON(uniquePartitionObject);
+    if (!result) {
+      qDebug() << "ERROR: PartitionsMPM - Failed to load partition with data from JSON file via inputFromJSON(), error at partition " << i << " out of [0, " << partitions.size() << ") entries within JSON partitions array for this body.";
+      return result;
+    }
+  }
+  return result;
 }
 
 bool
