@@ -1,5 +1,5 @@
-#ifndef HYDRO_SELECTION_H
-#define HYDRO_SELECTION_H
+#ifndef HYDRO_EDP_SELECTION_H
+#define HYDRO_EDP_SELECTION_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
@@ -81,4 +81,4 @@ private:
    SimCenterAppWidget *theUserDefinedEDPs;
 };
 
-#endif // HYDRO_SELECTION_H
+#endif // HYDRO_EDP_SELECTION_H

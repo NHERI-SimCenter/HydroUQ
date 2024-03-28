@@ -57,6 +57,7 @@ class SC_DoubleLineEdit;
 class SC_CheckBox;
 class ExecutionSPH : public SimCenterWidget
 {
+    Q_OBJECT
 public:
   
     ExecutionSPH(QWidget *parent = 0);

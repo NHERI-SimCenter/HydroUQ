@@ -619,7 +619,8 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   // Inlet/Outlet
   applyInletOutlet = new SC_CheckBox("applyInletOutlet");
-  applyInletOutlet->setChecked(true);
+  applyInletOutlet->setChecked(false);
+  applyInletOutlet->setEnabled(false); // TODO: Wall inlet/outlet not implemented yet 
   wallsLayout->addWidget(new QLabel("Apply Inlet/Outlet?"),numRow, 0);
   wallsLayout->itemAt(wallsLayout->count()-1)->setAlignment(Qt::AlignRight);
   wallsLayout->addWidget(applyInletOutlet,numRow++, 1);
@@ -649,6 +650,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   inletOutletBoxLayout->addWidget(inletOutletTypePlusY,numInOutRow,2);
   inletOutletBoxLayout->addWidget(inletOutletTypePlusZ,numInOutRow++,3);
   inletOutletBoxLayout->setRowStretch(numInOutRow,1);
+  inletOutletBox->setVisible(false); // TODO: Wall inlet/outlet not implemented yet
   // numRow = numRow+1;  
   wallsLayout->addWidget(inletOutletBox, numRow+numInOutRow, 0, 2, 4);
   numRow += numInOutRow;

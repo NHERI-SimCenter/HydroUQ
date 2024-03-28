@@ -56,6 +56,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_FileEdit.h>
 #include <SC_CheckBox.h>
 
+#include "GeometryAI.h"
+
 GeometryMPM::GeometryMPM(QWidget *parent)
   :SimCenterWidget(parent)
 {
@@ -63,9 +65,8 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   int numRow = 0;
 
   QGridLayout *layout = new QGridLayout();
-  this->setLayout(layout);
   
-  QStringList bodyList; bodyList << "Fluid" << "Debris" << "Structure" << "Custom";
+  QStringList bodyList; bodyList << "Fluid" << "Debris" << "Structure" << "Custom" << "Generative AI";
   bodyPreset = new SC_ComboBox("body_preset", bodyList);
   layout->addWidget(new QLabel("Body Preset"), numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(bodyPreset,numRow++,1, 1, 3);
@@ -73,11 +74,19 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   // numRow = 0;
 
   // -----------------------------------------------------------------------------------
-  QList <QString> objectList; objectList << "Box" << "Sphere" << "Cylinder" << "Cone" << "Ring" << "File" << "Checkpoint" << "OSU LWF" << "OSU DWB" << "UW WASIRF" << "WU TWB" << "USGS DFF" << "NICHE" << "Custom";
+  QList <QString> objectList; objectList << "Box" << "Sphere" << "Cylinder" << "Cone" << "Ring" << "File" << "Checkpoint" << "OSU LWF" << "OSU DWB" << "UW WASIRF" << "WU TWB" << "USGS DFF" << "NICHE" << "Custom" << "Generative AI";
   objectType = new SC_ComboBox("object_type", objectList);
   layout->addWidget(new QLabel("Object Type"), numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(objectType,numRow++, 1, 1, 3);
   layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
+
+
+  // -----------------------------------------------------------------------------------
+  theGenAI = new GeometryAI();
+  layout->addWidget(theGenAI, numRow++, 0, 1, 5);  
+  theGenAI->hide(); // Hide the AI widget until object type is "Generative AI"
+  // -----------------------------------------------------------------------------------
+
 
   QList <QString> operationList;  operationList << "Add (OR)" << "Subtract (NOT)" << "Intersect (AND)" << "Difference (XOR)";
   operationType = new SC_ComboBox("operation_type", operationList);
@@ -311,6 +320,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
 
   layout->setRowStretch(numRow, 1);
 
+  this->setLayout(layout);
 
 
   connect(bathymetryComboBox, &QComboBox::currentTextChanged, [=](QString val) {
@@ -436,8 +446,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       width->setEnabled(true);
       width->show();
       radius->setDisabled(true);
-      // radius->hide();
+      radius->clear();
       longAxis->setDisabled(true);
+      longAxis->setCurrentText("");
+      // radius->hide();
       // longAxis->hide();
       length->setText("1.0");
       height->setText("1.0");
@@ -452,6 +464,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       radius->setEnabled(true);
       radius->show();
       longAxis->setDisabled(true);
+      longAxis->setCurrentText("");
       // longAxis->hide();
       radius->setText("0.5");
     } else if (val == "Cylinder") {
@@ -507,8 +520,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       height->setText("1.0");
       width->setText("1.0");
       radius->setDisabled(true);
-      // radius->hide();
+      radius->clear();
       longAxis->setDisabled(true);
+      longAxis->setCurrentText("");
+      // radius->hide();
       // longAxis->hide();
     } else if (val == "Checkpoint") {
       length->setDisabled(true);
@@ -518,8 +533,8 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       width->setDisabled(true);
       // width->hide();
       radius->setDisabled(true);
-      // radius->hide();
       longAxis->setDisabled(true);
+      // radius->hide();
       // longAxis->hide();
     } else if (val == "OSU LWF") {
       facility->setCurrentText("Hinsdale Large Wave Flume (OSU LWF)");
@@ -530,8 +545,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       width->setEnabled(true);
       width->show();
       radius->setDisabled(true);
-      // radius->hide();
+      radius->clear();
       longAxis->setDisabled(true);
+      longAxis->setCurrentText("");
+      // radius->hide();
       // longAxis->hide();
       if (bodyPreset->currentText() == "Fluid") {
         length->setText("84.0");
@@ -550,8 +567,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       width->setEnabled(true);
       width->show();
       radius->setDisabled(true);
-      // radius->hide();
+      radius->clear();
       longAxis->setDisabled(true);
+      longAxis->setCurrentText("");
+      // radius->hide();
       // longAxis->hide();
       if (bodyPreset->currentText() == "Fluid") {
         length->setText("48.8");
@@ -570,8 +589,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       width->setEnabled(true);
       width->show();
       radius->setDisabled(true);
-      // radius->hide();
+      radius->clear();
       longAxis->setDisabled(true);
+      longAxis->setCurrentText("");
+      // radius->hide();
       // longAxis->hide();
       if (bodyPreset->currentText() == "Fluid") {
         length->setText("12.19");
@@ -590,8 +611,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       width->setEnabled(true);
       width->show();
       radius->setDisabled(true);
-      // radius->hide();
+      radius->clear();
       longAxis->setDisabled(true);
+      longAxis->setCurrentText("");
+      // radius->hide();
       // longAxis->hide();
       if (bodyPreset->currentText() == "Fluid") {
         length->setText("9.0");
@@ -610,8 +633,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       width->setEnabled(true);
       width->show();
       radius->setDisabled(true);
-      // radius->hide();
+      radius->clear();
       longAxis->setDisabled(true);
+      longAxis->setCurrentText("");
+      // radius->hide();
       // longAxis->hide();
       if (bodyPreset->currentText() == "Fluid") {
         length->setText("90.0");
@@ -630,8 +655,10 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       width->setEnabled(true);
       width->show();
       radius->setDisabled(true);
-      // radius->hide();
+      radius->clear();
       longAxis->setDisabled(true);
+      longAxis->setCurrentText("");
+      // radius->hide();
       // longAxis->hide();
       if (bodyPreset->currentText() == "Fluid") {
         length->setText("300.0");
@@ -649,10 +676,34 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       width->setEnabled(true);
       width->show();
       radius->setDisabled(true);
-      // radius->hide();
+      radius->clear();
       longAxis->setDisabled(true);
+      longAxis->setCurrentText("");
+      // radius->hide();
       // longAxis->hide();
+    } else if (val == "Generative AI") {
+      length->setEnabled(true);
+      length->show();
+      height->setEnabled(true);
+      height->show();
+      width->setEnabled(true);
+      width->show();
+      radius->setDisabled(true);
+      radius->clear();
+      longAxis->setDisabled(true);
+      longAxis->setCurrentText("");
     }
+
+
+    // if else specifically for generative AI
+    if (val == "Generative AI") {
+      theGenAI->show();
+      theGenAI->setVisible(true);
+    } else {
+      theGenAI->hide();
+      theGenAI->setVisible(false);
+    }
+
   });
 
   connect(bodyPreset, &QComboBox::currentTextChanged, [=](QString val) {
@@ -814,10 +865,13 @@ GeometryMPM::setBodyPreset(int index)
     objectType->setCurrentText("Box");
     applyArray->setChecked(true);
     applyRotation->setChecked(true);
+  } else if (bodyPreset->currentText() == "Generative AI") {
+    objectType->setCurrentText("Generative AI");
+    applyArray->setChecked(false);
+    applyRotation->setChecked(false);
   }
   // Should probably make this a function, it checks array spacing vs dimensions
   if (applyArray->isChecked()) {
-    // May prefer terniary operator here
     if (spacingX->text().toDouble() < length->text().toDouble()) 
       spacingX->setText(QString::number(1.0*length->text().toDouble()));
     if (spacingY->text().toDouble() < height->text().toDouble()) 
@@ -1078,9 +1132,9 @@ GeometryMPM::setDigitalTwin(int twinIdx)
       originY->setText(QString::number(0.255)); // Recheck the height
       originZ->setText(QString::number(1.725));
       applyArray->setChecked(true);
-      spacingX->setText(QString::number(0.0));
-      spacingY->setText(QString::number(0.12));
-      spacingZ->setText(QString::number(0.05));
+      spacingX->setText(QString::number(0.09));
+      spacingY->setText(QString::number(0.09));
+      spacingZ->setText(QString::number(0.18));
       arrayX->setText(QString::number(1));
       arrayY->setText(QString::number(2));
       arrayZ->setText(QString::number(3));
@@ -1111,7 +1165,31 @@ GeometryMPM::setDigitalTwin(int twinIdx)
     // TODO: Force constency for rigid/non-rigid selection of structure
   } else if (bodyPreset->currentText() == "Custom") {
     // Do nothing
+  } else if (bodyPreset->currentText() == "Generative AI") {
+      objectType->setCurrentText("Generative AI");
+      length->setText(QString::number(1.0));
+      height->setText(QString::number(1.0));
+      width->setText(QString::number(1.0));
+      originX->setText(QString::number(0.5));
+      originY->setText(QString::number(0.5));
+      originZ->setText(QString::number(0.5));
+      applyArray->setChecked(false);
+      spacingX->setText(QString::number(1.5));
+      spacingY->setText(QString::number(1.5));
+      spacingZ->setText(QString::number(1.5));
+      arrayX->setText(QString::number(1));
+      arrayY->setText(QString::number(1));
+      arrayZ->setText(QString::number(1));
+      applyRotation->setChecked(false);
+      rotateAngleX->setText(QString::number(0.0));
+      rotateAngleY->setText(QString::number(0.0));
+      rotateAngleZ->setText(QString::number(0.0));
+      rotateFulcrumX->setText(QString::number(1.0));
+      rotateFulcrumY->setText(QString::number(1.0));
+      rotateFulcrumZ->setText(QString::number(1.0));
+      operationType->setCurrentText("Add (OR)");
+      radius->setText(QString::number(0.0));
+      longAxis->setCurrentText("");
   }
-
   return true;
 }

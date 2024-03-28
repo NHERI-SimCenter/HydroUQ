@@ -37,7 +37,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmckenna
+// Written: fmckenna, JustinBonus
 
 #include <SimCenterAppWidget.h>
 
@@ -46,6 +46,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QGridLayout>
 #include <QComboBox>
 
+class EDP;
 class InputWidgetParameters;
 
 class StandardHydroEDP : public SimCenterAppWidget
@@ -55,20 +56,38 @@ public:
     explicit StandardHydroEDP(QWidget *parent = 0);
     ~StandardHydroEDP();
 
-    bool outputToJSON(QJsonObject &rvObject);
-    bool inputFromJSON(QJsonObject &rvObject);
-    bool outputAppDataToJSON(QJsonObject &rvObject);
-    bool inputAppDataFromJSON(QJsonObject &rvObject);
-    bool copyFiles(QString &dirName);
+    bool outputToJSON(QJsonObject &rvObject) override;
+    bool inputFromJSON(QJsonObject &rvObject) override;
+    bool outputAppDataToJSON(QJsonObject &rvObject) override;
+    bool inputAppDataFromJSON(QJsonObject &rvObject) override;
+    bool copyFiles(QString &dirName) override;
 
-    void clear(void);
+
+    // From UserDefinedEDP.h in SimCenterCommon/Workflow/EDP/
+    QString getMainScript();
+    bool setProcessingScript(QString filename);
+    void setAdditionalInput(QString filename);
+    // void clear(void) override; This was in public for StandardEarthquakeEDP.h-- not in public slots as in UserDefinedEDP.h
 
 signals:
 
 public slots:
+   void clear(void) override;
+   void chooseProcessingScript(void);
+   void chooseAdditionalInput(void);
+
+   void addEDP(void);
+   void removeEDP(EDP *);
 
 private:
-
+    void addEDP(QString &name);
+    QLineEdit   *processingScriptLE;
+    // QString filenameProcesssingScript;
+    QLineEdit   *additionalInputLE;
+    // QString filenameAdditionalInput;
+    QVector<EDP *>theEDPs;
+    QVBoxLayout *edpLayout;
+    QFrame *edp;
 };
 
 #endif // STANDARD_HYDRO_EDP_H

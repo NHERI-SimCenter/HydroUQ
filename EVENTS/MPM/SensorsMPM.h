@@ -59,6 +59,7 @@ class SC_DoubleLineEdit;
 class SensorMPM;
 class SensorsMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     SensorsMPM(QWidget *parent = 0);
     virtual ~SensorsMPM();
@@ -69,9 +70,9 @@ public:
 signals:
 
 private:
-  int numReserveTabs = 8;
-  int numAddedTabs = 0;
-  QVector<SensorMPM*> addedSensor {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+    int numReserveTabs = 8;
+    int numAddedTabs = 0;
+    QVector<SensorMPM*> addedSensor {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 };
 
 #endif // SENSORS_MPM_H

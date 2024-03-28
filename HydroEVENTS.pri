@@ -52,6 +52,7 @@ SOURCES += \
     $$PWD/EVENTS/MPM/PartitionsMPM.cpp \
     $$PWD/EVENTS/MPM/PartitionMPM.cpp \
     $$PWD/EVENTS/MPM/ResultsMPM.cpp \
+    $$PWD/EVENTS/MPM/GeometryAI.cpp \
     $$PWD/EVENTS/MPM/SPH.cpp \
     $$PWD/EVENTS/MPM/CaseSPH.cpp \
     $$PWD/EVENTS/MPM/ExecutionSPH.cpp \
@@ -103,6 +104,7 @@ HEADERS += \
     $$PWD/EVENTS/MPM/PartitionsMPM.h \   
     $$PWD/EVENTS/MPM/PartitionMPM.h \  
     $$PWD/EVENTS/MPM/ResultsMPM.h \
+    $$PWD/EVENTS/MPM/GeometryAI.h \
     $$PWD/EVENTS/MPM/SPH.h \
     $$PWD/EVENTS/MPM/CaseSPH.h \
     $$PWD/EVENTS/MPM/ExecutionSPH.h \

@@ -80,6 +80,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <Qt3DRender/QGeometryRenderer>
 
 
+// #include <QOpenGLWidget>
 #include "QVector3D"
 #include <qcustomplot.h>
 #include <QJsonDocument>
@@ -97,14 +98,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QVector>
 #include <LineEditRV.h>
 #include <QDebug>
-// #include <QOpenGLWidget>
 #include <SimCenterPreferences.h>
 #include <GeneralInformationWidget.h>
 #include <QProcess>
 #include <QDir>
 #include <QTextEdit>
 #include <QFormLayout>
-#include <Qt3DRender/QMesh>
+
 
 
 // Trying out
@@ -416,8 +416,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // auto camera = new Qt3DRender::QCamera(rootEntity);
     auto cameraEntity = view->camera();
     cameraEntity->setUpVector(QVector3D(0, 1.f, 0));
-    cameraEntity->setPosition(QVector3D(-5.0f, 5.0f, 5.0f));
-    cameraEntity->setViewCenter(QVector3D(0.0f, 0.0f, 0.0f));
+    cameraEntity->setPosition(QVector3D(-45.0f, 20.0f, 25.0f));
+    cameraEntity->setViewCenter(QVector3D(25.0f, 2.0f, 2.0f));
     cameraEntity->viewAll();
     // Create a cube mesh
     // Qt3DExtras::QCuboidMesh *cubeMesh = new Qt3DExtras::QCuboidMesh();
@@ -482,7 +482,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
                 debrisMesh[i][j][k]->setYExtent(0.05f);
                 debrisMesh[i][j][k]->setZExtent(0.1f);
                 debrisTransform[i][j][k]->setScale(1.f);
-                debrisTransform[i][j][k]->setTranslation(QVector3D((42.8f + 0.5f/2.f - 0.5f*4 - 0.1f*3)/2.f + i*(0.5f + 0.1f), 2.0f+0.05f/2.f + (0.05f + 0.1f)*j, (3.65f - 0.1f*(8) - 0.1f*(7)/2 + (0.1f+.1f)*(k)))); 
+                debrisTransform[i][j][k]->setTranslation(QVector3D((42.8f + 0.5f/2.f - 0.5f*4 - 0.1f*3) + i*(0.5f + 0.1f), 2.0f+0.05f/2.f + (0.05f + 0.1f)*j, (3.65f - 0.1f*(8) - 0.1f*(7))/2 + (0.1f+.1f)*(k))); 
                 debrisTransform[i][j][k]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
             }
         }
@@ -1567,6 +1567,7 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
       // If it is possible to increment the "gpu" and "model" to a unique value, update the new body's "gpu" and "model"
       // for (int j = numBodies; j < bodiesArray.size(); j++) {
       for (int j = 0; j < bodiesArray.size(); j++) {
+        if (j >= bodiesArray.size()) break;
         QJsonObject newBody = bodiesArray[j].toObject();
         for (int k = 0; k < j; k++) {
           QJsonObject existingBody = bodiesArray[k].toObject();
@@ -1577,6 +1578,7 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
             int newModel = newBody["model"].toInt();
             bool unique = false;
             while (!unique) {
+              if (j >= bodiesArray.size()) break;
               if (newGPU < numGPUs && newModel < modelsPerGPU) {
                 newModel++;
                 unique = true;
@@ -1601,10 +1603,16 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
               } else {
                 // Remove the new body if it is not possible to increment the "gpu" and "model" to a unique value
                 // Also remove if we exceed the number of GPUs and models per GPU specified in "computer"
-                bodiesArray.removeAt(j);
-                break;
+                // if (!unique) {
+                  bodiesArray.removeAt(j);
+                  // if (j > 0) {
+                  //   j = j - 1;
+                  // }
+                  break;
+                // }
               }
             }
+            // if (!unique) {}
             newBody["gpu"] = newGPU;
             newBody["model"] = newModel;
             bodiesArray[j] = newBody;

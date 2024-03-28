@@ -49,6 +49,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <SimCenterWidget.h>
 
+// Forward Declaration
 class QJsonObject;
 class QJsonArray;
 class SC_DoubleLineEdit;
@@ -59,19 +60,22 @@ class SC_TableEdit;
 class SC_FileEdit;
 class SC_CheckBox;
 
+class GeometryAI; // Provide optional AI geometry generation, e.g. with point-e library and various backend scripts - Justin Bonus
+
 class GeometryMPM : public SimCenterWidget
 {
 public:
     GeometryMPM(QWidget *parent = 0);
     virtual ~GeometryMPM();
-    bool outputToJSON(QJsonObject &jsonObject);
-    bool inputFromJSON(QJsonObject &jsonObject);
+    bool outputToJSON(QJsonObject &jsonObject); // override
+    bool inputFromJSON(QJsonObject &jsonObject); // override
     bool copyFiles(QString &dirName);
     bool setBodyPreset(int index);
     bool setDigitalTwin(int twinIdx);
 signals:
 
 private:
+  // QVBoxLayout         *layout;
   SC_ComboBox         *bodyPreset;
   SC_ComboBox         *objectType;
   SC_ComboBox         *operationType;
@@ -115,6 +119,10 @@ private:
 
   SC_FileEdit         *geometryFile;
   SC_FileEdit         *checkpointBGEO;
+
+  // GeometryAI         *theGenAI;
+  SimCenterWidget       *theGenAI;
+  // QWidget            *holdGenAI;
 };
 
 #endif // GEOMETRY_MPM_H
