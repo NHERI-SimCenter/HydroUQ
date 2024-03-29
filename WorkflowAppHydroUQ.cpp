@@ -259,7 +259,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     // Make sideBarIconFrame match the style of theComponentSelection
     sideBarIconFrame->setFixedWidth(50);
     sideBarIconFrame->setMinimumHeight(600);
-    sideBarIconFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    sideBarIconFrame->setSizenPolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
     // Create a layout to hold the frame
     QVBoxLayout *wrapperVerticalIconLayout = new QVBoxLayout();
@@ -337,6 +337,7 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     // Add standalone events to tools menu
     //
 
+    /*
     GeoClawOpenFOAM *theGeoClaw = new GeoClawOpenFOAM(theRVs);
     QString appNameGeoClaw = "simcenter-openfoam-frontera-1.0.0u6";
     QList<QString> queuesGeoClaw; queuesGeoClaw << "normal" << "fast";
@@ -366,8 +367,8 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     connect(showCDT, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theCDTTool] {
         theDialog->showTool("Digital Twin (OpenFOAM + OpenSees)");
     });  
-
-
+    */
+    
     // MPM *miniMPM = new MPM(); 
     MPM *miniMPM = new MPM(theRVs); 
     if (!miniMPM->isInitialize()) { 
@@ -376,24 +377,12 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     QString appName =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6
     QString systemName = "lonestar6-gpu";
     QList<QString> queues; queues << "gpu-a100-dev" << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog, systemName);
+    SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog);
     theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");
     QAction *showMPM = toolsMenu->addAction("Digital Twin (&MPM)");
     connect(showMPM, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniMPMTool] {
         theDialog->showTool("Digital Twin (MPM)");
     });
-
-    /*
-    RemoteAppTest *theTest = new RemoteAppTest();
-    QString appNameTest = "remoteAppTest-1.0.0";
-    QList<QString> queuesTest; queuesTest << "normal" << "fast";
-    SC_RemoteAppTool *theTestTool = new SC_RemoteAppTool(appNameTest, queuesTest, theRemoteService, theTest, theToolDialog);
-    theToolDialog->addTool(theTestTool, "Build and Run MPI Program");
-    QAction *showTest = toolsMenu->addAction("&Build and Run MPI Program");
-    connect(showTest, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theTestTool] {
-        theDialog->showTool("Build and Run MPI Program");
-    });  
-    */
 
     //
     // Add Tools to menu bar
