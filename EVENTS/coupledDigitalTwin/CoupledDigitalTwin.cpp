@@ -160,8 +160,8 @@ bool CoupledDigitalTwin::outputToJSON(QJsonObject &jsonObject)
 bool CoupledDigitalTwin::outputAppDataToJSON(QJsonObject &jsonObject) {
 
     //
-    // per API, need to add name of application to be called in AppLication
-    // and all data to be used in ApplicationDate
+    // per API, need to add name of application to be called in Application
+    // and all data to be used in ApplicationData
     //
 
     jsonObject["EventClassification"]="Hydro";

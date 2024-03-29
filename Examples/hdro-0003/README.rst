@@ -1,8 +1,14 @@
-.. _hydro-0003:
+.. _hdro-0003:
 
 Coupled Digital Twin Example - Simple Cantilevered Cylinder Half-Submerged in Crossflow
 ============================
 
++---------------+----------------------------------------------+
+| Problem files | :github:`Github <Examples/hdro-0003/>`       |
++---------------+----------------------------------------------+
+
+Outline 
+-------
 Example to demonstrate how to run a coupled OpenSees-OpenFOAM simulation to determine floor loads on a building and then perform
 an OpenSees simulation of the building assuming uncertainties in the building properties.
 
@@ -51,7 +57,6 @@ Inlet Velocity Time History (U(t))
 
 CASE RUN TIME
 ---------------
-
 Simulation Time: 1 second on TACC Frontera, 56 processors, 1 node -> Real Time: 1hr, 20 minutes
 
 Submitted

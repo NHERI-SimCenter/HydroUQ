@@ -40,6 +40,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written: fmckenna
 
 #include <QWidget>
+#include <QStandardItemModel>
+#include <QHBoxLayout>
+// #include <QFrame>
 
 #include <WorkflowAppWidget.h>
 
@@ -57,6 +60,7 @@ class GeneralInformationWidget;
 class HydroEventSelection;
 class QStackedWidget;
 class UQ_Results;
+class QSvgWidget;
 
 class RunLocalWidget;
 class RunWidget;
@@ -65,7 +69,15 @@ class RemoteService;
 class RemoteJobManager;
 class QNetworkAccessManager;
 class QNetworkReply;
-class EDP_Selection;
+class HydroEDP_Selection;
+// class EDP_Selection;
+
+// class GeoClawOpenFOAM;
+// class WaveDigitalFlume;
+// class CoupledDigitalTwin;
+// class MPM;
+// class SPH;
+
 
 class WorkflowAppHydroUQ : public WorkflowAppWidget
 {
@@ -74,6 +86,7 @@ public:
     explicit WorkflowAppHydroUQ(RemoteService *theService, QWidget *parent = 0);
     ~WorkflowAppHydroUQ();
 
+    void setMainWindow(MainWindowWorkflowApp* window); // From WE-UQ
     bool outputToJSON(QJsonObject &rvObject);
     bool inputFromJSON(QJsonObject &rvObject);
     void clear(void);
@@ -83,8 +96,8 @@ public:
     void onRemoteRunButtonClicked();
     void onRemoteGetButtonClicked();
     void onExitButtonClicked();
-    int getMaxNumParallelTasks();
-    
+    int  getMaxNumParallelTasks();
+
 signals:
     void setUpForApplicationRunDone(QString &tmpDirectory, QString &inputFile);
     void sendLoadFile(QString filename);
@@ -92,8 +105,7 @@ signals:
 public slots:  
 
     void setUpForApplicationRun(QString &, QString &);
-    void processResults(QString &resultsDir);
-    //void processResults(QString dakotaOut, QString dakotaTab, QString inputFile);
+    void processResults(QString &dirResults);
 
     int loadFile(QString &filename);
     void replyFinished(QNetworkReply*);
@@ -101,6 +113,7 @@ public slots:
 private:
     // sidebar container selection
     SimCenterComponentSelection *theComponentSelection;
+    // QFrame *sideBarIconFrame; // TODO: Merge into SimCenterComponentSelection in Common
 
     // objects that go in sidebar
     GeneralInformationWidget *theGI;
@@ -109,17 +122,32 @@ private:
     UQ_EngineSelection *theUQ_Selection;
     HydroEventSelection *theEventSelection;
     FEA_Selection *theAnalysisSelection;
-    EDP_Selection *theEDP_Selection;
+    // EDP_Selection *theEDP_Selection;
+    HydroEDP_Selection *theEDP_Selection;
     UQ_Results *theResults;
+
+    // Icons for sidebar
+    QSvgWidget *theSvgUQ;
+    QSvgWidget *theSvgGI;
+    QSvgWidget *theSvgSIM;
+    QSvgWidget *theSvgEVT;
+    QSvgWidget *theSvgFEM;
+    QSvgWidget *theSvgEDP;
+    QSvgWidget *theSvgRV;
+    QSvgWidget *theSvgRES;
 
     // objects for running the workflow and obtaining results
     RunWidget *theRunWidget;
     Application *localApp;
     Application *remoteApp;
+    Application *currentApp;
     RemoteJobManager *theJobManager;
 
+
     QJsonObject *jsonObjOrig;
-    QNetworkAccessManager *manager;
+    QNetworkAccessManager *manager; 
+
+    bool canRunLocally(); 
 };
 
 #endif // WORKFLOW_APP_HYDRO_UQ_H

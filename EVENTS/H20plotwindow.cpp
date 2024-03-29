@@ -1,5 +1,8 @@
 #include "H20plotwindow.h"
+// #include <QWidget>
+
 #include "ui_H20plotwindow.h"
+
 
 H20plotwindow::H20plotwindow(QWidget *parent) :
     QWidget(parent),

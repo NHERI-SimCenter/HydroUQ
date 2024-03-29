@@ -8,21 +8,36 @@
 #include <QFile>
 #include <QThread>
 #include <QObject>
+#include <QDebug>
 
 #include <AgaveCurl.h>
 #include <WorkflowAppHydroUQ.h>
+
 #include <QCoreApplication>
 
-#include <QApplication>
-#include <QFile>
+
 #include <QTime>
 #include <QTextStream>
 #include <GoogleAnalytics.h>
-#include <QOpenGLWidget>
 #include <QStandardPaths>
 #include <QDir>
-#include <QStatusBar>
+#include <SimCenterPreferences.h>
 #include <QWebEngineView>
+#include <QStatusBar>
+#include <QSvgWidget>
+// #include <QOpenGLWidget>
+
+
+#ifdef ENDLN
+#undef ENDLN
+#endif
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+#define ENDLN endl
+#else
+#define ENDLN Qt::endl
+#endif
+
 
 static QString logFilePath;
 static bool logToFile = false;
@@ -67,10 +82,10 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("2.0.0");
+    QCoreApplication::setApplicationVersion("3.0.0");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
-    // Q_INIT_RESOURCE(images1);
+    Q_INIT_RESOURCE(images1);
     // Q_INIT_RESOURCE(Resources);
 
     // Set up logging of output messages for user debugging
@@ -81,29 +96,36 @@ int main(int argc, char *argv[])
     QDir dirWork(logFilePath);
     if (!dirWork.exists())
         if (!dirWork.mkpath(logFilePath)) {
-            qDebug() << QString("Could not create Working Dir: ") << logFilePath;
+            qDebug() << QString("Could not create Working Dir: ") << logFilePath; 
         }
 
     // full path to debug.log file
-    logFilePath = logFilePath + QDir::separator() + QString("debug.log");
+    logFilePath = logFilePath + QDir::separator() + QString("debug.log"); 
+
+
+    //
+    // window scaling
+    //
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling); 
+
 
     // remove old log file
-    QFile debugFile(logFilePath);
-    debugFile.remove();
+    // QFile debugFile(logFilePath); 
+    // debugFile.remove(); 
+
+    QApplication a(argc, argv);
 
     //  check if the app is run in Qt Creator
-    QByteArray envVar = qgetenv("QTDIR");
+    QByteArray envVar = qgetenv("QTDIR"); 
 
     if (envVar.isEmpty())
         logToFile = true;
 
     qInstallMessageHandler(customMessageOutput);
 
-    //
-    // window scaling
-    //
+    qDebug() << "logFile: " << logFilePath;
 
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
 
     /******************  code to reset openGL version .. keep around in case need again
     QSurfaceFormat glFormat;
@@ -113,13 +135,13 @@ int main(int argc, char *argv[])
     ***********************************************************************************/
 
     // regular Qt startup
-    QApplication a(argc, argv);
+    // QApplication a(argc, argv);
 
     // create a remote interface
-    QString tenant("designsafe");
-    QString storage("agave://designsafe.storage.default/");
-    QString dirName("Hydro-UQ");
-    AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName);
+    QString tenant("designsafe"); // this is the default tenant for the design safe community
+    QString storage("agave://designsafe.storage.default/"); // this is the default storage system for the design safe community
+    QString dirName("Hydro-UQ"); // this is the default directory for the application
+    AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName); // this is the remote service used by the application
 
 
     // create the main window
@@ -132,11 +154,11 @@ int main(int argc, char *argv[])
     w.setAbout(aboutTitle, aboutSource);
 
     // Version
-    QString version("Version 1.0.1");
+    QString version = QString("Version ") + QCoreApplication::applicationVersion();
     w.setVersion(version);
 
     // Citation
-    QString citeText("1) Ajay B Harish, & Frank McKenna. (2021, April 30). NHERI-SimCenter/HydroUQ: Version 1.0.0 (Version v1.0.0). Zenodo. http://doi.org/10.5281/zenodo.4731074\n\n 2) Deierlein GG, McKenna F, Zsarnóczay A, Kijewski-Correa T, Kareem A, Elhaddad W, Lowes L, Schoettler MJ and Govindjee S (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Front. Built Environ. 6:558706. doi: 10.3389/fbuil.2020.558706");
+    QString citeText("1) Ajay B Harish, Frank McKenna, Justin Bonus. (2024, January). NHERI-SimCenter/HydroUQ: Version 3.0.0 (Version v3.0.0). Zenodo. http://doi.org/10.5281/zenodo.4731074\n\n 2) Deierlein GG, McKenna F, Zsarnóczay A, Kijewski-Correa T, Kareem A, Elhaddad W, Lowes L, Schoettler MJ and Govindjee S (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Front. Built Environ. 6:558706. doi: 10.3389/fbuil.2020.558706");
     w.setCite(citeText);
 
     // Link to repository
@@ -148,8 +170,8 @@ int main(int argc, char *argv[])
     w.setFeedbackURL(messageBoardURL);
 
     // Move remote interface to a thread
-    QThread *thread = new QThread();
-    theRemoteService->moveToThread(thread);
+    QThread *thread = new QThread(); 
+    theRemoteService->moveToThread(thread); 
     QWidget::connect(thread, SIGNAL(finished()), theRemoteService, SLOT(deleteLater()));
     QWidget::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();
@@ -184,17 +206,19 @@ int main(int argc, char *argv[])
     //Setting Google Analytics Tracking Information
     //GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
     //GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
+    GoogleAnalytics::SetMeasurementId("G-SQHRGYDZ0H");
+    GoogleAnalytics::SetAPISecret("SCg4ry-WRee780Oen2WBUA");
     GoogleAnalytics::CreateSessionId();
     GoogleAnalytics::StartSession();
 
-    /************** TRY LATER
+    // /************** TRY LATER
     // Opening a QWebEngineView and using github to get app geographic usage
     QWebEngineView view;
     view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
     view.resize(1024, 750);
     view.show();
     view.hide();
-    ************************/    
+    // ************************/    
     
     // Result of execution
     int res = a.exec();

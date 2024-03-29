@@ -1,12 +1,17 @@
 INCLUDEPATH += $$PWD/EVENTS
+INCLUDEPATH += EVENTS
+INCLUDEPATH += $$PWD/EDP
+INCLUDEPATH += EDP
+INCLUDEPATH += ../SimCenterCommon/Common
 INCLUDEPATH += $$PWD/EVENTS/GeoClawOpenFOAM
 INCLUDEPATH += $$PWD/EVENTS/WaveDigitalFlume
 INCLUDEPATH += $$PWD/EVENTS/coupledDigitalTwin
+INCLUDEPATH += $$PWD/EVENTS/MPM
 INCLUDEPATH += $$PWD/EVENTS/Common
-
+INCLUDEPATH += $$PWD/SlidingStackedWidget
 SOURCES += \
-    $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.cpp \
     $$PWD/EVENTS/HydroEventSelection.cpp \
+    $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/GeoClawOpenFOAM.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/H20utilities/h20utilities.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundary.cpp \
@@ -31,17 +36,35 @@ SOURCES += \
     $$PWD/EVENTS/coupledDigitalTwin/OutputsDigitalTwin.cpp \
     $$PWD/EVENTS/coupledDigitalTwin/OpenSeesDigitalTwin.cpp \
     $$PWD/EVENTS/coupledDigitalTwin/OpenFOAM_DigitalTwin.cpp \
-    $$PWD/EVENTS/coupledDigitalTwin/VisualizeDigitalTwin.cpp \        
+    $$PWD/EVENTS/coupledDigitalTwin/VisualizeDigitalTwin.cpp \
+    $$PWD/EVENTS/MPM/MPM.cpp \
+    $$PWD/EVENTS/MPM/BoundaryMPM.cpp \
+    $$PWD/EVENTS/MPM/BoundariesMPM.cpp \
+    $$PWD/EVENTS/MPM/OutputsMPM.cpp \
+    $$PWD/EVENTS/MPM/SensorsMPM.cpp \
+    $$PWD/EVENTS/MPM/SensorMPM.cpp \
+    $$PWD/EVENTS/MPM/BodiesMPM.cpp \
+    $$PWD/EVENTS/MPM/SettingsMPM.cpp \
+    $$PWD/EVENTS/MPM/MaterialMPM.cpp \
+    $$PWD/EVENTS/MPM/GeometriesMPM.cpp \
+    $$PWD/EVENTS/MPM/GeometryMPM.cpp \
+    $$PWD/EVENTS/MPM/AlgorithmMPM.cpp \
+    $$PWD/EVENTS/MPM/PartitionsMPM.cpp \
+    $$PWD/EVENTS/MPM/PartitionMPM.cpp \
+    $$PWD/EVENTS/MPM/ResultsMPM.cpp \
+    $$PWD/EVENTS/MPM/GeometryAI.cpp \
+    $$PWD/EVENTS/MPM/SPH.cpp \
+    $$PWD/EVENTS/MPM/CaseSPH.cpp \
+    $$PWD/EVENTS/MPM/ExecutionSPH.cpp \
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.cpp \
     $$PWD/EVENTS/Common/projectsettings.cpp \
     $$PWD/EVENTS/Common/bathymetry.cpp
-
-
+    # $$PWD/SlidingStackedWidget/slidingstackedwidget.cpp
 
 
 HEADERS += \
-    $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.h \
     $$PWD/EVENTS/HydroEventSelection.h \
+    $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/H20utilities/h20utilities.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundary.h \
     $$PWD/EVENTS/GeoClawOpenFOAM/boundarydata.h \
@@ -65,7 +88,26 @@ HEADERS += \
     $$PWD/EVENTS/coupledDigitalTwin/OutputsDigitalTwin.h \
     $$PWD/EVENTS/coupledDigitalTwin/OpenSeesDigitalTwin.h \
     $$PWD/EVENTS/coupledDigitalTwin/OpenFOAM_DigitalTwin.h \
-    $$PWD/EVENTS/coupledDigitalTwin/VisualizeDigitalTwin.h \            
+    $$PWD/EVENTS/coupledDigitalTwin/VisualizeDigitalTwin.h \
+    $$PWD/EVENTS/MPM/MPM.h \
+    $$PWD/EVENTS/MPM/BoundaryMPM.h \
+    $$PWD/EVENTS/MPM/BoundariesMPM.h \
+    $$PWD/EVENTS/MPM/OutputsMPM.h \
+    $$PWD/EVENTS/MPM/SensorsMPM.h \
+    $$PWD/EVENTS/MPM/SensorMPM.h \
+    $$PWD/EVENTS/MPM/BodiesMPM.h \
+    $$PWD/EVENTS/MPM/SettingsMPM.h \   
+    $$PWD/EVENTS/MPM/MaterialMPM.h \
+    $$PWD/EVENTS/MPM/GeometriesMPM.h \
+    $$PWD/EVENTS/MPM/GeometryMPM.h \
+    $$PWD/EVENTS/MPM/AlgorithmMPM.h \
+    $$PWD/EVENTS/MPM/PartitionsMPM.h \   
+    $$PWD/EVENTS/MPM/PartitionMPM.h \  
+    $$PWD/EVENTS/MPM/ResultsMPM.h \
+    $$PWD/EVENTS/MPM/GeometryAI.h \
+    $$PWD/EVENTS/MPM/SPH.h \
+    $$PWD/EVENTS/MPM/CaseSPH.h \
+    $$PWD/EVENTS/MPM/ExecutionSPH.h \
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.h \
     $$PWD/EVENTS/Common/projectsettings.h \
     $$PWD/EVENTS/Common/bathymetry.h \
@@ -368,7 +410,8 @@ HEADERS += \
     $$PWD/EVENTS/dependencies/Eigen/src/plugins/CommonCwiseBinaryOps.h \
     $$PWD/EVENTS/dependencies/Eigen/src/plugins/CommonCwiseUnaryOps.h \
     $$PWD/EVENTS/dependencies/Eigen/src/plugins/MatrixCwiseBinaryOps.h \
-    $$PWD/EVENTS/dependencies/Eigen/src/plugins/MatrixCwiseUnaryOps.h
+    $$PWD/EVENTS/dependencies/Eigen/src/plugins/MatrixCwiseUnaryOps.h 
+    # $$PWD/SlidingStackedWidget/slidingstackedwidget.h
 
 FORMS += \
     $$PWD/EVENTS/GeoClawOpenFOAM/GeoClawOpenFOAM_copy.ui \
