@@ -375,8 +375,7 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         miniMPM->initialize(); 
     }
     QString appName =  "ClaymoreUW-ls6.bonusj-1.0.0u1"; // Lonestar6
-    QString systemName = "lonestar6-gpu";
-    QList<QString> queues; queues << "gpu-a100-dev" << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    QList<QString> queues; queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
     SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog);
     theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");
     QAction *showMPM = toolsMenu->addAction("Digital Twin (&MPM)");
