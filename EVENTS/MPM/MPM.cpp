@@ -417,7 +417,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // -----------------------------------------------------------------------------------
     // Create a 3D window and container widget and set the 3D window as its layout
     // Based on code by Alex44, 2018; https://stackoverflow.com/questions/23231012/how-to-render-in-qt3d-in-standard-gui-application)
-#ifdef _WIN32
+
     auto rootEntity = new Qt3DCore::QEntity();
     auto view = new Qt3DExtras::Qt3DWindow();
     QWidget *container = QWidget::createWindowContainer(view);
@@ -1190,7 +1190,6 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 #endif
     });
     
-#endif
 
     // QVBoxLayout *layout = new QVBoxLayout();
     // mainWindowLayout->addWidget(scrollArea);
