@@ -410,6 +410,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     theTabWidget->setIconSize(QSize(sizePrimaryTabs,sizePrimaryTabs));
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
+
+#ifdef _WIN32
     // -----------------------------------------------------------------------------------
     // Create a 3D window and container widget and set the 3D window as its layout
     // Based on code by Alex44, 2018; https://stackoverflow.com/questions/23231012/how-to-render-in-qt3d-in-standard-gui-application)
@@ -1137,23 +1139,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       updateBoundaryPaddlePosition();
       updateBoundaryPaddleSize();
     });
+
+
     mainLayout->addWidget(updateBodiesButton, 3, 0);
 
+#endif
 
-
-
-    // -----------------------------------------------------------------------------------
-
-    // Add QWebView for viewing a Boussinesq wave solver web-page using WebGPU functionality
-    // m_pWebView = new QWebEngineView(this);
-
-    // // Set position and size of instance
-    // m_pWebView->setGeometry(0, 0, 200, 200);
-
-    // // Load the initial page
-    // m_pWebView->load(QUrl("https://plynett.github.io/"));
-
-    // -----------------------------------------------------------------------------------
 
     mainLayout->addWidget(theTabWidget, 4, 0);
     mainGroup->setLayout(mainLayout);
