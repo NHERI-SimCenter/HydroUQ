@@ -1169,12 +1169,21 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // horizontalPanelLayout->addWidget(visualizationGroup);
 #ifdef _WIN32
     horizontalPanelLayout->addWidget(container);
+#endif
+    // QVBoxLayout *layout = new QVBoxLayout();
+    // mainWindowLayout->addWidget(scrollArea);
+    // mainWindowLayout->addWidget(updateBodiesButton);
+    // mainWindowLayout->addWidget(container);
+    mainWindowLayout->addWidget(horizontalPanels);
+    this->setLayout(mainWindowLayout);
 
     connect(stackedWidget, &SlidingStackedWidget::animationFinished, [=](void){
       int index = stackedWidget->currentIndex();
       mpmBodies->setDigitalTwin(index);
       mpmBoundaries->setDigitalTwin(index);
+#ifdef _WIN32
       updateDigitalTwin(index);
+#endif
     });
     
 #endif
