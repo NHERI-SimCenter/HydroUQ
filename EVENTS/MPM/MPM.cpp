@@ -1168,8 +1168,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     horizontalPanelLayout->addWidget(scrollArea);
 
     // horizontalPanelLayout->addWidget(visualizationGroup);
+#ifdef _WIN32
     horizontalPanelLayout->addWidget(container);
-
+#endif
     // QVBoxLayout *layout = new QVBoxLayout();
     // mainWindowLayout->addWidget(scrollArea);
     // mainWindowLayout->addWidget(updateBodiesButton);
@@ -1182,7 +1183,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       int index = stackedWidget->currentIndex();
       mpmBodies->setDigitalTwin(index);
       mpmBoundaries->setDigitalTwin(index);
+#ifdef _WIN32
       updateDigitalTwin(index);
+#endif
     });
 
 
