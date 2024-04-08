@@ -1,5 +1,5 @@
-#ifndef MATERIAL_POINT_METHOD_H
-#define MATERIAL_POINT_METHOD_H
+#ifndef CELERIS_H
+#define CELERIS_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
@@ -38,11 +38,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 // Author: JustinBonus
-// Date: 1/2024
+// Date: 4/2024
 
 #include <SimCenterAppWidget.h>
-
-#include <ResultsMPM.h>
 
 #include <QWebEngineView>
 // Forward declaration
@@ -50,12 +48,6 @@ class InputWidgetParameters;
 class RandomVariablesContainer;
 class LineEditRV;
 
-class SettingsMPM;
-class BodiesMPM;
-class BoundariesMPM;
-class SensorsMPM;
-class OutputsMPM; 
-class ResultsMPM;
 
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
@@ -74,16 +66,16 @@ class QPushButton;
 class QCheckBox;
 class QFormLayout;
 class QLabel;
-class MPM : public SimCenterAppWidget
+class Celeris : public SimCenterAppWidget
 {
       Q_OBJECT 
 
 public:
-    explicit MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent = 0);
-   // MPM( QWidget *parent = 0);
-   ~MPM();
+    Celeris(QWidget *parent = 0);
+   // Celeris( QWidget *parent = 0);
+   ~Celeris();
 
-   friend class ResultsMPM; // Allow ResultsMPM to access private members. TODO: use a better vis architecture
+//    friend class ResultsCeleris; // Allow ResultsCeleris to access private members. TODO: use a better vis architecture
 
    bool inputFromJSON(QJsonObject &rvObject) override;
    bool outputToJSON(QJsonObject &rvObject) override;  
@@ -91,58 +83,50 @@ public:
    bool inputAppDataFromJSON(QJsonObject &rvObject);
    bool copyFiles(QString &dirName) override;
 
-   bool initialize();
-   bool isInitialize();
+    //    bool initialize();
+    //    bool isInitialize();
 
-   bool setupCase();
-   bool cleanCase();
-   bool removeOldFiles();
-   bool isCaseConfigured();
-   void readCaseData();
+    //    bool setupCase();
+    //    bool cleanCase();
+    //    bool removeOldFiles();
+    //    bool isCaseConfigured();
+    //    void readCaseData();
 
-   void importMainDomainJsonFile(QJsonObject &rvObject);
-   QVector<QVector<double>> readTxtData(QString fileName);
-
-   void executeBackendScript();
-   void updateJSON();
-   QString caseDir();
-   QString templateDictDir();
-   QString pyScriptsPath();
-   QString simulationType();
-   //  QString foamDictsPath(); // For OpenFOAM from WE-UQ, not MPM
-
-   SC_ResultsWidget* getResultsWidget(QWidget *parent) override; // For vis of output data results 
+    //    void importMainDomainJsonFile(QJsonObject &rvObject);
+    //    QVector<QVector<double>> readTxtData(QString fileName);
+    //    void executeBackendScript();
+    //    void updateJSON();
+    //    QString caseDir();
+    //    QString templateDictDir();
+    //    QString pyScriptsPath();
+    //    QString simulationType();
+    //    SC_ResultsWidget* getResultsWidget(QWidget *parent) override; // For vis of output data results 
 
 signals:
 
 public slots:
    void clear(void) override;
-   void onBrowseCaseDirectoryButtonClicked(void);
+
 
 private:
-   QHBoxLayout                  *mainWindowLayout;
-   QGridLayout                  *mainLayout;
-   SettingsMPM                  *mpmSettings;
-   BodiesMPM                    *mpmBodies;
-   BoundariesMPM                *mpmBoundaries;
-   SensorsMPM                   *mpmSensors;
-   OutputsMPM                   *mpmOutputs; 
-   ResultsMPM                   *mpmResults;
+    QHBoxLayout                  *mainWindowLayout;
+    QGridLayout                  *mainLayout;
+    QWebEngineView               *m_pWebView;
+    QWebEngineView               *m_pWebViewExtra;
 
-   RandomVariablesContainer     *theRandomVariablesContainer;
-   QStringList                  varNamesAndValues;
+    // RandomVariablesContainer     *theRandomVariablesContainer;
+    // QStringList                  varNamesAndValues;
 
-   QString                      workingDirPath;
-   QLineEdit                    *caseDirectoryPathWidget;
-   QGroupBox                    *caseDirectoryGroup;
-   QGridLayout                  *caseDirectoryLayout;
-   QTabWidget                   *theTabWidget;
-   // QVBoxLayout                  *visWindowLayout;
-   // QGroupBox                    *visWindowGroup;
-   // QVBoxLayout                  *inputWindowLayout;
-   // QGroupBox                    *inputWindowGroup;
-   bool caseInitialized = false; 
-   QWebEngineView* m_pWebView;
+    //    QString                      workingDirPath;
+    //    QLineEdit                    *caseDirectoryPathWidget;
+    //    QGroupBox                    *caseDirectoryGroup;
+    //    QGridLayout                  *caseDirectoryLayout;
+    //    QTabWidget                   *theTabWidget;
+    // QVBoxLayout                  *visWindowLayout;
+    // QGroupBox                    *visWindowGroup;
+    // QVBoxLayout                  *inputWindowLayout;
+    // QGroupBox                    *inputWindowGroup;
+    // bool caseInitialized = false; 
 };
 
-#endif // MATERIAL_POINT_METHOD_H
+#endif // CELERIS_H

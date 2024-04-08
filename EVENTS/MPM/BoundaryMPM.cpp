@@ -171,6 +171,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   // QStringList facilityList; facilityList << "Hinsdale Large Wave Flume - Oregon State University (OSU LWF)" << "Hinsdale Directional Wave Basin (OSU DWB)" <<  "Wind-Air-Sea Interaction Facility (UW WASIRF)" << "Waseda University's Tsunami Wave Basin (WU TWB)" << "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)" << "CLOSED" << "INLETOUTLET";
   QStringList facilityList; facilityList << "Hinsdale Large Wave Flume (OSU LWF)" << "Hinsdale Directional Wave Basin (OSU DWB)" <<  "Wind-Air-Sea Interaction Facility (UW WASIRF)" << "Waseda University's Tsunami Wave Basin (WU TWB)" << "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)";
   facility = new SC_ComboBox("domainSubType",facilityList);
+  facility->setEnabled(false);
   waveFlumeLayout->addWidget(new QLabel("Digital Twin Facility"),numRow,0);
   waveFlumeLayout->itemAt(waveFlumeLayout->count()-1)->setAlignment(Qt::AlignRight);
   waveFlumeLayout->addWidget(facility,numRow++,1);
@@ -264,6 +265,8 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   numRow = 0;
   QStringList listWaveGeneration; listWaveGeneration << "Preset Paddle - OSU LWF" << "Periodic Waves" << "Preset Paddle - OSU DWB" ;
   generationMethod = new SC_ComboBox("generationMethod",listWaveGeneration);
+  generationMethod->setEnabled(false);
+
 
   QStringList paddleContactTypeList; paddleContactTypeList <<  "Separable" << "Slip" << "Sticky";  
   paddleContactType = new SC_ComboBox("paddleContactType", paddleContactTypeList);
@@ -394,7 +397,8 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
 
   structApplyCoulombFriction = new SC_CheckBox("structApplyCoulombFriction");
-  structApplyCoulombFriction->setChecked(true);
+  structApplyCoulombFriction->setChecked(false);
+  structApplyCoulombFriction->setEnabled(false);
   structLayout->addWidget(new QLabel("Apply Coulomb Friction?"),numRow, 0);  
   structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
   structLayout->addWidget(structApplyCoulombFriction,numRow++, 1);
@@ -563,7 +567,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   wallsLength = new SC_DoubleLineEdit("wallsLength",90.0);
   wallsHeight = new SC_DoubleLineEdit("wallsHeight",4.5);
-  wallsWidth = new SC_DoubleLineEdit("wallsWidth",3.65);
+  wallsWidth = new SC_DoubleLineEdit("wallsWidth",3.6);
   wallsLayout->addWidget(new QLabel("Dimensions (X,Y,Z)"),numRow, 0);
   wallsLayout->itemAt(wallsLayout->count()-1)->setAlignment(Qt::AlignRight);
   wallsLayout->addWidget(wallsLength,numRow,1);
@@ -582,7 +586,8 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   wallsLayout->addWidget(new QLabel("m"),numRow++, 4);
 
   applyCoulombFriction = new SC_CheckBox("applyCoulombFriction");
-  applyCoulombFriction->setChecked(true);
+  applyCoulombFriction->setChecked(false);
+  applyCoulombFriction->setEnabled(false);
   wallsLayout->addWidget(new QLabel("Apply Coulomb Friction?"),numRow, 0);  
   wallsLayout->itemAt(wallsLayout->count()-1)->setAlignment(Qt::AlignRight);
   wallsLayout->addWidget(applyCoulombFriction,numRow++, 1);
@@ -613,7 +618,6 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   frictionBoxLayout->addWidget(dynamicFrictionWallZ,numFrictionRow,3);  
   frictionBoxLayout->addWidget(new QLabel("Coef."),numFrictionRow++, 4);
   frictionBoxLayout->setRowStretch(numFrictionRow,1);
-
   wallsLayout->addWidget(frictionBox, numRow, 0, numFrictionRow, 5);
   numRow += numFrictionRow;
 
@@ -1424,6 +1428,10 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
   else if (boundaryType->currentIndex() == 4) {
     // Rigid walls
     // Make sure the walls fit the wave flume's dimensions
+    applyCoulombFriction->setChecked(false);
+    applyCoulombFriction->setEnabled(false);
+    applyInletOutlet->setChecked(false);
+    applyInletOutlet->setEnabled(false);
     if (twinIdx == 0) { // OSU LWF
       wallsContactType->setCurrentIndex(0); // Separable
       wallsLength->setText(QString::number(90.0));
@@ -1447,12 +1455,16 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
       wallsLength->setText(QString::number(9.0));
       wallsHeight->setText(QString::number(1.0));
       wallsWidth->setText(QString::number(4.0));
+      applyCoulombFriction->setEnabled(true);
+      // applyCoulombFriction->setChecked(false);
     }
     else if (twinIdx == 4) { // USGS DFF
       wallsContactType->setCurrentIndex(0); // Separable
       wallsLength->setText(QString::number(100.0));
       wallsHeight->setText(QString::number(2.0));
       wallsWidth->setText(QString::number(2.0));
+      applyCoulombFriction->setEnabled(true);
+      // applyCoulombFriction->setChecked(false);
     }
     originLength->setText(QString::number(0.0));
     originHeight->setText(QString::number(0.0));

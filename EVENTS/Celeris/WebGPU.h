@@ -1,5 +1,5 @@
-#ifndef MATERIAL_POINT_METHOD_H
-#define MATERIAL_POINT_METHOD_H
+#ifndef WEB_GPU_H
+#define WEB_GPU_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
@@ -38,11 +38,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 // Author: JustinBonus
-// Date: 1/2024
+// Date: 4/2024
 
 #include <SimCenterAppWidget.h>
-
-#include <ResultsMPM.h>
 
 #include <QWebEngineView>
 // Forward declaration
@@ -50,12 +48,6 @@ class InputWidgetParameters;
 class RandomVariablesContainer;
 class LineEditRV;
 
-class SettingsMPM;
-class BodiesMPM;
-class BoundariesMPM;
-class SensorsMPM;
-class OutputsMPM; 
-class ResultsMPM;
 
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
@@ -74,75 +66,29 @@ class QPushButton;
 class QCheckBox;
 class QFormLayout;
 class QLabel;
-class MPM : public SimCenterAppWidget
+class WebGPU : public SimCenterAppWidget
 {
       Q_OBJECT 
 
 public:
-    explicit MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent = 0);
-   // MPM( QWidget *parent = 0);
-   ~MPM();
-
-   friend class ResultsMPM; // Allow ResultsMPM to access private members. TODO: use a better vis architecture
+    WebGPU(QWidget *parent = 0);
+   ~WebGPU();
 
    bool inputFromJSON(QJsonObject &rvObject) override;
    bool outputToJSON(QJsonObject &rvObject) override;  
    bool outputAppDataToJSON(QJsonObject &rvObject) ;
    bool inputAppDataFromJSON(QJsonObject &rvObject);
    bool copyFiles(QString &dirName) override;
-
-   bool initialize();
-   bool isInitialize();
-
-   bool setupCase();
-   bool cleanCase();
-   bool removeOldFiles();
-   bool isCaseConfigured();
-   void readCaseData();
-
-   void importMainDomainJsonFile(QJsonObject &rvObject);
-   QVector<QVector<double>> readTxtData(QString fileName);
-
-   void executeBackendScript();
-   void updateJSON();
-   QString caseDir();
-   QString templateDictDir();
-   QString pyScriptsPath();
-   QString simulationType();
-   //  QString foamDictsPath(); // For OpenFOAM from WE-UQ, not MPM
-
-   SC_ResultsWidget* getResultsWidget(QWidget *parent) override; // For vis of output data results 
-
 signals:
 
 public slots:
    void clear(void) override;
-   void onBrowseCaseDirectoryButtonClicked(void);
+
 
 private:
-   QHBoxLayout                  *mainWindowLayout;
-   QGridLayout                  *mainLayout;
-   SettingsMPM                  *mpmSettings;
-   BodiesMPM                    *mpmBodies;
-   BoundariesMPM                *mpmBoundaries;
-   SensorsMPM                   *mpmSensors;
-   OutputsMPM                   *mpmOutputs; 
-   ResultsMPM                   *mpmResults;
-
-   RandomVariablesContainer     *theRandomVariablesContainer;
-   QStringList                  varNamesAndValues;
-
-   QString                      workingDirPath;
-   QLineEdit                    *caseDirectoryPathWidget;
-   QGroupBox                    *caseDirectoryGroup;
-   QGridLayout                  *caseDirectoryLayout;
-   QTabWidget                   *theTabWidget;
-   // QVBoxLayout                  *visWindowLayout;
-   // QGroupBox                    *visWindowGroup;
-   // QVBoxLayout                  *inputWindowLayout;
-   // QGroupBox                    *inputWindowGroup;
-   bool caseInitialized = false; 
-   QWebEngineView* m_pWebView;
+    QHBoxLayout                  *mainWindowLayout;
+    QGridLayout                  *mainLayout;
+    QWebEngineView               *m_pWebView;
 };
 
-#endif // MATERIAL_POINT_METHOD_H
+#endif // WEB_GPU_H

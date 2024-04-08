@@ -89,7 +89,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   // ambientBoxLayout->addWidget(new QLabel("deg. C"), numRow++, 2);
 
   gravityX = new SC_DoubleLineEdit("gravityX", 0.0);
-  gravityY = new SC_DoubleLineEdit("gravityY", -9.81);
+  gravityY = new SC_DoubleLineEdit("gravityY", -9.80665);
   gravityZ = new SC_DoubleLineEdit("gravityZ", 0.0);
   ambientBoxLayout->addWidget(new QLabel("Gravity (X,Y,Z)"), numRow, 0, 1, 1, Qt::AlignRight);
   ambientBoxLayout->addWidget(gravityX, numRow, 1, 1, 1);  
@@ -117,7 +117,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
 
   domainSizeX = new SC_DoubleLineEdit("domain_X", 90);
   domainSizeY = new SC_DoubleLineEdit("domain_Y", 2.9);
-  domainSizeZ = new SC_DoubleLineEdit("domain_Z", 3.65);  
+  domainSizeZ = new SC_DoubleLineEdit("domain_Z", 3.6);  
   dimensionsBoxLayout->addWidget(new QLabel("Full Domain (X,Y,Z)"), numRow, 0, 1, 1, Qt::AlignRight);  
   dimensionsBoxLayout->addWidget(domainSizeX, numRow, 1, 1, 1);
   dimensionsBoxLayout->addWidget(domainSizeY, numRow, 2, 1, 1);
@@ -148,14 +148,14 @@ SettingsMPM::SettingsMPM(QWidget *parent)
 
   numRow = 0;
 
-  timeStep = new SC_DoubleLineEdit("defaultDt", 1e-5);
+  timeStep = new SC_DoubleLineEdit("defaultDt", 1e-4);
   timeBoxLayout->addWidget(new QLabel("Max Time Step (dt)"), numRow, 0, 1, 1, Qt::AlignRight);
   timeBoxLayout->addWidget(timeStep, numRow, 1, 1, 3);
   timeBoxLayout->setColumnStretch(1, 1); // Add this line to make the middle column expand
   timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 4, 1, 1);
 
-  QStringList timeIntegrationList ; timeIntegrationList <<  "Explicit (Forward Euler)"; //<< "Semi-Implicit (Symplectic Euler)";
+  QStringList timeIntegrationList ; timeIntegrationList <<  "Explicit"; //<< "Semi-Implicit (Symplectic Euler)";
   timeIntegration = new SC_ComboBox("time_integration", timeIntegrationList);    
   timeBoxLayout->addWidget(new QLabel("Time-Integration"), numRow, 0, 1, 1, Qt::AlignRight);
   timeBoxLayout->addWidget(timeIntegration, numRow, 1, 1, 3);
@@ -170,7 +170,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 4, 1, 1);
 
-  duration = new SC_DoubleLineEdit("duration",25.0);
+  duration = new SC_DoubleLineEdit("duration",26.0);
   timeBoxLayout->addWidget(new QLabel("Duration (tf-t0)"), numRow, 0, 1, 1, Qt::AlignRight);
   timeBoxLayout->addWidget(duration, numRow, 1, 1, 3);  
   timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);

@@ -105,7 +105,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QTextEdit>
 #include <QFormLayout>
 
-
+#include <QWebEngineView>
+#include <QUrl> 
+// #include <QWebEngineView>
+// #include <QWebEnginePage>
+// #include <QWebEngineSettings>
+// #include <QWebEngineProfile>
+// #include <QWebEngineScriptCollection>
+// #include <QWebEngineScript>
+// #include <QWebEngineScriptCollection>
 
 // Trying out
 // #include <SimCenterAppWidget.h>
@@ -1134,7 +1142,18 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
 
     // -----------------------------------------------------------------------------------
-    
+
+    // Add QWebView for viewing a Boussinesq wave solver web-page using WebGPU functionality
+    // m_pWebView = new QWebEngineView(this);
+
+    // // Set position and size of instance
+    // m_pWebView->setGeometry(0, 0, 200, 200);
+
+    // // Load the initial page
+    // m_pWebView->load(QUrl("https://plynett.github.io/"));
+
+    // -----------------------------------------------------------------------------------
+
     mainLayout->addWidget(updateBodiesButton, 3, 0);
     mainLayout->addWidget(theTabWidget, 4, 0);
     mainGroup->setLayout(mainLayout);
@@ -1566,59 +1585,78 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
       // If it is not possible to increment the "gpu" and "model" to a unique value, remove the new body
       // If it is possible to increment the "gpu" and "model" to a unique value, update the new body's "gpu" and "model"
       // for (int j = numBodies; j < bodiesArray.size(); j++) {
-      for (int j = 0; j < bodiesArray.size(); j++) {
-        if (j >= bodiesArray.size()) break;
-        QJsonObject newBody = bodiesArray[j].toObject();
-        for (int k = 0; k < j; k++) {
-          QJsonObject existingBody = bodiesArray[k].toObject();
-          if (newBody["gpu"].toInt() == existingBody["gpu"].toInt() && newBody["model"].toInt() == existingBody["model"].toInt()) {
-            int numGPUs = jsonObject["computer"].toObject()["numGPUs"].toInt();
-            int modelsPerGPU = jsonObject["computer"].toObject()["modelsPerGPU"].toInt();
-            int newGPU = newBody["gpu"].toInt();
-            int newModel = newBody["model"].toInt();
-            bool unique = false;
-            while (!unique) {
-              if (j >= bodiesArray.size()) break;
-              if (newGPU < numGPUs && newModel < modelsPerGPU) {
-                newModel++;
-                unique = true;
-                for (int l = 0; l < j; l++) {
-                  QJsonObject existingBody = bodiesArray[l].toObject();
-                  if (newGPU == existingBody["gpu"].toInt() && newModel == existingBody["model"].toInt()) {
-                    unique = false;
-                    break;
-                  }
-                }
-              } else if (newGPU < numGPUs && newModel == modelsPerGPU) {
-                newGPU++;
-                newModel = 0;
-                unique = true;
-                for (int l = 0; l < j; l++) {
-                  QJsonObject existingBody = bodiesArray[l].toObject();
-                  if (newGPU == existingBody["gpu"].toInt() && newModel == existingBody["model"].toInt()) {
-                    unique = false;
-                    break;
-                  }
-                }
-              } else {
-                // Remove the new body if it is not possible to increment the "gpu" and "model" to a unique value
-                // Also remove if we exceed the number of GPUs and models per GPU specified in "computer"
-                // if (!unique) {
-                  bodiesArray.removeAt(j);
-                  // if (j > 0) {
-                  //   j = j - 1;
-                  // }
-                  break;
-                // }
-              }
-            }
-            // if (!unique) {}
-            newBody["gpu"] = newGPU;
-            newBody["model"] = newModel;
-            bodiesArray[j] = newBody;
-          }
-        }
-      }
+      // ---- Debug soon
+      // for (int j = 0; j < bodiesArray.size(); j++) {
+      //   if (j >= bodiesArray.size()) break;
+      //   QJsonObject newBody = bodiesArray[j].toObject();
+      //   for (int k = 0; k < j; k++) {
+      //     QJsonObject existingBody = bodiesArray[k].toObject();
+      //     if (newBody["gpu"].toInt() == existingBody["gpu"].toInt() && newBody["model"].toInt() == existingBody["model"].toInt()) {
+      //       int numGPUs = jsonObject["computer"].toObject()["numGPUs"].toInt();
+      //       int modelsPerGPU = jsonObject["computer"].toObject()["modelsPerGPU"].toInt();
+      //       int newGPU = newBody["gpu"].toInt();
+      //       int newModel = newBody["model"].toInt();
+      //       bool unique = false;
+      //       while (!unique) {
+      //         if (j >= bodiesArray.size()) break;
+
+      //         if (newGPU < numGPUs && newModel < modelsPerGPU) {
+      //           newModel++;
+      //           unique = true;
+      //           for (int l = 0; l < j; l++) {
+      //             QJsonObject existingBody = bodiesArray[l].toObject();
+      //             if (newGPU == existingBody["gpu"].toInt() && newModel == existingBody["model"].toInt()) {
+      //               unique = false;
+      //               // break;
+      //             }
+      //           }
+      //         } 
+              
+      //         if (newGPU < numGPUs && newModel < modelsPerGPU) {
+      //           newModel++;
+      //           unique = true;
+      //           for (int l = 0; l < j; l++) {
+      //             QJsonObject existingBody = bodiesArray[l].toObject();
+      //             if (newGPU == existingBody["gpu"].toInt() && newModel == existingBody["model"].toInt()) {
+      //               unique = false;
+      //               // break;
+      //             }
+      //           }
+      //         } 
+              
+
+      //         // if (newGPU < numGPUs && newModel == modelsPerGPU) {
+      //         //   newGPU++;
+      //         //   newModel = 0;
+      //         //   unique = true;
+      //         //   for (int l = 0; l < j; l++) {
+      //         //     QJsonObject existingBody = bodiesArray[l].toObject();
+      //         //     if (newGPU == existingBody["gpu"].toInt() && newModel == existingBody["model"].toInt()) {
+      //         //       unique = false;
+      //         //     }
+      //         //   }
+      //         // }
+
+      //       }
+      //       if (!unique) {
+      //         // Remove the new body if it is not possible to increment the "gpu" and "model" to a unique value
+      //         // Also remove if we exceed the number of GPUs and models per GPU specified in "computer"
+      //         // if (!unique) {
+      //           bodiesArray.removeAt(j);
+      //           // if (j > 0) {
+      //           //   j = j - 1;
+      //           // }
+      //           break;
+      //         // }
+      //       }
+      //       // if (!unique) {}
+      //       newBody["gpu"] = newGPU;
+      //       newBody["model"] = newModel;
+      //       bodiesArray[j] = newBody;
+      //     }
+      //   }
+      // }
+      // ---- Debug soon
     }
     jsonObject["bodies"] = bodiesArray; // Add the bodies array to the jsonObject
   }
@@ -1659,6 +1697,7 @@ bool MPM::outputAppDataToJSON(QJsonObject &jsonObject) {
     // jsonObject["ApplicationData"] = dataObj;
 
     jsonObject["programFile"] = "fbar"; // <- ClaymoreUW MPM executable filename on remote machine. Can be changed depending on compiled optimizations, versions, digital twin, etc.
+    jsonObject["maxRunTime"] = "02:00:00"; // <- Maximum run time for the simulation, timeout if exceeded
     return true;
 }
 bool MPM::inputAppDataFromJSON(QJsonObject &jsonObject) {
@@ -1706,11 +1745,11 @@ bool MPM::copyFiles(QString &destDir) {
       qDebug() << "MPM - failed to copy bodies files";
       return false;
     }
-    if (mpmBoundaries->copyFiles(destDir) == false)
-    {
-      qDebug() << "MPM - failed to copy boundaries files";
-      return false;
-    }
+    // if (mpmBoundaries->copyFiles(destDir) == false)
+    // {
+    //   qDebug() << "MPM - failed to copy boundaries files";
+    //   return false;
+    // }
     if (mpmSensors->copyFiles(destDir) == false)
     {
       qDebug() << "MPM - failed to copy sensors files";
