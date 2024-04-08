@@ -311,6 +311,33 @@ BodiesMPM::BodiesMPM(QWidget *parent)
     addedGeometries[i]->setBodyPreset(3);
   }
 
+  // Set initial algorithm preset
+  fluidAlgorithm->enableASFLIP(true);
+  fluidAlgorithm->setASFLIP_alpha(0.0);
+  fluidAlgorithm->setASFLIP_betaMin(0.0);
+  fluidAlgorithm->setASFLIP_betaMax(0.0);
+  fluidAlgorithm->enableFBAR(true);
+  fluidAlgorithm->setFBAR_psi(0.9);
+  fluidAlgorithm->enableFBAR_fusedG2P2G(true);
+
+  debrisAlgorithm->enableASFLIP(true);
+  debrisAlgorithm->setASFLIP_alpha(0.0);
+  debrisAlgorithm->setASFLIP_betaMin(0.0);
+  debrisAlgorithm->setASFLIP_betaMax(0.0);
+  debrisAlgorithm->enableFBAR(true);
+  debrisAlgorithm->setFBAR_psi(0.0);
+  debrisAlgorithm->enableFBAR_fusedG2P2G(false);
+
+  structureAlgorithm->enableASFLIP(true);
+  structureAlgorithm->setASFLIP_alpha(0.0);
+  structureAlgorithm->setASFLIP_betaMin(0.0);
+  structureAlgorithm->setASFLIP_betaMax(0.0);
+  structureAlgorithm->enableFBAR(true);
+  structureAlgorithm->setFBAR_psi(0.0);
+  structureAlgorithm->enableFBAR_fusedG2P2G(false);
+  
+
+
   // Set initial partition preset
   // TODO: Better distribute bodies as models across GPUs to allow for more bodies (i.e. 4+), as most are on just 1-2 GPUs and leave empty slots. 
   // TODO: Also guarantee no empty model ID slots on a GPU or ClaymoreUW will crash
@@ -338,9 +365,14 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   fluidPartitions->addPartition(1,0);    // GPU 1 : Model 0
   fluidPartitions->addPartition(2,0);    // GPU 2 : Model 0
   {
-    double fluidOrigin[3] = {1.9, 0.0, 0.0};
-    double fluidDimensions[3] = {90.0, 3.0, 3.65};
-    fluidPartitions->balance(fluidOrigin, fluidDimensions);  // Balance partitions, i.e. decompose the geometry at equal volume for each partition (no-overlap)
+    double trueOrigin[3] = {0.0, 0.0, 0.0};
+    double flumeOrigin[3] = {1.9, 0.0, 0.0};
+    double flumeDimensions[3] = {90.0, 2.9, 3.6}; 
+     // Balance partitions, i.e. decompose the geometry at equal volume for each partition (no-overlap)
+    fluidPartitions->balance(flumeOrigin, flumeDimensions);
+    debrisPartitions->balance(flumeOrigin, flumeDimensions); 
+    // fluidPartitions->constrainPartitionWithin(trueOrigin, flumeDimensions);
+    // debrisPartitions->constrainPartitionWithin(trueOrigin, flumeDimensions); 
   }
   // Do the same for custom body partitions with a loop
   for (int i=0; i<numAddedTabs; i++) {
@@ -348,6 +380,7 @@ BodiesMPM::BodiesMPM(QWidget *parent)
     addedPartitions[i]->setDefaultModelID(i+(numDefaultTabs-1));
     addedPartitions[i]->setModel(i+(numDefaultTabs-1)); 
     addedPartitions[i]->setModel(i+(numDefaultTabs-1));
+    double trueOrigin[3] = {0.0, 0.0, 0.0};
   }
 
 }

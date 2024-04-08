@@ -67,7 +67,26 @@ public:
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
-  
+
+    void enableFBAR (bool isChecked);
+    void enableASFLIP (bool isChecked);
+    void enableFBAR_fusedG2P2G (bool isChecked);
+
+    void disableFBAR (bool isChecked);
+    void disableASFLIP (bool isChecked);
+    void disableFBAR_fusedG2P2G (bool isChecked);
+
+    void setFBAR_psi (double psi);
+    void setASFLIP_alpha (double alpha);
+    void setASFLIP_betaMin (double betaMin);
+    void setASFLIP_betaMax (double betaMax);
+
+    double getFBAR_psi();
+    double getASFLIP_alpha();
+    double getASFLIP_betaMin();
+    double getASFLIP_betaMax();
+    // void setFBAR_fusedG2P2G (bool isChecked);
+
 signals:
 
 private:

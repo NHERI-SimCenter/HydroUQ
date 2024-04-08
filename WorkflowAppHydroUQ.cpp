@@ -107,6 +107,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <coupledDigitalTwin/CoupledDigitalTwin.h>
 #include <MPM/MPM.h>
 #include <MPM/SPH.h>
+#include <Celeris/Celeris.h>
+#include <Celeris/WebGPU.h>
+#include <NOAA/DigitalCoast.h>
+
 // static pointer for global procedure set in constructor
 static WorkflowAppHydroUQ *theApp = 0;
 
@@ -337,35 +341,35 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     // Add standalone events to tools menu
     //
 
-    GeoClawOpenFOAM *theGeoClaw = new GeoClawOpenFOAM(theRVs);
-    QString appNameGeoClaw = "simcenter-openfoam-frontera-1.0.0u6";
-    QList<QString> queuesGeoClaw; queuesGeoClaw << "normal" << "fast";
-    SC_RemoteAppTool *theGeoClawTool = new SC_RemoteAppTool(appNameGeoClaw, queuesGeoClaw, theRemoteService, theGeoClaw, theToolDialog);
-    theToolDialog->addTool(theGeoClawTool, "GeoClaw OpenFOAM");
-    QAction *showGeoClaw = toolsMenu->addAction("GeoClaw (&OpenFOAM)");
-    connect(showGeoClaw, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theGeoClawTool] {
-        theDialog->showTool("GeoClaw OpenFOAM");
-    });
+    // GeoClawOpenFOAM *theGeoClaw = new GeoClawOpenFOAM(theRVs);
+    // QString appNameGeoClaw = "simcenter-openfoam-frontera-1.0.0u6";
+    // QList<QString> queuesGeoClaw; queuesGeoClaw << "normal" << "fast";
+    // SC_RemoteAppTool *theGeoClawTool = new SC_RemoteAppTool(appNameGeoClaw, queuesGeoClaw, theRemoteService, theGeoClaw, theToolDialog);
+    // theToolDialog->addTool(theGeoClawTool, "GeoClaw OpenFOAM");
+    // QAction *showGeoClaw = toolsMenu->addAction("GeoClaw (&OpenFOAM)");
+    // connect(showGeoClaw, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theGeoClawTool] {
+    //     theDialog->showTool("GeoClaw OpenFOAM");
+    // });
 
-    WaveDigitalFlume *theFlume = new WaveDigitalFlume(theRVs);
-    QString appNameFlume =  "simcenter-openfoam-frontera-1.0.0u6";
-    QList<QString> queuesFlume; queuesFlume << "normal" << "fast";
-    SC_RemoteAppTool *theFlumeTool = new SC_RemoteAppTool(appNameFlume, queuesFlume, theRemoteService, theFlume, theToolDialog);
-    theToolDialog->addTool(theFlumeTool, "Wave Digital Flume");
-    QAction *showFlume = toolsMenu->addAction("Wave Digital (&Flume)");
-    connect(showFlume, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theFlumeTool] {
-        theDialog->showTool("Wave Digital Flume");
-    });
+    // WaveDigitalFlume *theFlume = new WaveDigitalFlume(theRVs);
+    // QString appNameFlume =  "simcenter-openfoam-frontera-1.0.0u6";
+    // QList<QString> queuesFlume; queuesFlume << "normal" << "fast";
+    // SC_RemoteAppTool *theFlumeTool = new SC_RemoteAppTool(appNameFlume, queuesFlume, theRemoteService, theFlume, theToolDialog);
+    // theToolDialog->addTool(theFlumeTool, "Wave Digital Flume");
+    // QAction *showFlume = toolsMenu->addAction("Wave Digital (&Flume)");
+    // connect(showFlume, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theFlumeTool] {
+    //     theDialog->showTool("Wave Digital Flume");
+    // });
 
-    CoupledDigitalTwin *theCDT = new CoupledDigitalTwin();
-    QString appNameCDT = "simcenter-openfoam-frontera-1.0.0u6"; // u3
-    QList<QString> queuesCDT; queuesCDT << "normal" << "fast";
-    SC_RemoteAppTool *theCDTTool = new SC_RemoteAppTool(appNameCDT, queuesCDT, theRemoteService, theCDT, theToolDialog);
-    theToolDialog->addTool(theCDTTool, "Digital Twin (OpenFOAM + OpenSees)");
-    QAction *showCDT = toolsMenu->addAction("Digital Twin (&OpenFOAM + OpenSees)");
-    connect(showCDT, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theCDTTool] {
-        theDialog->showTool("Digital Twin (OpenFOAM + OpenSees)");
-    });  
+    // CoupledDigitalTwin *theCDT = new CoupledDigitalTwin();
+    // QString appNameCDT = "simcenter-openfoam-frontera-1.0.0u6"; // u3
+    // QList<QString> queuesCDT; queuesCDT << "normal" << "fast";
+    // SC_RemoteAppTool *theCDTTool = new SC_RemoteAppTool(appNameCDT, queuesCDT, theRemoteService, theCDT, theToolDialog);
+    // theToolDialog->addTool(theCDTTool, "Digital Twin (OpenFOAM + OpenSees)");
+    // QAction *showCDT = toolsMenu->addAction("Digital Twin (&OpenFOAM + OpenSees)");
+    // connect(showCDT, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theCDTTool] {
+    //     theDialog->showTool("Digital Twin (OpenFOAM + OpenSees)");
+    // });  
 
 
     // MPM *miniMPM = new MPM(); 
@@ -375,13 +379,53 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     }
     QString appName =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6
     QString systemName = "lonestar6-gpu";
-    QList<QString> queues; queues << "gpu-a100-dev" << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog, systemName);
+    QList<QString> queues; queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
     theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");
     QAction *showMPM = toolsMenu->addAction("Digital Twin (&MPM)");
     connect(showMPM, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniMPMTool] {
         theDialog->showTool("Digital Twin (MPM)");
     });
+
+
+    // DigitalCoast *miniDC = new DigitalCoast();
+    // QString appNameDC =  "DigitalCoast-1.0.0"; // Frontera
+    // QString systemNameDC = "frontera";
+    // QList<QString> queuesDC; queuesDC << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    // SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, queuesDC, theRemoteService, miniDC, theToolDialog, systemNameDC);
+    // theToolDialog->addTool(miniDCTool, "Sea-Level Rise (NOAA Digital Coast)");
+    // QAction *showDC = toolsMenu->addAction("Sea-Level Rise (&NOAA Digital Coast)");
+    // connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
+    //     theDialog->showTool("Sea-Level Rise (NOAA Digital Coast)");
+    // });
+
+
+
+    // Celeris *miniCeleris = new Celeris();
+    // QString appNameCeleris =  "Celeris-1.0.0"; // Frontera
+    // QString systemNameCeleris = "frontera";
+    // QList<QString> queuesCeleris; queuesCeleris << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    // SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appNameCeleris, queuesCeleris, theRemoteService, miniCeleris, theToolDialog, systemNameCeleris);
+    // theToolDialog->addTool(miniCelerisTool, "Boussinesq Waves (Celeris)");
+    // QAction *showCeleris = toolsMenu->addAction("Boussinesq Waves (&Celeris)");
+    // connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
+    //     theDialog->showTool("Boussinesq Waves (Celeris)");
+    // });
+
+
+    // WebGPU *miniWebGPU = new WebGPU();
+    // QString appNameWebGPU =  "WebGPU-1.0.0"; // Frontera
+    // QString systemNameWebGPU = "frontera";
+    // QList<QString> queuesWebGPU; queuesWebGPU << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    // SC_RemoteAppTool *miniWebGPUTool = new SC_RemoteAppTool(appNameWebGPU, queuesWebGPU, theRemoteService, miniWebGPU, theToolDialog, systemNameWebGPU);
+    // theToolDialog->addTool(miniWebGPUTool, "Trouble-Shoot WebGPU (Hardware Acceleration)");
+    // QAction *showWebGPU = toolsMenu->addAction("Trouble-Shoot &WebGPU (Hardware Acceleration)");
+    // connect(showWebGPU, &QAction::triggered, this,[this, theDialog=theToolDialog, miniW = miniWebGPUTool] {
+    //     theDialog->showTool("Trouble-Shoot WebGPU (Hardware Acceleration)");
+    // });
+
+
+
 
     /*
     RemoteAppTest *theTest = new RemoteAppTest();
@@ -933,6 +977,7 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
 
     if (hasMPMEvent) 
     {
+        QMap<QString, QString> extraParameters;
         // Adding extra job inputs for MPM
         // QMap<QString, QString> extraInputs;
         // if(eventAppData.contains("MPMCase"))
@@ -940,7 +985,6 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
         // remoteApplication->setExtraInputs(extraInputs);
 
         // Adding extra job parameters for MPM, already has "driverFile", "errorFile", "inputFile", "outputFile"
-        QMap<QString, QString> extraParameters;
         if (eventAppData.contains("programFile")) {
             qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'programFile' to parameters: " << eventAppData["programFile"].toString();
             extraParameters.insert("programFile", eventAppData["programFile"].toString());
@@ -949,8 +993,24 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
             qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'programFile' to parameters: " << defaultProgramFile;
             extraParameters.insert("programFile", defaultProgramFile);
         }
+        if (eventAppData.contains("maxRunTime")) {
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'maxRunTime' to parameters: " << eventAppData["maxRunTime"].toString();
+            extraParameters.insert("maxRunTime", eventAppData["maxRunTime"].toString());
+        } else {
+            auto defaultMaxRunTime = "02:00:00";
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'maxRunTime' to parameters: " << defaultMaxRunTime;
+            extraParameters.insert("maxRunTime", defaultMaxRunTime);  // Include max run time for MPM application, TODO: move into the remote application class so we may set it through the pop-up remote app window
+        }
         remoteApplication->setExtraParameters(extraParameters);
-    }
+
+        // else {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - No MPM Event found in Events, continuing";
+        //     QMap<QString, QString> extraParameters;
+        //     auto defaultMaxRunTime = "02:00:00";
+        //     extraParameters.insert("maxRunTime", defaultMaxRunTime);  // Include max run time for MPM application, TODO: move into the remote application class so we may set it through the pop-up remote app window
+        //     remoteApplication->setExtraParameters(extraParameters);
+        // }
+    } 
 
     if (hasCFDEvent)
     {
