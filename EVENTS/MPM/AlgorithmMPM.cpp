@@ -290,8 +290,43 @@ AlgorithmMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 AlgorithmMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  // theOpenSeesPyScript->inputFromJSON(jsonObject);
-  // theSurfaceFile->inputFromJSON(jsonObject);    
+
+
+  if (jsonObject.contains("algorithm")) {
+    QJsonObject algorithmObject = jsonObject["algorithm"].toObject();
+    if (algorithmObject.contains("type")) {
+      QString type = algorithmObject["type"].toString();
+      int index = numericalMethod->findText(type);
+      if (index != -1) {
+        numericalMethod->setCurrentIndex(index);
+      }
+    }
+    if (algorithmObject.contains("ppc")) {
+      particlesPerCell->setText(QString::number(algorithmObject["ppc"].toDouble()));
+    }
+    if (algorithmObject.contains("use_ASFLIP")) {
+      useASFLIP->setChecked(algorithmObject["use_ASFLIP"].toBool());
+    }
+    if (algorithmObject.contains("use_FBAR")) {
+      useFBAR->setChecked(algorithmObject["use_FBAR"].toBool());
+    }
+    if (algorithmObject.contains("FBAR_fused_kernel")) {
+      useFBAR_fusedG2P2G->setChecked(algorithmObject["FBAR_fused_kernel"].toBool());
+    }
+    if (algorithmObject.contains("ASFLIP_alpha")) {
+      ASFLIP_alpha->setText(QString::number(algorithmObject["ASFLIP_alpha"].toDouble()));
+    }
+    if (algorithmObject.contains("ASFLIP_beta_min")) {
+      ASFLIP_betaMin->setText(QString::number(algorithmObject["ASFLIP_beta_min"].toDouble()));
+    }
+    if (algorithmObject.contains("ASFLIP_beta_max")) {
+      ASFLIP_betaMax->setText(QString::number(algorithmObject["ASFLIP_beta_max"].toDouble()));
+    }
+    if (algorithmObject.contains("FBAR_psi")) {
+      FBAR_psi->setText(QString::number(algorithmObject["FBAR_psi"].toDouble()));
+    }
+  }
+
   return true;
 }
 
@@ -303,4 +338,66 @@ AlgorithmMPM::copyFiles(QString &destDir)
   // return theSurfaceFile->copyFile(destDir);    
   return true;
 }
+
+void AlgorithmMPM::enableFBAR(bool isChecked = true) {
+  useFBAR->setChecked(isChecked);
+}
+
+void AlgorithmMPM::enableASFLIP(bool isChecked = true) {
+  useASFLIP->setChecked(isChecked);
+}
+
+void AlgorithmMPM::enableFBAR_fusedG2P2G(bool isChecked = true) {
+  useFBAR_fusedG2P2G->setChecked(isChecked);
+}
+
+void AlgorithmMPM::disableFBAR(bool isChecked = true) {
+  useFBAR->setChecked(!isChecked);
+}
+
+void AlgorithmMPM::disableASFLIP(bool isChecked = true) {
+  useASFLIP->setChecked(!isChecked);
+}
+
+void AlgorithmMPM::disableFBAR_fusedG2P2G(bool isChecked = true) {
+  useFBAR_fusedG2P2G->setChecked(!isChecked);
+}
+
+
+void AlgorithmMPM::setFBAR_psi(double psi = 0.0) {
+  psi = (psi < 0.0) ? 0.0 : (psi > 1.0) ? 1.0 : psi;
+  FBAR_psi->setText(QString::number(psi));
+}
+
+void AlgorithmMPM::setASFLIP_alpha(double alpha = 0.0) {
+  alpha = (alpha < 0.0) ? 0.0 : (alpha > 1.0) ? 1.0 : alpha;
+  ASFLIP_alpha->setText(QString::number(alpha));
+}
+
+void AlgorithmMPM::setASFLIP_betaMin(double betaMin = 0.0) {
+  betaMin = (betaMin < 0.0) ? 0.0 : (betaMin > ASFLIP_betaMax->text().toDouble()) ? ASFLIP_betaMax->text().toDouble() : betaMin;
+  ASFLIP_betaMin->setText(QString::number(betaMin));
+}
+
+void AlgorithmMPM::setASFLIP_betaMax(double betaMax = 0.0) {
+  betaMax = (betaMax < ASFLIP_betaMin->text().toDouble()) ? ASFLIP_betaMin->text().toDouble() : (betaMax > 1.0) ? 1.0 : betaMax;
+  ASFLIP_betaMax->setText(QString::number(betaMax));
+}
+
+double AlgorithmMPM::getFBAR_psi() {
+  return FBAR_psi->text().toDouble();
+}
+
+double AlgorithmMPM::getASFLIP_alpha() {
+  return ASFLIP_alpha->text().toDouble();
+}
+
+double AlgorithmMPM::getASFLIP_betaMin() {
+  return ASFLIP_betaMin->text().toDouble();
+}
+
+double AlgorithmMPM::getASFLIP_betaMax() {
+  return ASFLIP_betaMax->text().toDouble();
+}
+
 

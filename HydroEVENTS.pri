@@ -7,6 +7,8 @@ INCLUDEPATH += $$PWD/EVENTS/GeoClawOpenFOAM
 INCLUDEPATH += $$PWD/EVENTS/WaveDigitalFlume
 INCLUDEPATH += $$PWD/EVENTS/coupledDigitalTwin
 INCLUDEPATH += $$PWD/EVENTS/MPM
+INCLUDEPATH += $$PWD/EVENTS/Celeris
+INCLUDEPATH += $$PWD/EVENTS/NOAA
 INCLUDEPATH += $$PWD/EVENTS/Common
 INCLUDEPATH += $$PWD/SlidingStackedWidget
 SOURCES += \
@@ -56,6 +58,9 @@ SOURCES += \
     $$PWD/EVENTS/MPM/SPH.cpp \
     $$PWD/EVENTS/MPM/CaseSPH.cpp \
     $$PWD/EVENTS/MPM/ExecutionSPH.cpp \
+    $$PWD/EVENTS/Celeris/Celeris.cpp \
+    $$PWD/EVENTS/Celeris/WebGPU.cpp \
+    $$PWD/EVENTS/NOAA/DigitalCoast.cpp \
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.cpp \
     $$PWD/EVENTS/Common/projectsettings.cpp \
     $$PWD/EVENTS/Common/bathymetry.cpp
@@ -108,6 +113,9 @@ HEADERS += \
     $$PWD/EVENTS/MPM/SPH.h \
     $$PWD/EVENTS/MPM/CaseSPH.h \
     $$PWD/EVENTS/MPM/ExecutionSPH.h \
+    $$PWD/EVENTS/Celeris/Celeris.h \
+    $$PWD/EVENTS/Celeris/WebGPU.h \
+    $$PWD/EVENTS/NOAA/DigitalCoast.h \
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.h \
     $$PWD/EVENTS/Common/projectsettings.h \
     $$PWD/EVENTS/Common/bathymetry.h \

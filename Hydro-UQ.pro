@@ -11,7 +11,8 @@ include($$OUT_PWD/conanbuildinfo.pri)
 
 QT += core gui charts concurrent network qml svg
 QT += printsupport opengl widgets webenginewidgets
-QT += webchannel webenginewidgets
+QT += webchannel webenginewidgets 
+#QT += webkit webkitwidgets
 QT += 3dcore 3drender 3dextras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets 
