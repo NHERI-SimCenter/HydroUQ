@@ -263,7 +263,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     // Make sideBarIconFrame match the style of theComponentSelection
     sideBarIconFrame->setFixedWidth(50);
     sideBarIconFrame->setMinimumHeight(600);
-    sideBarIconFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    sideBarIconFrame->setSizenPolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
     // Create a layout to hold the frame
     QVBoxLayout *wrapperVerticalIconLayout = new QVBoxLayout();
@@ -341,52 +341,21 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     // Add standalone events to tools menu
     //
 
-    // GeoClawOpenFOAM *theGeoClaw = new GeoClawOpenFOAM(theRVs);
-    // QString appNameGeoClaw = "simcenter-openfoam-frontera-1.0.0u6";
-    // QList<QString> queuesGeoClaw; queuesGeoClaw << "normal" << "fast";
-    // SC_RemoteAppTool *theGeoClawTool = new SC_RemoteAppTool(appNameGeoClaw, queuesGeoClaw, theRemoteService, theGeoClaw, theToolDialog);
-    // theToolDialog->addTool(theGeoClawTool, "GeoClaw OpenFOAM");
-    // QAction *showGeoClaw = toolsMenu->addAction("GeoClaw (&OpenFOAM)");
-    // connect(showGeoClaw, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theGeoClawTool] {
-    //     theDialog->showTool("GeoClaw OpenFOAM");
-    // });
-
-    // WaveDigitalFlume *theFlume = new WaveDigitalFlume(theRVs);
-    // QString appNameFlume =  "simcenter-openfoam-frontera-1.0.0u6";
-    // QList<QString> queuesFlume; queuesFlume << "normal" << "fast";
-    // SC_RemoteAppTool *theFlumeTool = new SC_RemoteAppTool(appNameFlume, queuesFlume, theRemoteService, theFlume, theToolDialog);
-    // theToolDialog->addTool(theFlumeTool, "Wave Digital Flume");
-    // QAction *showFlume = toolsMenu->addAction("Wave Digital (&Flume)");
-    // connect(showFlume, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theFlumeTool] {
-    //     theDialog->showTool("Wave Digital Flume");
-    // });
-
-    // CoupledDigitalTwin *theCDT = new CoupledDigitalTwin();
-    // QString appNameCDT = "simcenter-openfoam-frontera-1.0.0u6"; // u3
-    // QList<QString> queuesCDT; queuesCDT << "normal" << "fast";
-    // SC_RemoteAppTool *theCDTTool = new SC_RemoteAppTool(appNameCDT, queuesCDT, theRemoteService, theCDT, theToolDialog);
-    // theToolDialog->addTool(theCDTTool, "Digital Twin (OpenFOAM + OpenSees)");
-    // QAction *showCDT = toolsMenu->addAction("Digital Twin (&OpenFOAM + OpenSees)");
-    // connect(showCDT, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theCDTTool] {
-    //     theDialog->showTool("Digital Twin (OpenFOAM + OpenSees)");
-    // });  
-
-
     // MPM *miniMPM = new MPM(); 
     MPM *miniMPM = new MPM(theRVs); 
     if (!miniMPM->isInitialize()) { 
         miniMPM->initialize(); 
     }
+
     QString appName =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6
-    QString systemName = "lonestar6-gpu";
     QList<QString> queues; queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
     SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
+
     theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");
     QAction *showMPM = toolsMenu->addAction("Digital Twin (&MPM)");
     connect(showMPM, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniMPMTool] {
         theDialog->showTool("Digital Twin (MPM)");
     });
-
 
     // DigitalCoast *miniDC = new DigitalCoast();
     // QString appNameDC =  "DigitalCoast-1.0.0"; // Frontera
@@ -399,8 +368,6 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     //     theDialog->showTool("Sea-Level Rise (NOAA Digital Coast)");
     // });
 
-
-
     // Celeris *miniCeleris = new Celeris();
     // QString appNameCeleris =  "Celeris-1.0.0"; // Frontera
     // QString systemNameCeleris = "frontera";
@@ -411,7 +378,6 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     // connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
     //     theDialog->showTool("Boussinesq Waves (Celeris)");
     // });
-
 
     // WebGPU *miniWebGPU = new WebGPU();
     // QString appNameWebGPU =  "WebGPU-1.0.0"; // Frontera
@@ -438,6 +404,7 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         theDialog->showTool("Build and Run MPI Program");
     });  
     */
+
 
     //
     // Add Tools to menu bar
