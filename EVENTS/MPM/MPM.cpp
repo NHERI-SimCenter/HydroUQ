@@ -1137,6 +1137,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       updateBoundaryPaddlePosition();
       updateBoundaryPaddleSize();
     });
+    mainLayout->addWidget(updateBodiesButton, 3, 0);
 
 
 
@@ -1154,7 +1155,6 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     // -----------------------------------------------------------------------------------
 
-    mainLayout->addWidget(updateBodiesButton, 3, 0);
     mainLayout->addWidget(theTabWidget, 4, 0);
     mainGroup->setLayout(mainLayout);
     mainGroup->setMinimumWidth(windowWidthMin);
