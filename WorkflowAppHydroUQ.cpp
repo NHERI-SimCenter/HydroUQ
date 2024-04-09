@@ -139,14 +139,10 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theEDP_Selection = new HydroEDP_Selection(theRVs);
     theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity);
 
-    // theEDP_Selection = new EDP_Selection(theRVs);
     theResults = theUQ_Selection->getResults();
-    //theResults = new DakotaResultsSampling(theRVs);
 
     localApp = new LocalApplication("sWHALE.py");
     remoteApp = new RemoteApplication("sWHALE.py", theService);
-    // localApp = new LocalApplication("Hydro-UQ.py");
-    // remoteApp = new RemoteApplication("Hydro-UQ.py", theService);
 
     //QStringList filesToDownload; filesToDownload << "inputRWHALE.json" << "input_data.zip" << "Results.zip";
     theJobManager = new RemoteJobManager(theService);
@@ -347,7 +343,7 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         miniMPM->initialize(); 
     }
 
-    QString appName =  "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6
+    QString appName =  "simcenter-claymore-ls6-1.0.0u2"; // Lonestar6
     QList<QString> queues; queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
     SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
 
