@@ -129,6 +129,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // #include <SC_ToolDialog.h>
 // #include <SC_RemoteAppTool.h>
 
+// #include <QtSystemDetection>
+
 MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     :  SimCenterAppWidget(parent), theRandomVariablesContainer(theRandomVariableIW)
 {
@@ -411,11 +413,11 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
 
-#ifdef _WIN32
+#if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)
     // -----------------------------------------------------------------------------------
     // Create a 3D window and container widget and set the 3D window as its layout
     // Based on code by Alex44, 2018; https://stackoverflow.com/questions/23231012/how-to-render-in-qt3d-in-standard-gui-application)
-#ifdef _WIN32
+
     auto rootEntity = new Qt3DCore::QEntity();
     auto view = new Qt3DExtras::Qt3DWindow();
     QWidget *container = QWidget::createWindowContainer(view);
@@ -1167,17 +1169,27 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     horizontalPanelLayout->addWidget(scrollArea);
 
     // horizontalPanelLayout->addWidget(visualizationGroup);
-#ifdef _WIN32
+// #ifdef _WIN32
+#if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)
     horizontalPanelLayout->addWidget(container);
+#endif
+    // QVBoxLayout *layout = new QVBoxLayout();
+    // mainWindowLayout->addWidget(scrollArea);
+    // mainWindowLayout->addWidget(updateBodiesButton);
+    // mainWindowLayout->addWidget(container);
+    mainWindowLayout->addWidget(horizontalPanels);
+    this->setLayout(mainWindowLayout);
 
     connect(stackedWidget, &SlidingStackedWidget::animationFinished, [=](void){
       int index = stackedWidget->currentIndex();
       mpmBodies->setDigitalTwin(index);
       mpmBoundaries->setDigitalTwin(index);
+// #ifdef _WIN32
+#if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)
       updateDigitalTwin(index);
+#endif
     });
     
-#endif
 
     // QVBoxLayout *layout = new QVBoxLayout();
     // mainWindowLayout->addWidget(scrollArea);
