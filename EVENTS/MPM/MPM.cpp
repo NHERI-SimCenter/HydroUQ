@@ -413,7 +413,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
 
-#if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)
+
+#ifdef _WIN32
+    //#if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)    
     // -----------------------------------------------------------------------------------
     // Create a 3D window and container widget and set the 3D window as its layout
     // Based on code by Alex44, 2018; https://stackoverflow.com/questions/23231012/how-to-render-in-qt3d-in-standard-gui-application)
@@ -1169,8 +1171,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     horizontalPanelLayout->addWidget(scrollArea);
 
     // horizontalPanelLayout->addWidget(visualizationGroup);
-// #ifdef _WIN32
-#if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)
+#ifdef _WIN32
+    //#if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)
     horizontalPanelLayout->addWidget(container);
 #endif
     // QVBoxLayout *layout = new QVBoxLayout();
@@ -1184,8 +1186,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       int index = stackedWidget->currentIndex();
       mpmBodies->setDigitalTwin(index);
       mpmBoundaries->setDigitalTwin(index);
-// #ifdef _WIN32
-#if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)
+#ifdef _WIN32
+      // #if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)
       updateDigitalTwin(index);
 #endif
     });
