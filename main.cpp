@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
     w.setVersion(version);
 
     // Citation
-    QString citeText("1) Ajay B Harish, Frank McKenna, Justin Bonus. (2024, January). NHERI-SimCenter/HydroUQ: Version 3.0.0 (Version v3.0.0). Zenodo. http://doi.org/10.5281/zenodo.4731074\n\n 2) Deierlein GG, McKenna F, Zsarnóczay A, Kijewski-Correa T, Kareem A, Elhaddad W, Lowes L, Schoettler MJ and Govindjee S (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Front. Built Environ. 6:558706. doi: 10.3389/fbuil.2020.558706");
+    QString citeText("1) Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.1.0 (v3.1.0). Zenodo. https://doi.org/10.5281/zenodo.10902090 \n\n 2) Deierlein GG, McKenna F, Zsarnóczay A, Kijewski-Correa T, Kareem A, Elhaddad W, Lowes L, Schoettler MJ and Govindjee S (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Front. Built Environ. 6:558706. doi: 10.3389/fbuil.2020.558706");
     w.setCite(citeText);
 
     // Link to repository
@@ -202,23 +202,22 @@ int main(int argc, char *argv[])
         qDebug() << "could not open stylesheet";
     }
 
-
+    /* *****************************************************************
     //Setting Google Analytics Tracking Information
-    //GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
-    //GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
+    GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
+    GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
     GoogleAnalytics::SetMeasurementId("G-SQHRGYDZ0H");
     GoogleAnalytics::SetAPISecret("SCg4ry-WRee780Oen2WBUA");
     GoogleAnalytics::CreateSessionId();
     GoogleAnalytics::StartSession();
 
-    // /************** TRY LATER
     // Opening a QWebEngineView and using github to get app geographic usage
     QWebEngineView view;
     view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
     view.resize(1024, 750);
     view.show();
     view.hide();
-    // ************************/    
+    ******************************************************************* */
     
     // Result of execution
     int res = a.exec();
