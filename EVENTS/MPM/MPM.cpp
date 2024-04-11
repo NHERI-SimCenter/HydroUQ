@@ -415,12 +415,10 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
 
 // #ifdef _WIN32
-// Only allow 3D visualization on Windows and Linux for now, Mac had issues with Qt3D 
-// Try to check the most reliable set of preprocessor definitions to detect the OS on common OS
-// https://stackoverflow.com/questions/5919996/how-to-detect-reliably-mac-os-x-ios-linux-windows-in-c-preprocessor
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__) || defined(__linux__) || defined(__linux) || defined(__unix__) || defined(__unix)  
-// Qts definitions are not very reliable
-//#if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)    
+#if defined(_WIN32) || defined(__linux__)
+    // Only allow 3D visualization on Windows and Linux for now, Mac had issues with Qt3D 
+    // Try to check the most reliable set of preprocessor definitions to detect the OS on common OS
+    // https://stackoverflow.com/questions/5919996/how-to-detect-reliably-mac-os-x-ios-linux-windows-in-c-preprocessor
     // -----------------------------------------------------------------------------------
     // Create a 3D window and container widget and set the 3D window as its layout
     // Based on code by Alex44, 2018; https://stackoverflow.com/questions/23231012/how-to-render-in-qt3d-in-standard-gui-application)
@@ -1177,7 +1175,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     // horizontalPanelLayout->addWidget(visualizationGroup);
 // #ifdef _WIN32
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__) || defined(__linux__) || defined(__linux) || defined(__unix__) || defined(__unix)  
+#if defined(_WIN32) || defined(__linux__)
     horizontalPanelLayout->addWidget(container);
 #endif
     // QVBoxLayout *layout = new QVBoxLayout();
@@ -1192,7 +1190,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       mpmBodies->setDigitalTwin(index);
       mpmBoundaries->setDigitalTwin(index);
 // #ifdef _WIN32
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__) || defined(__linux__) || defined(__linux) || defined(__unix__) || defined(__unix)  
+#if defined(_WIN32) || defined(__linux__)
       updateDigitalTwin(index);
 #endif
     });
