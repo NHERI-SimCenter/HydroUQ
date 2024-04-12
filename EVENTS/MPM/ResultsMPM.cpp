@@ -42,6 +42,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "ResultsMPM.h"
 #include "MPM.h"
+#include <ZipUtils/ZipUtils.h>
+
 #include <GeneralInformationWidget.h>
 #include <RandomVariablesContainer.h>
 #include <LineEditRV.h>
@@ -531,8 +533,11 @@ ResultsMPM::onPlotPressureClicked(void)
                 zipPath = SimCenterPreferences::getInstance()->getRemoteAppDir() + QDir::separator() 
                             + "results.zip";
             }
+
             if (QFileInfo::exists(zipPath))
             {
+	      ZipUtils::UnzipFile(zipPath, plotDir);
+	      /* ***************************************************************************************************************
                 QString program = "tar";
                 QStringList arguments;
                 // Extract results.zip file from zipPath (either in the GUI set caseDir/output/{'','sensors','results}, variants in brackets, or in RemoteWorkDir when retrieving run from DesignSafe. Extract to plotDir
@@ -554,8 +559,9 @@ ResultsMPM::onPlotPressureClicked(void)
                     qDebug() << "ResultsMPM::onPlotPressureClicked - The unzip process has finished running with an unknown exit status.";
                 }
                 process->deleteLater();
-            }
-            
+	      ********************************************************************************************* */
+	    }
+	    
             QString plotPath = mainModel->caseDir() + QDir::separator() 
                                 + "output" + QDir::separator()
                                 + intermediateFolder + QDir::separator() 
@@ -723,6 +729,9 @@ ResultsMPM::plotSensors(MPM* host)
 
         if (QFileInfo::exists(zipPath))
         {
+	  ZipUtils::UnzipFile(zipPath, plotDir);
+	  
+	  /* **********************************************************************************************
             QString program = "tar"; // "unzip"; // TODO: consider cross-platform compatibility.
             QStringList arguments;
             // Extract results.zip file from zipPath (either in the GUI set caseDir/output/{'','sensors','results}, variants in brackets, or in RemoteWorkDir when retrieving run from DesignSafe. Extract to plotDir
@@ -747,6 +756,8 @@ ResultsMPM::plotSensors(MPM* host)
                 qDebug() << "ResultsMPM::plotSensors - The unzip process has finished running with an unknown exit status.";
             }
             process->deleteLater();
+	    ********************************************************************************************************************** */
+	  
         } else {
             qDebug () << "ERROR - ResultsMPM::plotSensors - Cannot find the results.zip file in the checked directory: " << plotDir;
         }
