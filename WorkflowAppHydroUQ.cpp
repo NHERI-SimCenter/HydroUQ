@@ -343,8 +343,16 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         miniMPM->initialize(); 
     }
 
-    QString appName =  "simcenter-claymore-ls6-1.0.0u2"; // Lonestar6
-    QList<QString> queues; queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    const bool DEV_MODE = false; // Set to true for development mode, false for production mode
+    QString appName;
+    QList<QString> queues; 
+    if (DEV_MODE) {
+        appName = "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6 dev app for ClaymoreUW MPM, Justin Bonus (bonusj) 
+        queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    } else  {
+        appName =  "simcenter-claymore-ls6-1.0.0u2"; // Lonestar6 public app for ClaymoreUW MPM
+        queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    }
     SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
 
     theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");

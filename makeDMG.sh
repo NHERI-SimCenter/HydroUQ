@@ -188,5 +188,5 @@ echo "xcrun notarytool submit ./$DMG_FILENAME --apple-id $appleID --password $ap
 echo "xcrun notarytool log ID --apple-id $appleID --team-id $appleCredential  --password $appleAppPAssword"
 echo ""
 echo "Finally staple the dmg"
-
 echo "xcrun stapler staple \"$APP_NAME\" $DMG_FILENAME"
+
