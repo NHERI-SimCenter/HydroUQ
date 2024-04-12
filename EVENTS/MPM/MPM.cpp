@@ -1706,7 +1706,7 @@ bool MPM::outputAppDataToJSON(QJsonObject &jsonObject) {
     // jsonObject["ApplicationData"] = dataObj;
 
     jsonObject["programFile"] = "fbar"; // <- ClaymoreUW MPM executable filename on remote machine. Can be changed depending on compiled optimizations, versions, digital twin, etc.
-    jsonObject["maxRunTime"] = "01:02:03"; // <- Maximum run time for the simulation, timeout if exceeded
+    jsonObject["maxRunTime"] = "24:00:00"; // <- Maximum run time for the simulation, timeout if exceeded
     return true;
 }
 bool MPM::inputAppDataFromJSON(QJsonObject &jsonObject) {
