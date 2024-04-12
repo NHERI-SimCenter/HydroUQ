@@ -491,29 +491,87 @@ ResultsMPM::onPlotPressureClicked(void)
 {
     int dialogHeight = 450;
     int dialogWidth = 850;
-
     QVBoxLayout *plotLayout = new QVBoxLayout();
-
     QWebEngineView *plotView = new QWebEngineView();
     plotView->page()->setBackgroundColor(Qt::transparent);
     plotLayout->addWidget(plotView);
-
     plotView->setMinimumWidth(dialogWidth);
     plotView->setMinimumHeight(dialogHeight);
 
-    QString ext = ".webp";
-    QString plotPath = mainModel->caseDir() + QDir::separator() 
-                        + "output" + QDir::separator() 
-                        + profileNameP->currentText() 
-                        + ext;
+    QString ext = ".png";
+    for (int i=0; i<2; ++i) {
+        if (i == 0) ext = ".webp";
+        if (i == 1) ext = ".html";
+        QString intermediateFolder = "";
+        for (int j=0; j<3; ++j)
+        {
+            if (j == 0) intermediateFolder = "";
+            if (j == 1) intermediateFolder = "sensors";
+            if (j == 2) intermediateFolder = "results";
+            if (j == 3) intermediateFolder = ""; // TODO: Just use the preferences for this.
+            
+            QString plotDir = mainModel->caseDir() + QDir::separator() 
+                                + "output" + QDir::separator()
+                                + intermediateFolder + QDir::separator();
+            // If directory doesn't exist then skip to the next one.
+            if (!QDir(plotDir).exists())
+            {
+                qDebug() << "ResultsMPM::onPlotPressureClicked - Checked for results.zip in " << plotDir << ", but folder does not exist. Skipping...";
+                continue;
+            }
 
-    if(QFileInfo::exists(plotPath))
-    {
-        plotView->load(QUrl::fromLocalFile(plotPath));
-        plotView->setWindowFlag(Qt::WindowStaysOnTopHint);
-        plotView->show();
-        plotView->activateWindow();
-        plotView->raise();
+            QString zipPath = mainModel->caseDir() + QDir::separator() 
+                            + "output" + QDir::separator()
+                            + intermediateFolder + QDir::separator() 
+                            + "results.zip";
+
+            if (j == 3)
+            {
+                // Remoteworkdir
+                zipPath = SimCenterPreferences::getInstance()->getRemoteAppDir() + QDir::separator() 
+                            + "results.zip";
+            }
+            if (QFileInfo::exists(zipPath))
+            {
+                QString program = "tar";
+                QStringList arguments;
+                // Extract results.zip file from zipPath (either in the GUI set caseDir/output/{'','sensors','results}, variants in brackets, or in RemoteWorkDir when retrieving run from DesignSafe. Extract to plotDir
+                arguments << "-xzf" << zipPath << "-c" << plotDir; 
+                QProcess *process = new QProcess();
+                process->start(program, arguments);
+                process->waitForStarted(); 
+                process->waitForFinished(-1);
+                if (process->exitStatus() == QProcess::CrashExit)
+                {
+                    qDebug() << "ResultsMPM::onPlotPressureClicked - The unzip process has crashed.";
+                } 
+                else if (process->exitStatus() == QProcess::NormalExit)
+                {
+                    qDebug() << "ResultsMPM::onPlotPressureClicked - The unzip process has finished running.";
+                }
+                else 
+                {
+                    qDebug() << "ResultsMPM::onPlotPressureClicked - The unzip process has finished running with an unknown exit status.";
+                }
+                process->deleteLater();
+            }
+            
+            QString plotPath = mainModel->caseDir() + QDir::separator() 
+                                + "output" + QDir::separator()
+                                + intermediateFolder + QDir::separator() 
+                                + profileNameP->currentText() 
+                                + ext;
+            if (QFileInfo::exists(plotPath))
+            {
+                // Check if results.zip here, if so, extract it.
+
+                plotView->load(QUrl::fromLocalFile(plotPath));
+                plotView->setWindowFlag(Qt::WindowStaysOnTopHint);
+                plotView->show();
+                plotView->activateWindow();
+                plotView->raise();
+            }
+        }
     }
 }
 
@@ -619,6 +677,82 @@ ResultsMPM::plotSensors(MPM* host)
     qDebug() << "ResultsMPM::plotSensors - outputPath: " << outputPath;
     qDebug() << "ResultsMPM::plotSensors - scriptPath: " << scriptPath;
     qDebug() << "ResultsMPM::plotSensors - scriptName: " << scriptName;
+
+    // We want to ensure that results.zip is extracted into individual sensor files for processing
+    // Check the user specified case director for the results.zip
+    // Also check most likely local directories for the results.zip file
+    // Also check the remote work directory for the results.zip file
+    // Extract to 
+    QString intermediateFolder = "";
+    for (int j=0; j<4; ++j)
+    {
+        if (j == 0) intermediateFolder = "."; // RemoteWorkDir
+        if (j == 1) intermediateFolder = "sensors"; // LocalWorkDir
+        if (j == 2) intermediateFolder = "results"; // LocalWorkDir
+        if (j == 3) intermediateFolder = "."; // LocalWorkDir
+        
+        QString plotDir = sensorsPath; // + intermediateFolder + QDir::separator(); // Save the extracted files to the sensors directory.
+        // NOTE: The sensors directory is where the sensor time-series files are stored.
+        //       The plots are stored in the output directory once created.
+    
+        // If directory doesn't exist then skip to the next one.
+        if (!QDir(plotDir).exists())
+        {
+            qDebug() << "ResultsMPM::plotSensors - Checked if the folder to extract to exists: " << plotDir << ", but folder does not exist. Skipping...";
+            continue;
+        }
+
+        QString zipDir = SimCenterPreferences::getInstance()->getLocalWorkDir() + QDir::separator();
+        if (j == 0)
+        {
+            zipDir = SimCenterPreferences::getInstance()->getRemoteWorkDir() + QDir::separator();
+        } 
+        else 
+        {
+            zipDir = mainModel->caseDir() + QDir::separator() 
+                            + "output" + QDir::separator()
+                            + intermediateFolder + QDir::separator();
+        }
+
+        QString zipPath = zipDir + "results.zip";
+        if (!QDir(zipDir).exists())
+        {
+            qDebug() << "ResultsMPM::plotSensors - Checked if folder " << zipDir << " exists, but folder does not exist. Skipping...";
+            continue;
+        }
+
+        if (QFileInfo::exists(zipPath))
+        {
+            QString program = "tar"; // "unzip"; // TODO: consider cross-platform compatibility.
+            QStringList arguments;
+            // Extract results.zip file from zipPath (either in the GUI set caseDir/output/{'','sensors','results}, variants in brackets, or in RemoteWorkDir when retrieving run from DesignSafe. Extract to plotDir
+            // plotDir must exist, and the zipPath must exist.
+            arguments << "-xzf" << zipPath << "-C" << plotDir; 
+            QProcess *process = new QProcess();
+            process->start(program, arguments);
+            process->waitForStarted(); 
+            process->waitForFinished(-1);
+            if (process->exitStatus() == QProcess::CrashExit)
+            {
+                qDebug() << "ResultsMPM::plotSensors - The unzip process has crashed.";
+            } 
+            else if (process->exitStatus() == QProcess::NormalExit)
+            {
+                qDebug() << "ResultsMPM::plotSensors - The unzip process has finished running.";
+                process->deleteLater(); 
+                break;
+            }
+            else 
+            {
+                qDebug() << "ResultsMPM::plotSensors - The unzip process has finished running with an unknown exit status.";
+            }
+            process->deleteLater();
+        } else {
+            qDebug () << "ERROR - ResultsMPM::plotSensors - Cannot find the results.zip file in the checked directory: " << plotDir;
+        }
+    }
+
+
 
     QString sensorsList =  "";
     QDir sensorsDir(sensorsPath);
