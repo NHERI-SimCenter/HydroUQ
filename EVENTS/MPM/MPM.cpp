@@ -414,8 +414,11 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
 
 
-#ifdef _WIN32
-    //#if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)    
+// #ifdef _WIN32
+#if defined(_WIN32) || defined(__linux__)
+    // Only allow 3D visualization on Windows and Linux for now, Mac had issues with Qt3D 
+    // Try to check the most reliable set of preprocessor definitions to detect the OS on common OS
+    // https://stackoverflow.com/questions/5919996/how-to-detect-reliably-mac-os-x-ios-linux-windows-in-c-preprocessor
     // -----------------------------------------------------------------------------------
     // Create a 3D window and container widget and set the 3D window as its layout
     // Based on code by Alex44, 2018; https://stackoverflow.com/questions/23231012/how-to-render-in-qt3d-in-standard-gui-application)
@@ -1171,8 +1174,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     horizontalPanelLayout->addWidget(scrollArea);
 
     // horizontalPanelLayout->addWidget(visualizationGroup);
-#ifdef _WIN32
-    //#if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)
+// #ifdef _WIN32
+#if defined(_WIN32) || defined(__linux__)
     horizontalPanelLayout->addWidget(container);
 #endif
     // QVBoxLayout *layout = new QVBoxLayout();
@@ -1186,8 +1189,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       int index = stackedWidget->currentIndex();
       mpmBodies->setDigitalTwin(index);
       mpmBoundaries->setDigitalTwin(index);
-#ifdef _WIN32
-      // #if defined(Q_OS_WIN) || defined(Q_OS_WIN32) || defined(Q_OS_LINUX) ||  defined(Q_OS_UNIX)
+// #ifdef _WIN32
+#if defined(_WIN32) || defined(__linux__)
       updateDigitalTwin(index);
 #endif
     });
@@ -1703,7 +1706,7 @@ bool MPM::outputAppDataToJSON(QJsonObject &jsonObject) {
     // jsonObject["ApplicationData"] = dataObj;
 
     jsonObject["programFile"] = "fbar"; // <- ClaymoreUW MPM executable filename on remote machine. Can be changed depending on compiled optimizations, versions, digital twin, etc.
-    jsonObject["maxRunTime"] = "02:00:00"; // <- Maximum run time for the simulation, timeout if exceeded
+    jsonObject["maxRunTime"] = "24:00:00"; // <- Maximum run time for the simulation, timeout if exceeded
     return true;
 }
 bool MPM::inputAppDataFromJSON(QJsonObject &jsonObject) {
