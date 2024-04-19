@@ -66,6 +66,9 @@ class QPushButton;
 class QCheckBox;
 class QFormLayout;
 class QLabel;
+
+class VolumetricModifier;
+
 class Celeris : public SimCenterAppWidget
 {
       Q_OBJECT 
@@ -79,28 +82,10 @@ public:
 
    bool inputFromJSON(QJsonObject &rvObject) override;
    bool outputToJSON(QJsonObject &rvObject) override;  
-   bool outputAppDataToJSON(QJsonObject &rvObject) ;
+   bool outputAppDataToJSON(QJsonObject &rvObject);
    bool inputAppDataFromJSON(QJsonObject &rvObject);
    bool copyFiles(QString &dirName) override;
-
-    //    bool initialize();
-    //    bool isInitialize();
-
-    //    bool setupCase();
-    //    bool cleanCase();
-    //    bool removeOldFiles();
-    //    bool isCaseConfigured();
-    //    void readCaseData();
-
-    //    void importMainDomainJsonFile(QJsonObject &rvObject);
-    //    QVector<QVector<double>> readTxtData(QString fileName);
-    //    void executeBackendScript();
-    //    void updateJSON();
-    //    QString caseDir();
-    //    QString templateDictDir();
-    //    QString pyScriptsPath();
-    //    QString simulationType();
-    //    SC_ResultsWidget* getResultsWidget(QWidget *parent) override; // For vis of output data results 
+   bool outputCitation(QJsonObject &jsonObject) override;
 
 signals:
 
@@ -111,9 +96,13 @@ public slots:
 private:
     QHBoxLayout                  *mainWindowLayout;
     QGridLayout                  *mainLayout;
-    QWebEngineView               *m_pWebView;
-    QWebEngineView               *m_pWebViewExtra;
+    QWebEngineView               *view;
+    VolumetricModifier           *modifier;
+   //  QWebEnginePage               *m_pWebPage;
 
+   // QWebEnginePage               *m_pWebView;
+   //  QWebEngineView               *m_pWebViewExtra;
+// 
     // RandomVariablesContainer     *theRandomVariablesContainer;
     // QStringList                  varNamesAndValues;
 

@@ -365,29 +365,29 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     // QString appNameDC =  "DigitalCoast-1.0.0"; // Frontera
     // QString systemNameDC = "frontera";
     // QList<QString> queuesDC; queuesDC << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    // SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, queuesDC, theRemoteService, miniDC, theToolDialog, systemNameDC);
+    // SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, queuesDC, theRemoteService, miniDC, theToolDialog);
     // theToolDialog->addTool(miniDCTool, "Sea-Level Rise (NOAA Digital Coast)");
     // QAction *showDC = toolsMenu->addAction("Sea-Level Rise (&NOAA Digital Coast)");
     // connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
     //     theDialog->showTool("Sea-Level Rise (NOAA Digital Coast)");
     // });
 
-    // Celeris *miniCeleris = new Celeris();
-    // QString appNameCeleris =  "Celeris-1.0.0"; // Frontera
-    // QString systemNameCeleris = "frontera";
-    // QList<QString> queuesCeleris; queuesCeleris << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    // SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appNameCeleris, queuesCeleris, theRemoteService, miniCeleris, theToolDialog, systemNameCeleris);
-    // theToolDialog->addTool(miniCelerisTool, "Boussinesq Waves (Celeris)");
-    // QAction *showCeleris = toolsMenu->addAction("Boussinesq Waves (&Celeris)");
-    // connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
-    //     theDialog->showTool("Boussinesq Waves (Celeris)");
-    // });
+    Celeris *miniCeleris = new Celeris();
+    QString appNameCeleris =  "Celeris-1.0.0"; // Frontera
+    QString systemNameCeleris = "frontera";
+    QList<QString> queuesCeleris; queuesCeleris << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appNameCeleris, queuesCeleris, theRemoteService, miniCeleris, theToolDialog);
+    theToolDialog->addTool(miniCelerisTool, "Boussinesq Waves (Celeris)");
+    QAction *showCeleris = toolsMenu->addAction("Boussinesq Waves (&Celeris)");
+    connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
+        theDialog->showTool("Boussinesq Waves (Celeris)");
+    });
 
     // WebGPU *miniWebGPU = new WebGPU();
     // QString appNameWebGPU =  "WebGPU-1.0.0"; // Frontera
     // QString systemNameWebGPU = "frontera";
     // QList<QString> queuesWebGPU; queuesWebGPU << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    // SC_RemoteAppTool *miniWebGPUTool = new SC_RemoteAppTool(appNameWebGPU, queuesWebGPU, theRemoteService, miniWebGPU, theToolDialog, systemNameWebGPU);
+    // SC_RemoteAppTool *miniWebGPUTool = new SC_RemoteAppTool(appNameWebGPU, queuesWebGPU, theRemoteService, miniWebGPU, theToolDialog);
     // theToolDialog->addTool(miniWebGPUTool, "Trouble-Shoot WebGPU (Hardware Acceleration)");
     // QAction *showWebGPU = toolsMenu->addAction("Trouble-Shoot &WebGPU (Hardware Acceleration)");
     // connect(showWebGPU, &QAction::triggered, this,[this, theDialog=theToolDialog, miniW = miniWebGPUTool] {

@@ -50,14 +50,15 @@ class SettingsDigitalTwin;
 class CoupledDigitalTwin : public SimCenterAppWidget
 {
 public:
-    CoupledDigitalTwin(QWidget *parent = 0);
-    ~CoupledDigitalTwin();
+   CoupledDigitalTwin(QWidget *parent = 0);
+   ~CoupledDigitalTwin();
 
-    bool inputFromJSON(QJsonObject &rvObject);
-    bool outputToJSON(QJsonObject &rvObject);  
-    bool outputAppDataToJSON(QJsonObject &rvObject);
-    bool inputAppDataFromJSON(QJsonObject &rvObject);
-    bool copyFiles(QString &dirName);
+   bool inputFromJSON(QJsonObject &rvObject);
+   bool outputToJSON(QJsonObject &rvObject);  
+   bool outputAppDataToJSON(QJsonObject &rvObject);
+   bool inputAppDataFromJSON(QJsonObject &rvObject);
+   bool copyFiles(QString &dirName);
+   bool outputCitation(QJsonObject &jsonObject) override;
 
 signals:
 

@@ -559,3 +559,18 @@ void GeoClawOpenFOAM::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, int
         }
     }
 }
+
+bool GeoClawOpenFOAM::outputCitation(QJsonObject &jsonObject)
+{
+    QJsonObject citeGeoClaw, citeOpenFOAM, citeOpenSees;
+    citeGeoClaw["citation"] = "Berger, M. J., George, D. L., LeVeque, R. J., & Mandli, K. T. (2011). The GeoClaw software for depth-averaged flows with adaptive refinement. Advances in Water Resources, 34(9), 1195-1206.";
+    citeGeoClaw["description"] = "HydroUQ allows the import of results from GeoClaw for high-quality 2D shallow water solutions. GeoClaw is a free, open-source software package for modeling depth-averaged flows with adaptive mesh refinement. It is developed by the GeoClaw Consortium, which is a group of researchers from various institutions around the world.";
+    citeOpenFOAM["citation"] = "Greenshields, Christopher. (2023). OpenFOAM v11 User Guide. OpenFOAM Foundation.";
+    citeOpenFOAM["description"] = "HydroUQ uses OpenFOAM for high-quality 3D Navier-Stokes solutions. OpenFOAM is a free, open-source software package for computational fluid dynamics (CFD) that is widely used in academia and industry. It is developed by the OpenFOAM Foundation, which is a non-profit organization that promotes the use of open-source software in engineering and science.";
+    citeOpenSees["citation"] = "McKenna, F., Scott, M. H., and Fenves, G. L. (2010) “Nonlinear finite-element analysis software architecture using object composition.” Journal of Computing in Civil Engineering, 24(1):95-107.";
+    citeOpenSees["description"] = "HydroUQ incorporates OpenSees for defining structural models in the SimCenter workflow. OpenSees is a software framework for developing applications to simulate the performance of structural and geotechnical systems subjected to earthquakes. It is developed by the Pacific Earthquake Engineering Research Center (PEER) at the University of California, Berkeley.";
+    jsonObject["GeoClaw"]  = citeGeoClaw;
+    jsonObject["OpenFOAM"] = citeOpenFOAM;
+    jsonObject["OpenSees"] = citeOpenSees;
+    return true;
+}

@@ -9,11 +9,24 @@
 CONFIG += conan_basic_setup
 include($$OUT_PWD/conanbuildinfo.pri)
 
-QT += core gui charts concurrent network qml svg
-QT += printsupport opengl widgets webenginewidgets
-QT += webchannel webenginewidgets 
-#QT += webkit webkitwidgets
+QT += core gui charts concurrent network qml 
+QT += widgets 
+QT += svg multimedia
+QT += printsupport 
 QT += 3dcore 3drender 3dextras
+QT += datavisualization 
+QT += opengl
+# QT += wayland
+QT += x11extras
+# QT += webglplugin-no-lgpl
+QT += webengine webenginewidgets 
+QT += webenginecore
+QT += webchannel websockets
+# QT += webkit webview 
+# QT += webkitwidgets
+# QT += webkit webkitwidgets
+# QT += tools
+# QT += declarative
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets 
 greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
@@ -26,9 +39,13 @@ CONFIG += c++17
 
 DEFINES += _GRAPHICS_Qt3D
 QMAKE_APPLE_DEVICE_ARCHS="x86_64"
+QTWEBENGINE_CHROMIUM_FLAGS+=--ignore-gpu-blacklist --
 
 VERSION=3.0.0
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+
+# Some tools use web-apps with WebGPU, flags are often needed to make Qt properly use your GPU in a Chromium process
+# They can be OS dependent, and GPU manufacture dependent (e.g. NVIDIA)
 
 
 # VTK setup ported from Abiy's work in WE-UQ for advanced 3D visualization
@@ -170,6 +187,7 @@ RESOURCES += \
     images.qrc \
     resources.qrc \
     objects.qrc \
+    EVENTS/Celeris/volumetric.qrc \
     $$PWD/styles.qrc
 
 DISTFILES += \
@@ -181,6 +199,7 @@ RESOURCES += \
     $$PWD/images.qrc \
     $$PWD/resources.qrc \   
     $$PWD/styles.qrc \
+    $$PWD/EVENTS/Celeris/volumetric.qrc \
     $$PWD/objects.qrc
        
 
