@@ -90,6 +90,7 @@ public:
    bool outputAppDataToJSON(QJsonObject &rvObject) ;
    bool inputAppDataFromJSON(QJsonObject &rvObject);
    bool copyFiles(QString &dirName) override;
+   bool outputCitation(QJsonObject &jsonObject) override;
 
    bool initialize();
    bool isInitialize();

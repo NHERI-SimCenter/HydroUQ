@@ -184,3 +184,18 @@ bool CoupledDigitalTwin::copyFiles(QString &destDir) {
   return inputOpenSees->copyFiles(destDir);
  }
 
+bool CoupledDigitalTwin::outputCitation(QJsonObject &jsonObject) {
+  QJsonObject citeFOAMySees;
+  QJsonObject citeOpenSees;
+  QJsonObject citeOpenFOAM;
+  citeFOAMySees["citation"] = "Lewis, Nicolette S. (2023). Development of an Open-Source Methodology for Simulation of Civil Engineering Structures Subject to Multi-Hazards. ProQuest Dissertations Publishing.";
+  citeFOAMySees["description"] = "HydroUQ applied FOAMySees for two-way coupled CFD-FEA, developed in this thesis as the FOAMySees software. It couples OpenFOAM and OpenSees for the simulation of civil engineering structures subject to multi-hazards via the PreCICE coupling library.";
+  citeOpenFOAM["citation"] = "Greenshields, Christopher. (2023). OpenFOAM v11 User Guide. OpenFOAM Foundation.";
+  citeOpenFOAM["description"] = "HydroUQ uses OpenFOAM for high-quality 3D Navier-Stokes solutions. OpenFOAM is a free, open-source software package for computational fluid dynamics (CFD) that is widely used in academia and industry. It is developed by the OpenFOAM Foundation, which is a non-profit organization that promotes the use of open-source software in engineering and science.";
+  citeOpenSees["citation"] = "McKenna, F., Scott, M. H., and Fenves, G. L. (2010) “Nonlinear finite-element analysis software architecture using object composition.” Journal of Computing in Civil Engineering, 24(1):95-107.";
+  citeOpenSees["description"] = "HydroUQ incorporates OpenSees for defining structural models in the SimCenter workflow. OpenSees is a software framework for developing applications to simulate the performance of structural and geotechnical systems subjected to earthquakes. It is developed by the Pacific Earthquake Engineering Research Center (PEER) at the University of California, Berkeley.";
+  jsonObject["FOAMySees"] = citeFOAMySees;
+  jsonObject["OpenFOAM"] =  citeOpenFOAM;
+  jsonObject["OpenSees"] =  citeOpenSees;
+  return true;
+}
