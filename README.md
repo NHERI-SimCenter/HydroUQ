@@ -1,6 +1,3 @@
----
-title: NAV TITLE 
----
 #
 <div style="display: flex; justify-content: center;">
     <a href="https://github.com/NHERI-SimCenter/HydroUQ/"><img width=200px src="https://raw.githubusercontent.com/NHERI-SimCenter/HydroUQ/master/icons/HydroUQ_Icon_Color_512x512.svg" align="left" /></a>
@@ -8,7 +5,7 @@ title: NAV TITLE
     <div height=200px style="border-left: 2px solid black;"></div>
     <span style="display:inline-block; width: 25px;">&nbsp;</span>
     <div height="200px">
-        <p><h2 class="subtitle">HydroUQ - Desktop Application</h2></p> 
+        <p><h3 class="subtitle">HydroUQ - Desktop Application</h3></p> 
         <p><h4 class="subtitle">Water-borne Natural Hazards Engineering with Uncertainty Quantification</h4></p>
         <p><h4 class="subtitle">Developed by the NHERI SimCenter</h4></p>
     </div>
@@ -22,8 +19,8 @@ title: NAV TITLE
 [![Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/HydroUQ?color=blue&label=Latest%20Release)](https://github.com/NHERI-SimCenter/HydroUQ/releases/latest) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10902090.svg)](https://doi.org/10.5281/zenodo.10902090) [![Build status](https://ci.appveyor.com/api/projects/status/k1cfrfmjsq14akso?svg=true)](https://ci.appveyor.com/project/fmckenna/hydrouq) [![License](https://img.shields.io/badge/License-BSD%202--Clause-blue)](https://raw.githubusercontent.com/NHERI-SimCenter/HydroUQ/master/LICENSE) [![GitHub](https://img.shields.io/badge/NHERI--SimCenter-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter) [![LinkedIn Follow](https://img.shields.io/badge/nheri--simcenter-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/nheri-simcenter) [![YouTube Subscribe](https://img.shields.io/badge/DesignSafe-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)](https://www.youtube.com/channel/DesignSafe) [![Twitter Follow](https://img.shields.io/twitter/follow/NHERISimCenter?style=social)](https://twitter.com/NHERI_SimCenter) 
 <div style="border-bottom: 2px solid black; width: 100%; margin-top: -5px;"></div>
 <div style="display: flex; justify-content: center;">
-    <img src="./images/NHERI_SimCenter_DamBreakAnimation_VelocityPressureVisualized_2.5MParticles_res0.05m_23012023.gif" alt="Dam Break Animation" width="50%" />
-    <img src="./images/HydroUQ_MPM_3DViewPort_OSULWF_2024.04.25.gif" alt="HydroUQ MPM 3D ViewPort OSULWF" width="50%" />
+    <img src="./images/NHERI_SimCenter_DamBreakAnimation_VelocityPressureVisualized_2.5MParticles_res0.05m_23012023.gif" alt="Dam Break Animation" width="45%" />
+    <img src="./images/HydroUQ_MPM_3DViewPort_OSULWF_2024.04.25.gif" alt="HydroUQ MPM 3D ViewPort OSULWF" width="45%" />
 </div>
 
 <div style="border-bottom: 2px solid black; width: 100%; margin-top: 0px;"></div>
