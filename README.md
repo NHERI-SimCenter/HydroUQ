@@ -1,15 +1,7 @@
 ---
-hide:
- - navigation
- - toc
+title: NAV TITLE 
 ---
-<style>
-  .md-typeset h1,
-  .md-content__button {
-    display: none;
-  }
-</style>
-
+#
 <div style="display: flex; justify-content: center;">
     <a href="https://github.com/NHERI-SimCenter/HydroUQ/"><img width=200px src="https://raw.githubusercontent.com/NHERI-SimCenter/HydroUQ/master/icons/HydroUQ_Icon_Color_512x512.svg" align="left" /></a>
     <span style="display:inline-block; width: 25px;">&nbsp;</span>
