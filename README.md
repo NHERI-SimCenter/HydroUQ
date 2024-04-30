@@ -1,11 +1,13 @@
 
 <div style="display: flex; justify-content: center;">
-    <a href="https://github.com/NHERI-SimCenter/HydroUQ/" width=250px><img width=100% src="https://raw.githubusercontent.com/NHERI-SimCenter/HydroUQ/master/icons/HydroUQ_Icon_Color_512x512.svg" align="left" /></a>
+    <a href="https://github.com/NHERI-SimCenter/HydroUQ/"><img width=200px src="https://raw.githubusercontent.com/NHERI-SimCenter/HydroUQ/master/icons/HydroUQ_Icon_Color_512x512.svg" align="left" /></a>
     <span style="display:inline-block; width: 25px;">&nbsp;</span>
-    <div height=250px style="border-left: 2px solid black;"></div>
+    <div height=200px style="border-left: 2px solid black;"></div>
     <span style="display:inline-block; width: 25px;">&nbsp;</span>
     <div height="200px">
-        <p> <h2 class="title">HydroUQ - Desktop Application</h2> <h4 class="subtitle">Water-borne Natural Hazards Engineering with Uncertainty Quantification</h4> <h4 class="subtitle">Developed by the NHERI SimCenter</h4> </p> 
+        <p><h2 class="subtitle">HydroUQ - Desktop Application</h2></p> 
+        <p><h4 class="subtitle">Water-borne Natural Hazards Engineering with Uncertainty Quantification</h4></p>
+        <p><h4 class="subtitle">Developed by the NHERI SimCenter</h4></p>
     </div>
 </div>
 
