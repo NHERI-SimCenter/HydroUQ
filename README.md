@@ -1,47 +1,81 @@
 #
 <div style="display: flex; justify-content: center;">
-    <a href="https://github.com/NHERI-SimCenter/HydroUQ/"><img width=200px src="https://raw.githubusercontent.com/NHERI-SimCenter/HydroUQ/master/icons/HydroUQ_Icon_Color_512x512.svg" align="left" /></a>
-    <span style="display:inline-block; width: 25px;">&nbsp;</span><div height=200px style="border-left: 2px solid black;"></div><span style="display:inline-block; width: 25px;">&nbsp;</span>
-    <div height="200px">
-        <h3 class="subtitle">HydroUQ - Desktop Application</h3>
-        <p><h4 class="subtitle">Water-borne Natural Hazards Engineering with Uncertainty Quantification</h4></p>
-        <p><h4 class="subtitle">Developed by the NHERI SimCenter</h4></p>
-    </div>
+  <a href="https://github.com/NHERI-SimCenter/HydroUQ/"><img width=256px src="./icons/HydroUQ_Icon_Color_RightBorder_512x512.svg" align="left" /></a>
+  <span style="display:inline-block; width: 25px;"></span>
+  <div>
+    <p>
+      <h3>HydroUQ - Desktop App</h3><h5 class="subtitle">Water-borne Hazards Engineering with Uncertainty Quantification</h5>
+      <h6>NHERI SimCenter, 2020-2024</h6>
+    </p>
+  </div>
 </div>
+<i>Frank McKenna, Justin Bonus, Ajay Harish, Nicolette Lewis</i>
 
-<span style="display:block; height: 10px;"></span>
-
-<div style="border-bottom: 2px solid black; width: 100%; margin-top: 0px;"></div>
-<span style="display:block; height: 10px;"></span>
-
-[![Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/HydroUQ?color=blue&label=Latest%20Release)](https://github.com/NHERI-SimCenter/HydroUQ/releases/latest) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10902090.svg)](https://doi.org/10.5281/zenodo.10902090) [![Build status](https://ci.appveyor.com/api/projects/status/k1cfrfmjsq14akso?svg=true)](https://ci.appveyor.com/project/fmckenna/hydrouq) [![License](https://img.shields.io/badge/License-BSD%202--Clause-blue)](https://raw.githubusercontent.com/NHERI-SimCenter/HydroUQ/master/LICENSE) [![GitHub](https://img.shields.io/badge/NHERI--SimCenter-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter) [![LinkedIn Follow](https://img.shields.io/badge/nheri--simcenter-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/nheri-simcenter) [![YouTube Subscribe](https://img.shields.io/badge/DesignSafe-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)](https://www.youtube.com/channel/DesignSafe) [![Twitter Follow](https://img.shields.io/twitter/follow/NHERISimCenter?style=social)](https://twitter.com/NHERI_SimCenter) 
-<div style="border-bottom: 2px solid black; width: 100%; margin-top: -5px;"></div>
+<style>
+  table {
+    border-collapse: collapse;
+    border: none;
+  }
+  th {
+    border: none !important;
+    border-collapse: collapse;
+    background-color: #C0C0C0;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+  }
+  tr {
+    border-top: 1px solid black;
+  }
+  tr:nth-child(9n) {
+    background-color: #f2f2f2;
+  }
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  tr:first-child {
+    border-top: 1px solid black;
+  }
+  tr:last-child {
+    border-bottom: 2px solid black;
+  }
+  td {
+    border: none !important;
+  }
+</style>
+|     | |     | |     | |     |
+|:----------------:|:---------------:|:---------------:|:---------------:|:----------------:|:---------------:|:----------------:|
+| [![Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/HydroUQ?color=blue&label=Latest%20Release)](https://github.com/NHERI-SimCenter/HydroUQ/releases/latest) | | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10902090.svg)](https://doi.org/10.5281/zenodo.10902090) | | [![Build status](https://ci.appveyor.com/api/projects/status/k1cfrfmjsq14akso?svg=true)](https://ci.appveyor.com/project/fmckenna/hydrouq) | | [![License](https://img.shields.io/badge/License-BSD%202--Clause-blue)](https://raw.githubusercontent.com/NHERI-SimCenter/HydroUQ/master/LICENSE) |
+| [![GitHub](https://img.shields.io/badge/NHERI--SimCenter-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter) | | [![LinkedIn Follow](https://img.shields.io/badge/nheri--simcenter-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/nheri-simcenter) | | [![YouTube Subscribe](https://img.shields.io/badge/DesignSafe-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)](https://www.youtube.com/channel/DesignSafe) | | [![Twitter Follow](https://img.shields.io/twitter/follow/NHERISimCenter?style=social)](https://twitter.com/NHERI_SimCenter) | 
 <div style="display: flex; justify-content: center;">
-    <img src="./images/NHERI_SimCenter_DamBreakAnimation_VelocityPressureVisualized_2.5MParticles_res0.05m_23012023.gif" alt="Dam Break Animation" width="40%" />
-    <img src="./images/HydroUQ_MPM_3DViewPort_OSULWF_2024.04.25.gif" alt="HydroUQ MPM 3D ViewPort OSULWF" width="50%" />
+    <img src="./images/NHERI_SimCenter_DamBreakAnimation_VelocityPressureVisualized_2.5MParticles_res0.05m_23012023.gif" alt="Dam Break Animation" width="44%" />
+    <img src="./images/HydroUQ_MPM_3DViewPort_OSULWF_2024.04.25.gif" alt="HydroUQ MPM 3D ViewPort OSULWF" width="55%" />
 </div>
 
-<div style="border-bottom: 2px solid black; width: 100%; margin-top: 0px;"></div>
+---
 
-# What is HydroUQ?
+# Why Use HydroUQ?
 
 ## Overview
 
-The ``HydroUQ`` desktop application is a free, open-source software for simulating a building's engineering performance with quantified uncertainty during water-borne natural hazard loading (e.g. tsunamis and hurricane storm surges). The application's interchangeable workflow allows users to swap between popular uncertainty quantification methods to apply on previously deterministic models. Further, the modular design lets users drop-in their own building models (SIM), event types (EVT), nonlinear structural analysis (FEM), engineering demand parameters (EDP), and more while maintaining the full-workflow's UQ capabilities. 
+The ``HydroUQ`` desktop application is a user-facing portal for cutting-edge engineering workflows targeting tsunami and storm-surge demands on structures. It is a free, open-source, graphical software for simulating a structures's response with uncertainty quantification (UQ) during water-borne natural hazard loading. The application's interchangeable workflow allows users to swap between popular uncertainty quantification methods (e.g. Sensitivity, Reliability, Surrogates) to upgrade their previously deterministic models. Modular design lets you drop-in your own building models (SIM), event types (EVT), nonlinear structural analysis (FEM), engineering demand parameters (EDP), and more.
 
 
 ## Capabilities
 
-- Drop-in uncertainty quantification (UQ) methods like forward propagation, sensitivity, and reliability analysis onto previously deterministic CFD models using ``SimCenter UQ`` and/or ``Dakota`` backends
+- Drop-in uncertainty quantification (UQ) methods like forward propagation, sensitivity, and reliability analysis onto previously deterministic computational fluid dynamics (CFD) models using ``SimCenter UQ`` and/or ``Dakota`` backends
 - Model experiments from validated wave flume digital twin
-    - [NHERI Oregon State University Large Wave Flume](https://oregonstate.designsafe-ci.org) ``OSU LWF`` 
-    - [Waseda University Tsunami Wave Basin](https://shibayama.w.waseda.jp/lab_en.html) ``WU TWB`` 
+    - [Oregon State University's Large Wave Flume](https://oregonstate.designsafe-ci.org) ``OSU LWF`` ` 
+    - [Waseda University Tsunami's Wave Basin](https://shibayama.w.waseda.jp/lab_en.html) ``WU TWB`` 
 - Bathymetry/topography of the ocean floor and land surface for accurate wave propagation
 - Shallow-water solutions (e.g., ``GeoClaw``) as boundary conditions to 3D CFD (e.g., ``OpenFOAM``)
+- Capture high-fiedlity wave-driven debris motion, impacts, damming, and deposition.
 - User-defined buildings for wave loading input and structural response output
 - Design structures including Multi-degree-of-freedom (``MDOF``) model, steel building model, ``OpenSees`` models, and ``OpenSeesPy`` models
 - Output probabilistic building responses, velocities and pressure at any point in the fluid domain
-- Supports multiscale coupling by resolving areas of interest by with a two-dimensional shallow water solver (e.g., ``GeoClaw``) and/or a three-dimensional computational fluid dynamics (CFD) solver (e.g., ``OpenFOAM``) and coupling them at an interface.
+- Supports multiscale coupling by resolving areas of interest with a 2D shallow water solver (e.g., ``GeoClaw``) and a 3D CFD solver (e.g., ``OpenFOAM``) and bridging them at an interface.
+- Model elasto-plastic, topology-changing debris and/or structures under wave-loads with the Material Point Method (``MPM``)
 
 
 ## Quick Links
