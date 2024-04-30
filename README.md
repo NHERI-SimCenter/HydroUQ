@@ -4,50 +4,17 @@
   <span style="display:inline-block; width: 25px;"></span>
   <div>
     <p>
-      <h3>HydroUQ - Desktop App</h3><h5 class="subtitle">Water-borne Hazards Engineering with Uncertainty Quantification</h5>
+      <h3>HydroUQ - Desktop App</h3><br><h5 class="subtitle">Water-borne Hazards Engineering with Uncertainty Quantification</h5>
       <h6>NHERI SimCenter, 2020-2024</h6>
     </p>
   </div>
 </div>
+
 <i>Frank McKenna, Justin Bonus, Ajay Harish, Nicolette Lewis</i>
 
-<style>
-  table {
-    border-collapse: collapse;
-    border: none;
-  }
-  th {
-    border: none !important;
-    border-collapse: collapse;
-    background-color: #C0C0C0;
-    border-top: none;
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-  }
-  tr {
-    border-top: 1px solid black;
-  }
-  tr:nth-child(9n) {
-    background-color: #f2f2f2;
-  }
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  tr:first-child {
-    border-top: 1px solid black;
-  }
-  tr:last-child {
-    border-bottom: 2px solid black;
-  }
-  td {
-    border: none !important;
-  }
-</style>
-|     | |     | |     | |     |
-|:----------------:|:---------------:|:---------------:|:---------------:|:----------------:|:---------------:|:----------------:|
-| [![Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/HydroUQ?color=blue&label=Latest%20Release)](https://github.com/NHERI-SimCenter/HydroUQ/releases/latest) | | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10902090.svg)](https://doi.org/10.5281/zenodo.10902090) | | [![Build status](https://ci.appveyor.com/api/projects/status/k1cfrfmjsq14akso?svg=true)](https://ci.appveyor.com/project/fmckenna/hydrouq) | | [![License](https://img.shields.io/badge/License-BSD%202--Clause-blue)](https://raw.githubusercontent.com/NHERI-SimCenter/HydroUQ/master/LICENSE) |
-| [![GitHub](https://img.shields.io/badge/NHERI--SimCenter-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter) | | [![LinkedIn Follow](https://img.shields.io/badge/nheri--simcenter-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/nheri-simcenter) | | [![YouTube Subscribe](https://img.shields.io/badge/DesignSafe-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)](https://www.youtube.com/channel/DesignSafe) | | [![Twitter Follow](https://img.shields.io/twitter/follow/NHERISimCenter?style=social)](https://twitter.com/NHERI_SimCenter) | 
+
+[![Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/HydroUQ?color=blue&label=Latest%20Release)](https://github.com/NHERI-SimCenter/HydroUQ/releases/latest)   <span style="display:inline-block; width: 15px;"></span> [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10902090.svg)](https://doi.org/10.5281/zenodo.10902090)   <span style="display:inline-block; width: 15px;"></span> [![Build status](https://ci.appveyor.com/api/projects/status/k1cfrfmjsq14akso?svg=true)](https://ci.appveyor.com/project/fmckenna/hydrouq)  <span style="display:inline-block; width: 15px;"></span> [![License](https://img.shields.io/badge/License-BSD%202--Clause-blue)](https://raw.githubusercontent.com/NHERI-SimCenter/HydroUQ/master/LICENSE)  <span style="display:inline-block; width: 15px;"></span> [![GitHub](https://img.shields.io/badge/NHERI--SimCenter-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter)  <span style="display:inline-block; width: 15px;"></span>  [![LinkedIn Follow](https://img.shields.io/badge/nheri--simcenter-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/nheri-simcenter) <span style="display:inline-block; width: 15px;"></span>  [![YouTube Subscribe](https://img.shields.io/badge/DesignSafe-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)](https://www.youtube.com/channel/DesignSafe) <span style="display:inline-block; width: 15px;"></span>  
+
 <div style="display: flex; justify-content: center;">
     <img src="./images/NHERI_SimCenter_DamBreakAnimation_VelocityPressureVisualized_2.5MParticles_res0.05m_23012023.gif" alt="Dam Break Animation" width="44%" />
     <img src="./images/HydroUQ_MPM_3DViewPort_OSULWF_2024.04.25.gif" alt="HydroUQ MPM 3D ViewPort OSULWF" width="55%" />
@@ -151,37 +118,6 @@ Additional tools, such as ``BRAILS`` and ``TInF``, have special use-cases includ
 
 All applications are free, open-source, and available for download on the [DesignSafe-CI](https://www.designsafe-ci.org) website. See the table below for more information on each application:
 
-
-<style>
-  table {
-    border-collapse: collapse;
-    border: none;
-  }
-  th {
-    border: none !important;
-    border-collapse: collapse;
-    background-color: #C0C0C0;
-    border-top: none;
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-  }
-  tr {
-    border-top: 1px solid black;
-  }
-  tr:nth-child(9n) {
-    background-color: #f2f2f2;
-  }
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  tr:first-child {
-    border-top: 1px solid black;
-  }
-  td {
-    border: none !important;
-  }
-</style>
 
 
 | Application | Full Title | Download | GitHub | Version |
