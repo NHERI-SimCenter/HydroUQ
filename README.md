@@ -1,11 +1,12 @@
 #
+
 <div style="display: flex; justify-content: center;">
   <a href="https://github.com/NHERI-SimCenter/HydroUQ/"><img width=256px src="./icons/HydroUQ_Icon_Color_RightBorder_512x512.svg" align="left" /></a>
   <span style="display:inline-block; width: 25px;"></span>
   <div>
     <p>
-      <h3>HydroUQ - Desktop App</h1>
-      <h2 class="subtitle">Water-borne Hazards Engineering with Uncertainty Quantification</h2>
+      <h1>HydroUQ - Desktop App</h1>
+      <h2>Water-borne Hazards Engineering with Uncertainty Quantification</h2>
       <h3>NHERI SimCenter, 2020-2024</h3>
       <h4><i>Frank McKenna, Justin Bonus, Ajay Harish, Nicolette Lewis</i></h4>
     </p>
