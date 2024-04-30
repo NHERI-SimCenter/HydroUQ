@@ -5,10 +5,10 @@
   <span style="display:inline-block; width: 25px;"></span>
   <div>
     <p>
-      <h2 class="text">HydroUQ - Desktop App</h2>
+      <h3 class="subtitle"><b>HydroUQ - Desktop App</b></h3>
       <h3 class="text">Water-borne Hazards Engineering with Uncertainty Quantification</h3>
-      <h3>NHERI SimCenter, 2020-2024</h3>
       <h4><i>Frank McKenna, Justin Bonus, Ajay Harish, Nicolette Lewis</i></h4>
+      <h4>NHERI SimCenter, 2020-2024</h4>
     </p>
   </div>
 </div>
