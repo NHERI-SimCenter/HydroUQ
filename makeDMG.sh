@@ -26,7 +26,7 @@ QTDIR="/Users/fmckenna/Qt/5.15.2/clang_64/"
 #QTDIR="/Users/fmckenna/Qt/6.6.0/macos/"
 pathToBackendApps="/Users/fmckenna/NHERI/SimCenterBackendApplications"
 pathToOpenSees="/Users/fmckenna/bin/OpenSees3.6.0"
-pathToDakota="/Users/fmckenna/dakota-6.12.0"
+pathToDakota="/Users/fmckenna/dakota/dakota-6.16.0"
 
 #pathToPython="/Users/fmckenna/PythonEnvR2D"
 #
@@ -182,12 +182,11 @@ else
     codesign --force --sign "$appleCredential" $DMG_FILENAME
 fi
 
-echo "Issue the following: " 
-echo "xcrun altool --notarize-app -u $appleID -p $appleAppPassword -f ./$DMG_FILENAME --primary-bundle-id altool"
+echo "Issue the following: "
 echo ""
-echo "returns id: ID .. wait for email indicating success"
-echo "To check status"
-echo "xcrun altool --notarization-info ID  -u $appleID  -p $appleAppPassword"
+echo "xcrun notarytool submit ./$DMG_FILENAME --apple-id $appleID --password $appleAppPassword --team-id $appleCredential"
+echo "xcrun notarytool log ID --apple-id $appleID --team-id $appleCredential  --password $appleAppPAssword"
 echo ""
 echo "Finally staple the dmg"
 echo "xcrun stapler staple \"$APP_NAME\" $DMG_FILENAME"
+
