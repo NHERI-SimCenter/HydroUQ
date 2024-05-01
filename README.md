@@ -1,7 +1,8 @@
 #
 
 <div style="display: flex; justify-content: center;">
-  <a href="https://github.com/NHERI-SimCenter/HydroUQ/"><img width=256px src="./icons/HydroUQ_Icon_Color_RightBorder_512x512.svg" align="left" /></a>
+  <a href="https://github.com/NHERI-SimCenter/HydroUQ/#gh-light-mode-only""><img width=256px src="./icons/HydroUQ_Icon_Black_BorderRight.svg"#gh-light-mode-only" align="left" /></a>
+  <a href="https://github.com/NHERI-SimCenter/HydroUQ/#gh-light-mode-only""><img width=256px src="./icons/HydroUQ_Icon_White_BorderRight.svg"#gh-light-mode-only" align="left" /></a>
   <span style="display:inline-block; width: 25px;"></span>
   <div>
     <p>
