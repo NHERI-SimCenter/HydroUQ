@@ -34,7 +34,7 @@ This research aims to produce a robust database (numerical and physical) from wh
 
 Because the structural impact loads of debris-fields driven by waves are notoriously chaotic, meaning very small changes in initial conditions can greatly alter structural demands between near identical cases, this represents a step towards better understanding one of the least understood phenomena faced by modern coastal engineers.
 
-For ordered debris-field arrays, our simulated structural loads are within 5 - 15\% of experimental medians, typically fall within interquartile ranges, and never qualify as outliers relative to experimental trial envelopes. 
+For ordered debris-field arrays, our simulated structural loads are within 5 - 15% of experimental medians, typically fall within interquartile ranges, and never qualify as outliers relative to experimental trial envelopes. 
 
 We validate against two very similar (but not identical) physical studies done in the OSU LWF by citeNP{Shekhar2020} and citeNP{Mascarenas2022}, indicating high accuracy of our model and low bias to minor experiment specifications. 
 

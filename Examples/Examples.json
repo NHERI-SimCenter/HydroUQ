@@ -1,5 +1,5 @@
 {
-    "Examples": [
+  "Examples": [
     {
       "name": "E1: Simple Example",
       "description": "This example takes a brief look at uncertainty quantification in a three story shear frame subjected to earthquake loading.",
