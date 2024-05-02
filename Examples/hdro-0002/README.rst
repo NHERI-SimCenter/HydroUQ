@@ -9,60 +9,211 @@ Debris Impacts on a Rigid Structure - OSU Large Wave Flume Digital Twin - MPM
 
 Outline 
 -------
-Example to demonstrate how to run a coupled OpenSees-OpenFOAM simulation to determine floor loads on a building and then perform
-an OpenSees simulation of the building assuming uncertainties in the building properties.
 
-The flume is 1 meter wide (from Y=-0.5m to Y=0.5 m), 1 meter tall (Z=0.0m to Z=1.0m), and 4 meters long (X=0.0m to X=4.0m). 
+In this example, debris-field wave-flume tests at a NHERI facility, Oregon State University's Large Wave Flume (OSU LWF), are briefly summarized before demonstrating the use of HydroUQ's OSU LWF digital twin paired with the Material Point Method (MPM).
 
-The case is initialized with a still water level of 0.25 meters. The velocity at the inlet is given a time history boundary condition (src/VelTime.csv). 
+.. figure:: figures/HydroUQ_MPM_3DViewPort_OSULWF_2024.04.25.gif
+   :align: center
+   :width: 600
+   :figclass: align-center
+   
 
-This structure is a simple cylinder, with diameter 0.1 meters, located at X=1.5, Y=0.0, Z=0.0. The interface surface file is 'src/interface.stl'. 
 
-The cylinder is represented in OpenSees by a cantilevered beam, with an elastic section, modelled with displacement-action controlled beam elements. The bottom of the cantilevered beam is fixed at Z=0.0.
+Details for the experiments are available in various publications. Namely, the work of Andrew Winter cite{Winter2019} cite{Winter2020}, Krishnendu Shekhar cite{Shekhar2020}, and Dakota Mascarenas cite{Mascarenas2022} cite{Mascarenas2022PORTS}. 
 
-The constrained node is removed from the coupled solution, by omitting it from the list 'coupledNodes' in the OpenSees model file. 
+Experiments were performed in the NHERI OSU LWF, a 100 meter long flume with adjustable bathymetry, in order to quantify stochastic impact loads of ordered and disordered debris-fields on effectively rigid, raised structure. 
 
-The length of the cylinder is 0.5 meters. 
+.. figure:: figures/OSU_Flume_Schematic_Dakota_Alam.png
+   :align: center
+   :width: 600
+   :figclass: align-center
 
-The flow around the cylinder is calculated for a given period of time. 
+NHERI OSU LWF facilty's experimental schematic used in this example.
 
-Outputs:
+This research aims to produce a robust database (numerical and physical) from which to eventually be able to extract both the first-principals of wave-driven debris-field phenomena and design guidelines on induced forces. 
+
+Because the structural impact loads of debris-fields driven by waves are notoriously chaotic, meaning very small changes in initial conditions can greatly alter structural demands between near identical cases, this represents a step towards better understanding one of the least understood phenomena faced by modern coastal engineers.
+
+For ordered debris-field arrays, our simulated structural loads are within 5 - 15% of experimental medians, typically fall within interquartile ranges, and never qualify as outliers relative to experimental trial envelopes. 
+
+We validate against two very similar (but not identical) physical studies done in the OSU LWF by citeNP{Shekhar2020} and citeNP{Mascarenas2022}, indicating high accuracy of our model and low bias to minor experiment specifications. 
+
+
 Results for free surface, velocity, and pressure, as well as interface forces and moments and a cut section of the case at a specified interval. 
 
-Simulated debris impacts on the structure in the Material Point Method
+Simulated debris impacts on the structure in the Material Point Method. Experiment debris impact photos shown below.
 
 .. figure:: figures/OSU_LWF_MPM_32L_Impact_3Photos.png
    :align: center
    :width: 600
    :figclass: align-center
 
-Overview of case
 
-
-.. figure:: figures/OSU_Flume_Schematic_Dakota_Alam.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-    
-
-Experiment debris impact photos
-	
 .. figure:: figures/OSU_LWF_Dakota_8L_Impact_3Photos.PNG
    :align: center
    :width: 600
    :figclass: align-center
     
 
-    
 
-CASE RUN TIME
+Overview of case:
+
+Open ``Settings``. Here we set the simulation time, the time step, and the number of processors to use, among other pre-simulation decisions.
+
+.. figure:: figures/GUI_Settings.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+HydroUQ Settings GUI
+
+
+Open ``Materials``. Here we set the material properties of the fluid and the debris.
+
+.. figure:: figures/GUI_Fluid_Material.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+HydroUQ Materials GUI
+
+Open ``Geometry``. Here we set the geometry of the flume, the debris, and the raised structure. 
+
+.. figure:: figures/GUI_Fluid_Geometry.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+HydroUQ Geometry GUI
+
+
+Open ``Algorithm``. Here we set the algorithm parameters for the simulation. We choose to apply F-Bar antilocking to aid in the pressure field on the fluid. The associated toggle must be checked, and the antilocking ratio set to 0.9, loosely.
+
+.. figure:: figures/GUI_Fluid_Algorithm.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+HydroUQ Geometry GUI
+
+Open ``Partitions``. Here we set the number of partitions for the simulation. This is the domain decomposition across discrete hardware units, i.e. Multi-GPUs. These may be kept as there default values. 
+
+.. figure:: figures/GUI_Bodies_Fluid_Partitions.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+HydroUQ Partitions GUI
+
+Moving onto the definition of an ordered debris-array, we set the debris properties in the ``Debris`` / ``Materials`` tab. We will assume debris are made of HDPE plastic, as in experiment
+
+.. figure:: figures/GUI_Debris_Material.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+HydroUQ Debris Materials GUI
+
+Open ``Debris`` / ``Geometry``. Here we set the debris properties, such as the number of debris, the size of the debris, and the spacing between the debris. Rotation is another option, though not used in this example. We've elected to use an 8 x 4 grid of debris (longitudinal axis parallel to long-axis of the flume).
+
+.. figure:: figures/GUI_Bodies_Debris_Geometry.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+HydroUQ Debris Geometry GUI
+
+The ``Debris`` / ``Algorithm`` and ``Debris`` / ``Partitions`` tabs are not used in this example, but are available for more advanced users.
+
+Open ``Bodies`` / ``Structures``. Uncheck the box that enables this body, if it is checked. We will not model the structure as a body in this example, instead, we will modify it as a boundary later.
+
+.. figure:: figures/GUI_Bodies_Structure_Disabled.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+HydroUQ Bodies Structures GUI
+
+
+Open ``Bodies`` / ``Boundaries`` / ``Wave Flume``. We will set the boundary to be a rigid body, with a fixed separable velocity condition, that is faithful to the digital tiwn of the NHERI OSU LWF. Bathmyetry joint points should be indetical to the ones used in ``Bodeis`` / ``FLuid``.
+
+.. figure:: figures/GUI_Boundaries_Flume.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+Open ``Bodies`` / ``Boundaries`` / ``Wave Generator``.
+
+.. figure:: figures/GUI_Boundaries_WaveGenerator.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+Open ``Bodies`` / ``Boundaries`` / ``Rigid Structure``.
+
+.. figure:: figures/GUI_Boundaries_RigidStructure.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+Open ``Bodies`` / ``Boundaries`` / ``RigidWalls``.
+
+.. figure:: figures/GUI_Boundaries_RigidWalls.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+HydroUQ Bodies Boundaries Wave-Flume Facility GUI
+
+Open ``Bodies`` / ``Debris``. Here we set the boundary conditions for the debris. We will set the boundary to be a rigid body, with a fixed boundary condition.
+
+Open ``Bodes`` /  ``Boundaries`` / ``Debris``. Here we set the boundary conditions for the debris. We will set the boundary to be a rigid body, with a fixed boundary condition.
+
+
+Open ``Sensors`` / ``Wave Gauges``. Set the ``Use sensor?`` box to ``True`` so that the simulation will output results for the instruments we set on this page.
+
+Three wave gauges will be defined. The first is located prior to the bathymetry ramps, the second partially up the ramps, and the third near the the bathymetry crest, debris, and raised structure. 
+
+
+Set the origins and dimensions of each wave as in the table below. To match experimental conditions, we also apply a 120 Hz sampling rate to the wave gauges, meaning they record data every 0.0083 seconds. 
+
+.. figure:: figures/GUI_Sensors_WaveGauges.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+   
+HydroUQ Wave Gauges GUI
+
+These gauges will read all numerical bodies within their defined regions every sampling step, and will report the highest elevation value (Position Y) of a contained body as the free-surface elevation at that gauge. The results is written into our sensor results files.
+
+
+Open ``Sensors`` / ``Load Cells``. Set the ``Use these sensor?`` box to ``True`` so that the simulation will output results for the instruments we set on this page.
+
+.. figure:: figures/GUI_Sensors_LoadCells.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+HydroUQ Load Cells GUI
+
+
+Open ``Outputs``
+
+.. figure:: figures/GUI_Outputs.PNG
+   :align: center
+   :width: 600
+   :figclass: align-center
+
+   HydroUQ Outputs GUI
+
+Simulation Details
 ---------------
-Simulation Time: 20 seconds - Ran on TACC Lonestar6, 56 processors, 3 NVIDIA A100 GPUs, 1 node -> Real Time: 1hr, 20 minutes
+Simulation Time: 2 hours - Ran on TACC Lonestar6, 56 processors, 3 NVIDIA A100 GPUs, 1 node -/ Real Time: 1hr, 20 minutes
 
 Submitted
-Oct 8, 2023 1:14:37 PM
+May 1, 2024 1:14:37 PM
 Finished
-Oct 8, 2023 2:34:10 PM
+May 1, 2024 2:34:10 PM
 
 The case can be run for as long as desired, but mind that the longer the case runs, the longer the postprocessing routines will be.
 
@@ -72,7 +223,8 @@ Provide a large amount of time for the 'Max Run Time' field in HydroUQ when subm
 
 Be aware that the smaller the OpenFOAM Outputs and OpenSees Outputs 'Time Interval' value is, the longer the post processing of the case will take after analysis has completed, and the larger the results.zip folder will be. 
 
-USE CAUTION WHEN REQUESTING OUTPUT! Only ask for what you need, or you will end up will massive amounts of data.
+
+USE CAUTION WHEN REQUESTING OUTPUT RATE, SENSOR COUNT, OR NUMBER OF OUTPUT VAIRABLES! Only ask for what you need, or you will end up will massive amounts of data.
 
 
 Post Processing
@@ -84,7 +236,8 @@ Retrieving the results.zip folder from the Tools and Applications Page of Design
    :align: center
    :width: 600
    :figclass: align-center
-    Locating the job files on DesignSafe
+
+   Locating the job files on DesignSafe
 
 Check if the job has finished. If it has, click 'More info'.  
 
@@ -92,7 +245,8 @@ Check if the job has finished. If it has, click 'More info'.
    :align: center
    :width: 600
    :figclass: align-center
-    Once the job is finished, the output files should be available in the directory which the analysis results were sent to
+
+Once the job is finished, the output files should be available in the directory which the analysis results were sent to
 
 Find the files by clicking 'View'. 
 	
@@ -100,7 +254,8 @@ Find the files by clicking 'View'.
    :align: center
    :width: 600
    :figclass: align-center
-    Locating this directory is easy. 
+
+   Locating this directory is easy. 
 	
 
 Move the results.zip to somewhere in My Data/. Use the Extractor tool available on DesignSafe.  Unzip the results.zip folder. 
@@ -117,7 +272,8 @@ OR Download the results.zip folder to your PC and unzip to look at the model res
    :align: center
    :width: 600
    :figclass: align-center
-    Download the results to look at the VTK files of the analysis. This will include OpenFOAM and OpenSees field data and model geometry
+
+Download the results to look at the VTK files of the analysis. This will include OpenFOAM and OpenSees field data and model geometry
 
 Extract the Zip folder either on DesignSafe or on your local machine. You will need Paraview to view the model data.
 
@@ -125,101 +281,51 @@ Extract the Zip folder either on DesignSafe or on your local machine. You will n
    :align: center
    :width: 600
    :figclass: align-center
-    Locate the zip folder and extract it to somewhere convenient
+
+Locate the zip folder and extract it to somewhere convenient
 	
 The results folder should look something like this. 
 	
-.. figure:: figures/results.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-    This is the output of the model
-	
+
+
+
 Paraview files have a .PVD extension. Open VTK/Fluid.vtm.series to look at OpenFOAM results.
 Open OpenSeesOutput.pvd to look at OpenSees results.
 
-.. figure:: figures/Paraview.PNG
+
+
+MPM sensor / probe output is available in `{your_path_to_HydroUQ_WorkDir}/HydroUQ/RemoteWorkDir/results/postProcessing/`.
+
+SideFX Houdini files often have a .BGEO extension, open Houdini Apprentice to look at MPM results in high-detail.
+
+Once complete, the simulation data at the three wave gauges (left-to-right, respectively) is as show below when plotted against an experimental trial.
+
+.. figure:: figures/OSU_LWF_Wave_Gauges_Hydro_2D_Plots3_2023.10.31.png
    :align: center
    :width: 600
    :figclass: align-center
-    This is the model output data as seen from ParaView
-
-OpenSees Displacements And Reactions 
 
 
-.. figure:: figures/TipDisplacement.png
+Though only one case was considered here, if many experimental debris-field cases are ran (10+) we can use HydroUQ to perform a sensitivity analysis on the debris-field parameters. This isn't pursued here-in. 
+
+
+However, the following box-and-whisker charts demonstrates the strengh of the numerical replication, as most points fall within experimental interquartile ranges and never outside of the experimental envelope for impact loads.
+
+.. figure:: figures/OSU_U_FirstPeak_BoxAndWhiskers_KrishExpOnly_31072023.png
    :align: center
    :width: 600
    :figclass: align-center
-    This is the model output data as seen from ParaView
 
-.. figure:: figures/ReactionForces.png
+This is the output of the model
+
+
+.. figure:: figures/OSU_LWF_LodCell_Hydro_2D_Plots3_2023.10.31.png
    :align: center
    :width: 600
    :figclass: align-center
-    This is the model output data as seen from ParaView
 
+This is the output of the model
 
-OpenFOAM probe and function object output is available in results/postProcessing/.
-
-OpenFOAM output is messy. An example Matlab script is provided in the /src/ directory to post process the OpenFOAM output for this particular case and output. 
-This file can be modified to work for any case. The names of the data folders will need to be changed according to the name of the probe given in HydroUQ.
-
-.. figure:: figures/MatlabScriptCopyToLocation.PNG
-   :align: center
-   :width: 600
-   :figclass: align-center
-    In the /src/ folder in the hdro-0002 folder, an example matlab script is provided to look at time history data of the output probes	
-	
-	
-OpenFOAM Calculated Story Forces
-
-.. figure:: figures/storyForces.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-    Story Forces	
-	
-OpenFOAM Calculated Coupled Interface Forces
-
-.. figure:: figures/Forces.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-    Forces
- 
-OpenFOAM Calculated Coupled Interface Moments
- 
-.. figure:: figures/Moments.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-    Moments
-
-OpenFOAM Calculated Pressure Probe Values
-
-.. figure:: figures/Pressures.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-    Pressures
-
-OpenFOAM Calculated Velocity Probe Values
-
-.. figure:: figures/Velocities.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-    Velocities
-
-
-OpenFOAM Calculated Free Surface Values 
-
-.. figure:: figures/WaveGauges.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-    Wave Gauges
 
 
 
