@@ -37,6 +37,7 @@ We validate against two very similar (but not identical) physical studies done i
 Results for free surface elevation and streamwise structural loads are to be recorded for validation at a specified interval. 
 
 Qualitatively, an MPM simulation of debris impacts on a raised structure in the OSU LWF is shown below.
+
 .. figure:: figures/OSU_LWF_MPM_32L_Impact_3Photos.png
    :align: center
    :width: 600
@@ -66,7 +67,7 @@ The experiments by Shekhar et al. 2020 [Shekhar2020]_ are also shown below for c
 Similar figures can be made for the whole range of order debris-array experiments done at the OSU LWF. However, this example focuses on teaching you how to replicate the above results.
 
 Set-Up
----
+------
 
 A step-by-step walkthrough on replicating an MPM simulation result from Bonus 2023 [Bonus2023Dissertation]_ is provided below.
 
@@ -221,7 +222,7 @@ Open ``Outputs``. Here we set the non-physical output parameters for the simulat
 
 
 Execution
----
+---------
 
 We assume that 2 hours are reserved for your simulation. For those using the reduce fluid bulk modulus or reduced resolution, this may be more than neccesary.
 
@@ -237,7 +238,7 @@ Provide a large amount of time for the ``Max Run Time`` field in HydroUQ when su
 
 
 Analysis
----
+--------
 
 When the simulation job has completed, the results will be available on the remote system for retrieval or remote post-processing.
 
@@ -250,12 +251,14 @@ Retrieving the ``results.zip`` folder from the ``Tools & Applications`` Page of 
 
    Locating the job files on DesignSafe
 
+
 Check if the job has finished in the right-side vertical drawer by clicking the refresh icon. If it has, click ``More info``.  
 
 .. figure:: figures/DSToolsAndAppsJobsStatusFinished.PNG
    :align: center
    :width: 600
    :figclass: align-center
+
 
 Once the job is finished, the output files should be available in the directory which the analysis results were sent to
 
@@ -266,6 +269,7 @@ Find the files by clicking ``View``.
    :width: 600
    :figclass: align-center
 
+
 Move the ``results.zip`` to somewhere in ``My Data/``. Use the Extractor tool available on DesignSafe.  Unzip the results.zip folder. 
 
 .. figure:: figures/extractonDS.PNG
@@ -275,6 +279,7 @@ Move the ``results.zip`` to somewhere in ``My Data/``. Use the Extractor tool av
     
    Extracting the ``results.zip`` folder on DesignSafe
 
+
 OR Download the ``results.zip`` folder to your PC and unzip to look at the model results. 
 
 .. figure:: figures/downloadResults.PNG
@@ -283,6 +288,7 @@ OR Download the ``results.zip`` folder to your PC and unzip to look at the model
    :figclass: align-center
 
    Download button on DesignSafe shown in red
+
 
 Download the results to look at the geometry files of the analysis.
 
@@ -294,6 +300,7 @@ Extract the ``results.zip`` folder either on DesignSafe or on your local machine
    :figclass: align-center
 
    File-system view of results zip folder on DesignSafe.
+
 
 Locate the zip folder and extract it somewhere convenient. The local or remote work directory on your computer is a good option, but note that these files may be erased if another simulation is set-up in HydroUQ, so keep a backup somewhere outside the working directories.
 	
@@ -310,14 +317,16 @@ Once complete, the simulation data at the three wave gauges (WG1, WG2, and WG3, 
 
    OSU LWF simulated free-surface elevation wave gauges vs. experimental data from Mascarenas 2022 [Mascarenas2022]_.
 
+
 The simulation data at the load-cell is as shown below when plotted against experimental trials of Mascarenas 2022 [Mascarenas2022]_ for the "unbroken" solitary wave case. The experimental streamwise load is the combination of "LC5" and "LC8" in Mascarenas 2022 [Mascarenas2022]_, as both measured streamwise load on the box to reduce errors from position / slight box apparatus out-of-plane rotation.
 
-.. figure:: figures/OSU_LWF_LoadCell_Hydro_2D_Plots3_2023.10.31.png
+.. figure:: figures/OSU_LWF_Load_Cells_Hydro_2023.10.31.png
    :align: center
    :width: 600
    :figclass: align-center
 
    OSU LWF simulated streamwise load-cells vs. experimental data from Mascarenas 2022 [Mascarenas2022]_.
+
 
 Though only one case was considered here, if many experimental debris-field cases are ran (10+) we can use HydroUQ to perform a sensitivity analysis on the debris-field parameters. This isn't pursued here-in. 
 
