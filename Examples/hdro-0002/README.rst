@@ -27,7 +27,8 @@ Experiments were performed in the NHERI OSU LWF, a 100 meter long flume with adj
    :align: center
    :width: 600
    :figclass: align-center
-   :alt: NHERI OSU LWF facilty's experimental schematic used in this example.
+
+NHERI OSU LWF facilty's experimental schematic used in this example.
 
 This research aims to produce a robust database (numerical and physical) from which to eventually be able to extract both the first-principals of wave-driven debris-field phenomena and design guidelines on induced forces. 
 
@@ -47,6 +48,7 @@ Simulated debris impacts on the structure in the Material Point Method. Experime
    :width: 600
    :figclass: align-center
 
+
 .. figure:: figures/OSU_LWF_Dakota_8L_Impact_3Photos.PNG
    :align: center
    :width: 600
@@ -62,7 +64,8 @@ Open ``Settings``. Here we set the simulation time, the time step, and the numbe
    :align: center
    :width: 600
    :figclass: align-center
-   HydroUQ Settings GUI
+
+HydroUQ Settings GUI
 
 
 Open ``Materials``. Here we set the material properties of the fluid and the debris.
@@ -71,7 +74,8 @@ Open ``Materials``. Here we set the material properties of the fluid and the deb
    :align: center
    :width: 600
    :figclass: align-center
-   HydroUQ Materials GUI
+
+HydroUQ Materials GUI
 
 Open ``Geometry``. Here we set the geometry of the flume, the debris, and the raised structure. 
 
@@ -79,7 +83,8 @@ Open ``Geometry``. Here we set the geometry of the flume, the debris, and the ra
    :align: center
    :width: 600
    :figclass: align-center
-   HydroUQ Geometry GUI
+
+HydroUQ Geometry GUI
 
 
 Open ``Algorithm``. Here we set the algorithm parameters for the simulation. We choose to apply F-Bar antilocking to aid in the pressure field on the fluid. The associated toggle must be checked, and the antilocking ratio set to 0.9, loosely.
@@ -88,7 +93,8 @@ Open ``Algorithm``. Here we set the algorithm parameters for the simulation. We 
    :align: center
    :width: 600
    :figclass: align-center
-   HydroUQ Geometry GUI
+
+HydroUQ Geometry GUI
 
 Open ``Partitions``. Here we set the number of partitions for the simulation. This is the domain decomposition across discrete hardware units, i.e. Multi-GPUs. These may be kept as there default values. 
 
@@ -96,9 +102,10 @@ Open ``Partitions``. Here we set the number of partitions for the simulation. Th
    :align: center
    :width: 600
    :figclass: align-center
-   HydroUQ Partitions GUI
 
-Moving onto the definition of an ordered debris-array, we set the debris properties in the ``Debris`` > ``Materials`` tab. We will assume debris are made of HDPE plastic, as in experiment
+HydroUQ Partitions GUI
+
+Moving onto the definition of an ordered debris-array, we set the debris properties in the ``Debris`` / ``Materials`` tab. We will assume debris are made of HDPE plastic, as in experiment
 
 .. figure:: figures/GUI_Debris_Material.PNG
    :align: center
@@ -107,7 +114,7 @@ Moving onto the definition of an ordered debris-array, we set the debris propert
 
 HydroUQ Debris Materials GUI
 
-Open ``Debris`` > ``Geometry``. Here we set the debris properties, such as the number of debris, the size of the debris, and the spacing between the debris. Rotation is another option, though not used in this example. We've elected to use an 8 x 4 grid of debris (longitudinal axis parallel to long-axis of the flume).
+Open ``Debris`` / ``Geometry``. Here we set the debris properties, such as the number of debris, the size of the debris, and the spacing between the debris. Rotation is another option, though not used in this example. We've elected to use an 8 x 4 grid of debris (longitudinal axis parallel to long-axis of the flume).
 
 .. figure:: figures/GUI_Bodies_Debris_Geometry.PNG
    :align: center
@@ -116,9 +123,9 @@ Open ``Debris`` > ``Geometry``. Here we set the debris properties, such as the n
 
 HydroUQ Debris Geometry GUI
 
-The ``Debris`` > ``Algorithm`` and ``Debris`` > ``Partitions`` tabs are not used in this example, but are available for more advanced users.
+The ``Debris`` / ``Algorithm`` and ``Debris`` / ``Partitions`` tabs are not used in this example, but are available for more advanced users.
 
-Open ``Bodies`` > ``Structures``. Uncheck the box that enables this body, if it is checked. We will not model the structure as a body in this example, instead, we will modify it as a boundary later.
+Open ``Bodies`` / ``Structures``. Uncheck the box that enables this body, if it is checked. We will not model the structure as a body in this example, instead, we will modify it as a boundary later.
 
 .. figure:: figures/GUI_Bodies_Structure_Disabled.PNG
    :align: center
@@ -128,28 +135,28 @@ Open ``Bodies`` > ``Structures``. Uncheck the box that enables this body, if it 
 HydroUQ Bodies Structures GUI
 
 
-Open ``Bodies`` > ``Boundaries`` > ``Wave Flume``. We will set the boundary to be a rigid body, with a fixed separable velocity condition, that is faithful to the digital tiwn of the NHERI OSU LWF. Bathmyetry joint points should be indetical to the ones used in ``Bodeis`` > ``FLuid``.
+Open ``Bodies`` / ``Boundaries`` / ``Wave Flume``. We will set the boundary to be a rigid body, with a fixed separable velocity condition, that is faithful to the digital tiwn of the NHERI OSU LWF. Bathmyetry joint points should be indetical to the ones used in ``Bodeis`` / ``FLuid``.
 
 .. figure:: figures/GUI_Boundaries_Flume.PNG
    :align: center
    :width: 600
    :figclass: align-center
 
-Open ``Bodies`` > ``Boundaries`` > ``Wave Generator``.
+Open ``Bodies`` / ``Boundaries`` / ``Wave Generator``.
 
 .. figure:: figures/GUI_Boundaries_WaveGenerator.PNG
    :align: center
    :width: 600
    :figclass: align-center
 
-Open ``Bodies`` > ``Boundaries`` > ``Rigid Structure``.
+Open ``Bodies`` / ``Boundaries`` / ``Rigid Structure``.
 
 .. figure:: figures/GUI_Boundaries_RigidStructure.PNG
    :align: center
    :width: 600
    :figclass: align-center
 
-Open ``Bodies`` > ``Boundaries`` > ``RigidWalls``.
+Open ``Bodies`` / ``Boundaries`` / ``RigidWalls``.
 
 .. figure:: figures/GUI_Boundaries_RigidWalls.PNG
    :align: center
@@ -158,12 +165,12 @@ Open ``Bodies`` > ``Boundaries`` > ``RigidWalls``.
 
 HydroUQ Bodies Boundaries Wave-Flume Facility GUI
 
-Open ``Bodies`` > ``Debris``. Here we set the boundary conditions for the debris. We will set the boundary to be a rigid body, with a fixed boundary condition.
+Open ``Bodies`` / ``Debris``. Here we set the boundary conditions for the debris. We will set the boundary to be a rigid body, with a fixed boundary condition.
 
-Open ``Bodes`` >  ``Boundaries`` > ``Debris``. Here we set the boundary conditions for the debris. We will set the boundary to be a rigid body, with a fixed boundary condition.
+Open ``Bodes`` /  ``Boundaries`` / ``Debris``. Here we set the boundary conditions for the debris. We will set the boundary to be a rigid body, with a fixed boundary condition.
 
 
-Open ``Sensors`` > ``Wave Gauges``. Set the ``Use sensor?`` box to ``True`` so that the simulation will output results for the instruments we set on this page.
+Open ``Sensors`` / ``Wave Gauges``. Set the ``Use sensor?`` box to ``True`` so that the simulation will output results for the instruments we set on this page.
 
 Three wave gauges will be defined. The first is located prior to the bathymetry ramps, the second partially up the ramps, and the third near the the bathymetry crest, debris, and raised structure. 
 
@@ -180,7 +187,7 @@ HydroUQ Wave Gauges GUI
 These gauges will read all numerical bodies within their defined regions every sampling step, and will report the highest elevation value (Position Y) of a contained body as the free-surface elevation at that gauge. The results is written into our sensor results files.
 
 
-Open ``Sensors`` > ``Load Cells``. Set the ``Use these sensor?`` box to ``True`` so that the simulation will output results for the instruments we set on this page.
+Open ``Sensors`` / ``Load Cells``. Set the ``Use these sensor?`` box to ``True`` so that the simulation will output results for the instruments we set on this page.
 
 .. figure:: figures/GUI_Sensors_LoadCells.PNG
    :align: center
@@ -201,7 +208,7 @@ Open ``Outputs``
 
 Simulation Details
 ---------------
-Simulation Time: 2 hours - Ran on TACC Lonestar6, 56 processors, 3 NVIDIA A100 GPUs, 1 node -> Real Time: 1hr, 20 minutes
+Simulation Time: 2 hours - Ran on TACC Lonestar6, 56 processors, 3 NVIDIA A100 GPUs, 1 node -/ Real Time: 1hr, 20 minutes
 
 Submitted
 May 1, 2024 1:14:37 PM
