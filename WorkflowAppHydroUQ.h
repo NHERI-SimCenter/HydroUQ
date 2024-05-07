@@ -87,9 +87,10 @@ public:
     ~WorkflowAppHydroUQ();
 
     void setMainWindow(MainWindowWorkflowApp* window); // From WE-UQ
-    bool outputToJSON(QJsonObject &rvObject);
-    bool inputFromJSON(QJsonObject &rvObject);
-    void clear(void);
+    bool outputToJSON(QJsonObject &rvObject) override; 
+    bool inputFromJSON(QJsonObject &rvObject) override;
+    void clear(void) override;
+    int  createCitation(QJsonObject &citationToAddTo, QString citeFile); // From EE-UQ
 
     //void setMainWindow(MainWindow* window);
     void onRunButtonClicked();
