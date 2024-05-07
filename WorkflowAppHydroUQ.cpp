@@ -836,7 +836,7 @@ WorkflowAppHydroUQ::onExitButtonClicked(){
 void
 WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir) {
 
-    errorMessage("");
+    // errorMessage(""); // I dont think we need this? Will clutter up any error counting tool. - JB
 
     //
     // create temporary directory in working dir
@@ -998,6 +998,13 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
         remoteApplication->setExtraParameters(extraParameters);
     }
     
+    // This outputs citations, makes it easy for people to add their own 
+    // to tools and have them grouped for output with the rest
+    QJsonObject citations;
+    QString citeFile = templateDirectory + QDir::separator() + tr("please_cite.json");    
+    // QString citeFile = destinationDirectory.filePath("please_cite.json"); // file getting deleted
+    this->createCitation(citations, citeFile);
+    // json.insert("citations",citations);
 
     // statusMessage("Set-Up Done .. Now Starting HydroUQ Application");
     emit setUpForApplicationRunDone(tmpDirectory, inputFile);
@@ -1049,4 +1056,44 @@ WorkflowAppHydroUQ::loadFile(QString &fileName){
 int
 WorkflowAppHydroUQ::getMaxNumParallelTasks() {
     return theUQ_Selection->getNumParallelTasks();
+}
+
+int
+WorkflowAppHydroUQ::createCitation(QJsonObject &citation, QString citeFile) {
+
+  QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.1.0 (v3.1.0). Zenodo. https://doi.org/10.5281/zenodo.4731073\",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
+
+  QJsonDocument docC = QJsonDocument::fromJson(cit.toUtf8());
+  if(!docC.isNull()) {
+    if(docC.isObject()) {
+      citation = docC.object();        
+    }  else {
+      qDebug() << "WorkflowAppHydro citation text is not valid JSON: \n" << cit << endl;
+    }
+  }
+  
+  theSIM->outputCitation(citation);
+  theEventSelection->outputCitation(citation);
+  theAnalysisSelection->outputCitation(citation);
+  theUQ_Selection->outputCitation(citation);
+  theEDP_Selection->outputCitation(citation);
+  // TODO: Allow citations from GI, RVs, and RES widgets. Maybe from the remote run pop-up too to cite DesignSafe/TACC? (JB)
+
+  // write the citation to a citeFile if provided
+  
+  if (!citeFile.isEmpty()) {
+    
+    QFile file(citeFile);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+      errorMessage(QString("writeCitation - could not open file") + citeFile);
+    //   progressDialog->hideProgressBar(); // Not in HydroUQ currentyl
+      return 0;
+    }
+
+    QJsonDocument doc(citation);
+    file.write(doc.toJson());
+    file.close();
+  }
+  
+  return 0;    
 }
