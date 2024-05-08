@@ -41,7 +41,7 @@ DEFINES += _GRAPHICS_Qt3D
 QMAKE_APPLE_DEVICE_ARCHS="x86_64"
 QTWEBENGINE_CHROMIUM_FLAGS+=--ignore-gpu-blacklist --
 
-VERSION=3.0.0
+VERSION=3.1.0
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 # Some tools use web-apps with WebGPU, flags are often needed to make Qt properly use your GPU in a Chromium process
@@ -188,7 +188,8 @@ RESOURCES += \
     resources.qrc \
     objects.qrc \
     EVENTS/Celeris/volumetric.qrc \
-    $$PWD/styles.qrc
+    $$PWD/styles.qrc \
+    scripts.qrc
 
 DISTFILES += \
     resources/docs/textAboutHydroUQ.html
@@ -200,7 +201,8 @@ RESOURCES += \
     $$PWD/resources.qrc \   
     $$PWD/styles.qrc \
     $$PWD/EVENTS/Celeris/volumetric.qrc \
-    $$PWD/objects.qrc
+    $$PWD/objects.qrc \
+    $$PWD/scripts.qrc
        
 
 FORMS += \

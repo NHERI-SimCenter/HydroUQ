@@ -6,7 +6,7 @@ class HYDROUQ(ConanFile):
     license = "BSD"
     author = "NHERI SimCenter"
     url = "https://github.com/NHERI-SimCenter/HydroUQ"
-    description = "NHERI SimCenter Water-Borne Hazard Engineering with Uncertainty Quantification Research Tool"
+    description = "NHERI SimCenter Water-Borne Hazard Engineering with Uncertainty Quantification Tool"
     settings = "os", "compiler", "build_type", "arch"
     generators = "qmake"
     requires = "jansson/2.13.1", \
