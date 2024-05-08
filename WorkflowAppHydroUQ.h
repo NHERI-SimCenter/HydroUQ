@@ -70,6 +70,8 @@ class RemoteJobManager;
 class QNetworkAccessManager;
 class QNetworkReply;
 class HydroEDP_Selection;
+class SC_RemoteAppTool;
+#include <QDir>
 // class EDP_Selection;
 
 // class GeoClawOpenFOAM;
@@ -91,6 +93,7 @@ public:
     bool inputFromJSON(QJsonObject &rvObject) override;
     void clear(void) override;
     int  createCitation(QJsonObject &citationToAddTo, QString citeFile); // From EE-UQ
+    int  createToolCitation(QJsonObject &citationToAddTo, QString citeFile); // From EE-UQ
 
     //void setMainWindow(MainWindow* window);
     void onRunButtonClicked();
@@ -128,25 +131,30 @@ private:
     UQ_Results *theResults;
 
     // Icons for sidebar
-    QSvgWidget *theSvgUQ;
-    QSvgWidget *theSvgGI;
-    QSvgWidget *theSvgSIM;
-    QSvgWidget *theSvgEVT;
-    QSvgWidget *theSvgFEM;
-    QSvgWidget *theSvgEDP;
-    QSvgWidget *theSvgRV;
-    QSvgWidget *theSvgRES;
+    // QSvgWidget *theSvgUQ;
+    // QSvgWidget *theSvgGI;
+    // QSvgWidget *theSvgSIM;
+    // QSvgWidget *theSvgEVT;
+    // QSvgWidget *theSvgFEM;
+    // QSvgWidget *theSvgEDP;
+    // QSvgWidget *theSvgRV;
+    // QSvgWidget *theSvgRES;
 
     // objects for running the workflow and obtaining results
     RunWidget *theRunWidget;
     Application *localApp;
     Application *remoteApp;
     Application *currentApp;
+    SC_RemoteAppTool *currentTool;
+
     RemoteJobManager *theJobManager;
 
 
     QJsonObject *jsonObjOrig;
     QNetworkAccessManager *manager; 
+
+    QDir defaultWorkDir = QDir("tmp.SimCenter");
+    QString defaultSubDir = QString("templatedir");
 
     bool canRunLocally(); 
 };
