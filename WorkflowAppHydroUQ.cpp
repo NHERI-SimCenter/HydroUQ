@@ -349,9 +349,11 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     // to tools and have them grouped for output with the rest
     
     // TODO: 
-    SimCenterPreferences prefs;
+    auto prefs = SimCenterPreferences::getInstance();
     
-    defaultWorkDir = QDir(prefs::getLocalWorkDir());
+    QString stringLocalWorkDir = prefs->getLocalWorkDir();
+
+    defaultWorkDir = QDir(stringLocalWorkDir);
     QString templateDirectory  = defaultWorkDir.absoluteFilePath(defaultSubDir);
     defaultWorkDir.mkpath(templateDirectory);
 
