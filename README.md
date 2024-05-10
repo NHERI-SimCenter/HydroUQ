@@ -30,7 +30,7 @@
 
 # Why Use HydroUQ?
 
-The ``HydroUQ`` desktop application is a user-facing portal for cutting-edge engineering workflows targeting tsunami and storm-surge demands on structures. It is a free, open-source, graphical software for simulating a structures's response with uncertainty quantification (UQ) during water-borne natural hazard loading. The application's interchangeable workflow allows you  to swap between popular uncertainty quantification methods (e.g. Forward, Sensitivity, Reliability) to upgrade their previously deterministic models. Modular design lets you drop-in your own building models (SIM), event types (EVT), nonlinear structural analysis (FEM), engineering demand parameters (EDP), and more.
+The ``HydroUQ`` desktop application is a user-facing portal for cutting-edge engineering workflows targeting tsunami and storm-surge demands on structures. It is a free, open-source, graphical software for simulating a structures's response with uncertainty quantification (UQ) during water-borne natural hazard loading. The application's interchangeable workflow allows you to swap between popular uncertainty quantification methods (e.g. Forward, Sensitivity, Reliability) to upgrade your previously deterministic models to probabilistic ones. Modular design lets you drop-in your own building models (SIM), event types (EVT), nonlinear structural analysis (FEM), engineering demand parameters (EDP), and more.
 
 
 ## Capabilities
@@ -63,7 +63,7 @@ The ``HydroUQ`` desktop application is a user-facing portal for cutting-edge eng
 If you use ``HydroUQ`` [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10902090.svg)](https://doi.org/10.5281/zenodo.10902090) in your research, please cite our software as:
 
 ```bibtex
-@misc{McKennaBonusHarishLewis2024,
+@software{McKennaBonusHarishLewis2024,
   author = {Frank McKenna and Justin Bonus and Ajay Harish and Nicolette Lewis},
   title = {HydroUQ},
   year = {2024},
