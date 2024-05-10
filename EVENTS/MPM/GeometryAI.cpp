@@ -68,9 +68,19 @@
 #include <Qt3DCore/QEntity>
 #include <QQuaternion>
 #include <Qt3DExtras/QOrbitCameraController>
-#include <Qt3DRender/QAttribute>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <Qt3DCore/QBuffer>
+#include <Qt3DCore/QAttribute>
+#include <Qt3DCore/QGeometry>
+namespace Qt3DGeometry = Qt3DCore;
+#else
 #include <Qt3DRender/QBuffer>
+#include <Qt3DRender/QAttribute>
 #include <Qt3DRender/QGeometry>
+
+namespace Qt3DGeometry = Qt3DRender;
+#endif
+
 #include <Qt3DRender/QGeometryRenderer>
 #include <Qt3DRender/QMaterial>
 #include <Qt3DRender/QMesh>

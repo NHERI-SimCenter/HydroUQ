@@ -62,7 +62,7 @@ class QDoubleSpinBox;
 class QLabel;
 class QRadioButton;
 class QString;
-class QStringList;
+//class QStringList;
 
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
