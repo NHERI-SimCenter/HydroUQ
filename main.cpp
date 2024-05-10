@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("3.1.0");
+    QCoreApplication::setApplicationVersion("3.1.1");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     Q_INIT_RESOURCE(images1);
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
     w.setVersion(version);
 
     // Citation
-    QString citeText("1) Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.1.0 (v3.1.0). Zenodo. https://doi.org/10.5281/zenodo.10902090 \n\n 2) Deierlein GG, McKenna F, Zsarnóczay A, Kijewski-Correa T, Kareem A, Elhaddad W, Lowes L, Schoettler MJ and Govindjee S (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Front. Built Environ. 6:558706. doi: 10.3389/fbuil.2020.558706");
+    QString citeText("1) Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.1.0 (v3.1.0). Zenodo. https://doi.org/10.5281/zenodo.10902090 \n\n 2) \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
     w.setCite(citeText);
 
     // Link to repository
@@ -202,7 +202,7 @@ int main(int argc, char *argv[])
         qDebug() << "could not open stylesheet";
     }
 
-    /* *****************************************************************
+    /* ***************************************************************** 
     //Setting Google Analytics Tracking Information
     GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
     GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
