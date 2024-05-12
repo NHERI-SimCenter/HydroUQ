@@ -30,7 +30,7 @@
 
 # Why Use HydroUQ?
 
-The ``HydroUQ`` desktop application is a user-facing portal for cutting-edge engineering workflows targeting tsunami and storm-surge demands on structures. It is a free, open-source, graphical software for simulating a structures's response with uncertainty quantification (UQ) during water-borne natural hazard loading. The application's interchangeable workflow allows users to swap between popular uncertainty quantification methods (e.g. Sensitivity, Reliability, Surrogates) to upgrade their previously deterministic models. Modular design lets you drop-in your own building models (SIM), event types (EVT), nonlinear structural analysis (FEM), engineering demand parameters (EDP), and more.
+The ``HydroUQ`` desktop application is a user-facing portal for cutting-edge engineering workflows targeting tsunami and storm-surge demands on structures. It is a free, open-source, graphical software for simulating a structures's response with uncertainty quantification (UQ) during water-borne natural hazard loading. The application's interchangeable workflow allows you to swap between popular uncertainty quantification methods (e.g. Forward, Sensitivity, Reliability) to upgrade your previously deterministic models to probabilistic ones. Modular design lets you drop-in your own building models (SIM), event types (EVT), nonlinear structural analysis (FEM), engineering demand parameters (EDP), and more.
 
 
 ## Capabilities
@@ -58,12 +58,12 @@ The ``HydroUQ`` desktop application is a user-facing portal for cutting-edge eng
 - [Forum & Feature Requests](http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0)
 
 
-## Citing this Work
+## Citing HydroUQ
 
 If you use ``HydroUQ`` [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10902090.svg)](https://doi.org/10.5281/zenodo.10902090) in your research, please cite our software as:
 
 ```bibtex
-@misc{McKennaBonusHarishLewis2024,
+@software{McKennaBonusHarishLewis2024,
   author = {Frank McKenna and Justin Bonus and Ajay Harish and Nicolette Lewis},
   title = {HydroUQ},
   year = {2024},
@@ -109,7 +109,7 @@ In reality, this is a software workflow representation of the PEER Performance-B
 
 
 
-``HydroUQ`` is just one part of the [NHERI SimCenter](https://simcenter.designsafe-ci.org) ecosystem that provides cutting-edge open-source tools for natural hazards engineering. Tools like ``quoFEM``, ``EE-UQ``, ``WE-UQ``, ``HydroUQ``, ``PBE``, and ``R2D`` work together to provide a comprehensive solution for natural hazards engineering. The SimCenter ecosytem forms a modular hierarchy that allows users to pick and choose the tools they need for their specific research or engineering problem.
+``HydroUQ`` is just one part of the [NHERI SimCenter](https://simcenter.designsafe-ci.org) ecosystem that provides cutting-edge open-source tools for natural hazards engineering. Tools like ``quoFEM``, ``EE-UQ``, ``WE-UQ``, ``HydroUQ``, ``PBE``, and ``R2D`` work together to provide a comprehensive solution for natural hazards engineering. The SimCenter ecosytem forms a modular hierarchy that allows you to pick and choose tools in the workflow for your specific research or engineering problem.
 
 
 
@@ -126,32 +126,31 @@ All applications are free, open-source, and available for download on the [Desig
 
 | Application | Full Title | Download | GitHub | Version |
 |:-----------:|:-----------|:--------:|:------:|:-------:|
-| ``quoFEM`` | Quantified Uncertainty with Optimization for the Finite Element Method Application | [![Download quoFEM](https://img.shields.io/badge/Download-quoFEM-blue)](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/quoFEM) | [![GitHub quoFEM](https://img.shields.io/badge/git%20quoFEM-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter/quoFEM) |  [![GitHub Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/quoFEM)](https://github.com/NHERI-SimCenter/quoFEM/releases/latest) |
+| ``R2D`` | Regional Resilience Determination Application | [![Download R2D](https://img.shields.io/badge/Download-R2D-blue)](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/R2Dt) | [![GitHub R2D](https://img.shields.io/badge/git%20R2D-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter/R2DTool) | [![GitHub Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/R2DTool)](https://github.com/NHERI-SimCenter/R2DTool/releases/latest) |
+| ``PBE`` | Performance-Based Engineering Application | [![Download PBE](https://img.shields.io/badge/Download-PBE-blue)](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/PBE) | [![GitHub PBE](https://img.shields.io/badge/git%20PBE-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter/PBE) | [![GitHub Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/PBE)](https://github.com/NHERI-SimCenter/PBE/releases/latest) |
 | ``EE-UQ`` | Earthquake Engineering with Uncertainty Quantification Application | [![Download EE-UQ](https://img.shields.io/badge/Download-EE--UQ-blue)](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/EE_UQ) | [![GitHub EE-UQ](https://img.shields.io/badge/git%20EE--UQ-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter/EE-UQ) | [![GitHub Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/EE-UQ)](https://github.com/NHERI-SimCenter/EE-UQ/releases/latest) |
 | ``WE-UQ`` | Wind Engineering with Uncertainty Quantification Application | [![Download WE-UQ](https://img.shields.io/badge/Download-WE--UQ-blue)](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/WE_UQ) | [![GitHub WE-UQ](https://img.shields.io/badge/git%20WE--UQ-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter/WE-UQ)  | [![GitHub Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/WE-UQ)](https://github.com/NHERI-SimCenter/WE-UQ/releases/latest) |
 | ``HydroUQ`` | Water-Borne Natural Hazards Engineering with Uncertainty Quantification Application | [![Download HydroUQ](https://img.shields.io/badge/Download-HydroUQ-blue)](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/HydroUQ) | [![GitHub HydroUQ](https://img.shields.io/badge/git%20HydroUQ-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter/HydroUQ)  | [![GitHub Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/HydroUQ)](https://github.com/NHERI-SimCenter/HydroUQ/releases/latest) |
-| ``PBE`` | Performance-Based Engineering Application | [![Download PBE](https://img.shields.io/badge/Download-PBE-blue)](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/PBE) | [![GitHub PBE](https://img.shields.io/badge/git%20PBE-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter/PBE) | [![GitHub Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/PBE)](https://github.com/NHERI-SimCenter/PBE/releases/latest) |
-| ``R2D`` | Regional Resilience Determination Application | [![Download R2D](https://img.shields.io/badge/Download-R2D-blue)](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/R2Dt) | [![GitHub R2D](https://img.shields.io/badge/git%20R2D-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter/R2DTool) | [![GitHub Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/R2DTool)](https://github.com/NHERI-SimCenter/R2DTpp;/releases/latest) |
-| ``BRAILS`` | Building Recognition with AI at Large-Scale Application | ``pip install BRAILS`` | [![GitHub BRAILS](https://img.shields.io/badge/git%20BRAILS-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter/BRAILS) | [![GitHub Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/BRAILS)](https://github.com/NHERI-SimCenter/HydroUQ/BRAILS/latest) |
+| ``quoFEM`` | Quantified Uncertainty with Optimization for the Finite Element Method Application | [![Download quoFEM](https://img.shields.io/badge/Download-quoFEM-blue)](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/quoFEM) | [![GitHub quoFEM](https://img.shields.io/badge/git%20quoFEM-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter/quoFEM) |  [![GitHub Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/quoFEM)](https://github.com/NHERI-SimCenter/quoFEM/releases/latest) |
 | ``TInF`` | Turbulence Inflow Generation for CFD Application | [![Download TInF](https://img.shields.io/badge/Download-TInF-blue)](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community//SimCenter/Software/TurbulenceInflowTool) | [![GitHub TInF](https://img.shields.io/badge/git%20TInF-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter/TurbulenceInflowTool) | [![GitHub Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/TurbulenceInflowTool)](https://github.com/NHERI-SimCenter/TurbulenceInflowTool/releases/latest) |
+| ``BRAILS`` | Building Recognition with AI at Large-Scales Application | ``pip install BRAILS`` | [![GitHub BRAILS](https://img.shields.io/badge/git%20BRAILS-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter/BRAILS) | [![GitHub Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/BRAILS)](https://github.com/NHERI-SimCenter/HydroUQ/BRAILS/latest) |
 
 ---
 
 ## Getting Started
 
-The ``HydroUQ`` application can be [downloaded](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/HydroUQ), [installed](https://nheri-simcenter.github.io/Hydro-Documentation/common/user_manual/installation/desktop/installation.html), [built](https://nheri-simcenter.github.io/Hydro-Documentation/common/developer_manual/how_to_build/desktop/how_to_build.html), and [launched](https://nheri-simcenter.github.io/Hydro-Documentation/common/user_manual/running/desktop/running.html) on Windows, Mac, and Linux operating systems. With a [free DesignSafe account](https://www.designsafe-ci.org/account/register/), users can run HydroUQ simulations remotely on powerful supercomputers including the ``Frontera``, ``Lonestar6``, and ``Stampede3`` systems.
+The ``HydroUQ`` application can be [downloaded](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/HydroUQ), [installed](https://nheri-simcenter.github.io/Hydro-Documentation/common/user_manual/installation/desktop/installation.html), [built](https://nheri-simcenter.github.io/Hydro-Documentation/common/developer_manual/how_to_build/desktop/how_to_build.html), and [launched](https://nheri-simcenter.github.io/Hydro-Documentation/common/user_manual/installation/desktop/installation.html) on Windows, Mac, and Linux operating systems. With a [free DesignSafe account](https://www.designsafe-ci.org/account/register/), you can run HydroUQ simulations remotely on powerful supercomputers including ``Frontera``, ``Lonestar6``, and ``Stampede3``.
 
 
 
 ### Download HydroUQ
 
-The ``HydroUQ`` desktop application is available for download on Windows and Mac operating systems from the DesignSafe-CI website at the [HydroUQ Download Link](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/HydroUQ)
+The ``HydroUQ`` desktop application is available for download on Windows and Mac operating systems from the DesignSafe-CI website at the [HydroUQ Download Link](https://www.designsafe-ci.org/data/browser/public/designsafe.storage.community/SimCenter/Software/HydroUQ).
 
 
 ### Install HydroUQ
 
-The ``HydroUQ`` executable desktop application is available for Windows and Mac operating systems. The installation instructions are available in the [HydroUQ Documentation](https://nheri-simcenter.github.io/Hydro-Documentation/common/user_manual/installation/desktop/installation.html)
-
+The ``HydroUQ`` installation instructions are available in the [HydroUQ Installation Guide](https://nheri-simcenter.github.io/Hydro-Documentation/common/user_manual/installation/desktop/installation.html).
 
 
 ### Build HydroUQ
@@ -163,7 +162,7 @@ Clone the repository using the following command if the Github CLI is installed 
 git clone https://github.com/NHERI-SimCenter/HydroUQ.git
 ```
 
-Otherwise, you can clone the repository on this page by clicking on the green "Code" button and then clicking on "Download ZIP". Extract the downloaded ZIP file to a location on your system.
+Otherwise, you can clone the repository on this page by clicking on the green ``Code`` button and then clicking on ``Download ZIP``. Extract the downloaded ZIP file to a location on your system.
 
 Instructions on building the HydroUQ application from downloaded source code are available in the [HydroUQ How-To-Build Guide](https://nheri-simcenter.github.io/Hydro-Documentation/common/developer_manual/how_to_build/desktop/how_to_build.html)
 
@@ -176,11 +175,11 @@ The ``HydroUQ`` application can be run by executing the ``Hydro_UQ`` executable 
 
 ### Run HydroUQ Remotely
 
-Users with a free DesignSafe account can use the `HydroUQ` desktop app to launch a remote job to run simulations on powerful supercomputers with ease.
+With a free DesignSafe account you can use the `HydroUQ` desktop app to launch a remote job to run simulations on powerful supercomputers with ease.
 
 [Sign-up for DesignSafe](https://www.designsafe-ci.org/account/register/)
 
-Available systems are the ``Frontera``, ``Lonestar6``, and ``Stampede3`` supercomputers. Systems are located at the Texas Advanced Computing Center (TACC) and made available to the user through NSF's NHERI DesignSafe-CI, the cyberinfrastructure provider for NHERI. 
+Available systems are the ``Frontera``, ``Lonestar6``, and ``Stampede3`` supercomputers. Systems are located at the Texas Advanced Computing Center (TACC) and made available to you through NSF's NHERI DesignSafe-CI, the cyberinfrastructure provider for NHERI. 
 
 
 ---
@@ -219,7 +218,7 @@ Stay up-to-date with the latest news, updates, and releases with the [NHERI News
 ## Release License
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-blue)](https://raw.githubusercontent.com/NHERI-SimCenter/HydroUQ/master/LICENSE)
 
-HydroUQ is released as an open-source research application under a [BSD 2-Clause License](https://nheri-simcenter.github.io/Hydro-Documentation/common/front-matter/license.html)
+``HydroUQ`` is released as an open-source research application under a [BSD 2-Clause License](https://nheri-simcenter.github.io/Hydro-Documentation/common/front-matter/license.html)
 
 
 
