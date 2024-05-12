@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>EVENTS/Celeris/js/main.js</file>
+    </qresource>
+</RCC>

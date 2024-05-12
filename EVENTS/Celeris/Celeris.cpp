@@ -99,13 +99,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QDir>
 #include <QTextEdit>
 #include <QFormLayout>
-// #include <QtWebEngineWidgets>
-// #include <QWebEngineSettings>
+#include <QtWebEngineWidgets>
 #include <QWebEngineView>
-// #include <QWebEnginePage>
-// #include <QWebEngineProfile>
-// #include <QWebEngineScriptCollection>
-// #include <QWebEngineScript>
+#include <QWebEngineSettings>
+#include <QWebEnginePage>
+#include <QWebEngineProfile>
+#include <QWebEngineScriptCollection>
+#include <QWebEngineScript>
 
 #include <QUrl> 
 
@@ -382,7 +382,16 @@ Celeris::Celeris(QWidget *parent)
     // page.load(QUrl("https://plynett.github.io/"));
 
     // -----------------------------------------------------------------------------------
-    view = new QWebEngineView();
+    QFile file;
+    // file.setFileName("https://plynett.github.io/js/main.js");
+    // file.setFileName("https://github.com/plynett/plynett.github.io/blob/main/js/main.js");
+    file.setFileName(":/EVENTS/Celeris/js/main.js");
+    file.open(QIODevice::ReadOnly);
+    mainJS = file.readAll();
+    // jQuery.append("\nvar qt = { 'jQuery': jQuery.noConflict(true) };");
+    file.close();
+
+    view = new QWebEngineView(this);
 
     // Maximize the size of the instance
     // view->setMaximumSize(1920, 1080);
@@ -394,7 +403,41 @@ Celeris::Celeris(QWidget *parent)
     // Load the initial page
     // view->load(QUrl("https://tidesandcurrents.noaa.gov/ports/index.html?port=sf"));
 
+
+    QWebEngineSettings *settings = view->settings();
+    settings->setAttribute(QWebEngineSettings::WebGLEnabled, true);
+    settings->setAttribute(QWebEngineSettings::Accelerated2dCanvasEnabled, true);
+    settings->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
+    settings->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, true);
+    settings->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
+    settings->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
+    settings->setAttribute(QWebEngineSettings::AllowRunningInsecureContent, true);
+    settings->setAttribute(QWebEngineSettings::AllowWindowActivationFromJavaScript, true);
+    settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+    settings->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, true);
+    settings->setAttribute(QWebEngineSettings::LocalContentCanAccessFileUrls, true);
+
+
     view->load(QUrl("https://plynett.github.io/"));
+
+    // connect(view, &QWebEngineView::loadFinished, this, &Celeris::adjustLocation);
+    // connect(view, &QWebEngineView::titleChanged, this, &Celeris::adjustTitle);
+    // connect(view, &QWebEngineView::loadProgress, this, &Celeris::setProgress);
+    connect(view, &QWebEngineView::loadFinished, this, &Celeris::finishLoading);
+
+    qDebug() << "Try to run Celeris javascript...";
+
+    // view->page()->runJavaScript("js/main.js");
+    // view->page()->runJavaScript(mainJS);
+    
+
+
+
+
+
+
+    // view->page()->runJavaScript(mainJS)
+
     // Add QWebView for viewing a Boussinesq wave solver web-page using WebGPU functionality
     // view = new QWebEnginePage();
     // QWebEnginePage 
@@ -490,6 +533,77 @@ Celeris::~Celeris()
 
 }
 
+
+void Celeris::finishLoading(bool)
+{
+    // view->page()->runJavaScript("https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js");
+    // view->page()->runJavaScript("https://cdn.jsdelivr.net/npm/chart.js");
+    // view->page()->runJavaScript("js/main.js");
+    // view->page()->runJavaScript(mainJS);
+    // view->page()->runJavaScript(":/EVENTS/Celeris/js/main.js");
+    // view->page()->runJavaScript("https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js");
+    // view->page()->runJavaScript("https://cdn.jsdelivr.net/npm/chart.js");
+    // view->page()->runJavaScript("https://github.com/plynett/plynett.github.io/js/main.js");
+    // view->page()->runJavaScript("js/main.js");
+    // view->page()->runJavaScript(mainJS);
+
+    // view->page()->runJavaScript(":/main.js");
+    // view->page()->runJavaScript(":/EVENTS/Celeris/js/main.js");
+
+    // Example of running javascript, it will change the background color of the page to lightblue
+    QString code = "document.body.style.backgroundColor = 'lightblue';";
+    view->page()->runJavaScript(code);
+
+    QString codeUpdateButtonLabel = "const maximizedCounts = []; const panels = document.querySelectorAll('#horizontalbar .custom-window'); panels.forEach((panel, index) => { maximizedCounts[index] = 0; const content = panel.querySelector('.window-content'); const isMaximized = window.getComputedStyle(content).display !== 'none'; const button = panel.querySelector('.minimize-button'); button.textContent = isMaximized ? '-' : '+'; });";
+    view->page()->runJavaScript(codeUpdateButtonLabel);
+
+    QString codeRunExample = "initializeWebGPUApp();";
+
+    QString codeToolTip = "const windows = document.querySelectorAll('.window-content');   windows.forEach(windowContent => { const button = windowContent.previousElementSibling.querySelector('.minimize-button'); if (windowContent.getAttribute('data-default') === 'minimized') {  windowContent.style.display = 'none';  button.textContent = '+';  } else {  windowContent.style.display = 'block';   button.textContent = '-';  }  button.addEventListener('click', function() {   if (windowContent.style.display === 'none') {  windowContent.style.display = 'block';  this.textContent = '-';  } else {   windowContent.style.display = 'none';  this.textContent = '+';   }   });  });";
+    view->page()->runJavaScript(codeToolTip);
+
+    QString codeOnFileUpload = " function onFileUpload(event) { var inputId = event.target.id;  var label = document.querySelector('label[for=' + inputId + ']');  if (event.target.files.length > 0) {  label.style.backgroundColor = '#4CAF50';   label.style.color = 'white'; } else {  label.style.backgroundColor = '';  label.style.color = '';  } }";
+    view->page()->runJavaScript(codeOnFileUpload);
+
+    QString codeOnFileUploadListener = "var fileInputs = document.querySelectorAll('input[type=file]'); fileInputs.forEach(function (input) { input.addEventListener('change', onFileUpload); });";
+    view->page()->runJavaScript(codeOnFileUploadListener);
+
+    QString codeMouseVals = "var leftMouseIsDown = false; var rightMouseIsDown = false; var lastMouseX_right = 0;  var lastMouseY_right = 0; var lastMouseX_left = 0;   var lastMouseY_left = 0;";
+    QString codeMouseEvent = "function handleMouseEvent(event) {  var rect = canvas.getBoundingClientRect();  var scaleX = calc_constants.WIDTH / rect.width;  var scaleY = calc_constants.HEIGHT / rect.height;  calc_constants.xClick = (event.clientX - rect.left) * scaleX;  calc_constants.yClick = calc_constants.HEIGHT - (event.clientY - rect.top) * scaleY; calc_constants.click_update = 1; console.log('Canvas clicked/moved at X:', calc_constants.xClick, ' Y:', calc_constants.yClick); }";
+    QString codeMouseDown = "canvas.addEventListener('mousedown', function (event) {   if (event.button === 0 && calc_constants.viewType == 1) {  leftMouseIsDown = true;  handleMouseEvent(event);   } else if (event.button === 0 && calc_constants.viewType == 2) {   leftMouseIsDown = true;  lastMouseX_left = event.clientX;  lastMouseY_left = event.clientY; calc_constants.click_update = 2;  } else if (event.button === 2 && calc_constants.viewType == 1 && calc_constants.whichPanelisOpen == 6) {   rightMouseIsDown = true;  lastMouseX_right = event.clientX;   lastMouseY_right = event.clientY;  calc_constants.locationOfTimeSeries[calc_constants.changethisTimeSeries].xts = x_position; calc_constants.locationOfTimeSeries[calc_constants.changethisTimeSeries].yts = y_position;  calc_constants.click_update = 2;  calc_constants.updateTimeSeriesTx = 1;  } else if (event.button === 2 && calc_constants.viewType == 2) {   rightMouseIsDown = true;   lastMouseX_right = event.clientX; lastMouseY_right = event.clientY; calc_constants.click_update = 2;  }  });";
+
+    QString codeMouseMove = "canvas.addEventListener('mousemove', function (event) { if (leftMouseIsDown && calc_constants.viewType == 1) {   handleMouseEvent(event);  } else if (leftMouseIsDown && calc_constants.viewType == 2) {  const deltaX = event.clientX - lastMouseX_left;  const deltaY = event.clientY - lastMouseY_left; const motion_inc = 0.001 / calc_constants.forward; calc_constants.shift_x  += deltaX * motion_inc;  calc_constants.shift_y  -= deltaY * motion_inc * calc_constants.WIDTH / calc_constants.HEIGHT;   lastMouseX_left = event.clientX; lastMouseY_left = event.clientY;  calc_constants.click_update = 2; } else if (rightMouseIsDown) {  const deltaX = event.clientX - lastMouseX_right;   calc_constants.rotationAngle_xy -= deltaX * 0.1;  astMouseX_right = event.clientX;  lastMouseY_right = event.clientY; calc_constants.click_update = 2;  } });";
+
+    QString codeMouseUp = "canvas.addEventListener('mouseup', function (event) { if (event.button === 0) { leftMouseIsDown = false; calc_constants.click_update = 0;  } else if (event.button === 2) {  rightMouseIsDown = false; calc_constants.click_update = 0;  }  });";
+
+    QString codeMouseLeave = "canvas.addEventListener('mouseleave', function () { leftMouseIsDown = false;  rightMouseIsDown = false;  });";
+
+    view->page()->runJavaScript(codeMouseVals);
+    view->page()->runJavaScript(codeMouseEvent);
+    view->page()->runJavaScript(codeMouseDown);
+    view->page()->runJavaScript(codeMouseMove);
+    view->page()->runJavaScript(codeMouseUp);
+    view->page()->runJavaScript(codeMouseLeave);
+
+
+    // QString codeTool = "const tooltip = document.getElementById('tooltip'); let x_position = 0.0;  let y_position = 0.0;";
+    // QString codeToolTipMouseMoveAsync = "canvas.addEventListener('mousemove', async (event) => { const bounds = canvas.getBoundingClientRect();  const x = event.clientX;  const y = event.clientY; const canvas_width = bounds.right - bounds.left;  const canvas_height = bounds.bottom - bounds.top;  const normalizedX = (x - bounds.left) / canvas_width;   const normalizedY = 1.0 - (y - bounds.top) / canvas_height;  calc_constants.mouse_current_canvas_indX = Math.round(normalizedX * 80);  calc_constants.mouse_current_canvas_indY = Math.round(normalizedY * 120);  x_position = normalizedX * 80 * 1;  y_position = normalizedY * 120 * 1;  tooltip.style.display = 'block';  tooltip.style.left = `${x + window.scrollX }px`;   tooltip.style.top = `${y + window.scrollY + 20}px`;   tooltip.style.backgroundColor = 'gray';  tooltip.style.color = 'white';   tooltip.style.padding = '8px';  tooltip.style.borderRadius = '4px';  });";
+    // QString codeUpdateToolTip = "function updateTooltip() {  tooltip.innerHTML = `x-coordinate (m): ${x_position.toFixed(2)}<br>y-coordinate (m): ${y_position.toFixed(2)}<br>bathy/topo (m): ${calc_constants.tooltipVal_bottom.toFixed(2)} <br>friction factor: ${calc_constants.tooltipVal_friction.toFixed(3)}<br>surface elevation (m): ${calc_constants.tooltipVal_eta.toFixed(2)} <br>sig wave height (m): ${calc_constants.tooltipVal_Hs.toFixed(2)}`;  }";
+    // QString codeToolTipInterval = "setInterval(updateTooltip, 100);";
+
+    // QString codeToolTipMouseMove = "canvas.addEventListener('mouseout', () => {  tooltip.style.display = 'none';  });";
+
+    // view->page()->runJavaScript(codeTool);
+    // view->page()->runJavaScript(codeToolTipMouseMoveAsync);
+    // view->page()->runJavaScript(codeUpdateToolTip);
+    // view->page()->runJavaScript(codeToolTipInterval);
+    // view->page()->runJavaScript(codeToolTipMouseMove);
+
+
+    // view->page()->runJavaScript(mainJS);
+
+    qDebug() << "Finished loading";
+}
 
 bool Celeris::outputToJSON(QJsonObject &jsonObject)
 {
