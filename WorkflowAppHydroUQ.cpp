@@ -1012,18 +1012,18 @@ WorkflowAppHydroUQ::getMaxNumParallelTasks() {
 int
 WorkflowAppHydroUQ::createCitation(QJsonObject &citation, QString citeFile) {
 
-  QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.1.0 (v3.1.0). Zenodo. https://doi.org/10.5281/zenodo.4731073\",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
+  QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.1.0 (v3.1.0). Zenodo. https://doi.org/10.5281/zenodo.4731073 \",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
 
   QJsonDocument docC = QJsonDocument::fromJson(cit.toUtf8());
   if(!docC.isNull()) {
     if(docC.isObject()) {
       citation = docC.object();        
     }  else {
+
       qDebug() << "WorkflowAppHydro citation text is not valid JSON: \n" << cit << Qt::endl;
     }
   }
-  
-//   theGI->outputCitation(citation);
+  // theGI->outputCitation(citation);
   theSIM->outputCitation(citation);
   theEventSelection->outputCitation(citation);
   theAnalysisSelection->outputCitation(citation);
@@ -1080,7 +1080,7 @@ WorkflowAppHydroUQ::createToolCitation(QJsonObject &citation, QString citeFile) 
     QFile file(citeFile);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
       errorMessage(QString("WorkflowAppHydroUQ::createToolCitation - could not open write-only file ") + citeFile);
-    //   progressDialog->hideProgressBar(); // Not in HydroUQ currentyl
+      progressDialog->hideProgressBar(); // Not in HydroUQ currently
       return 0;
     }
 
