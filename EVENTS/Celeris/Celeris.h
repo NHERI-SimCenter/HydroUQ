@@ -66,7 +66,7 @@ class QPushButton;
 class QCheckBox;
 class QFormLayout;
 class QLabel;
-
+class QString;
 class VolumetricModifier;
 
 class Celeris : public SimCenterAppWidget
@@ -92,12 +92,16 @@ signals:
 public slots:
    void clear(void) override;
 
+protected slots:
+    void finishLoading(bool);
+   //  void viewSource();
 
 private:
     QHBoxLayout                  *mainWindowLayout;
     QGridLayout                  *mainLayout;
-    QWebEngineView               *view;
     VolumetricModifier           *modifier;
+    QWebEngineView               *view;
+    QString                      mainJS;
    //  QWebEnginePage               *m_pWebPage;
 
    // QWebEnginePage               *m_pWebView;

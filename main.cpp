@@ -26,6 +26,7 @@
 #include <QStatusBar>
 #include <QSvgWidget>
 // #include <QOpenGLWidget>
+#include <QtWebEngine>
 
 
 #ifdef ENDLN
@@ -115,6 +116,11 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
+    // https://doc.qt.io/qt-5/qtwebengine-overview.html
+    // QtWebEngine::initialize();
+    // QQmlApplicationEngine engine;
+    // engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
     //  check if the app is run in Qt Creator
     QByteArray envVar = qgetenv("QTDIR"); 
 
@@ -140,16 +146,16 @@ int main(int argc, char *argv[])
     // create a remote interface
     QString tenant("designsafe"); // this is the default tenant for the design safe community
     QString storage("agave://designsafe.storage.default/"); // this is the default storage system for the design safe community
-    QString dirName("Hydro-UQ"); // this is the default directory for the application
+    QString dirName("HydroUQ"); // this is the default directory for the application
     AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName); // this is the remote service used by the application
 
 
     // create the main window
     WorkflowAppWidget *theInputApp = new WorkflowAppHydroUQ(theRemoteService);
-    MainWindowWorkflowApp w(QString("Hydro-UQ: Response during water wave loading"), theInputApp, theRemoteService);
+    MainWindowWorkflowApp w(QString("HydroUQ: Water-borne Hazards Engineering with Uncertainty Quantification"), theInputApp, theRemoteService);
 
     // About the application
-    QString aboutTitle = "About the SimCenter Hydro-UQ Application"; // this is the title displayed in the on About dialog
+    QString aboutTitle = "About the SimCenter HydroUQ Application"; // this is the title displayed in the on About dialog
     QString aboutSource = ":/resources/docs/textAboutHydroUQ.html";  // this is an HTML file stored under resources
     w.setAbout(aboutTitle, aboutSource);
 
