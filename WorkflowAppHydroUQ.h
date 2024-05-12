@@ -45,6 +45,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // #include <QFrame>
 
 #include <WorkflowAppWidget.h>
+#include <QDir>
 
 class SimCenterComponentSelection;
 
@@ -71,7 +72,6 @@ class QNetworkAccessManager;
 class QNetworkReply;
 class HydroEDP_Selection;
 class SC_RemoteAppTool;
-#include <QDir>
 // class EDP_Selection;
 
 // class GeoClawOpenFOAM;
@@ -92,8 +92,6 @@ public:
     bool outputToJSON(QJsonObject &rvObject) override; 
     bool inputFromJSON(QJsonObject &rvObject) override;
     void clear(void) override;
-    int  createCitation(QJsonObject &citationToAddTo, QString citeFile); // From EE-UQ
-    int  createToolCitation(QJsonObject &citationToAddTo, QString citeFile); // From EE-UQ
 
     //void setMainWindow(MainWindow* window);
     void onRunButtonClicked();
@@ -102,7 +100,8 @@ public:
     void onExitButtonClicked();
     int  getMaxNumParallelTasks();
 
-    int createCitation(QJsonObject &citationToAddTo, QString citeFile);
+    int  createCitation(QJsonObject &citationToAddTo, QString citeFile);
+    int  createToolCitation(QJsonObject &citationToAddTo, QString citeFile);
   
 signals:
     void setUpForApplicationRunDone(QString &tmpDirectory, QString &inputFile);

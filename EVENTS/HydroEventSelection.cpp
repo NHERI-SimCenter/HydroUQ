@@ -61,8 +61,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <GeoClawOpenFOAM/GeoClawOpenFOAM.h>
 #include <WaveDigitalFlume/WaveDigitalFlume.h>
 #include <coupledDigitalTwin/CoupledDigitalTwin.h>
-#include <mpm/MPM.h>
-#include <mpm/SPH.h>
+#include <MPM/MPM.h>
+#include <MPM/SPH.h>
 //*********************************************************************************
 // Main Hydro event
 //*********************************************************************************
