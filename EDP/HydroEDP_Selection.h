@@ -45,6 +45,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QVector>
 class QComboBox;
 class QStackedWidget;
+class StandardEDP;
 class UserDefinedApplication;
 class StandardHydroEDP;
 class StandardTsunamiEDP;
@@ -75,6 +76,7 @@ private:
    QStackedWidget *theStackedWidget;
    SimCenterAppWidget *theCurrentEDP;
 
+   SimCenterAppWidget *theStandardEDPs;
    SimCenterAppWidget *theStandardHydroEDPs;
    SimCenterAppWidget *theStandardTsunamiEDPs;
    SimCenterAppWidget *theStandardStormSurgeEDPs;

@@ -1,14 +1,23 @@
 .. _hdro-0002:
 
+====================================================================================
 Validation - Multiple Debris Impacts on a Raised Structure - Digital Twin (OSU LWF) 
-============================
+====================================================================================
 
 +---------------+----------------------------------------------+
 | Problem files | :github:`Github <Examples/hdro-0002/>`       |
 +---------------+----------------------------------------------+
 
+
+.. contents:: Table of Contents
+   :local:
+   :backlinks: none
+
+
+.. _hdro-0002-overview:
+
 Overview
--------
+--------
 
 In this digital twin validation example, debris-field wave-flume tests at a NHERI facility, Oregon State University's Large Wave Flume (OSU LWF), are briefly summarized before demonstrating the use of HydroUQ's OSU LWF digital twin paired with the Material Point Method (MPM).
 
@@ -27,12 +36,12 @@ Experiments were performed in the NHERI OSU LWF, a 100 meter long flume with adj
    :align: center
    :width: 600
    :figclass: align-center
-
+   
    NHERI OSU LWF facilty's experimental schematic used in this example. Adapted from Winter 2019 [Winter2019]_, and Mascarenas 2022 [Mascarenas2022]_.
 
 This example may help to produce a robust database (numerical and physical) from which to eventually be able to extract both the first-principals of wave-driven debris-field phenomena and design guidelines on induced forces. 
 
-We validate against two very similar (but not identical) physical studies done in the OSU LWF by [Shekhar2020]_ and [Mascarenas2022_, indicating high accuracy of our model and low bias to minor experiment specifications. 
+We validate against two very similar (but not identical) physical studies done in the OSU LWF by [Shekhar2020]_ and [Mascarenas2022]_, indicating high accuracy of our model and low bias to minor experiment specifications. 
 
 Results for free surface elevation and streamwise structural loads are to be recorded for validation at a specified interval. 
 
@@ -65,6 +74,9 @@ The experiments by Shekhar et al. 2020 [Shekhar2020]_ are also shown below for c
    OSU LWF debris impact photos from Shekhar et al. 2020 [Shekhar2020]_ experiments.
 
 Similar figures can be made for the whole range of order debris-array experiments done at the OSU LWF. However, this example focuses on teaching you how to replicate the above results.
+
+
+.. _hdro-0002-setup:
 
 Set-Up
 ------
@@ -100,7 +112,7 @@ Open ``Bodies`` / ``Fluid`` / ``Geometry``. Here we set the geometry of the flum
    HydroUQ Bodies Fluid Geometry GUI
 
 
-Open ``Algorithm``. Here we set the algorithm parameters for the simulation. We choose to apply F-Bar antilocking to aid in the pressure field on the fluid. The associated toggle must be checked, and the antilocking ratio set to 0.9, loosely.
+Open ``Algorithm``. Here we set the algorithm parameters for the simulation. We choose to apply F-Bar antilocking to aid in the pressure field's accuracy on the fluid. The associated toggle must be checked, and the antilocking ratio set to 0.9, loosely.
 
 .. figure:: figures/GUI_Bodies_Fluid_Algorithm.PNG
    :align: center
@@ -144,9 +156,8 @@ Open ``Bodies`` / ``Structures``. Uncheck the box that enables this body, if it 
    :align: center
    :width: 600
    :figclass: align-center
-
+   
    HydroUQ Bodies Structures GUI
-
 
 Open ``Boundaries`` / ``Wave Flume``. We will set the boundary to be a rigid body, with a fixed separable velocity condition, that is faithful to the digital tiwn of the NHERI OSU LWF. Bathmyetry joint points should be indetical to the ones used in ``Bodeis`` / ``FLuid``.
 
@@ -157,16 +168,16 @@ Open ``Boundaries`` / ``Wave Flume``. We will set the boundary to be a rigid bod
 
    HydroUQ Boundaries Wave Flume Facility GUI
 
-Open ``Boundaries`` / ``Wave Generator``.
+Open ``Boundaries`` / ``Wave Generator``. Fill in the appropriate file-path for the wave generator paddle motion. It is designed to produce near-solitary like waves.
 
 .. figure:: figures/GUI_Boundaries_WaveGenerator.PNG
    :align: center
    :width: 600
    :figclass: align-center
-
+   
    HydroUQ Boundaries Wave Generator GUI
 
-Open ``Boundaries`` / ``Rigid Structure``.
+Open ``Boundaries`` / ``Rigid Structure``. This is where we will specify the raised structure as a boundary condition. By doing so, we can determine exact loads on the rigid boundary grid-nodes, which may then be mapped to the FEM tab for nonlinear UQ structural response analysis.
 
 .. figure:: figures/GUI_Boundaries_RigidStructure.PNG
    :align: center
@@ -206,7 +217,7 @@ Open ``Sensors`` / ``Load Cells``. Set the ``Use these sensor?`` box to ``True``
    :align: center
    :width: 600
    :figclass: align-center
-
+   
    HydroUQ Sensors Load-Cells GUI
 
 
@@ -216,13 +227,15 @@ Open ``Outputs``. Here we set the non-physical output parameters for the simulat
    :align: center
    :width: 600
    :figclass: align-center
-
+   
    HydroUQ Outputs GUI
 
 
 
-Execution
----------
+.. _hdro-0002-simulation:
+
+Simulation
+----------
 
 We assume that 2 hours are reserved for your simulation. For those using the reduce fluid bulk modulus or reduced resolution, this may be more than neccesary.
 
@@ -230,12 +243,14 @@ This simulation was ran on the TACC Lonestar6 system. It uesd three NVIDIA A100 
 
 In order to retrieve results from the analysis, the analysis must complete and postprocess the model output files into an appropriate format before the end of the allotted submission time. 
 
-Provide a large amount of time for the ``Max Run Time`` field in HydroUQ when submitting a job to ensure the model completes before the time allotted runs out! We recommend 2 hours in this example. 
+.. important::
+   Provide a large amount of time for the ``Max Run Time`` field in HydroUQ when submitting a job to ensure the model completes before the time allotted runs out! We recommend 2 hours in this example. 
 
 .. warning::
-   USE CAUTION WHEN REQUESTING OUTPUT RATE, SENSOR COUNT, OR NUMBER OF OUTPUT VARIABLES! Only ask for what you need, or you will end up with massive amounts of data.
+   Only ask for what you need in terms of sensor size, count, and output sampling rate. Otherwise you will end up with massive amounts of data which can slow simulations due to I/O constraints.
 
 
+.. _hdro-0002-analysis:
 
 Analysis
 --------
@@ -248,7 +263,7 @@ Retrieving the ``results.zip`` folder from the ``Tools & Applications`` Page of 
    :align: center
    :width: 600
    :figclass: align-center
-
+   
    Locating the job files on DesignSafe
 
 
@@ -258,6 +273,8 @@ Check if the job has finished in the right-side vertical drawer by clicking the 
    :align: center
    :width: 600
    :figclass: align-center
+   
+   Job status is finished on DesignSafe
 
 
 Once the job is finished, the output files should be available in the directory which the analysis results were sent to
@@ -268,7 +285,8 @@ Find the files by clicking ``View``.
    :align: center
    :width: 600
    :figclass: align-center
-
+   
+   Viewing the job files on DesignSafe
 
 Move the ``results.zip`` to somewhere in ``My Data/``. Use the Extractor tool available on DesignSafe.  Unzip the results.zip folder. 
 
@@ -292,19 +310,19 @@ OR Download the ``results.zip`` folder to your PC and unzip to look at the model
 
 Download the results to look at the geometry files of the analysis.
 
-Extract the ``results.zip`` folder either on DesignSafe or on your local machine. You will likely want to have a free Side FX Houdini Apprentice installation to view BGEO files.
+Extract the ``results.zip`` folder either on DesignSafe or on your local machine. You will likely want to have a free Side FX Houdini Apprentice installation to view ``BGEO`` files.
 
 .. figure:: figures/resultsZip.png
    :align: center
    :width: 600
    :figclass: align-center
-
+   
    File-system view of results zip folder on DesignSafe.
 
 
 Locate the zip folder and extract it somewhere convenient. The local or remote work directory on your computer is a good option, but note that these files may be erased if another simulation is set-up in HydroUQ, so keep a backup somewhere outside the working directories.
 	
-HydroUQ's sensor / probe / instrument output is available in ``{your_path_to_HydroUQ_WorkDir}/HydroUQ/RemoteWorkDir/results/`` as CSV files.
+HydroUQ's sensor / probe / instrument output is available in ``{your_path_to_HydroUQ_WorkDir}/HydroUQ/RemoteWorkDir/results/`` as ``CSV`` files.
 
 Particle geometry files often have a ``BGEO`` extension, open Side FX Houdini Apprentice (free to use) to look at MPM results in high-detail.
 
@@ -314,7 +332,7 @@ Once complete, the simulation data at the three wave gauges (WG1, WG2, and WG3, 
    :align: center
    :width: 600
    :figclass: align-center
-
+   
    OSU LWF simulated free-surface elevation wave gauges vs. experimental data from Mascarenas 2022 [Mascarenas2022]_.
 
 
@@ -324,7 +342,7 @@ The simulation data at the load-cell is as shown below when plotted against expe
    :align: center
    :width: 600
    :figclass: align-center
-
+   
    OSU LWF simulated streamwise load-cells vs. experimental data from Mascarenas 2022 [Mascarenas2022]_.
 
 
@@ -336,26 +354,27 @@ However, the following box-and-whisker charts demonstrates the strengh of the nu
    :align: center
    :width: 600
    :figclass: align-center
-
+   
    OSU LWF simulated first peak debris impact loads vs. experimental data from Mascarenas 2022 [Mascarenas2022]_.
 
 
 This complete our HydroUQ validation example for multiple debris impacts on a raised structure in the OSU LWF, Bonus 2023 [Bonus2023Dissertation]_.
 
+
+.. _hdro-0002-references:
+
 References
 ----------
 
-.. Need to redo these
+.. [Winter2019] Winter, A. (2019). "Effects of Flow Shielding and Channeling on Tsunami-Induced Loading of Coastal Structures." PhD thesis. University of Washington, Seattle.
 
-.. [Winter2020] Winter, A. (2020). "Wave-Driven Debris Impact on a Raised Structure in the Large Wave Flume." PhD thesis. University of Washington, Seattle.
-
-.. [Winter2019] Winter, A., Mascarenas, D., Shekhar, K., and Cox, D. (2019). "Wave-Driven Debris Impact on a Raised Structure in the Large Wave Flume." 16th International Conference on Hydroinformatics, Palermo, Italy.
+.. [Winter2020] Andrew O Winter, Mohammad S Alam, Krishnendu Shekhar, Michael R Motley, Marc O Eberhard, Andre R Barbosa, Pedro Lomonaco, Pedro Arduino, Daniel T Cox (2019). "Tsunami-Like Wave Forces on an Elevated Coastal Structure: Effects of Flow Shielding and Channeling." Journal of Waterway, Port, Coastal, and Ocean Engineering.
 
 .. [Shekhar2020] Shekhar, K., Mascarenas, D., and Cox, D. (2020). "Wave-Driven Debris Impact on a Raised Structure in the Large Wave Flume." 17th International Conference on Hydroinformatics, Seoul, South Korea.
 
-.. [Mascarenas2022] Mascarenas, Dakota. (2022). "Wave-Driven Debris Impact on a Raised Structure in the Large Wave Flume." Journal of Waterway, Port, Coastal, and Ocean Engineering.
+.. [Mascarenas2022] Mascarenas, Dakota. (2022). "Quantification of Wave-Driven Debris Impact on a Raised Structure in a Large Wave Flume." Masters thesis. University of Washington, Seattle.
 
-.. [Mascarenas2022PORTS] Mascarenas, Dakota (2022). "Wave-Driven Debris Impact on a Raised Structure in the Large Wave Flume." Journal of Waterway, Port, Coastal, and Ocean Engineering.
+.. [Mascarenas2022PORTS] Mascarenas, Dakota, Motley, M., Eberhard, M. (2022). "Wave-Driven Debris Impact on a Raised Structure in the Large Wave Flume." Journal of Waterway, Port, Coastal, and Ocean Engineering.
 
 .. [Bonus2023Dissertation] Bonus, Justin (2023). "Evaluation of Fluid-Driven Debris Impacts in a High-Performance Multi-GPU Material Point Method." PhD thesis. University of Washington, Seattle.
 
