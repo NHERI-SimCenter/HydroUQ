@@ -1425,6 +1425,20 @@ void MPM::clear(void)
 
 }
 
+bool MPM::outputCitation(QJsonObject &jsonObject)
+{
+    QJsonObject citeClaymore;
+    QJsonObject citeClaymoreUW;
+    
+    citeClaymore["citation"] = "Wang, Xinlei and Qiu Yuxing, et al. (2020). “A massively parallel and scalable multi-GPU material point method.”";
+    citeClaymore["description"] = "The Multi-GPU Material Point Method software, claymore, which is the predeccesor to ClaymoreUW MPM. It is a highly optimized C++/CUDA code for explicit MLS-MPM simulations on multiple NVIDIA GPUs. It is designed primarily for back-end computer graphics usage.";
+    citeClaymoreUW["citation"] = "Bonus, Justin (2023). “Evaluation of Fluid-Driven Debris Impacts in a High-Performance Multi-GPU Material Point Method.” PhD thesis, University of Washington, Seattle, WA.";
+    citeClaymoreUW["description"] = "The ClaymoreUW Multi-GPU Material Point Method software developed in this PhD thesis is the engineering refactor of the claymore MPM software. It is a highly optimized C++/CUDA code for explicit MLS-MPM simulations on multiple NVIDIA GPUs. It features higher computational precision, validated accuracy in multiple debris-fluid-structure interaction problems, new algorithms (ASFLIP, F-Bar antilocking), an expanded user-interface, and improved material behavior.";
+    jsonObject["claymore"] = citeClaymore;
+    jsonObject["ClaymoreUW"] = citeClaymoreUW;
+    return true;
+}
+
 bool MPM::inputFromJSON(QJsonObject &jsonObject)
 {
   this->clear();

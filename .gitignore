@@ -1,9 +1,10 @@
-
 build
 *.DS_Store
 *.user
 .DS_Store
 .DS_Store
-ui_*
+ui_*.h
 *~
+*Zone.Identifier*
+FlatTabWidget*
 #*#

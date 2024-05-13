@@ -2,11 +2,11 @@ from conans import ConanFile
 
 class HYDROUQ(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    version = "2.1.0"
+    version = "3.1.0"
     license = "BSD"
     author = "NHERI SimCenter"
-    url = "https://github.com/NHERI-SimCenter/Hydro-UQ"
-    description = "NHERI SimCenter Hydrodynamic Engineering with Uncertainty Quantification Research Tool"
+    url = "https://github.com/NHERI-SimCenter/HydroUQ"
+    description = "NHERI SimCenter Water-Borne Hazard Engineering with Uncertainty Quantification Tool"
     settings = "os", "compiler", "build_type", "arch"
     generators = "qmake"
     requires = "jansson/2.13.1", \

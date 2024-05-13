@@ -66,6 +66,9 @@ class QPushButton;
 class QCheckBox;
 class QFormLayout;
 class QLabel;
+class QString;
+class VolumetricModifier;
+
 class Celeris : public SimCenterAppWidget
 {
       Q_OBJECT 
@@ -79,41 +82,31 @@ public:
 
    bool inputFromJSON(QJsonObject &rvObject) override;
    bool outputToJSON(QJsonObject &rvObject) override;  
-   bool outputAppDataToJSON(QJsonObject &rvObject) ;
+   bool outputAppDataToJSON(QJsonObject &rvObject);
    bool inputAppDataFromJSON(QJsonObject &rvObject);
    bool copyFiles(QString &dirName) override;
-
-    //    bool initialize();
-    //    bool isInitialize();
-
-    //    bool setupCase();
-    //    bool cleanCase();
-    //    bool removeOldFiles();
-    //    bool isCaseConfigured();
-    //    void readCaseData();
-
-    //    void importMainDomainJsonFile(QJsonObject &rvObject);
-    //    QVector<QVector<double>> readTxtData(QString fileName);
-    //    void executeBackendScript();
-    //    void updateJSON();
-    //    QString caseDir();
-    //    QString templateDictDir();
-    //    QString pyScriptsPath();
-    //    QString simulationType();
-    //    SC_ResultsWidget* getResultsWidget(QWidget *parent) override; // For vis of output data results 
+   bool outputCitation(QJsonObject &jsonObject) override;
 
 signals:
 
 public slots:
    void clear(void) override;
 
+protected slots:
+    void finishLoading(bool);
+   //  void viewSource();
 
 private:
     QHBoxLayout                  *mainWindowLayout;
     QGridLayout                  *mainLayout;
-    QWebEngineView               *m_pWebView;
-    QWebEngineView               *m_pWebViewExtra;
+    VolumetricModifier           *modifier;
+    QWebEngineView               *view;
+    QString                      mainJS;
+   //  QWebEnginePage               *m_pWebPage;
 
+   // QWebEnginePage               *m_pWebView;
+   //  QWebEngineView               *m_pWebViewExtra;
+// 
     // RandomVariablesContainer     *theRandomVariablesContainer;
     // QStringList                  varNamesAndValues;
 

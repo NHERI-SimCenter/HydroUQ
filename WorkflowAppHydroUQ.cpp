@@ -96,6 +96,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_RemoteAppTool.h>
 #include <QList>
 #include <RemoteAppTest.h>
+#include <SimCenterPreferences.h>
 
 #include <QMenuBar>
 
@@ -179,8 +180,6 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     
     // connect(theRunLocalWidget, SIGNAL(runButtonPressed(QString, QString)), this, SLOT(runLocal(QString, QString)));
 
-
-
     //
     // create layout to hold component selection
     //
@@ -190,94 +189,6 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     this->setLayout(horizontalLayout);
     // horizontalLayout->setSpacing(0);
     // this->setContentsMargins(0,5,0,5);
-
-    // Work-in-progress: Add icons to the side bar to represent the components. May be redone as a sliding shelf using component selection widget in SimCenterCommon repository. (JB)
-    /*
-    theSvgUQ  = new QSvgWidget();
-    theSvgGI  = new QSvgWidget();
-    theSvgSIM = new QSvgWidget();
-    theSvgEVT = new QSvgWidget();
-    theSvgFEM = new QSvgWidget();
-    theSvgEDP = new QSvgWidget();
-    theSvgRV  = new QSvgWidget();
-    theSvgRES = new QSvgWidget();
-    theSvgUQ->load(QString(":/icons/question-dimensions-white.svg"));
-    theSvgGI->load(QString(":/icons/building-white.svg"));
-    theSvgSIM->load(QString(":/icons/shape-3-white.svg"));
-    theSvgEVT->load(QString(":/icons/ripple-white.svg"));
-    theSvgFEM->load(QString(":/icons/vector-triangle-white.svg"));
-    theSvgEDP->load(QString(":/icons/chart-arrows-white.svg"));
-    theSvgRV->load(QString(":/icons/dice-6-white.svg"));
-    theSvgRES->load(QString(":/icons/flag-white.svg"));
-    // Set size of SVG to match the size of the test in the side bar at theComponentSelection, e.g. "UQ"
-    
-    int iconSize = 36;
-    theSvgUQ->setFixedSize(iconSize,iconSize);
-    theSvgGI->setFixedSize(iconSize,iconSize);
-    theSvgSIM->setFixedSize(iconSize,iconSize);
-    theSvgEVT->setFixedSize(iconSize,iconSize);
-    theSvgFEM->setFixedSize(iconSize,iconSize);
-    theSvgEDP->setFixedSize(iconSize,iconSize);
-    theSvgRV->setFixedSize(iconSize,iconSize);
-    theSvgRES->setFixedSize(iconSize,iconSize);
-
-    // Set background color of SVG to match the background color of the side bar
-    // Set the size policy of the SVG to be fixed
-    theSvgUQ->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    theSvgGI->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    theSvgSIM->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    theSvgEVT->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    theSvgFEM->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    theSvgEDP->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    theSvgRV->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    theSvgRES->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-    // Create a layout to hold the icons
-    QVBoxLayout *verticalIconLayout = new QVBoxLayout();
-    verticalIconLayout->addWidget(theSvgUQ);
-    verticalIconLayout->addWidget(theSvgGI);
-    verticalIconLayout->addWidget(theSvgSIM);
-    verticalIconLayout->addWidget(theSvgEVT);
-    verticalIconLayout->addWidget(theSvgFEM);
-    verticalIconLayout->addWidget(theSvgEDP);
-    verticalIconLayout->addWidget(theSvgRV);
-    verticalIconLayout->addWidget(theSvgRES);
-    verticalIconLayout->addStretch();
-    verticalIconLayout->setAlignment(Qt::AlignCenter);
-
-    // Create a frame to hold the icons
-    sideBarIconFrame = new QFrame();
-    sideBarIconFrame->setLayout(verticalIconLayout);
-    sideBarIconFrame->setFrameShape(QFrame::Box);
-    sideBarIconFrame->setLineWidth(0);
-    sideBarIconFrame->setObjectName("sideBarIconFrame");
-    sideBarIconFrame->setStyleSheet("#sideBarIconFrame {background-color: rgb(63, 67, 73); border: 0px solid rgb(61, 65, 71); }");
-    sideBarIconFrame->setContentsMargins(0,5,0,5);
-    sideBarIconFrame->layout()->setContentsMargins(0,5,0,5);
-    sideBarIconFrame->layout()->setSpacing(14);
-
-    // Make sideBarIconFrame match the style of theComponentSelection
-    sideBarIconFrame->setFixedWidth(50);
-    sideBarIconFrame->setMinimumHeight(600);
-    sideBarIconFrame->setSizenPolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-
-    // Create a layout to hold the frame
-    QVBoxLayout *wrapperVerticalIconLayout = new QVBoxLayout();
-    wrapperVerticalIconLayout->addWidget(sideBarIconFrame);
-
-    
-    QFrame *wrapperFrame = new QFrame();
-    wrapperFrame->setLayout(wrapperVerticalIconLayout);
-    wrapperFrame->setFrameShape(QFrame::NoFrame);
-    wrapperFrame->setLineWidth(0);
-    wrapperFrame->setContentsMargins(0,2.975,0,2.975);
-    wrapperFrame->layout()->setContentsMargins(0,2.975,0,2.975);
-
-    wrapperFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-
-    // Now, place the frame in the primary horizontal layout (before the component selection text)
-    horizontalLayout->addWidget(wrapperFrame);
-    */
 
     //
     // create the component selection & add the components to it
@@ -365,29 +276,29 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     // QString appNameDC =  "DigitalCoast-1.0.0"; // Frontera
     // QString systemNameDC = "frontera";
     // QList<QString> queuesDC; queuesDC << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    // SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, queuesDC, theRemoteService, miniDC, theToolDialog, systemNameDC);
+    // SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, queuesDC, theRemoteService, miniDC, theToolDialog);
     // theToolDialog->addTool(miniDCTool, "Sea-Level Rise (NOAA Digital Coast)");
     // QAction *showDC = toolsMenu->addAction("Sea-Level Rise (&NOAA Digital Coast)");
     // connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
     //     theDialog->showTool("Sea-Level Rise (NOAA Digital Coast)");
     // });
 
-    // Celeris *miniCeleris = new Celeris();
-    // QString appNameCeleris =  "Celeris-1.0.0"; // Frontera
-    // QString systemNameCeleris = "frontera";
-    // QList<QString> queuesCeleris; queuesCeleris << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    // SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appNameCeleris, queuesCeleris, theRemoteService, miniCeleris, theToolDialog, systemNameCeleris);
-    // theToolDialog->addTool(miniCelerisTool, "Boussinesq Waves (Celeris)");
-    // QAction *showCeleris = toolsMenu->addAction("Boussinesq Waves (&Celeris)");
-    // connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
-    //     theDialog->showTool("Boussinesq Waves (Celeris)");
-    // });
+    Celeris *miniCeleris = new Celeris();
+    QString appNameCeleris =  "Celeris-1.0.0"; // Frontera
+    QString systemNameCeleris = "frontera";
+    QList<QString> queuesCeleris; queuesCeleris << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appNameCeleris, queuesCeleris, theRemoteService, miniCeleris, theToolDialog);
+    theToolDialog->addTool(miniCelerisTool, "Boussinesq Waves (Celeris)");
+    QAction *showCeleris = toolsMenu->addAction("Boussinesq Waves (&Celeris)");
+    connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
+        theDialog->showTool("Boussinesq Waves (Celeris)");
+    });
 
     // WebGPU *miniWebGPU = new WebGPU();
     // QString appNameWebGPU =  "WebGPU-1.0.0"; // Frontera
     // QString systemNameWebGPU = "frontera";
     // QList<QString> queuesWebGPU; queuesWebGPU << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    // SC_RemoteAppTool *miniWebGPUTool = new SC_RemoteAppTool(appNameWebGPU, queuesWebGPU, theRemoteService, miniWebGPU, theToolDialog, systemNameWebGPU);
+    // SC_RemoteAppTool *miniWebGPUTool = new SC_RemoteAppTool(appNameWebGPU, queuesWebGPU, theRemoteService, miniWebGPU, theToolDialog);
     // theToolDialog->addTool(miniWebGPUTool, "Trouble-Shoot WebGPU (Hardware Acceleration)");
     // QAction *showWebGPU = toolsMenu->addAction("Trouble-Shoot &WebGPU (Hardware Acceleration)");
     // connect(showWebGPU, &QAction::triggered, this,[this, theDialog=theToolDialog, miniW = miniWebGPUTool] {
@@ -430,7 +341,42 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         }
     }
     menuBar->insertMenu(menuAfter, toolsMenu);    
+
+
+
+    // TODO - Make this a bit more dynamic, use bibtex, and consider swapping tools in and out automaticlly
+    // This outputs citations, makes it easy for people to add their own 
+    // to tools and have them grouped for output with the rest
+    
+    // TODO: 
+    auto prefs = SimCenterPreferences::getInstance();
+    
+    QString stringLocalWorkDir = prefs->getLocalWorkDir();
+
+    defaultWorkDir = QDir(stringLocalWorkDir);
+    QString templateDirectory  = defaultWorkDir.absoluteFilePath(defaultSubDir);
+    defaultWorkDir.mkpath(templateDirectory);
+
+
+    currentTool = nullptr;
+    currentTool = miniMPMTool; // TODO: Set the default tool here
+    // connect(theToolDialog, SIGNAL(toolSelected(QString)), this, SLOT(toolSelected(QString)));
+    QJsonObject citations;
+    QString citeFile = templateDirectory + QDir::separator() + tr("tool_cite.json");    
+    // QString citeFile = destinationDirectory.filePath("please_cite.json"); // file getting deleted
+    this->createToolCitation(citations, citeFile);
+    // json.insert("citations",citations);
+
 }
+
+
+// WorkflowAppHydroUQ::toolSelected(QString toolName) {
+//     if (currentTool != nullptr) {
+//         currentTool->hide();
+//     }
+//     currentTool = theToolDialog->getTool(toolName);
+//     currentTool->show();
+// }
 
 
 WorkflowAppHydroUQ::~WorkflowAppHydroUQ()
@@ -785,7 +731,7 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
 void
 WorkflowAppHydroUQ::onRunButtonClicked() {
     // if (canRunLocally()) 
-    emit errorMessage("HydroUQ cannot be run locally. Please run remotely on DesignSafe.");
+    emit errorMessage("HydroUQ cannot be run locally yet. Please run remotely on DesignSafe.");
     theRunWidget->hide();
     theRunWidget->setMinimumWidth(this->width()*0.5);
     theRunWidget->showLocalApplication();
@@ -836,7 +782,7 @@ WorkflowAppHydroUQ::onExitButtonClicked(){
 void
 WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir) {
 
-    errorMessage("");
+    // errorMessage(""); // I dont think we need this? Will clutter up any error counting tool. - JB
 
     //
     // create temporary directory in working dir
@@ -863,6 +809,11 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
       destinationDirectory.removeRecursively();
     } else
       destinationDirectory.mkpath(tmpDirectory);
+
+    // Used in other places temporarily, 
+    // e.g. citation output for Tools to avoid passing parameters
+    defaultWorkDir = destinationDirectory;
+    defaultSubDir = subDir;
 
     QString templateDirectory  = destinationDirectory.absoluteFilePath(subDir);
     destinationDirectory.mkpath(templateDirectory);
@@ -998,6 +949,13 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
         remoteApplication->setExtraParameters(extraParameters);
     }
     
+    // This outputs citations, makes it easy for people to add their own 
+    // to tools and have them grouped for output with the rest
+    QJsonObject citations;
+    QString citeFile = templateDirectory + QDir::separator() + tr("please_cite.json");    
+    // QString citeFile = destinationDirectory.filePath("please_cite.json"); // file getting deleted
+    this->createCitation(citations, citeFile);
+    // json.insert("citations",citations);
 
     // statusMessage("Set-Up Done .. Now Starting HydroUQ Application");
     emit setUpForApplicationRunDone(tmpDirectory, inputFile);
@@ -1054,21 +1012,26 @@ WorkflowAppHydroUQ::getMaxNumParallelTasks() {
 int
 WorkflowAppHydroUQ::createCitation(QJsonObject &citation, QString citeFile) {
 
-  QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.1.0 (v3.1.0). Zenodo. https://doi.org/10.5281/zenodo.10902090 \",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment.It  is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
+  QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.1.0 (v3.1.0). Zenodo. https://doi.org/10.5281/zenodo.4731073 \",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
 
   QJsonDocument docC = QJsonDocument::fromJson(cit.toUtf8());
   if(!docC.isNull()) {
     if(docC.isObject()) {
       citation = docC.object();        
     }  else {
-      qDebug() << "WorkflowdAppEE_UQ citation text is not valid JSON: \n" << cit << endl;
+
+      qDebug() << "WorkflowAppHydro citation text is not valid JSON: \n" << cit << Qt::endl;
     }
   }
+  // theGI->outputCitation(citation);
   theSIM->outputCitation(citation);
   theEventSelection->outputCitation(citation);
   theAnalysisSelection->outputCitation(citation);
   theUQ_Selection->outputCitation(citation);
-  theEDP_Selection->outputCitation(citation);  
+  theEDP_Selection->outputCitation(citation);
+//   theRVs->outputCitation(citation);
+//   theRunWidget->outputCitation(citation);
+  // TODO: Allow citations from GI, RVs, and RES widgets. Maybe from the remote run pop-up too to cite DesignSafe/TACC? (JB)
 
   // write the citation to a citeFile if provided
   
@@ -1076,8 +1039,48 @@ WorkflowAppHydroUQ::createCitation(QJsonObject &citation, QString citeFile) {
     
     QFile file(citeFile);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
-      errorMessage(QString("writeCitation - could not open file") + citeFile);
-      progressDialog->hideProgressBar();
+      errorMessage(QString("WorkflowAppHydroUQ::writeCitation - could not open write-only file ") + citeFile);
+    //   progressDialog->hideProgressBar(); // Not in HydroUQ currentyl
+      return 0;
+    }
+
+    QJsonDocument doc(citation);
+    file.write(doc.toJson());
+    file.close();
+  }
+  
+  return 0;    
+}
+
+int
+WorkflowAppHydroUQ::createToolCitation(QJsonObject &citation, QString citeFile) {
+
+  QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.1.0 (v3.1.0). Zenodo. https://doi.org/10.5281/zenodo.4731073\",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
+
+  QJsonDocument docC = QJsonDocument::fromJson(cit.toUtf8());
+  if(!docC.isNull()) {
+    if(docC.isObject()) {
+      citation = docC.object();        
+    }  else {
+      qDebug() << "WorkflowAppHydro citation text is not valid JSON: \n" << cit << Qt::endl;
+    }
+  }
+  
+  if (currentTool == nullptr) {
+    errorMessage("WorkflowAppHydroUQ::createToolCitation - currentTool is nullptr");
+    return -1;
+  }
+
+  currentTool->outputCitation(citation);
+
+  // write the citation to a citeFile if provided
+  
+  if (!citeFile.isEmpty()) {
+    
+    QFile file(citeFile);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+      errorMessage(QString("WorkflowAppHydroUQ::createToolCitation - could not open write-only file ") + citeFile);
+      progressDialog->hideProgressBar(); // Not in HydroUQ currently
       return 0;
     }
 

@@ -45,6 +45,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // #include <QFrame>
 
 #include <WorkflowAppWidget.h>
+#include <QDir>
 
 class SimCenterComponentSelection;
 
@@ -70,6 +71,7 @@ class RemoteJobManager;
 class QNetworkAccessManager;
 class QNetworkReply;
 class HydroEDP_Selection;
+class SC_RemoteAppTool;
 // class EDP_Selection;
 
 // class GeoClawOpenFOAM;
@@ -87,9 +89,9 @@ public:
     ~WorkflowAppHydroUQ();
 
     void setMainWindow(MainWindowWorkflowApp* window); // From WE-UQ
-    bool outputToJSON(QJsonObject &rvObject);
-    bool inputFromJSON(QJsonObject &rvObject);
-    void clear(void);
+    bool outputToJSON(QJsonObject &rvObject) override; 
+    bool inputFromJSON(QJsonObject &rvObject) override;
+    void clear(void) override;
 
     //void setMainWindow(MainWindow* window);
     void onRunButtonClicked();
@@ -98,7 +100,8 @@ public:
     void onExitButtonClicked();
     int  getMaxNumParallelTasks();
 
-    int createCitation(QJsonObject &citationToAddTo, QString citeFile);
+    int  createCitation(QJsonObject &citationToAddTo, QString citeFile);
+    int  createToolCitation(QJsonObject &citationToAddTo, QString citeFile);
   
 signals:
     void setUpForApplicationRunDone(QString &tmpDirectory, QString &inputFile);
@@ -129,25 +132,30 @@ private:
     UQ_Results *theResults;
 
     // Icons for sidebar
-    QSvgWidget *theSvgUQ;
-    QSvgWidget *theSvgGI;
-    QSvgWidget *theSvgSIM;
-    QSvgWidget *theSvgEVT;
-    QSvgWidget *theSvgFEM;
-    QSvgWidget *theSvgEDP;
-    QSvgWidget *theSvgRV;
-    QSvgWidget *theSvgRES;
+    // QSvgWidget *theSvgUQ;
+    // QSvgWidget *theSvgGI;
+    // QSvgWidget *theSvgSIM;
+    // QSvgWidget *theSvgEVT;
+    // QSvgWidget *theSvgFEM;
+    // QSvgWidget *theSvgEDP;
+    // QSvgWidget *theSvgRV;
+    // QSvgWidget *theSvgRES;
 
     // objects for running the workflow and obtaining results
     RunWidget *theRunWidget;
     Application *localApp;
     Application *remoteApp;
     Application *currentApp;
+    SC_RemoteAppTool *currentTool;
+
     RemoteJobManager *theJobManager;
 
 
     QJsonObject *jsonObjOrig;
     QNetworkAccessManager *manager; 
+
+    QDir defaultWorkDir = QDir("tmp.SimCenter");
+    QString defaultSubDir = QString("templatedir");
 
     bool canRunLocally(); 
 };

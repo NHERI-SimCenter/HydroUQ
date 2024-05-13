@@ -61,8 +61,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <GeoClawOpenFOAM/GeoClawOpenFOAM.h>
 #include <WaveDigitalFlume/WaveDigitalFlume.h>
 #include <coupledDigitalTwin/CoupledDigitalTwin.h>
-#include <mpm/MPM.h>
-#include <mpm/SPH.h>
+#include <MPM/MPM.h>
+#include <MPM/SPH.h>
 //*********************************************************************************
 // Main Hydro event
 //*********************************************************************************
@@ -151,16 +151,16 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     // theStackedWidget->setCurrentIndex(indexForMPM);
     // theStackedWidget->setCurrentIndex(indexForMPM);
 
-    QString stringForMPM = "Digital Twin (OpenFOAM and OpenSees)";
-    int indexForFOAMySees = 2;
-    eventSelection->setCurrentIndex(indexForFOAMySees);
-    eventSelection->setCurrentIndex(indexForFOAMySees);
-    theStackedWidget->setCurrentIndex(indexForFOAMySees);
-    theStackedWidget->setCurrentIndex(indexForFOAMySees);    // theCurrentEvent = theMPM;
+    // // QString stringForMPM = "Digital Twin (OpenFOAM and OpenSees)";
+    // // int indexForFOAMySees = 2;
+    // // eventSelection->setCurrentIndex(indexForFOAMySees);
+    // // eventSelection->setCurrentIndex(indexForFOAMySees);
+    // // theStackedWidget->setCurrentIndex(indexForFOAMySees);
+    // // theStackedWidget->setCurrentIndex(indexForFOAMySees);    // theCurrentEvent = theMPM;
     // theCurrentEvent = theMPM;
 
 
-    // Connect signal and slots
+    // // Connect signal and slots
     // connect(theMPM, SIGNAL(errorMessage(QString)), this, SIGNAL(sendErrorMessage(QString))); // WE-UQ
     // connect(theMPM, SIGNAL(statusMessage(QString)), this, SIGNAL(sendStatusMessage(QString))); // WE-UQ
     // connect(theMPM, SIGNAL(fatalMessage(QString)), this, SIGNAL(sendFatalMessage(QString))); // WE-UQ
@@ -343,7 +343,8 @@ bool HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
     }
     //  else if ((type == QString("MPM")) || (type == QString("Material Point Method")) || (type == QString("Digital Twin (MPM)")) || (type == QString("MPMDigitalTwin")) || (type == QString("theMPM")) || (type == QString("MPM Digital Twin")) || (type == QString("MPMDigitalTwin")) || (type == QString("theMPMDigitalTwin"))){
     //     index = 3;
-    // } else if ((type == QString("SPH")) || (type == QString("Smoothed Particled Hydrodynamics")) || (type == QString("Digital Twin (SPH)")) || (type == QString("SPHDigitalTwin")) || (type == QString("theSPH")) || (type == QString("SPH Digital Twin")) || (type == QString("SPHDigitalTwin")) || (type == QString("theSPHDigitalTwin"))){
+    // } 
+    // // else if ((type == QString("SPH")) || (type == QString("Smoothed Particled Hydrodynamics")) || (type == QString("Digital Twin (SPH)")) || (type == QString("SPHDigitalTwin")) || (type == QString("theSPH")) || (type == QString("SPH Digital Twin")) || (type == QString("SPHDigitalTwin")) || (type == QString("theSPHDigitalTwin"))){
     //     index = 4;
     // }
     else 
@@ -509,4 +510,9 @@ bool HydroEventSelection::supportsLocalRun()
     // return theCurrentEvent->supportsLocalRun();
     // if theCurrentEvent
     return false;
+}
+
+bool
+HydroEventSelection::outputCitation(QJsonObject &jsonObject) {
+  return theCurrentEvent->outputCitation(jsonObject);
 }

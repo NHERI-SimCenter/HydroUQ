@@ -8,6 +8,7 @@ INCLUDEPATH += $$PWD/EVENTS/WaveDigitalFlume
 INCLUDEPATH += $$PWD/EVENTS/coupledDigitalTwin
 INCLUDEPATH += $$PWD/EVENTS/MPM
 INCLUDEPATH += $$PWD/EVENTS/Celeris
+INCLUDEPATH += $$PWD/EVENTS/Celeris/js
 INCLUDEPATH += $$PWD/EVENTS/NOAA
 INCLUDEPATH += $$PWD/EVENTS/Common
 INCLUDEPATH += $$PWD/SlidingStackedWidget
@@ -60,6 +61,7 @@ SOURCES += \
     $$PWD/EVENTS/MPM/ExecutionSPH.cpp \
     $$PWD/EVENTS/Celeris/Celeris.cpp \
     $$PWD/EVENTS/Celeris/WebGPU.cpp \
+    $$PWD/EVENTS/Celeris/volumetric.cpp \
     $$PWD/EVENTS/NOAA/DigitalCoast.cpp \
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.cpp \
     $$PWD/EVENTS/Common/projectsettings.cpp \
@@ -115,6 +117,7 @@ HEADERS += \
     $$PWD/EVENTS/MPM/ExecutionSPH.h \
     $$PWD/EVENTS/Celeris/Celeris.h \
     $$PWD/EVENTS/Celeris/WebGPU.h \
+    $$PWD/EVENTS/Celeris/volumetric.h \
     $$PWD/EVENTS/NOAA/DigitalCoast.h \
     $$PWD/EVENTS/WaveDigitalFlume/WaveDigitalFlume.h \
     $$PWD/EVENTS/Common/projectsettings.h \
