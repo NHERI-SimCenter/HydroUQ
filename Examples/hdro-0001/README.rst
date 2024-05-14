@@ -1,14 +1,17 @@
 .. _hdro-0001:
 
-Coupled Digital Twin Example
-============================
+=============================================================
+Multi-Story Shear Building - Coupled CFD-FEM Digital Twin
+=============================================================
 
 +---------------+----------------------------------------------------------------+
 | Problem files | :github:`HydroUQ Github Repository<Examples/hdro-0001/>`       |
 +---------------+----------------------------------------------------------------+
 
+.. _hdro-0001-overview:
+
 Overview
--------
+--------
 This example uses a NHERI wave-flume digital twin, the ``OSU LWF``, to simulate a scaled structure during wave loading in ``HydroUQ``. Two-way coupled OpenFOAM-OpenSees is configured to simulate the scenario. 
 
 You will define a Waterborne Event (**EVT**) to determine the engineering demand parameters (**EDP**) on a specified structure, i.e. **EVT** --> **EDP**,  with the following steps:
@@ -22,8 +25,11 @@ You will define a Waterborne Event (**EVT**) to determine the engineering demand
 #. Finally, recieve engineering demand parameters (**EDP**) of the structural response. Though beyond this example, you can use these EDPs to perform a fragility analysis of the structure.
 
 
-Data
-----
+.. _hdro-0001-setup:
+
+Set-Up
+------
+
 The dataset in this example originates from experimental tests conducted in the Hinsdale Wave Research Laboratory's Large Wave Flume at Oregon State University (``OSU LWF``), Corvallis, in 2020. Refer to Lewis 2023 [Lewis2023]_ and Bonus 2023 [Bonus2023]_ for details.
 
 .. _figCoupled:
@@ -36,23 +42,23 @@ The dataset in this example originates from experimental tests conducted in the 
    Coupled Digital Twin Illustration
 
 Model
------
+^^^^^
 
 This model is characterized by the parameters:
 
-* Youngs modulus :math:`E_0`for elastic behavior
-
-* Initial yield stress and strain hardening ratio :math:`(f_y, b)` for plastic behavior
+* Structural weight, :math:`w`, in kN as a random variable with a mean of 100 kN and a standard deviation of 10 kN.
 
 
 Files required
---------------
+^^^^^^^^^^^^^^
+
+
 
 .. warning::
    **Do NOT** place the files in your ``root``, ``downloads``, or ``desktop`` folder. The running application will copy every unrelated file in the directories and subdirectories multiple times.
 
 UQ workflow
------------
+^^^^^^^^^^^
 
 The inputs needed to run this example can be loaded into the HydroUQ user interface by selecting the ``Coupled Digital Twin`` example from the ``Examples`` menu at the top of the application.
 
@@ -71,14 +77,14 @@ The inputs can also be set up manually through the following steps:
 
 #. Next in the **FEM** panel , select **OpenSees** and populate the **Input Script** field by choosing the path to the model file.
 
-.. .. _figHBMFEM:
+.. _figHBMFEM:
 
-.. .. figure:: figures/FEM.png
-..    :align: center
-..    :figclass: align-center
-..    :width: 600
+.. figure:: figures/FEM.png
+   :align: center
+   :figclass: align-center
+   :width: 600
    
-..    Inputs in the FEM panel
+   Inputs in the FEM panel
 
 #. Select the **RV** tab from the input panel. This panel should be pre-populated with the names of the variables that were defined in the model scripts. If not, press the **Add** button to create a new field to define the input random variable. Enter the same variable name, as required in the model script. For this example, choose the Normal probability distribution for all the random variables and enter the parameter values for each distribution as shown in the figures below:
 
@@ -174,6 +180,12 @@ In addition to the results displayed in the **RES** panel in ``HydroUQ``, JSON f
 
 .. warning::
    The ``tmp.SimCenter`` directory is cleared every time the ``RUN`` button is clicked in ``HydroUQ``. So, if you want to restart the analysis using one of the sampling results files outlined above, make sure to copy the results file to a location outside the ``tmp.SimCenter`` directory at the end of the analysis.
+
+
+.. _hdro-0001-references:
+
+References
+----------
 
 .. [Lewis2023]
    Lewis, N. (2023). Development of An Open-Source Methodology for Simulation of Civil Engineering Structures Subject to Multi-Hazards. *PhD thesis*, University of Washington, Seattle, WA. ISBN: 979-8-381408-69-0.
