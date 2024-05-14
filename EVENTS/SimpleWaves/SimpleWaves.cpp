@@ -130,6 +130,81 @@ SimpleWaves::SimpleWaves(RandomVariablesContainer *theRandomVariableIW, QWidget 
     :  SimCenterAppWidget(parent), theRandomVariablesContainer(theRandomVariableIW)
 {
 
+
+    // Initialize member variables
+  dragCoefficient = new LineEditRV(randomVariables);
+  dragCoefficient->setText("2.1");
+
+  peakPeriod = new LineEditRV(randomVariables);
+  peakPeriod->setText("12.7");
+
+  significantWaveHeight = new LineEditRV(randomVariables);
+  significantWaveHeight->setText("8.1");
+
+  waterDepth = new LineEditRV(randomVariables);
+  waterDepth->setText("30.0");
+
+  recorderOriginX = new LineEditRV(randomVariables);
+  recorderOriginX->setText("0.0");
+
+  exposureCategory = new QComboBox();
+  exposureCategory->addItem("B");
+  exposureCategory->addItem("C");
+  exposureCategory->addItem("D");
+
+  seed = new QSpinBox();
+  seed->setMinimum(1);
+  seed->setMaximum(2147483647);
+  seed->setValue(500);  
+  seed->setEnabled(false);
+  useSeed = new QRadioButton("Provide seed value");
+  useSeed->setChecked(false);
+
+  QFormLayout *parameters = new QFormLayout();
+
+  exposureCategory = new QComboBox();
+  exposureCategory->addItem("B");
+  exposureCategory->addItem("C");
+  exposureCategory->addItem("D");
+
+  parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
+  parameters->addRow(new QLabel(tr("Drag Area")), dragArea);
+  parameters->addRow(new QLabel(tr("Peak Period [s]")), peakPeriod);
+  parameters->addRow(new QLabel(tr("Significant Wave Height [m]")), significantWaveHeight);
+  parameters->addRow(new QLabel(tr("Water Depth [m]")), waterDepth);
+  parameters->addRow(new QLabel(tr("Recorder Horizontal Position [m]")), recorderOriginX);
+  parameters->addRow(new QLabel(tr("ASCE 7 Exposure Condition")), exposureCategory);
+//   parameters->addRow(new QLabel(tr("Gust Wind Speed (mph)")), gustWindSpeed);
+//   gustWindSpeed->setToolTip("3 sec gust speed at height of 10m (33ft)");
+  // Add description label
+  modelDescription =
+      new QLabel(tr("This model provides wind speed time histories using a "
+                    "power law for the wind profile based on the ASCE Exposure\n"
+                    "Category and a discrete frequency function with FFT to "
+                    "account for wind fluctuations (Wittig & Sinha, 1975)"));
+  //model_description_->setStyleSheet("QLabel { color : gray; }");
+
+  // Construct required layouts
+  QVBoxLayout* layout = new QVBoxLayout();
+  QHBoxLayout* seedLayout = new QHBoxLayout();
+  QHBoxLayout* parametersLayout = new QHBoxLayout();
+
+  // Add widgets to layouts and layouts to this
+  seedLayout->addWidget(useSeed);
+  seedLayout->addWidget(seed);
+  seedLayout->addStretch();
+  parametersLayout->addLayout(parameters);
+  parametersLayout->addStretch();
+  layout->addWidget(modelDescription);
+  layout->addLayout(parametersLayout);
+  layout->addLayout(seedLayout);
+  layout->addStretch();
+  this->setLayout(layout);
+
+  // Connect slots
+  connect(useSeed, &QRadioButton::toggled, this,
+          &WittigSinha::provideSeed);
+
 }
 
 SimpleWaves::~SimpleWaves()
@@ -148,9 +223,9 @@ void SimpleWaves::executeBackendScript()
     updateJSON(); 
     QString scriptName = "SimpleWaves.py"; // "setup_case.py";
     QString scriptPath = pyScriptsPath() + QDir::separator() + scriptName; 
-    QString templatePath = templateDictDir();
-    QString jsonPath = caseDir() + QDir::separator() + "constant" + QDir::separator() + "simCenter" + QDir::separator() + "input";
-    QString outputPath = caseDir();
+    QString templatePath = ".";
+    QString jsonPath = caseDir() + QDir::separator() //+ "input";
+    QString outputPath = caseDir() + QDir::separator() //+ "output";
     if (QFileInfo(scriptPath).exists())
     {
       QString program = SimCenterPreferences::getInstance()->getPython();
@@ -165,31 +240,6 @@ void SimpleWaves::executeBackendScript()
       qDebug() << "Cannot find the script path: " << scriptPath;
     }
     return;
-}
-
-void SimpleWaves::readCaseData()
-{
-    //Write it to JSON becase it is needed for the mesh generation before the final simulation is run.
-    //In future only one JSON file in temp.SimCenter directory might be enough
-    QString inputFileName = "SimpleWaves.json";
-    QString inputFilePath = caseDir() + QDir::separator() 
-                            + "constant" + QDir::separator() 
-                            + "simCenter" + QDir::separator() 
-                            + "input" + QDir::separator() 
-                            + inputFileName;
-    QFile jsonFile(inputFilePath);
-    if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
-    {
-      qDebug() << "Cannot find/read input-file path: " << inputFilePath;
-      return;
-    }
-
-    QString val = jsonFile.readAll();
-    QJsonDocument doc = QJsonDocument::fromJson(val.toUtf8());
-    QJsonObject jsonObject = doc.object();
-    inputFromJSON(jsonObject);
-    jsonFile.close();
-    removeOldFiles();
 }
 
 void SimpleWaves::onBrowseCaseDirectoryButtonClicked(void)
@@ -219,19 +269,16 @@ void SimpleWaves::onBrowseCaseDirectoryButtonClicked(void)
 void SimpleWaves::clear(void)
 {
 
+
 }
 
 bool SimpleWaves::outputCitation(QJsonObject &jsonObject)
 {
-    QJsonObject citeClaymore;
     QJsonObject citeClaymoreUW;
     
-    citeClaymore["citation"] = "Wang, Xinlei and Qiu Yuxing, et al. (2020). “A massively parallel and scalable multi-GPU material point method.”";
-    citeClaymore["description"] = "The Multi-GPU Material Point Method software, claymore, which is the predeccesor to ClaymoreUW SimpleWaves. It is a highly optimized C++/CUDA code for explicit MLS-SimpleWaves simulations on multiple NVIDIA GPUs. It is designed primarily for back-end computer graphics usage.";
     citeClaymoreUW["citation"] = "Bonus, Justin (2023). “Evaluation of Fluid-Driven Debris Impacts in a High-Performance Multi-GPU Material Point Method.” PhD thesis, University of Washington, Seattle, WA.";
     citeClaymoreUW["description"] = "The ClaymoreUW Multi-GPU Material Point Method software developed in this PhD thesis is the engineering refactor of the claymore SimpleWaves software. It is a highly optimized C++/CUDA code for explicit MLS-SimpleWaves simulations on multiple NVIDIA GPUs. It features higher computational precision, validated accuracy in multiple debris-fluid-structure interaction problems, new algorithms (ASFLIP, F-Bar antilocking), an expanded user-interface, and improved material behavior.";
-    jsonObject["claymore"] = citeClaymore;
-    jsonObject["ClaymoreUW"] = citeClaymoreUW;
+    jsonObject["welib"] = citeClaymoreUW;
     return true;
 }
 
@@ -263,11 +310,30 @@ bool SimpleWaves::inputFromJSON(QJsonObject &jsonObject)
 
 bool SimpleWaves::outputToJSON(QJsonObject &jsonObject)
 {
-  jsonObject["EventClassification"] = "Hydro"; // Important for workflow (Earthquake vs Wind vs Hydro, etc.)
-  jsonObject["type"] = "SimpleWaves";
 
-  jsonObject["Application"] = "SimpleWaves"; // For accessing SimCenterBackendApplications/applications/createEVENTS/{Application}/*.py ?
-  jsonObject["subtype"] = "SimpleWaves";
+
+
+
+    bool result = true;
+
+    jsonObject["type"] = "SimpleWaves";
+    jsonObject["EventClassification"] = "Hydro";
+    dragCoefficient->outputToJSON(jsonObject, QString("dragCoefficient"));
+    dragArea->outputToJSON(jsonObject, QString("dragArea"));
+    significantWaveHeight->outputToJSON(jsonObject, QString("significantWaveHeight"));
+    peakPeriod->outputToJSON(jsonObject, QString("peakPeriod"));
+    waterDepth->outputToJSON(jsonObject, QString("waterDepth"));
+    recorderOriginX->outputToJSON(jsonObject, QString("recorerOriginX"));
+
+    jsonObject.insert("exposureCategory",exposureCategory->currentText());
+
+    if (useSeed->isChecked()) {
+        jsonObject.insert("seed", seed->value());
+    } else {
+        jsonObject.insert("seed", "None");
+    }
+    
+    return result;
 
   return true;
 }
@@ -319,63 +385,9 @@ bool SimpleWaves::copyFiles(QString &destDir) {
         return false;
     }
 
-    //
-    //  Copy files from all the major sub-widgets
-    //
-
-    if (simpleWavesSettings->copyFiles(destDir) == false) 
-    {
-      qDebug() << "SimpleWaves - failed to copy settings files";
-      return false;
-    }
-    if (simpleWavesBodies->copyFiles(destDir) == false)
-    {
-      qDebug() << "SimpleWaves - failed to copy bodies files";
-      return false;
-    }
-    // if (simpleWavesBoundaries->copyFiles(destDir) == false)
-    // {
-    //   qDebug() << "SimpleWaves - failed to copy boundaries files";
-    //   return false;
-    // }
-    if (simpleWavesSensors->copyFiles(destDir) == false)
-    {
-      qDebug() << "SimpleWaves - failed to copy sensors files";
-      return false;
-    }
-    if (simpleWavesOutputs->copyFiles(destDir) == false)
-    {
-      qDebug() << "SimpleWaves - failed to copy outputs files";
-      return false;
-    }
-    // if (simpleWavesResults->copyFiles(destDir) == false)
-    // {
-    //   qDebug() << "SimpleWaves - failed to copy results files";
-    //   return false;
-    // }
-
     return true;
  }
 
-
-bool SimpleWaves::cleanCase()
-{
-    // 
-    //  Remove the primary folders and log file within the case directory recursively
-    // 
-
-    QDir zeroDir(caseDir() + QDir::separator() + "0");
-    QDir constDir(caseDir() + QDir::separator() + "constant");
-    QDir systemDir(caseDir() + QDir::separator() + "system");
-    zeroDir.removeRecursively();
-    constDir.removeRecursively();
-    systemDir.removeRecursively();
-    QFile logFile(caseDir() + QDir::separator() + "log.txt");
-    if (logFile.exists()) {
-      logFile.remove();
-    }
-    return true;
-}
 
 bool SimpleWaves::removeOldFiles()
 {
@@ -402,66 +414,21 @@ bool SimpleWaves::setupCase()
     {
         targetDir.mkpath(caseDir());
     }
-    targetDir.mkpath("0");
-    targetDir.mkpath("constant");
-    targetDir.mkpath("constant/geometry");
-    targetDir.mkpath("constant/simCenter");
-    targetDir.mkpath("constant/simCenter/output");
-    targetDir.mkpath("constant/simCenter/input");
-    targetDir.mkpath("constant/boundaryData");
-    targetDir.mkpath("constant/boundaryData/inlet");
-    targetDir.mkpath("system");
+    // targetDir.mkpath("0");
+    // targetDir.mkpath("constant");
+    // targetDir.mkpath("constant/geometry");
+    // targetDir.mkpath("constant/simCenter");
+    // targetDir.mkpath("constant/simCenter/output");
+    // targetDir.mkpath("constant/simCenter/input");
+    // targetDir.mkpath("constant/boundaryData");
+    // targetDir.mkpath("constant/boundaryData/inlet");
+    // targetDir.mkpath("system");
 
     // Write setup files using the backend python script
     executeBackendScript();
     return true;
 }
 
-// From WE-UQ EmptyDomainCFD
-QVector<QVector<double>> SimpleWaves::readTxtData(QString fileName)
-{
-    int colCount  = 0;
-    QVector<QVector<double>>  data;
-    QFile inputFileTest(fileName);
-    if (inputFileTest.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&inputFileTest);
-
-       while (!in.atEnd())
-       {
-            QString line = in.readLine();
-            QStringList  fields = line.split(" ");
-            colCount  = fields.size();
-            break;
-       }
-       inputFileTest.close();
-    }
-
-    for (int i=0; i < colCount; i++)
-    {
-        QVector<double> row;
-        data.append(row);
-    }
-
-    int count  = 0;
-    QFile inputFile(fileName);
-    if (inputFile.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&inputFile);
-       while (!in.atEnd())
-       {
-            QString line = in.readLine();
-            QStringList  fields = line.split(" ");
-            for (int i=0; i < colCount; i++)
-            {
-                data[i].append(fields[i].toDouble());
-            }
-       }
-       inputFile.close();
-    }
-
-    return data;
-}
 
 bool SimpleWaves::isCaseConfigured()
 {
@@ -485,9 +452,9 @@ QString SimpleWaves::caseDir()
 
 QString SimpleWaves::pyScriptsPath()
 {
-    QString backendAppDir = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
-             + QString("applications") + QDir::separator() + QString("createEVENT") + QDir::separator()
-             + QString("SimpleWaves");
+    // QString backendAppDir = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
+    //          + QString("applications") + QDir::separator() + QString("createEVENT") + QDir::separator()
+    //          + QString("SimpleWaves");
 
     QString backendAppDir = QString("./") + QDir::separator()
              + QString("SimpleWaves");
