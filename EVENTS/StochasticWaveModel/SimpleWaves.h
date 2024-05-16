@@ -43,19 +43,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SimCenterAppWidget.h>
 
 // #include <ResultsSimpleWaves.h>
+#include <RandomVariablesContainer.h>
+#include <LineEditRV.h>
+#include <SC_DoubleLineEdit.h>
+#include <SC_IntLineEdit.h>
 
-#include <QWebEngineView>
+#include <QJsonObject>
+#include <QString>
+#include <QWidget>
+
+
+// #include <QWebEngineView>
 // Forward declaration
 class InputWidgetParameters;
 class RandomVariablesContainer;
 class LineEditRV;
-
-// class SettingsSimpleWaves;
-// class BodiesSimpleWaves;
-// class BoundariesSimpleWaves;
-// class SensorsSimpleWaves;
-// class OutputsSimpleWaves; 
-// class ResultsSimpleWaves;
+class QJsonObject;
+class QString;
+class QWidget;
 
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
@@ -74,6 +79,10 @@ class QPushButton;
 class QCheckBox;
 class QFormLayout;
 class QLabel;
+class QRadioButton;
+class QStackedWidget;
+
+
 class SimpleWaves : public SimCenterAppWidget
 {
       Q_OBJECT 
@@ -81,7 +90,7 @@ class SimpleWaves : public SimCenterAppWidget
 public:
     explicit SimpleWaves(RandomVariablesContainer *theRandomVariableIW, QWidget *parent = 0);
    // SimpleWaves( QWidget *parent = 0);
-   ~SimpleWaves();
+    ~SimpleWaves() ;
 
 //    friend class ResultsSimpleWaves; // Allow ResultsSimpleWaves to access private members. TODO: use a better vis architecture
 
@@ -95,24 +104,21 @@ public:
 //    bool initialize();
 //    bool isInitialize();
 
-   bool setupCase();
-   bool cleanCase();
-   bool removeOldFiles();
-   bool isCaseConfigured();
-   void readCaseData();
+//    bool setupCase();
+//    bool cleanCase();
+//    bool removeOldFiles();
+//    bool isCaseConfigured();
+//    void readCaseData();
 
 //    void importMainDomainJsonFile(QJsonObject &rvObject);
 //    QVector<QVector<double>> readTxtData(QString fileName);
 
    void executeBackendScript();
-   void updateJSON();
-   QString caseDir();
-   QString templateDictDir();
+//    void updateJSON();
+//    QString caseDir();
    QString pyScriptsPath();
-   QString simulationType();
-   //  QString foamDictsPath(); // For OpenFOAM from WE-UQ, not SimpleWaves
 
-   SC_ResultsWidget* getResultsWidget(QWidget *parent) override; // For vis of output data results 
+//    SC_ResultsWidget* getResultsWidget(QWidget *parent) override; // For vis of output data results 
 
 signals:
 
@@ -120,30 +126,55 @@ public slots:
    void clear(void) override;
    void onBrowseCaseDirectoryButtonClicked(void);
 
+ /**
+   * Update ability to provide seed based on changed status of radio button
+   * @param[in] checked Current status of radio button for providing seed
+   */
+  void provideSeed(const bool& checked);
+
 private:
    QHBoxLayout                  *mainWindowLayout;
-   QGridLayout                  *mainLayout;
-//    SettingsSimpleWaves                  *mpmSettings;
-//    BodiesSimpleWaves                    *mpmBodies;
-//    BoundariesSimpleWaves                *mpmBoundaries;
-//    SensorsSimpleWaves                   *mpmSensors;
-//    OutputsSimpleWaves                   *mpmOutputs; 
-//    ResultsSimpleWaves                   *mpmResults;
+//    QGridLayout                  *mainLayout;
+// 
+//  RandomVariablesContainer* rvInputWidget; /**< Widget for inputting random
+						//   variables */
+  QHBoxLayout * parametersLayout; /**< Layout for stochastic model widget */
+  QComboBox* modelSelection; /**< Selection of ground motion model inputs */
 
    RandomVariablesContainer     *theRandomVariablesContainer;
-   QStringList                  varNamesAndValues;
+//    QStringList                  varNamesAndValues;
 
-   QString                      workingDirPath;
-   QLineEdit                    *caseDirectoryPathWidget;
-   QGroupBox                    *caseDirectoryGroup;
-   QGridLayout                  *caseDirectoryLayout;
-   QTabWidget                   *theTabWidget;
-   // QVBoxLayout                  *visWindowLayout;
-   // QGroupBox                    *visWindowGroup;
-   // QVBoxLayout                  *inputWindowLayout;
-   // QGroupBox                    *inputWindowGroup;
-//    bool caseInitialized = false; 
-   QWebEngineView* m_pWebView;
+//    QString                      workingDirPath;
+//    QLineEdit                    *caseDirectoryPathWidget;
+
+  
+
+//    QGroupBox                    *caseDirectoryGroup;
+//    QGridLayout                  *caseDirectoryLayout;
+//    QTabWidget                   *theTabWidget;
+
+
+  QLabel *modelDescription; /**< Brief description of model indicating relevant
+				 paper where more information can be found describing
+				 model in greater detail */
+
+  QComboBox *exposureCategory; /**< type of wave spectrum */
+  LineEditRV *dragCoefficient; /**< drag Coefficient */
+  LineEditRV *dragArea; /**< drag Area */
+  LineEditRV *significantWaveHeight; /**< significant wave height (ft) */
+    LineEditRV *peakPeriod; /**< peak period (s) */
+    LineEditRV *waterDepth; /**< water depth (ft) */
+  LineEditRV *recorderOriginX; /**< x-coordinate of recorder origin */
+  SC_IntLineEdit *recorderCountZ; /**< number of recorders in z-direction */
+  LineEditRV *timeStep; /**< time step (s) */
+  LineEditRV *timeDuration; /**< time duration (s) */
+
+  
+
+  QSpinBox *seed; /**< Value to use as seed for motion generation */
+  QRadioButton *useSeed; /**< Radio button to indicate whether specific seed
+                              value should be used */
+
 };
 
 #endif // SIMPLE_WAVES_H

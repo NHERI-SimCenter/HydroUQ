@@ -16,7 +16,7 @@ from welib.hydro.morison import *
 # --- Parameters
 g   = 9.81                # gravity [m/s^2]
 h   = 30.                 # water depth [m]
-rho = 1025                # water density
+rho = 1000                # water density
 D   = 6                   # monopile diameter [m]
 CD  = 1                   # given
 CM  = 2                   # 

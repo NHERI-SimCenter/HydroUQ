@@ -108,6 +108,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <coupledDigitalTwin/CoupledDigitalTwin.h>
 #include <MPM/MPM.h>
 #include <MPM/SPH.h>
+#include <StochasticWaveModel/include/StochasticWaveInput.h>
 #include <Celeris/Celeris.h>
 #include <Celeris/WebGPU.h>
 #include <NOAA/DigitalCoast.h>
@@ -272,16 +273,16 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         theDialog->showTool("Digital Twin (MPM)");
     });
 
-    // DigitalCoast *miniDC = new DigitalCoast();
-    // QString appNameDC =  "DigitalCoast-1.0.0"; // Frontera
-    // QString systemNameDC = "frontera";
-    // QList<QString> queuesDC; queuesDC << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    // SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, queuesDC, theRemoteService, miniDC, theToolDialog);
-    // theToolDialog->addTool(miniDCTool, "Sea-Level Rise (NOAA Digital Coast)");
-    // QAction *showDC = toolsMenu->addAction("Sea-Level Rise (&NOAA Digital Coast)");
-    // connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
-    //     theDialog->showTool("Sea-Level Rise (NOAA Digital Coast)");
-    // });
+    DigitalCoast *miniDC = new DigitalCoast();
+    QString appNameDC =  "DigitalCoast-1.0.0"; // Frontera
+    QString systemNameDC = "frontera";
+    QList<QString> queuesDC; queuesDC << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, queuesDC, theRemoteService, miniDC, theToolDialog);
+    theToolDialog->addTool(miniDCTool, "Sea-Level Rise (NOAA Digital Coast)");
+    QAction *showDC = toolsMenu->addAction("Sea-Level Rise (&NOAA Digital Coast)");
+    connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
+        theDialog->showTool("Sea-Level Rise (NOAA Digital Coast)");
+    });
 
     Celeris *miniCeleris = new Celeris();
     QString appNameCeleris =  "Celeris-1.0.0"; // Frontera
