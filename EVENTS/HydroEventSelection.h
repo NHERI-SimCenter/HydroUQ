@@ -110,6 +110,7 @@ private:
    SimCenterAppWidget *theCoupledDigitalTwin;
    SimCenterAppWidget *theMPM;    
    SimCenterAppWidget *theSPH;
+   SimCenterAppWidget *theSimpleWaves;
    SimCenterAppWidget *theExistingEvents;
 
    RandomVariablesContainer *theRandomVariablesContainer;
