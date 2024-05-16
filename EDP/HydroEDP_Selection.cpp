@@ -120,7 +120,7 @@ HydroEDP_Selection::HydroEDP_Selection(QWidget *parent)
     theStackedWidget->addWidget(theStandardStormSurgeEDPs);
     theStackedWidget->addWidget(theUserDefinedEDPs);
     theStackedWidget->addWidget(theStandardEDPs);
-    theStackedWidget->setCurrentIndex(4);
+    theStackedWidget->setCurrentIndex(0);
     layout->addWidget(theStackedWidget);
     this->setLayout(layout);
 

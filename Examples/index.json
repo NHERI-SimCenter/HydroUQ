@@ -2,7 +2,7 @@
   "items": {
     "hdro-0001": {
       "id": "hdro-0001",
-      "title": "Wave flume Coupled Digital twin",
+      "title": "Multi-Story Structure - OSU LWF Digital Twin - OpenFOAM",
       "base": "hdro-0001",
       "doc": [
         "hdro-0001/figures/openfoam.png",
@@ -22,7 +22,7 @@
     },
     "hdro-0002": {
       "id": "hdro-0002",
-      "title": "Debris Impacts on a Rigid Structure - OSU Large Wave Flume Digital Twin - MPM",
+      "title": "Debris Impacts on a Structure - OSU LWF Digital Twin - MPM",
       "base": "hdro-0002",
       "doc": [
         "hdro-0002/figures/HydroUQ_MPM_3DViewPort_OSULWF_2024.04.25.gif",
@@ -68,11 +68,31 @@
     },
     "hdro-0003": {
       "id": "hdro-0003",
-      "title": "Half-Submerged Cylinder in Flow - Digital Twin - Coupled CFD-FEM",
+      "title": "Cylinder in Flow - UW WASIRF Digital Twin - OpenFOAM + OpenSees",
       "base": "hdro-0003",
       "doc": [
         "hdro-0003/figures/openfoam.png",
         "hdro-0003/figures/opensees.png",
+        "hdro-0003/figures/downloadResults.PNG",
+        "hdro-0003/figures/DSToolsAndAppsJobsStatus.PNG",
+        "hdro-0003/figures/DSToolsAndAppsJobsStatusFinished.PNG",
+        "hdro-0003/figures/DSToolsANdAppsJobsStatusViewFiles.PNG",
+        "hdro-0003/figures/extractonDS.PNG",
+        "hdro-0003/figures/resultsZip.png",
+        "hdro-0003/figures/Forces.png",
+        "hdro-0003/figures/hdro-0003example.png",
+        "hdro-0003/figures/hdro-0003exampleprobeLoc.png",
+        "hdro-0003/figures/inletVTH.png",
+        "hdro-0003/figures/MatlabScriptCopyToLocation.PNG",
+        "hdro-0003/figures/Moments.png",
+        "hdro-0003/figures/Paraview.PNG",
+        "hdro-0003/figures/Pressures.png",
+        "hdro-0003/figures/ReactionForces.png",
+        "hdro-0003/figures/results.png",
+        "hdro-0003/figures/storyForces.png",
+        "hdro-0003/figures/TipDisplacement.png",
+        "hdro-0003/figures/Velocities.png",
+        "hdro-0003/figures/WaveGauges.png",
         "hdro-0003/README.rst"
       ],
       "entry_point": "hdro-0003/./input.json",
@@ -84,7 +104,7 @@
     },
     "hdro-0004": {
       "id": "hdro-0004",
-      "title": "Tsunami Debris Motion Through a Scaled Port Setting - WU TWB Digital Twin - MPM",
+      "title": "Tsunami Debris Motion In a Scaled Port Setting - WU TWB Digital Twin - MPM",
       "base": "hdro-0004",
       "doc": [
         "hdro-0004/figures/TOKYO_BoreFrontImage_Debris3_o5x1_Frame20_29072023.png",

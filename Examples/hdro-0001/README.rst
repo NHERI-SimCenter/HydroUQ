@@ -41,30 +41,27 @@ The dataset in this example originates from experimental tests conducted in the 
 
    Coupled Digital Twin Illustration
 
+
 Model
 ^^^^^
 
 This model is characterized by the parameters:
 
 * Structural weight, :math:`w`, in kN as a random variable with a mean of 100 kN and a standard deviation of 10 kN.
-
-
-Files required
-^^^^^^^^^^^^^^
-
-
-
+^
 .. warning::
    **Do NOT** place the files in your ``root``, ``downloads``, or ``desktop`` folder. The running application will copy every unrelated file in the directories and subdirectories multiple times.
 
-UQ workflow
+
+Workflow
 ^^^^^^^^^^^
 
 The inputs needed to run this example can be loaded into the HydroUQ user interface by selecting the ``Coupled Digital Twin`` example from the ``Examples`` menu at the top of the application.
 
 The inputs can also be set up manually through the following steps:
 
-#. Start the application and the **UQ** panel will be highlighted. In the **UQ Method** drop-down menu, select the **Bayesian Calibration** option. In the **UQ Engine** dropdown menu select **UCSD-UQ** option. In the **Model** dropdown, select the **Hierarchical** option. Enter the values in this panel as shown in the figure below. A brief explanation of the different user input fields can be found in the :ref:`User Manual <lblUCSDHierarchical>`. 
+#. Start the application and select the **UQ** panel:
+   In the **UQ Method** drop-down menu, select the **Bayesian Calibration** option. In the **UQ Engine** dropdown menu select **UCSD-UQ** option. In the **Model** dropdown, select the **Hierarchical** option. Enter the values in this panel as shown in the figure below. A brief explanation of the different user input fields can be found in the :ref:`User Manual <lblUCSDHierarchical>`. 
 
 .. _figHBMUQ:
 
@@ -75,7 +72,8 @@ The inputs can also be set up manually through the following steps:
    
    Inputs in the UQ panel
 
-#. Next in the **FEM** panel , select **OpenSees** and populate the **Input Script** field by choosing the path to the model file.
+#. Next in the **FEM** panel: 
+   Select **OpenSees** and populate the **Input Script** field by choosing the path to the model file.
 
 .. _figHBMFEM:
 
@@ -86,7 +84,8 @@ The inputs can also be set up manually through the following steps:
    
    Inputs in the FEM panel
 
-#. Select the **RV** tab from the input panel. This panel should be pre-populated with the names of the variables that were defined in the model scripts. If not, press the **Add** button to create a new field to define the input random variable. Enter the same variable name, as required in the model script. For this example, choose the Normal probability distribution for all the random variables and enter the parameter values for each distribution as shown in the figures below:
+#. Select the **RV** tab from the input panel: 
+   This panel should be pre-populated with the names of the variables that were defined in the model scripts. If not, press the **Add** button to create a new field to define the input random variable. Enter the same variable name, as required in the model script. For this example, choose the Normal probability distribution for all the random variables and enter the parameter values for each distribution as shown in the figures below:
 
 .. _figHBMRV:
 
@@ -112,7 +111,8 @@ The inputs can also be set up manually through the following steps:
 ..    Inputs in the RV panel
 
 
-#. In the **EDP** panel create the output quantities corresponding to each of the experiments with a descriptive name, as shown in the figures below:
+#. In the **EDP** panel:
+   Create the output quantities corresponding to each of the experiments with a descriptive name, as shown in the figures below:
 
 .. .. _figHBMEDP1:
 
@@ -131,9 +131,14 @@ The inputs can also be set up manually through the following steps:
 ..    Inputs in the EDP panel
 
 
-#. Click on the **Run** button. This will create the necessary input files to perform a Bayesian calibration of the hierarchical model, run the analysis, and display the results when the analysis is completed. The results produced are sample values drawn from the distribution that represents the aleatory uncertainty in the estimated material parameters from each of the datasets. 
+#. Click on the **Run** button. 
+   This will create the necessary input files to perform a Bayesian calibration of the hierarchical model, run the analysis, and display the results when the analysis is completed.
 
-The **Summary** tab shows the mean, standard deviation, and coefficient of variation of each of the seven parameters of the material model that were inferred in this example.
+#. The **RES** tab will open with the workflow results when the simulation completers. The results produced are sample values drawn from the distribution that represents the aleatory uncertainty in the estimated material parameters from each of the datasets. 
+
+  The **Summary** tab shows the mean, standard deviation, and coefficient of variation of each of the seven parameters of the material model that were inferred in this example.
+
+  In the **Data Values** tab of the **RES** panel, a chart and a table with all the sample values are shown. By clicking on the data inside the columns of the chart with the **left** or **right** mouse button (``M1`` and ``M2``), different chart types are created and shown in the chart area on the left. 
 
 .. .. _figHBMRES1:
 
@@ -152,7 +157,6 @@ The **Summary** tab shows the mean, standard deviation, and coefficient of varia
 .. Results in the **RES** panel summary tab
 
 
-In the **Data Values** tab of the **RES** panel, a chart and a table with all the sample values are shown. By clicking on the data inside the columns of the chart with the left or right mouse button, different chart types are created and shown in the chart area on the left. 
 
 .. .. _figHBMRES3:
 
@@ -173,10 +177,9 @@ In the **Data Values** tab of the **RES** panel, a chart and a table with all th
 
 .. _lblHBMRestart:
 
-Files for restarting the analysis
----------------------------------
-
-In addition to the results displayed in the **RES** panel in ``HydroUQ``, JSON files with the state of the chain at every step of the sampling algorithm are saved in a directory called ``sampling_results`` within the ``tmp.SimCenter`` directory inside the jobs directory specified in the ``HydroUQ`` Preferences menu. Any of these files can be used to resume the sampling, by copying the file to the directory containing the model files and specifying its name in the Restart File Name field in the **UQ** panel.
+.. info::
+   In addition to the results displayed in the **RES** panel in ``HydroUQ``, JSON files with the state of the chain at every step of the sampling algorithm are saved in a directory called ``sampling_results`` within the ``tmp.SimCenter`` directory inside the jobs directory specified in the ``HydroUQ`` Preferences menu.
+   Any of these files can be used to resume the sampling, by copying the file to the directory containing the model files and specifying its name in the Restart File Name field in the **UQ** panel.
 
 .. warning::
    The ``tmp.SimCenter`` directory is cleared every time the ``RUN`` button is clicked in ``HydroUQ``. So, if you want to restart the analysis using one of the sampling results files outlined above, make sure to copy the results file to a location outside the ``tmp.SimCenter`` directory at the end of the analysis.

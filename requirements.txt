@@ -1,0 +1,8 @@
+matplotlib
+xlrd
+numpy>=1.16.5; python_version>"3.0"
+pandas>=1.0.1; python_version>"3.0"
+chardet
+scipy
+sympy
+welib
