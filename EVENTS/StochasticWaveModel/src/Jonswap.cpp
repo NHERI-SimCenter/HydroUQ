@@ -121,8 +121,10 @@ bool Jonswap::outputAppDataToJSON(QJsonObject& jsonObject) {
   bool result = true;
 
   jsonObject["Application"] = "StochasticWaveJonswap";
-  jsonObject["EventClassification"] = "Hydro";
+  // jsonObject["EventClassification"] = "Hydro";
 
+  // jsonObject["Application"] = "StochasticWindWittigSinha";
+  jsonObject["EventClassification"] = "Wind";
   // squirel in the application data selection text
   QJsonObject appData;
   jsonObject["ApplicationData"] = appData;
@@ -139,7 +141,11 @@ bool Jonswap::outputToJSON(QJsonObject& jsonObject) {
   bool result = true;
 
   jsonObject["type"] = "StochasticWaveJonswap";
-  jsonObject["EventClassification"] = "Hydro";
+  // jsonObject["type"] = "StochasticWindWittigSinha";
+
+  // jsonObject["EventClassification"] = "Hydro";
+  jsonObject["EventClassification"] = "Wind";
+
   dragCoefficient->outputToJSON(jsonObject, QString("dragCoefficient"));
   gustWindSpeed->outputToJSON(jsonObject, QString("gustSpeed"));
   jsonObject.insert("exposureCategory",exposureCategory->currentText());

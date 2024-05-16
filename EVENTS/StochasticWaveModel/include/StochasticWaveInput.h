@@ -101,6 +101,10 @@ class StochasticWaveInput : public SimCenterAppWidget {
    */
   bool outputAppDataToJSON(QJsonObject& rvObject);
 
+
+  bool supportsLocalRun() override;
+
+
  signals:
   void sendErrorMessage(QString message);
 

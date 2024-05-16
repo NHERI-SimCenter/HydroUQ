@@ -144,6 +144,11 @@ bool StochasticWaveInput::inputAppDataFromJSON(QJsonObject& jsonObject) {
   return true;
 }
 
+bool StochasticWaveInput::supportsLocalRun() {
+  // TODO: Check if the selected model supports local run
+  return true;
+}
+
 void StochasticWaveInput::modelSelectionChanged(const QString& model) {
 
   // Switch the model description and form layout based on model selection

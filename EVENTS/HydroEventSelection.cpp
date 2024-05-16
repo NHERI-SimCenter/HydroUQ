@@ -534,9 +534,8 @@ bool HydroEventSelection::copyFiles(QString &destDir) {
 
 bool HydroEventSelection::supportsLocalRun()
 {
-    // return theCurrentEvent->supportsLocalRun();
-    // if theCurrentEvent
-    return false;
+    if (theCurrentEvent != 0)
+        return theCurrentEvent->supportsLocalRun();
 }
 
 bool
