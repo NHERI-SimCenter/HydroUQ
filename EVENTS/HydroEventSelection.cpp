@@ -286,7 +286,7 @@ void HydroEventSelection::eventSelectionChanged(const QString &arg1)
     //     }     
     //     theStackedWidget->setCurrentIndex(4);
     // }
-    else if(arg1 == "Stochastic Wave Loading" || arg1 == "SimpleWaves") {
+    else if(arg1 == "Stochastic Wave Loading" || arg1 == "StochasticWave" || arg1 == "StochasticWaveJonswap" ) {
         theCurrentEvent = theSimpleWaves;
         theStackedWidget->setCurrentIndex(4);
     }
@@ -365,7 +365,7 @@ bool HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
     // // else if ((type == QString("SPH")) || (type == QString("Smoothed Particled Hydrodynamics")) || (type == QString("Digital Twin (SPH)")) || (type == QString("SPHDigitalTwin")) || (type == QString("theSPH")) || (type == QString("SPH Digital Twin")) || (type == QString("SPHDigitalTwin")) || (type == QString("theSPHDigitalTwin"))){
     //     index = 4;
     // }
-    else if ((type == QString("SimpleWaves")) || (type == QString("Stochastic Wave Loading"))) {
+    else if ((type == QString("StochasticWave")) || (type == QString("StochasticWaveJonswap")) || (type == QString("Stochastic Wave Loading"))) {
         index = 4;
     }
     else 
@@ -479,8 +479,8 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
     //   theCurrentEvent = theSPH;
     //   index = 4;
     // }
-    else if ((type == "SimpleWaves")
-    || (type == "Stochastic Wave Loading")) {
+    else if ((type == "StochasticWave")
+    || (type == "StochasticWaveJonswap") || (type == "Stochastic Wave Loading")) {
       
       theCurrentEvent = theSimpleWaves;
       index = 4;

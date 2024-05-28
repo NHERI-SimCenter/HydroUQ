@@ -1,6 +1,3 @@
-#ifndef STANDARD_HYDRO_EDP_H
-#define STANDARD_HYDRO_EDP_H
-
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
 All rights reserved.
@@ -37,57 +34,72 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmckenna, JustinBonus
+// Written: fmckenna
 
-#include <SimCenterAppWidget.h>
+#include <QJsonObject>
+#include "StandardWindEDP.h"
 
-#include <QGroupBox>
-#include <QVector>
-#include <QGridLayout>
-#include <QComboBox>
-
-class EDP;
-// class InputWidgetParameters;
-
-class StandardHydroEDP : public SimCenterAppWidget
+StandardWindEDP::StandardWindEDP(QWidget *parent)
+    : SimCenterAppWidget(parent)
 {
-    Q_OBJECT
-public:
-    explicit StandardHydroEDP(QWidget *parent = 0);
-    ~StandardHydroEDP();
 
-    bool outputToJSON(QJsonObject &rvObject) override;
-    bool inputFromJSON(QJsonObject &rvObject) override;
-    bool outputAppDataToJSON(QJsonObject &rvObject) override;
-    bool inputAppDataFromJSON(QJsonObject &rvObject) override;
-    bool copyFiles(QString &dirName) override;
+}
+
+StandardWindEDP::~StandardWindEDP()
+{
+
+}
 
 
-    // From UserDefinedEDP.h in SimCenterCommon/Workflow/EDP/
-    QString getMainScript();
-    bool setProcessingScript(QString filename);
-    void setAdditionalInput(QString filename);
-    // void clear(void) override; This was in public for StandardEarthquakeEDP.h-- not in public slots as in UserDefinedEDP.h
+void
+StandardWindEDP::clear(void)
+{
 
-signals:
+}
 
-public slots:
-   void clear(void) override;
-   void chooseProcessingScript(void);
-   void chooseAdditionalInput(void);
 
-   void addEDP(void);
-   void removeEDP(EDP *);
 
-private:
-    void addEDP(QString &name);
-    QLineEdit   *processingScriptLE;
-    // QString filenameProcesssingScript;
-    QLineEdit   *additionalInputLE;
-    // QString filenameAdditionalInput;
-    QVector<EDP *>theEDPs;
-    QVBoxLayout *edpLayout;
-    QFrame *edp;
-};
+bool
+StandardWindEDP::outputToJSON(QJsonObject &jsonObject)
+{
+    // just need to send the class type here.. type needed in object in case user screws up
+    jsonObject["type"]="StandardWindEDP";
 
-#endif // STANDARD_HYDRO_EDP_H
+    return true;
+}
+
+
+bool
+StandardWindEDP::inputFromJSON(QJsonObject &jsonObject)
+{
+    Q_UNUSED(jsonObject);
+    return true;
+}
+
+
+bool
+StandardWindEDP::outputAppDataToJSON(QJsonObject &jsonObject) {
+
+    //
+    // per API, need to add name of application to be called in AppLication
+    // and all data to be used in ApplicationDate
+    //
+
+    jsonObject["Application"] = "StandardWindEDP";
+    QJsonObject dataObj;
+    jsonObject["ApplicationData"] = dataObj;
+
+    return true;
+}
+bool
+StandardWindEDP::inputAppDataFromJSON(QJsonObject &jsonObject) {
+    Q_UNUSED(jsonObject);
+    return true;
+}
+
+
+bool
+StandardWindEDP::copyFiles(QString &dirName) {
+    Q_UNUSED(dirName);
+    return true;
+}

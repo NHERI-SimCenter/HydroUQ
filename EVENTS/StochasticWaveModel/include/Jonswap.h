@@ -63,6 +63,7 @@ class QString;
 class QWidget;
 class QComboBox;
 class RandomVariablesContainer;
+class SC_IntLineEdit;
 
 /**
  * Widget for inputting parameters for stochastic earthquake time history
@@ -126,12 +127,25 @@ class Jonswap : public SimCenterAppWidget {
 				 paper where more information can be found describing
 				 model in greater detail */
 
-  QComboBox *exposureCategory; /**< ASCE 7 Exposure condition */
-  LineEditRV *dragCoefficient; /**< drag Coefficient */
-  LineEditRV *gustWindSpeed; /**< gust wnind speed (mph) */
-  QSpinBox *seed; /**< Value to use as seed for motion generation */
-  QRadioButton *useSeed; /**< Radio button to indicate whether specific seed
+  // LineEditRV *gustWindSpeed; /**< gust wnind speed (mph) */
+
+   QComboBox *exposureCategory; /**< type of wave spectrum */
+   LineEditRV *dragCoefficient; /**< drag Coefficient */
+   LineEditRV *dragArea; /**< drag Area */
+   LineEditRV *significantWaveHeight; /**< significant wave height (ft) */
+   LineEditRV *peakPeriod; /**< peak period (s) */
+   LineEditRV *waterDepth; /**< water depth (ft) */
+   LineEditRV *recorderOriginX; /**< x-coordinate of recorder origin */
+   SC_IntLineEdit *recorderCountZ; /**< number of recorders in z-direction */
+   LineEditRV *timeStep; /**< time step (s) */
+   LineEditRV *timeDuration; /**< time duration (s) */
+   
+   
+   
+   QSpinBox *seed; /**< Value to use as seed for motion generation */
+   QRadioButton *useSeed; /**< Radio button to indicate whether specific seed
                               value should be used */
+
 };
 
 #endif  // _KWON_KAREEM_2006_MODEL_H

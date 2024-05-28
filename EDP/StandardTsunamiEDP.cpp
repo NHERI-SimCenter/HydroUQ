@@ -36,7 +36,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // Written: fmckenna
 
-#include "StandardTsunamiEDP.h"
+#include "EDP/StandardTsunamiEDP.h"
 // #include <QJsonObject>
 // #include <QLabel>
 
@@ -45,6 +45,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <vector>
 // #include "UserDefinedEDP.h"
 #include <EDP.h>
+// #include <InputWidgetParameters.h>
 
 #include <QPushButton>
 #include <QScrollArea>

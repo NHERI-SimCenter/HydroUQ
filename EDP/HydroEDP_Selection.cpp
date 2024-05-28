@@ -39,7 +39,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written: fmckenna
 // Modified: JustinBonus
 
-#include "HydroEDP_Selection.h"
+#include "EDP/HydroEDP_Selection.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -59,12 +59,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QPushButton>
 #include <SectionTitle.h>
 
-
+// In SimCenterCommon and 
+#include <StandardWindEDP.h>
+#include "EDP/StandardHydroEDP.h"
+#include "EDP/StandardTsunamiEDP.h"
+#include "EDP/StandardStormSurgeEDP.h"
 #include <StandardEDP.h>
-#include <StandardHydroEDP.h>
-#include <StandardTsunamiEDP.h>
-#include <StandardStormSurgeEDP.h>
+#include <StandardWindEDP.h>
+#include <StandardEarthquakeEDP.h>
 #include <UserDefinedEDP.h>
+
+
 
 HydroEDP_Selection::HydroEDP_Selection(QWidget *parent)
     : SimCenterAppWidget(parent), theCurrentEDP(0)
@@ -81,19 +86,19 @@ HydroEDP_Selection::HydroEDP_Selection(QWidget *parent)
     label->setMinimumWidth(250);
     
     edpSelection = new QComboBox();
+    edpSelection->addItem(tr("Standard"));
     edpSelection->addItem(tr("Standard Hydro"));
     edpSelection->addItem(tr("Standard Tsunami"));
     edpSelection->addItem(tr("Standard Storm Surge"));
     edpSelection->addItem(tr("User Defined"));
-    edpSelection->addItem(tr("Standard"));
     edpSelection->setObjectName("EDPSelectionComboBox");
 
     //    edpSelection->setItemData(1, "A Seismic event using Seismic Hazard Analysis and Record Selection/Scaling", Qt::ToolTipRole);
-    edpSelection->setItemData(0, "A general hydrodynamic event with measurement of common engineering demand parameters (EDPs).", Qt::ToolTipRole);
-    edpSelection->setItemData(1, "A tsunami event with measurement of established tsunami demand parameters (EDPs) for coastal structures (e.g. residential, commercial).", Qt::ToolTipRole);
-    edpSelection->setItemData(2, "A hurricane storm surge event with measurement of established hydrodynamic storm surge demand parameters (EDPs) for affected structures (e.g. residential, commercial).", Qt::ToolTipRole);
-    edpSelection->setItemData(3, "User-defined selection of engineering demand parameters (EDPs) for custom workflows.", Qt::ToolTipRole);
-    edpSelection->setItemData(4, "A general event with measurement of common (earthquake) engineering demand parameters (EDPs).", Qt::ToolTipRole);
+    edpSelection->setItemData(0, "A general event with measurement of common (i.e. earthquake related) engineering demand parameters (EDPs).", Qt::ToolTipRole);
+    edpSelection->setItemData(1, "A general hydrodynamic event with measurement of common engineering demand parameters (EDPs).", Qt::ToolTipRole);
+    edpSelection->setItemData(2, "A tsunami event with measurement of established tsunami demand parameters (EDPs) for coastal structures (e.g. residential, commercial).", Qt::ToolTipRole);
+    edpSelection->setItemData(3, "A hurricane storm surge event with measurement of established hydrodynamic storm surge demand parameters (EDPs) for affected structures (e.g. residential, commercial).", Qt::ToolTipRole);
+    edpSelection->setItemData(4, "User-defined selection of engineering demand parameters (EDPs) for custom workflows.", Qt::ToolTipRole);
     theSelectionLayout->addWidget(label);
     theSelectionLayout->addWidget(edpSelection);
     theSelectionLayout->addStretch();
@@ -109,17 +114,17 @@ HydroEDP_Selection::HydroEDP_Selection(QWidget *parent)
     // create the individual widgets add to stacked widget
     //
 
+    theStandardEDPs = new StandardEDP();
     theStandardHydroEDPs = new StandardHydroEDP();
     theStandardTsunamiEDPs = new StandardTsunamiEDP();
     theStandardStormSurgeEDPs = new StandardStormSurgeEDP();
     theUserDefinedEDPs = new UserDefinedEDP();
-    theStandardEDPs = new StandardEDP();
     
+    theStackedWidget->addWidget(theStandardEDPs);
     theStackedWidget->addWidget(theStandardHydroEDPs);
     theStackedWidget->addWidget(theStandardTsunamiEDPs);
     theStackedWidget->addWidget(theStandardStormSurgeEDPs);
     theStackedWidget->addWidget(theUserDefinedEDPs);
-    theStackedWidget->addWidget(theStandardEDPs);
     theStackedWidget->setCurrentIndex(0);
     layout->addWidget(theStackedWidget);
     this->setLayout(layout);
@@ -146,6 +151,7 @@ HydroEDP_Selection::outputToJSON(QJsonObject &jsonObject)
 
 bool
 HydroEDP_Selection::inputFromJSON(QJsonObject &jsonObject) {
+    qDebug() << "EDP_SELECTION - " << jsonObject;
 
     if (theCurrentEDP != 0) {
         return theCurrentEDP->inputFromJSON(jsonObject);
@@ -160,28 +166,28 @@ void HydroEDP_Selection::edpSelectionChanged(const QString &arg1)
     // switch stacked widgets depending on text
     // note type output in json and name in pull down are not the same and hence the ||
     //
-
-    if (arg1 == "Standard Hydro" || arg1 == "StandardHydroEDP") {
+    if (arg1 == "Standard" || arg1 == "StandardEDP") {
         theStackedWidget->setCurrentIndex(0);
+        theCurrentEDP = theStandardEDPs;
+    }
+
+    else if (arg1 == "Standard Hydro" || arg1 == "StandardHydroEDP") {
+        theStackedWidget->setCurrentIndex(1);
         theCurrentEDP = theStandardHydroEDPs;
     }
 
     else if(arg1 == "Standard Tsunami" || arg1 == "StandardTsunamiEDP") {
-        theStackedWidget->setCurrentIndex(1);
+        theStackedWidget->setCurrentIndex(2);
         theCurrentEDP = theStandardTsunamiEDPs;
     }
 
     else if(arg1 == "Standard Storm Surge" || arg1 == "StandardStormSurgeEDP") {
-        theStackedWidget->setCurrentIndex(2);
+        theStackedWidget->setCurrentIndex(3);
         theCurrentEDP = theStandardStormSurgeEDPs;
     }
     else if(arg1 == "User Defined" || arg1 == "UserDefinedEDP") {
-        theStackedWidget->setCurrentIndex(3);
-        theCurrentEDP = theUserDefinedEDPs;
-    }
-    else if (arg1 == "Standard" || arg1 == "StandardEDP") {
         theStackedWidget->setCurrentIndex(4);
-        theCurrentEDP = theStandardEDPs;
+        theCurrentEDP = theUserDefinedEDPs;
     }
     else {
         qDebug() << "ERROR .. HydroEDP_Selection selection .. type unknown: " << arg1;
@@ -216,22 +222,26 @@ HydroEDP_Selection::inputAppDataFromJSON(QJsonObject &jsonObject)
 
     // based on application name value set edp type
     int index = 0;
-    if ((type == QString("Standard Hydro EDPs")) ||
-            (type == QString("StandardHydroEDP"))) {
+    if ((type == QString("StandardEDP")) ||
+                (type == QString("Standard EDPs")) || (type == QString("Standard"))) {
         index = 0;
-    } else if ((type == QString("StandardTsunamiEDP")) ||
-               (type == QString("Standard Tsunami EDPs"))) {
-        index = 1;
-    } else if ((type == QString("StandardStormSurgeEDP")) ||
-               (type == QString("Standard Storm Surge EDPs"))) {
-        index = 2;
-    } else if ((type == QString("UserDefinedEDP")) ||
-               (type == QString("User Defined EDPs"))) {
-        index = 3;
-    }  else if ((type == QString("StandardEDP")) ||
-                (type == QString("Standard EDPs"))) {
-        index = 4;
     }
+    else if ((type == QString("Standard Hydro EDPs")) ||
+            (type == QString("StandardHydroEDP")) || (type == QString("Standard Hydro"))) {
+        index = 1;
+    } 
+    else if ((type == QString("StandardTsunamiEDP")) ||
+               (type == QString("Standard Tsunami EDPs")) || (type == QString("Standard Tsunami"))) {
+        index = 2;
+    } 
+    else if ((type == QString("StandardStormSurgeEDP")) ||
+               (type == QString("Standard Storm Surge EDPs") || (type == QString("Standard Storm Surge")))) {
+        index = 3;
+    } 
+    else if ((type == QString("UserDefinedEDP")) ||
+               (type == QString("User Defined EDPs")) || (type == QString("User Defined"))) {
+        index = 4;
+    } 
     else {
         errorMessage("HydroEDP_Selection - no valid type found");
         return false;

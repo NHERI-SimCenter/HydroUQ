@@ -1,5 +1,5 @@
-#ifndef STANDARD_HYDRO_EDP_H
-#define STANDARD_HYDRO_EDP_H
+#ifndef STANDARD_WIND_EDP_H
+#define STANDARD_WIND_EDP_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
@@ -37,7 +37,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmckenna, JustinBonus
+// Written: fmckenna
 
 #include <SimCenterAppWidget.h>
 
@@ -46,48 +46,29 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QGridLayout>
 #include <QComboBox>
 
-class EDP;
-// class InputWidgetParameters;
+class InputWidgetParameters;
 
-class StandardHydroEDP : public SimCenterAppWidget
+class StandardWindEDP : public SimCenterAppWidget
 {
     Q_OBJECT
 public:
-    explicit StandardHydroEDP(QWidget *parent = 0);
-    ~StandardHydroEDP();
+    explicit StandardWindEDP(QWidget *parent = 0);
+    ~StandardWindEDP();
 
-    bool outputToJSON(QJsonObject &rvObject) override;
-    bool inputFromJSON(QJsonObject &rvObject) override;
-    bool outputAppDataToJSON(QJsonObject &rvObject) override;
-    bool inputAppDataFromJSON(QJsonObject &rvObject) override;
-    bool copyFiles(QString &dirName) override;
+    bool outputToJSON(QJsonObject &rvObject);
+    bool inputFromJSON(QJsonObject &rvObject);
+    bool outputAppDataToJSON(QJsonObject &rvObject);
+    bool inputAppDataFromJSON(QJsonObject &rvObject);
+    bool copyFiles(QString &dirName);
 
-
-    // From UserDefinedEDP.h in SimCenterCommon/Workflow/EDP/
-    QString getMainScript();
-    bool setProcessingScript(QString filename);
-    void setAdditionalInput(QString filename);
-    // void clear(void) override; This was in public for StandardEarthquakeEDP.h-- not in public slots as in UserDefinedEDP.h
+    void clear(void);
 
 signals:
 
 public slots:
-   void clear(void) override;
-   void chooseProcessingScript(void);
-   void chooseAdditionalInput(void);
-
-   void addEDP(void);
-   void removeEDP(EDP *);
 
 private:
-    void addEDP(QString &name);
-    QLineEdit   *processingScriptLE;
-    // QString filenameProcesssingScript;
-    QLineEdit   *additionalInputLE;
-    // QString filenameAdditionalInput;
-    QVector<EDP *>theEDPs;
-    QVBoxLayout *edpLayout;
-    QFrame *edp;
+
 };
 
-#endif // STANDARD_HYDRO_EDP_H
+#endif // STANDARD_WIND_EDP_H

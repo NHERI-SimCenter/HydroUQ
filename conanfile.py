@@ -2,7 +2,7 @@ from conans import ConanFile
 
 class HYDROUQ(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    version = "3.1.0"
+    version = "3.2.0"
     license = "BSD"
     author = "NHERI SimCenter"
     url = "https://github.com/NHERI-SimCenter/HydroUQ"
@@ -29,12 +29,27 @@ class HYDROUQ(ConanFile):
         appsDestination = "./applications"
         if self.settings.os == "Windows":
             appsDestination = './%s/applications' % self.settings.build_type
-        elif self.settings.os == "Macos":
+        elif self.settings.os == "Macos" or self.settings.os == "Mac" or self.settings.os == "Darwin":
             appsDestination = './HydroUQ.app/Contents/MacOS/applications'
+        elif self.settings.os == "Linux":
+            appsDestination = './applications'
 
         self.copy("createEVENT/multiple*", dst=appsDestination, src="bin")
         self.copy("createEVENT/siteRes*", dst=appsDestination, src="bin")
-        self.copy("createEVENT/stochasticGr*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/stochasticGroundMotion*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/*wind*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/*Wind*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/EmptyDomainCFD*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/IsolatedBuildingCFD*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/CFDEvent*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/multipleSimCenter*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/SimCenterEvent*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/*wave*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/*Wave*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/*GeoClaw*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/*DigitalTwin*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/*MPM*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/*stochasticWave*", dst=appsDestination, src="bin")
 
         self.copy("createSAM/*", dst=appsDestination, src="bin")
         self.copy("createEDP/*", dst=appsDestination, src="bin")

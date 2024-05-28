@@ -1,8 +1,8 @@
 INCLUDEPATH += $$PWD/EVENTS
 INCLUDEPATH += EVENTS
-INCLUDEPATH += $$PWD/EDP
-INCLUDEPATH += EDP
-INCLUDEPATH += ../SimCenterCommon/Common
+# INCLUDEPATH += $$PWD/EDP
+# INCLUDEPATH += EDP
+# INCLUDEPATH += ../SimCenterCommon/Common
 INCLUDEPATH += $$PWD/EVENTS/GeoClawOpenFOAM
 INCLUDEPATH += $$PWD/EVENTS/WaveDigitalFlume
 INCLUDEPATH += $$PWD/EVENTS/coupledDigitalTwin
@@ -15,6 +15,7 @@ INCLUDEPATH += $$PWD/EVENTS/StochasticWaveModel/include
 INCLUDEPATH += $$PWD/EVENTS/StochasticWaveModel/src
 INCLUDEPATH += $$PWD/EVENTS/Common
 INCLUDEPATH += $$PWD/SlidingStackedWidget
+
 SOURCES += \
     $$PWD/EVENTS/HydroEventSelection.cpp \
     $$PWD/EVENTS/GeoClawOpenFOAM/hydroerror.cpp \

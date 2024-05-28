@@ -45,18 +45,28 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QVector>
 class QComboBox;
 class QStackedWidget;
-class StandardEDP;
-class UserDefinedApplication;
-class StandardHydroEDP;
-class StandardTsunamiEDP;
-class StandardStormSurgeEDP;
+// class QJsonObject;
 
-class HydroEDP_Selection : public  SimCenterAppWidget
+// class StandardHydroEDP;
+
+// class StandardTsunamiEDP;
+// class StandardStormSurgeEDP;
+// class StandardWindEDP;
+// class StandardEarthquakeEDP;
+// class StandardEDP;
+// class UserDefinedEDP;
+class UserDefinedApplication;
+//class RandomVariablesContainer;
+
+class HydroEDP_Selection : public SimCenterAppWidget
 {
     Q_OBJECT
 public:
-    explicit HydroEDP_Selection(QWidget *parent = 0);
+    explicit HydroEDP_Selection( QWidget *parent = 0);
+    // explicit HydroEDP_Selection(RandomVariablesContainer *, QWidget *parent = 0);
+    // virtual ~HydroEDP_Selection();
     ~HydroEDP_Selection();
+
 
     bool outputToJSON(QJsonObject &rvObject);
     bool inputFromJSON(QJsonObject &rvObject);
@@ -80,7 +90,10 @@ private:
    SimCenterAppWidget *theStandardHydroEDPs;
    SimCenterAppWidget *theStandardTsunamiEDPs;
    SimCenterAppWidget *theStandardStormSurgeEDPs;
+   SimCenterAppWidget *theStandardWindEDPs;
    SimCenterAppWidget *theUserDefinedEDPs;
+
+   //RandomVariablesContainer *theRandomVariables;
 };
 
 #endif // HYDRO_EDP_SELECTION_H
