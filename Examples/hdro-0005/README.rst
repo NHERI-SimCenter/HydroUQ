@@ -19,9 +19,20 @@ Feature - Stochastic Wave Loading on a Simple Structure - Stochastic Wave Spectr
 Overview
 --------
 
-In this digital twin validation example, debris-field wave-flume tests at a NHERI facility, Oregon State University's Large Wave Flume (OSU LWF), are briefly summarized before demonstrating the use of HydroUQ's OSU LWF digital twin paired with the Material Point Method (MPM).
+.. figure:: figures/hdro-0005_WaveTimeSeries.png
+   :align: center
+   :width: 600
+   :figclass: align-center
+   
+   Stochastic JONSWAP wave spectra produced in HydroUQ, applying the welib Python package.
 
-.. figure:: figures/HydroUQ_MPM_3DViewPort_OSULWF_2024.04.25.gif
+In this local workflow example, basic uncertainty quantification methods (Forward, Sensitivity, Reliability) are applied to the response of a simple structure loaded by a stochastic wave spectra.
+
+
+Set-Up
+------
+
+.. figure:: figures/hdro-0005_UQ.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -32,7 +43,7 @@ Details for the experiments are available in various publications. Namely, the w
 
 Experiments were performed in the NHERI OSU LWF, a 100 meter long flume with adjustable bathymetry, in order to quantify stochastic impact loads of ordered and disordered debris-fields on effectively rigid, raised structure. 
 
-.. figure:: figures/OSU_Flume_Schematic_Dakota_Alam.png
+.. figure:: figures/hdro-0005_GI.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -47,7 +58,7 @@ Results for free surface elevation and streamwise structural loads are to be rec
 
 Qualitatively, an MPM simulation of debris impacts on a raised structure in the OSU LWF is shown below.
 
-.. figure:: figures/OSU_LWF_MPM_32L_Impact_3Photos.png
+.. figure:: figures/hdro-0005_SIM.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -56,7 +67,7 @@ Qualitatively, an MPM simulation of debris impacts on a raised structure in the 
 
 It appears similar in the mechanism of debris impact, stalling, and deflection relative to the structure and flow for a similar case in Mascarenas 2022 [Mascarenas2022]_.
 
-.. figure:: figures/OSU_LWF_Dakota_8L_Impact_3Photos.PNG
+.. figure:: figures/hdro-0005_EVT.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -66,7 +77,7 @@ It appears similar in the mechanism of debris impact, stalling, and deflection r
 
 The experiments by Shekhar et al. 2020 [Shekhar2020]_ are also shown below for comparison. These tests had a slightly different configuartion, primarily the debris were located 0.5 meters further upstream from the box and the water level was 0.10-0.15 meters lower than the 2.0 meter datum used in the simulations and Mascarenas 2022 [Mascarenas2022]_ experiments.
 
-.. figure:: figures/OSU_LWF_Krish_Debris_8L_3Panel_Impacts_Photograph_Shekhar2020.PNG
+.. figure:: figures/hdro-0005_EDP.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -78,14 +89,13 @@ Similar figures can be made for the whole range of order debris-array experiment
 
 .. _hdro-0005-setup:
 
-Set-Up
-------
+
 
 A step-by-step walkthrough on replicating an MPM simulation result from Bonus 2023 [Bonus2023Dissertation]_ is provided below.
 
 Open ``Settings``. Here we set the simulation time, the time step, and the number of processors to use, among other pre-simulation decisions.
 
-.. figure:: figures/GUI_Settings.PNG
+.. figure:: figures/hdro-0005_RV.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -95,7 +105,7 @@ Open ``Settings``. Here we set the simulation time, the time step, and the numbe
 
 Open ``Bodies`` / ``Fluid`` / ``Material``. Here we set the material properties of the fluid and the debris.
 
-.. figure:: figures/GUI_Bodies_Fluid_Material.PNG
+.. figure:: figures/hdro-0005_RES_Summary_Forward.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -104,7 +114,7 @@ Open ``Bodies`` / ``Fluid`` / ``Material``. Here we set the material properties 
 
 Open ``Bodies`` / ``Fluid`` / ``Geometry``. Here we set the geometry of the flume, the debris, and the raised structure. 
 
-.. figure:: figures/GUI_Bodies_Fluid_Geometry.PNG
+.. figure:: figures/hdro-0005_RES_Scatter.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -114,7 +124,7 @@ Open ``Bodies`` / ``Fluid`` / ``Geometry``. Here we set the geometry of the flum
 
 Open ``Algorithm``. Here we set the algorithm parameters for the simulation. We choose to apply F-Bar antilocking to aid in the pressure field's accuracy on the fluid. The associated toggle must be checked, and the antilocking ratio set to 0.9, loosely.
 
-.. figure:: figures/GUI_Bodies_Fluid_Algorithm.PNG
+.. figure:: figures/hdro-0005_RES_Cumulative_Forward.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -123,7 +133,7 @@ Open ``Algorithm``. Here we set the algorithm parameters for the simulation. We 
 
 Open ``Bodies`` / ``Fluid`` / ``Partitions``. Here we set the number of partitions for the simulation. This is the domain decomposition across discrete hardware units, i.e. Multi-GPUs. These may be kept as there default values. 
 
-.. figure:: figures/GUI_Bodies_Fluid_Partitions.PNG
+.. figure:: figures/hdro-0005_RES_HistogramForward.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -132,7 +142,7 @@ Open ``Bodies`` / ``Fluid`` / ``Partitions``. Here we set the number of partitio
 
 Moving onto the creation of an ordered debris-array, we set the debris properties in the ``Bodies`` / ``Debris`` / ``Material`` tab. We will assume debris are made of HDPE plastic, as in experiments by Mascarenas 2022 [Mascarenas2022]_ and Shekhar et al. 2020 [Shekhar2020]_.
 
-.. figure:: figures/GUI_Bodies_Debris_Material.PNG
+.. figure:: figures/hdro-0005_RV_Sensitivity.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -141,7 +151,7 @@ Moving onto the creation of an ordered debris-array, we set the debris propertie
 
 Open ``Bodies`` / ``Debris`` / ``Geometry``. Here we set the debris properties, such as the number of debris, the size of the debris, and the spacing between the debris. Rotation is another option, though not used in this example. We've elected to use an 8 x 4 grid of debris (longitudinal axis parallel to long-axis of the flume).
 
-.. figure:: figures/GUI_Bodies_Debris_Geometry.PNG
+.. figure:: figures/hdro-0005_RES_Summary_Sensitivity.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -152,7 +162,7 @@ The ``Bodies`` / ``Debris`` / ``Algorithm`` and ``Debris`` / ``Partitions`` tabs
 
 Open ``Bodies`` / ``Structures``. Uncheck the box that enables this body, if it is checked. We will not model the structure as a body in this example, instead, we will modify it as a boundary later.
 
-.. figure:: figures/GUI_Bodies_Structure_Disabled.PNG
+.. figure:: figures/hdro-0005_RES_Scatter_Sensitivity.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -161,7 +171,7 @@ Open ``Bodies`` / ``Structures``. Uncheck the box that enables this body, if it 
 
 Open ``Boundaries`` / ``Wave Flume``. We will set the boundary to be a rigid body, with a fixed separable velocity condition, that is faithful to the digital tiwn of the NHERI OSU LWF. Bathmyetry joint points should be indetical to the ones used in ``Bodeis`` / ``FLuid``.
 
-.. figure:: figures/GUI_Boundaries_Flume.PNG
+.. figure:: figures/hdro-0005_RES_Summary_Reliability.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -170,7 +180,7 @@ Open ``Boundaries`` / ``Wave Flume``. We will set the boundary to be a rigid bod
 
 Open ``Boundaries`` / ``Wave Generator``. Fill in the appropriate file-path for the wave generator paddle motion. It is designed to produce near-solitary like waves.
 
-.. figure:: figures/GUI_Boundaries_WaveGenerator.PNG
+.. figure:: figures/hdro-0005_forces.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -179,7 +189,7 @@ Open ``Boundaries`` / ``Wave Generator``. Fill in the appropriate file-path for 
 
 Open ``Boundaries`` / ``Rigid Structure``. This is where we will specify the raised structure as a boundary condition. By doing so, we can determine exact loads on the rigid boundary grid-nodes, which may then be mapped to the FEM tab for nonlinear UQ structural response analysis.
 
-.. figure:: figures/GUI_Boundaries_RigidStructure.PNG
+.. figure:: figures/hdro-0005_moments.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -188,7 +198,7 @@ Open ``Boundaries`` / ``Rigid Structure``. This is where we will specify the rai
 
 Open ``Boundaries`` / ``RigidWalls``.
 
-.. figure:: figures/GUI_Boundaries_RigidWalls.PNG
+.. figure:: figures/hdro-0005_IntegratedPileLoads.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -201,34 +211,26 @@ Three wave gauges will be defined. The first is located prior to the bathymetry 
 
 Set the origins and dimensions of each wave as in the table below. To match experimental conditions, we also apply a 120 Hz sampling rate to the wave gauges, meaning they record data every 0.0083 seconds. 
 
-.. figure:: figures/GUI_Sensors_WaveGauges.PNG
-   :align: center
-   :width: 600
-   :figclass: align-center
+
+
+.. Open ``Sensors`` / ``Load Cells``. Set the ``Use these sensor?`` box to ``True`` so that the simulation will output results for the instruments we set on this page.
+
+.. .. figure:: figures/GUI_Sensors_LoadCells.PNG
+..    :align: center
+..    :width: 600
+..    :figclass: align-center
    
-   HydroUQ Sensors Wave-Gauge GUI
-
-These wave gauges will read all numerical bodies (i.e. particles) within their defined regions every sampling step, and will report the highest elevation value (Position Y) of a contained body as the free-surface elevation at that gauge. The results is written into our sensor results files.
+..    HydroUQ Sensors Load-Cells GUI
 
 
-Open ``Sensors`` / ``Load Cells``. Set the ``Use these sensor?`` box to ``True`` so that the simulation will output results for the instruments we set on this page.
+.. Open ``Outputs``. Here we set the non-physical output parameters for the simulation, e.g. attributes to save per frame and file extension types. The particle bodies' output frequency is set to 10 Hz (0.1 seconds), meaning the simulation will output results every 0.1 seconds. This is decent for animations without taking too much space. Fill in the rest of the data in the figure into your GUI to ensure all your outputs match this example.
 
-.. figure:: figures/GUI_Sensors_LoadCells.PNG
-   :align: center
-   :width: 600
-   :figclass: align-center
+.. .. figure:: figures/GUI_Outputs.PNG
+..    :align: center
+..    :width: 600
+..    :figclass: align-center
    
-   HydroUQ Sensors Load-Cells GUI
-
-
-Open ``Outputs``. Here we set the non-physical output parameters for the simulation, e.g. attributes to save per frame and file extension types. The particle bodies' output frequency is set to 10 Hz (0.1 seconds), meaning the simulation will output results every 0.1 seconds. This is decent for animations without taking too much space. Fill in the rest of the data in the figure into your GUI to ensure all your outputs match this example.
-
-.. figure:: figures/GUI_Outputs.PNG
-   :align: center
-   :width: 600
-   :figclass: align-center
-   
-   HydroUQ Outputs GUI
+..    HydroUQ Outputs GUI
 
 
 
@@ -237,17 +239,10 @@ Open ``Outputs``. Here we set the non-physical output parameters for the simulat
 Simulation
 ----------
 
-We assume that 2 hours are reserved for your simulation. For those using the reduce fluid bulk modulus or reduced resolution, this may be more than neccesary.
-
-This simulation was ran on the TACC Lonestar6 system. It uesd three NVIDIA A100 GPUs on a single node in the ``gpu-a100`` queue. Real time to complete was 2 hours. Simulated time in the digital twin is 26 seconds.
-
-In order to retrieve results from the analysis, the analysis must complete and postprocess the model output files into an appropriate format before the end of the allotted submission time. 
-
-.. important::
-   Provide a large amount of time for the ``Max Run Time`` field in HydroUQ when submitting a job to ensure the model completes before the time allotted runs out! We recommend 2 hours in this example. 
+We assume most computers will be able to run this simulation within a few minutes if samples are kept below 100.
 
 .. warning::
-   Only ask for what you need in terms of sensor size, count, and output sampling rate. Otherwise you will end up with massive amounts of data which can slow simulations due to I/O constraints.
+   Only ask for what you need in terms of recorder count, time-step size, random variables, and UQ samples. Otherwise you will end up with massive amounts of data which can slow simulations due to I/O constraints.
 
 
 .. _hdro-0005-analysis:
@@ -255,110 +250,8 @@ In order to retrieve results from the analysis, the analysis must complete and p
 Analysis
 --------
 
-When the simulation job has completed, the results will be available on the remote system for retrieval or remote post-processing.
 
-Retrieving the ``results.zip`` folder from the ``Tools & Applications`` Page of Design Safe starts by navigating to the designsafe-ci.org website. Login and go to ``Use DesignSafe`` / ``Tools & Applications``
-
-.. figure:: figures/DSToolsAndAppsJobsStatus.PNG
-   :align: center
-   :width: 600
-   :figclass: align-center
-   
-   Locating the job files on DesignSafe
-
-
-Check if the job has finished in the right-side vertical drawer by clicking the refresh icon. If it has, click ``More info``.  
-
-.. figure:: figures/DSToolsAndAppsJobsStatusFinished.PNG
-   :align: center
-   :width: 600
-   :figclass: align-center
-   
-   Job status is finished on DesignSafe
-
-
-Once the job is finished, the output files should be available in the directory which the analysis results were sent to
-
-Find the files by clicking ``View``. 
-	
-.. figure:: figures/DSToolsAndAppsJobsStatusViewFiles.PNG
-   :align: center
-   :width: 600
-   :figclass: align-center
-   
-   Viewing the job files on DesignSafe
-
-Move the ``results.zip`` to somewhere in ``My Data/``. Use the Extractor tool available on DesignSafe.  Unzip the results.zip folder. 
-
-.. figure:: figures/extractonDS.PNG
-   :align: center
-   :width: 600
-   :figclass: align-center
-    
-   Extracting the ``results.zip`` folder on DesignSafe
-
-
-OR Download the ``results.zip`` folder to your PC and unzip to look at the model results. 
-
-.. figure:: figures/downloadResults.PNG
-   :align: center
-   :width: 600
-   :figclass: align-center
-
-   Download button on DesignSafe shown in red
-
-
-Download the results to look at the geometry files of the analysis.
-
-Extract the ``results.zip`` folder either on DesignSafe or on your local machine. You will likely want to have a free Side FX Houdini Apprentice installation to view ``BGEO`` files.
-
-.. figure:: figures/resultsZip.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-   
-   File-system view of results zip folder on DesignSafe.
-
-
-Locate the zip folder and extract it somewhere convenient. The local or remote work directory on your computer is a good option, but note that these files may be erased if another simulation is set-up in HydroUQ, so keep a backup somewhere outside the working directories.
-	
-HydroUQ's sensor / probe / instrument output is available in ``{your_path_to_HydroUQ_WorkDir}/HydroUQ/RemoteWorkDir/results/`` as ``CSV`` files.
-
-Particle geometry files often have a ``BGEO`` extension, open Side FX Houdini Apprentice (free to use) to look at MPM results in high-detail.
-
-Once complete, the simulation data at the three wave gauges (WG1, WG2, and WG3, left-to-right) is as showm below when plotted against experimental trials of Mascarenas 2022 [Mascarenas2022]_ for the "unbroken" solitary wave case.
-
-.. figure:: figures/OSU_LWF_Wave_Gauges_Hydro_2D_Plots3_2023.10.31.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-   
-   OSU LWF simulated free-surface elevation wave gauges vs. experimental data from Mascarenas 2022 [Mascarenas2022]_.
-
-
-The simulation data at the load-cell is as shown below when plotted against experimental trials of Mascarenas 2022 [Mascarenas2022]_ for the "unbroken" solitary wave case. The experimental streamwise load is the combination of "LC5" and "LC8" in Mascarenas 2022 [Mascarenas2022]_, as both measured streamwise load on the box to reduce errors from position / slight box apparatus out-of-plane rotation.
-
-.. figure:: figures/OSU_LWF_Load_Cells_Hydro_2023.10.31.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-   
-   OSU LWF simulated streamwise load-cells vs. experimental data from Mascarenas 2022 [Mascarenas2022]_.
-
-
-Though only one case was considered here, if many experimental debris-field cases are ran (10+) we can use HydroUQ to perform a sensitivity analysis on the debris-field parameters. This isn't pursued here-in. 
-
-However, the following box-and-whisker charts demonstrates the strengh of the numerical replication, as most points fall within experimental interquartile ranges and never outside of the experimental envelope for impact loads.
-
-.. figure:: figures/OSU_U_FirstPeak_BoxAndWhiskers_KrishExpOnly_31072023.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-   
-   OSU LWF simulated first peak debris impact loads vs. experimental data from Mascarenas 2022 [Mascarenas2022]_.
-
-
-This complete our HydroUQ validation example for multiple debris impacts on a raised structure in the OSU LWF, Bonus 2023 [Bonus2023Dissertation]_.
+This complete our HydroUQ validation example for stocahstic wave-loading on a simple frame structure.
 
 
 .. _hdro-0005-references:
