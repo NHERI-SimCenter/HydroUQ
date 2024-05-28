@@ -53,6 +53,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QFileDialog>
 #include <QPushButton>
 #include <SectionTitle.h>
+#include <QScrollArea>
 
 #include <ExistingSimCenterEvents.h>
 #include "Utils/ProgramOutputDialog.h"
@@ -114,6 +115,8 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     theSelectionLayout->addItem(spacer);
     theSelectionLayout->addWidget(eventSelection, 2);
     theSelectionLayout->addStretch(3);
+
+    
     layout->addLayout(theSelectionLayout);
 
 
@@ -139,9 +142,22 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     // --- 
 
 
-    // Setup the Layout
-    layout->addWidget(theStackedWidget);
+    //  Setup the Layout
+    //  layout->addWidget(theStackedWidget);
+
+    //
+    // put inside a scroll area
+    //
+    
+    QScrollArea *sa = new QScrollArea;
+    sa->setWidgetResizable(true);
+    sa->setLineWidth(0);
+    sa->setFrameShape(QFrame::NoFrame);
+    sa->setWidget(theStackedWidget);
+    layout->addWidget(sa);    
+
     this->setLayout(layout);
+    
     // --
     // Set the default event to select at boot-up. For now, it is MPM
     theStackedWidget->setCurrentIndex(3);
