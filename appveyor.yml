@@ -94,7 +94,6 @@ for:
 
   # Visual Studio 2019
   -
-  
     matrix:
       only:
         - image: Visual Studio 2019
@@ -118,8 +117,8 @@ for:
 
     install:
        - cmd: git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
-       - git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
-       - git clone https://github.com/NHERI-SimCenter/HydroUQ.git
+       - cmd: git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
+       - cmd: git clone https://github.com/NHERI-SimCenter/HydroUQ.git
        - cmd: dir
 
     build_script:
@@ -150,4 +149,4 @@ for:
       - cmd: cd ..      
 
     test_script:
-      -cmd: python --version
+      - cmd: python --version

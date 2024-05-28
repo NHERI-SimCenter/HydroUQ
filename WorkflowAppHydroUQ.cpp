@@ -39,6 +39,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "WorkflowAppHydroUQ.h"
 #include <MainWindowWorkflowApp.h>
 
+#include <QtGlobal>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QJsonArray>
@@ -690,17 +691,15 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
     }
 
 
-    if (theUQ_Selection->inputFromJSON(jsonObject) == false)
+    if (theUQ_Selection->inputFromJSON(jsonObject) == false) {
        this->errorMessage("Hydro_UQ: failed to read UQ Method data");
-
-    if (theAnalysisSelection->inputFromJSON(jsonObject) == false) // Have to check if this is correct
-
-    // Use theSIM twice?
-    if (theSIM->inputFromJSON(jsonObject) == false)
-        this->errorMessage("Hydro_UQ: failed to read FEM Method data");
-
-    if (theSIM->inputFromJSON(jsonObject) == false)
-        this->errorMessage("Hydro_UQ: failed to read SIM Method data");
+    } 
+    if (theSIM->inputFromJSON(jsonObject) == false) {
+        this->errorMessage("Hydro_UQ: failed to read SIM Modeling Method data");
+    }
+    if (theAnalysisSelection->inputFromJSON(jsonObject) == false) {
+        this->errorMessage("Hydro_UQ: failed to read FEM Analysis Method data");
+    }
 
     this->statusMessage("WorkflowAppHydroUQ::inputFromJSON - Done Loading File");
     return true;  
@@ -731,12 +730,16 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
 
 void
 WorkflowAppHydroUQ::onRunButtonClicked() {
-    // if (canRunLocally()) 
-    emit errorMessage("HydroUQ cannot be run locally yet. Please run remotely on DesignSafe.");
-    theRunWidget->hide();
-    theRunWidget->setMinimumWidth(this->width()*0.5);
-    theRunWidget->showLocalApplication();
-    GoogleAnalytics::ReportLocalRun();
+    emit errorMessage("");
+    if (!canRunLocally())
+        emit errorMessage("HydroUQ cannot be run locally yet. Please run remotely on DesignSafe.");
+    else
+    {
+        theRunWidget->hide();
+        theRunWidget->setMinimumWidth(this->width()*0.5);
+        theRunWidget->showLocalApplication();
+        GoogleAnalytics::ReportLocalRun();
+    }
 }
 
 void

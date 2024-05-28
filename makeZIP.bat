@@ -1,9 +1,9 @@
 
-REM ## make the exe .. it assumes EE-UUQ_Windows_Download exists with vcredist and openssl there
+REM ## make the exe .. it assumes Hydro-UQ_Windows_Download exists with vcredist and openssl there
 
 cd build
 conan install .. --build missing
-qmake ..\HydroUQ.pro
+qmake ..\Hydro-UQ.pro
 nmake
 
 REM ## copy application into folder and winddeployqt it
@@ -60,7 +60,6 @@ rmdir /s /q .\applications\createEVENT\physicsBasedMotion
 rmdir /s /q .\applications\createEVENT\siteResponse
 rmdir /s /q .\applications\createEVENT\stochasticWind
 rmdir /s /q .\applications\createEVENT\stochasticGroundMotion
-rmdir /s /q .\applications\createEVENT\windTunnelExperiment
 rmdir /s /q .\applications\createEVENT\windTunnelExperiment
 
 

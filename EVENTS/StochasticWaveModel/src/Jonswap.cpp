@@ -34,7 +34,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: mhgardner
+// Written: JustinBonus
+// Adapted from work of: mhgardner
 #include <QComboBox>
 #include <QDebug>
 #include <QDoubleSpinBox>
@@ -47,8 +48,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QString>
 #include <QVBoxLayout>
 
+
 #include <RandomVariablesContainer.h>
 #include <SimCenterWidget.h>
+
+#include <SC_IntLineEdit.h>
 
 #include <StochasticWaveModel/include/Jonswap.h>
 
@@ -57,12 +61,68 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
 : SimCenterAppWidget(parent)
 {
 
-  // Initialize member variables
-  dragCoefficient = new LineEditRV(randomVariables);
-  dragCoefficient->setText("1.5");
 
-  gustWindSpeed = new LineEditRV(randomVariables);
-  gustWindSpeed->setText("50.0");
+//     // Initialize member variables
+  dragCoefficient = new LineEditRV(randomVariables);
+  dragCoefficient->setText("2.1");
+
+  dragArea = new LineEditRV(randomVariables);
+  dragArea->setText("1.0");
+
+  peakPeriod = new LineEditRV(randomVariables);
+  peakPeriod->setText("12.7");
+
+  significantWaveHeight = new LineEditRV(randomVariables);
+  significantWaveHeight->setText("8.1");
+
+  waterDepth = new LineEditRV(randomVariables);
+  waterDepth->setText("30.0");
+
+  recorderOriginX = new LineEditRV(randomVariables);
+  recorderOriginX->setText("0.0");
+
+  recorderCountZ = new SC_IntLineEdit("recorderCountZ", 2);
+
+  timeStep = new LineEditRV(randomVariables);
+  timeStep->setText("0.1");
+
+  timeDuration = new LineEditRV(randomVariables);
+  timeDuration->setText("3600.0");
+
+//   exposureCategory = new QComboBox();
+//   exposureCategory->addItem("JONSWAP");
+
+//   seed = new QSpinBox();
+//   seed->setMinimum(1);
+//   seed->setMaximum(2147483647);
+//   seed->setValue(500);  
+//   seed->setEnabled(false);
+//   useSeed = new QRadioButton("Provide seed value");
+//   useSeed->setChecked(false);
+
+
+//   exposureCategory = new QComboBox();
+//   exposureCategory->addItem("JONSWAP");
+// //   exposureCategory->addItem("Pierson-Moskowitz");
+  QFormLayout *parameters = new QFormLayout();
+
+  parameters->addRow(new QLabel(tr("Water Depth [ft]")), waterDepth);
+  parameters->addRow(new QLabel(tr("Significant Wave Height [ft]")), significantWaveHeight);
+  parameters->addRow(new QLabel(tr("Peak Period [s]")), peakPeriod);
+  parameters->addRow(new QLabel(tr("Recorder Horizontal Position [ft]")), recorderOriginX);
+  parameters->addRow(new QLabel(tr("Number of Recorders in Z-Direction")), recorderCountZ);
+  // parameters->addRow(new QLabel(tr("Wave Spectrum")), exposureCategory);
+  parameters->addRow(new QLabel(tr("Time Step [s]")), timeStep);
+  parameters->addRow(new QLabel(tr("Time Duration [s]")), timeDuration);
+  parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
+  parameters->addRow(new QLabel(tr("Drag Area [ft^2]")), dragArea);
+
+  // Initialize member variables
+  // dragCoefficient = new LineEditRV(randomVariables);
+  // dragCoefficient->setText("1.5");
+
+  // gustWindSpeed = new LineEditRV(randomVariables);
+  // gustWindSpeed->setText("50.0");
 
   exposureCategory = new QComboBox();
   exposureCategory->addItem("B");
@@ -77,17 +137,17 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   useSeed = new QRadioButton("Provide seed value");
   useSeed->setChecked(false);
 
-  QFormLayout *parameters = new QFormLayout();
+
 
   exposureCategory = new QComboBox();
   exposureCategory->addItem("B");
   exposureCategory->addItem("C");
   exposureCategory->addItem("D");
 
-  parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
+  // parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
   parameters->addRow(new QLabel(tr("ASCE 7 Exposure Condition")), exposureCategory);
-  parameters->addRow(new QLabel(tr("Gust Wind Speed (mph)")), gustWindSpeed);
-  gustWindSpeed->setToolTip("3 sec gust speed at height of 10m (33ft)");
+  // parameters->addRow(new QLabel(tr("Gust Wind Speed (mph)")), gustWindSpeed);
+  // gustWindSpeed->setToolTip("3 sec gust speed at height of 10m (33ft)");
   // Add description label
   modelDescription =
       new QLabel(tr("This model provides wave spectra using a "
@@ -120,11 +180,12 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
 bool Jonswap::outputAppDataToJSON(QJsonObject& jsonObject) {
   bool result = true;
 
-  jsonObject["Application"] = "StochasticWaveJonswap";
-  // jsonObject["EventClassification"] = "Hydro";
+  jsonObject["Application"] = "StochasticWave";
+  jsonObject["EventClassification"] = "Hydro";
 
   // jsonObject["Application"] = "StochasticWindWittigSinha";
-  jsonObject["EventClassification"] = "Wind";
+  // jsonObject["EventClassification"] = "Wind";
+
   // squirel in the application data selection text
   QJsonObject appData;
   jsonObject["ApplicationData"] = appData;
@@ -140,14 +201,24 @@ bool Jonswap::inputAppDataFromJSON(QJsonObject& jsonObject) {
 bool Jonswap::outputToJSON(QJsonObject& jsonObject) {
   bool result = true;
 
-  jsonObject["type"] = "StochasticWaveJonswap";
+  jsonObject["type"] = "StochasticWave";
+  jsonObject["EventClassification"] = "Hydro";
+
   // jsonObject["type"] = "StochasticWindWittigSinha";
+  // jsonObject["EventClassification"] = "Wind";
 
-  // jsonObject["EventClassification"] = "Hydro";
-  jsonObject["EventClassification"] = "Wind";
-
+  waterDepth->outputToJSON(jsonObject, QString("waterDepth"));
+  significantWaveHeight->outputToJSON(jsonObject, QString("significantWaveHeight"));
+  peakPeriod->outputToJSON(jsonObject, QString("peakPeriod"));
+  recorderOriginX->outputToJSON(jsonObject, QString("recorderOriginX"));
+  recorderCountZ->outputToJSON(jsonObject);
+  timeStep->outputToJSON(jsonObject, QString("timeStep"));
+  timeDuration->outputToJSON(jsonObject, QString("timeDuration"));
   dragCoefficient->outputToJSON(jsonObject, QString("dragCoefficient"));
-  gustWindSpeed->outputToJSON(jsonObject, QString("gustSpeed"));
+  dragArea->outputToJSON(jsonObject, QString("dragArea"));
+
+
+  // gustWindSpeed->outputToJSON(jsonObject, QString("gustSpeed"));
   jsonObject.insert("exposureCategory",exposureCategory->currentText());
 
   if (useSeed->isChecked()) {
@@ -162,15 +233,25 @@ bool Jonswap::outputToJSON(QJsonObject& jsonObject) {
 bool Jonswap::inputFromJSON(QJsonObject& jsonObject) {
   bool result = true;
 
+  waterDepth->inputFromJSON(jsonObject, QString("waterDepth"));
+  significantWaveHeight->inputFromJSON(jsonObject, QString("significantWaveHeight"));
+  peakPeriod->inputFromJSON(jsonObject, QString("peakPeriod"));
+  recorderOriginX->inputFromJSON(jsonObject, QString("recorderOriginX"));
+  recorderCountZ->inputFromJSON(jsonObject);
+  timeStep->inputFromJSON(jsonObject, QString("timeStep"));
+  timeDuration->inputFromJSON(jsonObject, QString("timeDuration"));
   dragCoefficient->inputFromJSON(jsonObject, QString("dragCoefficient"));
-  gustWindSpeed->inputFromJSON(jsonObject, QString("gustSpeed"));
+  dragArea->inputFromJSON(jsonObject, QString("dragArea"));
+
+
+  // gustWindSpeed->inputFromJSON(jsonObject, QString("gustSpeed"));
 
   if (jsonObject.contains("exposureCategory")) {
 
       QJsonValue theValue = jsonObject["exposureCategory"];
       if (theValue.isString()) {
-	QString exposure  = theValue.toString();
-	exposureCategory->setCurrentText(exposure);
+        QString exposure  = theValue.toString();
+        exposureCategory->setCurrentText(exposure);
       }
   }
 
@@ -182,13 +263,13 @@ bool Jonswap::inputFromJSON(QJsonObject& jsonObject) {
   }
 
   return result;
-}
+  }
 
-void Jonswap::provideSeed(const bool& checked) {
+  void Jonswap::provideSeed(const bool& checked) {
   if (checked) {
     seed->setEnabled(true);
   } else {
     seed->setEnabled(false);
     seed->setValue(500);
   }
-}
+  }

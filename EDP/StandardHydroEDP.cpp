@@ -36,10 +36,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // Written: fmckenna
 
-#include "StandardHydroEDP.h"
+#include "EDP/StandardHydroEDP.h"
 // #include <QJsonObject>
 // #include <QLabel>
 
+#include <RandomVariablesContainer.h>
+// #include <InputWidgetParameters.h>
 
 #include <cstring>
 #include <vector>
@@ -64,7 +66,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 using namespace std;
 #include <QGridLayout>
 
-#include <RandomVariablesContainer.h>
 StandardHydroEDP::StandardHydroEDP(QWidget *parent)
     : SimCenterAppWidget(parent)
 {
@@ -87,6 +88,9 @@ StandardHydroEDP::StandardHydroEDP(QWidget *parent)
     // add stuff to enter Additional Input
     QLabel *labelAI = new QLabel("Additional Input");
     additionalInputLE = new QLineEdit;
+    // Set the background text to (Optional)
+    additionalInputLE->setPlaceholderText("(Optional)");
+
     QPushButton *chooseAdditionalInputButton = new QPushButton();
     chooseAdditionalInputButton->setText(tr("Choose"));
     connect(chooseAdditionalInputButton,SIGNAL(clicked()),this,SLOT(chooseAdditionalInput()));
@@ -97,6 +101,11 @@ StandardHydroEDP::StandardHydroEDP(QWidget *parent)
     // add stuff to enter processing script
     QLabel *labelPS = new QLabel("Processing Script");
     processingScriptLE = new QLineEdit;
+    processingScriptLE->setText("StandardHydroEDP_PostProcess.py");
+    processingScriptLE->setReadOnly(true);
+    processingScriptLE->setToolTip("This script is used to process the output of the event simulation, EVT, to extract the Engineering Demand Parameters (EDPs) into a results.out file.");
+
+
     QPushButton *chooseProcessingScriptButton = new QPushButton();
     chooseProcessingScriptButton->setText(tr("Choose"));
     connect(chooseProcessingScriptButton,SIGNAL(clicked()),this,SLOT(chooseProcessingScript()));
@@ -141,14 +150,14 @@ StandardHydroEDP::StandardHydroEDP(QWidget *parent)
     titleLayout->addWidget(addEDP);
     titleLayout->addItem(spacer2);
 
-    /*
+    
     QPushButton *removeEDP = new QPushButton();
     removeEDP->setMinimumWidth(75);
     removeEDP->setMaximumWidth(75);
     removeEDP->setText(tr("Remove"));
     connect(removeEDP,SIGNAL(clicked()),this,SLOT(removeEDP()));
-      titleLayout->addWidget(removeEDP);
-*/
+    titleLayout->addWidget(removeEDP);
+
 
     titleLayout->addStretch();
 
@@ -226,17 +235,17 @@ StandardHydroEDP::clear(void)
     // from UserDefinedEDP.cpp, not needed for now
     //
 
-    // additionalInputLE->setText("");
-    // processingScriptLE->setText("");
+    additionalInputLE->setText("");
+    processingScriptLE->setText("");
 
-    // int numEDPs = theEDPs.size();
-    // for (int i = numEDPs-1; i >= 0; i--) {
-    //     EDP *theEDP = theEDPs.at(i);
-    //     theEDP->close();
-    //     edpLayout->removeWidget(theEDP);
-    //     theEDPs.remove(i);
-    //     delete theEDP;
-    // }
+    int numEDPs = theEDPs.size();
+    for (int i = numEDPs-1; i >= 0; i--) {
+        EDP *theEDP = theEDPs.at(i);
+        theEDP->close();
+        edpLayout->removeWidget(theEDP);
+        theEDPs.remove(i);
+        delete theEDP;
+    }
 }
 
 
@@ -258,11 +267,11 @@ StandardHydroEDP::outputToJSON(QJsonObject &jsonObject)
         QFileInfo fileInfoPS(fileName);
         if (fileInfoPS.exists()) {
 
-            jsonObject["fileNamePS"]= fileInfoPS.fileName();
-            jsonObject["filePathPS"]=fileInfoPS.path();
+            jsonObject["fileNamePS"] = fileInfoPS.fileName();
+            jsonObject["filePathPS"] = fileInfoPS.path();
 
         } else {
-            this->errorMessage("StandardHydroEDP :: Proceesing script does not exist");
+            this->errorMessage("StandardHydroEDP :: Processing script does not exist");
         }
     } else {
        this->errorMessage("StandardHydroEDP :: no processing script");
@@ -420,6 +429,10 @@ StandardHydroEDP::copyFiles(QString &dirName) {
              return false;
          }
      }
+    else {
+        this->errorMessage(QString("ERROR: copyFiles: no processing script"));
+        return false;
+    }
 
      filename = additionalInputLE->text();
      if (!filename.isEmpty()) {
@@ -429,7 +442,8 @@ StandardHydroEDP::copyFiles(QString &dirName) {
              return false;
          }
      }
-     return 0;
+
+     return true;
 }
 
 

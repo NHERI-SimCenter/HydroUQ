@@ -1,0 +1,197 @@
+{
+    "Applications": {
+        "EDP": {
+            "Application": "StandardEDP",
+            "ApplicationData": {
+            }
+        },
+        "Events": [
+            {
+                "Application": "StochasticWave",
+                "ApplicationData": {
+                },
+                "EventClassification": "Hydro"
+            }
+        ],
+        "Modeling": {
+            "Application": "OpenSeesInput",
+            "ApplicationData": {
+                "fileName": "Frame.tcl",
+                "filePath": "/home/justinbonus/SimCenter/HydroUQ/Examples/testing/src"
+            }
+        },
+        "Simulation": {
+            "Application": "OpenSees-Simulation",
+            "ApplicationData": {
+            }
+        },
+        "UQ": {
+            "Application": "Dakota-UQ",
+            "ApplicationData": {
+            }
+        }
+    },
+    "DefaultValues": {
+        "driverFile": "driver",
+        "edpFiles": [
+            "EDP.json"
+        ],
+        "filenameAIM": "AIM.json",
+        "filenameDL": "BIM.json",
+        "filenameEDP": "EDP.json",
+        "filenameEVENT": "EVENT.json",
+        "filenameSAM": "SAM.json",
+        "filenameSIM": "SIM.json",
+        "rvFiles": [
+            "AIM.json",
+            "SAM.json",
+            "EVENT.json",
+            "SIM.json"
+        ],
+        "workflowInput": "scInput.json",
+        "workflowOutput": "EDP.json"
+    },
+    "EDP": {
+        "type": "StandardEDP"
+    },
+    "Events": [
+        {
+            "EventClassification": "Hydro",
+            "dragArea": 1,
+            "dragCoefficient": 2.1,
+            "exposureCategory": "B",
+            "peakPeriod": 12.7,
+            "recorderCountZ": 2,
+            "recorderOriginX": 0,
+            "seed": "None",
+            "significantWaveHeight": 8.1,
+            "timeDuration": 3600,
+            "timeStep": 0.1,
+            "type": "StochasticWave",
+            "waterDepth": 30
+        }
+    ],
+    "GeneralInformation": {
+        "NumberOfStories": 4,
+        "PlanArea": 129600,
+        "StructureType": "RM1",
+        "YearBuilt": 1990,
+        "depth": 360,
+        "height": 576,
+        "location": {
+            "latitude": 37.8715,
+            "longitude": -122.273
+        },
+        "name": "",
+        "planArea": 129600,
+        "stories": 4,
+        "units": {
+            "force": "kips",
+            "length": "in",
+            "temperature": "C",
+            "time": "sec"
+        },
+        "width": 360
+    },
+    "Modeling": {
+        "centroidNodes": [
+            1,
+            3
+        ],
+        "dampingRatio": 0.02,
+        "ndf": 3,
+        "ndm": 2,
+        "randomVar": [
+            {
+                "name": "fc",
+                "value": "RV.fc"
+            },
+            {
+                "name": "fy",
+                "value": "RV.fy"
+            },
+            {
+                "name": "E",
+                "value": "RV.E"
+            }
+        ],
+        "responseNodes": [
+            1,
+            3
+        ],
+        "type": "OpenSeesInput"
+    },
+    "Simulation": {
+        "Application": "OpenSees-Simulation",
+        "algorithm": "Newton",
+        "analysis": "Transient -numSubLevels 2 -numSubSteps 10",
+        "convergenceTest": "NormUnbalance 1.0e-2 10",
+        "dampingModel": "Rayleigh Damping",
+        "firstMode": 1,
+        "integration": "Newmark 0.5 0.25",
+        "modalRayleighTangentRatio": 0,
+        "numModesModal": -1,
+        "rayleighTangent": "Initial",
+        "secondMode": -1,
+        "solver": "Umfpack"
+    },
+    "UQ": {
+        "parallelExecution": true,
+        "samplingMethodData": {
+            "method": "LHS",
+            "samples": 5,
+            "seed": 5
+        },
+        "saveWorkDir": true,
+        "uqType": "Forward Propagation"
+    },
+    "WorkflowType": "Building Simulation",
+    "correlationMatrix": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+    ],
+    "localAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "randomVariables": [
+        {
+            "distribution": "Normal",
+            "inputType": "Parameters",
+            "mean": 6,
+            "name": "fc",
+            "refCount": 1,
+            "stdDev": 0.6,
+            "value": "RV.fc",
+            "variableClass": "Uncertain"
+        },
+        {
+            "distribution": "Normal",
+            "inputType": "Parameters",
+            "mean": 60,
+            "name": "fy",
+            "refCount": 1,
+            "stdDev": 6,
+            "value": "RV.fy",
+            "variableClass": "Uncertain"
+        },
+        {
+            "distribution": "Normal",
+            "inputType": "Parameters",
+            "mean": 30000,
+            "name": "E",
+            "refCount": 1,
+            "stdDev": 3000,
+            "value": "RV.E",
+            "variableClass": "Uncertain"
+        }
+    ],
+    "remoteAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "runDir": "/home/justinbonus/Documents/HydroUQ/LocalWorkDir/tmp.SimCenter",
+    "runType": "runningLocal",
+    "workingDir": "/home/justinbonus/Documents/HydroUQ/LocalWorkDir"
+}
