@@ -47,7 +47,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QComboBox>
 
 class EDP;
-class InputWidgetParameters;
+// class InputWidgetParameters;
 
 class StandardTsunamiEDP : public SimCenterAppWidget
 {

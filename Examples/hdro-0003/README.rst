@@ -5,7 +5,7 @@ Cylinder Half-Submerged in Flow  -  UW WASIRF Twin  -  FOAMySees (OpenFOAM + Ope
 =======================================================================================
 
 +---------------+------------------------------------------------------------------------------------------------------+
-| Problem files | :ref:`Github <https://github.com/NHERI-SimCenter/HydroUQ/tree/master/Examples/hdro-0003/>`_          |
+| Problem files | :github:`Github <Examples/hdro-0003/>`                                                               |
 +---------------+------------------------------------------------------------------------------------------------------+
 
 
@@ -123,7 +123,7 @@ In order to retrieve results from the analysis, the job must complete and postpr
 
 .. _hdro-0003-results:
 
-Get Results
+Results
 -----------
 
 First, we must retrieve the ``results.zip`` folder from the DesignSafe file storage. This zip file will contain all our    from the Tools and Applications Page of Design Safe
