@@ -17,7 +17,7 @@
             "Application": "OpenSeesInput",
             "ApplicationData": {
                 "fileName": "Frame.tcl",
-                "filePath": "/home/justinbonus/SimCenter/HydroUQ/Examples/testing/src"
+                "filePath": "{Current_Dir}/."
             }
         },
         "Simulation": {
@@ -72,7 +72,7 @@
         }
     ],
     "GeneralInformation": {
-        "NumberOfStories": 4,
+        "NumberOfStories": 1,
         "PlanArea": 129600,
         "StructureType": "RM1",
         "YearBuilt": 1990,
@@ -84,7 +84,7 @@
         },
         "name": "",
         "planArea": 129600,
-        "stories": 4,
+        "stories": 1,
         "units": {
             "force": "kips",
             "length": "in",
@@ -156,7 +156,7 @@
         0,
         1
     ],
-    "localAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "localAppDir": "/Users/fmckenna/NHERI/SimCenterBackendApplications",
     "randomVariables": [
         {
             "distribution": "Normal",
@@ -189,7 +189,7 @@
             "variableClass": "Uncertain"
         }
     ],
-    "remoteAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "remoteAppDir": "/Users/fmckenna/NHERI/SimCenterBackendApplications",
     "runType": "runningLocal",
-    "workingDir": "/home/justinbonus/Documents/HydroUQ/LocalWorkDir"
+    "workingDir": "/Users/fmckenna/Documents/HydroUQ/LocalWorkDir"
 }
