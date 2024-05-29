@@ -39,6 +39,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QComboBox>
 #include <QGroupBox>
 #include <QGridLayout>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QTabWidget>
 #include <QStackedWidget>
 #include <QDebug>
@@ -47,7 +49,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QString> 
 #include <QJsonObject>
 #include <QJsonArray>
-
+#include <QLineEdit>
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
 #include <SC_IntLineEdit.h>
@@ -56,12 +58,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_CheckBox.h>
 
 
+// For 2d graphing like in RV distributions 
+#include <QLineEdit>
+#include <QDoubleValidator>
+#include <SimCenterGraphPlot.h>
+#include <math.h>
+#include <QPushButton>
+#include <QFileDialog>
+
 BoundaryMPM::BoundaryMPM(QWidget *parent)
   :SimCenterWidget(parent)
 {
 
   QGridLayout *layout = new QGridLayout();
   this->setLayout(layout);
+
+  QPushButton *showPlotButton = NULL;
+  QString inpType = QString("Preset Paddle - OSU LWF"); // Default wave generation method
+  this->inpty=inpType;
 
   stackedWidget = new QStackedWidget();
   theCustom = new QWidget();
@@ -310,11 +324,17 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   paddleDisplacementFile->setEnabled(false);
   paddleDisplacementFile->setToolTip("This file is not editable, it is a default file for the OSU LWF");
   paddleDisplacementFile->show();
-  paddleLayout->setRowStretch(numRow,1);  
   
+  int paddleNumRow = numRow;
+  numRow++;
+  paddleLayout->setRowStretch(numRow,1);  
+
   paddleWidget = new QWidget();
   paddleWidget->setLayout(paddleLayout);
- 
+  QHBoxLayout * plotLayout = new QHBoxLayout(paddleWidget);
+  QWidget *plotWidget = new QWidget();
+  plotWidget->setLayout(plotLayout);
+
   // Periodic Waves
   waveMag = new SC_DoubleLineEdit("waveMag",0.5);
   waveCelerity = new SC_DoubleLineEdit("waveCelerity",4.0);
@@ -340,9 +360,79 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   waveGenStack->addWidget(paddleWidget);
   waveGenStack->addWidget(periodicWidget); 
 
+  thePlot = new SimCenterGraphPlot(QString("Time [s]"),QString("Displacement [m]"), 500, 500);
+  if (inpty==QString("Periodic Waves")) {
+      alpha = this->createTextEntry(tr("Height"), periodicLayout, 0);
+      beta  = this->createTextEntry(tr("Celerity"), periodicLayout, 1);
+      a = this->createTextEntry(tr("Period"), periodicLayout, 2);
+      b  = this->createTextEntry(tr("Duration"), periodicLayout, 3);
+      showPlotButton = new QPushButton("Show Plot");
+      periodicLayout->addWidget(showPlotButton, 1,4);
+
+      periodicLayout->setColumnStretch(5,1);
+
+  } else  {
+    dataDir = this->createTextEntry(tr("Paddle Motion (*.csv)"), plotLayout, 0);
+    dataDir->setMinimumWidth(200);
+    dataDir->setMaximumWidth(700);
+
+    QPushButton *chooseFileButton = new QPushButton("Choose");
+    plotLayout->addWidget(chooseFileButton, 1);
+    a = this->createTextEntry(tr("Min(t)"), plotLayout,  2);
+    b = this->createTextEntry(tr("Max(t)"), plotLayout, 3);
+    showPlotButton = new QPushButton("Show Plot");
+    plotLayout->addWidget(showPlotButton, 4);
+
+    plotLayout->setStretch(5,1);
+
+    paddleLayout->addWidget(plotWidget, paddleNumRow++, 0, 1, 5);
+
+    paddleLayout->addWidget(thePlot, paddleNumRow++, 0, 1, 5);
+    thePlot->hide();
+    // mainLayout->setColumnStretch(4,1);
+
+    connect(chooseFileButton, &QPushButton::clicked, this, [=](){
+          QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"),"", "CSV File (*.csv)");
+          if (!fileName.isEmpty()) {
+              dataDir->setText(fileName);
+          }
+      });
+  }
+
+
+  // Place the plot in the layout
+
+  if (inpty==QString("Periodic Waves"))
+  {
+      connect(alpha,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+      connect(beta,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+      connect(a,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+      connect(b,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+      connect(showPlotButton, &QPushButton::clicked, this, [=](){ thePlot->hide(); thePlot->show();});
+  } else  {
+      connect(dataDir,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+      connect(a,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+      connect(b,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+      connect(showPlotButton, &QPushButton::clicked, this, [=](){ thePlot->hide(); thePlot->show();});
+      // connect (paddleDisplacementFile, &SC_FileEdit::fileChanged, this, [=](){
+      //     QString fileName = paddleDisplacementFile->getFilename();
+      //     dataDir->setText(fileName);
+      // });
+      // Show the plot when the
+      connect(dataDir, &QLineEdit::editingFinished, this, [=](){
+          thePlot->hide();
+          thePlot->show();
+      });
+  }
 
   connect(generationMethod, QOverload<int>::of(&QComboBox::activated),
     waveGenStack, &QStackedWidget::setCurrentIndex);
+
+  // update value of inpty when generationMethod is changed
+  connect(generationMethod, QOverload<int>::of(&QComboBox::activated),
+    this, [=](int index) {
+      inpty = generationMethod->currentText();
+    });
 
   numRow = 0;
   theWaveGenLayout->addWidget(new QLabel("Wave Generation Method"),numRow,0);
@@ -731,7 +821,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
 BoundaryMPM::~BoundaryMPM()
 {
-
+  delete thePlot;
 }
 
 
@@ -1033,6 +1123,61 @@ SC_DoubleLineEdit* BoundaryMPM::getSpacingZWidget() {
 }
 
 
+QLineEdit *
+BoundaryMPM::createTextEntry(QString text,
+                                            QHBoxLayout *theLayout,
+                                            int minL,
+                                            int maxL)
+{
+    QVBoxLayout *entryLayout = new QVBoxLayout();
+    //QHBoxLayout *entryLayout = new QHBoxLayout();
+    QLabel *entryLabel = new QLabel(text);
+
+    QLineEdit *res = new QLineEdit();
+    res->setMinimumWidth(minL);
+    res->setMaximumWidth(maxL);
+    res->setValidator(new QDoubleValidator);
+
+    entryLayout->addWidget(entryLabel);
+    entryLayout->addWidget(res);
+
+    entryLayout->setSpacing(0);
+    //    entryLayout->setMargin(0);
+
+    theLayout->addLayout(entryLayout);
+
+    return res;
+}
+
+QLineEdit *
+BoundaryMPM::createTextEntry(QString text,
+                                            QGridLayout *theLayout,
+                                            int col,
+                                            int minL,
+                                            int maxL)
+{
+    //QVBoxLayout *entryLayout = new QVBoxLayout();
+    // //QHBoxLayout *entryLayout = new QHBoxLayout();
+    QLabel *entryLabel = new QLabel(text);
+
+    QLineEdit *res = new QLineEdit();
+    res->setMinimumWidth(minL);
+    res->setMaximumWidth(maxL);
+    res->setValidator(new QDoubleValidator);
+    //entryLayout->addWidget(entryLabel);
+    //entryLayout->addWidget(res);
+
+    //entryLayout->setSpacing(0);
+    //entryLayout->setMargin(0);
+
+    //theLayout->addLayout(entryLayout,0,col,2,1);
+
+    theLayout->addWidget(entryLabel,0,col);
+    theLayout->addWidget(res,1,col);
+
+    return res;
+}
+
 
 bool
 BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
@@ -1113,6 +1258,30 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
       boundariesObject["output_freq"] = 1200.0; // TODO: Either be user set or read-in from motion_file
     } 
 
+    if (inpty==QString("Periodic Waves")) {
+        // check for error condition, an entry had no value
+        if ((alpha->text().isEmpty())||(beta->text().isEmpty())||(a->text().isEmpty())||(b->text().isEmpty())) {
+            this->errorMessage("ERROR: Periodic Waves - data has not been set");
+            return false;
+        }
+        boundariesObject["wave_height"]=alpha->text().toDouble();
+        boundariesObject["wave_celerity"]=beta->text().toDouble();
+        boundariesObject["wave_period"]=a->text().toDouble();
+        boundariesObject["wave_duration"]=b->text().toDouble();
+        boundariesObject["object"] = QString("Periodic Waves");
+    } else if (inpty==QString("Preset Paddle - OSU LWF")) {
+        if (dataDir->text().isEmpty()) {
+            this->errorMessage("ERROR: Paddle Motion - data has not been set");
+            return false;
+        }
+
+        QJsonArray paddleTimeArray;
+        paddleTimeArray.append(a->text().toDouble());
+        paddleTimeArray.append(b->text().toDouble());
+        boundariesObject["time"] = paddleTimeArray;
+        boundariesObject["file"] = QString(dataDir->text());
+        boundariesObject["object"] = QString("OSU Paddle");
+    }
 
     boundariesArray.append(boundariesObject);
   }
@@ -1269,17 +1438,266 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
 {
   bathSTL->inputFromJSON(jsonObject);
   paddleDisplacementFile->inputFromJSON(jsonObject);
-  return true;
-}
 
+
+
+    //
+    // for all entries, make sure i exists and if it does get it, otherwise return error
+    //
+
+    if (jsonObject.contains("object")) {
+        inpty=jsonObject["object"].toString();
+    } else {
+        inpty = "Parameters";
+    }
+
+    if (inpty==QString("Periodic Waves")) {
+      if (jsonObject.contains("wave_height")) {
+          double theAlphaValue = jsonObject["wave_height"].toDouble();
+          alpha->setText(QString::number(theAlphaValue));
+      } else {
+          this->errorMessage("ERROR: Periodic Waves - no \"alpha\" entry");
+          return false;
+      }
+      if (jsonObject.contains("wave_celerity")) {
+          double theBetaValue = jsonObject["wave_celerity"].toDouble();
+          beta->setText(QString::number(theBetaValue));
+      } else {
+          this->errorMessage("ERROR: Periodic Waves  - no \"beta\" entry");
+          return false;
+      }
+      if (jsonObject.contains("wave_period")) {
+          double theAValue = jsonObject["wave_period"].toDouble();
+          a->setText(QString::number(theAValue));
+      } else {
+          this->errorMessage("ERROR: Periodic Waves  - no \"a\" entry");
+          return false;
+      }
+      if (jsonObject.contains("wave_duration")) {
+          double theBValue = jsonObject["wave_duration"].toDouble();
+          b->setText(QString::number(theBValue));
+      } else {
+          this->errorMessage("ERROR: Periodic Waves - no \"b\" entry");
+          return false;
+      }
+
+    } else if (inpty==QString("Preset Paddle - OSU LWF")) {
+      if (jsonObject.contains("time")) {
+          QJsonArray theTimeArray = jsonObject["time"].toArray();
+          a->setText(QString::number(theTimeArray[0].toDouble()));
+          b->setText(QString::number(theTimeArray[1].toDouble()));
+      } else {
+          this->errorMessage("ERROR: Paddle Motion - no \"time\" entry");
+          return false;
+      }
+      if (jsonObject.contains("file")) {
+          QString theDataDir = jsonObject["file"].toString();
+          dataDir->setText(theDataDir);
+      } else {
+          this->errorMessage("ERROR: Paddle Motion - no \"file\" entry");
+          return false;
+      }
+    } else if (inpty==QString("Preset Paddle - OSU DWB")) {
+      if (jsonObject.contains("time")) {
+          QJsonArray theTimeArray = jsonObject["time"].toArray();
+          a->setText(QString::number(theTimeArray[0].toDouble()));
+          b->setText(QString::number(theTimeArray[1].toDouble()));
+      } else {
+          this->errorMessage("ERROR: Paddle Motion - no \"time\" entry");
+          return false;
+      }
+      if (jsonObject.contains("file")) {
+          QString theDataDir = jsonObject["file"].toString();
+          dataDir->setText(theDataDir);
+      } else {
+          this->errorMessage("ERROR: Paddle Motion - no \"file\" entry");
+          return false;
+      }
+    }
+  
+    this->updateDistributionPlot();
+    return true;
+}
 
 bool
 BoundaryMPM::copyFiles(QString &destDir)
 {
-  bathSTL->copyFile(destDir);
-  if (paddleDisplacementFile->copyFile(destDir) != true)
-    return false;
-  return paddleDisplacementFile->copyFile(destDir);    
+    if (inpty==QString("Preset Paddle - OSU LWF") || inpty==QString("Preset Paddle - OSU DWB") || inpty==QString("Paddle")) {
+        return QFile::copy(dataDir->text(), destDir);
+    } else {
+        return true;
+    }
+  if (bathSTL) {
+    if (!bathSTL->copyFile(destDir))
+      qDebug() << "Error copying bathymetry file: " << bathSTL->getFilename();
+  }
+  if (paddleDisplacementFile) {
+    if (!paddleDisplacementFile->copyFile(destDir))
+      qDebug() << "Error copying paddle displacement file: " << paddleDisplacementFile->getFilename();
+  }
+
+
+  return true;    
+}
+
+QString
+BoundaryMPM::getAbbreviatedName(void) {
+  return QString("WM");
+}
+
+bool readCSVRow (QTextStream &in, QStringList *row) {
+
+    static const int delta[][5] = {
+        //  ,    "   \n    ?  eof
+        {   1,   2,  -1,   0,  -1  }, // 0: parsing (store char)
+        {   1,   2,  -1,   0,  -1  }, // 1: parsing (store column)
+        {   3,   4,   3,   3,  -2  }, // 2: quote entered (no-op)
+        {   3,   4,   3,   3,  -2  }, // 3: parsing inside quotes (store char)
+        {   1,   3,  -1,   0,  -1  }, // 4: quote exited (no-op)
+        // -1: end of row, store column, success
+        // -2: eof inside quotes
+    };
+
+    row->clear();
+
+    if (in.atEnd())
+        return false;
+
+    int state = 0, t;
+    char ch;
+    QString cell;
+
+    while (state >= 0) {
+
+        if (in.atEnd())
+            t = 4;
+        else {
+            in >> ch;
+            if (ch == ',') t = 0;
+            else if (ch == '\"') t = 1;
+            else if (ch == '\n') t = 2;
+            else t = 3;
+        }
+
+        state = delta[state][t];
+
+        if (state == 0 || state == 3) {
+            cell += ch;
+        } else if (state == -1 || state == 1) {
+            row->append(cell);
+            cell = "";
+        }
+
+    }
+
+    if (state == -2)
+        throw std::runtime_error("End-of-file found while inside quotes.");
+
+    return true;
+
+}
+
+void
+BoundaryMPM::updateDistributionPlot() {
+    double alp=0, bet=0, aa=0, bb=0, me=0, st=0;
+    int numSteps = 100;
+    if ((this->inpty)==QString("Periodic Waves")) {
+        alp=alpha->text().toDouble();
+        bet=beta->text().toDouble();
+        aa=a->text().toDouble();
+        bb=b->text().toDouble();
+        me = (aa*bet+bb*alp)/(alp+bet);
+        st = sqrt( alp*bet*(bb-aa)/pow(alp+bet,2)/(alp+bet+1)  );
+     } 
+     else if (((this->inpty)==QString("Preset Paddle - OSU LWF")) || (this->inpty==QString("Preset Paddle - OSU DWB")) || (this->inpty==QString("Paddle"))) {
+        if (dataDir->text().isEmpty()) {
+            this->errorMessage("ERROR: Paddle Motion - data has not been set");
+            return;
+        }
+        QString csvFileName = dataDir->text();
+        QFile csv(csvFileName);
+        csv.open(QFile::ReadOnly | QFile::Text);
+
+        QTextStream in(&csv);
+        QStringList row;
+        QStringList firstColumn;
+        QStringList secondColumn;
+        QStringList thirdColumn;
+        
+        numSteps = 0; // reset
+
+        // Assume no header lines
+        while (readCSVRow(in, &row)) {
+            firstColumn.append(row[0]);
+            secondColumn.append(row[1]);
+            thirdColumn.append(row[2]);
+            numSteps++;
+        }
+
+        csv.close();
+
+        QVector<double> x(numSteps); // time
+        QVector<double> y(numSteps); // displacement
+        for (int i=0; i<numSteps; i++) {
+            x[i] = firstColumn[i].toDouble();
+            y[i] = secondColumn[i].toDouble();
+        }
+
+        me = 2.0;
+        alp = 1.0;
+        bet = 1.0;
+
+        aa = 0.0;
+        bb=b->text().toDouble();
+
+        // plot
+        thePlot->clear();
+        thePlot->drawPDF(x,y);
+        return;
+
+    }
+
+
+    if (aa>bb) {
+        thePlot->clear();
+        return;
+    }
+
+    if (this->inpty==QString("Periodic Waves")) {
+      if (alp >= 0.0 && bet > 0.0 && me != aa) {
+          double min = aa; // defined in x>0
+          double max = bb;
+          QVector<double> x(100);
+          QVector<double> y(100);
+          for (int i=0; i<100; i++) {
+              double xi = min + i*(max-min)/99;
+              x[i] = xi;
+              double betai=tgamma(alp)*tgamma(bet)/tgamma(alp+bet);
+              y[i] = pow(xi-aa,alp-1)*pow(bb-xi,bet-1)/betai/pow(bb-aa,alp+bet-1);
+          }
+          thePlot->clear();
+          thePlot->drawPDF(x,y);
+      } else {
+          thePlot->clear();
+      }
+    }
+
+
+//        else {
+//            QVector<double> x(100);
+//            QVector<double> y(100);
+//            QVector<double> x1(100);
+//            QVector<double> y1(100);
+//            for (int i=0; i<100; i++) {
+//                x[i] =  aa+1;
+//                y[i] =  bb+10;
+//                x1[i] =  me+1;
+//                y1[i] =  st+10;
+//            }
+//            thePlot->clear();
+//            thePlot->drawPDF(x,y);
+//            thePlot->drawPDF(x1,y1);
+//        }
 }
 
 bool
