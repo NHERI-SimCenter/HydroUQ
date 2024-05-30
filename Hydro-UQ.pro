@@ -26,7 +26,7 @@ QT += datavisualization
 
 
 # QT += wayland
-QT += x11extras
+# QT += x11extras
 # QT += webglplugin-no-lgpl 
 QT += webengine
 QT += webenginecore
