@@ -1,0 +1,307 @@
+{
+    "Applications": {
+        "EDP": {
+            "Application": "StandardEDP",
+            "ApplicationData": {
+            }
+        },
+        "Events": [
+            {
+                "Application": "StochasticWave",
+                "ApplicationData": {
+                },
+                "EventClassification": "Hydro"
+            }
+        ],
+        "Modeling": {
+            "Application": "MDOF_BuildingModel",
+            "ApplicationData": {
+            }
+        },
+        "Simulation": {
+            "Application": "OpenSees-Simulation",
+            "ApplicationData": {
+            }
+        },
+        "UQ": {
+            "Application": "Dakota-UQ",
+            "ApplicationData": {
+            }
+        }
+    },
+    "DefaultValues": {
+        "driverFile": "driver",
+        "edpFiles": [
+            "EDP.json"
+        ],
+        "filenameAIM": "AIM.json",
+        "filenameDL": "BIM.json",
+        "filenameEDP": "EDP.json",
+        "filenameEVENT": "EVENT.json",
+        "filenameSAM": "SAM.json",
+        "filenameSIM": "SIM.json",
+        "rvFiles": [
+            "AIM.json",
+            "SAM.json",
+            "EVENT.json",
+            "SIM.json"
+        ],
+        "workflowInput": "scInput.json",
+        "workflowOutput": "EDP.json"
+    },
+    "EDP": {
+        "type": "StandardEDP"
+    },
+    "Events": [
+        {
+            "EventClassification": "Hydro",
+            "dragArea": 1,
+            "dragCoefficient": 2.1,
+            "exposureCategory": "B",
+            "peakPeriod": 12.7,
+            "recorderCountZ": 30,
+            "recorderOriginX": 0,
+            "seed": "None",
+            "significantWaveHeight": 8.1,
+            "timeDuration": 3600,
+            "timeStep": 0.1,
+            "type": "StochasticWave",
+            "waterDepth": 30
+        }
+    ],
+    "GeneralInformation": {
+        "NumberOfStories": 9,
+        "PlanArea": 129600,
+        "StructureType": "RM1",
+        "YearBuilt": 2024,
+        "depth": 360,
+        "height": 1296,
+        "location": {
+            "latitude": 37.8715,
+            "longitude": -122.273
+        },
+        "name": "9-Story Statistical Building",
+        "planArea": 129600,
+        "stories": 9,
+        "units": {
+            "force": "kips",
+            "length": "in",
+            "temperature": "C",
+            "time": "sec"
+        },
+        "width": 360
+    },
+    "Modeling": {
+        "Bx": "RV.bx",
+        "By": 0.1,
+        "Fyx": "RV.fx",
+        "Fyy": "RV.fy",
+        "Krz": 10000000000,
+        "Kx": "RV.kx",
+        "Ky": "RV.ky",
+        "ModelData": [
+            {
+                "Fyx": "RV.fx",
+                "Fyy": "RV.fy",
+                "Ktheta": 10000000000,
+                "bx": "RV.bx",
+                "by": 0.1,
+                "height": 144,
+                "kx": "RV.kx",
+                "ky": "RV.ky",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": "RV.fx",
+                "Fyy": "RV.fy",
+                "Ktheta": 10000000000,
+                "bx": "RV.bx",
+                "by": 0.1,
+                "height": 144,
+                "kx": "RV.kx",
+                "ky": "RV.ky",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": "RV.fx",
+                "Fyy": "RV.fy",
+                "Ktheta": 10000000000,
+                "bx": "RV.bx",
+                "by": 0.1,
+                "height": 144,
+                "kx": "RV.kx",
+                "ky": "RV.ky",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": "RV.fx",
+                "Fyy": "RV.fy",
+                "Ktheta": 10000000000,
+                "bx": "RV.bx",
+                "by": 0.1,
+                "height": 144,
+                "kx": "RV.kx",
+                "ky": "RV.ky",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": "RV.fx",
+                "Fyy": "RV.fy",
+                "Ktheta": 10000000000,
+                "bx": "RV.bx",
+                "by": 0.1,
+                "height": 144,
+                "kx": "RV.kx",
+                "ky": "RV.ky",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": "RV.fx",
+                "Fyy": "RV.fy",
+                "Ktheta": 10000000000,
+                "bx": "RV.bx",
+                "by": 0.1,
+                "height": 144,
+                "kx": "RV.kx",
+                "ky": "RV.ky",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": "RV.fx",
+                "Fyy": "RV.fy",
+                "Ktheta": 10000000000,
+                "bx": "RV.bx",
+                "by": 0.1,
+                "height": 144,
+                "kx": "RV.kx",
+                "ky": "RV.ky",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": "RV.fx",
+                "Fyy": "RV.fy",
+                "Ktheta": 10000000000,
+                "bx": "RV.bx",
+                "by": 0.1,
+                "height": 144,
+                "kx": "RV.kx",
+                "ky": "RV.ky",
+                "weight": "RV.w"
+            },
+            {
+                "Fyx": "RV.fx",
+                "Fyy": "RV.fy",
+                "Ktheta": 10000000000,
+                "bx": "RV.bx",
+                "by": 0.1,
+                "height": 144,
+                "kx": "RV.kx",
+                "ky": "RV.ky",
+                "weight": "RV.w"
+            }
+        ],
+        "dampingRatio": 0.01,
+        "height": 144,
+        "massX": 0,
+        "massY": 0,
+        "numStories": 9,
+        "randomVar": [
+        ],
+        "responseX": 0,
+        "responseY": 0,
+        "type": "MDOF_BuildingModel",
+        "weight": "RV.w"
+    },
+    "Simulation": {
+        "Application": "OpenSees-Simulation",
+        "algorithm": "Newton",
+        "analysis": "Transient -numSubLevels 2 -numSubSteps 10",
+        "convergenceTest": "NormUnbalance 1.0e-2 10",
+        "dampingModel": "Rayleigh Damping",
+        "firstMode": 1,
+        "integration": "Newmark 0.5 0.25",
+        "modalRayleighTangentRatio": 0,
+        "numModesModal": -1,
+        "rayleighTangent": "Initial",
+        "secondMode": -1,
+        "solver": "Umfpack"
+    },
+    "UQ": {
+        "parallelExecution": true,
+        "samplingMethodData": {
+            "method": "LHS",
+            "samples": 500,
+            "seed": 1
+        },
+        "saveWorkDir": true,
+        "uqType": "Forward Propagation"
+    },
+    "localAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "randomVariables": [
+        {
+            "distribution": "Uniform",
+            "inputType": "Moments",
+            "lowerbound": 900,
+            "name": "w",
+            "refCount": 1,
+            "upperbound": 1100,
+            "value": "RV.w",
+            "variableClass": "Uncertain"
+        },
+        {
+            "distribution": "Lognormal",
+            "inputType": "Moments",
+            "mean": 100,
+            "name": "kx",
+            "refCount": 1,
+            "stdDev": 25,
+            "value": "RV.kx",
+            "variableClass": "Uncertain"
+        },
+        {
+            "alphaparam": 0.075,
+            "betaparam": 100,
+            "distribution": "Gumbel",
+            "inputType": "Parameters",
+            "name": "ky",
+            "refCount": 1,
+            "value": "RV.ky",
+            "variableClass": "Uncertain"
+        },
+        {
+            "distribution": "Weibull",
+            "inputType": "Moments",
+            "name": "fy",
+            "refCount": 0,
+            "scaleparam": 15,
+            "shapeparam": 10,
+            "value": "RV.fy",
+            "variableClass": "Uncertain"
+        },
+        {
+            "distribution": "Normal",
+            "inputType": "Moments",
+            "mean": 0.2,
+            "name": "bx",
+            "refCount": 1,
+            "stdDev": 0.05,
+            "value": "RV.bx",
+            "variableClass": "Uncertain"
+        },
+        {
+            "alphas": 2,
+            "betas": 1,
+            "distribution": "Beta",
+            "inputType": "Parameters",
+            "lowerbound": 2.5,
+            "name": "fx",
+            "refCount": 1,
+            "upperbound": 10,
+            "value": "RV.fx",
+            "variableClass": "Uncertain"
+        }
+    ],
+    "remoteAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "runType": "runningLocal",
+    "workingDir": "/home/justinbonus/Documents/HydroUQ/LocalWorkDir"
+}
