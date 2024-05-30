@@ -85,6 +85,7 @@ Inlet Velocity Time History (U(t)) for the truncated digital twin is given by th
 
 .. figure:: figures/inletVTH.png
    :align: center
+   :alt: A line graph titled "Inlet Velocity TH" showing a progressive increase in velocity (y-axis) over time (x-axis). The vertical y-axis is labeled "Velocity [m/s]" with values ranging from 0 to 0.6 m/s in increments of 0.1, and the horizontal x-axis is labeled "Time [s]" with values ranging from 0 to 12 seconds in increments of 2. The line starts at the origin and shows a curved increase, plateauing slightly as it approaches 0.6 m/s near the 10-second mark. The curve suggests a smooth and consistent acceleration of velocity over time.
    :width: 600
    :figclass: align-center
 
@@ -130,6 +131,7 @@ First, we must retrieve the ``results.zip`` folder from the DesignSafe file stor
 
 .. figure:: figures/DSToolsAndAppsJobsStatus.PNG
    :align: center
+   :alt: Screenshot of a web interface for a simulation platform titled 'TOOLS & APPLICATIONS'. On the top are tabs labeled 'Simulation', 'SimCenter Tools', 'Visualization', 'Analysis', 'Hazard Apps', 'Utilities', and 'My Apps'. To the left is a 'DATA DEPOT BROWSER' showing directories and files with names like 'Trash', 'archive', and 'Hydro-UQ'. The center section states 'SELECT AN APP' and describes how to pick an application from the tabs above, mentioning tools like OpenSees, ADCIRC, OpenFOAM, Jupyter, MATLAB, Paraview, and VisIt. To the right is a 'JOBS STATUS' section showing a list of tasks with names like 'HydroUQ: hdra-0003Short' and 'HydroUQ: Example002Shorter', indicating their statuses as 'RUNNING' or 'FINISHED'.
    :width: 600
    :figclass: align-center
    
@@ -139,6 +141,7 @@ Check if the job has finished. If it has, click 'More info'.
 
 .. figure:: figures/DSToolsAndAppsJobsStatusFinished.PNG
    :align: center
+   :alt: A graphical user interface element showing a status tag with the word "FINISHED" next to a button labeled "More info" which includes an information icon consisting of a lowercase "i" within a circle.
    :width: 600
    :figclass: align-center
    
@@ -148,6 +151,7 @@ Find the files by clicking 'View'.
 	
 .. figure:: figures/DSToolsAndAppsJobsStatusViewFiles.PNG
    :align: center
+   :alt: A screenshot of a computer interface showing the details of a completed job in an application. The Application name is "simcenter-openfoam-frontera-1.0.0," and there is a unique Job ID provided. The status indicates "FINISHED," and the submission and completion times are listed as "Oct 8, 2023 7:53:52 AM" and "Oct 8, 2023 10:36:54 AM" respectively. The Last Status Message states "Transitioning from status ARCHIVING to FINISHED in phase ARCHIVING." There are buttons for "View" with an arrow indicating it, and "Delete" under the Output and Actions sections. There is also a "Close" button at the bottom right corner.
    :width: 600
    :figclass: align-center
    
@@ -158,6 +162,7 @@ Move the ``results.zip`` to somewhere in ``My Data/``. Use the Extractor tool av
 
 .. figure:: figures/extractonDS.PNG
    :align: center
+   :alt: Screenshot of a software interface with tabs labeled "Simulation," "SimCenter Tools," "Visualization," "Analysis," "Hazard Apps," "Utilities," and "My Apps." Under the "SimCenter Tools" tab, two options are shown: "Compress Files" with a symbol representing compression, and "Extract Compressed File" highlighted in blue with a corresponding symbol of a file being extracted. Below is a button with the text "RUN EXTRACT COMPRESSED FILE."
    :width: 600
    :figclass: align-center
     
@@ -166,6 +171,7 @@ OR Download the ``results.zip`` folder to your PC and unzip to look at the model
 
 .. figure:: figures/downloadResults.PNG
    :align: center
+   :alt: Screenshot of a data management interface showing a directory listing with files and folders. At the top, there are search and action buttons like "Rename," "Move," "Copy," "Preview," "Preview Images," "Download," and "Move to Trash." The "Download" button is encircled, highlighting it. The main panel lists files such as "agave.log," "hydroqu-example002shorter-*-out," and "results.zip," with details on file size and the date of last modification. The file "results.zip" is selected with a green checkmark.
    :width: 600
    :figclass: align-center
    
@@ -175,6 +181,7 @@ Extract the Zip folder either on DesignSafe or on your local machine. You will n
 
 .. figure:: figures/resultsZip.png
    :align: center
+   :alt: A screenshot of a file directory interface highlighting a file named "results.zip." The directory contains other files with names like "agave.log," and files starting with "hydroqu-example002shorter," each with different file extensions such as .log, .err, and .out. The selected "results.zip" file is encircled in red, indicating its importance or selection. File sizes and last modified dates are visible next to each file, with the dates showing 10/8/23 and times ranging from 10:35 AM to 10:36 AM.
    :width: 600
    :figclass: align-center
    
@@ -184,6 +191,7 @@ The results folder should look something like this.
 	
 .. figure:: figures/results.png
    :align: center
+   :alt: Screenshot of a computer file explorer window showing a directory listing within the 'results' folder. There are three folders named 'postProcessing', 'SeesOutput', and 'VTK', all modified on '10/8/2023 10:30 AM'. Below the folders, there is a PVD file named 'OpenSeesOutput.pvd' with the same modification date and a size of 13 KB.
    :width: 600
    :figclass: align-center
    
@@ -201,6 +209,7 @@ Open OpenSeesOutput.pvd to look at OpenSees results.
 
 .. figure:: figures/Paraview.PNG
    :align: center
+   :alt: Screenshot of a scientific visualization software interface displaying a 3D model of a simulation. The main window shows a long, rectangular object with a gradient color scale indicating displacement magnitude, from blue (no displacement) to red (maximum displacement). A small portion is highlighted with a spectrum of colors showing increased displacement. Two scale bars, one for displacement magnitude and one for a variable labelled as 'alpha.water', are visible on the right side. The software's graphical user interface, including the pipeline browser, properties, and animation view panels, frames the model display.
    :width: 600
    :figclass: align-center
    
@@ -211,6 +220,7 @@ OpenSees Displacements And Reactions
 
 .. figure:: figures/TipDisplacement.png
    :align: center
+   :alt: "A graph titled 'Tip Displacement VS Time' with the X-axis representing time in seconds and the Y-axis representing displacement in meters. The graph displays a line plot showing the tip displacement labeled as 'Tip Displacement_X (originalId=16 block=2)' with values starting at zero displacement, then rising sharply around 2 seconds and displaying fluctuating but generally increasing values up to around 0.0055 meters by 12 seconds."
    :width: 600
    :figclass: align-center
    
@@ -218,6 +228,7 @@ OpenSees Displacements And Reactions
 
 .. figure:: figures/ReactionForces.png
    :align: center
+   :alt: The image depicts a line graph titled "OpenSees Reaction Forces" with the y-axis labeled "Force (N)" and the x-axis showing an unlabeled numerical scale from 0 to 10. There are three distinct lines representing 'Base Reaction_X,' 'Base Reaction_Y,' and 'Base Reaction_Z,' each annotated with '(originalId=0 block=2)' in red, green, and blue respectively. The 'Base Reaction_X' in red shows a sinusoidal pattern with amplitude decreasing over time. The 'Base Reaction_Y' in green demonstrates a more consistent, slightly undulating pattern. The 'Base Reaction_Z' in blue displays a high-frequency oscillating pattern with relatively steady amplitude. The lines overlap and intersect at various points throughout the graph.
    :width: 600
    :figclass: align-center
    
@@ -229,6 +240,7 @@ This file can be modified to work for any case. The names of the data folders wi
 
 .. figure:: figures/MatlabScriptCopyToLocation.PNG
    :align: center
+   :alt: Screenshot of a computer file explorer window with a list of directories and files inside a folder named 'postProcessing.' Most items are folders named with different labels such as 'baseForces,' 'freeSurfaceVTK,' 'interface,' and several 'PressureProbe' and 'WaveGauge' folders, all modified on '10/8/2023 10:30 AM.' One file named 'plotData.m,' identified as MATLAB Code and sized 5 KB, has a red arrow pointing to it, highlighting its size. The breadcrumb navigation path at the top indicates the 'postProcessing' folder is inside the 'results' folder, which is within another 'results' folder in the 'Downloads' directory.
    :width: 600
    :figclass: align-center
     In the /src/ folder in the hrdo-0003 folder, an example matlab script is provided to look at time history data of the output probes	
@@ -238,6 +250,7 @@ OpenFOAM Calculated Story Forces are
 
 .. figure:: figures/storyForces.png
    :align: center
+   :alt: A set of three line graphs titled "Story Forces", with each graph depicting force over time in seconds for three stories (levels) of a structure, along the X, Y, and Z axes. The top chart shows forces in the X direction, with lines for Story 1 X Force, Story 2 X Force, and Story 3 X Force, oscillating and diverging slightly. The middle chart depicts forces in the Y direction with similar oscillating patterns. The bottom chart shows forces in the Z direction, with the lines for Story 1 Z Force and Story 2 Z Force remaining almost constant and close to zero, while the Story 3 Z Force shows minor oscillation. Each force is measured in Newtons (N) and the time spans from 0 to 10 seconds.
    :width: 600
    :figclass: align-center
    
@@ -247,6 +260,7 @@ OpenFOAM Calculated Coupled Interface Forces are visualized in the following fig
 
 .. figure:: figures/Forces.png
    :align: center
+   :alt: A line graph titled "FSI Interface Forces" displaying three differently colored lines representing force in the X, Y, and Z directions over a period of 10 seconds. The X-force (blue) exhibits a significant increase and fluctuations, peaking just below 7 N. The Y-force (orange) shows smaller, regular oscillations around 0 N. The Z-force (yellow) shows minor activity around 0 N with no significant peaks. The time in seconds is on the x-axis and the force in Newtons is on the y-axis.
    :width: 600
    :figclass: align-center
    
@@ -256,6 +270,7 @@ OpenFOAM calculated, coupled interface moments at the structural surface are
  
 .. figure:: figures/Moments.png
    :align: center
+   :alt: A line graph titled "FSI Interface Moments" displaying three different moment components (Mxx, Myy, Mzz) over time, measured in seconds, from 0 to 10. The Mxx component is represented by an orange line oscillating and decreasing over time. The Myy component is a blue oscillating line that becomes stable after an initial drop. The Mzz component is depicted by a yellow line that remains mostly flat across the time period. The moments are measured in Newton-meters (N*m) ranging from 0.1 to -0.7 on the y-axis.
    :width: 600
    :figclass: align-center
    
@@ -265,6 +280,7 @@ OpenFOAM calculated pressure probe values throughout the flume are
 
 .. figure:: figures/Pressures.png
    :align: center
+   :alt: A line graph titled "Pressure Sensors" plotting the pressure readings from four different sensors, P1 through P4, over a time period of 10 seconds. The y-axis is labeled "Pressure [Pa]" and ranges from -2000 to 3000 Pa, while the x-axis is labeled "Time [s]" and ranges from 0 to 10 seconds. The P1 sensor reading starts at approximately 2500 Pa and decreases slightly over time, represented by a blue line. The P2 reading is an orange line starting around 1700 Pa and also decreases. The P3 reading, in a yellow line, begins just under 1000 Pa and follows the same downward trend. The P4 sensor reading is a purple line that remains flat close to 0 Pa throughout the period. All lines show a smooth and gradual decline except P4, which is constant.
    :width: 600
    :figclass: align-center
    Pressure Probe Values in OpenFOAM
@@ -273,6 +289,7 @@ OpenFOAM calculated fluid velocity probe values throughout the flume are
 
 .. figure:: figures/Velocities.png
    :align: center
+   :alt: A line graph titled "Velocity Probe" with the X-axis labeled "Time [s]" ranging from 0 to 10 seconds, and the Y-axis labeled "Velocity [m/s]" ranging from -0.1 to 0.6 meters per second. There are three lines representing velocity components in X, Y, and Z directions. The X component shows a rising curve starting from zero and approaching approximately 0.6 m/s. The Y and Z components are relatively flat, hovering near zero throughout the graph. A legend in the upper right corner matches the X component with blue, the Y component with orange, and the Z component with grey, indicating the velocity in each respective axis.
    :width: 600
    :figclass: align-center
    
@@ -283,6 +300,7 @@ OpenFOAM calculated wave gauge free-surface values at key locations in the facil
 
 .. figure:: figures/WaveGauges.png
    :align: center
+   :alt: A line graph titled "Wave Gauges" tracking free surface elevation (in meters) against time (in seconds) from 0 to 10 seconds. Seven different lines representing wave gauges WG1 through WG7 exhibit various oscillating patterns with a notable spike and subsequent oscillations starting at approximately 3.5 seconds. The legend in the upper right corner associates each wave gauge with a different color line on the graph.
    :width: 600
    :figclass: align-center
    

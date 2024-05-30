@@ -36,6 +36,7 @@ The dataset in this example originates from experimental tests conducted in the 
 
 .. figure:: figures/Coupled.png
    :align: center
+   :alt: Screenshot of a software interface with various settings. On the left side, there is a vertical navigation menu with items like UQ, GI, SIM, EVT, FEM, EDP, RV, and RES highlighted in different shades of grey and blue, with EVT (Event) selected in blue. In the larger right panel, the interface shows a section titled "Event Type" with a dropdown menu set to "Coupled Digital Twin". Below, there are instructions for defining models and outputs, as well as tabs labeled "Settings", "OpenSees", "OpenFOAM", "Outputs", and "Visualization". The visible content under the "OpenSees" and "OpenFOAM" tabs includes options for "Output VTK" set to "Yes", and fields to input "Time Interval", set to "0.05 sec." for OpenSees and "0.01 sec." for OpenFOAM. Other available options are "Free Surface Probes" and "Section Cuts". The interface has a clean, modern design with a blue and grey color scheme.
    :figclass: align-center
    :width: 400
 
@@ -67,6 +68,7 @@ The inputs can also be set up manually through the following steps:
 
 .. figure:: figures/UQ.png
    :align: center
+   :alt: Screenshot of a user interface with a section titled "UQ Method" featuring options such as "Forward Propagation," a dropdown menu for "UQ Engine" set to "Dakota," checkboxes for "Parallel Execution" and "Save Working dirs," another dropdown menu for the "Method" set to "LHS," and fields to input the number of "Samples" (set to 500) and "Seed" (set to 700). On the left side, there is a vertical navigation bar with various abbreviated items like "UQ," "GI," "SIM," "EVT," "FEM," "EDP," "RV," and "RES" highlighted.
    :figclass: align-center
    :width: 600
    
@@ -79,6 +81,7 @@ The inputs can also be set up manually through the following steps:
 
 .. figure:: figures/FEM.png
    :align: center
+   :alt: Screenshot of a configuration interface for a finite element analysis application, with options for setting analysis type, integration method, algorithm, convergence test, solver, and damping model. Various fields are filled with specific parameters such as "Analysis: {umSubLevels 2 -numSubSteps 10}", "Integration: Newmark 0.5 0.25", and "ConvergenceTest: NormUnbalance 1.0e-2 10". The interface also includes dropdown menus for algorithm and damping model, input fields for specifying mode shape numbers, and a button to choose an analysis script. On the left side, there is a vertical navigation menu with highlighted options like "FEM", "EDP", and other abbreviations possibly referring to different modules or steps in the engineering analysis process.
    :figclass: align-center
    :width: 600
    
@@ -91,6 +94,7 @@ The inputs can also be set up manually through the following steps:
 
 .. figure:: figures/RV.png
    :align: center
+   :alt: Screenshot of a user interface for inputting random variables, with a section titled "Input Random Variables". The interface includes fields for 'Variable Name', 'Distribution', 'Mean', and 'Standard Dev' with an example input of 'w' for Variable Name, 'Normal' for Distribution, '150' for Mean, and '10' for Standard Dev. There are buttons for 'Add', 'Clear All', 'Correlation Matrix', 'Export', and 'Import'. On the left side, a vertical menu with the options 'UQ', 'GI', 'SIM', 'EVT', 'FEM', 'EDP', 'RV', 'RES' is visible, with 'RV' highlighted in a lighter shade. A 'Show PDF' button is also in view.
    :figclass: align-center
    :width: 600
 

@@ -21,6 +21,7 @@ Overview
 
 .. figure:: figures/hdro-0005_WaveTimeSeries.png
    :align: center
+   :alt: The image displays two charts related to "Wave Generation." The top chart is a time series graph showing "Wave Elevation (m)" over "Time [s]" with values ranging from roughly -5 to 5 meters, fluctuating over a period of 0 to 3500 seconds in a noisy, seemingly random pattern. The bottom chart is a spectral density graph, plotting "Spectral density [m^2/s]" from 0 to 150 against "Frequency [Hz]" from 0 to 0.4 Hz. There are two overlapping curves on this graph: one labeled "Generated," which is a line plot that peaks near 0.1 Hz and tapers off, and another labeled "Jonswap," which seems to be a reference plot closely tracking the "Generated" curve but with some minor deviations. Both charts are colored in shades of blue, with a white background and axis labels in black text.
    :width: 600
    :figclass: align-center
    
@@ -34,6 +35,7 @@ Set-Up
 
 .. figure:: figures/hdro-0005_UQ.png
    :align: center
+   :alt: A screenshot of a software interface with a section labeled "UQ Method" displaying settings for uncertainty quantification. The UQ Engine is set to "Dakota" with options for "Forward Propagation." Checkboxes for "Parallel Execution" and "Save Working dirs" are ticked. Under Method, "LHS" (Latin Hypercube Sampling) is selected from a dropdown menu with inputs for "# Samples" set at 5 and "Seed" also set at 5. The left sidebar shows tabs labeled UQ, GI, SIM, EVT, FEM, EDP, RV, and RES, indicating different modules or sections of the software.
    :width: 600
    :figclass: align-center
    
@@ -45,6 +47,7 @@ Experiments were performed in the NHERI OSU LWF, a 100 meter long flume with adj
 
 .. figure:: figures/hdro-0005_GI.png
    :align: center
+   :alt: Screenshot of a building information form with fields for name, properties, location, and units. Under properties, it includes 'Year Built' as 1990, '# Stories' as 4, 'Struct. Type' as RM1, 'Height' as 576, 'Width' as 360, 'Depth' as 360, and 'Plan Area' as 129600. Location details show 'Latitude' as 37.8715 and 'Longitude' as -122.273. Units selected are 'Force' in Kips, 'Length' in Inches, and 'Temperature' in Celsius. There is a menu on the left side with various tabs such as UQ, GI, SIM, EVT, FEM, EDP, RV, and RES.
    :width: 600
    :figclass: align-center
    
@@ -60,6 +63,7 @@ Qualitatively, an MPM simulation of debris impacts on a raised structure in the 
 
 .. figure:: figures/hdro-0005_SIM.png
    :align: center
+   :alt: A screenshot of a user interface for a "Building Model Generator" with a dropdown menu set to "OpenSees". The interface contains fields for "Input Script" with a file path provided, "Centroid Nodes", "Response Nodes" with the value 1,3 entered, "Spatial Dimension" with the value 2, "# DOF at Nodes" with the value 3, and "Damping Ratio" with the value 0.02. On the left side, a vertical menu shows tabs for UQ, GI, SIM, EVT, and FEM, with the SIM tab currently selected. There is also a "Choose" button on the right side of the "Input Script" field.
    :width: 600
    :figclass: align-center
 
@@ -69,6 +73,7 @@ It appears similar in the mechanism of debris impact, stalling, and deflection r
 
 .. figure:: figures/hdro-0005_EVT.png
    :align: center
+   :alt: Screenshot of a software interface with various input fields related to "Stochastic Wave Loading". A dropdown menu for "Event Type" is set to "Stochastic Wave Loading", and another dropdown for "Stochastic Loading Model" is set to "JONSWAP". There are multiple input fields with values for parameters such as "Water Depth", "Significant Wave Height", "Peak Period", and others related to the simulation of wave conditions. At the bottom, an option for "Provide seed value" with a numerical input box is visible. The interface has a tabbed layout with tabs labeled UQ, GI, SIM, EVT, FEM, EDP, RV, and RES at the top. The current view is under the "EVT" tab, indicating event-specific parameters are being configured.
    :width: 600
    :figclass: align-center
 
@@ -79,6 +84,7 @@ The experiments by Shekhar et al. 2020 [Shekhar2020]_ are also shown below for c
 
 .. figure:: figures/hdro-0005_EDP.png
    :align: center
+   :alt: Screenshot of a software interface with a vertical navigation menu on the left side showing various abbreviated menu items such as "UQ," "GI," "SIM," "EVT," "FEM," with "EDP" highlighted. The main area displays the header "Engineering Demand Parameters Generator" with a dropdown menu set to "Standard." The rest of the main area is blank.
    :width: 600
    :figclass: align-center
 
@@ -97,6 +103,7 @@ Open ``Settings``. Here we set the simulation time, the time step, and the numbe
 
 .. figure:: figures/hdro-0005_RV.png
    :align: center
+   :alt: Screenshot of a software interface for inputting random variables with an 'Add' button at the top. Three variables are listed—fc, fy, and E—with each set to a 'Normal' distribution and respective mean and standard deviation values. Each variable has an option to 'Show PDF'. Menu options for UQ, GI, SIM, EVT, FEM, EDP, RV, and RES are visible on the left side, with 'RV' highlighted. 'Clear All', 'Correlation Matrix', 'Export', and 'Import' options are available at the top right corner of the input section.
    :width: 600
    :figclass: align-center
 
@@ -107,6 +114,7 @@ Open ``Bodies`` / ``Fluid`` / ``Material``. Here we set the material properties 
 
 .. figure:: figures/hdro-0005_RES_Summary_Forward.png
    :align: center
+   :alt: Screenshot of a software interface displaying statistical data values for different items categorized under labels UQ, SIM, EVT, FEM, and EDP. Each category shows a name such as 1-PFA-1-1, and values for Mean, StdDev, Skewness, and Kurtosis. The data presented is numerical, with values like 12.7422 for Mean under UQ and varying standard deviations and other statistical measures for each item. The interface has a tab selection with "Summary" and "Data Values" as options; "Data Values" is highlighted.
    :width: 600
    :figclass: align-center
 
@@ -116,6 +124,7 @@ Open ``Bodies`` / ``Fluid`` / ``Geometry``. Here we set the geometry of the flum
 
 .. figure:: figures/hdro-0005_RES_Scatter.png
    :align: center
+   :alt: Screenshot of "HydroUQ: Water-borne Hazards Engineering with Uncertainty Quantification" software interface displaying a scatter plot with several data points and a correlation coefficient of -0.95. On the right side of the screen, there is a table with multiple columns showing engineering data like "Run #," "fc," "fy," "E," and several columns with labeling consistent with engineering nomenclature such as "1-RMSA-1-1," "1-PDF-1-1," and "1-PID-1-1." The user interface has tabs for "Summary" and "Data Values" and buttons such as "Save Table," "Save Columns Separately," "Save RVs," and "Save QoIs" at the top right. At the bottom, there are buttons for "RUN," "RUN at DesignSafe," "GET from DesignSafe," and "Exit." The interface suggests a tool for engineering analysis and simulation with focus on uncertainty quantification.
    :width: 600
    :figclass: align-center
 
@@ -126,6 +135,7 @@ Open ``Algorithm``. Here we set the algorithm parameters for the simulation. We 
 
 .. figure:: figures/hdro-0005_RES_Cumulative_Forward.png
    :align: center
+   :alt: Screenshot of a data analysis software interface showing a cumulative frequency distribution chart on the left and a detailed data table on the right. The chart depicts a step-like increase, representing a cumulative probability distribution. The table includes numerical values for various parameters including 'Run #', 'fc', 'fy', 'E', and several probability values. Color-coded buttons for saving and exiting the table are visible at the bottom.
    :width: 600
    :figclass: align-center
 
@@ -144,6 +154,7 @@ Moving onto the creation of an ordered debris-array, we set the debris propertie
 
 .. figure:: figures/hdro-0005_RV_Sensitivity.png
    :align: center
+   :alt: Screenshot of an interface with tabs on the left which include "UQ", "GI", "SIM", "EVT", "FEM", "EDP", "RV", and "RES". The main panel is titled "Input Random Variables" and has three options: "Add", "Clear All", and "Correlation Matrix", along with "Export" and "Import" buttons on the right. Below this, there are three entries of random variables listed with their corresponding distribution, mean, and standard deviation values. The first variable "fc" has a normal distribution with a mean of 6.0 and a standard deviation of 0.6. The second variable "fy" has a constant distribution with a constant value of 60.0. The third variable "E" also has a normal distribution with a mean of 30000 and a standard deviation of 3000. Each variable entry has a button labeled "Show PDF". The background is light with a color scheme of blues and grays.
    :width: 600
    :figclass: align-center
 
@@ -153,6 +164,7 @@ Open ``Bodies`` / ``Debris`` / ``Geometry``. Here we set the debris properties, 
 
 .. figure:: figures/hdro-0005_RES_Summary_Sensitivity.png
    :align: center
+   :alt: Screenshot of the "HydroUQ: Water-borne Hazards Engineering with Uncertainty Quantification" web interface, showing tables and bar graphs of Sobol' indices for different random variables 'fc' and 'E'. The interface features four sets of indices: 1-PFA-1-1 Sobol', 1-RMSA-1-1 Sobol', 1-PFD-1-1 Sobol', and 1-PID-1-1 Sobol'. Each set includes numerical values and corresponding bar graphs with green bars representing 'Main' effects and blue bars representing 'Total' effects. The numerical values range from negative to positive, indicating varying degrees of sensitivity or influence of the variables on a particular model or system. The page has a navigation sidebar on the left with options such as UQ, GI, SIM, EVT, FEM, EDP, RV, and RES highlighted. There are "Cite" and "Login" buttons at the top right corner.
    :width: 600
    :figclass: align-center
 
@@ -164,6 +176,7 @@ Open ``Bodies`` / ``Structures``. Uncheck the box that enables this body, if it 
 
 .. figure:: figures/hdro-0005_RES_Scatter_Sensitivity.png
    :align: center
+   :alt: Screenshot of a software application titled "HydroUQ: Water-borne Hazards Engineering with Uncertainty Quantification". The left side of the screen shows a navigation menu with various categories such as UQ, GI, SIM, EVT, and others highlighted in blue. The main area displays a scatter plot with the label "Samples" and numerous blue dots representing data points, along with a correlation coefficient value of -0.95 displayed below the plot. On the right side, there is a data table with columns titled "Run #", "fc", "E", "fy", and several others with numerical data, and options to save or export the data are provided above the table. There is a button labeled "GET from DesignSafe" at the bottom right corner.
    :width: 600
    :figclass: align-center
    
@@ -173,6 +186,7 @@ Open ``Boundaries`` / ``Wave Flume``. We will set the boundary to be a rigid bod
 
 .. figure:: figures/hdro-0005_RES_Summary_Reliability.png
    :align: center
+   :alt: A complex graphical interface displaying a graph titled "HydroUQ: Water-borne Hazards Engineering with Uncertainty Quantification." The graph maps a curved line ascending from left to right representing a probability level on the Y-axis and a 1-RMSA-1-1 index on the X-axis. Below the graph, several numerical data entries are visible, correlating the RMSA index to probability levels. There's a top navigation bar with the options "Cite" and "Login." Also, there's a left navigation bar with various options including UQ, GI, SIM, EVT, FEM, EDP, RV, and RES highlighted in blue.
    :width: 600
    :figclass: align-center
 
@@ -182,6 +196,7 @@ Open ``Boundaries`` / ``Wave Generator``. Fill in the appropriate file-path for 
 
 .. figure:: figures/hdro-0005_forces.png
    :align: center
+   :alt: The image displays eight line graphs in a 2x4 grid format, illustrating changes in inline force (measured in kN/m) versus depth (measured in meters) at different normalized time intervals of a cyclical process, denoted as t/T, where T is the period. Each time interval (0, 1/8, 1/4, 3/8, 1/2, 5/8, 3/4, 7/8) is represented above its respective graph. Three types of forces are plotted in each graph: 'finertia' in blue, 'fdrag' in black, and 'ftot' in red, each showing varying patterns of force distribution with depth. The forces exhibit dynamic behavior, alternating direction and magnitude as time progresses.
    :width: 600
    :figclass: align-center
    
@@ -191,6 +206,7 @@ Open ``Boundaries`` / ``Rigid Structure``. This is where we will specify the rai
 
 .. figure:: figures/hdro-0005_moments.png
    :align: center
+   :alt: The image displays a series of eight graphs arranged in a two-row, four-column grid, each depicting curves that represent inline moment in kilonewton-meters per meter (kNm/m) plotted against depth in meters (m). Each graph is labeled with a fractional time value (t/T) ranging from 0 to 7/8 incrementally. Two types of curves are shown in each graph: 'dMtot with Wheeler' represented by solid lines and 'dMtot no-correction' indicated by plus signs. The shapes of the curves vary across the different time steps, mainly describing negative sloped lines that illustrate the relationship between the inline moment and depth at the given time fractions. The overall presentation suggests an analysis of structural or mechanical data over time, with Wheeler correction applied in one scenario and omitted in the other.
    :width: 600
    :figclass: align-center
 
@@ -200,6 +216,7 @@ Open ``Boundaries`` / ``RigidWalls``.
 
 .. figure:: figures/hdro-0005_IntegratedPileLoads.png
    :align: center
+   :alt: A set of three line graphs plotted against Dimensionless Time, t/T, on the x-axis, ranging from 0 to 1. The top graph shows Cumulative Elevation in meters ranging from -4 to 4, the middle graph shows Scaled Moment [kNm/m] ranging from -3 to 3, and the bottom graph shows Scaled Moment [kNm/m] ranging from -40 to 20. Each graph has two lines representing 'Standard' and 'Wheeler Correction'. All lines show a wave-like pattern with peaks and troughs. The 'Standard' line is represented in blue and the 'Wheeler Correction' in black, with the middle graph showing a larger amplitude in the curves than the bottom graph.
    :width: 600
    :figclass: align-center
 
