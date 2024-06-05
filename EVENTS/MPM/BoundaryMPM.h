@@ -48,7 +48,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
 #include <SimCenterWidget.h>
-
+// #include "RandomVariableDistribution.h"
+class QLineEdit;
+class QLabel;
+class SimCenterGraphPlot;
+class QString;
+class QGridLayout;
+class QHBoxLayout;
 class QJsonObject;
 class QJsonArray;
 class SC_DoubleLineEdit;
@@ -99,6 +105,18 @@ public:
     SC_DoubleLineEdit* getSpacingXWidget();
     SC_DoubleLineEdit* getSpacingYWidget();
     SC_DoubleLineEdit* getSpacingZWidget();
+    QString getAbbreviatedName(void);
+
+    QLineEdit *createTextEntry(QString text,
+                   QHBoxLayout *theLayout,
+                   int minL=100,
+                   int maxL=100);
+
+    QLineEdit *createTextEntry(QString text,
+                   QGridLayout *theLayout,
+                   int col,
+                   int minL=100,
+                   int maxL=100);
 
 // Need to let parent know if a dimension or origin has changed
 signals:
@@ -109,7 +127,16 @@ signals:
     void structArrayChanged(QString val);
     void structSpacingChanged(QString val);
 
+public slots:
+    void updateDistributionPlot(); 
+
 private:
+
+    QLineEdit *mean, *standardDev;
+    QLineEdit *alpha, *beta, *a, *b;
+    QLineEdit *dataDir;
+    QString inpty ;
+    SimCenterGraphPlot *thePlot;
 
   SC_ComboBox      *boundaryType;
   QStackedWidget   *stackedWidget;

@@ -67,10 +67,10 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   dragCoefficient->setText("2.1");
 
   dragArea = new LineEditRV(randomVariables);
-  dragArea->setText("1.0");
+  dragArea->setText("15.0");
 
   peakPeriod = new LineEditRV(randomVariables);
-  peakPeriod->setText("12.7");
+  peakPeriod->setText("12.0");
 
   significantWaveHeight = new LineEditRV(randomVariables);
   significantWaveHeight->setText("8.1");
@@ -108,14 +108,17 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
 
   parameters->addRow(new QLabel(tr("Water Depth [ft]")), waterDepth);
   parameters->addRow(new QLabel(tr("Significant Wave Height [ft]")), significantWaveHeight);
-  parameters->addRow(new QLabel(tr("Peak Period [s]")), peakPeriod);
-  parameters->addRow(new QLabel(tr("Recorder Horizontal Position [ft]")), recorderOriginX);
-  parameters->addRow(new QLabel(tr("Number of Recorders in Z-Direction")), recorderCountZ);
-  // parameters->addRow(new QLabel(tr("Wave Spectrum")), exposureCategory);
+  parameters->addRow(new QLabel(tr("Peak Wave Period [s]")), peakPeriod);
   parameters->addRow(new QLabel(tr("Time Step [s]")), timeStep);
   parameters->addRow(new QLabel(tr("Time Duration [s]")), timeDuration);
+  parameters->addRow(new QLabel(tr("Load Recorder Origin [ft]")), recorderOriginX);
+  parameters->addRow(new QLabel(tr("Load Recorder Count")), recorderCountZ);
+  // parameters->addRow(new QLabel(tr("Wave Spectrum")), exposureCategory);
   parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
   parameters->addRow(new QLabel(tr("Drag Area [ft^2]")), dragArea);
+
+
+
 
   // Initialize member variables
   // dragCoefficient = new LineEditRV(randomVariables);
@@ -124,34 +127,46 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   // gustWindSpeed = new LineEditRV(randomVariables);
   // gustWindSpeed->setText("50.0");
 
-  exposureCategory = new QComboBox();
-  exposureCategory->addItem("B");
-  exposureCategory->addItem("C");
-  exposureCategory->addItem("D");
+  // exposureCategory = new QComboBox();
+  // exposureCategory->addItem("B");
+  // exposureCategory->addItem("C");
+  // exposureCategory->addItem("D");
 
   seed = new QSpinBox();
   seed->setMinimum(1);
   seed->setMaximum(2147483647);
   seed->setValue(500);  
   seed->setEnabled(false);
-  useSeed = new QRadioButton("Provide seed value");
+  useSeed = new QRadioButton("Set Random Seed");
   useSeed->setChecked(false);
 
 
 
   exposureCategory = new QComboBox();
-  exposureCategory->addItem("B");
-  exposureCategory->addItem("C");
-  exposureCategory->addItem("D");
+  exposureCategory->addItem("NATO 5");
+  exposureCategory->addItem("NATO 4");
+  exposureCategory->addItem("NATO 3");
+  exposureCategory->addItem("NATO 2");
+  exposureCategory->addItem("NATO 1");
 
   // parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
-  parameters->addRow(new QLabel(tr("ASCE 7 Exposure Condition")), exposureCategory);
+  parameters->addRow(new QLabel(tr("Sea State Category")), exposureCategory);
+
+  // Align the labels to the right
+  for (int i = 0; i < parameters->rowCount(); i++) {
+    QLabel* label = qobject_cast<QLabel*>(parameters->itemAt(i, QFormLayout::LabelRole)->widget());
+    label->setAlignment(Qt::AlignRight);
+  }
   // parameters->addRow(new QLabel(tr("Gust Wind Speed (mph)")), gustWindSpeed);
   // gustWindSpeed->setToolTip("3 sec gust speed at height of 10m (33ft)");
   // Add description label
   modelDescription =
       new QLabel(tr("This model provides wave spectra using a "
                     "JONSWAP empirical distribution."));
+
+  modelDescription =
+      new QLabel(tr("The open-source welib library computes the JONSWAP"
+                    "Morrison loads on the structure."));
   //model_description_->setStyleSheet("QLabel { color : gray; }");
 
   // Construct required layouts

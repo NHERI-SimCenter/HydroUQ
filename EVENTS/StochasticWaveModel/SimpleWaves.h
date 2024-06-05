@@ -138,8 +138,8 @@ private:
 // 
 //  RandomVariablesContainer* rvInputWidget; /**< Widget for inputting random
 						//   variables */
-  QHBoxLayout * parametersLayout; /**< Layout for stochastic model widget */
-  QComboBox* modelSelection; /**< Selection of ground motion model inputs */
+   QHBoxLayout * parametersLayout; /**< Layout for stochastic model widget */
+   QComboBox* modelSelection; /**< Selection of ground motion model inputs */
 
    RandomVariablesContainer     *theRandomVariablesContainer;
 //    QStringList                  varNamesAndValues;
@@ -154,25 +154,25 @@ private:
 //    QTabWidget                   *theTabWidget;
 
 
-  QLabel *modelDescription; /**< Brief description of model indicating relevant
-				 paper where more information can be found describing
-				 model in greater detail */
-
-  QComboBox *exposureCategory; /**< type of wave spectrum */
-  LineEditRV *dragCoefficient; /**< drag Coefficient */
-  LineEditRV *dragArea; /**< drag Area */
-  LineEditRV *significantWaveHeight; /**< significant wave height (ft) */
-    LineEditRV *peakPeriod; /**< peak period (s) */
-    LineEditRV *waterDepth; /**< water depth (ft) */
-  LineEditRV *recorderOriginX; /**< x-coordinate of recorder origin */
-  SC_IntLineEdit *recorderCountZ; /**< number of recorders in z-direction */
-  LineEditRV *timeStep; /**< time step (s) */
-  LineEditRV *timeDuration; /**< time duration (s) */
-
-  
-
-  QSpinBox *seed; /**< Value to use as seed for motion generation */
-  QRadioButton *useSeed; /**< Radio button to indicate whether specific seed
+   QLabel *modelDescription; /**< Brief description of model indicating relevant
+   				 paper where more information can be found describing
+   				 model in greater detail */
+   
+   QComboBox *exposureCategory; /**< type of wave spectrum */
+   LineEditRV *dragCoefficient; /**< drag Coefficient */
+   LineEditRV *dragArea; /**< drag Area */
+   LineEditRV *significantWaveHeight; /**< significant wave height (ft) */
+   LineEditRV *peakPeriod; /**< peak period (s) */
+   LineEditRV *waterDepth; /**< water depth (ft) */
+   LineEditRV *recorderOriginX; /**< x-coordinate of recorder origin */
+   SC_IntLineEdit *recorderCountZ; /**< number of recorders in z-direction */
+   LineEditRV *timeStep; /**< time step (s) */
+   LineEditRV *timeDuration; /**< time duration (s) */
+   
+   
+   
+   QSpinBox *seed; /**< Value to use as seed for motion generation */
+   QRadioButton *useSeed; /**< Radio button to indicate whether specific seed
                               value should be used */
 
 };
