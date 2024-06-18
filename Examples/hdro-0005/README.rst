@@ -26,7 +26,7 @@ Overview
    
    Stochastic JONSWAP wave spectra produced in HydroUQ, applying the welib Python package.
 
-In this local workflow example, basic uncertainty quantification methods (Forward, Sensitivity, Reliability) are applied to the response of a simple structure loaded by a stochastic wave spectra.
+In this local workflow example, basic uncertainty quantification methods (Forward, Sensitivity, Reliability) are applied to the response of a simple structure loaded by stochastic wave spectra.
 
 
 Set-Up
@@ -50,7 +50,7 @@ Experiments were performed in the NHERI OSU LWF, a 100 meter long flume with adj
    
    NHERI OSU LWF facilty's experimental schematic used in this example. Adapted from Winter 2019 [Winter2019]_, and Mascarenas 2022 [Mascarenas2022]_.
 
-This example may help to produce a robust database (numerical and physical) from which to eventually be able to extract both the first-principals of wave-driven debris-field phenomena and design guidelines on induced forces. 
+This example may help to produce a robust database (numerical and physical) from which to eventually be able to extract both the first principles of wave-driven debris-field phenomena and design guidelines on induced forces. 
 
 We validate against two very similar (but not identical) physical studies done in the OSU LWF by [Shekhar2020]_ and [Mascarenas2022]_, indicating high accuracy of our model and low bias to minor experiment specifications. 
 
@@ -131,7 +131,7 @@ Open ``Algorithm``. Here we set the algorithm parameters for the simulation. We 
 
    HydroUQ Bodies Fluid Algorithm GUI
 
-Open ``Bodies`` / ``Fluid`` / ``Partitions``. Here we set the number of partitions for the simulation. This is the domain decomposition across discrete hardware units, i.e. Multi-GPUs. These may be kept as there default values. 
+Open ``Bodies`` / ``Fluid`` / ``Partitions``. Here we set the number of partitions for the simulation. This is the domain decomposition across discrete hardware units, i.e. Multi-GPUs. These may be kept as their default values. 
 
 .. figure:: figures/hdro-0005_RES_HistogramForward.png
    :align: center
@@ -169,7 +169,7 @@ Open ``Bodies`` / ``Structures``. Uncheck the box that enables this body, if it 
    
    HydroUQ Bodies Structures GUI
 
-Open ``Boundaries`` / ``Wave Flume``. We will set the boundary to be a rigid body, with a fixed separable velocity condition, that is faithful to the digital tiwn of the NHERI OSU LWF. Bathmyetry joint points should be indetical to the ones used in ``Bodeis`` / ``FLuid``.
+Open ``Boundaries`` / ``Wave Flume``. We will set the boundary to be a rigid body, with a fixed separable velocity condition, that is faithful to the digital tiwn of the NHERI OSU LWF. Bathmyetry joint points should be identical to the ones used in ``Bodeis`` / ``FLuid``.
 
 .. figure:: figures/hdro-0005_RES_Summary_Reliability.png
    :align: center
@@ -207,7 +207,7 @@ Open ``Boundaries`` / ``RigidWalls``.
 
 Open ``Sensors`` / ``Wave Gauges``. Set the ``Use these sensor?`` box to ``True`` so that the simulation will output results for the instruments we set on this page.
 
-Three wave gauges will be defined. The first is located prior to the bathymetry ramps, the second partially up the ramps, and the third near the the bathymetry crest, debris, and raised structure. 
+Three wave gauges will be defined. The first is located prior to the bathymetry ramps, the second partially up the ramps, and the third near the bathymetry crest, debris, and raised structure. 
 
 Set the origins and dimensions of each wave as in the table below. To match experimental conditions, we also apply a 120 Hz sampling rate to the wave gauges, meaning they record data every 0.0083 seconds. 
 
@@ -242,7 +242,7 @@ Simulation
 We assume most computers will be able to run this simulation within a few minutes if samples are kept below 100.
 
 .. warning::
-   Only ask for what you need in terms of recorder count, time-step size, random variables, and UQ samples. Otherwise you will end up with massive amounts of data which can slow simulations due to I/O constraints.
+   Only ask for what you need in terms of recorder count, time-step size, random variables, and UQ samples. Otherwise, you will end up with massive amounts of data which can slow simulations due to I/O constraints.
 
 
 .. _hdro-0005-analysis:
@@ -251,7 +251,7 @@ Analysis
 --------
 
 
-This complete our HydroUQ validation example for stocahstic wave-loading on a simple frame structure.
+This completes our HydroUQ validation example for stochastic wave-loading on a simple frame structure.
 
 
 .. _hdro-0005-references:
