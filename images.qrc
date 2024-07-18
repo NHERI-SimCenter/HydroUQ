@@ -102,5 +102,7 @@
         <file>icons/subtract-black.svg</file>
         <file>icons/intersect-black.svg</file>
         <file>icons/difference-black.svg</file>
+        <file>icons/HydroLoadPile.png</file>
+        <file>icons/forces.png</file>
     </qresource>
 </RCC>

@@ -2,5 +2,9 @@
     <qresource prefix="/">
         <file>HydroUQ_Icon_Color.obj</file>
         <file>OSU_LWF_Bathymetry.obj</file>
+        <file>wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv</file>
+        <file>Examples/hdro-0005/data/WaveSpectra.csv</file>
+        <file>Examples/hdro-0005/data/WaveSpectraGenerated.csv</file>
+        <file>Examples/hdro-0005/data/WaveTimeSeries.csv</file>
     </qresource>
 </RCC>
