@@ -37,13 +37,32 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written: JustinBonus
 
 #include "Celeris.h"
+
 #include "volumetric.h"
+
+// #include <QtDataVisualization/q3dscatter.h>
+// #include <QtDataVisualization/qcustom3dvolume.h>
+// #include <QtDataVisualization/q3dtheme.h>
+
+#include <QVector3D>
+#include <QVector2D>
 #include <QVector>
+#include <QColor>
+#include <QTimer>
+
+
 #include <QScrollArea>
-#include <QLineEdit>
-#include <QTabWidget>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
+#include <QMessageBox>
+#include <QCheckBox>
+#include <QSlider>
 #include <QLabel>
+
+
+#include <QLineEdit>
+
 #include <QPushButton>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -51,12 +70,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QString>
 #include <QIcon>
 #include <QPixmap>
+// #include <QMovie>
 #include <QToolButton>
+#include <QRadioButton>
+#include <QButtonGroup>
+#include <QComboBox>
+#include <QSpinBox>
+#include <QGroupBox>
 // #include <QStackedWidget>
 // #include "slidingstackedwidget.h"
 
 #include <SC_DoubleLineEdit.h>
 #include <SC_IntLineEdit.h>
+#include <RandomVariablesContainer.h>
 
 // #include <Qt3DExtras/QCuboidMesh>
 // #include <Qt3DExtras/QPhongMaterial>
@@ -75,71 +101,85 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // #include <Qt3DRender/QGeometryRenderer>
 
 
+
+
+
+
+// #include <InputWidgetParameters.h>
+
+#include <LineEditRV.h>
+#include <SectionTitle.h>
+#include <SimCenterPreferences.h>
+// #include <GeneralInformationWidget.h>
+
+
 // #include <QOpenGLWidget>
 #include "QVector3D"
 #include <qcustomplot.h>
 #include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonValue>
+#include <QJsonObject>
+
 #include <QFileDialog>
-#include <SectionTitle.h>
 #include <QFileInfo>
-#include <QMovie>
-#include <QPixmap>
-#include <RandomVariablesContainer.h>
-#include <QRadioButton>
-#include <QButtonGroup>
-#include <QComboBox>
-#include <QSpinBox>
-#include <QGroupBox>
-#include <QVector>
-#include <LineEditRV.h>
-#include <QDebug>
-#include <SimCenterPreferences.h>
-#include <GeneralInformationWidget.h>
-#include <QProcess>
+#include <QFile>
 #include <QDir>
 #include <QTextEdit>
+#include <QProcess>
+#include <QDebug>
 #include <QFormLayout>
-#include <QtWebEngineWidgets>
+
+#include <QCheckBox>
+#include <QSlider>
+#include <QRadioButton>
+#include <QGroupBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+
+#include <QWidget>
+#include <QFrame>
+#include <QSize>
+#include <QSizePolicy>
+#include <QLabel>
+
+
+
 #include <QWebEngineView>
-#include <QWebEngineSettings>
+#include <QtWebEngineWidgets>
 #include <QWebEnginePage>
+#include <QWebEngineSettings>
+
 #include <QWebEngineProfile>
+#include <QWebEngineDownloadItem>
 #include <QWebEngineScriptCollection>
 #include <QWebEngineScript>
 
-#include <QUrl> 
+// #include <QWebEngineDownloadRequest> // QT6
 
+#include <QUrl> 
 #include <QtGui/QScreen>
 
-// #include <QWebEngineView>
-// #include <QWebEnginePage>
-// #include <QWebEngineSettings>
-// #include <QWebEngineProfile>
-// #include <QWebEngineScriptCollection>
-// #include <QWebEngineScript>
-// #include <QWebEngineScriptCollection>
 
-// Trying out
-// #include <SimCenterAppWidget.h>
-// #include <WorkflowAppHydroUQ.h>
-// #include <MainWindowWorkflowApp.h>
-// #include <HydroEventSelection.h>
-// #include <LocalApplication.h>
-// #include <RemoteApplication.h>
-// #include <RemoteJobManager.h>
-// #include <RunWidget.h>
-// #include <UQ_EngineSelection.h>
-// #include <UQ_Results.h>
-// #include <SC_ToolDialog.h>
-// #include <SC_RemoteAppTool.h>
 
-Celeris::Celeris(QWidget *parent)
-    :  SimCenterAppWidget(parent)
+// #include <Q3DScatter>
+// #include <Q3DTheme>
+// #include <Q3DLight>
+// #include <Q3DCamera>
+// #include <Q3DInputHandler>
+// #include <Q3DScene>
+
+
+
+
+// explicit
+// Celeris::Celeris(QWidget *parent) : SimCenterAppWidget(parent)
+Celeris::Celeris(QWidget *parent) : SimCenterAppWidget(parent) 
 {
-    int windowWidth = 1000;
-    int windowWidthMin = 1000;
-    int windowHeight = 1000;
-    int windowHeightMin = 900;
+    int windowWidth = 1920;
+    int windowWidthMin = 1280;
+    int windowHeight = 1080;
+    int windowHeightMin = 720;
     QWidget     *mainGroup = new QWidget();
     mainLayout = new QGridLayout();
     mainWindowLayout = new QHBoxLayout(); 
@@ -170,16 +210,16 @@ Celeris::Celeris(QWidget *parent)
     hLayout->addLayout(vLayout);
     hLayout->addLayout(vLayout2);
 
-    volume->setWindowTitle(QStringLiteral("Bathymetry 3D Viewer & Boussinesq Wave Solver (Celeris)"));
+    volume->setWindowTitle(QStringLiteral("Wave Solver with Outputs (Celeris-WebGPU)"));
 
     QCheckBox *sliceXCheckBox = new QCheckBox(volume);
-    sliceXCheckBox->setText(QStringLiteral("Slice on X axis"));
+    sliceXCheckBox->setText(QStringLiteral("Slice on X"));
     sliceXCheckBox->setChecked(false);
     QCheckBox *sliceYCheckBox = new QCheckBox(volume);
-    sliceYCheckBox->setText(QStringLiteral("Slice on Y axis"));
+    sliceYCheckBox->setText(QStringLiteral("Slice on Y"));
     sliceYCheckBox->setChecked(false);
     QCheckBox *sliceZCheckBox = new QCheckBox(volume);
-    sliceZCheckBox->setText(QStringLiteral("Slice on Z axis"));
+    sliceZCheckBox->setText(QStringLiteral("Slice on Z"));
     sliceZCheckBox->setChecked(false);
 
     QSlider *sliceXSlider = new QSlider(Qt::Horizontal, volume);
@@ -203,7 +243,7 @@ Celeris::Celeris(QWidget *parent)
     fpsCheckBox->setChecked(false);
     QLabel *fpsLabel = new QLabel(QStringLiteral(""), volume);
 
-    QGroupBox *textureDetailGroupBox = new QGroupBox(QStringLiteral("Bathymetry detail"));
+    QGroupBox *textureDetailGroupBox = new QGroupBox(QStringLiteral("3D Detail"));
 
     QRadioButton *lowDetailRB = new QRadioButton(volume);
     lowDetailRB->setText(QStringLiteral("Low (128x64x128)"));
@@ -225,18 +265,18 @@ Celeris::Celeris(QWidget *parent)
     textureDetailVBox->addWidget(highDetailRB);
     textureDetailGroupBox->setLayout(textureDetailVBox);
 
-    QGroupBox *areaGroupBox = new QGroupBox(QStringLiteral("Show area"));
+    QGroupBox *areaGroupBox = new QGroupBox(QStringLiteral("Show Area"));
 
     QRadioButton *areaAllRB = new QRadioButton(volume);
-    areaAllRB->setText(QStringLiteral("Full region"));
+    areaAllRB->setText(QStringLiteral("Full Region"));
     areaAllRB->setChecked(true);
 
     QRadioButton *areaMineRB = new QRadioButton(volume);
-    areaMineRB->setText(QStringLiteral("Analysis area"));
+    areaMineRB->setText(QStringLiteral("Analysis Area"));
     areaMineRB->setChecked(false);
 
     QRadioButton *areaMountainRB = new QRadioButton(volume);
-    areaMountainRB->setText(QStringLiteral("Wave inlet"));
+    areaMountainRB->setText(QStringLiteral("Multi-Scale Zone"));
     areaMountainRB->setChecked(false);
 
     QVBoxLayout *areaVBox = new QVBoxLayout;
@@ -246,18 +286,18 @@ Celeris::Celeris(QWidget *parent)
     areaGroupBox->setLayout(areaVBox);
 
     QCheckBox *colorTableCheckBox = new QCheckBox(volume);
-    colorTableCheckBox->setText(QStringLiteral("Alternate color table"));
+    colorTableCheckBox->setText(QStringLiteral("Invert Colors"));
     colorTableCheckBox->setChecked(false);
 
     QLabel *sliceImageXLabel = new QLabel(volume);
     QLabel *sliceImageYLabel = new QLabel(volume);
     QLabel *sliceImageZLabel = new QLabel(volume);
-    sliceImageXLabel->setMinimumSize(QSize(200, 100));
+    sliceImageXLabel->setMinimumSize(QSize(200, 200));
     sliceImageYLabel->setMinimumSize(QSize(200, 200));
-    sliceImageZLabel->setMinimumSize(QSize(200, 100));
-    sliceImageXLabel->setMaximumSize(QSize(200, 100));
+    sliceImageZLabel->setMinimumSize(QSize(200, 200));
+    sliceImageXLabel->setMaximumSize(QSize(200, 200));
     sliceImageYLabel->setMaximumSize(QSize(200, 200));
-    sliceImageZLabel->setMaximumSize(QSize(200, 100));
+    sliceImageZLabel->setMaximumSize(QSize(200, 200));
     sliceImageXLabel->setFrameShape(QFrame::Box);
     sliceImageYLabel->setFrameShape(QFrame::Box);
     sliceImageZLabel->setFrameShape(QFrame::Box);
@@ -273,20 +313,20 @@ Celeris::Celeris(QWidget *parent)
     QLabel *alphaMultiplierLabel = new QLabel(QStringLiteral("Opacity: 1.0"));
 
     QCheckBox *preserveOpacityCheckBox = new QCheckBox(volume);
-    preserveOpacityCheckBox->setText(QStringLiteral("Preserve opacity"));
+    preserveOpacityCheckBox->setText(QStringLiteral("Preserve Opacity"));
     preserveOpacityCheckBox->setChecked(true);
 
     QCheckBox *transparentGroundCheckBox = new QCheckBox(volume);
-    transparentGroundCheckBox->setText(QStringLiteral("Transparent ground"));
+    transparentGroundCheckBox->setText(QStringLiteral("Transparent Ground"));
     transparentGroundCheckBox->setChecked(false);
 
     QCheckBox *useHighDefShaderCheckBox = new QCheckBox(volume);
-    useHighDefShaderCheckBox->setText(QStringLiteral("Use HD shader"));
+    useHighDefShaderCheckBox->setText(QStringLiteral("HD Shader"));
     useHighDefShaderCheckBox->setChecked(true);
 
     QLabel *performanceNoteLabel =
             new QLabel(QStringLiteral(
-                           "Note: A high end graphics card is\nrecommended with the HD shader\n enabled."));
+                           "Note: HD shader uses GPU."));
     performanceNoteLabel->setFrameShape(QFrame::Box);
 
     QCheckBox *drawSliceFramesCheckBox = new QCheckBox(volume);
@@ -384,8 +424,8 @@ Celeris::Celeris(QWidget *parent)
     // -----------------------------------------------------------------------------------
     QFile file;
     // file.setFileName("https://plynett.github.io/js/main.js");
-    // file.setFileName("https://github.com/plynett/plynett.github.io/blob/main/js/main.js");
-    file.setFileName(":/EVENTS/Celeris/js/main.js");
+    file.setFileName("https://github.com/plynett/plynett.github.io/blob/main/js/main.js");
+    // file.setFileName(":/EVENTS/Celeris/js/main.js");
     file.open(QIODevice::ReadOnly);
     mainJS = file.readAll();
     // jQuery.append("\nvar qt = { 'jQuery': jQuery.noConflict(true) };");
@@ -423,7 +463,6 @@ Celeris::Celeris(QWidget *parent)
     // connect(view, &QWebEngineView::loadFinished, this, &Celeris::adjustLocation);
     // connect(view, &QWebEngineView::titleChanged, this, &Celeris::adjustTitle);
     // connect(view, &QWebEngineView::loadProgress, this, &Celeris::setProgress);
-    connect(view, &QWebEngineView::loadFinished, this, &Celeris::finishLoading);
 
     qDebug() << "Try to run Celeris javascript...";
 
@@ -433,7 +472,32 @@ Celeris::Celeris(QWidget *parent)
 
 
 
+    // enable unsfafe javascript through the page
+    // so we may download when if the event is triggered
+    // view->page()->settings()->setAttribute(QWebEngineSettings::AllowRunningInsecureContent, true);
 
+
+    // Watch for a download event
+
+
+    QWebEngineProfile *profile = view->page()->profile();
+
+
+    // QWebEngineDownloadItem *download = new QWebEngineDownloadItem();
+    
+
+
+    QObject::connect(profile, &QWebEngineProfile::downloadRequested, [this](QWebEngineDownloadItem *download) {
+        // QString downloadPath = QFileDialog::getSaveFileName(this, tr("Save File"), download->path());
+        QString downloadPath = QFileDialog::getSaveFileName(this, tr("Save File"), download->path());
+        if (downloadPath.isEmpty()) {
+            download->cancel();
+        } else {
+            download->setPath(downloadPath);
+            download->accept();
+        }
+    });
+    
 
 
     // view->page()->runJavaScript(mainJS)
@@ -501,12 +565,58 @@ Celeris::Celeris(QWidget *parent)
     // view->showMaximized();
     // view->show(); 
 
-  
+    QScrollArea *scrollAreaLeft = new QScrollArea();
+    scrollAreaLeft->setWidget(view);
 
-    view->setMinimumSize(650, 800);
-    mainLayout->addWidget(view, 0, 0);
+    scrollAreaLeft->setWidgetResizable(true);
+    scrollAreaLeft->setLineWidth(1);
+    scrollAreaLeft->setFrameShape(QFrame::NoFrame);
+    scrollAreaLeft->setMinimumWidth(200);
+    scrollAreaLeft->setMinimumHeight(400);
+
+    // -----------------------------------------------------------------------------------
+
+    // QWebEngineView *view = new QWebEngineView();
+    // view->load(QUrl("https://plynett.github.io/"));
+    // view->show();
+
+
+    
+    // view->setMinimumSize(800, 800);
+    // scrollAreaLeft->addWidget(view);
+
+
+    // -- header  on either side of top of window to describe the application
+    SectionTitle *titleLeft = new SectionTitle();
+    titleLeft->setText(QString("Web-Solver for Boussinesq and NLSW Waves (Celeris-WebGPU)"));
+    SectionTitle *titleRight = new SectionTitle();
+    titleRight->setText(QString("Volumetric Model of the 2D Celeris Scene"));
+
+    mainLayout->addWidget(titleLeft, 0, 0);
+    mainLayout->addWidget(titleRight, 0, 1);
+
+    mainLayout->addWidget(scrollAreaLeft, 1, 0);
+
+    // mainLayout->addWidget(view, 0, 0);
+
+
+
     volume->setMinimumSize(800, 800);
-    mainLayout->addWidget(volume, 0, 1);
+
+    QScrollArea *scrollAreaRight = new QScrollArea();
+    scrollAreaRight->setWidget(volume);
+
+    scrollAreaRight->setWidgetResizable(true);
+    scrollAreaRight->setLineWidth(1);
+    scrollAreaRight->setFrameShape(QFrame::NoFrame);
+    scrollAreaRight->setMinimumWidth(800);
+    scrollAreaRight->setMinimumHeight(400);
+    mainLayout->addWidget(scrollAreaRight, 1, 1);
+
+
+    // mainLayout->addWidget(volume, 1, 1);
+
+
 
 
     // -----------------------------------------------------------------------------------
@@ -519,20 +629,49 @@ Celeris::Celeris(QWidget *parent)
 
     // // Add digital twin + scene builder on left. Add 3D visualizer on right
     QHBoxLayout *horizontalPanelLayout = new QHBoxLayout();
+    horizontalPanelLayout->addWidget(mainGroup);
+
     QWidget *horizontalPanels = new QWidget();
     horizontalPanels->setLayout(horizontalPanelLayout);
-    horizontalPanelLayout->addWidget(mainGroup);
-    mainWindowLayout->addWidget(horizontalPanels);
+    QScrollArea *scrollArea = new QScrollArea();
+
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setLineWidth(1);
+    scrollArea->setFrameShape(QFrame::NoFrame);
+    scrollArea->setMinimumWidth(400 + 25);
+    scrollArea->setMinimumHeight(400 + 25);
+    scrollArea->setWidget(horizontalPanels);
+
+    
+
+    // scrollArea->setMaximumWidth(windowWidth + 25);
+
+
+    // QWidget *horizontalPanels = new QWidget();
+    // mainWindowLayout->addWidget(horizontalPanels);
+    mainWindowLayout->addWidget(scrollArea);
     // mainWindowLayout->addWidget(view);
     this->setLayout(mainWindowLayout);
+
+    connect(view, &QWebEngineView::loadFinished, this, &Celeris::finishLoading);
+    
+    view->show();
+
 }
 
 
 Celeris::~Celeris()
 {
-
+    // if (modifier != nullptr) {
+    //     delete modifier;
+    // }
+    // if (view != nullptr) {
+    //     // first,
+    //     view->close();
+    //     // then,
+    //     delete view;
+    // }
 }
-
 
 void Celeris::finishLoading(bool)
 {
@@ -551,8 +690,8 @@ void Celeris::finishLoading(bool)
     // view->page()->runJavaScript(":/EVENTS/Celeris/js/main.js");
 
     // Example of running javascript, it will change the background color of the page to lightblue
-    QString code = "document.body.style.backgroundColor = 'lightblue';";
-    view->page()->runJavaScript(code);
+    // QString code = "document.body.style.backgroundColor = 'lightblue';";
+    // view->page()->runJavaScript(code);
 
     QString codeUpdateButtonLabel = "const maximizedCounts = []; const panels = document.querySelectorAll('#horizontalbar .custom-window'); panels.forEach((panel, index) => { maximizedCounts[index] = 0; const content = panel.querySelector('.window-content'); const isMaximized = window.getComputedStyle(content).display !== 'none'; const button = panel.querySelector('.minimize-button'); button.textContent = isMaximized ? '-' : '+'; });";
     view->page()->runJavaScript(codeUpdateButtonLabel);
@@ -568,22 +707,22 @@ void Celeris::finishLoading(bool)
     QString codeOnFileUploadListener = "var fileInputs = document.querySelectorAll('input[type=file]'); fileInputs.forEach(function (input) { input.addEventListener('change', onFileUpload); });";
     view->page()->runJavaScript(codeOnFileUploadListener);
 
-    QString codeMouseVals = "var leftMouseIsDown = false; var rightMouseIsDown = false; var lastMouseX_right = 0;  var lastMouseY_right = 0; var lastMouseX_left = 0;   var lastMouseY_left = 0;";
-    QString codeMouseEvent = "function handleMouseEvent(event) {  var rect = canvas.getBoundingClientRect();  var scaleX = calc_constants.WIDTH / rect.width;  var scaleY = calc_constants.HEIGHT / rect.height;  calc_constants.xClick = (event.clientX - rect.left) * scaleX;  calc_constants.yClick = calc_constants.HEIGHT - (event.clientY - rect.top) * scaleY; calc_constants.click_update = 1; console.log('Canvas clicked/moved at X:', calc_constants.xClick, ' Y:', calc_constants.yClick); }";
-    QString codeMouseDown = "canvas.addEventListener('mousedown', function (event) {   if (event.button === 0 && calc_constants.viewType == 1) {  leftMouseIsDown = true;  handleMouseEvent(event);   } else if (event.button === 0 && calc_constants.viewType == 2) {   leftMouseIsDown = true;  lastMouseX_left = event.clientX;  lastMouseY_left = event.clientY; calc_constants.click_update = 2;  } else if (event.button === 2 && calc_constants.viewType == 1 && calc_constants.whichPanelisOpen == 6) {   rightMouseIsDown = true;  lastMouseX_right = event.clientX;   lastMouseY_right = event.clientY;  calc_constants.locationOfTimeSeries[calc_constants.changethisTimeSeries].xts = x_position; calc_constants.locationOfTimeSeries[calc_constants.changethisTimeSeries].yts = y_position;  calc_constants.click_update = 2;  calc_constants.updateTimeSeriesTx = 1;  } else if (event.button === 2 && calc_constants.viewType == 2) {   rightMouseIsDown = true;   lastMouseX_right = event.clientX; lastMouseY_right = event.clientY; calc_constants.click_update = 2;  }  });";
+    // QString codeMouseVals = "var leftMouseIsDown = false; var rightMouseIsDown = false; var lastMouseX_right = 0;  var lastMouseY_right = 0; var lastMouseX_left = 0;   var lastMouseY_left = 0;";
+    // QString codeMouseEvent = "function handleMouseEvent(event) {  var rect = canvas.getBoundingClientRect();  var scaleX = calc_constants.WIDTH / rect.width;  var scaleY = calc_constants.HEIGHT / rect.height;  calc_constants.xClick = (event.clientX - rect.left) * scaleX;  calc_constants.yClick = calc_constants.HEIGHT - (event.clientY - rect.top) * scaleY; calc_constants.click_update = 1; console.log('Canvas clicked/moved at X:', calc_constants.xClick, ' Y:', calc_constants.yClick); }";
+    // QString codeMouseDown = "canvas.addEventListener('mousedown', function (event) {   if (event.button === 0 && calc_constants.viewType == 1) {  leftMouseIsDown = true;  handleMouseEvent(event);   } else if (event.button === 0 && calc_constants.viewType == 2) {   leftMouseIsDown = true;  lastMouseX_left = event.clientX;  lastMouseY_left = event.clientY; calc_constants.click_update = 2;  } else if (event.button === 2 && calc_constants.viewType == 1 && calc_constants.whichPanelisOpen == 6) {   rightMouseIsDown = true;  lastMouseX_right = event.clientX;   lastMouseY_right = event.clientY;  calc_constants.locationOfTimeSeries[calc_constants.changethisTimeSeries].xts = x_position; calc_constants.locationOfTimeSeries[calc_constants.changethisTimeSeries].yts = y_position;  calc_constants.click_update = 2;  calc_constants.updateTimeSeriesTx = 1;  } else if (event.button === 2 && calc_constants.viewType == 2) {   rightMouseIsDown = true;   lastMouseX_right = event.clientX; lastMouseY_right = event.clientY; calc_constants.click_update = 2;  }  });";
 
-    QString codeMouseMove = "canvas.addEventListener('mousemove', function (event) { if (leftMouseIsDown && calc_constants.viewType == 1) {   handleMouseEvent(event);  } else if (leftMouseIsDown && calc_constants.viewType == 2) {  const deltaX = event.clientX - lastMouseX_left;  const deltaY = event.clientY - lastMouseY_left; const motion_inc = 0.001 / calc_constants.forward; calc_constants.shift_x  += deltaX * motion_inc;  calc_constants.shift_y  -= deltaY * motion_inc * calc_constants.WIDTH / calc_constants.HEIGHT;   lastMouseX_left = event.clientX; lastMouseY_left = event.clientY;  calc_constants.click_update = 2; } else if (rightMouseIsDown) {  const deltaX = event.clientX - lastMouseX_right;   calc_constants.rotationAngle_xy -= deltaX * 0.1;  astMouseX_right = event.clientX;  lastMouseY_right = event.clientY; calc_constants.click_update = 2;  } });";
+    // QString codeMouseMove = "canvas.addEventListener('mousemove', function (event) { if (leftMouseIsDown && calc_constants.viewType == 1) {   handleMouseEvent(event);  } else if (leftMouseIsDown && calc_constants.viewType == 2) {  const deltaX = event.clientX - lastMouseX_left;  const deltaY = event.clientY - lastMouseY_left; const motion_inc = 0.001 / calc_constants.forward; calc_constants.shift_x  += deltaX * motion_inc;  calc_constants.shift_y  -= deltaY * motion_inc * calc_constants.WIDTH / calc_constants.HEIGHT;   lastMouseX_left = event.clientX; lastMouseY_left = event.clientY;  calc_constants.click_update = 2; } else if (rightMouseIsDown) {  const deltaX = event.clientX - lastMouseX_right;   calc_constants.rotationAngle_xy -= deltaX * 0.1;  astMouseX_right = event.clientX;  lastMouseY_right = event.clientY; calc_constants.click_update = 2;  } });";
 
-    QString codeMouseUp = "canvas.addEventListener('mouseup', function (event) { if (event.button === 0) { leftMouseIsDown = false; calc_constants.click_update = 0;  } else if (event.button === 2) {  rightMouseIsDown = false; calc_constants.click_update = 0;  }  });";
+    // QString codeMouseUp = "canvas.addEventListener('mouseup', function (event) { if (event.button === 0) { leftMouseIsDown = false; calc_constants.click_update = 0;  } else if (event.button === 2) {  rightMouseIsDown = false; calc_constants.click_update = 0;  }  });";
 
-    QString codeMouseLeave = "canvas.addEventListener('mouseleave', function () { leftMouseIsDown = false;  rightMouseIsDown = false;  });";
+    // QString codeMouseLeave = "canvas.addEventListener('mouseleave', function () { leftMouseIsDown = false;  rightMouseIsDown = false;  });";
 
-    view->page()->runJavaScript(codeMouseVals);
-    view->page()->runJavaScript(codeMouseEvent);
-    view->page()->runJavaScript(codeMouseDown);
-    view->page()->runJavaScript(codeMouseMove);
-    view->page()->runJavaScript(codeMouseUp);
-    view->page()->runJavaScript(codeMouseLeave);
+    // view->page()->runJavaScript(codeMouseVals);
+    // view->page()->runJavaScript(codeMouseEvent);
+    // view->page()->runJavaScript(codeMouseDown);
+    // view->page()->runJavaScript(codeMouseMove);
+    // view->page()->runJavaScript(codeMouseUp);
+    // view->page()->runJavaScript(codeMouseLeave);
 
 
     // QString codeTool = "const tooltip = document.getElementById('tooltip'); let x_position = 0.0;  let y_position = 0.0;";

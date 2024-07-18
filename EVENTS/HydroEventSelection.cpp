@@ -552,6 +552,7 @@ bool HydroEventSelection::supportsLocalRun()
 {
     if (theCurrentEvent != 0)
         return theCurrentEvent->supportsLocalRun();
+    return false;
 }
 
 bool

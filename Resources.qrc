@@ -97,6 +97,8 @@
         <file>icons/subtract-black.svg</file>
         <file>icons/intersect-black.svg</file>
         <file>icons/difference-black.svg</file>
+        <file>icons/HydroLoadPile.png</file>
+        <file>icons/forces.png</file>
     </qresource>
     <qresource prefix="/icons">
         <file>icons/engine-white.svg</file>
@@ -190,9 +192,15 @@
         <file>icons/intersect-black.svg</file>
         <file>icons/difference-black.svg</file>
         <file>icons/HydroUQ_Icon_Color_512x512.svg</file>
+        <file>icons/HydroLoadPile.png</file>
+        <file>icons/forces.png</file>
     </qresource>
     <qresource prefix="/objects">
         <file>HydroUQ_Icon_Color.obj</file>
         <file>OSU_LWF_Bathymetry.obj</file>
+        <file>wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv</file>
+        <file>Examples/hdro-0005/data/WaveSpectra.csv</file>
+        <file>Examples/hdro-0005/data/WaveSpectraGenerated.csv</file>
+        <file>Examples/hdro-0005/data/WaveTimeSeries.csv</file>
     </qresource>
 </RCC>
