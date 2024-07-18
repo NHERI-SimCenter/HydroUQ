@@ -39,19 +39,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // Written: mhgardner
 
-#include <QComboBox>
-#include <QJsonObject>
-#include <QString>
-#include <QWidget>
-#include <RandomVariablesContainer.h>
 #include <SimCenterAppWidget.h>
+#include <RandomVariablesContainer.h>
+// #include <QComboBox>
+// #include <QJsonObject>
+// #include <QString>
+// #include <QWidget>
 
 // Forward declarations
-class QComboBox;
-class QJsonObject;
-class QString;
-class QWidget;
-class RandomVariableInputWidget;
+// class QComboBox;
+// class QJsonObject;
+// class QString;
+// class QWidget;
+// class RandomVariableInputWidget;
+// class QHBoxLayout;
+class RandomVariablesContainer;
 
 /**
  * Widget for inputting parameters for stochastic earthquake time history
@@ -78,28 +80,28 @@ class StochasticWaveInput : public SimCenterAppWidget {
    * @param[in] rvObject JSON object containing input information
    * @return Returns true if successful, false otherwise
    */
-  bool inputFromJSON(QJsonObject& rvObject);
+  bool inputFromJSON(QJsonObject& rvObject) override;
 
   /**
    * Write all current class data to JSON required to reconstruct class
    * @param[in, out] rvObject JSON object to write output to
    * @return Returns true if successful, false otherwise
    */
-  bool outputToJSON(QJsonObject& rvObject);
+  bool outputToJSON(QJsonObject& rvObject) override;
 
   /**
    * Read application-specific data from JSON object
    * @param[in] rvObject JSON object to read application data from
    * @return Returns true if successful, false otherwise
    */
-  bool inputAppDataFromJSON(QJsonObject& rvObject);
+  bool inputAppDataFromJSON(QJsonObject& rvObject) override;
 
   /**
    * Write application-specific data to JSON object
    * @param[in, out] rvObject JSON object to write application data to
    * @return Returns true if successful, false otherwise
    */
-  bool outputAppDataToJSON(QJsonObject& rvObject);
+  bool outputAppDataToJSON(QJsonObject& rvObject) override;
 
 
   bool supportsLocalRun() override;

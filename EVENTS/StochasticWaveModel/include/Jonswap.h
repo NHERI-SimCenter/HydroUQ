@@ -1,5 +1,5 @@
-#ifndef _KWON_KAREEM_2006_H
-#define _KWON_KAREEM_2006_H
+#ifndef _JONSWAP_H
+#define _JONSWAP_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
@@ -50,6 +50,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QWidget>
 #include <RandomVariablesContainer.h>
 #include <SimCenterAppWidget.h>
+#include <QPushButton>
+class SimCenterGraphPlot;
+class SC_ComboBox;
+class QStackedWidget;
 
 // Forward declarations
 class LineEditRV;
@@ -64,6 +68,12 @@ class QWidget;
 class QComboBox;
 class RandomVariablesContainer;
 class SC_IntLineEdit;
+class SC_FileEdit;
+class QGridLayout;
+class QHBoxLayout;
+class QString;
+class QVBoxLayout;
+class QPushButton;
 
 /**
  * Widget for inputting parameters for stochastic earthquake time history
@@ -115,7 +125,24 @@ class Jonswap : public SimCenterAppWidget {
    * @return Returns true if successful, false otherwise
    */
 
- public slots:
+  bool copyFiles(QString &dirName);
+
+  QString getAbbreviatedName(void);
+
+  QLineEdit *createTextEntry(QString text,
+                  QHBoxLayout *theLayout,
+                  int minL=100,
+                  int maxL=100);
+
+  QLineEdit *createTextEntry(QString text,
+                  QGridLayout *theLayout,
+                  int col,
+                  int minL=100,
+                  int maxL=100);
+
+public slots:
+    void updateDistributionPlot(); 
+
   /**
    * Update ability to provide seed based on changed status of radio button
    * @param[in] checked Current status of radio button for providing seed
@@ -123,6 +150,7 @@ class Jonswap : public SimCenterAppWidget {
   void provideSeed(const bool& checked);
 
  protected:
+
   QLabel *modelDescription; /**< Brief description of model indicating relevant
 				 paper where more information can be found describing
 				 model in greater detail */
@@ -135,17 +163,27 @@ class Jonswap : public SimCenterAppWidget {
    LineEditRV *significantWaveHeight; /**< significant wave height (ft) */
    LineEditRV *peakPeriod; /**< peak period (s) */
    LineEditRV *waterDepth; /**< water depth (ft) */
+   LineEditRV *tidalSLR; /**< tidal sea level rise (ft) */
+   LineEditRV *stormSurgeSLR; /**< storm surge sea level rise (ft) */
+   LineEditRV *climateChangeSLR; /**< climate change sea level rise (ft) */
    LineEditRV *recorderOriginX; /**< x-coordinate of recorder origin */
    SC_IntLineEdit *recorderCountZ; /**< number of recorders in z-direction */
    LineEditRV *timeStep; /**< time step (s) */
    LineEditRV *timeDuration; /**< time duration (s) */
-   
-   
-   
+   SC_FileEdit *spectraFile; /**< file containing wave spectra */
+   SC_FileEdit *kinematicsFile; /**< file containing bathymetry data */
+
+   QPushButton *theDomainImageButton;
+
    QSpinBox *seed; /**< Value to use as seed for motion generation */
    QRadioButton *useSeed; /**< Radio button to indicate whether specific seed
                               value should be used */
 
+  QLineEdit *mean, *standardDev;
+  QLineEdit *alpha, *beta, *a, *b;
+  QLineEdit *dataDir;
+  QString inpty;
+  SimCenterGraphPlot *thePlot;
 };
 
 #endif  // _KWON_KAREEM_2006_MODEL_H
