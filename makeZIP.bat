@@ -32,6 +32,9 @@ mkdir .\applications\Workflow
 mkdir .\applications\opensees
 mkdir .\applications\dakota
 mkdir .\applications\python
+mkdir .\applications\claymore
+mkdir .\applications\taichi
+mkdir .\applications\gns
 
 xcopy /s /e ..\..\..\SimCenterBackendApplications\applications\common  .\applications\common
 xcopy /s /e ..\..\..\SimCenterBackendApplications\applications\createEDP  .\applications\createEDP
