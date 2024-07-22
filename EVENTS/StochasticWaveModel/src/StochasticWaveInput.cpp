@@ -35,7 +35,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 // Written: mhgardner
-
+// Modified: JustinBonus (05/2024)
 #include <QComboBox>
 #include <QDebug>
 #include <QDoubleSpinBox>
@@ -87,7 +87,7 @@ StochasticWaveInput::StochasticWaveInput(
 
 
 StochasticWaveInput::~StochasticWaveInput() {
-
+  // delete stochasticModel->thePlot; 
 }
 
 bool StochasticWaveInput::outputToJSON(QJsonObject& jsonObject) {
@@ -107,7 +107,7 @@ bool StochasticWaveInput::inputFromJSON(QJsonObject& jsonObject) {
   if (stochasticModel != NULL) 
     return stochasticModel->inputFromJSON(jsonObject);
   else {
-    qDebug() << "StocashicWaveInput::outputToJSON - NULL model";
+    qDebug() << "StocashicWaveInput::inputToJSON - NULL model";
   }
 
   return result;
@@ -119,7 +119,7 @@ bool StochasticWaveInput::outputAppDataToJSON(QJsonObject& jsonObject) {
   if (stochasticModel != NULL) 
     return stochasticModel->outputAppDataToJSON(jsonObject);
   else {
-    qDebug() << "StocashicWaveInput::outputToJSON - NULL model";
+    qDebug() << "StocashicWaveInput::outputAppDataToJSON - NULL model";
   }
   return result;
 }
@@ -153,7 +153,7 @@ void StochasticWaveInput::modelSelectionChanged(const QString& model) {
 
   // Switch the model description and form layout based on model selection
   SimCenterAppWidget *nextModel = NULL;
-  if (model == "JONSWAP") {
+  if (model == "JONSWAP" || model == "StochasticWaveJonswap" || model == "StochasticWave") {
     nextModel = new Jonswap(rvInputWidget, this);
   } else {
     qDebug() << "ERROR: StochasticWaveInput::modelSelectionChanged: Unknown selection: " << model << "\n";
