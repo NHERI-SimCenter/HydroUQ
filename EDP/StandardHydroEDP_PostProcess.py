@@ -34,8 +34,8 @@ import matplotlib
 # Read in files to pandas, assume they are located in the same directory as the script for now
 # Read in the gridTarget files
 data = {}
-for i in range(2):
-    for j in range(3):
+for i in range(32):
+    for j in range(8):
         filename = f"gridTarget[{i}]_dev[{j}].csv"
         if os.path.exists(filename):
             data[filename] = pd.read_csv(filename)
@@ -43,9 +43,9 @@ for i in range(2):
             print(f"File {filename} does not exist.")
 
 # Read in the particleTarget files            
-for i in range(2):
-    for j in range(3):
-        for k in range(3):
+for i in range(32):
+    for j in range(8):
+        for k in range(8):
             filename = f"particleTarget[{i}]_model[{k}]_dev[{j}].csv"
             if os.path.exists(filename):
                 data[filename] = pd.read_csv(filename)

@@ -56,6 +56,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_TableEdit.h>
 #include <SC_FileEdit.h>
 #include <SC_CheckBox.h>
+#include <QPixmap>
+
 
 
 // For 2d graphing like in RV distributions 
@@ -317,7 +319,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   // QString paddleDisplacementFilename = QString::fromAscii"WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv";
   paddleLayout->addWidget(new QLabel("Paddle Motion File"), numRow, 0);
   paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
-  char str[] = "WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv";
+  char str[] = "WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv"; // 4m amplitude, scale-factor 500, from Mascarenas 2022
   QString paddleDisplacementFilename(str);
   paddleDisplacementFile->setFilename(paddleDisplacementFilename);
   paddleLayout->addWidget(paddleDisplacementFile, numRow++, 1, 1, 4);
