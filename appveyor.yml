@@ -25,9 +25,12 @@ for:
        
     install:
        - uname
+       - rm -rf HydroUQ
+       - rm -rf SimCenterBackend
+       - rm -rf SimCenterCommon
        - git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
        - git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
-       - git clone https://github.com/NHERI-SimCenter/HydroUQ.git
+       - git clone https://github.com/JustinBonus/HydroUQ.git
 
     build_script:
 
