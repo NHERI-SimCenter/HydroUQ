@@ -1,9 +1,9 @@
 version: 3.1.{build}
 
 image:
+  - Visual Studio 2019
   - macOS
   - Ubuntu1804
-  - Visual Studio 2019
 
 stack: python 3.8
 
@@ -25,9 +25,12 @@ for:
        
     install:
        - uname
+       - rm -rf HydroUQ
+       - rm -rf SimCenterBackend
+       - rm -rf SimCenterCommon
        - git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
        - git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
-       - git clone https://github.com/NHERI-SimCenter/HydroUQ.git
+       - git clone https://github.com/JustinBonus/HydroUQ.git
 
     build_script:
 
@@ -63,6 +66,9 @@ for:
        
     install:
        - uname
+       - rm -rf HydroUQ
+       - rm -rf SimCenterBackend
+       - rm -rf SimCenterCommon
        - sudo update-alternatives --set gcc /usr/bin/gcc-8
        - sudo apt-get update       
        - sudo apt-get -y install libglu1-mesa-dev freeglut3-dev mesa-common-dev libblas-dev liblapack-dev
@@ -72,7 +78,7 @@ for:
        - conan remote add simcenter https://nherisimcenter.jfrog.io/artifactory/api/conan/simcenter
        - git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
        - git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
-       - git clone https://github.com/NHERI-SimCenter/HydroUQ.git
+       - git clone https://github.com/JustinBonus/HydroUQ.git
        
     build_script:
        # build SimCenterBackendApplications
@@ -118,9 +124,12 @@ for:
        - cmd: echo %PATH%
 
     install:
+       - cmd: rm -rf HydroUQ
+       - cmd: rm -rf SimCenterBackend
+       - cmd: rm -rf SimCenterCommon
        - cmd: git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
        - cmd: git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
-       - cmd: git clone https://github.com/NHERI-SimCenter/HydroUQ.git
+       - cmd: git clone https://github.com/JustinBonus/HydroUQ.git
        - cmd: dir
 
     build_script:
@@ -152,4 +161,4 @@ for:
 
     test_script:
       - cmd: python --version
-      - cmd: python3 --version
+      

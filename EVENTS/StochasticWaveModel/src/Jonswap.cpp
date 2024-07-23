@@ -64,7 +64,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QFile>
 #include <QMessageBox>
 
-
+#include <stdexcept>
 
 #include <QLineEdit>
 #include <QDoubleValidator>
