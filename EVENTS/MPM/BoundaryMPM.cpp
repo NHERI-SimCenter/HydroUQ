@@ -56,6 +56,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_TableEdit.h>
 #include <SC_FileEdit.h>
 #include <SC_CheckBox.h>
+
+#include <stdexcept>
 #include <QPixmap>
 
 
