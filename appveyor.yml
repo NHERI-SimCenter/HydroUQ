@@ -124,6 +124,9 @@ for:
        - cmd: echo %PATH%
 
     install:
+       - rm -rf HydroUQ
+       - rm -rf SimCenterBackend
+       - rm -rf SimCenterCommon
        - cmd: git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
        - cmd: git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
        - cmd: git clone https://github.com/NHERI-SimCenter/HydroUQ.git
