@@ -161,4 +161,4 @@ for:
 
     test_script:
       - cmd: python --version
-      - cmd: python3 --version
+      
