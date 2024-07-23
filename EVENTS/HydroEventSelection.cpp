@@ -108,7 +108,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     eventSelection->setItemData(2, "Finite-Volume-Method <-> Finite-Element-Analysis (OpenFOAM <-> OpenSees) [Multi-CPU]", Qt::ToolTipRole);
     eventSelection->setItemData(3, "Material-Point-Method (ClaymoreUW) [Multi-GPU]", Qt::ToolTipRole);    
     // eventSelection->setItemData(4, "Smoothed-Particle-Hydrodynamics (DualSPHysics) [CPU-GPU]", Qt::ToolTipRole);    
-    eventSelection->setItemData(4, "Stochastic Wave Loading [CPU]", Qt::ToolTipRole);
+    eventSelection->setItemData(4, "Stochastic Wave Loading By Sea-State (welib) [CPU]", Qt::ToolTipRole);
 
     theSelectionLayout->addWidget(label);
     QSpacerItem *spacer = new QSpacerItem(50,10);
@@ -552,6 +552,7 @@ bool HydroEventSelection::supportsLocalRun()
 {
     if (theCurrentEvent != 0)
         return theCurrentEvent->supportsLocalRun();
+    return false;
 }
 
 bool

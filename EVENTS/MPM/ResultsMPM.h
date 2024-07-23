@@ -72,8 +72,8 @@ public:
     ~ResultsMPM() override;
 
     void processResults(QString &dirName);     
-    int processResults(QString &outputFile, QString &dirName, QString &assetType, QList<QString> typesInAssetType) override;
-    int processResults(QString &outputFile, QString &dirName) override;   
+    int processResults(QString &outputFile, QString &dirName, QString &assetType, QList<QString> typesInAssetType) ;
+    int processResults(QString &outputFile, QString &dirName) ;   
     bool inputFromJSON(QJsonObject &jsonObject) override;
     bool outputToJSON(QJsonObject &jsonObject) override; 
     void clear(void) override;  // This is a virtual function in SC_ResultsWidget, so it must be implemented here.

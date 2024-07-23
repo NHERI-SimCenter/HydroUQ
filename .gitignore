@@ -8,3 +8,15 @@ ui_*.h
 *Zone.Identifier*
 FlatTabWidget*
 #*#
+EVENTS/Celeris/Example_Configs/*
+build/*
+./build/*
+./build_windows/*
+build_windows
+FlatTabWidget
+./FlatTabWidget
+./FlatTabWidget/*
+*Zone.Identifier
+test
+WaterDropSample*
+*.o

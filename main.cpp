@@ -3,35 +3,39 @@
 // Purpose: the typical Qt main for running a QMainWindow
 
 // Include headers
-#include <MainWindowWorkflowApp.h>
-#include <QApplication>
-#include <QFile>
-#include <QThread>
-#include <QObject>
-#include <QDebug>
-
+#include <GoogleAnalytics.h>
 #include <AgaveCurl.h>
+#include <MainWindowWorkflowApp.h>
 #include <WorkflowAppHydroUQ.h>
+
+
+#include <QApplication>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#include <QObject>
+#include <QFile>
+// #include <QOpenGLWidget>
+#include <QDebug>
+#include <QStandardPaths>
+#include <QStatusBar>
+#include <QTextStream>
+#include <QThread>
+#include <QTime>
+
 
 // #include <QCoreApplication>
 
 
-#include <QTime>
-#include <QTextStream>
-#include <GoogleAnalytics.h>
-#include <QStandardPaths>
-#include <QDir>
-#include <SimCenterPreferences.h>
 
-#include <QWebEngineView>
-#include <QStatusBar>
 #include <QSvgWidget>
-// #include <QOpenGLWidget>
+#include <QWebEngineView>
 #include <QtWebEngine>
 
 //#include <QtGlobal> // for for Q_OS_WIN, etc.
 #include <stdlib.h>
 //#include <QSurfaceFormat>
+#include <SimCenterPreferences.h>
 
 #ifdef ENDLN
 #undef ENDLN
@@ -90,7 +94,7 @@ int main(int argc, char *argv[])
 
 // #endif
     // QApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-    QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    QGuiApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     // QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     // QApplication::setAttribute(Qt::AA_UseOpenGLES);
 
@@ -101,7 +105,7 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_UseOpenGLES);
     // QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
 #endif
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
 
 
@@ -149,9 +153,10 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
+    // To have a plugin for web engine, uncomment the following lines
     // https://doc.qt.io/qt-5/qtwebengine-overview.html
-    // QtWebEngine::initialize();
-    // QQmlApplicationEngine engine;
+    // QtWebEngine::initialize(); // Initialize the QtWebEngine
+    // QQmlApplicationEngine engine; // This one only for qt quick applications
     // engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     //  check if the app is run in Qt Creator

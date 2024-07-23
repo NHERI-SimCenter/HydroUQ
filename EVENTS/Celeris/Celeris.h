@@ -42,12 +42,31 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <SimCenterAppWidget.h>
 
-#include <QWebEngineView>
+// #include <QString>
+// #include <QJsonObject>
+// #include <QWidget>
+
+
 // Forward declaration
+// class QWebEngineView;
+
+
+
+// Forward declarations
+
+
+
+
+
+// class VolumetricModifier;
+class QJsonObject;
+class QWebEngineView;
+class QWebEnginePage;
 class InputWidgetParameters;
 class RandomVariablesContainer;
 class LineEditRV;
-
+class VolumetricModifier;
+// #include <QWebEnginePage>
 
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
@@ -59,26 +78,28 @@ class QHBoxLayout;
 class QComboBox;
 class QSpinBox;
 class QLineEdit;
-class QTabWidget;
 
 class QGroupBox;
 class QPushButton;
 class QCheckBox;
-class QFormLayout;
+
 class QLabel;
 class QString;
-class VolumetricModifier;
+class QJsonObject;
+class QJsonArray;
+
+
 
 class Celeris : public SimCenterAppWidget
 {
       Q_OBJECT 
 
 public:
-    Celeris(QWidget *parent = 0);
-   // Celeris( QWidget *parent = 0);
+   explicit Celeris(QWidget *parent = nullptr);
    ~Celeris();
 
-//    friend class ResultsCeleris; // Allow ResultsCeleris to access private members. TODO: use a better vis architecture
+   // friend class ResultsCeleris; 
+   // Allow ResultsCeleris to access private members. TODO: use a better vis architecture
 
    bool inputFromJSON(QJsonObject &rvObject) override;
    bool outputToJSON(QJsonObject &rvObject) override;  
@@ -88,12 +109,14 @@ public:
    bool outputCitation(QJsonObject &jsonObject) override;
 
 signals:
+   
 
 public slots:
    void clear(void) override;
 
 protected slots:
     void finishLoading(bool);
+
    //  void viewSource();
 
 private:
@@ -101,12 +124,13 @@ private:
     QGridLayout                  *mainLayout;
     VolumetricModifier           *modifier;
     QWebEngineView               *view;
-    QString                      mainJS;
-   //  QWebEnginePage               *m_pWebPage;
+    QString                      mainJS;  
 
-   // QWebEnginePage               *m_pWebView;
-   //  QWebEngineView               *m_pWebViewExtra;
-// 
+    //  QWebEnginePage               *m_pWebPage;
+
+    // QWebEnginePage               *m_pWebView;
+    //  QWebEngineView               *m_pWebViewExtra;
+
     // RandomVariablesContainer     *theRandomVariablesContainer;
     // QStringList                  varNamesAndValues;
 

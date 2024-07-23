@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-#ifndef VOLUMETRICMODIFIER_H
-#define VOLUMETRICMODIFIER_H
+#ifndef VOLUMETRIC_MODIFIER_H
+#define VOLUMETRIC_MODIFIER_H
 
 #include <QtDataVisualization/q3dscatter.h>
 #include <QtDataVisualization/qcustom3dvolume.h>

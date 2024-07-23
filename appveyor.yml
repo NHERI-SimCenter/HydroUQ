@@ -1,11 +1,11 @@
-version: 1.0.{build}
+version: 3.1.{build}
 
 image:
+  - Visual Studio 2019
   - macOS
   - Ubuntu1804
-  - Visual Studio 2019
 
-stack: python 3.7
+stack: python 3.8
 
 for:
   # macOS 
@@ -17,17 +17,20 @@ for:
     clone_folder: ~/SimCenter
 
     init:
-       - export PATH="$HOME/Qt/5.15.2/clang_64/bin:$HOME/venv3.9/bin:$PATH"
-       - python -m pip install --upgrade pip
+       - export PATH="$HOME/Qt/5.15.2/clang_64/bin:$HOME/venv3.8/bin:$PATH"
+       - python3 -m pip install --upgrade pip
        - pip install conan==1.60.1
        - conan user
        - conan remote add simcenter https://nherisimcenter.jfrog.io/artifactory/api/conan/simcenter
        
     install:
        - uname
+       - rm -rf HydroUQ
+       - rm -rf SimCenterBackend
+       - rm -rf SimCenterCommon
        - git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
        - git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
-       - git clone https://github.com/NHERI-SimCenter/HydroUQ.git
+       - git clone https://github.com/JustinBonus/HydroUQ.git
 
     build_script:
 
@@ -47,6 +50,7 @@ for:
        - qmake --version
        - gcc --version
        - python --version
+       - python3 --version
 
   # Ubuntu1804 
   -
@@ -62,16 +66,19 @@ for:
        
     install:
        - uname
+       - rm -rf HydroUQ
+       - rm -rf SimCenterBackend
+       - rm -rf SimCenterCommon
        - sudo update-alternatives --set gcc /usr/bin/gcc-8
        - sudo apt-get update       
        - sudo apt-get -y install libglu1-mesa-dev freeglut3-dev mesa-common-dev libblas-dev liblapack-dev
-       - python -m pip install --upgrade pip
-       - pip install conan
+       - python3 -m pip install --upgrade pip
+       - pip install conan==1.60.1
        - conan user
        - conan remote add simcenter https://nherisimcenter.jfrog.io/artifactory/api/conan/simcenter
        - git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
        - git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
-       - git clone https://github.com/NHERI-SimCenter/HydroUQ.git
+       - git clone https://github.com/JustinBonus/HydroUQ.git
        
     build_script:
        # build SimCenterBackendApplications
@@ -90,6 +97,7 @@ for:
     test_script:
        - qmake --version
        - gcc --version
+       - python3 --version
        - python --version
 
   # Visual Studio 2019
@@ -106,7 +114,7 @@ for:
        - cmd: set QT=C:\Qt\5.15.2\msvc2019_64\bin
        - cmd: set PATH=%PYTHON%;%PYTHON%\Scripts;%QT%;%PATH%
        - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-       - cmd: pip.exe install conan
+       - cmd: pip.exe install conan==1.60.1
        - cmd: conan user
        - cmd: conan profile new default --detect
        - cmd: conan profile show default
@@ -116,9 +124,12 @@ for:
        - cmd: echo %PATH%
 
     install:
+       - cmd: rm -rf HydroUQ
+       - cmd: rm -rf SimCenterBackend
+       - cmd: rm -rf SimCenterCommon
        - cmd: git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
        - cmd: git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
-       - cmd: git clone https://github.com/NHERI-SimCenter/HydroUQ.git
+       - cmd: git clone https://github.com/JustinBonus/HydroUQ.git
        - cmd: dir
 
     build_script:
@@ -150,3 +161,4 @@ for:
 
     test_script:
       - cmd: python --version
+      

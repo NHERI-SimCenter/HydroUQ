@@ -20,11 +20,11 @@ Outline
 Example to demonstrate how to run a MPM simulation to determine loads on an array of port buildings during a tsunami with respect to debris impacts and damming. After, we perform
 an OpenSees simulation of one building assuming uncertainties in the building properties.
 
-The Waseda University Tsunami Wave Basin (WU TBW) flume is 4 meter wide (from X=-2m to X=2 m), 1 meter tall (Z=0.0m to Z=1.0m), and 9 meters long (Y=0.0m to Y=9.0m). 
+The Waseda University Tsunami Wave Basin (WU TBW) flume is 4 meters wide (from X=-2m to X=2 m), 1 meter tall (Z=0.0m to Z=1.0m), and 9 meters long (Y=0.0m to Y=9.0m). 
 
 The case is initialized with a still water level of 0.23 meters. 
 
-Results for free surface, velocity, and pressure, as well as structural load forces are output at a specified interval to match experimental instruments. 
+Results for free surface, velocity, and pressure, as well as structural load forces, are output at a specified interval to match experimental instruments. 
 
 
 
@@ -65,10 +65,10 @@ In order to retrieve results from the analysis, the analysis must complete and p
 
 Provide a large amount of time for the 'Max Run Time' field in HydroUQ when submitting a job to ensure the model completes before the time allotted runs out!
 
-Be aware that the smaller the OpenFOAM Outputs and OpenSees Outputs 'Time Interval' value is, the longer the post processing of the case will take after analysis has completed, and the larger the results.zip folder will be. 
+Be aware that the smaller the OpenFOAM Outputs and OpenSees Outputs 'Time Interval' value is, the longer the post-processing of the case will take after analysis has been completed, and the larger the results.zip folder will be. 
 
 .. warning::
-   Use caution when requesting sensors and using high sampling rates. Only ask for what you need, or you will end up will massive amounts of data.
+   Use caution when requesting sensors and using high sampling rates. Only ask for what you need, or you will end up with massive amounts of data.
 
 
 
@@ -93,7 +93,7 @@ Check if the job has finished. If it has, click 'More info'.
    :width: 600
    :figclass: align-center
    
-   Once the job is finished, the output files should be available in the directory which the analysis results were sent to
+   Once the job is finished, the output files should be available in the directory to which the analysis results were sent
 
 Find the files by clicking 'View'. 
 	

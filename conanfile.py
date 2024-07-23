@@ -29,7 +29,7 @@ class HYDROUQ(ConanFile):
         appsDestination = "./applications"
         if self.settings.os == "Windows":
             appsDestination = './%s/applications' % self.settings.build_type
-        elif self.settings.os == "Macos" or self.settings.os == "Mac" or self.settings.os == "Darwin":
+        elif self.settings.os == "Macos":
             appsDestination = './HydroUQ.app/Contents/MacOS/applications'
         elif self.settings.os == "Linux":
             appsDestination = './applications'

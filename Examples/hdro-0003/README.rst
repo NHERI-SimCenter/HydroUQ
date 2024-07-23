@@ -18,12 +18,12 @@ Cylinder Half-Submerged in Flow  -  UW WASIRF Twin  -  FOAMySees (OpenFOAM + Ope
 Overview
 --------
 
-This example demonstrates how to run a coupled **OpenSees-OpenFOAM** simulation (**FOAMySees**) to determine floor loads on a building caused by strongly-coupled, two-way fluid-structure interaction. 
+This example demonstrates how to run a coupled **OpenSees-OpenFOAM** simulation (**FOAMySees**) to determine floor loads on a building caused by strongly coupled, two-way fluid-structure interaction. 
 You can then perform an **OpenSees** simulation of the building assuming uncertainties in the building properties. 
 
 A truncated digital twin of the UW WASIRF wave flume contains a simple cantilevered cylinder. The cylinder, our structure, is half-submerged. The flow around the cylinder is calculated for a given period of time in order to determine a simulated structural response time-series under wave loading. 
 
-Outputs of the **EVT** simulation will include results, sampled at specified frequenies, for the:
+Outputs of the **EVT** simulation will include results, sampled at specified frequencies, for the:
 
 #. Fluid flow's free surface elevation at wave gauges
 #. Flow velocity at velocimeter locations
@@ -38,7 +38,7 @@ As the **EVT** and **FEM** functionality are effectively fused for FOAMySees, th
 The **EDP** tab will then process these results.
 
 #. Displacement of the cylinder tip from rest, peak relative-floor displacement (PFD)
-#. Displacement of the cylinder tip relative to its base or supporting , peak inter-story drift (PID)
+#. Displacement of the cylinder tip relative to its base or supporting, peak inter-story drift (PID)
 #. Peak floor acceleration (PFA)
 
 
@@ -105,18 +105,18 @@ Simulation time for 1 second in the digital flume took 1 hour and 20 minutes. Th
 
 The case can be run for as long as desired, but mind that the longer the case runs, the longer the postprocessing routines will be.
 
-In order to retrieve results from the analysis, the job must complete and postprocess the model output files into a VTK format before the end of the allotted submission time. 
+In order to retrieve results from the analysis, the job must complete and post-process the model output files into a VTK format before the end of the allotted submission time. 
 
 .. important::
    Provide a large amount of time for the *Max Run Time* field in HydroUQ when submitting a job to ensure the model completes before the time allotted runs out!
 
 .. note::
-   Be aware that the smaller the OpenFOAM Outputs and OpenSees Outputs *Time Interval* value is, the longer the post processing of the case will take after analysis has completed, 
+   Be aware that the smaller the OpenFOAM Outputs and OpenSees Outputs *Time Interval* value is, the longer the post-processing of the case will take after analysis has been completed, 
    and the larger the ``results.zip`` folder will be. 
 
 .. warning:: 
    Be modest when requesting simulation outputs across many recording probes or full geometry snapshots. 
-   Only ask for what you need, or your simulation will become slow due to I/O constraints and the output data will be too large to effecitvely post-process or host on your local machine.
+   Only ask for what you need, or your simulation will become slow due to I/O constraints and the output data will be too large to effectively post-process or host on your local machine.
 
 
 
@@ -142,7 +142,7 @@ Check if the job has finished. If it has, click 'More info'.
    :width: 600
    :figclass: align-center
    
-   Once the job is finished, the output files should be available in the directory which the analysis results were sent to
+   Once the job is finished, the output files should be available in the directory to which the analysis results were sent to
 
 Find the files by clicking 'View'. 
 	

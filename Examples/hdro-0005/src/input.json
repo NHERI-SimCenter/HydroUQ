@@ -156,7 +156,7 @@
         0,
         1
     ],
-    "localAppDir": "/Users/fmckenna/NHERI/SimCenterBackendApplications",
+    "localAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
     "randomVariables": [
         {
             "distribution": "Normal",
@@ -191,5 +191,5 @@
     ],
     "remoteAppDir": "/Users/fmckenna/NHERI/SimCenterBackendApplications",
     "runType": "runningLocal",
-    "workingDir": "/Users/fmckenna/Documents/HydroUQ/LocalWorkDir"
+    "workingDir": "/home/justinbonus/Documents/HydroUQ/LocalWorkDir"
 }
