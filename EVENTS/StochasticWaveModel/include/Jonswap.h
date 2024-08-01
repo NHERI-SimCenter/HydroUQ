@@ -141,8 +141,8 @@ class Jonswap : public SimCenterAppWidget {
                   int maxL=100);
 
 public slots:
+    void clear(void);
     void updateDistributionPlot(); 
-
   /**
    * Update ability to provide seed based on changed status of radio button
    * @param[in] checked Current status of radio button for providing seed

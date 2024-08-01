@@ -54,6 +54,7 @@ class QLineEdit;
 
 class VisualizeDigitalTwin : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     VisualizeDigitalTwin(QWidget *parent = 0);
     virtual ~VisualizeDigitalTwin();

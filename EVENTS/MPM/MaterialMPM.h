@@ -61,6 +61,7 @@ class SC_CheckBox;
 
 class MaterialMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     MaterialMPM(QWidget *parent = 0);
     virtual ~MaterialMPM();

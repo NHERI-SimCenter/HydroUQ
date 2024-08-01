@@ -7,8 +7,10 @@
         },
         "Events": [
             {
-                "Application": "CoupledDigitalTwin",
+                "Application": "MPM",
                 "ApplicationData": {
+                    "programFile": "fbar",
+                    "maxRunTime": "24:00:00"
                 },
                 "EventClassification": "Hydro"
             }
@@ -54,163 +56,883 @@
     },
     "Events": [
         {
-            "AdjustTimeStep": "No",
-            "Application": "CoupledDigitalTwin",
-            "ApplyGravity": "No",
-            "CouplingScheme": "Implicit",
+            "Application": "MPM",
             "EventClassification": "Hydro",
-            "SeesVTKOUT": "Yes",
-            "SeesVTKOUTRate": 0.1,
-            "SimDuration": 10,
-            "SolutionDT": 0.005,
-            "Turbulence": "Yes",
-            "bathSTL": ".",
-            "bathSTLPath": ".",
-            "bathType": "Point List",
-            "bathXZData": [
-                [
-                    100,
+            "bodies": [
+                {
+                    "algorithm": {
+                        "ASFLIP_alpha": 0,
+                        "ASFLIP_beta_max": 0,
+                        "ASFLIP_beta_min": 0,
+                        "FBAR_fused_kernel": true,
+                        "FBAR_psi": 0.9,
+                        "ppc": 8,
+                        "type": "particles",
+                        "use_ASFLIP": true,
+                        "use_FBAR": true
+                    },
+                    "geometry": [
+                        {
+                            "apply_array": false,
+                            "apply_rotation": false,
+                            "bathymetryXZ": [
+                                [
+                                    0,
+                                    0
+                                ],
+                                [
+                                    16.275,
+                                    0.226
+                                ],
+                                [
+                                    19.933,
+                                    0.226
+                                ],
+                                [
+                                    30.906,
+                                    1.14
+                                ],
+                                [
+                                    45.536,
+                                    1.75
+                                ],
+                                [
+                                    82.106,
+                                    1.75
+                                ],
+                                [
+                                    89.46,
+                                    2.363
+                                ]
+                            ],
+                            "body_preset": "Fluid",
+                            "facility": "Hinsdale Large Wave Flume (OSU LWF)",
+                            "facility_dimensions": [
+                                104,
+                                4.6,
+                                3.658
+                            ],
+                            "fill_flume_upto_SWL": true,
+                            "object": "OSU LWF",
+                            "offset": [
+                                1.9,
+                                0,
+                                0
+                            ],
+                            "operation": "add",
+                            "span": [
+                                84,
+                                2,
+                                3.65
+                            ],
+                            "standing_water_level": 2,
+                            "track_particle_id": [
+                                0
+                            ]
+                        }
+                    ],
+                    "gpu": 0,
+                    "material": {
+                        "CFL": 0.425,
+                        "bulk_modulus": 210000000,
+                        "constitutive": "JFluid",
+                        "gamma": 7.125,
+                        "material_preset": "Water (Fresh)",
+                        "rho": 1000,
+                        "viscosity": 0.001
+                    },
+                    "model": 0,
+                    "output_attribs": [
+                        "ID",
+                        "Pressure",
+                        "Velocity_X",
+                        "Velocity_Y",
+                        "Velocity_Z"
+                    ],
+                    "partition": [
+                        {
+                            "gpu": 0,
+                            "model": 0,
+                            "partition_end": [
+                                23.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                1.9,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "gpu": 1,
+                            "model": 0,
+                            "partition_end": [
+                                51.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                23.9,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "gpu": 2,
+                            "model": 0,
+                            "partition_end": [
+                                91.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                51.9,
+                                0,
+                                0
+                            ]
+                        }
+                    ],
+                    "partition_end": [
+                        23.9,
+                        2.9,
+                        3.6
+                    ],
+                    "partition_start": [
+                        1.9,
+                        0,
+                        0
+                    ],
+                    "target_attribs": [
+                        "Position_Y"
+                    ],
+                    "track_attribs": [
+                        "Position_Y",
+                        "Position_Z",
+                        "Velocity_X",
+                        "Velocity_Y"
+                    ],
+                    "track_particle_id": [
+                        0
+                    ],
+                    "type": "particles",
+                    "velocity": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "algorithm": {
+                        "ASFLIP_alpha": 0,
+                        "ASFLIP_beta_max": 0,
+                        "ASFLIP_beta_min": 0,
+                        "FBAR_fused_kernel": false,
+                        "FBAR_psi": 0,
+                        "ppc": 8,
+                        "type": "particles",
+                        "use_ASFLIP": true,
+                        "use_FBAR": true
+                    },
+                    "geometry": [
+                        {
+                            "apply_array": true,
+                            "apply_rotation": false,
+                            "array": [
+                                1,
+                                1,
+                                2
+                            ],
+                            "body_preset": "Debris",
+                            "facility": "Hinsdale Large Wave Flume (OSU LWF)",
+                            "facility_dimensions": [
+                                84,
+                                4.6,
+                                3.65
+                            ],
+                            "fulcrum": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "object": "Box",
+                            "offset": [
+                                42.5,
+                                2,
+                                1.575
+                            ],
+                            "operation": "add",
+                            "rotate": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "spacing": [
+                                0.80,
+                                0.35,
+                                0.40
+                            ],
+                            "span": [
+                                0.5,
+                                0.05,
+                                0.1
+                            ],
+                            "track_particle_id": [
+                                0
+                            ]
+                        }
+                    ],
+                    "gpu": 0,
+                    "material": {
+                        "CFL": 0.425,
+                        "constitutive": "FixedCorotated",
+                        "material_preset": "Plastic",
+                        "poisson_ratio": 0.3,
+                        "rho": 981,
+                        "youngs_modulus": 80000000
+                    },
+                    "model": 1,
+                    "output_attribs": [
+                        "ID",
+                        "Pressure",
+                        "Velocity_X",
+                        "Velocity_Y",
+                        "Velocity_Z"
+                    ],
+                    "partition": [
+                        {
+                            "gpu": 0,
+                            "model": 1,
+                            "partition_end": [
+                                91.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                1.9,
+                                0,
+                                0
+                            ]
+                        }
+                    ],
+                    "partition_end": [
+                        91.9,
+                        2.9,
+                        3.6
+                    ],
+                    "partition_start": [
+                        1.9,
+                        0,
+                        0
+                    ],
+                    "target_attribs": [
+                        "Position_Y"
+                    ],
+                    "track_attribs": [
+                        "Position_X",
+                        "Position_Y",
+                        "Position_Z",
+                        "Velocity_X",
+                        "Velocity_Y",
+                        "Velocity_Z"
+                    ],
+                    "track_particle_id": [
+                        0
+                    ],
+                    "type": "particles",
+                    "velocity": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "algorithm": {
+                        "ASFLIP_alpha": 0,
+                        "ASFLIP_beta_max": 0,
+                        "ASFLIP_beta_min": 0,
+                        "FBAR_fused_kernel": true,
+                        "FBAR_psi": 0.9,
+                        "ppc": 8,
+                        "type": "particles",
+                        "use_ASFLIP": true,
+                        "use_FBAR": true
+                    },
+                    "geometry": [
+                        {
+                            "apply_array": false,
+                            "apply_rotation": false,
+                            "bathymetryXZ": [
+                                [
+                                    0,
+                                    0
+                                ],
+                                [
+                                    16.275,
+                                    0.226
+                                ],
+                                [
+                                    19.933,
+                                    0.226
+                                ],
+                                [
+                                    30.906,
+                                    1.14
+                                ],
+                                [
+                                    45.536,
+                                    1.75
+                                ],
+                                [
+                                    82.106,
+                                    1.75
+                                ],
+                                [
+                                    89.46,
+                                    2.363
+                                ]
+                            ],
+                            "body_preset": "Fluid",
+                            "facility": "Hinsdale Large Wave Flume (OSU LWF)",
+                            "facility_dimensions": [
+                                104,
+                                4.6,
+                                3.658
+                            ],
+                            "fill_flume_upto_SWL": true,
+                            "object": "OSU LWF",
+                            "offset": [
+                                1.9,
+                                0,
+                                0
+                            ],
+                            "operation": "add",
+                            "span": [
+                                84,
+                                2,
+                                3.65
+                            ],
+                            "standing_water_level": 2.0,
+                            "track_particle_id": [
+                                0
+                            ]
+                        }
+                    ],
+                    "gpu": 1,
+                    "material": {
+                        "CFL": 0.425,
+                        "bulk_modulus": 210000000,
+                        "constitutive": "JFluid",
+                        "gamma": 7.125,
+                        "material_preset": "Water (Fresh)",
+                        "rho": 1000,
+                        "viscosity": 0.001
+                    },
+                    "model": 0,
+                    "output_attribs": [
+                        "ID",
+                        "Pressure",
+                        "Velocity_X",
+                        "Velocity_Y",
+                        "Velocity_Z"
+                    ],
+                    "partition": [
+                        {
+                            "gpu": 0,
+                            "model": 0,
+                            "partition_end": [
+                                23.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                1.9,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "gpu": 1,
+                            "model": 0,
+                            "partition_end": [
+                                51.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                23.9,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "gpu": 2,
+                            "model": 0,
+                            "partition_end": [
+                                91.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                51.9,
+                                0,
+                                0
+                            ]
+                        }
+                    ],
+                    "partition_end": [
+                        51.9,
+                        2.9,
+                        3.6
+                    ],
+                    "partition_start": [
+                        23.9,
+                        0,
+                        0
+                    ],
+                    "target_attribs": [
+                        "Position_Y"
+                    ],
+                    "track_attribs": [
+                        "Position_X",
+                        "Position_Y",
+                        "Velocity_X",
+                        "Velocity_Y"
+                    ],
+                    "track_particle_id": [
+                        0
+                    ],
+                    "type": "particles",
+                    "velocity": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "algorithm": {
+                        "ASFLIP_alpha": 0,
+                        "ASFLIP_beta_max": 0,
+                        "ASFLIP_beta_min": 0,
+                        "FBAR_fused_kernel": true,
+                        "FBAR_psi": 0.9,
+                        "ppc": 8,
+                        "type": "particles",
+                        "use_ASFLIP": true,
+                        "use_FBAR": true
+                    },
+                    "geometry": [
+                        {
+                            "apply_array": false,
+                            "apply_rotation": false,
+                            "bathymetryXZ": [
+                                [
+                                    0,
+                                    0
+                                ],
+                                [
+                                    16.275,
+                                    0.226
+                                ],
+                                [
+                                    19.933,
+                                    0.226
+                                ],
+                                [
+                                    30.906,
+                                    1.14
+                                ],
+                                [
+                                    45.536,
+                                    1.75
+                                ],
+                                [
+                                    82.106,
+                                    1.75
+                                ],
+                                [
+                                    89.46,
+                                    2.363
+                                ]
+                            ],
+                            "body_preset": "Fluid",
+                            "facility": "Hinsdale Large Wave Flume (OSU LWF)",
+                            "facility_dimensions": [
+                                104,
+                                4.6,
+                                3.658
+                            ],
+                            "fill_flume_upto_SWL": true,
+                            "object": "OSU LWF",
+                            "offset": [
+                                1.9,
+                                0,
+                                0
+                            ],
+                            "operation": "add",
+                            "span": [
+                                84,
+                                2,
+                                3.65
+                            ],
+                            "standing_water_level": 2,
+                            "track_particle_id": [
+                                0
+                            ]
+                        }
+                    ],
+                    "gpu": 2,
+                    "material": {
+                        "CFL": 0.425,
+                        "bulk_modulus": 210000000,
+                        "constitutive": "JFluid",
+                        "gamma": 7.125,
+                        "material_preset": "Water (Fresh)",
+                        "rho": 1000,
+                        "viscosity": 0.001
+                    },
+                    "model": 0,
+                    "output_attribs": [
+                        "ID",
+                        "Pressure",
+                        "Velocity_X",
+                        "Velocity_Y",
+                        "Velocity_Z"
+                    ],
+                    "partition": [
+                        {
+                            "gpu": 0,
+                            "model": 0,
+                            "partition_end": [
+                                23.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                1.9,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "gpu": 1,
+                            "model": 0,
+                            "partition_end": [
+                                51.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                23.9,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "gpu": 2,
+                            "model": 0,
+                            "partition_end": [
+                                91.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                51.9,
+                                0,
+                                0
+                            ]
+                        }
+                    ],
+                    "partition_end": [
+                        91.9,
+                        2.9,
+                        3.6
+                    ],
+                    "partition_start": [
+                        51.9,
+                        0,
+                        0
+                    ],
+                    "target_attribs": [
+                        "Position_Y"
+                    ],
+                    "track_attribs": [
+                        "Position_X",
+                        "Position_Y",
+                        "Velocity_X",
+                        "Velocity_Y"
+                    ],
+                    "track_particle_id": [
+                        0
+                    ],
+                    "type": "particles",
+                    "velocity": [
+                        0,
+                        0,
+                        0
+                    ]
+                }
+            ],
+            "boundaries": [
+                {
+                    "contact": "Separable",
+                    "domain_end": [
+                        104,
+                        4.6,
+                        3.658
+                    ],
+                    "domain_start": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "object": "OSU LWF"
+                },
+                {
+                    "array": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "contact": "Separable",
+                    "domain_end": [
+                        46.815999999999995,
+                        2.725,
+                        2.325
+                    ],
+                    "domain_start": [
+                        45.8,
+                        2.10,
+                        1.325
+                    ],
+                    "object": "Box",
+                    "spacing": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "contact": "Separable",
+                    "domain_end": [
+                        90,
+                        2.9,
+                        3.6
+                    ],
+                    "domain_start": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "object": "Walls"
+                }
+            ],
+            "computer": {
+                "hpc": "TACC - UT Austin - Lonestar6",
+                "hpc_card_architecture": "Ampere",
+                "hpc_card_brand": "NVIDIA",
+                "hpc_card_compute_capability": 80,
+                "hpc_card_global_memory": 40,
+                "hpc_card_name": "A100",
+                "models_per_gpu": 3,
+                "num_gpus": 3
+            },
+            "grid-sensors": [
+                {
+                    "attribute": "Velocity",
+                    "direction": "X+",
+                    "domain_end": [
+                        16.05,
+                        2.75,
+                        0.45
+                    ],
+                    "domain_start": [
+                        16,
+                        1.5,
+                        0.4
+                    ],
+                    "name": "VelocityMeter1",
+                    "operation": "Average",
+                    "output_frequency": 30,
+                    "toggle": true,
+                    "type": "grid"
+                },
+                {
+                    "attribute": "Velocity",
+                    "direction": "X+",
+                    "domain_end": [
+                        43.849999999999994,
+                        2.75,
+                        0.45
+                    ],
+                    "domain_start": [
+                        43.8,
+                        1.75,
+                        0.4
+                    ],
+                    "name": "VelocityMeter2",
+                    "operation": "Average",
+                    "output_frequency": 30,
+                    "toggle": true,
+                    "type": "grid"
+                },
+                {
+                    "attribute": "Force",
+                    "direction": "X+",
+                    "domain_end": [
+                        45.824,
+                        2.675,
+                        2.3
+                    ],
+                    "domain_start": [
+                        45.799,
+                        2.149,
+                        1.35
+                    ],
+                    "name": "LoadCell1",
+                    "operation": "Sum",
+                    "output_frequency": 120,
+                    "toggle": true,
+                    "type": "grid"
+                }
+            ],
+            "outputs": {
+                "bodies_output_freq": 10,
+                "bodies_save_suffix": "BGEO",
+                "boundaries_output_freq": 30,
+                "boundaries_save_suffix": "OBJ",
+                "checkpoints_output_freq": 1,
+                "checkpoints_save_suffix": "BGEO",
+                "energies_output_freq": 30,
+                "energies_save_suffix": "CSV",
+                "output_attribs": [
+                    [
+                        "ID",
+                        "Pressure"
+                    ],
+                    [
+                        "ID",
+                        "Pressure",
+                        "Velocity_X",
+                        "Velocity_Y",
+                        "Velocity_Z"
+                    ],
+                    [
+                        "ID",
+                        "Pressure",
+                        "VonMisesStress",
+                        "DefGrad_Invariant2",
+                        "DefGrad_Invariant3"
+                    ]
+                ],
+                "particles_output_exterior_only": false,
+                "sensors_save_suffix": "CSV",
+                "useKineticEnergy": false,
+                "usePotentialEnergy": false,
+                "useStrainEnergy": false
+            },
+            "particle-sensors": [
+                {
+                    "attribute": "Elevation",
+                    "direction": "N/A",
+                    "domain_end": [
+                        16.075,
+                        2.75,
+                        0.45
+                    ],
+                    "domain_start": [
+                        16,
+                        1.75,
+                        0.4
+                    ],
+                    "name": "WaveGauge1",
+                    "operation": "Max",
+                    "output_frequency": 30,
+                    "toggle": true,
+                    "type": "particles"
+                },
+                {
+                    "attribute": "Elevation",
+                    "direction": "N/A",
+                    "domain_end": [
+                        26.075,
+                        2.75,
+                        0.45
+                    ],
+                    "domain_start": [
+                        26,
+                        1.75,
+                        0.4
+                    ],
+                    "name": "WaveGauge2",
+                    "operation": "Max",
+                    "output_frequency": 30,
+                    "toggle": true,
+                    "type": "particles"
+                },
+                {
+                    "attribute": "Elevation",
+                    "direction": "N/A",
+                    "domain_end": [
+                        38.075,
+                        2.75,
+                        0.45
+                    ],
+                    "domain_start": [
+                        38,
+                        1.75,
+                        0.4
+                    ],
+                    "name": "WaveGauge3",
+                    "operation": "Max",
+                    "output_frequency": 30,
+                    "toggle": true,
+                    "type": "particles"
+                }
+            ],
+            "scaling": {
+                "cauchy_bulk_ratio": 1,
+                "froude_length_ratio": 1,
+                "froude_time_ratio": 1,
+                "use_cauchy_scaling": false,
+                "use_froude_scaling": false
+            },
+            "simulation": {
+                "cauchy_bulk_ratio": 1,
+                "cfl": 0.5,
+                "default_dt": 0.0001,
+                "default_dx": 0.1,
+                "domain": [
+                    90,
+                    2.9,
+                    3.6
+                ],
+                "duration": 2,
+                "fps": 60,
+                "frames": 30,
+                "froude_scaling": 1,
+                "froude_time_ratio": 1,
+                "gravity": [
+                    0,
+                    -9.80665,
                     0
                 ],
-                [
-                    105,
-                    0
-                ]
-            ],
-            "cellSize": 0.025,
-            "couplingConvergenceTol": 0.005,
-            "couplingDataAccelerationMethod": "IQN-IMVJ",
-            "couplingIterationOutputDataFrequency": 100,
-            "cutSurfaceLocsDirsFields": [
-                [
-                    0,
-                    0,
-                    0.25,
-                    0,
-                    1,
-                    0,
-                    "XSec1",
-                    "p,U,alpha.water"
-                ]
-            ],
-            "cutSurfaceOutput": "Yes",
-            "domainSubType": "INLETOUTLET",
-            "fieldProbeLocs": [
-                [
-                    1.4485,
-                    0,
-                    0.01,
-                    "PressureProbe1",
-                    "p"
+                "initial_time": 0,
+                "mirror_domain": [
+                    false,
+                    false,
+                    false
                 ],
-                [
-                    1.4485,
-                    0,
-                    0.1,
-                    "PressureProbe2",
-                    "p"
-                ],
-                [
-                    1.4485,
-                    0,
-                    0.2,
-                    "PressureProbe3",
-                    "p"
-                ],
-                [
-                    1.4485,
-                    0,
-                    0.3,
-                    "PressureProbe4",
-                    "p"
-                ],
-                [
-                    0.05,
-                    0,
-                    0.1,
-                    "VelocityProbe1",
-                    "u"
-                ]
-            ],
-            "fieldProbes": "Yes",
-            "flumeHeight": 1,
-            "flumeLength": 4,
-            "flumeWidth": 1,
-            "freeSurfOut": "Yes",
-            "freeSurfProbeLocs": [
-                [
-                    0.05,
-                    0,
-                    0.5,
-                    "WaveGauge1"
-                ],
-                [
-                    0.9,
-                    0,
-                    0.5,
-                    "WaveGauge2"
-                ],
-                [
-                    1.1,
-                    0,
-                    0.5,
-                    "WaveGauge3"
-                ],
-                [
-                    1.4485,
-                    0,
-                    0.5,
-                    "WaveGauge4front"
-                ],
-                [
-                    1.5515,
-                    0,
-                    0.5,
-                    "WaveGauge5back"
-                ],
-                [
-                    1.5,
-                    -0.0515,
-                    0.5,
-                    "WaveGauge6left"
-                ],
-                [
-                    1.5,
-                    0.0515,
-                    0.5,
-                    "WaveGauge7right"
-                ]
-            ],
-            "freeSurfProbes": "Yes",
-            "g": -9.81,
-            "initVelocity": 0,
-            "initialRelaxationFactor": 0.9,
-            "interfaceSurface": "interface.stl",
-            "interfaceSurfaceOutput": "Yes",
-            "interfaceSurfacePath": "{Current_Dir}/.",
-            "mapType": "Nearest Neighbor",
-            "maximumCouplingIterations": 100,
-            "numProcessors": 56,
-            "openSeesPyScript": "OpenSeesModel.py",
-            "openSeesPyScriptPath": "{Current_Dir}/.",
-            "outputDataFromCouplingIterations": "No",
-            "paddleDispFile": ".",
-            "paddleDispFilePath": ".",
-            "periodicWaveCelerity": 1,
-            "periodicWaveMagnitude": 1,
-            "periodicWaveRepeatPeriod": 1,
-            "refPressure": 0,
-            "runPrelim": "No",
-            "start": 0,
-            "stillWaterLevel": 0.25,
-            "turbIntensity": 0.25,
-            "turbRefLength": 0.1,
-            "turbReferenceVel": 1,
-            "velocityFile": "velTime.csv",
-            "velocityFilePath": "{Current_Dir}/.",
-            "waveType": "No Waves",
-            "writeDT": 0.1
-        }
+                "particles_output_exterior_only": false,
+                "save_suffix": ".bgeo",
+                "time": 0,
+                "time_integration": "Explicit",
+                "use_cauchy_scaling": false,
+                "use_froude_scaling": false
+            },
+            "subtype": "MPM",
+            "type": "MPM"
+        }        
     ],
     "GeneralInformation": {
         "NumberOfStories": 3,
@@ -307,16 +1029,16 @@
         "parallelExecution": true,
         "samplingMethodData": {
             "method": "LHS",
-            "samples": 500,
-            "seed": 547
+            "samples": 5,
+            "seed": 1
         },
         "saveWorkDir": true,
         "uqType": "Forward Propagation"
     },
     "localAppDir": "C:/Users/nsaoirse/Desktop/HydroUQ_Windows_Download",
     "nodeCount": 1,
-    "numP": 56,
-    "processorsOnEachNode": 56,
+    "numP": 1,
+    "processorsOnEachNode": 1,
     "randomVariables": [
     ],
     "remoteAppDir": "/work2/00477/tg457427/frontera/SimCenterBackendApplications/v4.2.0",

@@ -63,6 +63,7 @@ class SC_ComboBox;
 
 class SensorMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     SensorMPM(QWidget *parent = 0);
     virtual ~SensorMPM();
