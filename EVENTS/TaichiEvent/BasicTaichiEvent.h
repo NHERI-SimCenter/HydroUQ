@@ -1,8 +1,8 @@
-#ifndef VISUALIZE_DIGITAL_TWIN_H
-#define VISUALIZE_DIGITAL_TWIN_H
+#ifndef BASIC_TAICHI_EVENT_H
+#define BASIC_TAICHI_EVENT_H
 
 /* *****************************************************************************
-Copyright (c) 2016-2023, The Regents of the University of California (Regents).
+Copyright (c) 2016-2024, The Regents of the University of California (Regents).
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without 
@@ -38,34 +38,36 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 /**
- *  @author  fmckenna
- *  @date    2/2017
+ *  @author  JustinBonus
+ *  @date    7/2024
  *  @version 1.0
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the Visualize Tab for the CoupledDigitalTwin
+ *  This is the class providing the Basic Tab for the CoupledTaichiEvent
  */
 
 #include <SimCenterWidget.h>
 
 class QJsonObject;
-class QLineEdit;
+class SC_FileEdit;
 
-class VisualizeDigitalTwin : public SimCenterWidget
+class BasicTaichiEvent : public SimCenterWidget
 {
-    Q_OBJECT
+    // Q_OBJECT
 public:
-    VisualizeDigitalTwin(QWidget *parent = 0);
-    virtual ~VisualizeDigitalTwin();
+    BasicTaichiEvent(QWidget *parent = 0);
+    virtual ~BasicTaichiEvent();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
+    bool copyFiles(QString &dirName);
 
 signals:
 
 private:
-
-  QLineEdit *timeStep;
+  SC_FileEdit *theBasicPyScript;
+  SC_FileEdit *theSurfaceFile;
 };
 
-#endif // VISUALIZE_DIGITAL_TWIN_H
+#endif // BASIC_TAICHI_EVENT_H
+

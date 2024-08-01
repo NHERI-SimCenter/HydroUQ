@@ -1,41 +1,40 @@
 // Written: fmckenna
 // Modified: Ajay B Harish (Feb 2021)
+// Modified: Justin Bonus (2024)
 // Purpose: the typical Qt main for running a QMainWindow
 
 // Include headers
-#include <GoogleAnalytics.h>
-#include <AgaveCurl.h>
 #include <MainWindowWorkflowApp.h>
-#include <WorkflowAppHydroUQ.h>
-
-
 #include <QApplication>
+#include <QFile>
+#include <QThread>
+#include <QObject>
+
+#include <WorkflowAppHydroUQ.h>
+#include <AgaveCurl.h>
 #include <QCoreApplication>
+
+#include <QTime>
+#include <QTextStream>
+#include <GoogleAnalytics.h>
+#include <QOpenGLWidget>
+#include <QStandardPaths>
 #include <QDir>
 #include <QFile>
-#include <QObject>
-#include <QFile>
-// #include <QOpenGLWidget>
 #include <QDebug>
-#include <QStandardPaths>
-#include <QStatusBar>
 #include <QTextStream>
-#include <QThread>
-#include <QTime>
 
 
 // #include <QCoreApplication>
-
-
-
 #include <QSvgWidget>
 #include <QWebEngineView>
-#include <QtWebEngine>
+#include <QStatusBar>
+// #include <QtWebEngine>
 
 //#include <QtGlobal> // for for Q_OS_WIN, etc.
-#include <stdlib.h>
 //#include <QSurfaceFormat>
-#include <SimCenterPreferences.h>
+// #include <SimCenterPreferences.h>
+#include <stdlib.h>
 
 #ifdef ENDLN
 #undef ENDLN
@@ -87,27 +86,26 @@ int main(int argc, char *argv[])
     // QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 
     // code to reset openGL version .. keep around in case need again
-    QSurfaceFormat glFormat;
+    // QSurfaceFormat glFormat;
     // glFormat.setVersion(3, 3);
-    glFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
-    QSurfaceFormat::setDefaultFormat(glFormat);
+    // glFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
+    // QSurfaceFormat::setDefaultFormat(glFormat);
 
 // #endif
     // QApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-    QGuiApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    // QGuiApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     // QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     // QApplication::setAttribute(Qt::AA_UseOpenGLES);
-
-    
 // #endif
 
 #ifdef Q_OS_WIN
     QApplication::setAttribute(Qt::AA_UseOpenGLES);
     // QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
+#else
+    QApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 #endif
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-
+    // QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
@@ -134,6 +132,19 @@ int main(int argc, char *argv[])
     // full path to debug.log file
     logFilePath = logFilePath + QDir::separator() + QString("debug.log"); 
 
+
+    // remove old log file
+    QFile debugFile(logFilePath);
+    debugFile.remove();
+
+    QByteArray envVar = qgetenv("QTDIR");       //  check if the app is run in Qt Creator
+
+    if (envVar.isEmpty())
+        logToFile = true;
+
+    qInstallMessageHandler(customMessageOutput);
+    // qDebug() << "logFile: " << logFilePath;
+
     /******************  code to reset openGL version .. keep around in case need again
     QSurfaceFormat glFormat;
     glFormat.setVersion(3, 3);
@@ -145,11 +156,7 @@ int main(int argc, char *argv[])
     // window scaling
     //
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling); 
-
-
-    // remove old log file
-    // QFile debugFile(logFilePath); 
-    // debugFile.remove(); 
+    // QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     QApplication a(argc, argv);
 
@@ -158,16 +165,6 @@ int main(int argc, char *argv[])
     // QtWebEngine::initialize(); // Initialize the QtWebEngine
     // QQmlApplicationEngine engine; // This one only for qt quick applications
     // engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
-    //  check if the app is run in Qt Creator
-    QByteArray envVar = qgetenv("QTDIR"); 
-
-    if (envVar.isEmpty())
-        logToFile = true;
-
-    qInstallMessageHandler(customMessageOutput);
-
-    qDebug() << "logFile: " << logFilePath;
 
 
 
@@ -212,7 +209,6 @@ int main(int argc, char *argv[])
     QWidget::connect(thread, SIGNAL(finished()), theRemoteService, SLOT(deleteLater()));
     QWidget::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();
-
 
     // Show the main window, set styles & start the event loop
     w.show();
@@ -259,20 +255,40 @@ int main(int argc, char *argv[])
         qDebug() << "could not open stylesheet";
     }
 
-    /* ***************************************************************** 
-    //Setting Google Analytics Tracking Information
-    GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
-    GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
-    GoogleAnalytics::CreateSessionId();
-    GoogleAnalytics::StartSession();
+    const bool USE_GOOGLE_ANALYTICS = true;
+    if constexpr (USE_GOOGLE_ANALYTICS) {
+        //Setting Google Analytics Tracking Information
+        GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
+        GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
+        GoogleAnalytics::CreateSessionId();
+        GoogleAnalytics::StartSession();
+        // GoogleAnalytics::SetScreenName("HydroUQ");
+        /* *****************************************************************  
+        // Opening a QWebEngineView and using github to get app geographic usage
+        QWebEngineView view;
+        // view = QWebEngineView(); 
+        view.hide();
+        // view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+        // view.setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
+        view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+        // view.setAttribute(Qt::WA_TranslucentBackground);
+        // view.setAttribute(Qt::WA_NoSystemBackground);
+        
 
-    // Opening a QWebEngineView and using github to get app geographic usage
-    QWebEngineView view;
-    view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
-    view.resize(1024, 750);
-    view.show();
-    view.hide();
-    ******************************************************************* */
+        view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
+        view.resize(1080, 720);
+        view.show();
+        // view.raise();
+        // view.activateWindow();
+
+
+        // Cleanup
+        view.hide();
+        // view.close();
+        // view.deleteLater();
+    
+        ******************************************************************* */
+    }
     
     // Result of execution
     int res = a.exec();
@@ -282,7 +298,11 @@ int main(int argc, char *argv[])
     thread->quit();
 
     // Close Google Analytics session
-    GoogleAnalytics::EndSession();
+    if constexpr (USE_GOOGLE_ANALYTICS) {
+        // GoogleAnalytics::SetAPISecret("");
+        // GoogleAnalytics::SetMeasurementId("");
+        GoogleAnalytics::EndSession();
+    } 
 
     // Complete
     return res;

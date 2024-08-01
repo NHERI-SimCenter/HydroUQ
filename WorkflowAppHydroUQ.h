@@ -71,7 +71,8 @@ class RemoteJobManager;
 class QNetworkAccessManager;
 class QNetworkReply;
 class HydroEDP_Selection;
-class SC_RemoteAppTool;
+class SimCenterAppWidget;
+// class SC_RemoteAppTool;
 // class EDP_Selection;
 
 // class GeoClawOpenFOAM;
@@ -79,7 +80,7 @@ class SC_RemoteAppTool;
 // class CoupledDigitalTwin;
 // class MPM;
 // class SPH;
-
+// class TaichiEvent;
 
 class WorkflowAppHydroUQ : public WorkflowAppWidget
 {
@@ -146,7 +147,8 @@ private:
     Application *localApp;
     Application *remoteApp;
     Application *currentApp;
-    SC_RemoteAppTool *currentTool;
+    // SC_RemoteAppTool 
+    SimCenterAppWidget *currentTool;
 
     RemoteJobManager *theJobManager;
 

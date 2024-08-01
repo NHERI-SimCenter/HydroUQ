@@ -1,6 +1,3 @@
-#ifndef VISUALIZE_DIGITAL_TWIN_H
-#define VISUALIZE_DIGITAL_TWIN_H
-
 /* *****************************************************************************
 Copyright (c) 2016-2023, The Regents of the University of California (Regents).
 All rights reserved.
@@ -37,35 +34,55 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-/**
- *  @author  fmckenna
- *  @date    2/2017
- *  @version 1.0
- *
- *  @section DESCRIPTION
- *
- *  This is the class providing the Visualize Tab for the CoupledDigitalTwin
- */
+#include <BasicTaichiEvent.h>
+#include <QLabel>
+#include <QGridLayout>
 
-#include <SimCenterWidget.h>
+#include <SC_FileEdit.h>
 
-class QJsonObject;
-class QLineEdit;
-
-class VisualizeDigitalTwin : public SimCenterWidget
+BasicTaichiEvent::BasicTaichiEvent(QWidget *parent)
+  :SimCenterWidget(parent)
 {
-    Q_OBJECT
-public:
-    VisualizeDigitalTwin(QWidget *parent = 0);
-    virtual ~VisualizeDigitalTwin();
-    bool outputToJSON(QJsonObject &jsonObject);
-    bool inputFromJSON(QJsonObject &jsonObject);
 
-signals:
+  theBasicPyScript = new SC_FileEdit("basicPyScript");
+  theSurfaceFile = new SC_FileEdit("interfaceSurface");
 
-private:
+  QGridLayout *theLayout = new QGridLayout();
+  theLayout->addWidget(new QLabel("BasicPy Script"),0,0);
+  theLayout->addWidget(theBasicPyScript, 0,1);
+  theLayout->addWidget(new QLabel("Surface File"),1,0);
+  theLayout->addWidget(theSurfaceFile, 1,1);
+  theLayout->setRowStretch(2,1);
+  this->setLayout(theLayout);
+    
+}
 
-  QLineEdit *timeStep;
-};
+BasicTaichiEvent::~BasicTaichiEvent()
+{
 
-#endif // VISUALIZE_DIGITAL_TWIN_H
+}
+
+bool
+BasicTaichiEvent::outputToJSON(QJsonObject &jsonObject)
+{
+  theBasicPyScript->outputToJSON(jsonObject);
+  theSurfaceFile->outputToJSON(jsonObject);  
+  return true;
+}
+
+bool
+BasicTaichiEvent::inputFromJSON(QJsonObject &jsonObject)
+{
+  theBasicPyScript->inputFromJSON(jsonObject);
+  theSurfaceFile->inputFromJSON(jsonObject);    
+  return true;
+}
+
+bool
+BasicTaichiEvent::copyFiles(QString &destDir)
+{
+  if (theBasicPyScript->copyFile(destDir) != true)
+    return false;
+  return theSurfaceFile->copyFile(destDir);    
+}
+

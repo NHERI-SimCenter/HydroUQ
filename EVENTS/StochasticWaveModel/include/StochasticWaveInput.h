@@ -115,6 +115,7 @@ class StochasticWaveInput : public SimCenterAppWidget {
    * Emit error message displaing input message
    * @param[in] message String containg error message to emit
    */
+//   void clear(void);
   void errorMessage(QString message);
 
   /**
@@ -130,6 +131,7 @@ class StochasticWaveInput : public SimCenterAppWidget {
   QComboBox* modelSelection; /**< Selection of ground motion model inputs */
   SimCenterAppWidget* stochasticModel; /**< Widget for inputting currently
 					       selected model parameters */
+//   SimCenterAppWidget* theJonswap; /**< Widget for inputting Jonswap parameters */
 };
 
 #endif  // _STOCHASTIC_WIND_MODEL_H

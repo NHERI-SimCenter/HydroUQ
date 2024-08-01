@@ -56,6 +56,7 @@ class SC_ComboBox;
 
 class SettingsDigitalTwin : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     SettingsDigitalTwin(QWidget *parent = 0);
     virtual ~SettingsDigitalTwin();

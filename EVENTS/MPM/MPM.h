@@ -74,6 +74,11 @@ class QPushButton;
 class QCheckBox;
 class QFormLayout;
 class QLabel;
+
+namespace Qt3DExtras {
+   class Qt3DWindow;
+}
+
 class MPM : public SimCenterAppWidget
 {
       Q_OBJECT 
@@ -114,6 +119,8 @@ public:
 
    SC_ResultsWidget* getResultsWidget(QWidget *parent) override; // For vis of output data results 
 
+   void hideVisualization(void);
+   void showVisualization(void);
 signals:
 
 public slots:
@@ -144,6 +151,8 @@ private:
    // QGroupBox                    *inputWindowGroup;
    bool caseInitialized = false; 
    QWebEngineView* m_pWebView;
+   Qt3DExtras::Qt3DWindow* view;
+   QWidget* container;
 };
 
 #endif // MATERIAL_POINT_METHOD_H

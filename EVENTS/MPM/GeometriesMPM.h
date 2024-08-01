@@ -62,6 +62,7 @@ class SC_CheckBox;
 class GeometryMPM; // Individual geometries
 class GeometriesMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     GeometriesMPM(QWidget *parent = 0);
     virtual ~GeometriesMPM();

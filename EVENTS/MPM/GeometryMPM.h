@@ -64,6 +64,7 @@ class GeometryAI; // Provide optional AI geometry generation, e.g. with point-e 
 
 class GeometryMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     GeometryMPM(QWidget *parent = 0);
     virtual ~GeometryMPM();

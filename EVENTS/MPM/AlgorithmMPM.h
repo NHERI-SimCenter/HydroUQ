@@ -61,6 +61,7 @@ class SC_CheckBox;
 
 class AlgorithmMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     AlgorithmMPM(QWidget *parent = 0);
     virtual ~AlgorithmMPM();

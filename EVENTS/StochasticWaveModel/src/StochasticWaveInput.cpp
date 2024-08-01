@@ -34,7 +34,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: mhgardner
+// Written for similar event type: mhgardner
 // Modified: JustinBonus (05/2024)
 #include <QComboBox>
 #include <QDebug>
@@ -67,7 +67,8 @@ StochasticWaveInput::StochasticWaveInput(
   modelSelection = new QComboBox();
   modelSelection->setObjectName("StochasticLoadingModel");
   modelSelection->addItem(tr("JONSWAP"));
-  stochasticModel = new Jonswap(rvInputWidget, this);
+  // Jonswap* theJonswap = new Jonswap(rvInputWidget, this); //, this);
+  stochasticModel = new Jonswap(rvInputWidget); //, this);
   
   // Add widgets to layouts and layouts to this
 
@@ -87,8 +88,52 @@ StochasticWaveInput::StochasticWaveInput(
 
 
 StochasticWaveInput::~StochasticWaveInput() {
-  // delete stochasticModel->thePlot; 
+  // if (stochasticModel != NULL) {
+  //   delete stochasticModel;
+  // }
+
+  // if (parametersLayout != NULL) {
+  //   delete parametersLayout;
+  // }
+
+  // if (modelSelection != NULL) {
+  //   delete modelSelection;
+  // }
+
+  
+
 }
+
+// void StochasticWaveInput::clear(void)
+// {
+//   // if (stochasticModel != NULL) {
+//   //   stochasticModel->clear();
+//   // }
+
+//   // if (parametersLayout != NULL) {  
+//   //   delete parametersLayout;
+//   // }
+
+//   // if (modelSelection != NULL) {
+//   //   delete modelSelection;
+//   // }
+
+//   // if (rvInputWidget != NULL) {
+//   //   delete rvInputWidget;
+//   // }
+
+//   // if (stochasticModel != NULL) {
+
+//   //   delete stochasticModel;
+//   // }
+
+//   // if (theJonswap != NULL) {
+
+//   //   delete theJonswap;
+//   // }
+
+
+// }
 
 bool StochasticWaveInput::outputToJSON(QJsonObject& jsonObject) {
   bool result = false;
@@ -104,8 +149,27 @@ bool StochasticWaveInput::outputToJSON(QJsonObject& jsonObject) {
 bool StochasticWaveInput::inputFromJSON(QJsonObject& jsonObject) {
 
   bool result = false;
-  if (stochasticModel != NULL) 
+  if (stochasticModel != NULL) {
+    stochasticModel->clear();
+
+    SimCenterAppWidget *nextModel = NULL;
+    QString model = jsonObject["StochasticLoadingModel"].toString();
+    if (model == "JONSWAP" || model == "StochasticWaveJonswap" || model == "StochasticWave") {
+      nextModel = new Jonswap(rvInputWidget); //, this);
+    } else {
+      qDebug() << "ERROR: StochasticWaveInput::inputFromJSON: Unknown selection: " << model << "\n";
+    }
+
+    if (nextModel != NULL) {
+      if (stochasticModel != NULL) {
+        parametersLayout->replaceWidget(stochasticModel, nextModel);
+        delete stochasticModel;
+      }
+      stochasticModel = nextModel;
+    }
+
     return stochasticModel->inputFromJSON(jsonObject);
+  }
   else {
     qDebug() << "StocashicWaveInput::inputToJSON - NULL model";
   }
@@ -154,7 +218,26 @@ void StochasticWaveInput::modelSelectionChanged(const QString& model) {
   // Switch the model description and form layout based on model selection
   SimCenterAppWidget *nextModel = NULL;
   if (model == "JONSWAP" || model == "StochasticWaveJonswap" || model == "StochasticWave") {
-    nextModel = new Jonswap(rvInputWidget, this);
+    nextModel = new Jonswap(rvInputWidget); //, this);
+    // if (stochasticModel == NULL) {
+    //   if (nextModel != NULL) {
+    //     delete nextModel;
+    //   }
+    //   if (theJonswap) {
+    //     nextModel = theJonswap;
+    //   } else {
+    //     nextModel = new Jonswap(rvInputWidget); //, this);
+    //   }
+    // } else {
+    //   if (theJonswap) {
+    //     nextModel = theJonswap;
+    //   } else {
+    //     nextModel = new Jonswap(rvInputWidget); //, this);
+    //   }
+    //   parametersLayout->replaceWidget(stochasticModel, nextModel);
+    //   delete stochasticModel;
+    // }
+    // nextModel = theJonswap;
   } else {
     qDebug() << "ERROR: StochasticWaveInput::modelSelectionChanged: Unknown selection: " << model << "\n";
   }

@@ -300,9 +300,14 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
 
 
 
+
+  thePlot->hide();
+  thePlot->clear();
+  // thePileFigure->hide();
+  // theDomainImageButton->hide();
+
   parametersLayout->addWidget(plotWidget);
   parametersLayout->addWidget(thePlot);
-  thePlot->hide();
   connect(chooseFileButton, &QPushButton::clicked, this, [=](){
         QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"),"", "CSV File (*.csv)");
         if (!fileName.isEmpty()) {
@@ -313,10 +318,8 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   dataDir->setText(QString(":/WaveSpectra.csv"));
 
 
-  this->thePlot->hide();
-  this->thePlot->clear();
-  this->updateDistributionPlot();
-  this->thePlot->show();
+  updateDistributionPlot();
+
 
   // parametersLayout->addWidget(plotWidget);
   // parametersLayout->addWidget(theDomainImageButton);
@@ -330,6 +333,9 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   layout->addStretch();
   this->setLayout(layout);
 
+  thePlot->show();
+  theDomainImageButton->show();
+  thePileFigure->show();
 
 
   // Place the plot in the layout
@@ -416,7 +422,7 @@ bool
 Jonswap::copyFiles(QString &destDir)
 {
   if (dataDir->text().isEmpty()) {
-    dataDir->setText("qrc:/Examples/hdro-0005/data/WaveSpectra.csv");
+    dataDir->setText(":Examples/hdro-0005/data/WaveSpectra.csv");
     this->errorMessage("WARNING: StochasticWave - spectra ideal filename had not been set when trying to call copyFiles(), using default file: " + dataDir->text());
     QFile::copy(dataDir->text(), destDir);
     return true;
@@ -428,7 +434,7 @@ Jonswap::copyFiles(QString &destDir)
   QString timeSeriesFileName = dataDir->text();
   timeSeriesFileName.replace("WaveSpectra.csv", "WaveSpectraGenerated.csv"); // temp fix assuming spectra file name
   if (dataDir->text().isEmpty()) {
-    dataDir->setText("qrc:/Examples/hdro-0005/data/WaveSpectraGenerated.csv");
+    dataDir->setText(":Examples/hdro-0005/data/WaveSpectraGenerated.csv");
     this->errorMessage("WARNING: StochasticWave - spectra generated filename had not been set when trying to call copyFiles(), using default file: " + dataDir->text());
     QFile::copy(dataDir->text(), destDir);
     return true;
@@ -502,13 +508,35 @@ bool readCSVRowSpectra (QTextStream &in, QStringList *row) {
 
 }
 
+void Jonswap::clear() {
+  thePlot->hide();
+  // theDomainImageButton->hide();
+  waterDepth->clear();
+  tidalSLR->clear();
+  stormSurgeSLR->clear();
+  climateChangeSLR->clear();
+  significantWaveHeight->clear();
+  peakPeriod->clear();
+  recorderOriginX->clear();
+  recorderCountZ->clear();
+  timeStep->clear();
+  timeDuration->clear();
+  dragCoefficient->clear();
+  dragArea->clear();
+  // gustWindSpeed->clear();
+  seed->setValue(500);
+  useSeed->setChecked(false);
+  dataDir->setText("");
+  thePlot->clear();
+
+}
 
 void
 Jonswap::updateDistributionPlot() {
     int numSteps = 100;
     int numStepsTimeSeries = 100;
     if (dataDir->text().isEmpty()) {
-        dataDir->setText("qrc:/Examples/hdro-0005/data/WaveSpectra.csv"); // hardcoded for quick fix
+        dataDir->setText(":Examples/hdro-0005/data/WaveSpectra.csv"); // hardcoded for quick fix
         this->errorMessage("ERROR: StochasticWave - data has not been set, using default");
         // return;
     }
@@ -662,6 +690,11 @@ bool Jonswap::outputToJSON(QJsonObject& jsonObject) {
 bool Jonswap::inputFromJSON(QJsonObject& jsonObject) {
   bool result = true;
 
+  // theDomainImageButton->hide();
+  thePlot->hide();
+
+
+
   waterDepth->inputFromJSON(jsonObject, QString("waterDepth"));
   tidalSLR->inputFromJSON(jsonObject, QString("tidalSLR"));
   stormSurgeSLR->inputFromJSON(jsonObject, QString("stormSurgeSLR"));
@@ -674,6 +707,7 @@ bool Jonswap::inputFromJSON(QJsonObject& jsonObject) {
   timeDuration->inputFromJSON(jsonObject, QString("timeDuration"));
   dragCoefficient->inputFromJSON(jsonObject, QString("dragCoefficient"));
   dragArea->inputFromJSON(jsonObject, QString("dragArea"));
+
 
 
   // gustWindSpeed->inputFromJSON(jsonObject, QString("gustSpeed"));
@@ -694,14 +728,21 @@ bool Jonswap::inputFromJSON(QJsonObject& jsonObject) {
     seed->setValue(jsonObject.value("seed").toInt());    
   }
 
-  return result;
-  }
+  theDomainImageButton->show();
 
-  void Jonswap::provideSeed(const bool& checked) {
+  thePlot->clear();
+  updateDistributionPlot();
+  thePlot->show();
+
+
+  return result;
+}
+
+void Jonswap::provideSeed(const bool& checked) {
   if (checked) {
     seed->setEnabled(true);
   } else {
     seed->setEnabled(false);
     seed->setValue(500);
   }
-  }
+}

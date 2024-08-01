@@ -424,8 +424,11 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Based on code by Alex44, 2018; https://stackoverflow.com/questions/23231012/how-to-render-in-qt3d-in-standard-gui-application)
 
     auto rootEntity = new Qt3DCore::QEntity();
-    auto view = new Qt3DExtras::Qt3DWindow();
-    QWidget *container = QWidget::createWindowContainer(view);
+    // auto view = new Qt3DExtras::Qt3DWindow();
+    view = new Qt3DExtras::Qt3DWindow();
+    container = QWidget::createWindowContainer(view);
+    this->hideVisualization();
+    
 
     // background color
     view->defaultFrameGraph()->setClearColor(QColor(QRgb(0xFFFFFF)));
@@ -437,6 +440,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     cameraEntity->setPosition(QVector3D(-45.0f, 20.0f, 25.0f));
     cameraEntity->setViewCenter(QVector3D(25.0f, 2.0f, 2.0f));
     cameraEntity->viewAll();
+    
     // Create a cube mesh
     // Qt3DExtras::QCuboidMesh *cubeMesh = new Qt3DExtras::QCuboidMesh();
     // Qt3DExtras::QCuboidMesh *cubeMesh[16][2][16];
@@ -1186,11 +1190,11 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     this->setLayout(mainWindowLayout);
 
     connect(stackedWidget, &SlidingStackedWidget::animationFinished, [=](void){
-      int index = stackedWidget->currentIndex();
-      mpmBodies->setDigitalTwin(index);
-      mpmBoundaries->setDigitalTwin(index);
+    int index = stackedWidget->currentIndex();
+    mpmBodies->setDigitalTwin(index);
+    mpmBoundaries->setDigitalTwin(index);
 // #ifdef _WIN32
-#if defined(_WIN32) || defined(__linux__) || defined(linux) ||defined(WIN32) && !defined(__APPLE__)
+#if defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) && !defined(__APPLE__)
       updateDigitalTwin(index);
 #endif
     });
@@ -1211,6 +1215,22 @@ MPM::~MPM()
 
 }
 
+void MPM::showVisualization(void)
+{
+#if defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) && !defined(__APPLE__)
+    // container->show();
+    view->show();
+#endif
+}
+
+void MPM::hideVisualization(void)
+{
+#if defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) && !defined(__APPLE__)
+    // container->hide();
+    view->hide();
+#endif
+}
+
 bool MPM::isInitialize()
 {
     return caseInitialized;
@@ -1222,7 +1242,8 @@ bool MPM::initialize()
     // mainWindowLayout = new QHBoxLayout();
 
     // ---------------------------------------------------
-
+    hideVisualization();
+    // ---------------------------------------------------
 
     caseDirectoryGroup = new QGroupBox("Case Directory");
     caseDirectoryLayout = new QGridLayout();
@@ -1313,7 +1334,7 @@ bool MPM::initialize()
 
     this->adjustSize();
 
-
+    this->showVisualization();
 
     return true;
 }
@@ -1422,7 +1443,7 @@ void MPM::onBrowseCaseDirectoryButtonClicked(void)
 
 void MPM::clear(void)
 {
-
+    this->hideVisualization();
 }
 
 bool MPM::outputCitation(QJsonObject &jsonObject)
@@ -1470,6 +1491,8 @@ bool MPM::inputFromJSON(QJsonObject &jsonObject)
   // mpmSensors->inputFromJSON(jsonObject);
   // mpmOutputs->inputFromJSON(jsonObject);
   // mpmResults->inputFromJSON(jsonObject);
+
+  this->showVisualization();
   return true;
 }
 

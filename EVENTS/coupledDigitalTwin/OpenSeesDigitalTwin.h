@@ -54,6 +54,7 @@ class SC_FileEdit;
 
 class OpenSeesDigitalTwin : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     OpenSeesDigitalTwin(QWidget *parent = 0);
     virtual ~OpenSeesDigitalTwin();
