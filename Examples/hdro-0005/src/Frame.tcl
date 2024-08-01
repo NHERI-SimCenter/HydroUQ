@@ -143,8 +143,3 @@ set m [expr $P/$g];       # expr command to evaluate an expression
 #    tag   MX   MY   RZ
 mass  3    $m   $m    0
 mass  4    $m   $m    0
-
-recorder EnvelopeNode -file dispEnvelope.out -node all -dof 1 disp
-recorder EnvelopeNode -file dispEnvelope3.out -node 3 -dof 1 disp
-recorder Node -file disp.out -node all -dof 1 disp
-recorder Node -file disp3.out -node 3 -dof 1 disp

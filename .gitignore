@@ -20,3 +20,4 @@ FlatTabWidget
 test
 WaterDropSample*
 *.o
+build.old
