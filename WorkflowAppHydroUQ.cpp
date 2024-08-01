@@ -110,6 +110,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <MPM/MPM.h>
 #include <MPM/SPH.h>
 #include <StochasticWaveModel/include/StochasticWaveInput.h>
+#include <TaichiEvent/TaichiEvent.h>
 #include <Celeris/Celeris.h>
 #include <Celeris/WebGPU.h>
 #include <NOAA/DigitalCoast.h>
@@ -207,7 +208,8 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("EDP"), theEDP_Selection); // Using EDP_HydroSelection
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
-    theComponentSelection->displayComponent("EVT"); // Initial page on startup
+    
+    theComponentSelection->displayComponent("UQ"); // Initial page on startup
 
     /*
     // When theComponentSelection is changed, update the icon in the side bar to also be selected
@@ -249,52 +251,60 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     //
     // Add standalone events to tools menu
     //
-
-    // MPM *miniMPM = new MPM(); 
-    MPM *miniMPM = new MPM(theRVs); 
-    if (!miniMPM->isInitialize()) { 
-        miniMPM->initialize(); 
-    }
-
-    const bool DEV_MODE = false; // Set to true for development mode, false for production mode
+    const bool DEV_MODE = true; // Set to true for development mode, false for production mode
     QString appName;
     QList<QString> queues; 
-    if (DEV_MODE) {
-        appName = "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6 dev app for ClaymoreUW MPM, Justin Bonus (bonusj) 
-        queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    } else  {
-        appName =  "simcenter-claymore-ls6-1.0.0u2"; // Lonestar6 public app for ClaymoreUW MPM
-        queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+
+    
+    const bool USE_CLAYMORE_TOOL = false;
+    if constexpr (USE_CLAYMORE_TOOL) {
+        if constexpr (DEV_MODE) {
+            appName = "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6 dev app for ClaymoreUW MPM, Justin Bonus (bonusj) 
+            queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+        } else {
+            appName =  "simcenter-claymore-ls6-1.0.0u2"; // Lonestar6 public app for ClaymoreUW MPM
+            queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+        }
+        MPM *miniMPM = new MPM(theRVs); 
+        if (!miniMPM->isInitialize()) { 
+            miniMPM->initialize(); 
+        }
+        SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
+        theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");
+        QAction *showMPM = toolsMenu->addAction("Digital Twin (&MPM)");
+        connect(showMPM, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniMPMTool] {
+            theDialog->showTool("Digital Twin (MPM)");
+        });
     }
-    SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
 
-    theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");
-    QAction *showMPM = toolsMenu->addAction("Digital Twin (&MPM)");
-    connect(showMPM, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniMPMTool] {
-        theDialog->showTool("Digital Twin (MPM)");
-    });
 
-    DigitalCoast *miniDC = new DigitalCoast();
-    QString appNameDC =  "DigitalCoast-1.0.0"; // Frontera
-    QString systemNameDC = "frontera";
-    QList<QString> queuesDC; queuesDC << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, queuesDC, theRemoteService, miniDC, theToolDialog);
-    theToolDialog->addTool(miniDCTool, "Sea-Level Rise (NOAA Digital Coast)");
-    QAction *showDC = toolsMenu->addAction("Sea-Level Rise (&NOAA Digital Coast)");
-    connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
-        theDialog->showTool("Sea-Level Rise (NOAA Digital Coast)");
-    });
+    const bool USE_NOAA_TOOL = false; // Set to true to use Celeris tool, false to use WebGPU tool
+    if constexpr (USE_NOAA_TOOL) {
+        DigitalCoast *miniDC = new DigitalCoast();
+        QString appNameDC =  "DigitalCoast-1.0.0"; // Frontera
+        QString systemNameDC = "frontera";
+        QList<QString> queuesDC; queuesDC << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+        SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, queuesDC, theRemoteService, miniDC, theToolDialog);
+        theToolDialog->addTool(miniDCTool, "Sea-Level Rise (NOAA Digital Coast)");
+        QAction *showDC = toolsMenu->addAction("Sea-Level Rise (&NOAA Digital Coast)");
+        connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
+            theDialog->showTool("Sea-Level Rise (NOAA Digital Coast)");
+        });
+    }
 
-    Celeris *miniCeleris = new Celeris();
-    QString appNameCeleris =  "Celeris-1.0.0"; // Frontera
-    QString systemNameCeleris = "frontera";
-    QList<QString> queuesCeleris; queuesCeleris << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appNameCeleris, queuesCeleris, theRemoteService, miniCeleris, theToolDialog);
-    theToolDialog->addTool(miniCelerisTool, "Boussinesq Waves (Celeris)");
-    QAction *showCeleris = toolsMenu->addAction("Boussinesq Waves (&Celeris)");
-    connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
-        theDialog->showTool("Boussinesq Waves (Celeris)");
-    });
+    const bool USE_CELERIS_TOOL = false; // Set to true to use Celeris tool, false to use WebGPU tool
+    if constexpr (USE_CELERIS_TOOL) {
+        Celeris *miniCeleris = new Celeris();
+        QString appNameCeleris =  "Celeris-1.0.0"; // Frontera
+        QString systemNameCeleris = "frontera";
+        QList<QString> queuesCeleris; queuesCeleris << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+        SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appNameCeleris, queuesCeleris, theRemoteService, miniCeleris, theToolDialog);
+        theToolDialog->addTool(miniCelerisTool, "Boussinesq Waves (Celeris)");
+        QAction *showCeleris = toolsMenu->addAction("Boussinesq Waves (&Celeris)");
+        connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
+            theDialog->showTool("Boussinesq Waves (Celeris)");
+        });
+    }
 
     // WebGPU *miniWebGPU = new WebGPU();
     // QString appNameWebGPU =  "WebGPU-1.0.0"; // Frontera
@@ -360,8 +370,12 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     defaultWorkDir.mkpath(templateDirectory);
 
 
+
     currentTool = nullptr;
-    currentTool = miniMPMTool; // TODO: Set the default tool here
+    // if constexpr (USE_CLAYMORE_TOOL) {
+    //     currentTool = miniMPMTool; // TODO: Set the default tool here
+    // }
+    
     // connect(theToolDialog, SIGNAL(toolSelected(QString)), this, SLOT(toolSelected(QString)));
     QJsonObject citations;
     QString citeFile = templateDirectory + QDir::separator() + tr("tool_cite.json");    

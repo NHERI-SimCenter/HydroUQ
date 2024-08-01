@@ -9,11 +9,13 @@
 CONFIG += conan_basic_setup
 include($$OUT_PWD/conanbuildinfo.pri)
 
-QT += core gui concurrent webenginewidgets network sql qml 3dcore 3drender 3dextras printsupport quick opengl
-QT += charts
-QT += widgets
+QT += core gui charts concurrent network sql qml 3dcore 3drender 3dextras printsupport quick opengl
+QT += webengine webenginewidgets 
+QT += webenginecore
+QT += webchannel 
+QT += websockets
+
 QT += svg multimedia
-# QT += 3dcore 3drender 3dextras
 QT += 3dinput 
 QT += 3dlogic 
 QT += 3dquick 
@@ -28,10 +30,7 @@ QT += datavisualization
 # QT += wayland
 # QT += x11extras
 # QT += webglplugin-no-lgpl 
-QT += webengine
-QT += webenginecore
-QT += webchannel 
-QT += websockets
+# QT += webglplugin
 # QT += webkit webview 
 # QT += webkitwidgets
 # QT += webkit webkitwidgets
@@ -64,12 +63,12 @@ RCC_DIR = $$OUT_PWD/.rcc
 TARGET = Hydro_UQ
 TEMPLATE = app
 
-VERSION = 3.2.0
+VERSION = 3.2.1
 # VERSTR = '\"$${VERSION}\"'
 # DEFINES += APP_VERSION ="$${VERSTR}"
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += NOINTERNALFEM
-DEFINES += _GRAPHICS_Qt3D
+# DEFINES += _GRAPHICS_Qt3D
 
 QMAKE_APPLE_DEVICE_ARCHS="x86_64"
 # QTWEBENGINE_CHROMIUM_FLAGS+= --ignore-gpu-blacklist \
@@ -97,6 +96,7 @@ win32 {
     LIBS +=User32.lib
     DEFINES += CURL_STATICLIB
 } else {
+#    DEFINES += _GRAPHICS_Qt3D
     mac {
         LIBS += -L/usr/local/lib
         # LIBS += -framework WebKit
