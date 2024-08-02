@@ -10,8 +10,8 @@
 #include <QThread>
 #include <QObject>
 
-#include <WorkflowAppHydroUQ.h>
 #include <AgaveCurl.h>
+#include <WorkflowAppHydroUQ.h>
 #include <QCoreApplication>
 
 #include <QTime>
@@ -20,21 +20,20 @@
 #include <QOpenGLWidget>
 #include <QStandardPaths>
 #include <QDir>
-#include <QFile>
 #include <QDebug>
-#include <QTextStream>
-
 
 // #include <QCoreApplication>
 #include <QSvgWidget>
-#include <QWebEngineView>
 #include <QStatusBar>
+#include <QWebEngineView>
 // #include <QtWebEngine>
 
 //#include <QtGlobal> // for for Q_OS_WIN, etc.
 //#include <QSurfaceFormat>
 // #include <SimCenterPreferences.h>
 #include <stdlib.h>
+
+
 
 #ifdef ENDLN
 #undef ENDLN
@@ -98,12 +97,18 @@ int main(int argc, char *argv[])
     // QApplication::setAttribute(Qt::AA_UseOpenGLES);
 // #endif
 
+// Extensive documentation on how to set up OpenGL on Windows, macOS, and Linux can be found at:
+// https://doc.qt.io/qt-5/windows-requirements.html
 #ifdef Q_OS_WIN
-    QApplication::setAttribute(Qt::AA_UseOpenGLES);
-    // QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
+    QApplication::setAttribute(Qt::AA_UseOpenGLES); // Use ANGLE on Windows
 #else
-    QApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
+#ifdef Q_OS_MACOS
+    QApplication::setAttribute(Qt::AA_UseDesktopOpenGL); // Use Desktop OpenGL on macOS
+#else // Linux
+    QApplication::setAttribute(Qt::AA_UseOpenGLES); // Use OpenGLES on Linux
 #endif
+#endif
+
 
     // QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
@@ -115,6 +120,7 @@ int main(int argc, char *argv[])
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     Q_INIT_RESOURCE(images);
     Q_INIT_RESOURCE(images1);
+    // Q_INIT_RESOURCE(resources);
     
     // Q_INIT_RESOURCE(Resources);
 
@@ -137,7 +143,7 @@ int main(int argc, char *argv[])
     QFile debugFile(logFilePath);
     debugFile.remove();
 
-    QByteArray envVar = qgetenv("QTDIR");       //  check if the app is run in Qt Creator
+    QByteArray envVar = qgetenv("QTDIR"); // check if the app is run in Qt Creator
 
     if (envVar.isEmpty())
         logToFile = true;
@@ -155,6 +161,7 @@ int main(int argc, char *argv[])
     //
     // window scaling
     //
+
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling); 
     // QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
@@ -173,6 +180,7 @@ int main(int argc, char *argv[])
 
     // create a remote interface
     QString tenant("designsafe"); // this is the default tenant for the design safe community
+    // Below might become tapis://designsafe.storage.default/ in August 2024... - jb
     QString storage("agave://designsafe.storage.default/"); // this is the default storage system for the design safe community
     QString dirName("HydroUQ"); // this is the default directory for the application
     AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName); // this is the remote service used by the application
@@ -200,7 +208,7 @@ int main(int argc, char *argv[])
     w.setDocumentationURL(manualURL);
 
     // Link to message board
-    QString messageBoardURL("http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0");
+    QString messageBoardURL("https://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0");
     w.setFeedbackURL(messageBoardURL);
 
     // Move remote interface to a thread
@@ -216,39 +224,22 @@ int main(int argc, char *argv[])
 
 
 #ifdef Q_OS_WIN
-#define STYLESHEET ":/styleCommon/stylesheetWIN.qss"
     QFile file(":/styleCommon/stylesheetWIN.qss");
-#endif
-
+#else
 #ifdef Q_OS_MACOS
-#define STYLESHEET ":/styleCommon/stylesheetMAC.qss"
     QFile file(":/styleCommon/stylesheetMAC.qss");
-#endif
-
+#else
 #ifdef Q_OS_LINUX
-#define STYLESHEET ":/styleCommon/stylesheetLinux.qss"
-    // QFile file(":/styleCommon/stylesheetMAC.qss");
-    QFile file(":/styleCommon/stylesheetLinux.qss");
+    QFile file(":/styleCommon/stylesheetMAC.qss");
+#else
+    QFile file(":/styleCommon/stylesheetLinux.qss"); 
+#endif 
 #endif
-
-#ifdef Q_OS_UNIX
-#ifndef Q_OS_LINUX
-#ifndef Q_OS_MACOS
-#define STYLESHEET ":/styleCommon/stylesheetLinux.qss"
-    // QFile file(":/styleCommon/stylesheetMAC.qss");
-    QFile file(":/styleCommon/stylesheetLinux.qss");
-#endif
-#endif
-#endif
-
-#ifndef STYLESHEET
-#define STYLESHEET ":/styleCommon/stylesheetLinux.qss"
-    QFile file(":/styleCommon/stylesheetLinux.qss");
 #endif
 
 
     // Show error message
-    if(file.open(QFile::ReadOnly)) {
+    if (file.open(QFile::ReadOnly)) {
         a.setStyleSheet(file.readAll());
         file.close();
     } else {
@@ -263,20 +254,21 @@ int main(int argc, char *argv[])
         GoogleAnalytics::CreateSessionId();
         GoogleAnalytics::StartSession();
         // GoogleAnalytics::SetScreenName("HydroUQ");
-        /* *****************************************************************  
+        // /* *****************************************************************  
         // Opening a QWebEngineView and using github to get app geographic usage
         QWebEngineView view;
         // view = QWebEngineView(); 
-        view.hide();
+        // view.hide();
         // view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
         // view.setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
-        view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+        // view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);
         // view.setAttribute(Qt::WA_TranslucentBackground);
         // view.setAttribute(Qt::WA_NoSystemBackground);
         
 
         view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
-        view.resize(1080, 720);
+
+        view.resize(1024, 750);
         view.show();
         // view.raise();
         // view.activateWindow();
@@ -287,7 +279,7 @@ int main(int argc, char *argv[])
         // view.close();
         // view.deleteLater();
     
-        ******************************************************************* */
+        // ******************************************************************* */
     }
     
     // Result of execution
