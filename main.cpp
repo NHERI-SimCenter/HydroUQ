@@ -3,12 +3,6 @@
 // Purpose: the typical Qt main for running a QMainWindow
 
 // Include headers
-#include <GoogleAnalytics.h>
-#include <AgaveCurl.h>
-#include <MainWindowWorkflowApp.h>
-#include <WorkflowAppHydroUQ.h>
-
-
 #include <QApplication>
 #include <QCoreApplication>
 #include <QDir>
@@ -23,10 +17,12 @@
 #include <QThread>
 #include <QTime>
 
+#include <GoogleAnalytics.h>
+#include <TapisV3.h>
+#include <MainWindowWorkflowApp.h>
+#include <WorkflowAppHydroUQ.h>
 
 // #include <QCoreApplication>
-
-
 
 #include <QSvgWidget>
 #include <QWebEngineView>
@@ -175,11 +171,12 @@ int main(int argc, char *argv[])
     // QApplication a(argc, argv);
 
     // create a remote interface
-    QString tenant("designsafe"); // this is the default tenant for the design safe community
-    QString storage("agave://designsafe.storage.default/"); // this is the default storage system for the design safe community
+    QString tenant("designsafe");
+    // QString storage("agave://designsafe.storage.default/"); 
+    QString storage("designsafe.storage.default/");        
     QString dirName("HydroUQ"); // this is the default directory for the application
-    AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName); // this is the remote service used by the application
-
+    // AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName);
+    TapisV3 *theRemoteService = new TapisV3(tenant, storage, &dirName);        
 
     // create the main window
     WorkflowAppWidget *theInputApp = new WorkflowAppHydroUQ(theRemoteService);
