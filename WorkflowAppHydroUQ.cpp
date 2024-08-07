@@ -158,6 +158,8 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     // connect signals and slots for (1) local and (2) remote application runs. NOTE: Only remote is fully implemented
     //
 
+
+    /**************************
     // connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     connect(localApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir)
     {
@@ -182,6 +184,32 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));   
     
     // connect(theRunLocalWidget, SIGNAL(runButtonPressed(QString, QString)), this, SLOT(runLocal(QString, QString)));
+    *************************/
+
+    connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
+    connect(this,SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
+
+    connect(localApp,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+
+    connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
+
+    connect(theJobManager,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+    connect(theJobManager,SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
+
+
+    connect(remoteApp,SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));
+
+    connect(localApp,SIGNAL(runComplete()), this, SLOT(runComplete()));
+
+    connect(remoteApp,SIGNAL(successfullJobStart()), this, SLOT(runComplete()));
+    connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
+    connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));
+
+    // KZ connect queryEVT and the reply
+    connect(theUQ_Selection, SIGNAL(queryEVT()), theEventSelection, SLOT(replyEventType()));
+    connect(theEventSelection, SIGNAL(typeEVT(QString)), theUQ_Selection, SLOT(setEventType(QString)));
+
+
 
     //
     // create layout to hold component selection
@@ -190,13 +218,10 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     QHBoxLayout *horizontalLayout = new QHBoxLayout();
     horizontalLayout->setMargin(0);
     this->setLayout(horizontalLayout);
-    // horizontalLayout->setSpacing(0);
-    // this->setContentsMargins(0,5,0,5);
 
     //
     // create the component selection & add the components to it
     //
-
     theComponentSelection = new SimCenterComponentSelection();
     horizontalLayout->addWidget(theComponentSelection);
     horizontalLayout->setAlignment(Qt::AlignLeft);
@@ -209,7 +234,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
     
-    theComponentSelection->displayComponent("UQ"); // Initial page on startup
+    theComponentSelection->displayComponent("EVT"); // Initial page on startup
 
     /*
     // When theComponentSelection is changed, update the icon in the side bar to also be selected
@@ -256,8 +281,179 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     QList<QString> queues; 
 
     
-    const bool USE_CLAYMORE_TOOL = false;
+    // TODO : Gather all tool information into compile time arrays, turn on/off the tools with one edit
+    // TODO : Pull into a separate file / object. Shouldn't be here
+    //        Prototype for a later compiled approach for making most EVT/FEM/SUR modules available individually
+
+    // enum class ToolIndex_e : int {
+    //     Start = 0,
+    //     ClaymoreUW = Start,
+    //     TaichiEvent,
+    //     Celeris,
+    //     NOAA,
+    //     WebGPU,
+    //     Last,
+    //     Count = Last
+    // };
+
+    // enum class Tool_b : bool {
+    //     ClaymoreUW = true,
+    //     TaichiEvent = true,
+    //     Celeris = true,
+    //     NOAA = true,
+    //     WebGPU = false
+    // };
+
+    // const int ToolIndexArray[] = {
+    //     static_cast<int>(ToolIndex_e::ClaymoreUW),
+    //     static_cast<int>(ToolIndex_e::TaichiEvent),
+    //     static_cast<int>(ToolIndex_e::Celeris),
+    //     static_cast<int>(ToolIndex_e::NOAA),
+    //     static_cast<int>(ToolIndex_e::WebGPU)
+    // };
+
+
+    // const bool ToolEnabledArray[] = {
+    //     static_cast<bool>(Tool_b::ClaymoreUW),
+    //     static_cast<bool>(Tool_b::TaichiEvent),
+    //     static_cast<bool>(Tool_b::Celeris),
+    //     static_cast<bool>(Tool_b::NOAA),
+    //     static_cast<bool>(Tool_b::WebGPU)
+    // };
+
+    // const QString ToolStringArray[] = {
+    //     static_cast<QString>("Digital Twin (MPM)"),
+    //     static_cast<QString>("General Event (Taichi)"),
+    //     static_cast<QString>("Boussinesq Waves (Celeris)"),
+    //     static_cast<QString>("Sea-Level Rise (NOAA Digital Coast)"),
+    //     static_cast<QString>("Trouble-Shoot Hardware (WebGPU)")
+    // };
+
+    // const QString ToolDisplayArray[] = {
+    //     "Digital Twin (&MPM)",
+    //     "General Event (&Taichi)",
+    //     "Boussinesq Waves (&Celeris)",
+    //     "Sea-Level Rise (&NOAA Digital Coast)",
+    //     "Trouble-Shoot Hardware (&WebGPU)"
+    // };
+
+    // const QString ToolTipArray[] = {
+    //     "Digital Twin - Multi-GPU Material Point Method (MPM) - ClaymoreUW",
+    //     "General Event - High-Performance Solvers (SPH/MPM/LBM) - Taichi Lang",
+    //     "Regional Event - Boussinesq and NLSW Waves WebGPU Solver - Celeris",
+    //     "Sea-Level Rise - Sea-Level and Bathymetry Web API - NOAA Digital Coast",
+    //     "Trouble-Shoot Hardware - Hardware Acceleration - Chromium WebGPU"
+    // };
+
+    // static_assert(static_cast<int>(ToolIndex_e::Count) == static_cast<int>(ToolIndex_e::Last) - static_cast<int>(ToolIndex_e::Start) + 1, "ToolIndex_e::Count and ToolIndex_e::Last are not consistent");
+
+
+    // // const bool USE_CLAYMORE_TOOL = false;
+    // // if constexpr (USE_CLAYMORE_TOOL) {
+
+    // for (int tl : ToolIndexArray) {
+    //     if (!ToolEnabledArray[static_cast<int>(tl)]) {
+    //         toolsMenu->addSeparator();
+    //         // Add a separator between enabled and disabled tools
+    //         continue;
+    //     }
+    //     switch (static_cast<ToolIndex_e>(tl)) {
+    //         case (ToolIndex_e::ClaymoreUW):
+
+    //             // qDebug() << "Adding Tool: " << ToolStringArray[static_cast<int>(tl)];
+    //             // QAction *showTool = toolsMenu->addAction(ToolDisplayArray[static_cast<int>(tl)]);
+    //             // connect(showTool, &QAction::triggered, this,[this, theDialog=theToolDialog, static_cast<int>(tl)] {
+    //             //     theDialog->showTool(ToolDisplayArray[static_cast<int>(tl)]);
+    //             // });
+            
+    //             if constexpr (DEV_MODE) {
+    //                 appName = "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6 dev app for ClaymoreUW MPM, Justin Bonus (bonusj) 
+    //                 queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    //             } else {
+    //                 appName =  "simcenter-claymore-ls6-1.0.0u2"; // Lonestar6 public app for ClaymoreUW MPM
+    //                 queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    //             }
+    //             MPM *miniMPM = new MPM(theRVs); 
+    //             if (!miniMPM->isInitialize()) { 
+    //                 miniMPM->initialize(); 
+    //             }
+    //             SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
+    //             theToolDialog->addTool(miniMPMTool, ToolStringArray[static_cast<int>(ToolIndex_e::ClaymoreUW)]);
+    //             QAction *showMPM = toolsMenu->addAction(ToolDisplayArray[static_cast<int>(ToolIndex_e::ClaymoreUW)]);
+    //             connect(showMPM, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniMPMTool] {
+    //                 theDialog->showTool(ToolDisplayArray[static_cast<int>(ToolIndex_e::ClaymoreUW)]);
+    //             });
+    //             break;
+
+
+    //         case (ToolIndex_e::TaichiEvent):
+
+    //             TaichiEvent *miniTaichi = new TaichiEvent();
+    //             appName =  "Taichi-1.0.0"; // Frontera
+    //             queues.clear(); queues << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    //             SC_RemoteAppTool *miniTaichiTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniTaichi, theToolDialog);
+    //             theToolDialog->addTool(miniTaichiTool, ToolStringArray[static_cast<int>(ToolIndex_e::TaichiEvent)]);
+    //             QAction *showTaichi = toolsMenu->addAction(ToolDisplayArray[static_cast<int>(ToolIndex_e::TaichiEvent)]);
+    //             connect(showTaichi, &QAction::triggered, this,[this, theDialog=theToolDialog, miniT = miniTaichiTool] {
+    //                 theDialog->showTool(ToolDisplayArray[static_cast<int>(ToolIndex_e::TaichiEvent)]);
+    //             });
+    //             break;
+
+    //         case (ToolIndex_e::Celeris):
+
+    //             Celeris *miniCeleris = new Celeris();
+    //             appName =  "Celeris-1.0.0"; // Frontera
+    //             queues.clear(); queues << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    //             SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniCeleris, theToolDialog);
+    //             theToolDialog->addTool(miniCelerisTool, ToolStringArray[static_cast<int>(ToolIndex_e::Celeris)]);
+    //             QAction *showCeleris = toolsMenu->addAction(ToolDisplayArray[static_cast<int>(ToolIndex_e::Celeris)]);
+    //             connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
+    //                 theDialog->showTool(ToolDisplayArray[static_cast<int>(ToolIndex_e::Celeris)]);
+    //             });
+    //             break;
+
+    //         case (ToolIndex_e::NOAA):
+
+    //             DigitalCoast *miniDC = new DigitalCoast();
+    //             appName =  "DigitalCoast-1.0.0"; // Frontera
+    //             queues.clear(); queues << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    //             SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniDC, theToolDialog);
+    //             theToolDialog->addTool(miniDCTool, ToolStringArray[static_cast<int>(ToolIndex_e::NOAA)]);
+    //             QAction *showDC = toolsMenu->addAction(ToolDisplayArray[static_cast<int>(ToolIndex_e::NOAA)]);
+    //             connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
+    //                 theDialog->showTool(ToolDisplayArray[static_cast<int>(ToolIndex_e::NOAA)]);
+    //             });
+    //             break;
+
+    //         case (ToolIndex_e::WebGPU):
+
+    //             WebGPU *miniWebGPU = new WebGPU();
+    //             appName =  "WebGPU-1.0.0"; // Frontera
+    //             queues.clear(); queues << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    //             SC_RemoteAppTool *miniWebGPUTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniWebGPU, theToolDialog);
+    //             theToolDialog->addTool(miniWebGPUTool, ToolStringArray[static_cast<int>(ToolIndex_e::WebGPU)]);
+    //             QAction *showWebGPU = toolsMenu->addAction(ToolDisplayArray[static_cast<int>(ToolIndex_e::WebGPU)]);
+    //             connect(showWebGPU, &QAction::triggered, this,[this, theDialog=theToolDialog, miniW = miniWebGPUTool] {
+    //                 theDialog->showTool(ToolDisplayArray[static_cast<int>(ToolIndex_e::WebGPU)]);
+    //             });
+    //             break;
+
+    //         default:
+    //             break;
+    //     }
+
+    //     }
+    // }
+
+    // if constexpr(ToolEnabledArray[static_cast<int>(ToolIndex_e::ClaymoreUW)]) {
+    // }
+
+    const bool USE_CLAYMORE_TOOL = false; // Set to true to use ClaymoreUW tool, false to use TaichiEvent tool
     if constexpr (USE_CLAYMORE_TOOL) {
+        MPM *miniMPM = new MPM(theRVs);
+        if (!miniMPM->isInitialize()) {
+            miniMPM->initialize();
+        }
         if constexpr (DEV_MODE) {
             appName = "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6 dev app for ClaymoreUW MPM, Justin Bonus (bonusj) 
             queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
@@ -265,16 +461,26 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
             appName =  "simcenter-claymore-ls6-1.0.0u2"; // Lonestar6 public app for ClaymoreUW MPM
             queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
         }
-        MPM *miniMPM = new MPM(theRVs); 
-        if (!miniMPM->isInitialize()) { 
-            miniMPM->initialize(); 
-        }
         SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
         theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");
         QAction *showMPM = toolsMenu->addAction("Digital Twin (&MPM)");
         connect(showMPM, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniMPMTool] {
             theDialog->showTool("Digital Twin (MPM)");
         });
+    }
+
+    const bool USE_TAICHI_TOOL = true; // Set to true to use TaichiEvent tool, false to use ClaymoreUW tool
+    if constexpr (USE_TAICHI_TOOL) {
+        TaichiEvent *miniTaichi = new TaichiEvent();
+        appName =  "Taichi-1.0.0"; // Frontera
+        queues.clear(); queues << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+        SC_RemoteAppTool *miniTaichiTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniTaichi, theToolDialog);
+        theToolDialog->addTool(miniTaichiTool, "General Event (Taichi)");
+        QAction *showTaichi = toolsMenu->addAction("General Event (&Taichi)");  
+        connect(showTaichi, &QAction::triggered, this,[this, theDialog=theToolDialog, miniT = miniTaichiTool] {
+            theDialog->showTool("General Event (Taichi)");
+        });
+
     }
 
 
@@ -523,13 +729,10 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
         { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theRunWidget->outputToJSON() returned false!"); return result; }
 
     // theResults
-    // Should this output be reimplemented Its not in WE-UQ - but it is in the original HydroUQ, (JB)
-    // --------------------------------------------
     // sy - to save results
-    // --------------------------------------------
-    // result = theResults->outputToJSON(jsonObjectTop);
-    // if (result == false)
-    //     { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theResults->outputToJSON() returned false!"); return result; }
+    result = theResults->outputToJSON(jsonObjectTop);
+    if (result == false)
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theResults->outputToJSON() returned false!"); return result; }
 
     jsonObjectTop["Applications"]=apps;
 
@@ -583,12 +786,16 @@ WorkflowAppHydroUQ::processResults(QString &dirName)
     //
 
     QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
-    if (oldResults != NULL && oldResults != theResults) {;
+    if (oldResults != NULL) {
         this->errorMessage("WorkflowAppHydroUQ::processResults() - Deleting oldResults");
-        // disconnect(oldResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-        // disconnect(oldResults,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));  
         delete oldResults;
     }
+    // if (oldResults != NULL && oldResults != theResults) {;
+    //     this->errorMessage("WorkflowAppHydroUQ::processResults() - Deleting oldResults");
+    //     // disconnect(oldResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
+    //     // disconnect(oldResults,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));  
+    //     delete oldResults;
+    // }
 
     //
     // process results
@@ -602,10 +809,10 @@ WorkflowAppHydroUQ::processResults(QString &dirName)
 void
 WorkflowAppHydroUQ::clear(void)
 {
-    theRVs->clear();
-    theUQ_Selection->clear();
     theGI->clear();
     theSIM->clear();
+    theRVs->clear();
+    theUQ_Selection->clear();
     theEventSelection->clear();
     theAnalysisSelection->clear();
 
@@ -703,8 +910,6 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
         this->errorMessage("Hydro_UQ: failed to find EDP data");
         return false;
     }
-
-
     if (theUQ_Selection->inputFromJSON(jsonObject) == false) {
        this->errorMessage("Hydro_UQ: failed to read UQ Method data");
     } 
@@ -715,8 +920,16 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
         this->errorMessage("Hydro_UQ: failed to read FEM Analysis Method data");
     }
 
+    // Below allows users to load in existing results from a previous run / example. Appear in RES tab.
+    // sy - to display results
+    auto *theNewResults = theUQ_Selection->getResults();
+    if (theNewResults->inputFromJSON(jsonObject) == false) {
+        this->errorMessage("Hydro_UQ: failed to read RES Method data");
+    }
+    theResults->setResultWidget(theNewResults);
     this->statusMessage("WorkflowAppHydroUQ::inputFromJSON - Done Loading File");
     return true;  
+
 
     // I guess below is incorrect? Above was from WE-UQ's refactor Sep 14 and May 2, 2022
     // ---
@@ -733,12 +946,6 @@ WorkflowAppHydroUQ::inputFromJSON(QJsonObject &jsonObject)
     // return true;  
     // ---
 
-    // Below allows users to load in existing results from a previous run / example. Appear in RES tab.
-    // sy - to display results
-    auto* theNewResults = theUQ_Selection->getResults();
-    if (theNewResults->inputFromJSON(jsonObject) == false)
-        this->errorMessage("Hydro_UQ: failed to read RES Method data");
-    theResults->setResultWidget(theNewResults);
 }
 
 
@@ -823,10 +1030,11 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     QString tmpDirectory = workDir.absoluteFilePath(tmpDirName);
     QDir destinationDirectory(tmpDirectory);
 
-    if(destinationDirectory.exists()) {
+    if (destinationDirectory.exists()) {
       destinationDirectory.removeRecursively();
-    } else
+    } else {
       destinationDirectory.mkpath(tmpDirectory);
+    }
 
     // Used in other places temporarily, 
     // e.g. citation output for Tools to avoid passing parameters
@@ -837,8 +1045,14 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     destinationDirectory.mkpath(templateDirectory);
 
     // copyPath(path, tmpDirectory, false);
-    theSIM->copyFiles(templateDirectory);
-    theEventSelection->copyFiles(templateDirectory);
+    if (theSIM->copyFiles(templateDirectory) == false) {
+      errorMessage("Workflow Failed to start as SIM failed in copyFiles");
+      return;
+    }
+    if (theEventSelection->copyFiles(templateDirectory) == false) {
+      errorMessage("Workflow Failed to start as EVENT failed in copyFiles");
+      return;
+    }
     theAnalysisSelection->copyFiles(templateDirectory);
     theUQ_Selection->copyFiles(templateDirectory);
     theEDP_Selection->copyFiles(templateDirectory);

@@ -21,3 +21,6 @@ test
 WaterDropSample*
 *.o
 build.old
+*.vtk
+*.out
+*.old
