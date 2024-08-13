@@ -42,9 +42,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <SimCenterAppWidget.h>
 
-#include <ResultsMPM.h>
+// #include <ResultsMPM.h>
 
-#include <QWebEngineView>
 // Forward declaration
 class InputWidgetParameters;
 class RandomVariablesContainer;
@@ -74,6 +73,7 @@ class QPushButton;
 class QCheckBox;
 class QFormLayout;
 class QLabel;
+class QScrollArea;
 
 namespace Qt3DExtras {
    class Qt3DWindow;
@@ -145,14 +145,18 @@ private:
    QGroupBox                    *caseDirectoryGroup;
    QGridLayout                  *caseDirectoryLayout;
    QTabWidget                   *theTabWidget;
+   // QScrollArea                  *theScrollArea;
    // QVBoxLayout                  *visWindowLayout;
    // QGroupBox                    *visWindowGroup;
    // QVBoxLayout                  *inputWindowLayout;
    // QGroupBox                    *inputWindowGroup;
    bool caseInitialized = false; 
-   QWebEngineView* m_pWebView;
+
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
    Qt3DExtras::Qt3DWindow* view;
    QWidget* container;
+#endif
+   // QWebEngineView* m_pWebView;
 };
 
 #endif // MATERIAL_POINT_METHOD_H
