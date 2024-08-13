@@ -87,10 +87,11 @@ private:
    SimCenterAppWidget *theCurrentEDP;
 
    SimCenterAppWidget *theStandardEDPs;
+   SimCenterAppWidget *theStandardEarthquakeEDPs;
+   SimCenterAppWidget *theStandardWindEDPs;
    SimCenterAppWidget *theStandardHydroEDPs;
    SimCenterAppWidget *theStandardTsunamiEDPs;
    SimCenterAppWidget *theStandardStormSurgeEDPs;
-   SimCenterAppWidget *theStandardWindEDPs;
    SimCenterAppWidget *theUserDefinedEDPs;
 
    //RandomVariablesContainer *theRandomVariables;

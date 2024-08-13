@@ -132,18 +132,19 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //
     // create the various widgets
     //
+
     theRVs = RandomVariablesContainer::getInstance();
     theGI = GeneralInformationWidget::getInstance();
     theSIM = new SIM_Selection(true, true);
-
-    // theEventSelection = new HydroEventSelection(theRVs, theGI, this);
     theEventSelection = new HydroEventSelection(theRVs, theService); // WE-UQ
-    
     theAnalysisSelection = new FEA_Selection(true);
+    theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity); // ForwardReliabilitySensitivitySurrogate
     theEDP_Selection = new HydroEDP_Selection(theRVs);
-    theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity);
-
     theResults = theUQ_Selection->getResults();
+
+    //
+    // Set workflow scripts
+    //
 
     localApp = new LocalApplication("sWHALE.py");
     remoteApp = new RemoteApplication("sWHALE.py", theService);
@@ -159,23 +160,26 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //
 
 
-    /**************************
+    
     // connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     connect(localApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir)
     {
         currentApp = localApp;
         setUpForApplicationRun(workingDir, subDir);
     });
+    /*************************
     connect(this,SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
     connect(localApp,SIGNAL(runComplete()), this, SLOT(runComplete()));
     connect(localApp,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
 
     // connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
+    **************************/
     connect(remoteApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir)
     {
         currentApp = remoteApp;
         setUpForApplicationRun(workingDir, subDir);
     });
+    /************************
     connect(theJobManager,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
     connect(theJobManager,SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
     connect(remoteApp,SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));
@@ -186,22 +190,19 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     // connect(theRunLocalWidget, SIGNAL(runButtonPressed(QString, QString)), this, SLOT(runLocal(QString, QString)));
     *************************/
 
-    connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
-    connect(this,SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
+    //connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
+    connect(this, SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
+    connect(localApp, SIGNAL(runComplete()), this, SLOT(runComplete()));
+    connect(localApp, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
 
-    connect(localApp,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
-
-    connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
+    //connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
 
     connect(theJobManager,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
     connect(theJobManager,SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
 
-
-    connect(remoteApp,SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));
-
-    connect(localApp,SIGNAL(runComplete()), this, SLOT(runComplete()));
-
+    connect(remoteApp,SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));;
     connect(remoteApp,SIGNAL(successfullJobStart()), this, SLOT(runComplete()));
+
     connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
     connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));
 
@@ -234,25 +235,20 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
     
-    theComponentSelection->displayComponent("EVT"); // Initial page on startup
+    theComponentSelection->displayComponent("UQ"); // Initial page on startup
 
-    /*
-    // When theComponentSelection is changed, update the icon in the side bar to also be selected
-    // connect(theComponentSelection, SIGNAL(selectionChanged(QString &)), this, SLOT(updateIcons(QString &)));
-    */
 
     // access a web page which will increment the usage count for this tool
     manager = new QNetworkAccessManager(this);
     connect(manager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(replyFinished(QNetworkReply*)));
-    // TODO: Is this still functional? Check...
-    manager->get(QNetworkRequest(QUrl("http://opensees.berkeley.edu/OpenSees/developer/eeuq/use.php")));
+    manager->get(QNetworkRequest(QUrl("http://opensees.berkeley.edu/OpenSees/developer/eeuq/use.php"))); // EE-UQ?
 
     //
     // set the defults in the General Info
     //
 
-    theGI->setDefaultProperties(1,144,360,360,37.8715,-122.2730);
+    theGI->setDefaultProperties(1,144,360,360,37.8715,-122.2730); // Berkeley, kips and inches
 
     ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
     theDialog->appendInfoMessage("Welcome to HydroUQ");    
@@ -448,18 +444,18 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     // if constexpr(ToolEnabledArray[static_cast<int>(ToolIndex_e::ClaymoreUW)]) {
     // }
 
-    const bool USE_CLAYMORE_TOOL = false; // Set to true to use ClaymoreUW tool, false to use TaichiEvent tool
+    const bool USE_CLAYMORE_TOOL = true;
     if constexpr (USE_CLAYMORE_TOOL) {
         MPM *miniMPM = new MPM(theRVs);
         if (!miniMPM->isInitialize()) {
             miniMPM->initialize();
         }
         if constexpr (DEV_MODE) {
-            appName = "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6 dev app for ClaymoreUW MPM, Justin Bonus (bonusj) 
-            queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+            appName = "simcenter-claymore-lonestar6"; // Lonestar6 dev app for ClaymoreUW MPM, Justin Bonus (bonusj) 
+            queues << "gpu-a100-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
         } else {
-            appName =  "simcenter-claymore-ls6-1.0.0u2"; // Lonestar6 public app for ClaymoreUW MPM
-            queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+            appName =  "simcenter-claymore-lonestar6"; // Lonestar6 public app for ClaymoreUW MPM
+            queues << "gpu-a100-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
         }
         SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
         theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");
@@ -469,7 +465,7 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         });
     }
 
-    const bool USE_TAICHI_TOOL = true; // Set to true to use TaichiEvent tool, false to use ClaymoreUW tool
+    const bool USE_TAICHI_TOOL = true;
     if constexpr (USE_TAICHI_TOOL) {
         TaichiEvent *miniTaichi = new TaichiEvent();
         appName =  "Taichi-1.0.0"; // Frontera
@@ -484,7 +480,7 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     }
 
 
-    const bool USE_NOAA_TOOL = false; // Set to true to use Celeris tool, false to use WebGPU tool
+    const bool USE_NOAA_TOOL = false; 
     if constexpr (USE_NOAA_TOOL) {
         DigitalCoast *miniDC = new DigitalCoast();
         QString appNameDC =  "DigitalCoast-1.0.0"; // Frontera
@@ -498,7 +494,7 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         });
     }
 
-    const bool USE_CELERIS_TOOL = false; // Set to true to use Celeris tool, false to use WebGPU tool
+    const bool USE_CELERIS_TOOL = false;
     if constexpr (USE_CELERIS_TOOL) {
         Celeris *miniCeleris = new Celeris();
         QString appNameCeleris =  "Celeris-1.0.0"; // Frontera
@@ -512,18 +508,19 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         });
     }
 
-    // WebGPU *miniWebGPU = new WebGPU();
-    // QString appNameWebGPU =  "WebGPU-1.0.0"; // Frontera
-    // QString systemNameWebGPU = "frontera";
-    // QList<QString> queuesWebGPU; queuesWebGPU << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    // SC_RemoteAppTool *miniWebGPUTool = new SC_RemoteAppTool(appNameWebGPU, queuesWebGPU, theRemoteService, miniWebGPU, theToolDialog);
-    // theToolDialog->addTool(miniWebGPUTool, "Trouble-Shoot WebGPU (Hardware Acceleration)");
-    // QAction *showWebGPU = toolsMenu->addAction("Trouble-Shoot &WebGPU (Hardware Acceleration)");
-    // connect(showWebGPU, &QAction::triggered, this,[this, theDialog=theToolDialog, miniW = miniWebGPUTool] {
-    //     theDialog->showTool("Trouble-Shoot WebGPU (Hardware Acceleration)");
-    // });
-
-
+    // const bool USE_WEBGPU_TOOL = false;
+    // if constexpr (USE_WEBGPU_TOOL) {
+    //     WebGPU *miniWebGPU = new WebGPU();
+    //     QString appNameWebGPU =  "WebGPU-1.0.0"; // Frontera
+    //     QString systemNameWebGPU = "frontera";
+    //     QList<QString> queuesWebGPU; queuesWebGPU << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    //     SC_RemoteAppTool *miniWebGPUTool = new SC_RemoteAppTool(appNameWebGPU, queuesWebGPU, theRemoteService, miniWebGPU, theToolDialog);
+    //     theToolDialog->addTool(miniWebGPUTool, "Trouble-Shoot WebGPU (Hardware Acceleration)");
+    //     QAction *showWebGPU = toolsMenu->addAction("Trouble-Shoot &WebGPU (Hardware Acceleration)");
+    //     connect(showWebGPU, &QAction::triggered, this,[this, theDialog=theToolDialog, miniW = miniWebGPUTool] {
+    //         theDialog->showTool("Trouble-Shoot WebGPU (Hardware Acceleration)");
+    //     });
+    // }
 
 
     /*
@@ -809,8 +806,12 @@ WorkflowAppHydroUQ::processResults(QString &dirName)
 void
 WorkflowAppHydroUQ::clear(void)
 {
+    // EE-UQ
     theGI->clear();
     theSIM->clear();
+
+    // /*******************************************
+    // Needed?
     theRVs->clear();
     theUQ_Selection->clear();
     theEventSelection->clear();
@@ -836,6 +837,7 @@ WorkflowAppHydroUQ::clear(void)
     //
     // ready to process results
     //
+    // *******************************************/
 } 
 
 bool
@@ -1139,6 +1141,34 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
         // remoteApplication->setExtraInputs(extraInputs);
 
         // Adding extra job parameters for MPM, already has "driverFile", "errorFile", "inputFile", "outputFile"
+        if (eventAppData.contains("driverFile")) {
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'driverFile' to parameters: " << eventAppData["driverFile"].toString();
+            extraParameters.insert("driverFile", eventAppData["driverFile"].toString());
+        } else {
+            auto defaultMPMCase = "driver";
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'driverFile' to parameters: " << defaultMPMCase;
+            extraParameters.insert("driverFile", defaultMPMCase);
+        }
+
+        if (eventAppData.contains("inputFile")) {
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'inputFile' to parameters: " << eventAppData["inputFile"].toString();
+            extraParameters.insert("inputFile", eventAppData["inputFile"].toString());
+        } else {
+            auto defaultErrorFile = "scInput.json";
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'inputFile' to parameters: " << defaultErrorFile;
+            extraParameters.insert("inputFile", defaultErrorFile);
+        }
+
+
+        if (eventAppData.contains("publicDirectory")) {
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'publicDirectory' to parameters: " << eventAppData["publicDirectory"].toString();
+            extraParameters.insert("publicDirectory", eventAppData["publicDirectory"].toString());
+        } else {
+            auto defaultPublicDirectory = "../mpm-public-ls6";
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'publicDirectory' to parameters: " << defaultPublicDirectory;
+            extraParameters.insert("publicDirectory", defaultPublicDirectory);
+        }
+
         if (eventAppData.contains("programFile")) {
             qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'programFile' to parameters: " << eventAppData["programFile"].toString();
             extraParameters.insert("programFile", eventAppData["programFile"].toString());
@@ -1147,11 +1177,20 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
             qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'programFile' to parameters: " << defaultProgramFile;
             extraParameters.insert("programFile", defaultProgramFile);
         }
+        if (eventAppData.contains("defaultMaxRunTime")) {
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'defaultMaxRunTime' to parameters: " << eventAppData["defaultMaxRunTime"].toString();
+            extraParameters.insert("defaultMaxRunTime", eventAppData["defaultMaxRunTime"].toString());
+        } else {
+            auto defaultMaxRunTime = "1440"; 
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'defaultMaxRunTime' to parameters: " << defaultMaxRunTime;
+            extraParameters.insert("defaultMaxRunTime", defaultMaxRunTime);  // Include max run time for MPM application, TODO: move into the remote application class so we may set it through the pop-up remote app window
+        }
+
         if (eventAppData.contains("maxRunTime")) {
             qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'maxRunTime' to parameters: " << eventAppData["maxRunTime"].toString();
             extraParameters.insert("maxRunTime", eventAppData["maxRunTime"].toString());
         } else {
-            auto defaultMaxRunTime = "02:00:00";
+            auto defaultMaxRunTime = "120"; 
             qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'maxRunTime' to parameters: " << defaultMaxRunTime;
             extraParameters.insert("maxRunTime", defaultMaxRunTime);  // Include max run time for MPM application, TODO: move into the remote application class so we may set it through the pop-up remote app window
         }
@@ -1244,7 +1283,7 @@ WorkflowAppHydroUQ::getMaxNumParallelTasks() {
 int
 WorkflowAppHydroUQ::createCitation(QJsonObject &citation, QString citeFile) {
 
-  QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.1.0 (v3.1.0). Zenodo. https://doi.org/10.5281/zenodo.4731073 \",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
+  QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.2.0 (v3.2.0). Zenodo. https://doi.org/10.5281/zenodo.4731073 \",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
 
   QJsonDocument docC = QJsonDocument::fromJson(cit.toUtf8());
   if(!docC.isNull()) {
@@ -1287,7 +1326,7 @@ WorkflowAppHydroUQ::createCitation(QJsonObject &citation, QString citeFile) {
 int
 WorkflowAppHydroUQ::createToolCitation(QJsonObject &citation, QString citeFile) {
 
-  QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.1.0 (v3.1.0). Zenodo. https://doi.org/10.5281/zenodo.4731073\",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
+  QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.2.0 (v3.2.0). Zenodo. https://doi.org/10.5281/zenodo.4731073\",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
 
   QJsonDocument docC = QJsonDocument::fromJson(cit.toUtf8());
   if(!docC.isNull()) {

@@ -77,7 +77,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   QGridLayout *layout = new QGridLayout();
   this->setLayout(layout);
 
-  QPushButton *showPlotButton = NULL;
+  // QPushButton *showPlotButton = NULL;
   QString inpType = QString("Preset Paddle - OSU LWF"); // Default wave generation method
   this->inpty=inpType;
 
@@ -321,7 +321,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   // QString paddleDisplacementFilename = QString::fromAscii"WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv";
   paddleLayout->addWidget(new QLabel("Paddle Motion File"), numRow, 0);
   paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
-  char str[] = "WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv"; // 4m amplitude, scale-factor 500, from Mascarenas 2022
+  char str[] = ":/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv"; // 4m amplitude, scale-factor 500, from Mascarenas 2022
   QString paddleDisplacementFilename(str);
   paddleDisplacementFile->setFilename(paddleDisplacementFilename);
   paddleLayout->addWidget(paddleDisplacementFile, numRow++, 1, 1, 4);
@@ -335,9 +335,11 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   paddleWidget = new QWidget();
   paddleWidget->setLayout(paddleLayout);
+  // /**
   QHBoxLayout * plotLayout = new QHBoxLayout(paddleWidget);
   QWidget *plotWidget = new QWidget();
   plotWidget->setLayout(plotLayout);
+  // **/
 
   // Periodic Waves
   waveMag = new SC_DoubleLineEdit("waveMag",0.5);
@@ -364,6 +366,8 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   waveGenStack->addWidget(paddleWidget);
   waveGenStack->addWidget(periodicWidget); 
 
+
+  // /**
   thePlot = new SimCenterGraphPlot(QString("Time [s]"),QString("Displacement [m]"), 500, 500);
   if (inpty==QString("Periodic Waves")) {
       alpha = this->createTextEntry(tr("Height"), periodicLayout, 0);
@@ -377,6 +381,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   } else  {
     dataDir = this->createTextEntry(tr("Paddle Motion (*.csv)"), plotLayout, 0);
+    dataDir->setText(paddleDisplacementFilename);
     dataDir->setMinimumWidth(200);
     dataDir->setMaximumWidth(700);
 
@@ -402,10 +407,13 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
           }
       });
   }
+  // **/
 
 
   // Place the plot in the layout
 
+
+  // /**
   if (inpty==QString("Periodic Waves"))
   {
       connect(alpha,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
@@ -428,6 +436,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
           thePlot->show();
       });
   }
+  // **/
 
   connect(generationMethod, QOverload<int>::of(&QComboBox::activated),
     waveGenStack, &QStackedWidget::setCurrentIndex);
@@ -1257,9 +1266,20 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
     {
       // TODOL: Custom file input
       boundariesObject["object"] = QString("OSU Paddle");
-      // boundariesObject["file"] = QString("WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv");
-      boundariesObject["file"] = paddleDisplacementFile->getFilename(); // Paddle motion file
-      boundariesObject["output_freq"] = 1200.0; // TODO: Either be user set or read-in from motion_file
+
+      // QFileInfo paddleDisplacementFileInfo(paddleDisplacementFile->getFilename());
+      QString paddleDisplacementFilename = paddleDisplacementFile->getFilename();
+      QString paddleFile = paddleDisplacementFilename.mid(paddleDisplacementFilename.lastIndexOf("/"));
+      // if (!paddleDisplacementFileInfo.exists()) {
+      //   this->errorMessage("ERROR: Paddle Motion - file does not exist");
+      //   return false;
+      // }
+
+      // boundariesObject["file"] = paddleDisplacementFile->getFilename() ; // Paddle motion file
+      boundariesObject["file"] = QString("WaveMaker/") + paddleFile; // Paddle motion file assuming use of Data directory for claymore (TODO: relative paths)
+      boundariesObject["output_frequency"] = 1200.0; // TODO: Either be user set or read-in from motion_file
+      boundariesObject["friction_static"] = 0.0;
+      boundariesObject["friction_dynamic"] = 0.0;
     } 
 
     if (inpty==QString("Periodic Waves")) {
@@ -1519,7 +1539,7 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
       }
     }
   
-    this->updateDistributionPlot();
+    //this->updateDistributionPlot();
     return true;
 }
 

@@ -66,7 +66,7 @@ class SC_CheckBox;
 class SC_ComboBox;
 class QStackedWidget;
 class QGroupBox;
-
+class QPushButton;
 class BoundaryMPM : public SimCenterWidget
 {
     Q_OBJECT
@@ -132,11 +132,16 @@ public slots:
 
 private:
 
-    QLineEdit *mean, *standardDev;
-    QLineEdit *alpha, *beta, *a, *b;
+    QLineEdit *mean; 
+    QLineEdit *standardDev;
+    QLineEdit *alpha;
+    QLineEdit *beta; 
+    QLineEdit *a; 
+    QLineEdit *b;
     QLineEdit *dataDir;
     QString inpty ;
     SimCenterGraphPlot *thePlot;
+    QPushButton *showPlotButton;
 
   SC_ComboBox      *boundaryType;
   QStackedWidget   *stackedWidget;
@@ -163,7 +168,7 @@ private:
   SC_DoubleLineEdit   *waveCelerity;
   SC_DoubleLineEdit   *waveRepeatSpeed;
   SC_DoubleLineEdit   *paddleOriginX;
-  SC_DoubleLineEdit   *paddleOriginY;;
+  SC_DoubleLineEdit   *paddleOriginY;
   SC_DoubleLineEdit   *paddleOriginZ;
   SC_ComboBox         *paddleContactType;      
   SC_FileEdit         *paddleDisplacementFile;    

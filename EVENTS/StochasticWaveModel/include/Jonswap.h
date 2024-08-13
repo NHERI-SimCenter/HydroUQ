@@ -48,7 +48,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QSpinBox>
 #include <QString>
 #include <QWidget>
-#include <RandomVariablesContainer.h>
+// #include <RandomVariablesContainer.h>
 #include <SimCenterAppWidget.h>
 #include <QPushButton>
 class SimCenterGraphPlot;

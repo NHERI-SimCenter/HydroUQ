@@ -136,17 +136,17 @@ ResultsMPM::ResultsMPM(MPM *parent)
     plotSpectraLayout = new QGridLayout();
     plotSpectraGroup->setLayout(plotSpectraLayout);
 
-    plotElevationGroup = new QGroupBox("Plot Elevation");
-    plotElevationLayout = new QGridLayout();
-    plotElevationGroup->setLayout(plotElevationLayout);
+    // plotElevationGroup = new QGroupBox("Plot Elevation");
+    // plotElevationLayout = new QGridLayout();
+    // plotElevationGroup->setLayout(plotElevationLayout);
 
-    plotForceGroup = new QGroupBox("Plot Force");
-    plotForceLayout = new QGridLayout();
-    plotForceGroup->setLayout(plotForceLayout);
+    // plotForceGroup = new QGroupBox("Plot Force");
+    // plotForceLayout = new QGridLayout();
+    // plotForceGroup->setLayout(plotForceLayout);
 
-    plotPressureGroup = new QGroupBox("Plot Pressure");
-    plotPressureLayout = new QGridLayout();
-    plotPressureGroup->setLayout(plotPressureLayout);
+    // plotPressureGroup = new QGroupBox("Plot Pressure");
+    // plotPressureLayout = new QGridLayout();
+    // plotPressureGroup->setLayout(plotPressureLayout);
 
 
     //==================================================================
@@ -201,10 +201,10 @@ ResultsMPM::ResultsMPM(MPM *parent)
     sensorNumS->addItem("Sensor:1");
     sensorNumS->addItem("Sensor:2");
     sensorNumS->addItem("Sensor:3");
-    // sensorNumS->addItem("Sensor:4");
-    // sensorNumS->addItem("Sensor:5");
-    // sensorNumS->addItem("Sensor:6");
-    // sensorNumS->addItem("Sensor:7");
+    sensorNumS->addItem("Sensor:4");
+    sensorNumS->addItem("Sensor:5");
+    sensorNumS->addItem("Sensor:6");
+    sensorNumS->addItem("Sensor:7");
     sensorNumS->setToolTip("ID of the sensor numerical-type to display results for.");
     sensorNumS->setCurrentIndex(0);
 
@@ -215,6 +215,10 @@ ResultsMPM::ResultsMPM(MPM *parent)
     bodyNumS->addItem("Body:1");
     bodyNumS->addItem("Body:2");
     bodyNumS->addItem("Body:3");
+    bodyNumS->addItem("Body:4");
+    bodyNumS->addItem("Body:5");
+    bodyNumS->addItem("Body:6");
+    bodyNumS->addItem("Body:7");
     bodyNumS->setToolTip("ID of the material body (per-device) measured by a sensor to display results for.");
     bodyNumS->setCurrentIndex(0);
 
@@ -224,10 +228,10 @@ ResultsMPM::ResultsMPM(MPM *parent)
     deviceNumS->addItem("GPU:1");
     deviceNumS->addItem("GPU:2");
     deviceNumS->addItem("GPU:3");
-    // deviceNumS->addItem("GPU:4");
-    // deviceNumS->addItem("GPU:5");
-    // deviceNumS->addItem("GPU:6");
-    // deviceNumS->addItem("GPU:7");
+    deviceNumS->addItem("GPU:4");
+    deviceNumS->addItem("GPU:5");
+    deviceNumS->addItem("GPU:6");
+    deviceNumS->addItem("GPU:7");
     deviceNumS->setToolTip("ID of the hardware device that the sensor was simulated on to display results for.");
     deviceNumS->setCurrentIndex(0);
 
@@ -321,6 +325,13 @@ ResultsMPM::clear(void)
 
 }
 
+bool
+ResultsMPM::copyFiles(QString &dirName)
+{
+    Q_UNUSED(dirName); // This is to suppress the unused variable warning.
+    return true;
+}
+
 
 void
 ResultsMPM::processResults(QString &dirName)
@@ -347,7 +358,7 @@ ResultsMPM::processResults(QString &dirName)
 
     jsonObject["caseDirectoryPath"] = resultsPath;
     mainModel->inputFromJSON(jsonObject);
-    plotSensors(mainModel);
+    plotSensors(); //mainModel);
     return;  
 }
 
@@ -377,7 +388,7 @@ ResultsMPM::processResults(QString &inputFile, QString &dirName)
 
     jsonObject["caseDirectoryPath"] = resultsPath;
     mainModel->inputFromJSON(jsonObject);
-    plotSensors(mainModel);
+    plotSensors(); //mainModel);
     return 0;  
 }
 
@@ -407,7 +418,7 @@ ResultsMPM::processResults(QString &inputFile, QString &dirName, QString &assetT
 
     jsonObject["caseDirectoryPath"] = resultsPath;
     mainModel->inputFromJSON(jsonObject);
-    plotSensors(mainModel);
+    plotSensors(); //mainModel);
     return 0;  
 }
 
@@ -415,7 +426,7 @@ ResultsMPM::processResults(QString &inputFile, QString &dirName, QString &assetT
 void 
 ResultsMPM::onProcessSensorsClicked(void)
 {
-    plotSensors(mainModel);
+    plotSensors(); //mainModel);
     // processResults(mainModel->caseDir());
     // int dialogHeight = 800;
     // int dialogWidth  = 800;
@@ -488,8 +499,7 @@ ResultsMPM::onPlotSpectraClicked(void)
 
 }
 
-
-
+/*
 void 
 ResultsMPM::onPlotPressureClicked(void)
 {
@@ -539,7 +549,6 @@ ResultsMPM::onPlotPressureClicked(void)
             if (QFileInfo::exists(zipPath))
             {
 	      ZipUtils::UnzipFile(zipPath, plotDir);
-	      /* ***************************************************************************************************************
                 QString program = "tar";
                 QStringList arguments;
                 // Extract results.zip file from zipPath (either in the GUI set caseDir/output/{'','sensors','results}, variants in brackets, or in RemoteWorkDir when retrieving run from DesignSafe. Extract to plotDir
@@ -561,7 +570,6 @@ ResultsMPM::onPlotPressureClicked(void)
                     qDebug() << "ResultsMPM::onPlotPressureClicked - The unzip process has finished running with an unknown exit status.";
                 }
                 process->deleteLater();
-	      ********************************************************************************************* */
 	    }
 	    
             QString plotPath = mainModel->caseDir() + QDir::separator() 
@@ -582,7 +590,9 @@ ResultsMPM::onPlotPressureClicked(void)
         }
     }
 }
+*/
 
+/*
 void 
 ResultsMPM::onPlotElevationClicked(void)
 {
@@ -616,7 +626,9 @@ ResultsMPM::onPlotElevationClicked(void)
         plotView->raise();
     }
 }
+*/
 
+/*
 void 
 ResultsMPM::onPlotForceClicked(void)
 {
@@ -651,8 +663,7 @@ ResultsMPM::onPlotForceClicked(void)
         QMessageBox::warning(this, tr("File Not Found: "), plotPath);        
     }
 }
-
-
+*/
 
 bool 
 ResultsMPM::outputToJSON(QJsonObject &jsonObject)
@@ -662,12 +673,13 @@ ResultsMPM::outputToJSON(QJsonObject &jsonObject)
     // QJsonArray spectralPlotLocations = {0.25, 0.5, 1.0, 2.0};
     // resDisplayJson["spectralPlotLocations"] = spectralPlotLocations;
     // jsonObject["resultDisplay"] = resDisplayJson;
+    Q_UNUSED(jsonObject);
     return true;
 }
 
 // Rename to processSensors, and vice versa
 void 
-ResultsMPM::plotSensors(MPM* host)
+ResultsMPM::plotSensors(void) //MPM* host)
 {
     //
     //  Python scripts hosted remotely by SimCenterBackendApplications/modules/createEVENT/*
