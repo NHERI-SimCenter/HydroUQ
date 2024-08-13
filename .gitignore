@@ -1,4 +1,8 @@
 build
+build.mid
+build.better
+build*
+build*/*
 *.DS_Store
 *.user
 .DS_Store

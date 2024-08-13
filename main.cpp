@@ -4,15 +4,13 @@
 // Purpose: the typical Qt main for running a QMainWindow
 
 // Include headers
-#include <MainWindowWorkflowApp.h>
+
 #include <QApplication>
+#include <QCoreApplication>
 #include <QFile>
 #include <QThread>
 #include <QObject>
 
-#include <AgaveCurl.h>
-#include <WorkflowAppHydroUQ.h>
-#include <QCoreApplication>
 
 #include <QTime>
 #include <QTextStream>
@@ -22,7 +20,12 @@
 #include <QDir>
 #include <QDebug>
 
-// #include <QCoreApplication>
+#include <GoogleAnalytics.h>
+#include <TapisV3.h>
+// #include <AgaveCurl.h>
+#include <MainWindowWorkflowApp.h>
+#include <WorkflowAppHydroUQ.h>
+
 #include <QSvgWidget>
 #include <QStatusBar>
 #include <QWebEngineView>
@@ -106,6 +109,7 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_UseDesktopOpenGL); // Use Desktop OpenGL on macOS
 #else // Linux
     QApplication::setAttribute(Qt::AA_UseOpenGLES); // Use OpenGLES on Linux
+    // QApplication::setAttribute(Qt::AA_ShareOpenGLContexts); 
 #endif
 #endif
 
@@ -115,7 +119,7 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("3.2.1");
+    QCoreApplication::setApplicationVersion("3.2.2");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     Q_INIT_RESOURCE(images);
@@ -145,6 +149,12 @@ int main(int argc, char *argv[])
 
     QByteArray envVar = qgetenv("QTDIR"); // check if the app is run in Qt Creator
 
+    // Issues with web engine (notably with hardware acceleration) are
+    // sometimes resolved by setting various flags.
+    // https://github.com/probonopd/linuxdeployqt/issues/554
+    // qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu --no-sandbox");
+    // qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--ignore-gpu-blacklist --ignore-gpu-blocklist  --enable-gpu-rasterization --use-gl=egl");
+    // qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--ignore-gpu-blacklist --ignore-gpu-blocklist  --enable-gpu-rasterization");
     if (envVar.isEmpty())
         logToFile = true;
 
@@ -181,10 +191,10 @@ int main(int argc, char *argv[])
     // create a remote interface
     QString tenant("designsafe"); // this is the default tenant for the design safe community
     // Below might become tapis://designsafe.storage.default/ in August 2024... - jb
-    QString storage("agave://designsafe.storage.default/"); // this is the default storage system for the design safe community
+    QString storage("designsafe.storage.default/"); // this is the default storage system for the design safe community
     QString dirName("HydroUQ"); // this is the default directory for the application
-    AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName); // this is the remote service used by the application
-
+    // AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName); // this is the remote service used by the application
+    TapisV3 *theRemoteService = new TapisV3(tenant, storage, &dirName); 
 
     // create the main window
     WorkflowAppWidget *theInputApp = new WorkflowAppHydroUQ(theRemoteService);
@@ -200,7 +210,7 @@ int main(int argc, char *argv[])
     w.setVersion(version);
 
     // Citation
-    QString citeText("1) Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.2.0 (v3.2.0). Zenodo. https://doi.org/10.5281/zenodo.10902090 \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
+    QString citeText("1) Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.2.2 (v3.2.2). Zenodo. https://doi.org/10.5281/zenodo.10902090 \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
     w.setCite(citeText);
 
     // Link to repository
@@ -230,7 +240,7 @@ int main(int argc, char *argv[])
     QFile file(":/styleCommon/stylesheetMAC.qss");
 #else
 #ifdef Q_OS_LINUX
-    QFile file(":/styleCommon/stylesheetMAC.qss");
+    QFile file(":/styleCommon/stylesheetLinux.qss");
 #else
     QFile file(":/styleCommon/stylesheetLinux.qss"); 
 #endif 
@@ -267,7 +277,7 @@ int main(int argc, char *argv[])
         
 
         view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
-
+        // view.setUrl(QUrl("https://github.com/JustinBonus/HydroUQ/tree/master/GA4.html"));
         view.resize(1024, 750);
         view.show();
         // view.raise();
@@ -281,7 +291,6 @@ int main(int argc, char *argv[])
     
         // ******************************************************************* */
     }
-    
     // Result of execution
     int res = a.exec();
 
@@ -289,6 +298,7 @@ int main(int argc, char *argv[])
     theRemoteService->logout();
     thread->quit();
 
+    
     // Close Google Analytics session
     if constexpr (USE_GOOGLE_ANALYTICS) {
         // GoogleAnalytics::SetAPISecret("");

@@ -2,7 +2,7 @@ from conans import ConanFile
 
 class HYDROUQ(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    version = "3.2.0"
+    version = "3.2.2"
     license = "BSD"
     author = "NHERI SimCenter"
     url = "https://github.com/NHERI-SimCenter/HydroUQ"
@@ -10,8 +10,11 @@ class HYDROUQ(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "qmake"
     requires = "jansson/2.13.1", \
-               "libcurl/7.72.0", \
-               "zlib/1.2.11"
+               "libcurl/8.1.1", \
+               "zlib/1.2.12", \
+               "openssl/3.2.2"
+
+    # maybe go back to zlib 1.2.11
 
     build_policy = "missing"
 
@@ -33,6 +36,8 @@ class HYDROUQ(ConanFile):
             appsDestination = './HydroUQ.app/Contents/MacOS/applications'
         elif self.settings.os == "Linux":
             appsDestination = './applications'
+        else:
+            appsDestination = './applications'
 
         self.copy("createEVENT/multiple*", dst=appsDestination, src="bin")
         self.copy("createEVENT/siteRes*", dst=appsDestination, src="bin")
@@ -50,6 +55,9 @@ class HYDROUQ(ConanFile):
         self.copy("createEVENT/*DigitalTwin*", dst=appsDestination, src="bin")
         self.copy("createEVENT/*MPM*", dst=appsDestination, src="bin")
         self.copy("createEVENT/*stochasticWave*", dst=appsDestination, src="bin")
+        self.copy("createEVENT/*Taichi*", dst=appsDestination, src="bin")
+        #self.copy("createEVENT/*Celeris*", dst=appsDestination, src="bin")
+        #self.copy("createEVENT/*GNS*", dst=appsDestination, src="bin")
 
         self.copy("createSAM/*", dst=appsDestination, src="bin")
         self.copy("createEDP/*", dst=appsDestination, src="bin")
