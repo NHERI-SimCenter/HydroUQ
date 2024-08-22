@@ -10,6 +10,8 @@
 #include <QFile>
 #include <QThread>
 
+#include <QObject>
+
 #include <QTime>
 
 #include <GoogleAnalytics.h>
@@ -186,6 +188,7 @@ int main(int argc, char *argv[])
     QString dirName("HydroUQ"); // this is the default directory for the application
     // AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName);
     TapisV3 *theRemoteService = new TapisV3(tenant, storage, &dirName);        
+
 
     // create the main window
     WorkflowAppWidget *theInputApp = new WorkflowAppHydroUQ(theRemoteService);
