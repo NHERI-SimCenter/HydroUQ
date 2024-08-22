@@ -113,7 +113,7 @@ private:
     int simtype; // Simulation type
     QStringList optiontree; // Tree widget names
     QString applicationname = "Hydro-UQ";
-    QString applicationversion = "2.0.0";
+    QString applicationversion = "3.2.0";
     AgaveCurl *theRemoteService;
 };
 
