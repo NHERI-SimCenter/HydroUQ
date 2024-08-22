@@ -164,6 +164,9 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   int bathXZPairs = 7;
   bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, bathXZPairs, dataBathXZ);
   bathSTL = new SC_FileEdit("bathSTL");
+  QString bathFilename = QString(":/Examples/hdro-0001/src/flumeFloor.stl");
+  bathSTL->setFilename(bathFilename);
+  // bathSTL->setFilter("STL Files (*.stl)");
 
   QWidget *ptWidget = new QWidget(); // going to add figure which is why the layout
   QGridLayout *ptLayout = new QGridLayout();
@@ -317,13 +320,18 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   paddleLayout->addWidget(new QLabel("m"),numRow++, 4);
   
   paddleDisplacementFile = new SC_FileEdit("paddleDisplacementFile");
+  QString paddleName = QString("WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv");
+  paddleDisplacementFile->setFilename(paddleName);
+  // paddleDisplacementFile->setFilter("CSV Files (*.csv)");
+  
 
   // QString paddleDisplacementFilename = QString::fromAscii"WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv";
   paddleLayout->addWidget(new QLabel("Paddle Motion File"), numRow, 0);
   paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
   char str[] = ":/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv"; // 4m amplitude, scale-factor 500, from Mascarenas 2022
-  QString paddleDisplacementFilename(str);
-  paddleDisplacementFile->setFilename(paddleDisplacementFilename);
+  // paddleName(str);
+  QString renderPaddleName = QString(str);
+  paddleDisplacementFile->setFilename(renderPaddleName);
   paddleLayout->addWidget(paddleDisplacementFile, numRow++, 1, 1, 4);
   paddleDisplacementFile->setEnabled(false);
   paddleDisplacementFile->setToolTip("This file is not editable, it is a default file for the OSU LWF");
@@ -381,7 +389,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   } else  {
     dataDir = this->createTextEntry(tr("Paddle Motion (*.csv)"), plotLayout, 0);
-    dataDir->setText(paddleDisplacementFilename);
+    dataDir->setText(paddleName);
     dataDir->setMinimumWidth(200);
     dataDir->setMaximumWidth(700);
 
@@ -1462,7 +1470,6 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
 {
   bathSTL->inputFromJSON(jsonObject);
   paddleDisplacementFile->inputFromJSON(jsonObject);
-
 
 
     //

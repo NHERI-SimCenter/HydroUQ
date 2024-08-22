@@ -12,18 +12,10 @@
 
 #include <QObject>
 
-
 #include <QTime>
-#include <QTextStream>
-#include <GoogleAnalytics.h>
-#include <QOpenGLWidget>
-#include <QStandardPaths>
-#include <QDir>
-#include <QDebug>
 
 #include <GoogleAnalytics.h>
 #include <TapisV3.h>
-// #include <AgaveCurl.h>
 #include <MainWindowWorkflowApp.h>
 #include <WorkflowAppHydroUQ.h>
 
@@ -190,12 +182,12 @@ int main(int argc, char *argv[])
     // QApplication a(argc, argv);
 
     // create a remote interface
-    QString tenant("designsafe"); // this is the default tenant for the design safe community
-    // Below might become tapis://designsafe.storage.default/ in August 2024... - jb
-    QString storage("designsafe.storage.default/"); // this is the default storage system for the design safe community
+    QString tenant("designsafe");
+    // QString storage("agave://designsafe.storage.default/"); 
+    QString storage("designsafe.storage.default/");        
     QString dirName("HydroUQ"); // this is the default directory for the application
-    // AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName); // this is the remote service used by the application
-    TapisV3 *theRemoteService = new TapisV3(tenant, storage, &dirName); 
+    // AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName);
+    TapisV3 *theRemoteService = new TapisV3(tenant, storage, &dirName);        
 
 
     // create the main window
