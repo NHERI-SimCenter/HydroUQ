@@ -658,8 +658,6 @@ bool Jonswap::outputToJSON(QJsonObject& jsonObject) {
   jsonObject["type"] = "StochasticWave";
   jsonObject["EventClassification"] = "Hydro";
 
-  // jsonObject["type"] = "StochasticWindWittigSinha";
-  // jsonObject["EventClassification"] = "Wind";
 
   waterDepth->outputToJSON(jsonObject, QString("waterDepth"));
   tidalSLR->outputToJSON(jsonObject, QString("tidalSLR"));

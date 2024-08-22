@@ -45,7 +45,17 @@ OpenSeesDigitalTwin::OpenSeesDigitalTwin(QWidget *parent)
 {
 
   theOpenSeesPyScript = new SC_FileEdit("openSeesPyScript");
+  QString theOpenSeesPyScriptFilename = ":/Examples/hdro-0001/src/OpenSeesModel.py";
+  theOpenSeesPyScript->setFilename(theOpenSeesPyScriptFilename); // WASIRF column opensees
+  // theOpenSeesPyScript->setFilter("Python Files (*.py)"); // Ask nikki if we can use regular opensees scripts in tcl format
+  // theOpenSeesPyScript->setDialogCaption("Select OpenSeesPy Script");
+
   theSurfaceFile = new SC_FileEdit("interfaceSurface");
+  QString theSurfaceFilename = ":/Examples/hdro-0001/src/interface.stl";
+  theSurfaceFile->setFilename(theSurfaceFilename); //WASIRF column coupling interface
+  // theSurfaceFile->setFilter("Surface Files (*.stl, *.obj)");//Double check which types Nikki allows for now, make conv script if needed
+  // theSurfaceFile->setDialogCaption("Select Surface File");
+
 
   QGridLayout *theLayout = new QGridLayout();
   theLayout->addWidget(new QLabel("OpenSeesPy Script"),0,0);
@@ -81,8 +91,14 @@ OpenSeesDigitalTwin::inputFromJSON(QJsonObject &jsonObject)
 bool
 OpenSeesDigitalTwin::copyFiles(QString &destDir)
 {
-  if (theOpenSeesPyScript->copyFile(destDir) != true)
+  if (theOpenSeesPyScript->copyFile(destDir) != true) {
+    // qDebug() << "OpenSeesDigitalTwin::copyFiles: could not copy OpenSeesPyScript";
     return false;
-  return theSurfaceFile->copyFile(destDir);    
+  }
+  if (theSurfaceFile->copyFile(destDir) != true) {
+    // qDebug() << "OpenSeesDigitalTwin::copyFiles: could not copy SurfaceFile";
+    return false;
+  }
+  return true;  
 }
 

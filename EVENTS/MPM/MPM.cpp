@@ -105,31 +105,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QTextEdit>
 #include <QFormLayout>
 
-// #include <QWebEngineView>
 #include <QUrl> 
-// #include <QWebEngineView>
-// #include <QWebEnginePage>
-// #include <QWebEngineSettings>
-// #include <QWebEngineProfile>
-// #include <QWebEngineScriptCollection>
-// #include <QWebEngineScript>
-// #include <QWebEngineScriptCollection>
 
-// Trying out
-// #include <SimCenterAppWidget.h>
-// #include <WorkflowAppHydroUQ.h>
-// #include <MainWindowWorkflowApp.h>
-// #include <HydroEventSelection.h>
-// #include <LocalApplication.h>
-// #include <RemoteApplication.h>
-// #include <RemoteJobManager.h>
-// #include <RunWidget.h>
-// #include <UQ_EngineSelection.h>
-// #include <UQ_Results.h>
-// #include <SC_ToolDialog.h>
-// #include <SC_RemoteAppTool.h>
-
-// #include <QtSystemDetection>
 
 MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     :  SimCenterAppWidget(parent), theRandomVariablesContainer(theRandomVariableIW)
