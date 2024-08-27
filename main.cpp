@@ -9,13 +9,20 @@
 #include <QCoreApplication>
 #include <QFile>
 #include <QThread>
-
 #include <QObject>
 
+
 #include <QTime>
+#include <QTextStream>
+#include <GoogleAnalytics.h>
+#include <QOpenGLWidget>
+#include <QStandardPaths>
+#include <QDir>
+#include <QDebug>
 
 #include <GoogleAnalytics.h>
 #include <TapisV3.h>
+// #include <AgaveCurl.h>
 #include <MainWindowWorkflowApp.h>
 #include <WorkflowAppHydroUQ.h>
 
