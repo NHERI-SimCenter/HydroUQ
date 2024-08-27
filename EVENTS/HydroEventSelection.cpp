@@ -73,7 +73,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 enum class Event_b : bool {
     GeoClawOpenFOAM_b = false,
-    WaveDigitalFlume_b = true,
+    WaveDigitalFlume_b = false,
     CoupledDigitalTwin_b = true,
     ClaymoreUW_b = true,
     TaichiEvent_b = true,
