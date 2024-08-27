@@ -149,14 +149,26 @@ bool StochasticWaveInput::outputToJSON(QJsonObject& jsonObject) {
 bool StochasticWaveInput::inputFromJSON(QJsonObject& jsonObject) {
 
   bool result = false;
+
   if (stochasticModel != NULL) {
     stochasticModel->clear();
 
     SimCenterAppWidget *nextModel = NULL;
-    QString model = jsonObject["StochasticLoadingModel"].toString();
+    QString model;
+    if (!jsonObject.contains("StochasticLoadingModel")) {
+      qDebug() << "ERROR: StochasticWaveInput::inputFromJSON: Missing selection\n";
+      qDebug() << "Setting to default: StochasticWaveJonswap\n";
+      model = "StochasticWaveJonswap";
+      // return false;
+    }
+    else {
+      model = jsonObject["StochasticLoadingModel"].toString();
+    }
     if (model == "JONSWAP" || model == "StochasticWaveJonswap" || model == "StochasticWave") {
       nextModel = new Jonswap(rvInputWidget); //, this);
-    } else {
+    } 
+    // add more models here
+    else {
       qDebug() << "ERROR: StochasticWaveInput::inputFromJSON: Unknown selection: " << model << "\n";
     }
 

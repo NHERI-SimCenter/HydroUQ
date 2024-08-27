@@ -13,11 +13,11 @@
     </category-schemes>
 
   <items>
+    <map id="hdro-0005" base="hdro-0005" type="hdro" />
     <map id="hdro-0001" base="hdro-0001" type="hdro" />
     <map id="hdro-0002" base="hdro-0002" type="hdro" />
     <map id="hdro-0003" base="hdro-0003" type="hdro" />
     <map id="hdro-0004" base="hdro-0004" type="hdro" />
-    <map id="hdro-0005" base="hdro-0005" type="hdro" />
   </items>
 </collection>
 
