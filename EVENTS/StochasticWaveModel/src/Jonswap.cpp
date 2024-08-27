@@ -152,6 +152,7 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   exposureCategory->addItem("NATO 3");
   exposureCategory->addItem("NATO 2");
   exposureCategory->addItem("NATO 1");
+  // exposureCategory->setCurrentIndex(5);
 
   // parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
   parameters->addRow(new QLabel(tr("Sea State Category")), exposureCategory);
@@ -315,7 +316,8 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
         }
     });
 
-  dataDir->setText(QString(":/WaveSpectra.csv"));
+  // QString spectraFileString = "Examples/hdro-0005/data/WaveSpectra.csv";
+  dataDir->setText("Examples/hdro-0005/data/WaveSpectra.csv");
 
 
   updateDistributionPlot();
@@ -523,12 +525,13 @@ void Jonswap::clear() {
   timeDuration->clear();
   dragCoefficient->clear();
   dragArea->clear();
-  // gustWindSpeed->clear();
+
+  // seed->setEnabled(false);
   seed->setValue(500);
   useSeed->setChecked(false);
   dataDir->setText("");
   thePlot->clear();
-
+  // exposureCategory->setCurrentIndex(0);
 }
 
 void
@@ -716,16 +719,27 @@ bool Jonswap::inputFromJSON(QJsonObject& jsonObject) {
       if (theValue.isString()) {
         QString exposure  = theValue.toString();
         exposureCategory->setCurrentText(exposure);
+        // exposureCategory->setCurrentIndex(exposureCategory->findText(exposure));
       }
   }
 
-  if (jsonObject.value("seed").isString()) {
-    useSeed->setChecked(false);    
-  } else {
-    useSeed->setChecked(true);
-    seed->setValue(jsonObject.value("seed").toInt());    
+  if (jsonObject.contains("seed")) {
+    QJsonValue theValue = jsonObject["seed"];
+    if (theValue.isString()) {
+      useSeed->setChecked(false);
+    } else if (theValue.isDouble()) {
+      useSeed->setChecked(true);
+      seed->setValue(theValue.toInt());
+    }
   }
-
+  else { 
+    if (jsonObject.value("seed").isString()) {
+      seed->setEnabled(false);    
+    } else {
+      seed->setEnabled(true);
+      seed->setValue(jsonObject.value("seed").toInt());    
+    }
+  }
   theDomainImageButton->show();
 
   thePlot->clear();

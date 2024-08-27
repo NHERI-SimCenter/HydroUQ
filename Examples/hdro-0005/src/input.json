@@ -59,16 +59,19 @@
             "EventClassification": "Hydro",
             "dragArea": 1,
             "dragCoefficient": 2.1,
-            "exposureCategory": "B",
+            "exposureCategory": "NATO 5",
             "peakPeriod": 12.7,
             "recorderCountZ": 2,
             "recorderOriginX": 0,
-            "seed": "None",
             "significantWaveHeight": 8.1,
             "timeDuration": 3600,
             "timeStep": 0.1,
             "type": "StochasticWave",
-            "waterDepth": 30
+            "waterDepth": 30.0,
+            "tidalSLR": 3.0,
+            "stormSurgeSLR": 2.0,
+            "climateChangeSLR": 1.0,
+            "seed": 1
         }
     ],
     "GeneralInformation": {
@@ -139,8 +142,8 @@
         "parallelExecution": true,
         "samplingMethodData": {
             "method": "LHS",
-            "samples": 5,
-            "seed": 5
+            "samples": 20,
+            "seed": 1
         },
         "saveWorkDir": true,
         "uqType": "Forward Propagation"

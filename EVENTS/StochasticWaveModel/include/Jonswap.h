@@ -173,7 +173,7 @@ public slots:
    SC_FileEdit *spectraFile; /**< file containing wave spectra */
    SC_FileEdit *kinematicsFile; /**< file containing bathymetry data */
 
-   QPushButton *theDomainImageButton;
+  QPushButton *theDomainImageButton;
 
    QSpinBox *seed; /**< Value to use as seed for motion generation */
    QRadioButton *useSeed; /**< Radio button to indicate whether specific seed

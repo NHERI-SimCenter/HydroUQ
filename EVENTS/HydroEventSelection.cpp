@@ -253,7 +253,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     
     // --
     // Set the default event to select at boot-up
-    const Event_e indexDefault = Event_e::CoupledDigitalTwin_e;
+    const Event_e indexDefault = Event_e::StochasticWaves_e;
     theStackedWidget->setCurrentIndex(static_cast<int>(indexDefault));
     if constexpr (indexDefault == Event_e::GeoClawOpenFOAM_e) {
         theCurrentEvent = theGeoClawOpenFOAM;
