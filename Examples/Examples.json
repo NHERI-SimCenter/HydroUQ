@@ -6,7 +6,17 @@
       "inputFile": "hdro-0005/src/input.json"
     },
     {
-      "name": "Forward Sampling (LHS) Surrogate Model (GP) - Stochastic Wave Loading on a Frame Structure - JONSWAP Spectra",
+      "name": "Sensitivity Analysis - Stochastic Wave Loading on a Frame Structure - JONSWAP Spectra",
+      "description": "Generate a Gaussian Process (GP) surrogate model for stochastic wave loading on a simple frame structure using a stochastic wave spectra in a local UQ workflow. The structure is a simple 1-story OpenSees frame structure. Engineering Demand Parameters are PFA, RMSA, PFD, and PID. The wave loading is generated using a stochastic wave spectra (JONSWAP). The wave loading is applied to the floors as lateral forces.",
+      "inputFile": "hdro-0005/src/input_Sensitivity.json"
+    },
+    {
+      "name": "Reliability Analysis - Stochastic Wave Loading on a Frame Structure - JONSWAP Spectra",
+      "description": "Generate a Gaussian Process (GP) surrogate model for stochastic wave loading on a simple frame structure using a stochastic wave spectra in a local UQ workflow. The structure is a simple 1-story OpenSees frame structure. Engineering Demand Parameters are PFA, RMSA, PFD, and PID. The wave loading is generated using a stochastic wave spectra (JONSWAP). The wave loading is applied to the floors as lateral forces.",
+      "inputFile": "hdro-0005/src/input_Reliability.json"
+    },
+    {
+      "name": "Surrogate Model (Gaussian Process) - Stochastic Wave Loading on a Frame Structure - JONSWAP Spectra",
       "description": "Generate a Gaussian Process (GP) surrogate model for stochastic wave loading on a simple frame structure using a stochastic wave spectra in a local UQ workflow. The structure is a simple 1-story OpenSees frame structure. Engineering Demand Parameters are PFA, RMSA, PFD, and PID. The wave loading is generated using a stochastic wave spectra (JONSWAP). The wave loading is applied to the floors as lateral forces.",
       "inputFile": "hdro-0005/src/input_GP.json"
     },
