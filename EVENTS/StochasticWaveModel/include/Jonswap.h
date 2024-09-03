@@ -38,42 +38,40 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 // Written: mhgardner
-
-#include <LineEditRV.h>
-#include <QFormLayout>
-#include <QJsonObject>
-#include <QLabel>
-#include <QLineEdit>
-#include <QRadioButton>
-#include <QSpinBox>
-#include <QString>
-#include <QWidget>
-// #include <RandomVariablesContainer.h>
 #include <SimCenterAppWidget.h>
 #include <QPushButton>
+#include <QJsonObject>
+#include <QString>
+
+// #include <LineEditRV.h>
+// #include <QFormLayout>
+// #include <QLabel>
+// #include <QLineEdit>
+// #include <QRadioButton>
+// #include <QSpinBox>
+// #include <QWidget>
+// #include <RandomVariablesContainer.h>
+// Forward declarations
 class SimCenterGraphPlot;
 class SC_ComboBox;
-class QStackedWidget;
-
-// Forward declarations
 class LineEditRV;
-class QFormLayout;
 class QJsonObject;
 class QLabel;
 class QLineEdit;
 class QRadioButton;
 class QSpinBox;
-class QString;
-class QWidget;
+
+class QPushButton;
 class QComboBox;
 class RandomVariablesContainer;
 class SC_IntLineEdit;
-class SC_FileEdit;
+// class SC_FileEdit;
 class QGridLayout;
 class QHBoxLayout;
-class QString;
 class QVBoxLayout;
-class QPushButton;
+class QWidget;
+class QScrollArea;
+// class QFormLayout;
 
 /**
  * Widget for inputting parameters for stochastic earthquake time history
@@ -81,109 +79,113 @@ class QPushButton;
  */
 class Jonswap : public SimCenterAppWidget {
   Q_OBJECT
- public:
-  /**
-   * @constructor Construct new stochastic model input widget
-   * @param[in, out] random_variables Widget to store random variables to
-   * @param[in, out] parent Pointer to parent widget. Defaults to nullptr.
-   */
-  explicit Jonswap(RandomVariablesContainer* random_variables,
-			  QWidget* parent = nullptr);
+
+  public:
+    /**
+     * @constructor Construct new stochastic model input widget
+     * @param[in, out] random_variables Widget to store random variables to
+     * @param[in, out] parent Pointer to parent widget. Defaults to nullptr.
+     */
+    explicit Jonswap(RandomVariablesContainer* random_variables,
+          QWidget* parent = nullptr);
+
+    /**
+     * @destructor Virtual desctructor for stochastic model input widget
+     */
+    virtual ~Jonswap() {};
+
+    /**
+     * Instantiate stochastic motion input widget from input JSON object
+     * @param[in] jsonObject JSON object containing input information
+     * @return Returns true if successful, false otherwise
+     */
+    bool inputFromJSON(QJsonObject& jsonObject);
+
+    /**
+     * Write all current class data to JSON required to reconstruct class
+     * @param[in, out] jsonObject JSON object to write output to
+     * @return Returns true if successful, false otherwise
+     */
+    bool outputToJSON(QJsonObject& jsonObject);
+
+    bool inputAppDataFromJSON(QJsonObject& jsonObject);
+
+    /**
+     * Write application name to object and add a black ApplicationData
+     * @param[in, out] jsonObject JSON object to write output to
+     * @return Returns true if successful, false otherwise
+     */
+
+    bool outputAppDataToJSON(QJsonObject& jsonObject);
+
+    /**
+     * Read application specific data
+     * @param[in, out] jsonObject JSON object to write output to
+     * @return Returns true if successful, false otherwise
+     */
+
+    bool copyFiles(QString &dirName);
+
+    QString getAbbreviatedName(void);
+
+    QLineEdit *createTextEntry(QString text,
+                    QHBoxLayout *theLayout,
+                    int minL=100,
+                    int maxL=100);
+
+    QLineEdit *createTextEntry(QString text,
+                    QGridLayout *theLayout,
+                    int col,
+                    int minL=100,
+                    int maxL=100);
+
+  public slots:
   
-  /**
-   * @destructor Virtual desctructor for stochastic model input widget
-   */
-  virtual ~Jonswap() {};
-
-  /**
-   * Instantiate stochastic motion input widget from input JSON object
-   * @param[in] jsonObject JSON object containing input information
-   * @return Returns true if successful, false otherwise
-   */
-  bool inputFromJSON(QJsonObject& jsonObject);
-
-  /**
-   * Write all current class data to JSON required to reconstruct class
-   * @param[in, out] jsonObject JSON object to write output to
-   * @return Returns true if successful, false otherwise
-   */
-  bool outputToJSON(QJsonObject& jsonObject);
-
-  bool inputAppDataFromJSON(QJsonObject& jsonObject);
-
-  /**
-   * Write application name to object and add a black ApplicationData
-   * @param[in, out] jsonObject JSON object to write output to
-   * @return Returns true if successful, false otherwise
-   */
-
-  bool outputAppDataToJSON(QJsonObject& jsonObject);
-
-  /**
-   * Read application specific data
-   * @param[in, out] jsonObject JSON object to write output to
-   * @return Returns true if successful, false otherwise
-   */
-
-  bool copyFiles(QString &dirName);
-
-  QString getAbbreviatedName(void);
-
-  QLineEdit *createTextEntry(QString text,
-                  QHBoxLayout *theLayout,
-                  int minL=100,
-                  int maxL=100);
-
-  QLineEdit *createTextEntry(QString text,
-                  QGridLayout *theLayout,
-                  int col,
-                  int minL=100,
-                  int maxL=100);
-
-public slots:
     void clear(void);
+
     void updateDistributionPlot(); 
-  /**
-   * Update ability to provide seed based on changed status of radio button
-   * @param[in] checked Current status of radio button for providing seed
-   */
-  void provideSeed(const bool& checked);
 
- protected:
+    /**
+     * Update ability to provide seed based on changed status of radio button
+     * @param[in] checked Current status of radio button for providing seed
+     */
+    void provideSeed(const bool& checked);
 
-  QLabel *modelDescription; /**< Brief description of model indicating relevant
-				 paper where more information can be found describing
-				 model in greater detail */
+  protected:  
 
-  // LineEditRV *gustWindSpeed; /**< gust wnind speed (mph) */
+    QLabel *modelDescription; /**< Brief description of model indicating relevant
+          paper where more information can be found describing
+          model in greater detail */
 
-   QComboBox *exposureCategory; /**< type of wave spectrum */
-   LineEditRV *dragCoefficient; /**< drag Coefficient */
-   LineEditRV *dragArea; /**< drag Area */
-   LineEditRV *significantWaveHeight; /**< significant wave height (ft) */
-   LineEditRV *peakPeriod; /**< peak period (s) */
-   LineEditRV *waterDepth; /**< water depth (ft) */
-   LineEditRV *tidalSLR; /**< tidal sea level rise (ft) */
-   LineEditRV *stormSurgeSLR; /**< storm surge sea level rise (ft) */
-   LineEditRV *climateChangeSLR; /**< climate change sea level rise (ft) */
-   LineEditRV *recorderOriginX; /**< x-coordinate of recorder origin */
-   SC_IntLineEdit *recorderCountZ; /**< number of recorders in z-direction */
-   LineEditRV *timeStep; /**< time step (s) */
-   LineEditRV *timeDuration; /**< time duration (s) */
-   SC_FileEdit *spectraFile; /**< file containing wave spectra */
-   SC_FileEdit *kinematicsFile; /**< file containing bathymetry data */
-
-  QPushButton *theDomainImageButton;
-
-   QSpinBox *seed; /**< Value to use as seed for motion generation */
-   QRadioButton *useSeed; /**< Radio button to indicate whether specific seed
+    LineEditRV *waterDepth; /**< water depth (ft) */
+    LineEditRV *tidalSLR; /**< tidal sea level rise (ft) */
+    LineEditRV *stormSurgeSLR; /**< storm surge sea level rise (ft) */
+    LineEditRV *climateChangeSLR; /**< climate change sea level rise (ft) */
+    LineEditRV *significantWaveHeight; /**< significant wave height (ft) */
+    LineEditRV *peakPeriod; /**< peak period (s) */
+    LineEditRV *recorderOriginX; /**< x-coordinate of recorder origin */
+    SC_IntLineEdit *recorderCountZ; /**< number of recorders in z-direction */
+    LineEditRV *timeStep; /**< time step (s) */
+    LineEditRV *timeDuration; /**< time duration (s) */
+    LineEditRV *dragCoefficient; /**< drag Coefficient */
+    LineEditRV *dragArea; /**< drag Area */
+    QComboBox *exposureCategory; /**< type of wave spectrum */
+    QSpinBox *seed; /**< Value to use as seed for motion generation */
+    QRadioButton *useSeed; /**< Radio button to indicate whether specific seed
                               value should be used */
+    //  SC_FileEdit *spectraFile; /**< file containing wave spectra */
+    //  SC_FileEdit *kinematicsFile; /**< file containing bathymetry data */
+    SimCenterGraphPlot *thePlot;
+    QPushButton *theDomainImageButton;
+    QLineEdit *dataDir;
+    QString inpty;
 
-  QLineEdit *mean, *standardDev;
-  QLineEdit *alpha, *beta, *a, *b;
-  QLineEdit *dataDir;
-  QString inpty;
-  SimCenterGraphPlot *thePlot;
+    // QLineEdit *mean;
+    // QLineEdit *standardDev;
+    // QLineEdit *alpha;
+    // QLineEdit *beta; 
+    // QLineEdit *a;
+    // QLineEdit *b;
 };
 
 #endif  // _KWON_KAREEM_2006_MODEL_H
