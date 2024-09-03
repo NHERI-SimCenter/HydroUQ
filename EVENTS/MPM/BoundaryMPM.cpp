@@ -845,6 +845,15 @@ BoundaryMPM::~BoundaryMPM()
   delete thePlot;
 }
 
+void BoundaryMPM::clear(void)
+{
+  // clear all widgets
+  // theCustom->clear();
+  // theWaveFlume->clear();
+  // theWaveGeneration->clear();
+  // theStructures->clear();
+  // theWalls->clear();
+}
 
 bool
 BoundaryMPM::setBoundaryType(int type)
@@ -1237,6 +1246,10 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
     if (0) boundariesObject["dimensions"] = dimensionsArray; // future schema
     else boundariesObject["domain_end"] = dimensionsEndArray; // ClaymoreUW artifact, TODO: deprecate
 
+    boundariesObject["friction_static"] = 0.0;
+    boundariesObject["friction_dynamic"] = 0.0;
+
+
     // Maybe add SWL, bools, wave-maker neutral, etc. here
     boundariesArray.append(boundariesObject);
   }
@@ -1268,6 +1281,9 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
     else boundariesObject["domain_end"] = dimensionsEndArray; // ClaymoreUW artifact, TODO: deprecate
 
     
+    boundariesObject["friction_static"] = 0.0;
+    boundariesObject["friction_dynamic"] = 0.0;
+
     boundariesObject["object"] = QString("OSU Paddle");  
     
     if (generationMethod->currentIndex() == 0) 
@@ -1344,7 +1360,8 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
     if (0) boundariesObject["dimensions"] = dimensionsArray; // future schema
     else boundariesObject["domain_end"] = dimensionsEndArray; // ClaymoreUW artifact, TODO: deprecate
 
-
+    boundariesObject["friction_static"] = 0.0;
+    boundariesObject["friction_dynamic"] = 0.0;
 
     if (applyCoulombFriction->isChecked()) {
       QJsonObject frictionObject;
@@ -1407,6 +1424,9 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
     dimensionsEndArray.append(wallsWidth->text().toDouble() + originWidth->text().toDouble());
     if (0) boundariesObject["dimensions"] = dimensionsArray; // future schema
     else boundariesObject["domain_end"] = dimensionsEndArray; // ClaymoreUW artifact, TODO: deprecate
+
+    boundariesObject["friction_static"] = 0.0;
+    boundariesObject["friction_dynamic"] = 0.0;
 
     if (applyCoulombFriction->isChecked()) {
       QJsonObject frictionObject;

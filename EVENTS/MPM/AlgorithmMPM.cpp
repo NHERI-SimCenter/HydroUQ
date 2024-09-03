@@ -253,6 +253,12 @@ AlgorithmMPM::~AlgorithmMPM()
 
 }
 
+void AlgorithmMPM::clear(void)
+{
+  // theOpenSeesPyScript->clear();
+  // theSurfaceFile->clear();
+}
+
 bool
 AlgorithmMPM::outputToJSON(QJsonObject &jsonObject)
 {

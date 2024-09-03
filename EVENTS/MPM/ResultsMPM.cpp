@@ -156,8 +156,8 @@ ResultsMPM::ResultsMPM(MPM *parent)
     processSensorsName = new QComboBox();
     // processSensorsName->addItem("post_process_output.py");
     processSensorsName->addItem("post_process_sensors.py");
-    processSensorsName->addItem("post_process_sensors_tsunami.py");
-    processSensorsName->addItem("post_process_sensors_surge.py");
+    // processSensorsName->addItem("post_process_sensors_tsunami.py");
+    // processSensorsName->addItem("post_process_sensors_surge.py");
     processSensorsName->setToolTip("Name of the Post-Processing Script.");
     processSensorsName->setCurrentIndex(0);
 
@@ -340,9 +340,6 @@ ResultsMPM::processResults(QString &dirName)
     QString resultsPath = resultsDir.absolutePath() + QDir::separator() + "results";
     QString inputFileName = "MPM.json"; // "ResultsMPM.json"
     QString inputFilePath = resultsPath + QDir::separator() 
-                                + "constant" + QDir::separator() 
-                                + "simCenter" + QDir::separator() 
-                                + "input" + QDir::separator() 
                                 + inputFileName;
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
@@ -370,9 +367,6 @@ ResultsMPM::processResults(QString &inputFile, QString &dirName)
     QString resultsPath = resultsDir.absolutePath() + QDir::separator() + "results";
     QString inputFileName = "MPM.json"; // "ResultsMPM.json"
     QString inputFilePath = resultsPath + QDir::separator() 
-                                + "constant" + QDir::separator() 
-                                + "simCenter" + QDir::separator() 
-                                + "input" + QDir::separator() 
                                 + inputFileName;
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
@@ -400,9 +394,6 @@ ResultsMPM::processResults(QString &inputFile, QString &dirName, QString &assetT
     QString resultsPath = resultsDir.absolutePath() + QDir::separator() + "results";
     QString inputFileName = "MPM.json"; // "ResultsMPM.json"
     QString inputFilePath = resultsPath + QDir::separator() 
-                                + "constant" + QDir::separator() 
-                                + "simCenter" + QDir::separator() 
-                                + "input" + QDir::separator() 
                                 + inputFileName;
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
@@ -468,25 +459,35 @@ ResultsMPM::onPlotSpectraClicked(void)
 
     QVBoxLayout *plotLayout = new QVBoxLayout();
     QWebEngineView *plotView = new QWebEngineView();
+    
     plotView->page()->setBackgroundColor(Qt::transparent);
     plotLayout->addWidget(plotView);
 
+
     plotView->setMinimumWidth(dialogWidth);
     plotView->setMinimumHeight(dialogHeight);
+
+    // plotView->setWindowFlag(Qt::WindowStaysOnTopHint);
 
     QString ext = ".webp"; // ".html"; // ".csv"
     QString pre = "Target"; // "Sensor"
     QString bodyLabel = "model"; // "body";
     QString deviceLabel = "dev"; // "gpu";
+    QString bodyLabelIfApplicable = "";
+    if (profileNameS->currentText() == "particle" || profileNameS->currentText() == "particles")
+    {
+        bodyLabelIfApplicable = bodyLabel + "[" + QString::number(bodyNumS->currentIndex()) + "]_";
+        
+    }
     QString plotPath = mainModel->caseDir() + QDir::separator() 
-                        + "output" + QDir::separator() 
+                        + "results" + QDir::separator()
                         + profileNameS->currentText()
                         + pre + "[" + QString::number(sensorNumS->currentIndex()) + "]_" 
-                        + bodyLabel + "[" + QString::number(bodyNumS->currentIndex()) + "]_"
+                        + bodyLabelIfApplicable
                         + deviceLabel + "[" + QString::number(deviceNumS->currentIndex()) + "]"
                         + ext;
 
-    if(QFileInfo::exists(plotPath))
+    if (QFileInfo::exists(plotPath))
     {
         plotView->load(QUrl::fromLocalFile(plotPath));
         plotView->setWindowFlag(Qt::WindowStaysOnTopHint);
@@ -494,8 +495,14 @@ ResultsMPM::onPlotSpectraClicked(void)
         plotView->activateWindow();
         plotView->raise();
     } else {
-        QMessageBox::warning(this, tr("File Not Found: "), plotPath);        
+        QMessageBox::warning(this, tr("File Not Found. Change the case directory to point to the location of your simulation sensor output files. Ensure you have ran the processing script beforehand. Missing File: "), plotPath);        
     }
+
+    // plotView->setWindowFlag(Qt::WindowStaysOnTopHint);
+    // plotView->show();
+    // plotView->activateWindow();
+    // plotView->raise();
+
 
 }
 
@@ -690,8 +697,8 @@ ResultsMPM::plotSensors(void) //MPM* host)
         scriptName = processSensorsName->currentText(); // Must be initialized to a valid QString.
     }
     QString scriptPath = mainModel->pyScriptsPath() + QDir::separator() + scriptName; 
-    QString sensorsPath = mainModel->caseDir() + QDir::separator() + "output" + QDir::separator() ;
-    QString outputPath = mainModel->caseDir() + QDir::separator() + "output" + QDir::separator() ;
+    QString sensorsPath = mainModel->caseDir() + QDir::separator() + "results" + QDir::separator() ;
+    QString outputPath = mainModel->caseDir() + QDir::separator() + "results" + QDir::separator() ;
     // Find all the sensors in the sensorsPath folder if it exists, make them into one QString that is comma separated.
     qDebug() << "ResultsMPM::plotSensors - sensorsPath: " << sensorsPath;
     qDebug() << "ResultsMPM::plotSensors - outputPath: " << outputPath;
@@ -704,12 +711,13 @@ ResultsMPM::plotSensors(void) //MPM* host)
     // Also check the remote work directory for the results.zip file
     // Extract to 
     QString intermediateFolder = "";
-    for (int j=0; j<4; ++j)
+    for (int j=0; j<5; ++j)
     {
         if (j == 0) intermediateFolder = "."; // RemoteWorkDir
-        if (j == 1) intermediateFolder = "sensors"; // LocalWorkDir
-        if (j == 2) intermediateFolder = "results"; // LocalWorkDir
-        if (j == 3) intermediateFolder = "."; // LocalWorkDir
+        if (j == 1) intermediateFolder = "results"; // RemoteWorkDir
+        if (j == 2) intermediateFolder = "sensors"; // LocalWorkDir
+        if (j == 3) intermediateFolder = "results"; // LocalWorkDir
+        if (j == 4) intermediateFolder = "."; // LocalWorkDir
         
         QDir processDir = QDir(sensorsPath);
         QString unzipDirString = processDir.absoluteFilePath(intermediateFolder); // + intermediateFolder + QDir::separator(); // Save the extracted files to the sensors directory.
@@ -726,14 +734,13 @@ ResultsMPM::plotSensors(void) //MPM* host)
         }
 
         QString zipDirString;
-        if (j == 0)
+        if (j < 2)
         {
-            zipDirString = SimCenterPreferences::getInstance()->getRemoteWorkDir();
+            zipDirString = SimCenterPreferences::getInstance()->getRemoteWorkDir() + QDir::separator() + intermediateFolder;
         } 
         else 
         {
-            zipDirString = mainModel->caseDir() + QDir::separator() 
-                        + "output" + QDir::separator()
+            zipDirString = mainModel->caseDir() + QDir::separator()
                         + intermediateFolder;
         }
         QDir zipDir(zipDirString);
@@ -769,7 +776,7 @@ ResultsMPM::plotSensors(void) //MPM* host)
 
         qDebug() << "ResultsMPM::plotSensors - ERROR -Failed to unzip the results.zip file " << zipPath <<  "  to the sensors file extraction directory: " << unzipDir;
 
-	    // /* **********************************************************************************************
+	    /*
             QString program = "tar"; // "unzip"; // TODO: consider cross-platform compatibility.
             QStringList arguments;
             // Extract results.zip file from zipPath (either in the GUI set caseDir/output/{'','sensors','results}, variants in brackets, or in RemoteWorkDir when retrieving run from DesignSafe. Extract to plotDir
@@ -794,7 +801,7 @@ ResultsMPM::plotSensors(void) //MPM* host)
                 qDebug() << "ResultsMPM::plotSensors - The unzip process has finished running with an unknown exit status.";
             }
             process->deleteLater();
-	    // ********************************************************************************************************************** */
+	    */
     }
 
 
@@ -803,9 +810,9 @@ ResultsMPM::plotSensors(void) //MPM* host)
     if (sensorsDir.exists())
     {
 
-        // Print all the files in the directory (max 128 files for now, to avoid spamming the console)
+        // Print all the files in the directory (max 256 files for now, to avoid spamming the console)
         qDebug() << "Files in the sensors directory: "; 
-        for (int i = 0; i < sensorsDir.count() && i < 128; i++)
+        for (int i = 0; i < sensorsDir.count() && i < 256; i++)
         {
             qDebug() << sensorsDir[i];
         }
@@ -882,7 +889,9 @@ ResultsMPM::plotSensors(void) //MPM* host)
         {
             qDebug() << "ResultsMPM::plotSensors - The post_process_sensors.py script has finished running with an unknown exit status.";
         }
-        // process->close();
+    
+        // process->deleteLater();
+        // process = nullptr;
         qDebug() << "ResultsMPM::plotSensors - Finished running the post_process_sensors.py script.";
     } 
     else 
@@ -916,26 +925,26 @@ ResultsMPM::inputFromJSON(QJsonObject &jsonObject)
 
         profileNameS->addItem(QString::number(i)); 
 
-        if (profile[key].toString() == "Velocity")
+        if (profile[key].toString() == "Elevation" || profile[key].toString() == "Position_Y")
         {
             // profileNameU->addItem(profile["name"].toString()); // Wave Profile
             profileNameS->addItem(profile["name"].toString()); // Wave Spectra
             // profileNameS->addItem(QString("0")); // Wave Spectra
         }
-        if (profile[key].toString() == "Pressure")
-        {
-            profileNameP->addItem(profile["name"].toString());
-        }
+        // if (profile[key].toString() == "Pressure")
+        // {
+        //     profileNameP->addItem(profile["name"].toString());
+        // }
 
-        if (profile[key].toString() == "Elevation" || profile[key].toString() == "Position_Y")
-        {
-            profileNameE->addItem(profile["name"].toString());
-        }
+        // if (profile[key].toString() == "Elevation" || profile[key].toString() == "Position_Y")
+        // {
+        //     profileNameE->addItem(profile["name"].toString());
+        // }
 
-        if (profile[key].toString() == "Force" || profile[key].toString() == "Load")
-        {
-            profileNameF->addItem(profile["name"].toString());
-        }
+        // if (profile[key].toString() == "Force" || profile[key].toString() == "Load")
+        // {
+        //     profileNameF->addItem(profile["name"].toString());
+        // }
 
     }
 

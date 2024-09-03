@@ -205,17 +205,23 @@ bool StochasticWaveInput::inputAppDataFromJSON(QJsonObject& jsonObject) {
 
   QString appName;
   appName = jsonObject.value("Application").toString();
-  if (appName == "StochasticWaveJonswap" || appName == "JONSWAP" || appName == "StochasticWave") {  
-
-    this->modelSelectionChanged(QString("JONSWAP"));
-    stochasticModel->inputAppDataFromJSON(jsonObject); // no check for NULL as cannot be if i can write code!
+  if (appName == "StochasticWaveJonswap" || appName == "JONSWAP" || appName == "jonswap" || appName == "Jonswap" || appName == "StochasticWave" || appName == "StochasticWaves") {  
+    if (modelSelection->currentText() != "JONSWAP") {
+      this->modelSelectionChanged(QString("JONSWAP"));
+    }
   } 
-  
+  // else if (appName == "example stochastic model TBD") {}
   else {
     QString message = QString("StocashicWaveInput::inputAppDataFromJSON - unknown application string: ") + appName;
-    //    qDebug() << message;
     emit errorMessage(message);
   }
+
+  if (stochasticModel == nullptr) {
+    QString message = QString("StocashicWaveInput::inputAppDataFromJSON - stochasticModel objectis nullptr, may have failed when setting modelSelection to: ") + appName;
+    emit errorMessage(message);
+    return false;
+  }
+  stochasticModel->inputAppDataFromJSON(jsonObject); 
 
   return true;
 }

@@ -81,18 +81,19 @@ namespace Qt3DExtras {
 
 class MPM : public SimCenterAppWidget
 {
-      Q_OBJECT 
+   friend class ResultsMPM; // Allow ResultsMPM to access private members. TODO: use a better vis architecture
+   
+   Q_OBJECT 
 
 public:
     explicit MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent = 0);
    // MPM( QWidget *parent = 0);
    ~MPM();
 
-   friend class ResultsMPM; // Allow ResultsMPM to access private members. TODO: use a better vis architecture
 
    bool inputFromJSON(QJsonObject &rvObject) override;
    bool outputToJSON(QJsonObject &rvObject) override;  
-   bool outputAppDataToJSON(QJsonObject &rvObject) ;
+   bool outputAppDataToJSON(QJsonObject &rvObject);
    bool inputAppDataFromJSON(QJsonObject &rvObject);
    bool copyFiles(QString &dirName) override;
    bool outputCitation(QJsonObject &jsonObject) override;
@@ -117,14 +118,14 @@ public:
    QString simulationType();
    //  QString foamDictsPath(); // For OpenFOAM from WE-UQ, not MPM
 
-   SC_ResultsWidget* getResultsWidget(QWidget *parent) override; // For vis of output data results 
+   SC_ResultsWidget* getResultsWidget(QWidget *parent); // For vis of output data results 
 
    void hideVisualization(void);
    void showVisualization(void);
 signals:
 
 public slots:
-   void clear(void) override;
+   void clear(void);
    void onBrowseCaseDirectoryButtonClicked(void);
 
 private:

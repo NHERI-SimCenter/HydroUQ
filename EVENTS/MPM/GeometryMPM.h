@@ -70,6 +70,7 @@ public:
     virtual ~GeometryMPM();
     bool outputToJSON(QJsonObject &jsonObject); // override
     bool inputFromJSON(QJsonObject &jsonObject); // override
+    void clear(void); // override
     bool copyFiles(QString &dirName);
     bool setBodyPreset(int index);
     bool setDigitalTwin(int twinIdx);

@@ -75,7 +75,9 @@ public:
     virtual ~BoundaryMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
+    void clear(void);
     bool copyFiles(QString &dirName);  
+    
     bool setBoundaryType(int typeIdx);
     bool setDigitalTwin(int typeIdx);
 

@@ -10,7 +10,7 @@
                 "Application": "MPM",
                 "ApplicationData": {
                     "programFile": "fbar",
-                    "maxRunTime": "24:00:00"
+                    "maxRunTime": "1440"
                 },
                 "EventClassification": "Hydro"
             }
@@ -949,8 +949,8 @@
         "planArea": 129600,
         "stories": 3,
         "units": {
-            "force": "kips",
-            "length": "in",
+            "force": "N",
+            "length": "m",
             "temperature": "C",
             "time": "sec"
         },

@@ -107,6 +107,17 @@ PartitionMPM::~PartitionMPM()
 
 }
 
+void PartitionMPM::clear(void)
+{
+  // deviceNumber->clear();
+  // bodyNumber->clear();
+  // partitionOrigin_X->clear();
+  // partitionOrigin_Y->clear();
+  // partitionOrigin_Z->clear();
+  // partitionDimensions_X->clear();
+  // partitionDimensions_Y->clear();
+  // partitionDimensions_Z->clear();
+}
 
 bool
 PartitionMPM::setModel(int model) 

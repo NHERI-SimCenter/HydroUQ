@@ -346,6 +346,12 @@ GeometryAI::~GeometryAI()
 
 }
 
+void GeometryAI::clear(void)
+{
+    // textPrompt->clear();
+    // imagePrompt->clear();
+}
+
 bool 
 GeometryAI::text2pointcloud()
 {

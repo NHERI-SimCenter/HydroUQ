@@ -69,8 +69,10 @@ public:
     virtual ~SensorMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-    bool setSensorType(int type);
+    void clear(void);
     // bool copyFiles(QString &dirName);
+
+    bool setSensorType(int type);
   
 signals:
 

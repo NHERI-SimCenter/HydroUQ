@@ -225,7 +225,13 @@ BoundariesMPM::~BoundariesMPM()
 
 }
 
-
+void BoundariesMPM::clear(void)
+{
+  for (int i=0; i<numAddedTabs; i++) {
+    if (i >= numReserveTabs) break;
+    addedBoundary[i]->clear();
+  }
+}
 
 // void BoundariesMPM::structDimensionsChangedSlot(void)
 // {

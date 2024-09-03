@@ -40,7 +40,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "HydroEventSelection.h"
 
-
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QMessageBox>
@@ -60,6 +59,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "Utils/ProgramOutputDialog.h"
 
 #include <UserDefinedApplication.h>
+
+#if defined(HYDROUQ_GEOCLAW)
+#endif // HYDROUQ_GEOCLAW 
 #include <GeoClawOpenFOAM/GeoClawOpenFOAM.h>
 #include <WaveDigitalFlume/WaveDigitalFlume.h>
 #include <coupledDigitalTwin/CoupledDigitalTwin.h>
@@ -138,9 +140,9 @@ const QString EventSelectionToolTipArray[] = {
     "Shallow-Water-Equations -> Finite-Volume-Method (GeoClaw -> OpenFOAM) [Multi-CPU]",
     "Shallow-Water-Equations -> Finite-Volume-Method -> Finite-Element-Analysis (GeoClaw -> OpenFOAM -> OpenSees) [Multi-CPU]",
     "Finite-Volume-Method <-> Finite-Element-Analysis (OpenFOAM <-> OpenSees) [Multi-CPU]",
-    "Material-Point-Method (ClaymoreUW) [Multi-GPU]",
-    "High-Performance Numerical Simulation (Taichi) [CPU-GPU]",
-    "Stochastic Wave Loading By Sea-State (welib) [CPU]",
+    "Material-Point-Method (ClaymoreUW MPM) [Multi-GPU]",
+    "Taichi Numerical Simulation (Taichi Lang) [CPU-GPU]",
+    "Stochastic Wave Loading By Sea-State Spectra (welib) [CPU]",
     "Smoothed-Particle-Hydrodynamics (DualSPHysics) [CPU-GPU]"
 };
 
@@ -151,8 +153,8 @@ static_assert(sizeof(EventSelectionIndexArray) / sizeof(const int) == sizeof(Eve
 static_assert(sizeof(EventSelectionIndexArray) / sizeof(const int) == sizeof(EventSelectionDisplayArray) / sizeof(const QString));
 static_assert(sizeof(EventSelectionIndexArray) / sizeof(const int) == sizeof(EventSelectionToolTipArray) / sizeof(const QString));
 
+const bool implementedDualSPHysics = false;
 
-// Design pattern for the HydroEventSelection class in OOP is the 
 HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVariableIW, RemoteService* remoteService, QWidget *parent)
     : SimCenterAppWidget(parent), theCurrentEvent(0), theRandomVariablesContainer(theRandomVariableIW)
 
@@ -163,7 +165,7 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 
     // The selection of different events
     QHBoxLayout *theSelectionLayout = new QHBoxLayout();
-    SectionTitle *label=new SectionTitle();
+    SectionTitle *label = new SectionTitle();
     label->setMinimumWidth(250);
     label->setText(QString("Event Type"));
 
@@ -203,10 +205,18 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
         }
         switch (static_cast<Event_e>(evt)) {
             case (Event_e::GeoClawOpenFOAM_e):
+                #if defined(HYDROUQ_GEOCLAW)
+                #else
+                // theGeoClawOpenFOAM = new SimCenterAppWidget(theRandomVariablesContainer);
+                #endif // HYDROUQ_GEOCLAW
                 theGeoClawOpenFOAM = new GeoClawOpenFOAM(theRandomVariablesContainer);
                 theStackedWidget->addWidget(theGeoClawOpenFOAM);
                 break;
             case (Event_e::WaveDigitalFlume_e):
+                #if defined(HYDROUQ_GEOCLAW)
+                #else
+                // theWaveDigitalFlume = new SimCenterAppWidget(theRandomVariablesContainer);
+                #endif // HYDROUQ_GEOCLAW
                 theWaveDigitalFlume = new WaveDigitalFlume(theRandomVariablesContainer);
                 theStackedWidget->addWidget(theWaveDigitalFlume);
                 break;
@@ -227,11 +237,12 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
                 theStackedWidget->addWidget(theStochasticWaves);
                 break;
             case (Event_e::SPH_e):
-                theSPH = new SPH(theRandomVariablesContainer);
+                if constexpr (implementedDualSPHysics) {
+                    theSPH = new SPH(theRandomVariablesContainer);
+                } else {
+                    theSPH = new TaichiEvent(theRandomVariablesContainer);
+                }
                 theStackedWidget->addWidget(theSPH);
-                break;
-            default:
-                qDebug() << "ERROR: HydroEventSelection::HydroEventSelection - Unknown Event Type: " << evt;
                 break;
         }
     } 
@@ -251,9 +262,9 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 
     this->setLayout(layout);
     
-    // --
-    // Set the default event to select at boot-up
-    const Event_e indexDefault = Event_e::StochasticWaves_e;
+    // ---
+    const Event_e indexDefault = Event_e::StochasticWaves_e; // default event to select at boot-up
+
     theStackedWidget->setCurrentIndex(static_cast<int>(indexDefault));
     if constexpr (indexDefault == Event_e::GeoClawOpenFOAM_e) {
         theCurrentEvent = theGeoClawOpenFOAM;
@@ -278,10 +289,12 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     }
 
     connect(eventSelection, SIGNAL(currentIndexChanged(int)), this, SLOT(eventSelectionChanged(int)));
-    connect(eventSelection, SIGNAL(currentTextChanged(QString)), this, SLOT(eventSelectionChanged(QString))); // WE-UQ
+    connect(eventSelection, SIGNAL(currentTextChanged(const QString &)), this, SLOT(eventSelectionChanged(QString))); // WE-UQ
     
     eventSelection->setCurrentIndex(static_cast<int>(indexDefault));
-    theStackedWidget->setCurrentIndex(static_cast<int>(indexDefault));
+    eventSelection->repaint();
+    // eventSelection->setCurrentIndex(static_cast<int>(indexDefault));
+    // theStackedWidget->setCurrentIndex(static_cast<int>(indexDefault));
 
     // QString stringForMPM = "Digital Twin (MPM)";
     // QString stringForFOAMySees = "Digital Twin (OpenFOAM and OpenSees)";
@@ -305,7 +318,6 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
 HydroEventSelection::~HydroEventSelection()
 {
 
-
 }
 
 //*********************************************************************************
@@ -313,31 +325,34 @@ HydroEventSelection::~HydroEventSelection()
 //*********************************************************************************
 void HydroEventSelection::eventSelectionChanged(int arg1)
 {
+    if (static_cast<bool>(EventSelectionEnabledArray[arg1]) == false) {
+        qDebug() << "ERROR: Hydro-EventSelection selection-type disabled: " << arg1;
+        return;
+    }
     // switch stacked widgets depending on text
     // note type output in json and name in pull down are not the same and hence the ||
+
+    #if defined(HYDROUQ_GEOCLAW)
+    #endif // HYDROUQ_GEOCLAW
     if constexpr (static_cast<bool>(Event_b::GeoClawOpenFOAM_b)) {
         if (arg1 == static_cast<int>(Event_e::GeoClawOpenFOAM_e)) {
             theCurrentEvent = theGeoClawOpenFOAM;
         }
     }
-
     if constexpr (static_cast<bool>(Event_b::WaveDigitalFlume_b)) {
         if (arg1 == static_cast<int>(Event_e::WaveDigitalFlume_e)) {
             theCurrentEvent = theWaveDigitalFlume;
         }
     }
-
     if constexpr (static_cast<bool>(Event_b::CoupledDigitalTwin_b)) {
         if (arg1 == static_cast<int>(Event_e::CoupledDigitalTwin_e)) {
             theCurrentEvent = theCoupledDigitalTwin;
         }
     }
-
     if constexpr (static_cast<bool>(Event_b::ClaymoreUW_b)) {
         if (arg1 == static_cast<int>(Event_e::ClaymoreUW_e)) {
             MPM* theM = dynamic_cast<MPM*>(theMPM);
             theM->hideVisualization();
-            theM->showVisualization(); 
             theCurrentEvent = theM->isInitialize() ? theMPM 
                             : (theM->initialize() ? theMPM : nullptr);
             if (theCurrentEvent == nullptr) 
@@ -345,45 +360,38 @@ void HydroEventSelection::eventSelectionChanged(int arg1)
                 qDebug() << "ERROR: Hydro-EventSelection failed while attempting to initialize the MPM Event, index: " << arg1;
                 return;
             }     
+            theM->showVisualization(); 
         }        
     }
-
     if constexpr (static_cast<bool>(Event_b::TaichiEvent_b)) {
         if (arg1 == static_cast<int>(Event_e::TaichiEvent_e)) {
             theCurrentEvent = theTaichiEvent;
         }
     }
-
     if constexpr (static_cast<bool>(Event_b::StochasticWaves_b)) {
         if (arg1 == static_cast<int>(Event_e::StochasticWaves_e)) {
             theCurrentEvent = theStochasticWaves;
         }
     }
-
     if constexpr (static_cast<bool>(Event_b::SPH_b)) {
         if (arg1 == static_cast<int>(Event_e::SPH_e)) {
-            SPH* theM = dynamic_cast<SPH*>(theSPH);
-            theCurrentEvent = theM->isInitialize() ? theSPH 
-                            : (theM->initialize() ? theSPH : nullptr); 
-            if (theCurrentEvent == nullptr) 
-            {
-                qDebug() << "ERROR: Hydro-EventSelection failed while attempting to initialize the SPH Event, index: " << arg1;
-                return;
-            }     
-        }        
+            if constexpr (implementedDualSPHysics) { 
+                SPH* theS = dynamic_cast<SPH*>(theSPH);
+                if (!theS->isInitialize()) {
+                    theS->initialize();
+                }
+            }
+            theCurrentEvent = theSPH;
+        }
     }
 
-    if (static_cast<bool>(EventSelectionEnabledArray[arg1]) == false) {
-        qDebug() << "ERROR: Hydro-EventSelection selection-type disabled: " << arg1;
-        return;
-    }
+
     theStackedWidget->setCurrentIndex(arg1);
     return;
 }
 
 void HydroEventSelection::eventSelectionChanged(const QString &arg1)
 {
-    // qDebug() << arg1;
 
     //
     // switch stacked widgets depending on text
@@ -393,14 +401,15 @@ void HydroEventSelection::eventSelectionChanged(const QString &arg1)
     for (int evt : EventSelectionIndexArray) {
         bool matchesString = (arg1 == EventSelectionStringArray[evt]);
         bool matchesDisplay = (arg1 == EventSelectionDisplayArray[evt]);
-        if ((matchesString || matchesDisplay) && EventSelectionEnabledArray[evt]){
-                theStackedWidget->setCurrentIndex(static_cast<int>(evt));
-                eventSelectionChanged(static_cast<int>(evt));
+        if ((matchesString || matchesDisplay) && EventSelectionEnabledArray[evt]) {
+                if (static_cast<int>(evt) == eventSelection->currentIndex()) return;
+                // eventSelectionChanged(static_cast<int>(evt)); // Updates index, theCurrentEvent, and theStackedWidget
+                eventSelection->setCurrentIndex(static_cast<int>(evt));
                 eventSelection->repaint();
                 return;
         }
     }
-    qDebug() << "ERROR: HydroEventSelection selection-type unknown: " << arg1;
+    qDebug() << "ERROR: HydroEventSelection unable to switch to requested EVT: " << arg1;
     return;
 }
 
@@ -433,33 +442,35 @@ bool HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
     QString type;
     QJsonObject theEvent;
 
-    if (jsonObject.contains("Events"))
+    if (jsonObject.contains("Events") == false)
     {
-        QJsonArray theEvents = jsonObject["Events"].toArray();
-        QJsonValue theValue = theEvents.at(0);
-        if (theValue.isNull())
-        {
-            qDebug() << "HydroEventSelection::inputFromJSON no Event in Events";
-            return false;
-        }
-        theEvent = theValue.toObject();
-        // From WE-UQ, adds type
-        if (theEvent.contains("type")) {
-            QJsonValue theName = theEvent["type"];
-            type = theName.toString();
-        } else {
-            qDebug() << "HydroEventSelection::inputFromJSON no type in Event";
-            return false;
-        }
-    }
-    else
-    {
-        qDebug() << "HydroEventSelection::inputFromJSON Events found";
+        qDebug() << "HydroEventSelection::inputFromJSON No Events found";
         return false;
     }
+    
+    QJsonArray theEvents = jsonObject["Events"].toArray();
+    QJsonValue theValue = theEvents.at(0);
+    if (theValue.isNull())
+    {
+        qDebug() << "HydroEventSelection::inputFromJSON no Event in Events";
+        return false;
+    }
+    theEvent = theValue.toObject();
+    // From WE-UQ, adds type
+    if (theEvent.contains("type") == false) {
+        qDebug() << "HydroEventSelection::inputFromJSON no type in Event";
+        return false;
+    }
+    QJsonValue theName = theEvent["type"];
+    if (theEvent["type"].isString() == false) {
+        qDebug() << "HydroEventSelection::inputFromJSON type JSON value type incorrect: " << type;
+        return false;
+    }
+    type = theName.toString();
 
-    int index = static_cast<int>(Event_e::CoupledDigitalTwin_e);
-    qDebug() << "TYPE: " << type;
+
+    int index = eventSelection->currentIndex();
+    qDebug() << "HydroEventSelection - TYPE: " << type;
     bool flag = false;
     for (int evt : EventSelectionIndexArray) {
         bool matchesString = (type == EventSelectionStringArray[evt]);
@@ -477,28 +488,12 @@ bool HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
 
     qDebug() << "TYPE: " << type << "INDEX: " << index;
 
-    eventSelection->setCurrentIndex(index);
-
-    // if worked, just invoke method on new type
-    if (theCurrentEvent != NULL)
-    {
-        return theCurrentEvent->inputFromJSON(theEvent);
-    } 
-    else 
-    {
-        qDebug() << "HydroEventSelection::inputFromJSON theCurrentEvent is nullptr, set to appropriate event idx: " << index;
+    if (index != eventSelection->currentIndex() || theCurrentEvent == nullptr) { 
+        qDebug() << "Setting eventSelection index to: " << index;
+        eventSelection->setCurrentIndex(index);
     }
-
-    Event_e index_e = static_cast<Event_e>(index);
-    eventSelectionChanged(index);
-
-    if (theCurrentEvent != nullptr) {
-        return theCurrentEvent->inputFromJSON(theEvent);
-    }
-
-
-    qDebug() << "HydroEventSelection::inputFromJSON theCurrentEvent is nullptr, return false";
-    return false;
+    theCurrentEvent->inputFromJSON(theEvent);
+    return true;
 }
 
 //*********************************************************************************
@@ -508,18 +503,15 @@ bool HydroEventSelection::outputToJSON(QJsonObject &jsonObject)
 {
     if (theCurrentEvent == nullptr) {
         qDebug() << "HydroEventSelection::outputToJSON theCurrentEvent is nullptr";
-        return false;
+        return true; // Not inherently an error, just no event object set yet
     }
-    QJsonArray eventArray;
     QJsonObject singleEventData;
+    QJsonArray eventArray;
     bool result = theCurrentEvent->outputToJSON(singleEventData);
-    if (!result) {
-        qDebug() << "HydroEventSelection::outputToJSON - theCurrentEvent->outputToJSON returned false";
-        return result;
-    }
+    if (!result) return false; // Error in outputToJSON for selected event
     eventArray.append(singleEventData);
-    jsonObject["Events"]=eventArray;
-    return result;
+    jsonObject["Events"]=eventArray; // TODO: Multi event appending?
+    return true;
 }
 
 //*********************************************************************************
@@ -531,115 +523,82 @@ bool HydroEventSelection::inputAppDataFromJSON(QJsonObject &jsonObject)
     QString type;
     QString subtype;
 
-    // from Events get the single event
-    if (jsonObject.contains("Events"))
-    {
-        QJsonArray theEvents = jsonObject["Events"].toArray();
-        QJsonValue theValue = theEvents.at(0);
-        if (theValue.isNull())
-        {
-            qDebug() << "HydroEventSelection::inputAppDataFromJSON no Event in Events";
-          return false;
-        }
-        theEvent = theValue.toObject();
-        if (theEvent.contains("Application"))
-        {
-            QJsonValue theName = theEvent["Application"];
-            type = theName.toString();
-            if(theEvent.contains("subtype"))
-                subtype = theEvent["subtype"].toString();
-
-            qDebug() << "HydroEventSelection::inputAppDataFromJSON type: " << type;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    else
-    {
-        qDebug() << "HydroEventSelection::inputAppDataFromJSON Events not found";
+    // from Events get the single event. TODO: Multi-event support
+    if (jsonObject.contains("Events") == false) {
+        qDebug() << "HydroEventSelection::inputAppDataFromJSON Events not found in JSON";
         return false;
     }
+    
+    if (jsonObject["Events"].isArray() == false) {
+        qDebug() << "HydroEventSelection::inputAppDataFromJSON Events is not an array";
+        return false;
+    }
+    QJsonArray theEvents = jsonObject["Events"].toArray();
+    
+    const int singleEventIndex = 0;
+    QJsonValue theValue = theEvents.at(singleEventIndex);
+    if (theValue.isObject() == false) {
+        qDebug() << "HydroEventSelection::inputAppDataFromJSON no Event object in Events";
+        return false;
+    }
+    theEvent = theValue.toObject();
+    
+
+    if (theEvent.contains("Application") == false) {
+        qDebug() << "HydroEventSelection::inputAppDataFromJSON no Application in Event";
+        return false;
+    }
+    QJsonValue theName = theEvent["Application"];
+
+    if (theEvent["Application"].isString() == false) {
+        qDebug() << "HydroEventSelection::inputAppDataFromJSON Application JSON value type incorrect: " << type;
+        return false;
+    }
+    type = theName.toString();
+
+    if (theEvent.contains("subtype")) {
+        if (theEvent["subtype"].isString()) {
+            subtype = theEvent["subtype"].toString();
+        } else {
+            subtype = "";
+        }
+    } else {
+        subtype = "";
+    }
+
+    
 
     // Need the || (or) statements to map the different names of the same event and display names for convenience. Ideally we would have a proper map or enum
     // The folder for the event, the event header file, the event input file, the event's python script folder in SimCenterCommon, etc. will usually match these
     int index = static_cast<int>(Event_e::Start_e);
     for (int evt : EventSelectionIndexArray) {
-        if (type == EventSelectionStringArray[evt]) {
-            index = static_cast<int>(static_cast<int>(evt) * static_cast<int>(EventSelectionEnabledArray[evt])); // The * checks if the event is enabled
-            eventSelectionChanged(index);
-            // eventSelection->setCurrentIndex(index);
+        if ((type == EventSelectionStringArray[evt] || type == EventSelectionDisplayArray[evt]) && EventSelectionEnabledArray[evt]) {
+            index = static_cast<int>(evt);
+            eventSelection->setCurrentIndex(index);
+            // eventSelectionChanged(index);
             // theCurrentEvent = theStackedWidget->widget(index); // Check if this is correct, if not, use the if-else statements below
             break;
         }
     }
-    if (index >= static_cast<int>(Event_e::Count_e)) {
-        qDebug() << "HydroEventSelection::inputAppDataFromJSON Event type unknown: " << type;
-        return false;
-    }
+    // if (index >= static_cast<int>(Event_e::Count_e)) {
+    //     qDebug() << "HydroEventSelection::inputAppDataFromJSON Event index for event type: " << index << " " << type << " exceeds events enabled" << static_cast<int>(Event_e::Count_e);
+    //     return false;
+    // }
 
-
-    // if ( 
-    //     ((type == "GeneralEvent")
-	// || (type == "General Event")) || ((type == "General") || (type == "General Event (GeoClaw and OpenFOAM)") || (type == "GeoClawOpenFoam") || (type == "GeoClawOpenFOAM"))) {
-
-    //   theCurrentEvent = theGeoClawOpenFOAM;
-    //   index = 0;
-    // }
-    // else if (((type == "DigitalTwin")
-	// || (type == "Digital Twin") || (type == "Digital Twin (GeoClaw and OpenFOAM)") || (type == "WaveDigitalFlume"))) {
-      
-    //   theCurrentEvent = theWaveDigitalFlume;
-    //   index = 1;
-    // }
-    // else if (((type == "CoupledDigitalTwin")
-	// || (type == "Coupled Digital Twin")) || (type == "Digital Twin (OpenFOAM and OpenSees)") || (type == "coupledDigitalTwin")) {
-      
-    //   theCurrentEvent = theCoupledDigitalTwin;
-    //   index = 2;
-    // }
-    // else if (((type == "MPM")
-	// || (type == "Material Point Method")) || ((type == "General Event (MPM)") || (type == "Digital Twin (MPM)")) || (type == "MPMDigitalTwin") || (type == "theMPM")) {
-      
-    //   theCurrentEvent = theMPM;
-    //   index = 3;
-    // }
-    // else if ((type == "StochasticWave")
-    // || (type == "StochasticWaveJonswap") || (type == "Stochastic Wave Loading")) {
-      
-    //   theCurrentEvent = theSimpleWaves;
-    //   index = 4;
-    // }
-    // else if ((type == "TaichiEvent") || (type == "General Event (Taichi)") || (type == "Taichi")) {
-      
-    //   theCurrentEvent = theTaichiEvent;
-    //   index = 5;
-    // }
-    // else if (((type == "SPH")
-	// || (type == "Smoothed Particle Hydrodynamics")) || ((type == "General Event (SPH)") || (type == "Digital Twin (SPH)")) || (type == "SPHDigitalTwin") || (type == "theSPH")) {
-      
-    //   theCurrentEvent = theSPH;
-    //   index = 6;
-    // }
-    // else {
-    //   qDebug() << "HydroEventSelection::inputAppDataFromJSON type unknown: " << type;
-    //   theCurrentEvent = theCoupledDigitalTwin;
-    //   index = 2;
-    // //   return false;
-    // }
 
     // eventSelection->setCurrentIndex(index);
     // eventSelection->setCurrentIndex(index);
     
     // invoke inputAppDataFromJSON on new type
-    if (theCurrentEvent && !theEvent.isEmpty()) {
-      return theCurrentEvent->inputAppDataFromJSON(theEvent);
+    if (index != eventSelection->currentIndex() || theCurrentEvent == nullptr) { 
+        eventSelection->setCurrentIndex(index);
     }
-    
-    if (theCurrentEvent == nullptr) qDebug() << "HydroEventSelection::inputAppDataFromJSON theCurrentEvent is nullptr, return false";
-    if (theEvent.isEmpty()) qDebug() << "HydroEventSelection::inputAppDataFromJSON theEvent is empty, return false";
-    return false;
+
+    if (theCurrentEvent->inputAppDataFromJSON(theEvent) == false)
+    {
+        qDebug() << "HydroEventSelection::inputAppDataFromJSON theCurrentEvent->inputAppDataFromJSON failed";
+    }
+    return true;
 }
 
 //*********************************************************************************
@@ -668,7 +627,7 @@ bool HydroEventSelection::copyFiles(QString &destDir)
         qDebug() << "HydroEventSelection::copyFiles theCurrentEvent is nullptr, return false";
         return false;
     }
-    return  theCurrentEvent->copyFiles(destDir);
+    return theCurrentEvent->copyFiles(destDir);
 }
 
 bool HydroEventSelection::supportsLocalRun()

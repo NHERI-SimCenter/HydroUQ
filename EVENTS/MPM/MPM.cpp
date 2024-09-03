@@ -1162,8 +1162,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // mainWindowLayout->addWidget(theScrollArea);
     // mainWindowLayout->addWidget(updateBodiesButton);
     // mainWindowLayout->addWidget(container);
-    mainWindowLayout->addWidget(horizontalPanels);
-    this->setLayout(mainWindowLayout);
+    // mainWindowLayout->addWidget(horizontalPanels);
+    // this->setLayout(mainWindowLayout);
 
     connect(stackedWidget, &SlidingStackedWidget::animationFinished, [=](void) {
       int index = stackedWidget->currentIndex();
@@ -1188,56 +1188,6 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
 MPM::~MPM()
 {
-  // clean up qt3d, careful with the order and make sure to delete the children first
-  // container->hide();
-  // view->hide();
-
-  // delete container;
-  // delete view;
-
-  // delete cubeEntity;
-  // delete cubeMesh;
-  // delete cubeMaterial;
-  // delete cubeTransform;
-  // delete fluidEntity;
-  // delete fluidMesh;
-  // delete fluidMaterial;
-  // delete fluidTransform;
-  // delete pistonEntity;
-  // delete pistonMesh;
-  // delete pistonMaterial;
-  // delete pistonTransform;
-  // delete twinEntity;
-  // delete twinMesh;
-  // delete twinMaterial;
-  // delete twinTransform;
-  // delete hydroEntity;
-  // delete hydroMesh;
-  // delete hydroMaterial;
-  // delete hydroTransform;
-  // delete floorEntity;
-  // delete floorMesh;
-  // delete floorMaterial;
-  // delete floorTransform;
-  // delete harborEntity;
-  // delete harborMesh;
-  // delete harborMaterial;
-  // delete harborTransform;
-  // delete reservoirEntity;
-  // delete reservoirMesh;
-  // delete reservoirMaterial;
-  // delete reservoirTransform;
-  // delete view;
-  // delete container;
-  // delete rootEntity;
-  // delete mainGroup;
-  // delete mainLayout;
-  // delete mainWindowLayout;
-  // delete theTabWidget;
-  // delete mpmBodies;
-  // delete mpmBoundaries;
-  // delete mpmResults;
-
 
 }
 
@@ -1271,47 +1221,63 @@ bool MPM::initialize()
     hideVisualization();
     // ---------------------------------------------------
 
-    caseDirectoryGroup = new QGroupBox("Case Directory");
-    caseDirectoryLayout = new QGridLayout();
-
-    QLabel *casePathLabel = new QLabel("Path: ");
-    QPushButton* browseCaseDirectoryButton  = new QPushButton("Browse");
-
-
-    caseDirectoryPathWidget = new QLineEdit();
     QString currentAppDir = QCoreApplication::applicationDirPath();
 
-    QDir workingDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-    if (!workingDir.exists()) 
-    {
-      workingDir.mkpath(".");
+    caseDirectoryGroup = new QGroupBox("Case Directory");
+    caseDirectoryLayout = new QGridLayout();
+    caseDirectoryPathWidget = new QLineEdit();
+
+
+    // QDir workingDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+    // if (!workingDir.exists()) 
+    // {
+    //   workingDir.mkpath(".");
+    // }
+    // QString workingDirPath = workingDir.filePath(QCoreApplication::applicationName() + QDir::separator()
+    //                                              + "LocalWorkDir" + QDir::separator()
+    //                                              + "MPM");
+
+    auto prefs = SimCenterPreferences::getInstance();
+    QString localWorkDirectoryString = prefs->getLocalWorkDir();
+    QDir localWorkDir(localWorkDirectoryString);
+    if (!localWorkDir.exists()) {
+        localWorkDir.mkpath(".");
     }
-    QString workingDirPath = workingDir.filePath(QCoreApplication::applicationName() + QDir::separator()
-                                                 + "LocalWorkDir" + QDir::separator()
-                                                 + "MPM");
-    if (!workingDir.exists(workingDirPath)) {
+
+    QString tmpDirName = "tmp.SimCenter";
+    localWorkDir.mkdir(tmpDirName);
+    QDir tmpDir = QDir(localWorkDir.absoluteFilePath(tmpDirName));
+    if (!tmpDir.exists()) {
+        tmpDir.mkpath(".");
+    }
+
+    QString subDirName = "MPM"; // "tmp.SimCenter"; "templatedir";
+    localWorkDir.mkdir(subDirName);
+    workingDirPath = localWorkDir.absoluteFilePath(subDirName);
+
+    QDir workingDir = QDir(workingDirPath);
+    if (!workingDir.exists()) {
         workingDir.mkpath(workingDirPath);
     }
+
+    QLabel *casePathLabel = new QLabel("Path: ");
     caseDirectoryPathWidget->setText(workingDirPath);
+
+    QPushButton* browseCaseDirectoryButton  = new QPushButton("Browse");
     caseDirectoryLayout->addWidget(casePathLabel, 0, 0);
     caseDirectoryLayout->addWidget(caseDirectoryPathWidget, 0, 1);
     caseDirectoryLayout->addWidget(browseCaseDirectoryButton, 0, 2);
 
-    // QLabel *citeLabel = new QLabel("\nParts of the workflow for this MPM event are developed based on the work of Wang et al. (2020) and Bonus (2023).\n"
-    //                                "The user should cite the work as follows:\n"
-    //                                "\nWang, Xinlei and Qiu Yuxing, et al. (2020). “A massively parallel and scalable multi-GPU material point method.”\n"
-    //                                "\nBonus, Justin (2023). “Evaluation of Fluid-Driven Debris Impacts in a High-Performance Multi-GPU Material Point Method.”\n"
-    //                                "PhD thesis, University of Washington, Seattle, WA.");
-
+    // QLabel *citeLabel = new QLabel("This event uses ClaymoreUW Multi-GPU MPM (Bonus 2023). Based on Claymore (Wang et al. 2020)");
     // QFont citeFont("Arial", 8);
     // citeFont.setPointSize(7);
     // citeFont.setItalic(true);
-
     // citeLabel->setFont(citeFont);
 
     caseDirectoryGroup->setLayout(caseDirectoryLayout);
     // caseDirectoryGroup->setMaximumWidth(200); // small test
     const int citeRow = 0;
+    // mainLayout->addWidget(citeLabel, citeRow, 0);
     mainLayout->addWidget(caseDirectoryGroup, citeRow, 0);
     mainLayout->setRowStretch(0, 5);
 
@@ -1340,7 +1306,9 @@ bool MPM::initialize()
     {
         setupCase(); // Check if directories for the case files exist, if not create them
     }
-    readCaseData(); // Read the case data from the JSON file
+
+    // readCaseData(); // Read the case data from the JSON file
+
     caseInitialized = true;
     // ==================== Results-View Set-Up ====================
     if constexpr (1) {
@@ -1355,7 +1323,9 @@ bool MPM::initialize()
 
     // Update the GI Tab once the data is read
     GeneralInformationWidget *theGI = GeneralInformationWidget::getInstance();
-    theGI->setLengthUnit("m");
+    // theGI->setLengthUnit("m");
+    // theGI->setForceUnit("N");
+    // theGI->setTemperatureUnit("C");
     // theGI->setNumStoriesAndHeight(numberOfFloors(), buildingHeight());
     // theGI->setBuildingDimensions(buildingWidth(), buildingDepth(), buildingWidth()*buildingDepth());
 
@@ -1371,9 +1341,9 @@ void MPM::updateJSON()
 {
     // Write most recent EVT state to JSON becase it is needed for pre-processing steps / mesh generation before the final simulation is run.
     // In future only one JSON file in temp.SimCenter directory might be enough
-    QString inputFilePath = caseDir() + QDir::separator() + "constant" + QDir::separator() + "simCenter"
-                            + QDir::separator() + "input" + QDir::separator() + "MPM.json";
-
+    QString inputFileName = "MPM.json";
+    QString inputFilePath = caseDir() + QDir::separator() + "inputData" + QDir::separator() + inputFileName;
+    QString outputFilePath = caseDir() + QDir::separator() + "inputData" + QDir::separator() + inputFileName;
 
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::WriteOnly | QFile::Text))
@@ -1401,7 +1371,7 @@ void MPM::executeBackendScript()
     QString scriptName = "MPM.py"; // "setup_case.py";
     QString scriptPath = pyScriptsPath() + QDir::separator() + scriptName; 
     QString templatePath = templateDictDir();
-    QString jsonPath = caseDir() + QDir::separator() + "constant" + QDir::separator() + "simCenter" + QDir::separator() + "input";
+    QString jsonPath = caseDir() + QDir::separator() + "inputData";
     QString outputPath = caseDir();
     if (QFileInfo(scriptPath).exists())
     {
@@ -1411,6 +1381,8 @@ void MPM::executeBackendScript()
       process->start(program, arguments);
       process->waitForFinished(-1);
       process->close();
+      // process->deleteLater();
+
     } 
     else 
     {
@@ -1422,12 +1394,10 @@ void MPM::executeBackendScript()
 void MPM::readCaseData()
 {
     //Write it to JSON becase it is needed for the mesh generation before the final simulation is run.
-    //In future only one JSON file in temp.SimCenter directory might be enough
+    //In future only one JSON file in tmp.SimCenter directory might be enough
     QString inputFileName = "MPM.json";
     QString inputFilePath = caseDir() + QDir::separator() 
-                            + "constant" + QDir::separator() 
-                            + "simCenter" + QDir::separator() 
-                            + "input" + QDir::separator() 
+                            + "inputData" + QDir::separator() 
                             + inputFileName;
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
@@ -1439,7 +1409,7 @@ void MPM::readCaseData()
     QString val = jsonFile.readAll();
     QJsonDocument doc = QJsonDocument::fromJson(val.toUtf8());
     QJsonObject jsonObject = doc.object();
-    inputFromJSON(jsonObject);
+    this->inputFromJSON(jsonObject);
     jsonFile.close();
     removeOldFiles();
 }
@@ -1462,7 +1432,7 @@ void MPM::onBrowseCaseDirectoryButtonClicked(void)
         return;
     }
 
-    // Need to have JSON (MPM.json) in LocalWorkDir/MPM/constant/simCenter/input
+    // Need to have scene config file (MPM.json) in the LocalWorkDir/MPM/inputData directory
     readCaseData();
     caseDirectoryPathWidget->setText(fileName);
     return;
@@ -1471,6 +1441,19 @@ void MPM::onBrowseCaseDirectoryButtonClicked(void)
 void MPM::clear(void)
 {
     this->hideVisualization();
+
+    if (mpmSettings)
+      mpmSettings->clear();
+    if (mpmBodies)
+      mpmBodies->clear();
+    if (mpmBoundaries)
+      mpmBoundaries->clear();
+    if (mpmSensors)
+      mpmSensors->clear();
+    if (mpmOutputs)
+      mpmOutputs->clear();
+    if (mpmResults) 
+      mpmResults->clear();
 }
 
 bool MPM::outputCitation(QJsonObject &jsonObject)
@@ -1767,6 +1750,7 @@ bool MPM::outputAppDataToJSON(QJsonObject &jsonObject) {
 
     jsonObject["EventClassification"] = "Hydro";
     jsonObject["Application"] = "MPM";
+    // jsonObject["type"] = "MPM"; // Application and type used interchangeably in our openfoam Tapisv3 app
 
     // Env Variable for ClaymoreUW MPM as a Tool in Tapis V3
     jsonObject["programFile"] = "fbar"; // <- ClaymoreUW MPM executable filename on remote machine. Can be changed depending on compiled optimizations, versions, digital twin, etc.
@@ -1774,7 +1758,7 @@ bool MPM::outputAppDataToJSON(QJsonObject &jsonObject) {
     jsonObject["defaultMaxRunTime"] = "1440";
     jsonObject["publicDirectory"] = "../mpm-public-ls6";
     jsonObject["inputFile"] = "scInput.json"; // <- Input file for the simulation
-    jsonObject["driverFile"] = "driver"; // <- Python script to run the simulation
+    jsonObject["driverFile"] = "sc_driver"; // <- Python script to run the simulation
 
     
 
@@ -1820,34 +1804,34 @@ bool MPM::copyFiles(QString &destDir) {
     if (mpmSettings->copyFiles(destDir) == false) 
     {
       qDebug() << "MPM - failed to copy mpmSettings files";
-      return false;
+      // return false;
     }
     if (mpmBodies->copyFiles(destDir) == false)
     {
       qDebug() << "MPM - failed to copy mpmBodies files";
-      return false;
+      // return false;
     }
-    // if (mpmBoundaries->copyFiles(destDir) == false)
-    // {
-    //   qDebug() << "MPM - failed to copy boundaries files";
-    //   return false;
-    // }
+    if (mpmBoundaries->copyFiles(destDir) == false)
+    {
+      qDebug() << "MPM - failed to copy boundaries files";
+      // return false;
+    }
     if (mpmSensors->copyFiles(destDir) == false)
     {
       qDebug() << "MPM - failed to copy mpmSensors files";
-      return false;
+      // return false;
     }
-    if (mpmOutputs->copyFiles(destDir) == false)
-    {
-      qDebug() << "MPM - failed to copy mpmOutputs files";
-      return false;
-    }
-    if (mpmResults->copyFiles(destDir) == false)
-    {
-      qDebug() << "MPM - failed to copy results files";
-      qDebug() << "MPM - skipping mpmResults copy files";
-      return false;
-    }
+    // if (mpmOutputs->copyFiles(destDir) == false)
+    // {
+    //   qDebug() << "MPM - failed to copy mpmOutputs files";
+    //   return false;
+    // }
+    // if (mpmResults->copyFiles(destDir) == false)
+    // {
+    //   qDebug() << "MPM - failed to copy results files";
+    //   qDebug() << "MPM - skipping mpmResults copy files";
+    //   return false;
+    // }
 
     return true;
  }
@@ -1862,9 +1846,13 @@ bool MPM::cleanCase()
     QDir zeroDir(caseDir() + QDir::separator() + "0");
     QDir constDir(caseDir() + QDir::separator() + "constant");
     QDir systemDir(caseDir() + QDir::separator() + "system");
+    QDir templatedir(caseDir() + QDir::separator() + "templatedir");
+    QDir inputFiles(caseDir() + QDir::separator() + "inputFiles");
     zeroDir.removeRecursively();
     constDir.removeRecursively();
     systemDir.removeRecursively();
+    templatedir.removeRecursively();
+    inputFiles.removeRecursively();
     QFile logFile(caseDir() + QDir::separator() + "log.txt");
     if (logFile.exists()) {
       logFile.remove();
@@ -1897,15 +1885,20 @@ bool MPM::setupCase()
     {
         targetDir.mkpath(caseDir());
     }
-    targetDir.mkpath("0");
-    targetDir.mkpath("constant");
-    targetDir.mkpath("constant/geometry");
-    targetDir.mkpath("constant/simCenter");
-    targetDir.mkpath("constant/simCenter/output");
-    targetDir.mkpath("constant/simCenter/input");
-    targetDir.mkpath("constant/boundaryData");
-    targetDir.mkpath("constant/boundaryData/inlet");
-    targetDir.mkpath("system");
+
+    // targetDir.mkpath("0");
+    // targetDir.mkpath("constant");
+    // targetDir.mkpath("constant/geometry");
+    // targetDir.mkpath("constant/simCenter");
+    // targetDir.mkpath("constant/simCenter/output");
+    // targetDir.mkpath("constant/simCenter/input");
+    // targetDir.mkpath("constant/boundaryData");
+    // targetDir.mkpath("constant/boundaryData/inlet");
+    // targetDir.mkpath("system");
+
+    targetDir.mkpath("inputData");
+    targetDir.mkpath("templatedir");
+
 
     // Write setup files using the backend python script
     executeBackendScript();
@@ -1960,9 +1953,12 @@ QVector<QVector<double>> MPM::readTxtData(QString fileName)
 
 bool MPM::isCaseConfigured()
 {
-    QDir zeroDir(caseDir() + QDir::separator() +  "0");
-    QDir constDir(caseDir() + QDir::separator() + "constant");
-    QDir systemDir(caseDir() + QDir::separator() + "system");
+    // QDir tempDir = QDir(caseDir() + QDir::separator() + "templatedir" + QDir::separator() + "simCenter" + QDir::separator() + "input");
+    QDir tempDir(caseDir() + QDir::separator() +  "templatedir");
+    QDir inputDir(caseDir() + QDir::separator() + "inputData");
+    // QDir zeroDir(caseDir() + QDir::separator() + "0");
+    // QDir constDir(caseDir() + QDir::separator() + "constant");
+    // QDir systemDir(caseDir() + QDir::separator() + "system");
     // QFile contrlDict(caseDir() + QDir::separator() + "system" + QDir::separator() + "controlDict");
     // QFile blockDict(caseDir() + QDir::separator() + "system" +  QDir::separator() + "blockMeshDict");
     // QFile snappyDict(caseDir() + QDir::separator() + "system" + QDir::separator() + "snappyHexMeshDict");
@@ -1970,7 +1966,7 @@ bool MPM::isCaseConfigured()
     // //Better if we check other files too, for now these are enougg to run a mesh
     // return zeroDir.exists() && constDir.exists() && systemDir.exists() &&
     //        contrlDict.exists() && blockDict.exists() && snappyDict.exists();
-    return zeroDir.exists() && constDir.exists() && systemDir.exists();
+    return tempDir.exists() && inputDir.exists();
 }
 
 QString MPM::caseDir()
@@ -2000,7 +1996,7 @@ QString MPM::templateDictDir()
 
 QString MPM::simulationType()
 {
-    return QString("MPM"); // Yet to support turbulence models in MPM, so its just "MPM" (i.e. DNS)
+    return QString("MPM");
 }
 
 SC_ResultsWidget* MPM::getResultsWidget(QWidget *parent)
@@ -2018,6 +2014,7 @@ SC_ResultsWidget* MPM::getResultsWidget(QWidget *parent)
       QVBoxLayout* resultsLayout  = new QVBoxLayout();
       resultsWidget->setLayout(resultsLayout);
       mpmResults = new ResultsMPM(this); // this
+      
 
       resultsLayout->addWidget(mpmResults);
       resultsLayout->addStretch();
