@@ -78,6 +78,7 @@ public:
     // bool outputAppDataToJSON(QJsonObject &rvObject);
     // bool inputAppDataFromJSON(QJsonObject &rvObject);
     bool copyFiles(QString &dirName);
+    void clear(void);
     bool setDigitalTwin(int twinIdx);
 
     // SC_DoubleLineEdit* getDimensionXWidget();

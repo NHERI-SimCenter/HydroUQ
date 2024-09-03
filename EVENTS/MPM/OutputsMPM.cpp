@@ -214,6 +214,27 @@ OutputsMPM::~OutputsMPM()
 
 }
 
+void OutputsMPM::clear(void)
+{
+  // vtkBodies_Output->clear();
+  // vtkCheckpoints_Output->clear();
+  // vtkBoundaries_Output->clear();
+  // vtkSensors_Output->clear();
+  // vtkEnergies_Output->clear();
+
+  // outputBodies_Dt->clear();
+  // outputCheckpoints_Dt->clear();
+  // outputBoundaries_Dt->clear();
+  // outputEnergies_Dt->clear();
+
+  // useKineticEnergy->clear();
+  // usePotentialEnergy->clear();
+  // useStrainEnergy->clear();
+
+  // bodies_OutputExteriorOnly->clear();
+  // bodiesAttribsTable->clear();
+}
+
 bool
 OutputsMPM::outputToJSON(QJsonObject &jsonObject)
 {

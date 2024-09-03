@@ -169,6 +169,14 @@ GeometriesMPM::~GeometriesMPM()
 
 }
 
+void GeometriesMPM::clear(void)
+{
+  // Clear all geometries
+  for (int i=0; i<numAddedTabs; i++) {
+    addedGeometry[i]->clear();
+  }
+}
+
 bool
 GeometriesMPM::setBodyPreset(int index)
 {

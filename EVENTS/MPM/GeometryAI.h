@@ -82,6 +82,7 @@ public:
 
     bool inputFromJSON(QJsonObject &jsonObject); // override
     bool outputToJSON(QJsonObject &jsonObject); // override 
+    void clear(void); // override
     bool executeTextPromptsScripts(QString &dirName);     
     bool executeImagePromptsScripts(QString &dirName);     
     // void clear(void); 

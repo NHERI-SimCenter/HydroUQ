@@ -111,23 +111,23 @@ private:
     QComboBox            *bodyNumS;
     QComboBox            *deviceNumS;
 
-    // E - Plot Elevation
-    QGroupBox            *plotElevationGroup;
-    QGridLayout          *plotElevationLayout;
-    QPushButton          *plotElevation;
-    QComboBox            *profileNameE;
+    // // E - Plot Elevation
+    // QGroupBox            *plotElevationGroup;
+    // QGridLayout          *plotElevationLayout;
+    // QPushButton          *plotElevation;
+    // QComboBox            *profileNameE;
 
-    // F - Plot Force
-    QGroupBox            *plotForceGroup;
-    QGridLayout          *plotForceLayout;
-    QPushButton          *plotForce;
-    QComboBox            *profileNameF;
+    // // F - Plot Force
+    // QGroupBox            *plotForceGroup;
+    // QGridLayout          *plotForceLayout;
+    // QPushButton          *plotForce;
+    // QComboBox            *profileNameF;
 
-    // P - Plot Pressure
-    QGroupBox            *plotPressureGroup;
-    QGridLayout          *plotPressureLayout;
-    QPushButton          *plotPressure;
-    QComboBox            *profileNameP;
+    // // P - Plot Pressure
+    // QGroupBox            *plotPressureGroup;
+    // QGridLayout          *plotPressureLayout;
+    // QPushButton          *plotPressure;
+    // QComboBox            *profileNameP;
 
 public:
 
