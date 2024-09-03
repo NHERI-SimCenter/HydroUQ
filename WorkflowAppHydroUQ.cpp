@@ -39,7 +39,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include "WorkflowAppHydroUQ.h"
 #include <MainWindowWorkflowApp.h>
 
-#include <QtGlobal>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QJsonArray>
@@ -47,11 +46,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QJsonDocument>
 #include <QLabel>
 #include <QDebug>
+#include <QMessageBox>
+
+#include <QFrame>
+#include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QStackedWidget>
+
 #include <HydroEventSelection.h>
 #include <RunLocalWidget.h>
 #include <QProcess>
+
 #include <QCoreApplication>
 #include <RemoteService.h>
 #include <QtNetwork/QNetworkAccessManager>
@@ -59,18 +64,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QtNetwork/QNetworkRequest>
 #include <QHostInfo>
 #include <QUuid>
+#include <QDir>
+#include <QFile>
+#include <QSettings>
 
-#include <QSvgWidget>
-#include <QFrame>
-#include <QVBoxLayout>
+
 
 #include <SimCenterComponentSelection.h>
 #include "GeneralInformationWidget.h"
 #include <SIM_Selection.h>
 #include <RandomVariablesContainer.h>
 #include <FEA_Selection.h>
-#include <QDir>
-#include <QFile>
 #include <UQ_EngineSelection.h>
 #include <UQ_Results.h>
 #include <LocalApplication.h>
@@ -78,32 +82,34 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <RemoteJobManager.h>
 #include <RunWidget.h>
 #include <InputWidgetBIM.h>
-
 #include <HydroEDP_Selection.h>
 // #include <EDP_Selection.h>
 
+
 #include "CustomizedItemModel.h"
 
-#include <QSettings>
-#include <QUuid>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QNetworkRequest>
-#include <QHostInfo>
-#include <DakotaResultsSampling.h>
 #include <Utils/ProgramOutputDialog.h>
 #include <Utils/RelativePathResolver.h>
-#include <SC_ToolDialog.h>
-#include <SC_RemoteAppTool.h>
-#include <QList>
-#include <RemoteAppTest.h>
-#include <SimCenterPreferences.h>
-
-#include <QMenuBar>
-
 #include <GoogleAnalytics.h>
 
-// For Tools
+#include <QList>
+#include <QMenuBar>
+
+#include <SC_ToolDialog.h>
+#include <SC_RemoteAppTool.h>
+#include <SC_LocalAppTool.h>
+#include <SimCenterPreferences.h>
+#include <RemoteAppTest.h>
+// #include <DakotaResultsSampling.h>
+
+#include <QtGlobal>
+// #include <QSvgWidget>
+
+// EVT classes for standalone tool runs
+
+// HydroUQ original EVT classes from Ajay. Used OpenFOAM with GeoCLAW. TODO: Update OpenFOAM / GeoClaw version and build for TapisV3
+#if defined(HYDROUQ_GEOCLAW)
+#endif
 #include <GeoClawOpenFOAM/GeoClawOpenFOAM.h>
 #include <WaveDigitalFlume/WaveDigitalFlume.h>
 #include <coupledDigitalTwin/CoupledDigitalTwin.h>
@@ -112,7 +118,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <StochasticWaveModel/include/StochasticWaveInput.h>
 #include <TaichiEvent/TaichiEvent.h>
 #include <Celeris/Celeris.h>
-#include <Celeris/WebGPU.h>
+// #include <Celeris/WebGPU.h>
 #include <NOAA/DigitalCoast.h>
 
 // static pointer for global procedure set in constructor
@@ -136,7 +142,8 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theRVs = RandomVariablesContainer::getInstance();
     theGI = GeneralInformationWidget::getInstance();
     theSIM = new SIM_Selection(true, true);
-    theEventSelection = new HydroEventSelection(theRVs, theService); // WE-UQ
+    theEventSelection = new HydroEventSelection(theRVs, theService);
+    // theEventSelection = new HydroEventSelection(theRVs, theGI);
     theAnalysisSelection = new FEA_Selection(true);
     theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity); // ForwardReliabilitySensitivitySurrogate
     theEDP_Selection = new HydroEDP_Selection(theRVs);
@@ -156,13 +163,13 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theRunWidget = new RunWidget(localApp, remoteApp, theWidgets, 0);
 
     //
-    // connect signals and slots for (1) local and (2) remote application runs. NOTE: Only remote is fully implemented
+    // connect signals and slots for (1) local and (2) remote application runs.
     //
 
 
     
     // connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
-    connect(localApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir)
+    connect(localApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir) 
     {
         currentApp = localApp;
         setUpForApplicationRun(workingDir, subDir);
@@ -174,7 +181,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     // connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     **************************/
-    connect(remoteApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir)
+    connect(remoteApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir) 
     {
         currentApp = remoteApp;
         setUpForApplicationRun(workingDir, subDir);
@@ -192,24 +199,23 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
     //connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     connect(this, SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
-    connect(localApp, SIGNAL(runComplete()), this, SLOT(runComplete()));
+    connect(localApp, SIGNAL(runComplete()), this, SLOT(runComplete())); // swao with next?
     connect(localApp, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
 
     //connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
+    connect(theJobManager, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+    connect(theJobManager, SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
 
-    connect(theJobManager,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
-    connect(theJobManager,SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
-
-    connect(remoteApp,SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));;
-    connect(remoteApp,SIGNAL(successfullJobStart()), this, SLOT(runComplete()));
-
+    connect(remoteApp, SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));;
+    connect(remoteApp, SIGNAL(successfullJobStart()), this, SLOT(runComplete()));
     connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
     connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));
 
+    /** 
     // KZ connect queryEVT and the reply
     connect(theUQ_Selection, SIGNAL(queryEVT()), theEventSelection, SLOT(replyEventType()));
     connect(theEventSelection, SIGNAL(typeEVT(QString)), theUQ_Selection, SLOT(setEventType(QString)));
-
+    **/
 
 
     //
@@ -236,7 +242,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("RES"), theResults);
     
     theComponentSelection->displayComponent("UQ"); // Initial page on startup
-
+    
 
     // access a web page which will increment the usage count for this tool
     manager = new QNetworkAccessManager(this);
@@ -253,6 +259,17 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
     theDialog->appendInfoMessage("Welcome to HydroUQ");    
 }
+
+// Development mode for tools
+constexpr bool DEV_MODE = true; // Set to true for development mode, false for production mode
+
+// Quickly enable/disable tools here for compile-time
+constexpr bool USE_CLAYMORE_TOOL = true;
+constexpr bool USE_TAICHI_TOOL = true;
+constexpr bool USE_NOAA_TOOL = false; 
+constexpr bool USE_CELERIS_TOOL = false;
+constexpr bool USE_WEBGPU_TOOL = false;
+
 
 // Imported from WE-UQ for EmptyDomainCFD Tool
 void
@@ -272,179 +289,10 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     //
     // Add standalone events to tools menu
     //
-    const bool DEV_MODE = true; // Set to true for development mode, false for production mode
     QString appName;
     QList<QString> queues; 
 
-    
-    // TODO : Gather all tool information into compile time arrays, turn on/off the tools with one edit
-    // TODO : Pull into a separate file / object. Shouldn't be here
-    //        Prototype for a later compiled approach for making most EVT/FEM/SUR modules available individually
 
-    // enum class ToolIndex_e : int {
-    //     Start = 0,
-    //     ClaymoreUW = Start,
-    //     TaichiEvent,
-    //     Celeris,
-    //     NOAA,
-    //     WebGPU,
-    //     Last,
-    //     Count = Last
-    // };
-
-    // enum class Tool_b : bool {
-    //     ClaymoreUW = true,
-    //     TaichiEvent = true,
-    //     Celeris = true,
-    //     NOAA = true,
-    //     WebGPU = false
-    // };
-
-    // const int ToolIndexArray[] = {
-    //     static_cast<int>(ToolIndex_e::ClaymoreUW),
-    //     static_cast<int>(ToolIndex_e::TaichiEvent),
-    //     static_cast<int>(ToolIndex_e::Celeris),
-    //     static_cast<int>(ToolIndex_e::NOAA),
-    //     static_cast<int>(ToolIndex_e::WebGPU)
-    // };
-
-
-    // const bool ToolEnabledArray[] = {
-    //     static_cast<bool>(Tool_b::ClaymoreUW),
-    //     static_cast<bool>(Tool_b::TaichiEvent),
-    //     static_cast<bool>(Tool_b::Celeris),
-    //     static_cast<bool>(Tool_b::NOAA),
-    //     static_cast<bool>(Tool_b::WebGPU)
-    // };
-
-    // const QString ToolStringArray[] = {
-    //     static_cast<QString>("Digital Twin (MPM)"),
-    //     static_cast<QString>("General Event (Taichi)"),
-    //     static_cast<QString>("Boussinesq Waves (Celeris)"),
-    //     static_cast<QString>("Sea-Level Rise (NOAA Digital Coast)"),
-    //     static_cast<QString>("Trouble-Shoot Hardware (WebGPU)")
-    // };
-
-    // const QString ToolDisplayArray[] = {
-    //     "Digital Twin (&MPM)",
-    //     "General Event (&Taichi)",
-    //     "Boussinesq Waves (&Celeris)",
-    //     "Sea-Level Rise (&NOAA Digital Coast)",
-    //     "Trouble-Shoot Hardware (&WebGPU)"
-    // };
-
-    // const QString ToolTipArray[] = {
-    //     "Digital Twin - Multi-GPU Material Point Method (MPM) - ClaymoreUW",
-    //     "General Event - High-Performance Solvers (SPH/MPM/LBM) - Taichi Lang",
-    //     "Regional Event - Boussinesq and NLSW Waves WebGPU Solver - Celeris",
-    //     "Sea-Level Rise - Sea-Level and Bathymetry Web API - NOAA Digital Coast",
-    //     "Trouble-Shoot Hardware - Hardware Acceleration - Chromium WebGPU"
-    // };
-
-    // static_assert(static_cast<int>(ToolIndex_e::Count) == static_cast<int>(ToolIndex_e::Last) - static_cast<int>(ToolIndex_e::Start) + 1, "ToolIndex_e::Count and ToolIndex_e::Last are not consistent");
-
-
-    // // const bool USE_CLAYMORE_TOOL = false;
-    // // if constexpr (USE_CLAYMORE_TOOL) {
-
-    // for (int tl : ToolIndexArray) {
-    //     if (!ToolEnabledArray[static_cast<int>(tl)]) {
-    //         toolsMenu->addSeparator();
-    //         // Add a separator between enabled and disabled tools
-    //         continue;
-    //     }
-    //     switch (static_cast<ToolIndex_e>(tl)) {
-    //         case (ToolIndex_e::ClaymoreUW):
-
-    //             // qDebug() << "Adding Tool: " << ToolStringArray[static_cast<int>(tl)];
-    //             // QAction *showTool = toolsMenu->addAction(ToolDisplayArray[static_cast<int>(tl)]);
-    //             // connect(showTool, &QAction::triggered, this,[this, theDialog=theToolDialog, static_cast<int>(tl)] {
-    //             //     theDialog->showTool(ToolDisplayArray[static_cast<int>(tl)]);
-    //             // });
-            
-    //             if constexpr (DEV_MODE) {
-    //                 appName = "ClaymoreUW-ls6.bonusj-1.0.0"; // Lonestar6 dev app for ClaymoreUW MPM, Justin Bonus (bonusj) 
-    //                 queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    //             } else {
-    //                 appName =  "simcenter-claymore-ls6-1.0.0u2"; // Lonestar6 public app for ClaymoreUW MPM
-    //                 queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    //             }
-    //             MPM *miniMPM = new MPM(theRVs); 
-    //             if (!miniMPM->isInitialize()) { 
-    //                 miniMPM->initialize(); 
-    //             }
-    //             SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
-    //             theToolDialog->addTool(miniMPMTool, ToolStringArray[static_cast<int>(ToolIndex_e::ClaymoreUW)]);
-    //             QAction *showMPM = toolsMenu->addAction(ToolDisplayArray[static_cast<int>(ToolIndex_e::ClaymoreUW)]);
-    //             connect(showMPM, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniMPMTool] {
-    //                 theDialog->showTool(ToolDisplayArray[static_cast<int>(ToolIndex_e::ClaymoreUW)]);
-    //             });
-    //             break;
-
-
-    //         case (ToolIndex_e::TaichiEvent):
-
-    //             TaichiEvent *miniTaichi = new TaichiEvent();
-    //             appName =  "Taichi-1.0.0"; // Frontera
-    //             queues.clear(); queues << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    //             SC_RemoteAppTool *miniTaichiTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniTaichi, theToolDialog);
-    //             theToolDialog->addTool(miniTaichiTool, ToolStringArray[static_cast<int>(ToolIndex_e::TaichiEvent)]);
-    //             QAction *showTaichi = toolsMenu->addAction(ToolDisplayArray[static_cast<int>(ToolIndex_e::TaichiEvent)]);
-    //             connect(showTaichi, &QAction::triggered, this,[this, theDialog=theToolDialog, miniT = miniTaichiTool] {
-    //                 theDialog->showTool(ToolDisplayArray[static_cast<int>(ToolIndex_e::TaichiEvent)]);
-    //             });
-    //             break;
-
-    //         case (ToolIndex_e::Celeris):
-
-    //             Celeris *miniCeleris = new Celeris();
-    //             appName =  "Celeris-1.0.0"; // Frontera
-    //             queues.clear(); queues << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    //             SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniCeleris, theToolDialog);
-    //             theToolDialog->addTool(miniCelerisTool, ToolStringArray[static_cast<int>(ToolIndex_e::Celeris)]);
-    //             QAction *showCeleris = toolsMenu->addAction(ToolDisplayArray[static_cast<int>(ToolIndex_e::Celeris)]);
-    //             connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
-    //                 theDialog->showTool(ToolDisplayArray[static_cast<int>(ToolIndex_e::Celeris)]);
-    //             });
-    //             break;
-
-    //         case (ToolIndex_e::NOAA):
-
-    //             DigitalCoast *miniDC = new DigitalCoast();
-    //             appName =  "DigitalCoast-1.0.0"; // Frontera
-    //             queues.clear(); queues << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    //             SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniDC, theToolDialog);
-    //             theToolDialog->addTool(miniDCTool, ToolStringArray[static_cast<int>(ToolIndex_e::NOAA)]);
-    //             QAction *showDC = toolsMenu->addAction(ToolDisplayArray[static_cast<int>(ToolIndex_e::NOAA)]);
-    //             connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
-    //                 theDialog->showTool(ToolDisplayArray[static_cast<int>(ToolIndex_e::NOAA)]);
-    //             });
-    //             break;
-
-    //         case (ToolIndex_e::WebGPU):
-
-    //             WebGPU *miniWebGPU = new WebGPU();
-    //             appName =  "WebGPU-1.0.0"; // Frontera
-    //             queues.clear(); queues << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    //             SC_RemoteAppTool *miniWebGPUTool = new SC_RemoteAppTool(appName, queues, theRemoteService, miniWebGPU, theToolDialog);
-    //             theToolDialog->addTool(miniWebGPUTool, ToolStringArray[static_cast<int>(ToolIndex_e::WebGPU)]);
-    //             QAction *showWebGPU = toolsMenu->addAction(ToolDisplayArray[static_cast<int>(ToolIndex_e::WebGPU)]);
-    //             connect(showWebGPU, &QAction::triggered, this,[this, theDialog=theToolDialog, miniW = miniWebGPUTool] {
-    //                 theDialog->showTool(ToolDisplayArray[static_cast<int>(ToolIndex_e::WebGPU)]);
-    //             });
-    //             break;
-
-    //         default:
-    //             break;
-    //     }
-
-    //     }
-    // }
-
-    // if constexpr(ToolEnabledArray[static_cast<int>(ToolIndex_e::ClaymoreUW)]) {
-    // }
-
-    const bool USE_CLAYMORE_TOOL = true;
     if constexpr (USE_CLAYMORE_TOOL) {
         MPM *miniMPM = new MPM(theRVs);
         if (!miniMPM->isInitialize()) {
@@ -459,16 +307,19 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
             queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
         }
         QString appVersion = "1.0.0";
-        QString machine = "lonestar6";
+        QString machine = "lonestar6"; // "ls6";
         SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, appVersion, machine, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
+        // delete miniMPM; // Clean up the MPM object after creating the tool?
+        
         theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");
         QAction *showMPM = toolsMenu->addAction("Digital Twin (&MPM)");
         connect(showMPM, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniMPMTool] {
             theDialog->showTool("Digital Twin (MPM)");
         });
+    
+        // currentTool = miniMPMTool; // TODO: Make this more dynamics / use a better interface
     }
 
-    const bool USE_TAICHI_TOOL = true;
     if constexpr (USE_TAICHI_TOOL) {
         queues.clear(); queues << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
         TaichiEvent *miniTaichi = new TaichiEvent();
@@ -485,39 +336,36 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     }
 
 
-    const bool USE_NOAA_TOOL = false; 
-    if constexpr (USE_NOAA_TOOL) {
-        DigitalCoast *miniDC = new DigitalCoast();
-        QString appNameDC =  "simcenter-noaa-dc-frontera"; // Frontera
-        QString systemNameDC = "frontera";
-        QString appVersion = "1.0.0";
-        QString machine = "frontera";
-        QList<QString> queuesDC; queuesDC << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-        SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, appVersion, machine, queuesDC, theRemoteService, miniDC, theToolDialog);
-        theToolDialog->addTool(miniDCTool, "Sea-Level Rise (NOAA Digital Coast)");
-        QAction *showDC = toolsMenu->addAction("Sea-Level Rise (&NOAA Digital Coast)");
-        connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
-            theDialog->showTool("Sea-Level Rise (NOAA Digital Coast)");
-        });
-    }
+    // if constexpr (USE_NOAA_TOOL) {
+    //     DigitalCoast *miniDC = new DigitalCoast();
+    //     QString appNameDC =  "simcenter-noaa-dc-frontera"; // Frontera
+    //     QString systemNameDC = "frontera";
+    //     QString appVersion = "1.0.0";
+    //     QString machine = "frontera";
+    //     QList<QString> queuesDC; queuesDC << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    //     SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, appVersion, machine, queuesDC, theRemoteService, miniDC, theToolDialog);
+    //     theToolDialog->addTool(miniDCTool, "Sea-Level Rise (NOAA Digital Coast)");
+    //     QAction *showDC = toolsMenu->addAction("Sea-Level Rise (&NOAA Digital Coast)");
+    //     connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
+    //         theDialog->showTool("Sea-Level Rise (NOAA Digital Coast)");
+    //     });
+    // }
 
-    const bool USE_CELERIS_TOOL = false;
-    if constexpr (USE_CELERIS_TOOL) {
-        Celeris *miniCeleris = new Celeris();
-        QString appNameCeleris =  "simcenter-celeris-frontera"; // Frontera
-        QString systemNameCeleris = "frontera";
-        QString appVersion = "1.0.0";
-        QString machine = "frontera";      
-        QList<QString> queuesCeleris; queuesCeleris << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-        SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appNameCeleris, appVersion, machine, queuesCeleris, theRemoteService, miniCeleris, theToolDialog);
-        theToolDialog->addTool(miniCelerisTool, "Boussinesq Waves (Celeris)");
-        QAction *showCeleris = toolsMenu->addAction("Boussinesq Waves (&Celeris)");
-        connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
-            theDialog->showTool("Boussinesq Waves (Celeris)");
-        });
-    }
+    // if constexpr (USE_CELERIS_TOOL) {
+    //     Celeris *miniCeleris = new Celeris();
+    //     QString appNameCeleris =  "simcenter-celeris-frontera"; // Frontera
+    //     QString systemNameCeleris = "frontera";
+    //     QString appVersion = "1.0.0";
+    //     QString machine = "frontera";      
+    //     QList<QString> queuesCeleris; queuesCeleris << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+    //     SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appNameCeleris, appVersion, machine, queuesCeleris, theRemoteService, miniCeleris, theToolDialog);
+    //     theToolDialog->addTool(miniCelerisTool, "Boussinesq Waves (Celeris)");
+    //     QAction *showCeleris = toolsMenu->addAction("Boussinesq Waves (&Celeris)");
+    //     connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
+    //         theDialog->showTool("Boussinesq Waves (Celeris)");
+    //     });
+    // }
 
-    // const bool USE_WEBGPU_TOOL = false;
     // if constexpr (USE_WEBGPU_TOOL) {
     //     WebGPU *miniWebGPU = new WebGPU();
     //     QString appNameWebGPU =  "WebGPU-1.0.0"; // Frontera
@@ -571,28 +419,81 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     // TODO - Make this a bit more dynamic, use bibtex, and consider swapping tools in and out automaticlly
     // This outputs citations, makes it easy for people to add their own 
     // to tools and have them grouped for output with the rest
-    
-    // TODO: 
+
     auto prefs = SimCenterPreferences::getInstance();
     
-    QString stringLocalWorkDir = prefs->getLocalWorkDir();
 
-    defaultWorkDir = QDir(stringLocalWorkDir);
-    QString templateDirectory  = defaultWorkDir.absoluteFilePath(defaultSubDir);
-    defaultWorkDir.mkpath(templateDirectory);
+    // defaultWorkDir = QDir(stringLocalWorkDir);
+    QString localWorkDirString = prefs->getLocalWorkDir();
 
+    QDir localWorkDir(localWorkDirString);
+    if (!localWorkDir.exists()) {
+        localWorkDir.mkpath(localWorkDirString);
+    }
 
+    QString tmpDirName = QString("tmp.SimCenter");
+    localWorkDir.mkdir(tmpDirName); // defaultWorkDirString should start as "tmp.SimCenter"
+    // {
+    QString tmpDirectoryString = localWorkDir.absoluteFilePath(tmpDirName);
+    QDir tmpDirectory(tmpDirectoryString);
+    if (tmpDirectory.exists()) {
+        tmpDirectory.removeRecursively();
+    } else {
+        tmpDirectory.mkpath(tmpDirectoryString);
+    }
+    tmpDirectory.mkdir(defaultSubDir);
+    defaultWorkDir = QDir(tmpDirectoryString);
 
-    currentTool = nullptr;
-    // if constexpr (USE_CLAYMORE_TOOL) {
-    //     currentTool = miniMPMTool; // TODO: Set the default tool here
-    // }
+    QString templateDirectoryString = tmpDirectory.absoluteFilePath(defaultSubDir); // "templatedir" by default
+    QDir templateDirectory(templateDirectoryString);
+    if (templateDirectory.exists()) {
+        templateDirectory.removeRecursively();
+    } else {
+        templateDirectory.mkpath(templateDirectoryString);
+    }
+
     
     // connect(theToolDialog, SIGNAL(toolSelected(QString)), this, SLOT(toolSelected(QString)));
     QJsonObject citations;
-    QString citeFile = templateDirectory + QDir::separator() + tr("tool_cite.json");    
+    QString localCiteFile = templateDirectoryString + QDir::separator() + tr("tool_cite.json");    
     // QString citeFile = destinationDirectory.filePath("please_cite.json"); // file getting deleted
-    this->createToolCitation(citations, citeFile);
+    currentTool = nullptr;
+    this->createToolCitation(citations, localCiteFile);
+    // }
+
+    /**
+    QString remoteWorkDirString = prefs->getRemoteWorkDir();
+    QDir remoteWorkDir(remoteWorkDirString);
+    if (!remoteWorkDir.exists()) {
+        remoteWorkDir.mkpath(remoteWorkDirString);
+    }
+    QString tmpDirName = QString("tmp.SimCenter");
+    remoteWorkDir.mkdir(tmpDirName); // defaultWorkDirString should start as "tmp.SimCenter"
+    {
+        QString tmpDirectoryString = remoteWorkDir.absoluteFilePath(tmpDirName);
+        QDir tmpDirectory(tmpDirectoryString);
+        if (tmpDirectory.exists()) {
+            tmpDirectory.removeRecursively();
+        } else {
+            tmpDirectory.mkpath(tmpDirectoryString);
+        }
+        tmpDirectory.mkdir(defaultSubDir);
+        defaultWorkDir = QDir(tmpDirectoryString);
+
+        QString templateDirectoryString = tmpDirectory.absoluteFilePath(defaultSubDir); // "templatedir" by default
+        QDir templateDirectory(templateDirectoryString);
+        if (templateDirectory.exists()) {
+            templateDirectory.removeRecursively();
+        } else {
+            templateDirectory.mkpath(templateDirectoryString);
+        }
+
+        QJsonObject citations;
+        QString remoteCiteFile = templateDirectoryString + QDir::separator() + tr("tool_cite.json");
+        this->createToolCitation(citations, remoteCiteFile);
+    }
+    **/
+
     // json.insert("citations",citations);
 
 }
@@ -716,7 +617,7 @@ WorkflowAppHydroUQ::outputToJSON(QJsonObject &jsonObjectTop) {
 
     result = theAnalysisSelection->outputToJSON(jsonObjectTop);
     if (result == false)
-        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theAnalysisSelectoin->outputToJSON() returned false!"); return result; }
+        { this->errorMessage("ERROR: WorkflowAppHydroUQ::outputToJSON() theAnalysisSelection->outputToJSON() returned false!"); return result; }
 
     // theEventSelection
     // NOTE: Events treated differently, due to array nature of objects
@@ -1150,59 +1051,100 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
         // remoteApplication->setExtraInputs(extraInputs);
 
         // Adding extra job parameters for MPM, already has "driverFile", "errorFile", "inputFile", "outputFile"
-        if (eventAppData.contains("driverFile")) {
-            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'driverFile' to parameters: " << eventAppData["driverFile"].toString();
-            extraParameters.insert("driverFile", eventAppData["driverFile"].toString());
-        } else {
-            auto defaultMPMCase = "driver";
-            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'driverFile' to parameters: " << defaultMPMCase;
-            extraParameters.insert("driverFile", defaultMPMCase);
+        
+        QStringList requiredEnvVars = {"driverFile", "inputFile", "publicDirectory", "programFile", "defaultMaxRunTime", "maxRunTime"};
+        QStringList defaultEnvVars = {"sc_driver", "scInput.json", "../mpm-public-ls6", "fbar", "1440", "120"};
+        for (auto reqVar : requiredEnvVars)
+        {
+            if (eventAppData.contains(reqVar))
+            {
+                if (eventAppData[reqVar].isString() && !eventAppData[reqVar].toString().isEmpty()) {
+                    extraParameters.insert(reqVar, eventAppData[reqVar].toString());
+                    continue;
+                }
+                else if (eventAppData[reqVar].isDouble()) {
+                    extraParameters.insert(reqVar, QString::number(eventAppData[reqVar].toDouble()));
+                    continue;
+                }
+                else if (eventAppData[reqVar].isBool()) {
+                    if (eventAppData[reqVar].toBool())
+                        extraParameters.insert(reqVar, "true");
+                    else
+                        extraParameters.insert(reqVar, "false");
+                    extraParameters.insert(reqVar, eventAppData[reqVar].toString());
+                    continue;
+                }
+            }
+            auto defaultVar = defaultEnvVars[requiredEnvVars.indexOf(reqVar)];
+            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default '" << reqVar << "' to parameters: " << defaultVar;
+            extraParameters.insert(reqVar, defaultVar);
         }
+        
+        
+        // if (eventAppData.contains("driverFile")) {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'driverFile' to parameters: " << eventAppData["driverFile"].toString();
+        //     extraParameters.insert("driverFile", eventAppData["driverFile"].toString());
+        // } else {
+        //     auto defaultMPMCase = "driver";
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'driverFile' to parameters: " << defaultMPMCase;
+        //     extraParameters.insert("driverFile", defaultMPMCase);
+        // }
 
-        if (eventAppData.contains("inputFile")) {
-            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'inputFile' to parameters: " << eventAppData["inputFile"].toString();
-            extraParameters.insert("inputFile", eventAppData["inputFile"].toString());
-        } else {
-            auto defaultErrorFile = "scInput.json";
-            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'inputFile' to parameters: " << defaultErrorFile;
-            extraParameters.insert("inputFile", defaultErrorFile);
-        }
+        // if (eventAppData.contains("inputFile")) {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'inputFile' to parameters: " << eventAppData["inputFile"].toString();
+        //     extraParameters.insert("inputFile", eventAppData["inputFile"].toString());
+        // } else {
+        //     auto defaultErrorFile = "scInput.json";
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'inputFile' to parameters: " << defaultErrorFile;
+        //     extraParameters.insert("inputFile", defaultErrorFile);
+        // }
 
 
-        if (eventAppData.contains("publicDirectory")) {
-            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'publicDirectory' to parameters: " << eventAppData["publicDirectory"].toString();
-            extraParameters.insert("publicDirectory", eventAppData["publicDirectory"].toString());
-        } else {
-            auto defaultPublicDirectory = "../mpm-public-ls6";
-            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'publicDirectory' to parameters: " << defaultPublicDirectory;
-            extraParameters.insert("publicDirectory", defaultPublicDirectory);
-        }
+        // if (eventAppData.contains("publicDirectory")) {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'publicDirectory' to parameters: " << eventAppData["publicDirectory"].toString();
+        //     extraParameters.insert("publicDirectory", eventAppData["publicDirectory"].toString());
+        // } else {
+        //     auto defaultPublicDirectory = "../mpm-public-ls6";
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'publicDirectory' to parameters: " << defaultPublicDirectory;
+        //     extraParameters.insert("publicDirectory", defaultPublicDirectory);
+        // }
 
-        if (eventAppData.contains("programFile")) {
-            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'programFile' to parameters: " << eventAppData["programFile"].toString();
-            extraParameters.insert("programFile", eventAppData["programFile"].toString());
-        } else {
-            auto defaultProgramFile = "fbar";
-            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'programFile' to parameters: " << defaultProgramFile;
-            extraParameters.insert("programFile", defaultProgramFile);
-        }
-        if (eventAppData.contains("defaultMaxRunTime")) {
-            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'defaultMaxRunTime' to parameters: " << eventAppData["defaultMaxRunTime"].toString();
-            extraParameters.insert("defaultMaxRunTime", eventAppData["defaultMaxRunTime"].toString());
-        } else {
-            auto defaultMaxRunTime = "1440"; 
-            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'defaultMaxRunTime' to parameters: " << defaultMaxRunTime;
-            extraParameters.insert("defaultMaxRunTime", defaultMaxRunTime);  // Include max run time for MPM application, TODO: move into the remote application class so we may set it through the pop-up remote app window
-        }
+        // if (eventAppData.contains("programFile")) {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'programFile' to parameters: " << eventAppData["programFile"].toString();
+        //     extraParameters.insert("programFile", eventAppData["programFile"].toString());
+        // } else {
+        //     auto defaultProgramFile = "fbar";
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'programFile' to parameters: " << defaultProgramFile;
+        //     extraParameters.insert("programFile", defaultProgramFile);
+        // }
+        // if (eventAppData.contains("defaultMaxRunTime")) {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'defaultMaxRunTime' to parameters: " << eventAppData["defaultMaxRunTime"].toString();
+        //     extraParameters.insert("defaultMaxRunTime", eventAppData["defaultMaxRunTime"].toString());
+        // } else {
+        //     auto defaultMaxRunTime = "1440"; 
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'defaultMaxRunTime' to parameters: " << defaultMaxRunTime;
+        //     extraParameters.insert("defaultMaxRunTime", defaultMaxRunTime);  // Include max run time for MPM application, TODO: move into the remote application class so we may set it through the pop-up remote app window
+        // }
 
-        if (eventAppData.contains("maxRunTime")) {
-            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'maxRunTime' to parameters: " << eventAppData["maxRunTime"].toString();
-            extraParameters.insert("maxRunTime", eventAppData["maxRunTime"].toString());
-        } else {
-            auto defaultMaxRunTime = "120"; 
-            qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'maxRunTime' to parameters: " << defaultMaxRunTime;
-            extraParameters.insert("maxRunTime", defaultMaxRunTime);  // Include max run time for MPM application, TODO: move into the remote application class so we may set it through the pop-up remote app window
-        }
+        // if (eventAppData.contains("maxRunTime")) {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'maxRunTime' to parameters: " << eventAppData["maxRunTime"].toString();
+        //     extraParameters.insert("maxRunTime", eventAppData["maxRunTime"].toString());
+        // } else {
+        //     auto defaultMaxRunTime = "120"; 
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'maxRunTime' to parameters: " << defaultMaxRunTime;
+        //     extraParameters.insert("maxRunTime", defaultMaxRunTime);  // Include max run time for MPM application, TODO: move into the remote application class so we may set it through the pop-up remote app window
+        // }
+
+
+        // if (eventAppData.contains("maxMinutes")) {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'maxMinutes' to parameters: " << eventAppData["maxMinutes"].toString();
+        //     extraParameters.insert("maxMinutes", eventAppData["maxMinutes"].toString());
+        // } else {
+        //     auto defaultMaxRunTime = "120"; 
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default 'maxMinutes' to parameters: " << defaultMaxRunTime;
+        //     extraParameters.insert("maxMinutes", defaultMaxRunTime);  // Include max run time for MPM application, TODO: move into the remote application class so we may set it through the pop-up remote app window
+        // }
+
         remoteApplication->setExtraParameters(extraParameters);
 
         // else {
@@ -1292,82 +1234,86 @@ WorkflowAppHydroUQ::getMaxNumParallelTasks() {
 int
 WorkflowAppHydroUQ::createCitation(QJsonObject &citation, QString citeFile) {
 
-  QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.2.0 (v3.2.0). Zenodo. https://doi.org/10.5281/zenodo.4731073 \",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
+    QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.2.0 (v3.2.0). Zenodo. https://doi.org/10.5281/zenodo.4731073 \",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
 
-  QJsonDocument docC = QJsonDocument::fromJson(cit.toUtf8());
-  if(!docC.isNull()) {
-    if(docC.isObject()) {
-      citation = docC.object();        
-    }  else {
-
-      qDebug() << "WorkflowAppHydro citation text is not valid JSON: \n" << cit << Qt::endl;
+    QJsonDocument docC = QJsonDocument::fromJson(cit.toUtf8());
+    if(!docC.isNull()) {
+        if (docC.isObject()) {
+            citation = docC.object();        
+        } else {
+            qDebug() << "WorkflowAppHydro citation text is not valid JSON: \n" << cit << Qt::endl;
+        }
     }
-  }
-  // theGI->outputCitation(citation);
-  theSIM->outputCitation(citation);
-  theEventSelection->outputCitation(citation);
-  theAnalysisSelection->outputCitation(citation);
-  theUQ_Selection->outputCitation(citation);
-  theEDP_Selection->outputCitation(citation);
-//   theRVs->outputCitation(citation);
-//   theRunWidget->outputCitation(citation);
-  // TODO: Allow citations from GI, RVs, and RES widgets. Maybe from the remote run pop-up too to cite DesignSafe/TACC? (JB)
+    // theGI->outputCitation(citation);
+    theSIM->outputCitation(citation);
+    theEventSelection->outputCitation(citation);
+    theAnalysisSelection->outputCitation(citation);
+    theUQ_Selection->outputCitation(citation);
+    theEDP_Selection->outputCitation(citation);
+    //   theRVs->outputCitation(citation);
+    //   theRunWidget->outputCitation(citation);
 
-  // write the citation to a citeFile if provided
+    // write the citation to a citeFile if provided
   
-  if (!citeFile.isEmpty()) {
-    
-    QFile file(citeFile);
-    if (!file.open(QFile::WriteOnly | QFile::Text)) {
-      errorMessage(QString("WorkflowAppHydroUQ::writeCitation - could not open write-only file ") + citeFile);
-    //   progressDialog->hideProgressBar(); // Not in HydroUQ currentyl
-      return 0;
+    if (!citeFile.isEmpty()) {
+        
+        QFile file(citeFile);
+        if (!file.open(QFile::WriteOnly | QFile::Text)) {
+            errorMessage(QString("WorkflowAppHydroUQ::writeCitation - could not open read-only file ") + citeFile);
+            //  progressDialog->hideProgressBar(); // Not in HydroUQ currently
+            return 0;
+        }
+
+        QJsonDocument doc(citation);
+        file.write(doc.toJson());
+        file.close();
     }
-
-    QJsonDocument doc(citation);
-    file.write(doc.toJson());
-    file.close();
-  }
   
-  return 0;    
+    return 0;    
 }
 
 int
 WorkflowAppHydroUQ::createToolCitation(QJsonObject &citation, QString citeFile) {
 
-  QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.2.0 (v3.2.0). Zenodo. https://doi.org/10.5281/zenodo.4731073\",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
-
-  QJsonDocument docC = QJsonDocument::fromJson(cit.toUtf8());
-  if(!docC.isNull()) {
-    if(docC.isObject()) {
-      citation = docC.object();        
-    }  else {
-      qDebug() << "WorkflowAppHydro citation text is not valid JSON: \n" << cit << Qt::endl;
+    if (currentTool == nullptr) {
+        // errorMessage("WorkflowAppHydroUQ::createToolCitation - currentTool is nullptr");
+        return 0;
     }
-  }
-  
-  if (currentTool == nullptr) {
-    errorMessage("WorkflowAppHydroUQ::createToolCitation - currentTool is nullptr");
-    return -1;
-  }
 
-  currentTool->outputCitation(citation);
+    QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.2.0 (v3.2.0). Zenodo. https://doi.org/10.5281/zenodo.4731073\",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
 
-  // write the citation to a citeFile if provided
-  
-  if (!citeFile.isEmpty()) {
-    
+    QJsonDocument docC = QJsonDocument::fromJson(cit.toUtf8());
+    if(!docC.isNull()) {
+        if (docC.isObject()) {
+            citation = docC.object();        
+        }  else {
+            qDebug() << "WorkflowAppHydro citation text is not valid JSON: \n" << cit << Qt::endl;
+        }
+    }
+
+    if (currentTool) {
+        currentTool->outputCitation(citation);
+    }
+
+
+    // write the citation to a citeFile if provided
+
+    if (citeFile.isEmpty()) {
+        errorMessage(QString("WorkflowAppHydroUQ::createToolCitation - no citeFile provided for the currentTool's citation"));
+        return 0;
+    }
+
     QFile file(citeFile);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
-      errorMessage(QString("WorkflowAppHydroUQ::createToolCitation - could not open write-only file ") + citeFile);
-      progressDialog->hideProgressBar(); // Not in HydroUQ currently
-      return 0;
+        errorMessage(QString("WorkflowAppHydroUQ::createToolCitation - could not open read-only file ") + citeFile);
+        // progressDialog->hideProgressBar(); // Not in HydroUQ currently
+        return 0;
     }
 
     QJsonDocument doc(citation);
     file.write(doc.toJson());
     file.close();
-  }
-  
-  return 0;    
+    
+
+    return 0;    
 }
