@@ -88,7 +88,7 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   theDomainImageButton = NULL;
   thePlot = NULL;
 
-  modelDescription = new QLabel(tr("\n Sample JONSWAP spectras (empirical sea-state) for stochastic loads on monopile-like structures. "
+  modelDescription = new QLabel(tr("   Sample JONSWAP spectras (empirical sea-state) for stochastic loads on monopile-like structures. "
                                    "\n The welib Python package provides validated JONSWAP distributions and Wheeler-corrected Morison wave loads on simple monopile structures. "
                                    "\n Use-case: Quantify how sea-level rise (e.g., from climate-change, storm-surges, tides) influences stochastic structural loads. "));
   //fontsize 

@@ -77,6 +77,8 @@ public:
    //  explicit HydroEventSelection(RandomVariablesContainer *,
 	// 			 GeneralInformationWidget* generalInfoWidget,
 	// 			 QWidget *parent = 0);
+   //  explicit HydroEventSelection(RandomVariablesContainer *,  QWidget *parent = 0); 
+
     explicit HydroEventSelection(RandomVariablesContainer *, RemoteService* remoteService, QWidget *parent = 0); // WE-UQ
     ~HydroEventSelection();
 

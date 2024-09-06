@@ -1753,7 +1753,7 @@ bool MPM::outputAppDataToJSON(QJsonObject &jsonObject) {
     // jsonObject["type"] = "MPM"; // Application and type used interchangeably in our openfoam Tapisv3 app
 
     // Env Variable for ClaymoreUW MPM as a Tool in Tapis V3
-    jsonObject["programFile"] = "fbar"; // <- ClaymoreUW MPM executable filename on remote machine. Can be changed depending on compiled optimizations, versions, digital twin, etc.
+    jsonObject["programFile"] = "osu_lwf"; // <- ClaymoreUW MPM executable filename on remote machine. Can be changed depending on compiled optimizations, versions, digital twin, etc.
     jsonObject["maxRunTime"] = "120"; // <- Maximum run time for the simulation, timeout if exceeded
     jsonObject["defaultMaxRunTime"] = "1440";
     jsonObject["publicDirectory"] = "../mpm-public-ls6";

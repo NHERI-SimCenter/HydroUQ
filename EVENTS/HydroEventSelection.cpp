@@ -157,7 +157,8 @@ const bool implementedDualSPHysics = false;
 
 HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVariableIW, RemoteService* remoteService, QWidget *parent)
     : SimCenterAppWidget(parent), theCurrentEvent(0), theRandomVariablesContainer(theRandomVariableIW)
-
+// HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
+//     : SimCenterAppWidget(parent), theCurrentEvent(0), theRandomVariablesContainer(theRandomVariableIW)
 {
     // Unused variables
     // (void) generalInfoWidget;
@@ -351,6 +352,13 @@ void HydroEventSelection::eventSelectionChanged(int arg1)
     }
     if constexpr (static_cast<bool>(Event_b::ClaymoreUW_b)) {
         if (arg1 == static_cast<int>(Event_e::ClaymoreUW_e)) {
+            // theCurrentEvent = theMPM;
+            // MPM* theM = dynamic_cast<MPM*>(theMPM);
+            // theM->hideVisualization();
+            // if (!theM->isInitialize()) {
+            //     theM->initialize();
+            // }
+
             MPM* theM = dynamic_cast<MPM*>(theMPM);
             theM->hideVisualization();
             theCurrentEvent = theM->isInitialize() ? theMPM 
@@ -361,6 +369,7 @@ void HydroEventSelection::eventSelectionChanged(int arg1)
                 return;
             }     
             theM->showVisualization(); 
+            // theCurrentEvent = theMPM;
         }        
     }
     if constexpr (static_cast<bool>(Event_b::TaichiEvent_b)) {
@@ -375,8 +384,10 @@ void HydroEventSelection::eventSelectionChanged(int arg1)
     }
     if constexpr (static_cast<bool>(Event_b::SPH_b)) {
         if (arg1 == static_cast<int>(Event_e::SPH_e)) {
+            // theCurrentEvent = theSPH;
             if constexpr (implementedDualSPHysics) { 
                 SPH* theS = dynamic_cast<SPH*>(theSPH);
+                // theS->hideVisualization();
                 if (!theS->isInitialize()) {
                     theS->initialize();
                 }
@@ -492,8 +503,12 @@ bool HydroEventSelection::inputFromJSON(QJsonObject &jsonObject) {
         qDebug() << "Setting eventSelection index to: " << index;
         eventSelection->setCurrentIndex(index);
     }
-    theCurrentEvent->inputFromJSON(theEvent);
-    return true;
+    if (theCurrentEvent != nullptr) {
+        theCurrentEvent->inputFromJSON(theEvent);
+        return true;
+    }
+    qDebug() << "HydroEventSelection::inputFromJSON theCurrentEvent is nullptr, failed";
+    return false;
 }
 
 //*********************************************************************************

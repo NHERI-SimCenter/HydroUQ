@@ -2,7 +2,7 @@ from conans import ConanFile
 
 class HYDROUQ(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    version = "3.2.2"
+    version = "4.0.0"
     license = "BSD"
     author = "NHERI SimCenter"
     url = "https://github.com/NHERI-SimCenter/HydroUQ"
