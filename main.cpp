@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("3.2.2");
+    QCoreApplication::setApplicationVersion("4.0.0");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     Q_INIT_RESOURCE(images);
@@ -209,7 +209,7 @@ int main(int argc, char *argv[])
     w.setVersion(version);
 
     // Citation
-    QString citeText("1) Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.2.0 (v3.2.0). Zenodo. https://doi.org/10.5281/zenodo.10902090 \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
+    QString citeText("1) Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 4.0.0 (v4.0.0). Zenodo. https://doi.org/10.5281/zenodo.10902090 \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
     w.setCite(citeText);
 
     // Link to repository
@@ -217,7 +217,7 @@ int main(int argc, char *argv[])
     w.setDocumentationURL(manualURL);
 
     // Link to message board
-    QString messageBoardURL("https://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0");
+    QString messageBoardURL("https://github.com/orgs/NHERI-SimCenter/discussions/categories/hydro-uq");
     w.setFeedbackURL(messageBoardURL);
 
     // Move remote interface to a thread
@@ -241,7 +241,7 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_LINUX
     QFile file(":/styleCommon/stylesheetLinux.qss");
 #else
-    QFile file(":/styleCommon/stylesheetLinux.qss"); 
+    QFile file(":/styleCommon/stylesheetMAC.qss"); 
 #endif 
 #endif
 #endif
@@ -255,55 +255,44 @@ int main(int argc, char *argv[])
         qDebug() << "could not open stylesheet";
     }
 
-    const bool USE_GOOGLE_ANALYTICS = true;
-    if constexpr (USE_GOOGLE_ANALYTICS) {
-        //Setting Google Analytics Tracking Information
-        GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
-        GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
-        GoogleAnalytics::CreateSessionId();
-        GoogleAnalytics::StartSession();
-        // GoogleAnalytics::SetScreenName("HydroUQ");
-        // /* *****************************************************************  
-        // Opening a QWebEngineView and using github to get app geographic usage
-        QWebEngineView view;
-        // view = QWebEngineView(); 
-        // view.hide();
-        // view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-        // view.setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
-        // view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);
-        // view.setAttribute(Qt::WA_TranslucentBackground);
-        // view.setAttribute(Qt::WA_NoSystemBackground);
-        
 
-        view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
-        // view.setUrl(QUrl("https://github.com/JustinBonus/HydroUQ/tree/master/GA4.html"));
-        view.resize(1024, 750);
-        view.show();
-        // view.raise();
-        // view.activateWindow();
+    /* *****************************************************************  
+    //Setting Google Analytics Tracking Information
+    GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
+    GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
+    GoogleAnalytics::CreateSessionId();
+    GoogleAnalytics::StartSession();
+    // GoogleAnalytics::SetScreenName("HydroUQ");
+    // Opening a QWebEngineView and using github to get app geographic usage
+    QWebEngineView view;
+    // view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    // view.setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
+    // view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);
+    // view.setAttribute(Qt::WA_TranslucentBackground);
+    // view.setAttribute(Qt::WA_NoSystemBackground);
+    // view.setUrl(QUrl("https://github.com/NHERI-SimCenter/HydroUQ/tree/master/GA4.html"));
+    view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
+    view.resize(1024, 750);
+    view.show();
+    // view.raise();
+    // view.activateWindow();
+    view.hide();
+    // view.close();
+    // view.deleteLater();
 
-
-        // Cleanup
-        view.hide();
-        // view.close();
-        // view.deleteLater();
+    ******************************************************************* */
     
-        // ******************************************************************* */
-    }
     // Result of execution
     int res = a.exec();
 
     // On done with event loop, logout & stop the thread
     theRemoteService->logout();
     thread->quit();
-
     
     // Close Google Analytics session
-    if constexpr (USE_GOOGLE_ANALYTICS) {
-        // GoogleAnalytics::SetAPISecret("");
-        // GoogleAnalytics::SetMeasurementId("");
-        GoogleAnalytics::EndSession();
-    } 
+    // GoogleAnalytics::SetAPISecret("");
+    // GoogleAnalytics::SetMeasurementId("");
+    GoogleAnalytics::EndSession();
 
     // Complete
     return res;

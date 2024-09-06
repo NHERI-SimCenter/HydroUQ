@@ -306,7 +306,7 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
             appName = "simcenter-claymore-lonestar6"; // Lonestar6 public app for ClaymoreUW MPM
             queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
         }
-        QString appVersion = "1.0.0";
+        QString appVersion = "1.0.1";
         QString machine = "lonestar6"; // "ls6";
         SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, appVersion, machine, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
         // delete miniMPM; // Clean up the MPM object after creating the tool?
@@ -1053,7 +1053,7 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
         // Adding extra job parameters for MPM, already has "driverFile", "errorFile", "inputFile", "outputFile"
         
         QStringList requiredEnvVars = {"driverFile", "inputFile", "publicDirectory", "programFile", "defaultMaxRunTime", "maxRunTime"};
-        QStringList defaultEnvVars = {"sc_driver", "scInput.json", "../mpm-public-ls6", "fbar", "1440", "120"};
+        QStringList defaultEnvVars = {"sc_driver", "scInput.json", "../mpm-public-ls6", "osu_lwf", "1440", "120"};
         for (auto reqVar : requiredEnvVars)
         {
             if (eventAppData.contains(reqVar))
