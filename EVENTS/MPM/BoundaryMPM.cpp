@@ -164,7 +164,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   int bathXZPairs = 7;
   bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, bathXZPairs, dataBathXZ);
   bathSTL = new SC_FileEdit("bathSTL");
-  QString bathFilename = QString(":/Examples/hdro-0001/src/flumeFloor.stl");
+  QString bathFilename = QString("Examples/hdro-0001/src/flumeFloor.stl");
   bathSTL->setFilename(bathFilename);
   // bathSTL->setFilter("STL Files (*.stl)");
 
@@ -328,7 +328,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   // QString paddleDisplacementFilename = QString::fromAscii"WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv";
   paddleLayout->addWidget(new QLabel("Paddle Motion File"), numRow, 0);
   paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
-  char str[] = ":/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv"; // 4m amplitude, scale-factor 500, from Mascarenas 2022
+  char str[] = "wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv"; // 4m amplitude, scale-factor 500, from Mascarenas 2022
   // paddleName(str);
   QString renderPaddleName = QString(str);
   paddleDisplacementFile->setFilename(renderPaddleName);
@@ -395,7 +395,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
     QPushButton *chooseFileButton = new QPushButton("Choose");
     plotLayout->addWidget(chooseFileButton, 1);
-    a = this->createTextEntry(tr("Min(t)"), plotLayout,  2);
+    a = this->createTextEntry(tr("Min(t)"), plotLayout, 2);
     b = this->createTextEntry(tr("Max(t)"), plotLayout, 3);
     showPlotButton = new QPushButton("Show Plot");
     plotLayout->addWidget(showPlotButton, 4);
@@ -429,7 +429,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
       connect(a,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
       connect(b,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
       connect(showPlotButton, &QPushButton::clicked, this, [=](){ thePlot->hide(); thePlot->show();});
-  } else  {
+  } else {
       connect(dataDir,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
       connect(a,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
       connect(b,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
@@ -1326,7 +1326,7 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
         QJsonArray paddleTimeArray;
         paddleTimeArray.append(a->text().toDouble());
         paddleTimeArray.append(b->text().toDouble());
-        boundariesObject["time"] = paddleTimeArray;
+        // boundariesObject["time"] = paddleTimeArray;
         boundariesObject["file"] = QString(dataDir->text());
         boundariesObject["object"] = QString("OSU Paddle");
     }

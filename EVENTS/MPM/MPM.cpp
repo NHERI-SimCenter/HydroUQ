@@ -1760,7 +1760,13 @@ bool MPM::outputAppDataToJSON(QJsonObject &jsonObject) {
     jsonObject["inputFile"] = "scInput.json"; // <- Input file for the simulation
     jsonObject["driverFile"] = "sc_driver"; // <- Python script to run the simulation
 
-    
+    // QJsonArray fileInputsArray;
+    // QJsonObject fileInputsObj;
+    // fileInputsObj["envKey"] = "dataDirectory"; // <- Environment variable to be set on the remote machine
+    // fileInputsObj["sourceUrl"] = "tapis://designsafe.storage.default/bonusj/mpm-public-ls6"; // <- Directory where the input files are located
+    // fileInputsObj["targetPath"] = "*"; // <- Copy all files in the sourceUrl to the targetPath
+    // fileInputsArray.append(fileInputsObj);
+    // jsonObject["fileInputs"] = fileInputsArray;
 
     QJsonObject dataObj;
     jsonObject["ApplicationData"] = dataObj;
