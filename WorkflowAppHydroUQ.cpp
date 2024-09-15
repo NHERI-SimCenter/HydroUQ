@@ -1043,6 +1043,7 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
 
     if (hasMPMEvent) 
     {
+        QMap<QString, QString> extraFileInputs;
         QMap<QString, QString> extraParameters;
         // Adding extra job inputs for MPM
         // QMap<QString, QString> extraInputs;
@@ -1050,8 +1051,64 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
         //     extraInputs.insert("MPMCase", eventAppData["MPMCase"].toString());
         // remoteApplication->setExtraInputs(extraInputs);
 
-        // Adding extra job parameters for MPM, already has "driverFile", "errorFile", "inputFile", "outputFile"
+        // QStringList requiredFileInputs = {"dataDirectory"};
+        // QStringList defaultFileInputs = {"bonusj/mpm-public-ls6"};
+        // for (auto reqInput : requiredFileInputs)
+        // {
+        //     if (eventAppData.contains(reqInput))
+        //     {
+        //         if (eventAppData[reqInput].isString() && !eventAppData[reqInput].toString().isEmpty()) {
+        //             extraFileInputs.insert(reqInput, eventAppData[reqInput].toString());
+        //             continue;
+        //         }
+        //         else if (eventAppData[reqInput].isDouble()) {
+        //             extraFileInputs.insert(reqInput, QString::number(eventAppData[reqInput].toDouble()));
+        //             continue;
+        //         }
+        //         else if (eventAppData[reqInput].isBool()) {
+        //             if (eventAppData[reqInput].toBool())
+        //                 extraFileInputs.insert(reqInput, "true");
+        //             else
+        //                 extraFileInputs.insert(reqInput, "false");
+        //             continue;
+        //         }
+        //     }
+        //     auto defaultInput = defaultFileInputs[requiredFileInputs.indexOf(reqInput)];
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added default '" << reqInput << "' to parameters: " << defaultInput;
+        //     extraFileInputs.insert(reqInput, defaultInput);
+        // }
+        // dataInput["sourceUrl"]   = "tapis://" + QString("designsafe.storage.default/") + QString("bonusj/mpm-public-ls6");
+        // QJsonObject dataPathInput;
+        // dataInput["sourceUrl"]   = QString("tapis://designsafe.storage.default/bonusj/mpm-public-ls6");
+        // dataInput["targetPath"]  = "*";
+        // dataInput["envKey"] = "dataDirectory";
+        // fileInputs.append(data);
+        // fileInputs contains and array of json object which hold "sourceUrl", "targetPath", "envKey" 
+
+        // if (eventAppData.contains("fileInputs")) {
+        //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Added custom 'fileInputs' to parameters: " << eventAppData["fileInputs"].toArray();
+        //     if (eventAppData["fileInputs"].toArray().size() > 0)
+        //     {
+        //         QJsonArray fileInputs = eventAppData["fileInputs"].toArray();
+        //         for (auto fileInput : fileInputs)
+        //         {
+        //             auto fileInputObj = fileInput.toObject();
+        //             if (fileInputObj.contains("envKey") && fileInputObj.contains("sourceUrl") && fileInputObj.contains("targetPath"))
+        //             {
+        //                 extraFileInputs.insert("envKey", fileInputObj["envKey"].toString());
+        //                 extraFileInputs.insert("sourceUrl", fileInputObj["sourceUrl"].toString());
+        //                 extraFileInputs.insert("targetPath", fileInputObj["targetPath"].toString());
+        //             }
+        //         }
+        //     }
+        // }
+
+        // extraFileInputs.insert("envKey", "dataDirectory");
+        // extraFileInputs.insert("sourceUrl", "tapis://designsafe.storage.default/bonusj/mpm-public-ls6");
+        // extraFileInputs.insert("targetPath", "*");
         
+
+        // Adding extra job parameters for MPM, already has "driverFile", "errorFile", "inputFile", "outputFile"
         QStringList requiredEnvVars = {"driverFile", "inputFile", "publicDirectory", "programFile", "defaultMaxRunTime", "maxRunTime"};
         QStringList defaultEnvVars = {"sc_driver", "scInput.json", "../mpm-public-ls6", "osu_lwf", "1440", "120"};
         for (auto reqVar : requiredEnvVars)
@@ -1146,6 +1203,8 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
         // }
 
         remoteApplication->setExtraParameters(extraParameters);
+        // remoteApplication->setExtraInputs(extraFileInputs);
+
 
         // else {
         //     qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - No MPM Event found in Events, continuing";
