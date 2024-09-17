@@ -48,7 +48,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
 #include <SimCenterWidget.h>
-
+#include <QVector>
 class QJsonObject;
 class QJsonArray;
 // class SC_FileEdit;
@@ -72,6 +72,8 @@ signals:
 private:
     int numReserveTabs = 8;
     int numAddedTabs = 0;
+    // QVector<SimCenterWidget*> addedSensor {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+
     QVector<SensorMPM*> addedSensor {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 };
 
