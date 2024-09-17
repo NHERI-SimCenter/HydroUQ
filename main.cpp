@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("3.2.1");
+    QCoreApplication::setApplicationVersion("4.0.0");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     Q_INIT_RESOURCE(images);
@@ -200,7 +200,8 @@ int main(int argc, char *argv[])
     w.setDocumentationURL(manualURL);
 
     // Link to message board
-    QString messageBoardURL("http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0");
+    //    QString messageBoardURL("http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0");
+    QString messageBoardURL("https://github.com/orgs/NHERI-SimCenter/discussions/categories/hydro-uq");    
     w.setFeedbackURL(messageBoardURL);
 
     // Move remote interface to a thread
@@ -256,7 +257,7 @@ int main(int argc, char *argv[])
         qDebug() << "could not open stylesheet";
     }
 
-    /* ***************************************************************** 
+#ifdef _SC_RELEASE
     //Setting Google Analytics Tracking Information
     GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
     GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
@@ -269,7 +270,7 @@ int main(int argc, char *argv[])
     view.resize(1024, 750);
     view.show();
     view.hide();
-    ******************************************************************* */
+#endif
     
     // Result of execution
     int res = a.exec();
