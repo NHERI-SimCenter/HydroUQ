@@ -63,13 +63,16 @@ class SC_ComboBox;
 
 class SensorMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     SensorMPM(QWidget *parent = 0);
     virtual ~SensorMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-    bool setSensorType(int type);
+    void clear(void);
     // bool copyFiles(QString &dirName);
+
+    bool setSensorType(int type);
   
 signals:
 

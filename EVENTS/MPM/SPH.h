@@ -74,6 +74,7 @@ class ExecutionSPH;
 
 class SPH : public SimCenterAppWidget
 {
+      Q_OBJECT
 public:
    //  explicit SPH(RandomVariablesContainer *theRandomVariableIW, QWidget *parent = 0);
     SPH( QWidget *parent = 0);

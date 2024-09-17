@@ -162,6 +162,17 @@ PartitionsMPM::~PartitionsMPM()
 {
 }
 
+void PartitionsMPM::clear(void)
+{
+  // Clear all partitions
+  // for (int i = 0; i < numAddedTabs; i++) {
+  //   addedPartition[i]->clear();
+  // }
+  // // Clear the tab widget
+  // tabWidget->clear();
+  // numAddedTabs = 0;
+}
+
 void
 PartitionsMPM::updateHardwareLimits(int maxGPUs = 1, int maxModels = 1)
 {

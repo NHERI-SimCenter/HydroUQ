@@ -1,5 +1,5 @@
-#ifndef _STOCHASTIC_WIND_INPUT_H
-#define _STOCHASTIC_WIND_INPUT_H
+#ifndef _STOCHASTIC_WAVE_INPUT_H
+#define _STOCHASTIC_WAVE_INPUT_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
@@ -37,7 +37,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: mhgardner
+// Written: JustinBonus
 
 #include <SimCenterAppWidget.h>
 #include <RandomVariablesContainer.h>
@@ -47,12 +47,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // #include <QWidget>
 
 // Forward declarations
-// class QComboBox;
-// class QJsonObject;
 // class QString;
 // class QWidget;
 // class RandomVariableInputWidget;
-// class QHBoxLayout;
+class QJsonObject;
+class QHBoxLayout;
+class QComboBox;
 class RandomVariablesContainer;
 
 /**
@@ -115,6 +115,7 @@ class StochasticWaveInput : public SimCenterAppWidget {
    * Emit error message displaing input message
    * @param[in] message String containg error message to emit
    */
+//   void clear(void);
   void errorMessage(QString message);
 
   /**
@@ -130,6 +131,7 @@ class StochasticWaveInput : public SimCenterAppWidget {
   QComboBox* modelSelection; /**< Selection of ground motion model inputs */
   SimCenterAppWidget* stochasticModel; /**< Widget for inputting currently
 					       selected model parameters */
+//   SimCenterAppWidget* theJonswap; /**< Widget for inputting Jonswap parameters */
 };
 
 #endif  // _STOCHASTIC_WIND_MODEL_H

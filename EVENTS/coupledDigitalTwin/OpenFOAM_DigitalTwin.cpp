@@ -49,7 +49,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_TableEdit.h>
 #include <SC_FileEdit.h>
 
-
+// #include <SimCenterPreferences.h>
 OpenFOAM_DigitalTwin::OpenFOAM_DigitalTwin(QWidget *parent)
   :SimCenterWidget(parent)
 {
@@ -129,7 +129,12 @@ OpenFOAM_DigitalTwin::OpenFOAM_DigitalTwin(QWidget *parent)
   // 1. initial condotions
   stillWaterLevel = new SC_DoubleLineEdit("stillWaterLevel",2.0);
   initVel = new SC_DoubleLineEdit("initVelocity",0.0);
+
   velFile = new SC_FileEdit("velocityFile");
+  QString velFileString = QString("Examples/hdro-0001/src/velTime.csv");
+  velFile->setFilename(velFileString); // WASIRF velocity inflow file
+  // velFile->setFilter("Select File (*.csv)");
+
   refPressure = new SC_DoubleLineEdit("refPressure",0.0);
   
   QGridLayout *initLayout = new QGridLayout();
@@ -184,7 +189,12 @@ OpenFOAM_DigitalTwin::OpenFOAM_DigitalTwin(QWidget *parent)
   QStringList bathXZHeadings; bathXZHeadings << "Position Along Flume (m)" << "Height (m)";
   QStringList dataBathXZ; dataBathXZ << "35" << "0" << "42" << "1.75" << "56" << "2.5" << "105" << "2.5";
   bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 4, dataBathXZ);
+
   bathSTL = new SC_FileEdit("bathSTL");
+  QString bathSTLString = "Examples/hdro-0001/src/flumeFloor.stl"; // rename vars later, legacy
+  bathSTL->setFilename(bathSTLString); // osu-lwf bathymetry ramp
+  // bathSTL->setFilter("Select File (*.stl)");
+
 
   QWidget *ptWidget = new QWidget(); // going to add figure which is why the layout
   QGridLayout *ptLayout = new QGridLayout();
@@ -220,6 +230,10 @@ OpenFOAM_DigitalTwin::OpenFOAM_DigitalTwin(QWidget *parent)
   waveGenComboBox = new SC_ComboBox("waveType",genOptions);
   
   paddleDisplacementFile = new SC_FileEdit("paddleDispFile");
+  QString paddleDisplacementName = "Examples/hdro-0001/src/paddleDisplacement.csv";
+  paddleDisplacementFile->setFilename(paddleDisplacementName); // osu-lwf
+  // paddleDisplacementFile->setFilter("Select File (*.csv)");
+
   waveMag = new SC_DoubleLineEdit("periodicWaveMagnitude",1.0);
   waveCelerity = new SC_DoubleLineEdit("periodicWaveCelerity",1.0);
   waveRepeatSpeed = new SC_DoubleLineEdit("periodicWaveRepeatPeriod",1.0);
@@ -255,7 +269,7 @@ OpenFOAM_DigitalTwin::OpenFOAM_DigitalTwin(QWidget *parent)
   theWaveGenLayout->addWidget(waveGenComboBox,0,1);
   theWaveGenLayout->addWidget(waveGenStack,1,0,1,2);
   
-  // connext bathymetry to show correct widget
+  // connect bathymetry to show correct widget
   connect(waveGenComboBox, QOverload<int>::of(&QComboBox::activated),
 	  waveGenStack, &QStackedWidget::setCurrentIndex);
 
@@ -340,6 +354,7 @@ OpenFOAM_DigitalTwin::inputFromJSON(QJsonObject &jsonObject)
 bool
 OpenFOAM_DigitalTwin::copyFiles(QString &destDir)
 {
+
   velFile->copyFile(destDir);  
   bathSTL->copyFile(destDir);
   paddleDisplacementFile->copyFile(destDir);    

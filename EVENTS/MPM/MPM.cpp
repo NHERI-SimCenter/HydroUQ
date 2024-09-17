@@ -42,7 +42,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <BoundariesMPM.h>
 #include <SensorsMPM.h>
 #include <OutputsMPM.h>
-// #include <ResultsMPM.h>
+#include <ResultsMPM.h>
 #include <QVector>
 #include <QScrollArea>
 #include <QLineEdit>
@@ -105,31 +105,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QTextEdit>
 #include <QFormLayout>
 
-#include <QWebEngineView>
 #include <QUrl> 
-// #include <QWebEngineView>
-// #include <QWebEnginePage>
-// #include <QWebEngineSettings>
-// #include <QWebEngineProfile>
-// #include <QWebEngineScriptCollection>
-// #include <QWebEngineScript>
-// #include <QWebEngineScriptCollection>
 
-// Trying out
-// #include <SimCenterAppWidget.h>
-// #include <WorkflowAppHydroUQ.h>
-// #include <MainWindowWorkflowApp.h>
-// #include <HydroEventSelection.h>
-// #include <LocalApplication.h>
-// #include <RemoteApplication.h>
-// #include <RemoteJobManager.h>
-// #include <RunWidget.h>
-// #include <UQ_EngineSelection.h>
-// #include <UQ_Results.h>
-// #include <SC_ToolDialog.h>
-// #include <SC_RemoteAppTool.h>
-
-// #include <QtSystemDetection>
 
 MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     :  SimCenterAppWidget(parent), theRandomVariablesContainer(theRandomVariableIW)
@@ -412,10 +389,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     theTabWidget->setIconSize(QSize(sizePrimaryTabs,sizePrimaryTabs));
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
-
-
+// #define NO_MPM_QT3D true
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
 // #ifdef _WIN32
-#if defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) && !defined(__APPLE__)
     // Only allow 3D visualization on Windows and Linux for now, Mac had issues with Qt3D 
     // Try to check the most reliable set of preprocessor definitions to detect the OS on common OS
     // https://stackoverflow.com/questions/5919996/how-to-detect-reliably-mac-os-x-ios-linux-windows-in-c-preprocessor
@@ -424,8 +400,11 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Based on code by Alex44, 2018; https://stackoverflow.com/questions/23231012/how-to-render-in-qt3d-in-standard-gui-application)
 
     auto rootEntity = new Qt3DCore::QEntity();
-    auto view = new Qt3DExtras::Qt3DWindow();
-    QWidget *container = QWidget::createWindowContainer(view);
+    // auto view = new Qt3DExtras::Qt3DWindow();
+    view = new Qt3DExtras::Qt3DWindow();
+    container = QWidget::createWindowContainer(view);
+    this->hideVisualization();
+    
 
     // background color
     view->defaultFrameGraph()->setClearColor(QColor(QRgb(0xFFFFFF)));
@@ -437,6 +416,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     cameraEntity->setPosition(QVector3D(-45.0f, 20.0f, 25.0f));
     cameraEntity->setViewCenter(QVector3D(25.0f, 2.0f, 2.0f));
     cameraEntity->viewAll();
+    
     // Create a cube mesh
     // Qt3DExtras::QCuboidMesh *cubeMesh = new Qt3DExtras::QCuboidMesh();
     // Qt3DExtras::QCuboidMesh *cubeMesh[16][2][16];
@@ -459,8 +439,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     Qt3DExtras::QCuboidMesh *pistonMesh = new Qt3DExtras::QCuboidMesh();
     Qt3DRender::QMesh *twinMesh = new Qt3DRender::QMesh();
     twinMesh->setSource(QUrl(QStringLiteral("qrc:/OSU_LWF_Bathymetry.obj")));
-    Qt3DRender::QMesh *hydroMesh = new Qt3DRender::QMesh();
-    hydroMesh->setSource(QUrl(QStringLiteral("qrc:/HydroUQ_Icon_Color.obj")));
+    // Qt3DRender::QMesh *hydroMesh = new Qt3DRender::QMesh();
+    // hydroMesh->setSource(QUrl(QStringLiteral("qrc:/HydroUQ_Icon_Color.obj")));
 
     Qt3DExtras::QCuboidMesh *reservoirMesh = new Qt3DExtras::QCuboidMesh();
     Qt3DExtras::QCuboidMesh *harborMesh = new Qt3DExtras::QCuboidMesh();
@@ -478,7 +458,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto fluidTransform = new Qt3DCore::QTransform();
     auto pistonTransform = new Qt3DCore::QTransform();
     auto twinTransform = new Qt3DCore::QTransform();
-    auto hydroTransform = new Qt3DCore::QTransform();
+    // auto hydroTransform = new Qt3DCore::QTransform();
     auto reservoirTransform = new Qt3DCore::QTransform();
     auto harborTransform = new Qt3DCore::QTransform();
     auto floorTransform = new Qt3DCore::QTransform();
@@ -532,10 +512,10 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     twinTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
     twinTransform->setRotation(QQuaternion::fromEulerAngles(90.f, 0.f, 0.f));
 
-    hydroTransform->setScale(120.f);
-    hydroTransform->setTranslation(QVector3D(30.0f, 5.0f, -10.0f));
+    // hydroTransform->setScale(120.f);
+    // hydroTransform->setTranslation(QVector3D(30.0f, 5.0f, -10.0f));
     // hydroTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
-    hydroTransform->setRotation(QQuaternion::fromEulerAngles(90.f, 0.f, 0.f));
+    // hydroTransform->setRotation(QQuaternion::fromEulerAngles(90.f, 0.f, 0.f));
 
 
     reservoirMesh->setXExtent(0.5f);
@@ -581,7 +561,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto fluidMaterial = new Qt3DExtras::QPhongAlphaMaterial();
     auto pistonMaterial = new Qt3DExtras::QPhongMaterial();
     auto twinMaterial = new Qt3DExtras::QPhongMaterial();
-    auto hydroMaterial = new Qt3DExtras::QPhongMaterial();
+    // auto hydroMaterial = new Qt3DExtras::QPhongMaterial();
     auto reservoirMaterial = new Qt3DExtras::QPhongAlphaMaterial();
     auto harborMaterial = new Qt3DExtras::QPhongMaterial();
     auto floorMaterial = new Qt3DExtras::QPhongMaterial();
@@ -612,8 +592,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Give piston material a teal color
     pistonMaterial->setDiffuse(QColor(QRgb(0x00FFFF)));
 
-    hydroMaterial->setDiffuse(QColor(QRgb(0x005FFF)));
-    hydroMaterial->setAmbient(QColor(QRgb(0x005FFF)));
+    // hydroMaterial->setDiffuse(QColor(QRgb(0x005FFF)));
+    // hydroMaterial->setAmbient(QColor(QRgb(0x005FFF)));
     
 
 
@@ -639,11 +619,11 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto fluidEntity = new Qt3DCore::QEntity(rootEntity);
     auto reservoirEntity = new Qt3DCore::QEntity(rootEntity);
     auto pistonEntity = new Qt3DCore::QEntity(rootEntity);
-    auto hydroEntity = new Qt3DCore::QEntity(rootEntity);
+    // auto hydroEntity = new Qt3DCore::QEntity(rootEntity);
 
 
     // Now disable the HydroUQ logo until its cleaned up
-    hydroEntity->setEnabled(false);
+    // hydroEntity->setEnabled(false);
 
     for (int i = 0; i < 16; i++) {
         for (int j = 0; j < 2; j++) {
@@ -689,9 +669,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     twinEntity->addComponent(twinMaterial);
     twinEntity->addComponent(twinTransform);
 
-    hydroEntity->addComponent(hydroMesh);
-    hydroEntity->addComponent(hydroMaterial);
-    hydroEntity->addComponent(hydroTransform);
+    // hydroEntity->addComponent(hydroMesh);
+    // hydroEntity->addComponent(hydroMaterial);
+    // hydroEntity->addComponent(hydroTransform);
     
     floorEntity->addComponent(floorMesh);
     floorEntity->addComponent(floorMaterial);
@@ -955,7 +935,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         fluidEntity->setEnabled(true);
         pistonEntity->setEnabled(true);
         twinTransform->setScale3D(QVector3D(1.f,1.f,1.f));
-        hydroEntity->setEnabled(false);
+        // hydroEntity->setEnabled(false);
         reservoirEntity->setEnabled(false);
         harborEntity->setEnabled(false);
         floorEntity->setEnabled(false);
@@ -976,7 +956,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         fluidEntity->setEnabled(true);
         pistonEntity->setEnabled(true);
         twinTransform->setScale3D(QVector3D(0.6f,7.25f,1.f/1.75f));
-        hydroEntity->setEnabled(false);
+        // hydroEntity->setEnabled(false);
         reservoirEntity->setEnabled(false);
         harborEntity->setEnabled(false);
         floorEntity->setEnabled(false);
@@ -996,7 +976,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         }
         fluidEntity->setEnabled(true);
         pistonEntity->setEnabled(false);
-        hydroEntity->setEnabled(false);
+        // hydroEntity->setEnabled(false);
         reservoirEntity->setEnabled(false);
         harborEntity->setEnabled(false);
         floorEntity->setEnabled(true);
@@ -1018,7 +998,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
             }
           }
         }
-        hydroEntity->setEnabled(false);
+        // hydroEntity->setEnabled(false);
         floorEntity->setEnabled(true);
         floorTransform->setTranslation(QVector3D(9.0f/2, -0.125f/2, 4.0f/2)); 
         floorMesh->setXExtent(9.f);
@@ -1043,7 +1023,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         }
         fluidEntity->setEnabled(false);
         pistonEntity->setEnabled(true);
-        hydroEntity->setEnabled(false);
+        // hydroEntity->setEnabled(false);
         reservoirEntity->setEnabled(false);
         harborEntity->setEnabled(false);
         floorEntity->setEnabled(false);
@@ -1158,46 +1138,46 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     mainGroup->setMaximumWidth(windowWidth);
 
     
-    QScrollArea *scrollArea = new QScrollArea();
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setLineWidth(1);
-    scrollArea->setFrameShape(QFrame::NoFrame);
-    scrollArea->setWidget(mainGroup);
-    scrollArea->setMinimumWidth(windowWidthMin + 25);
-    scrollArea->setMaximumWidth(windowWidth + 25);
+    QScrollArea *theScrollArea = new QScrollArea();
+    theScrollArea->setWidget(mainGroup);
+    theScrollArea->setWidgetResizable(true);
+    theScrollArea->setLineWidth(1);
+    theScrollArea->setFrameShape(QFrame::NoFrame);
+    theScrollArea->setMinimumWidth(windowWidthMin + 25);
+    theScrollArea->setMaximumWidth(windowWidth + 25);
 
 
     // Add digital twin + scene builder on left. Add 3D visualizer on right
     QHBoxLayout *horizontalPanelLayout = new QHBoxLayout();
     QWidget *horizontalPanels = new QWidget();
     horizontalPanels->setLayout(horizontalPanelLayout);
-    horizontalPanelLayout->addWidget(scrollArea);
+    horizontalPanelLayout->addWidget(theScrollArea);
 
     // horizontalPanelLayout->addWidget(visualizationGroup);
 // #ifdef _WIN32
-#if defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) && !defined(__APPLE__)
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
     horizontalPanelLayout->addWidget(container);
 #endif
     // QVBoxLayout *layout = new QVBoxLayout();
-    // mainWindowLayout->addWidget(scrollArea);
+    // mainWindowLayout->addWidget(theScrollArea);
     // mainWindowLayout->addWidget(updateBodiesButton);
     // mainWindowLayout->addWidget(container);
-    mainWindowLayout->addWidget(horizontalPanels);
-    this->setLayout(mainWindowLayout);
+    // mainWindowLayout->addWidget(horizontalPanels);
+    // this->setLayout(mainWindowLayout);
 
-    connect(stackedWidget, &SlidingStackedWidget::animationFinished, [=](void){
+    connect(stackedWidget, &SlidingStackedWidget::animationFinished, [=](void) {
       int index = stackedWidget->currentIndex();
       mpmBodies->setDigitalTwin(index);
       mpmBoundaries->setDigitalTwin(index);
 // #ifdef _WIN32
-#if defined(_WIN32) || defined(__linux__) || defined(linux) ||defined(WIN32) && !defined(__APPLE__)
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
       updateDigitalTwin(index);
 #endif
     });
     
 
     // QVBoxLayout *layout = new QVBoxLayout();
-    // mainWindowLayout->addWidget(scrollArea);
+    // mainWindowLayout->addWidget(theScrollArea);
     // mainWindowLayout->addWidget(updateBodiesButton);
     // mainWindowLayout->addWidget(container);
     mainWindowLayout->addWidget(horizontalPanels);
@@ -1211,6 +1191,22 @@ MPM::~MPM()
 
 }
 
+void MPM::showVisualization(void)
+{
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
+    // container->show();
+    view->show();
+#endif
+}
+
+void MPM::hideVisualization(void)
+{
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
+    // container->hide();
+    view->hide();
+#endif
+}
+
 bool MPM::isInitialize()
 {
     return caseInitialized;
@@ -1222,49 +1218,66 @@ bool MPM::initialize()
     // mainWindowLayout = new QHBoxLayout();
 
     // ---------------------------------------------------
+    hideVisualization();
+    // ---------------------------------------------------
 
+    QString currentAppDir = QCoreApplication::applicationDirPath();
 
     caseDirectoryGroup = new QGroupBox("Case Directory");
     caseDirectoryLayout = new QGridLayout();
-
-    QLabel *casePathLabel = new QLabel("Path: ");
-    QPushButton* browseCaseDirectoryButton  = new QPushButton("Browse");
-
-
     caseDirectoryPathWidget = new QLineEdit();
-    QString currentAppDir = QCoreApplication::applicationDirPath();
 
-    QDir workingDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-    if (!workingDir.exists()) 
-    {
-      workingDir.mkpath(".");
+
+    // QDir workingDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+    // if (!workingDir.exists()) 
+    // {
+    //   workingDir.mkpath(".");
+    // }
+    // QString workingDirPath = workingDir.filePath(QCoreApplication::applicationName() + QDir::separator()
+    //                                              + "LocalWorkDir" + QDir::separator()
+    //                                              + "MPM");
+
+    auto prefs = SimCenterPreferences::getInstance();
+    QString localWorkDirectoryString = prefs->getLocalWorkDir();
+    QDir localWorkDir(localWorkDirectoryString);
+    if (!localWorkDir.exists()) {
+        localWorkDir.mkpath(".");
     }
-    QString workingDirPath = workingDir.filePath(QCoreApplication::applicationName() + QDir::separator()
-                                                 + "LocalWorkDir" + QDir::separator()
-                                                 + "MPM");
-    if (!workingDir.exists(workingDirPath)) {
+
+    QString tmpDirName = "tmp.SimCenter";
+    localWorkDir.mkdir(tmpDirName);
+    QDir tmpDir = QDir(localWorkDir.absoluteFilePath(tmpDirName));
+    if (!tmpDir.exists()) {
+        tmpDir.mkpath(".");
+    }
+
+    QString subDirName = "MPM"; // "tmp.SimCenter"; "templatedir";
+    localWorkDir.mkdir(subDirName);
+    workingDirPath = localWorkDir.absoluteFilePath(subDirName);
+
+    QDir workingDir = QDir(workingDirPath);
+    if (!workingDir.exists()) {
         workingDir.mkpath(workingDirPath);
     }
+
+    QLabel *casePathLabel = new QLabel("Path: ");
     caseDirectoryPathWidget->setText(workingDirPath);
+
+    QPushButton* browseCaseDirectoryButton  = new QPushButton("Browse");
     caseDirectoryLayout->addWidget(casePathLabel, 0, 0);
     caseDirectoryLayout->addWidget(caseDirectoryPathWidget, 0, 1);
     caseDirectoryLayout->addWidget(browseCaseDirectoryButton, 0, 2);
 
-    // QLabel *citeLabel = new QLabel("\nParts of the workflow for this MPM event are developed based on the work of Wang et al. (2020) and Bonus (2023).\n"
-    //                                "The user should cite the work as follows:\n"
-    //                                "\nWang, Xinlei and Qiu Yuxing, et al. (2020). “A massively parallel and scalable multi-GPU material point method.”\n"
-    //                                "\nBonus, Justin (2023). “Evaluation of Fluid-Driven Debris Impacts in a High-Performance Multi-GPU Material Point Method.”\n"
-    //                                "PhD thesis, University of Washington, Seattle, WA.");
-
+    // QLabel *citeLabel = new QLabel("This event uses ClaymoreUW Multi-GPU MPM (Bonus 2023). Based on Claymore (Wang et al. 2020)");
     // QFont citeFont("Arial", 8);
     // citeFont.setPointSize(7);
     // citeFont.setItalic(true);
-
     // citeLabel->setFont(citeFont);
 
     caseDirectoryGroup->setLayout(caseDirectoryLayout);
     // caseDirectoryGroup->setMaximumWidth(200); // small test
     const int citeRow = 0;
+    // mainLayout->addWidget(citeLabel, citeRow, 0);
     mainLayout->addWidget(caseDirectoryGroup, citeRow, 0);
     mainLayout->setRowStretch(0, 5);
 
@@ -1293,27 +1306,32 @@ bool MPM::initialize()
     {
         setupCase(); // Check if directories for the case files exist, if not create them
     }
-    readCaseData(); // Read the case data from the JSON file
+
+    // readCaseData(); // Read the case data from the JSON file
+
     caseInitialized = true;
     // ==================== Results-View Set-Up ====================
-    QWidget* resultsWidget = new QWidget();
-    QVBoxLayout* resultsLayout  = new QVBoxLayout();
-    resultsWidget->setLayout(resultsLayout);
-    mpmResults = new ResultsMPM(this);
-    resultsLayout->addWidget(mpmResults);
-    resultsLayout->addStretch();
-    theTabWidget->addTab(resultsWidget, QIcon(QString(":/icons/flag-black.svg")), "Results");   
-
+    if constexpr (1) {
+      QWidget* resultsWidget = new QWidget();
+      QVBoxLayout* resultsLayout  = new QVBoxLayout();
+      resultsWidget->setLayout(resultsLayout);
+      mpmResults = new ResultsMPM(this); // this 
+      resultsLayout->addWidget(mpmResults);
+      resultsLayout->addStretch();
+      theTabWidget->addTab(resultsWidget, QIcon(QString(":/icons/flag-black.svg")), "Results");   
+    }
 
     // Update the GI Tab once the data is read
     GeneralInformationWidget *theGI = GeneralInformationWidget::getInstance();
-    theGI->setLengthUnit("m");
+    // theGI->setLengthUnit("m");
+    // theGI->setForceUnit("N");
+    // theGI->setTemperatureUnit("C");
     // theGI->setNumStoriesAndHeight(numberOfFloors(), buildingHeight());
     // theGI->setBuildingDimensions(buildingWidth(), buildingDepth(), buildingWidth()*buildingDepth());
 
     this->adjustSize();
 
-
+    this->showVisualization();
 
     return true;
 }
@@ -1323,9 +1341,9 @@ void MPM::updateJSON()
 {
     // Write most recent EVT state to JSON becase it is needed for pre-processing steps / mesh generation before the final simulation is run.
     // In future only one JSON file in temp.SimCenter directory might be enough
-    QString inputFilePath = caseDir() + QDir::separator() + "constant" + QDir::separator() + "simCenter"
-                            + QDir::separator() + "input" + QDir::separator() + "MPM.json";
-
+    QString inputFileName = "MPM.json";
+    QString inputFilePath = caseDir() + QDir::separator() + "inputData" + QDir::separator() + inputFileName;
+    QString outputFilePath = caseDir() + QDir::separator() + "inputData" + QDir::separator() + inputFileName;
 
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::WriteOnly | QFile::Text))
@@ -1353,7 +1371,7 @@ void MPM::executeBackendScript()
     QString scriptName = "MPM.py"; // "setup_case.py";
     QString scriptPath = pyScriptsPath() + QDir::separator() + scriptName; 
     QString templatePath = templateDictDir();
-    QString jsonPath = caseDir() + QDir::separator() + "constant" + QDir::separator() + "simCenter" + QDir::separator() + "input";
+    QString jsonPath = caseDir() + QDir::separator() + "inputData";
     QString outputPath = caseDir();
     if (QFileInfo(scriptPath).exists())
     {
@@ -1363,6 +1381,8 @@ void MPM::executeBackendScript()
       process->start(program, arguments);
       process->waitForFinished(-1);
       process->close();
+      // process->deleteLater();
+
     } 
     else 
     {
@@ -1374,12 +1394,10 @@ void MPM::executeBackendScript()
 void MPM::readCaseData()
 {
     //Write it to JSON becase it is needed for the mesh generation before the final simulation is run.
-    //In future only one JSON file in temp.SimCenter directory might be enough
+    //In future only one JSON file in tmp.SimCenter directory might be enough
     QString inputFileName = "MPM.json";
     QString inputFilePath = caseDir() + QDir::separator() 
-                            + "constant" + QDir::separator() 
-                            + "simCenter" + QDir::separator() 
-                            + "input" + QDir::separator() 
+                            + "inputData" + QDir::separator() 
                             + inputFileName;
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
@@ -1391,7 +1409,7 @@ void MPM::readCaseData()
     QString val = jsonFile.readAll();
     QJsonDocument doc = QJsonDocument::fromJson(val.toUtf8());
     QJsonObject jsonObject = doc.object();
-    inputFromJSON(jsonObject);
+    this->inputFromJSON(jsonObject);
     jsonFile.close();
     removeOldFiles();
 }
@@ -1414,7 +1432,7 @@ void MPM::onBrowseCaseDirectoryButtonClicked(void)
         return;
     }
 
-    // Need to have JSON (MPM.json) in LocalWorkDir/MPM/constant/simCenter/input
+    // Need to have scene config file (MPM.json) in the LocalWorkDir/MPM/inputData directory
     readCaseData();
     caseDirectoryPathWidget->setText(fileName);
     return;
@@ -1422,7 +1440,20 @@ void MPM::onBrowseCaseDirectoryButtonClicked(void)
 
 void MPM::clear(void)
 {
+    this->hideVisualization();
 
+    if (mpmSettings)
+      mpmSettings->clear();
+    if (mpmBodies)
+      mpmBodies->clear();
+    if (mpmBoundaries)
+      mpmBoundaries->clear();
+    if (mpmSensors)
+      mpmSensors->clear();
+    if (mpmOutputs)
+      mpmOutputs->clear();
+    if (mpmResults) 
+      mpmResults->clear();
 }
 
 bool MPM::outputCitation(QJsonObject &jsonObject)
@@ -1470,6 +1501,8 @@ bool MPM::inputFromJSON(QJsonObject &jsonObject)
   // mpmSensors->inputFromJSON(jsonObject);
   // mpmOutputs->inputFromJSON(jsonObject);
   // mpmResults->inputFromJSON(jsonObject);
+
+  this->showVisualization();
   return true;
 }
 
@@ -1487,8 +1520,9 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
   QJsonArray boundariesArray;
   QJsonArray sensorsArray;
   QJsonObject outputsObject;
-  QJsonObject resultsObject;
-
+  if constexpr (1) {
+    QJsonObject resultsObject;
+  }
   // Pass in the objects or array object wrappers to the outputToJSON functions
   QJsonObject bodiesObjectWrapper;
   QJsonObject boundariesObjectWrapper;
@@ -1714,13 +1748,28 @@ bool MPM::outputAppDataToJSON(QJsonObject &jsonObject) {
     // and all data to be used in ApplicationData
     //
 
-    // jsonObject["EventClassification"] = "Hydro";
-    // jsonObject["Application"] = "MPM";
-    // QJsonObject dataObj;
-    // jsonObject["ApplicationData"] = dataObj;
+    jsonObject["EventClassification"] = "Hydro";
+    jsonObject["Application"] = "MPM";
+    // jsonObject["type"] = "MPM"; // Application and type used interchangeably in our openfoam Tapisv3 app
 
-    jsonObject["programFile"] = "fbar"; // <- ClaymoreUW MPM executable filename on remote machine. Can be changed depending on compiled optimizations, versions, digital twin, etc.
-    jsonObject["maxRunTime"] = "24:00:00"; // <- Maximum run time for the simulation, timeout if exceeded
+    // Env Variable for ClaymoreUW MPM as a Tool in Tapis V3
+    jsonObject["programFile"] = "osu_lwf"; // <- ClaymoreUW MPM executable filename on remote machine. Can be changed depending on compiled optimizations, versions, digital twin, etc.
+    jsonObject["maxRunTime"] = "120"; // <- Maximum run time for the simulation, timeout if exceeded
+    jsonObject["defaultMaxRunTime"] = "1440";
+    jsonObject["publicDirectory"] = "../mpm-public-ls6";
+    jsonObject["inputFile"] = "scInput.json"; // <- Input file for the simulation
+    jsonObject["driverFile"] = "sc_driver"; // <- Python script to run the simulation
+
+    // QJsonArray fileInputsArray;
+    // QJsonObject fileInputsObj;
+    // fileInputsObj["envKey"] = "dataDirectory"; // <- Environment variable to be set on the remote machine
+    // fileInputsObj["sourceUrl"] = "tapis://designsafe.storage.default/bonusj/mpm-public-ls6"; // <- Directory where the input files are located
+    // fileInputsObj["targetPath"] = "*"; // <- Copy all files in the sourceUrl to the targetPath
+    // fileInputsArray.append(fileInputsObj);
+    // jsonObject["fileInputs"] = fileInputsArray;
+
+    QJsonObject dataObj;
+    jsonObject["ApplicationData"] = dataObj;
     return true;
 }
 bool MPM::inputAppDataFromJSON(QJsonObject &jsonObject) {
@@ -1760,32 +1809,33 @@ bool MPM::copyFiles(QString &destDir) {
 
     if (mpmSettings->copyFiles(destDir) == false) 
     {
-      qDebug() << "MPM - failed to copy settings files";
-      return false;
+      qDebug() << "MPM - failed to copy mpmSettings files";
+      // return false;
     }
     if (mpmBodies->copyFiles(destDir) == false)
     {
-      qDebug() << "MPM - failed to copy bodies files";
-      return false;
+      qDebug() << "MPM - failed to copy mpmBodies files";
+      // return false;
     }
-    // if (mpmBoundaries->copyFiles(destDir) == false)
-    // {
-    //   qDebug() << "MPM - failed to copy boundaries files";
-    //   return false;
-    // }
+    if (mpmBoundaries->copyFiles(destDir) == false)
+    {
+      qDebug() << "MPM - failed to copy boundaries files";
+      // return false;
+    }
     if (mpmSensors->copyFiles(destDir) == false)
     {
-      qDebug() << "MPM - failed to copy sensors files";
-      return false;
+      qDebug() << "MPM - failed to copy mpmSensors files";
+      // return false;
     }
-    if (mpmOutputs->copyFiles(destDir) == false)
-    {
-      qDebug() << "MPM - failed to copy outputs files";
-      return false;
-    }
+    // if (mpmOutputs->copyFiles(destDir) == false)
+    // {
+    //   qDebug() << "MPM - failed to copy mpmOutputs files";
+    //   return false;
+    // }
     // if (mpmResults->copyFiles(destDir) == false)
     // {
     //   qDebug() << "MPM - failed to copy results files";
+    //   qDebug() << "MPM - skipping mpmResults copy files";
     //   return false;
     // }
 
@@ -1802,9 +1852,13 @@ bool MPM::cleanCase()
     QDir zeroDir(caseDir() + QDir::separator() + "0");
     QDir constDir(caseDir() + QDir::separator() + "constant");
     QDir systemDir(caseDir() + QDir::separator() + "system");
+    QDir templatedir(caseDir() + QDir::separator() + "templatedir");
+    QDir inputFiles(caseDir() + QDir::separator() + "inputFiles");
     zeroDir.removeRecursively();
     constDir.removeRecursively();
     systemDir.removeRecursively();
+    templatedir.removeRecursively();
+    inputFiles.removeRecursively();
     QFile logFile(caseDir() + QDir::separator() + "log.txt");
     if (logFile.exists()) {
       logFile.remove();
@@ -1837,15 +1891,20 @@ bool MPM::setupCase()
     {
         targetDir.mkpath(caseDir());
     }
-    targetDir.mkpath("0");
-    targetDir.mkpath("constant");
-    targetDir.mkpath("constant/geometry");
-    targetDir.mkpath("constant/simCenter");
-    targetDir.mkpath("constant/simCenter/output");
-    targetDir.mkpath("constant/simCenter/input");
-    targetDir.mkpath("constant/boundaryData");
-    targetDir.mkpath("constant/boundaryData/inlet");
-    targetDir.mkpath("system");
+
+    // targetDir.mkpath("0");
+    // targetDir.mkpath("constant");
+    // targetDir.mkpath("constant/geometry");
+    // targetDir.mkpath("constant/simCenter");
+    // targetDir.mkpath("constant/simCenter/output");
+    // targetDir.mkpath("constant/simCenter/input");
+    // targetDir.mkpath("constant/boundaryData");
+    // targetDir.mkpath("constant/boundaryData/inlet");
+    // targetDir.mkpath("system");
+
+    targetDir.mkpath("inputData");
+    targetDir.mkpath("templatedir");
+
 
     // Write setup files using the backend python script
     executeBackendScript();
@@ -1900,9 +1959,12 @@ QVector<QVector<double>> MPM::readTxtData(QString fileName)
 
 bool MPM::isCaseConfigured()
 {
-    QDir zeroDir(caseDir() + QDir::separator() +  "0");
-    QDir constDir(caseDir() + QDir::separator() + "constant");
-    QDir systemDir(caseDir() + QDir::separator() + "system");
+    // QDir tempDir = QDir(caseDir() + QDir::separator() + "templatedir" + QDir::separator() + "simCenter" + QDir::separator() + "input");
+    QDir tempDir(caseDir() + QDir::separator() +  "templatedir");
+    QDir inputDir(caseDir() + QDir::separator() + "inputData");
+    // QDir zeroDir(caseDir() + QDir::separator() + "0");
+    // QDir constDir(caseDir() + QDir::separator() + "constant");
+    // QDir systemDir(caseDir() + QDir::separator() + "system");
     // QFile contrlDict(caseDir() + QDir::separator() + "system" + QDir::separator() + "controlDict");
     // QFile blockDict(caseDir() + QDir::separator() + "system" +  QDir::separator() + "blockMeshDict");
     // QFile snappyDict(caseDir() + QDir::separator() + "system" + QDir::separator() + "snappyHexMeshDict");
@@ -1910,7 +1972,7 @@ bool MPM::isCaseConfigured()
     // //Better if we check other files too, for now these are enougg to run a mesh
     // return zeroDir.exists() && constDir.exists() && systemDir.exists() &&
     //        contrlDict.exists() && blockDict.exists() && snappyDict.exists();
-    return zeroDir.exists() && constDir.exists() && systemDir.exists();
+    return tempDir.exists() && inputDir.exists();
 }
 
 QString MPM::caseDir()
@@ -1940,7 +2002,7 @@ QString MPM::templateDictDir()
 
 QString MPM::simulationType()
 {
-    return QString("MPM"); // Yet to support turbulence models in MPM, so its just "MPM" (i.e. DNS)
+    return QString("MPM");
 }
 
 SC_ResultsWidget* MPM::getResultsWidget(QWidget *parent)
@@ -1953,15 +2015,19 @@ SC_ResultsWidget* MPM::getResultsWidget(QWidget *parent)
   }
   else 
   {
-    QWidget* resultsWidget = new QWidget();
-    QVBoxLayout* resultsLayout  = new QVBoxLayout();
-    resultsWidget->setLayout(resultsLayout);
-    mpmResults = new ResultsMPM(this);
+    if constexpr (1) {
+      QWidget* resultsWidget = new QWidget();
+      QVBoxLayout* resultsLayout  = new QVBoxLayout();
+      resultsWidget->setLayout(resultsLayout);
+      mpmResults = new ResultsMPM(this); // this
+      
 
-    resultsLayout->addWidget(mpmResults);
-    resultsLayout->addStretch();
-    theTabWidget->addTab(resultsWidget, QIcon(QString(":/icons/flag-black.svg")), "Results");
-    theTabWidget->setCurrentIndex(theTabWidget->count() - 1);
+      resultsLayout->addWidget(mpmResults);
+      resultsLayout->addStretch();
+      theTabWidget->addTab(resultsWidget, QIcon(QString(":/icons/flag-black.svg")), "Results");
+      theTabWidget->setCurrentIndex(theTabWidget->count() - 1);
+    }
+
   }  
 
   statusMessage("HydroUQ EVENTS MPM - Get results widget for the EVT to allow us to post-process the downloaded results (or locally saved results) for visualization.");

@@ -42,9 +42,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <SimCenterAppWidget.h>
 
-#include <ResultsMPM.h>
+// #include <ResultsMPM.h>
 
-#include <QWebEngineView>
 // Forward declaration
 class InputWidgetParameters;
 class RandomVariablesContainer;
@@ -74,20 +73,27 @@ class QPushButton;
 class QCheckBox;
 class QFormLayout;
 class QLabel;
+class QScrollArea;
+
+namespace Qt3DExtras {
+   class Qt3DWindow;
+}
+
 class MPM : public SimCenterAppWidget
 {
-      Q_OBJECT 
+   friend class ResultsMPM; // Allow ResultsMPM to access private members. TODO: use a better vis architecture
+   
+   Q_OBJECT 
 
 public:
     explicit MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent = 0);
    // MPM( QWidget *parent = 0);
    ~MPM();
 
-   friend class ResultsMPM; // Allow ResultsMPM to access private members. TODO: use a better vis architecture
 
    bool inputFromJSON(QJsonObject &rvObject) override;
    bool outputToJSON(QJsonObject &rvObject) override;  
-   bool outputAppDataToJSON(QJsonObject &rvObject) ;
+   bool outputAppDataToJSON(QJsonObject &rvObject);
    bool inputAppDataFromJSON(QJsonObject &rvObject);
    bool copyFiles(QString &dirName) override;
    bool outputCitation(QJsonObject &jsonObject) override;
@@ -112,12 +118,14 @@ public:
    QString simulationType();
    //  QString foamDictsPath(); // For OpenFOAM from WE-UQ, not MPM
 
-   SC_ResultsWidget* getResultsWidget(QWidget *parent) override; // For vis of output data results 
+   SC_ResultsWidget* getResultsWidget(QWidget *parent); // For vis of output data results 
 
+   void hideVisualization(void);
+   void showVisualization(void);
 signals:
 
 public slots:
-   void clear(void) override;
+   void clear(void);
    void onBrowseCaseDirectoryButtonClicked(void);
 
 private:
@@ -138,12 +146,18 @@ private:
    QGroupBox                    *caseDirectoryGroup;
    QGridLayout                  *caseDirectoryLayout;
    QTabWidget                   *theTabWidget;
+   // QScrollArea                  *theScrollArea;
    // QVBoxLayout                  *visWindowLayout;
    // QGroupBox                    *visWindowGroup;
    // QVBoxLayout                  *inputWindowLayout;
    // QGroupBox                    *inputWindowGroup;
    bool caseInitialized = false; 
-   QWebEngineView* m_pWebView;
+
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
+   Qt3DExtras::Qt3DWindow* view;
+   QWidget* container;
+#endif
+   // QWebEngineView* m_pWebView;
 };
 
 #endif // MATERIAL_POINT_METHOD_H

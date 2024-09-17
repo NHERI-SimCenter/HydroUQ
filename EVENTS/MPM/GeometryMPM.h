@@ -64,11 +64,13 @@ class GeometryAI; // Provide optional AI geometry generation, e.g. with point-e 
 
 class GeometryMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     GeometryMPM(QWidget *parent = 0);
     virtual ~GeometryMPM();
     bool outputToJSON(QJsonObject &jsonObject); // override
     bool inputFromJSON(QJsonObject &jsonObject); // override
+    void clear(void); // override
     bool copyFiles(QString &dirName);
     bool setBodyPreset(int index);
     bool setDigitalTwin(int twinIdx);

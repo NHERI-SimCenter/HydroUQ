@@ -10,5 +10,6 @@
     <qresource prefix="/styles">
         <file>styles/stylesheetMAC.qss</file>
         <file>styles/stylesheetWIN.qss</file>
+        <file>styles/stylesheetLinux.qss</file>
     </qresource>
 </RCC>

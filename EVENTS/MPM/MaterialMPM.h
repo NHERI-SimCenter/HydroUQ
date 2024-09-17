@@ -61,11 +61,13 @@ class SC_CheckBox;
 
 class MaterialMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     MaterialMPM(QWidget *parent = 0);
     virtual ~MaterialMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
+    void clear(void);
     bool copyFiles(QString &dirName);
     bool setMaterialPreset(int presetIndex);
     // bool setMaterialPreset(QString &presetName);

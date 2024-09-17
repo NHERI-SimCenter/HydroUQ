@@ -1,119 +1,71 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
+
+# written: fmk, adamzs 01/18
+
+# import functions for Python 2.X support
+from __future__ import division, print_function
+import sys
+if sys.version.startswith('2'): 
+    range=xrange
+    string_types = basestring
+else:
+    string_types = str
 
 import sys
-import re
 
-EDPs = ['Disp_1_1', 'RMSA_1_1', 'Force_1_1']
+def process_results(inputArgs):
 
-inputArgs = sys.argv
+    with open ('node.out', 'rt') as inFile:
+        line = inFile.readline()
+        line = inFile.readline()
+        line = inFile.readline()
+        displ = line.split()
+        numNode = len(displ)
 
-with open ('disp.out', 'rt', encoding="utf-8") as inFile:
-    numDisp = sum(1 for line in inFile)    
-    line = inFile.readline()
-    clean_line = line.strip()
-    displ = clean_line.split().copy()
-    # remove any empty strings
-    displ = list(filter(None, displ))
-    print('numDisp: ', numDisp)
-    print('Displ: ', displ)
-    # numNode = len(displ)
+    inFile.close
 
-inFile.close()
+    #
+    # now process the input args and write the results file
+    #
 
-with open ('accel.out', 'rt', encoding="utf-8") as inFile:
-    numAccel = sum(1 for line in inFile)
-    line = inFile.readline()
-    clean_line = line.strip()
-    accel = clean_line.split().copy()
-    print('numAccel: ', numAccel)
-    print('Accel: ', accel)
-    # numNode = len(accel)
+    outFile = open('results.out', 'w')
 
-inFile.close()
+    #
+    # note for now assuming no ERROR in user data
+    #
 
-with open ('forces.out', 'rt', encoding="utf-8") as inFile:
-    numForces = sum(1 for line in inFile)
-    line = inFile.readline()
-    clean_line = line.strip()
-    forces = clean_line.split().copy()
-    print('numForces: ', numForces)
-    print('Forces: ', forces)
-    
-    # numNode = len(forces)
+    for i in inputArgs:
+        
+        theList=i.split('_')
 
-inFile.close()
-
-numNode = 1
-numNode = max(numNode, numDisp)
-numNode = max(numNode, numAccel)
-numNode = max(numNode, numForces)
-print('numNode: ', numNode)
-
-#
-# now process the input args and write the results file
-#
-
-outFile = open('results.out', 'w', encoding='utf-8')
-
-#
-# note for now assuming no ERROR in user data
-#
-
-for i in EDPs[0:]:
-    print(i)
-    theList=i.split('_')
-    print('Deliminted EDP: ', theList)
-
-    if (theList[0] == 'Disp' or theList[0] == 'Displacement' or theList[0] == 'Drift' or theList[0] == 'Position'):
-        tag = int(theList[1])
-        if (tag > 0): # and tag <= numDisp):
-            if (theList[2] == '1' or theList[2] == 1 or theList[2] == 'X'):
-                val = max(displ, default=0.0)
-                print('Max Disp: ', val)
-                # val = displ[len(displ)-2]
-                # nodeDisp = displ[nodeTag-1] # If transpose
-                outFile.write(val)
-                outFile.write(' ')
-            else:
-                outFile.write('0. ')
+        if (len(theList) == 4):
+            dof = int(theList[3])
         else:
-            outFile.write('0. ')
+            dof = 1
             
-    elif (theList[0] == 'Accel' or theList[0] == 'Acceleration' or theList[0] == 'RMSA' or theList[0] == 'RMS'):
-        tag = int(theList[1])
-        if (tag > 0): # and tag <= numAccel):
-            if (theList[2] == '1' or theList[2] == 1 or theList[2] == 'X'):
-                print('Accel: ', accel)
-                val = max(accel, default=0.0)
-                print('Max Accel: ', val)
-                # val = accel[len(accel)-2]
-                # nodeDisp = displ[nodeTag-1] # If transpose
-                outFile.write(val)
-                outFile.write(' ')
-            else:
-                outFile.write('0. ')
-        else:
-            outFile.write('0. ')
-
-    elif (theList[0] == 'Force' or theList[0] == 'Forces' or theList[0] == 'Load'):
-        tag = int(theList[1])
-        if (tag > 0): # and tag <= numForces):
-            if (theList[2] == '1' or theList[2] == 1 or theList[2] == 'X'):
-                print('Forces: ', forces)
-                val = max(forces, default=0.0)
-                print('Max Force: ', val)
-                # val = forces[len(forces)-2]
-                # nodeDisp = displ[nodeTag-1] # If transpose
-                outFile.write(val)
-                outFile.write(' ')
-            else:
-                outFile.write('0. ')
-        else:
-            outFile.write('0. ')
             
-    else:
-        outFile.write('0. ')
+        if (theList[0] == "Node"):
+            nodeTag = int(theList[1])
 
-outFile.close()
+            if (nodeTag > 0 and nodeTag <= numNode):
+                if (theList[2] == "Disp"):
+                    nodeDisp = abs(float(displ[((nodeTag-1)*2)+dof-1]))
+                    outFile.write(str(nodeDisp))
+                    outFile.write(' ')
+                else:
+                    outFile.write('0. ')
+            else:
+                outFile.write('0. ')
+        else:
+            outFile.write('0. ')
 
+    outFile.close
+
+if __name__ == "__main__":
+    n = len(sys.argv)
+    responses = []
+    for i in range(1,n):
+        responses.append(sys.argv[i])
+
+    process_results(responses)
 

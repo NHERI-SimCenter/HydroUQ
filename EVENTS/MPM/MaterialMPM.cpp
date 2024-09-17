@@ -570,6 +570,28 @@ MaterialMPM::~MaterialMPM()
 
 }
 
+void MaterialMPM::clear(void) 
+{
+  // materialPreset->setCurrentIndex(0);
+  // constitutive->setCurrentIndex(0);
+  // CFL->clear();
+  // density->clear();
+  // bulkModulus->clear();
+  // viscosity->clear();
+  // bulkModulusDerivative->clear();
+  // youngsModulus->clear();
+  // poissonsRatio->clear();
+  // cohesion->clear();
+  // frictionAngle->clear();
+  // dilationAngle->clear();
+  // beta->clear();
+  // useVolumeCorrection->setChecked(false);
+  // useHardening->setChecked(false);
+  // xi->clear();
+  // logJp->clear();
+  // Mohr->clear();
+}
+
 bool
 MaterialMPM::setMaterialPreset(int index)
 {

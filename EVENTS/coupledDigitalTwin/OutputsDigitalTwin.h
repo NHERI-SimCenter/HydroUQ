@@ -56,6 +56,7 @@ class SC_DoubleLineEdit;
 
 class OutputsDigitalTwin : public SimCenterWidget
 {
+    Q_OBJECT
 public:
   
     OutputsDigitalTwin(QWidget *parent = 0);

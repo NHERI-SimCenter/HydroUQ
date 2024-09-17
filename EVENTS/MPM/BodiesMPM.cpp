@@ -317,22 +317,22 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   fluidAlgorithm->setASFLIP_betaMin(0.0);
   fluidAlgorithm->setASFLIP_betaMax(0.0);
   fluidAlgorithm->enableFBAR(true);
-  fluidAlgorithm->setFBAR_psi(0.9);
+  fluidAlgorithm->setFBAR_psi(0.85);
   fluidAlgorithm->enableFBAR_fusedG2P2G(true);
 
-  debrisAlgorithm->enableASFLIP(true);
+  debrisAlgorithm->enableASFLIP(false);
   debrisAlgorithm->setASFLIP_alpha(0.0);
   debrisAlgorithm->setASFLIP_betaMin(0.0);
   debrisAlgorithm->setASFLIP_betaMax(0.0);
-  debrisAlgorithm->enableFBAR(true);
+  debrisAlgorithm->enableFBAR(false);
   debrisAlgorithm->setFBAR_psi(0.0);
   debrisAlgorithm->enableFBAR_fusedG2P2G(false);
 
-  structureAlgorithm->enableASFLIP(true);
+  structureAlgorithm->enableASFLIP(false);
   structureAlgorithm->setASFLIP_alpha(0.0);
   structureAlgorithm->setASFLIP_betaMin(0.0);
   structureAlgorithm->setASFLIP_betaMax(0.0);
-  structureAlgorithm->enableFBAR(true);
+  structureAlgorithm->enableFBAR(false);
   structureAlgorithm->setFBAR_psi(0.0);
   structureAlgorithm->enableFBAR_fusedG2P2G(false);
   
@@ -390,7 +390,28 @@ BodiesMPM::~BodiesMPM()
 
 }
 
-
+void BodiesMPM::clear(void)
+{
+  // Clear all bodies
+  fluidGeometries->clear();
+  fluidMaterial->clear();
+  fluidAlgorithm->clear();
+  fluidPartitions->clear();
+  debrisGeometries->clear();
+  debrisMaterial->clear();
+  debrisAlgorithm->clear();
+  debrisPartitions->clear();
+  structureGeometries->clear();
+  structureMaterial->clear();
+  structureAlgorithm->clear();
+  structurePartitions->clear();
+  for (int i=0; i<numAddedTabs; i++) {
+    addedGeometries[i]->clear();
+    addedMaterial[i]->clear();
+    addedAlgorithm[i]->clear();
+    addedPartitions[i]->clear();
+  }
+}
 
 bool
 BodiesMPM::outputToJSON(QJsonObject &jsonObject)
@@ -427,7 +448,7 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
   
     // ClaymoreUW, TODO: Deprecate in favor of MPM:bodies:outputs or MPM:outputs (latter preferred) 
     bodyObject["target_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_Y"); // global
-    bodyObject["track_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_X" << "Position_Z" << "Velocity_X" << "Velocity_Z" << "Pressure"); // global
+    bodyObject["track_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_X" << "Position_Z" << "Pressure"); // global
     // Use initialize list for arrray
     QJsonArray trackParticleIdsArray = QJsonArray();
     int trackedIDs[1] = {0};
@@ -470,7 +491,7 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
   
     // ClaymoreUW, TODO: Deprecate in favor of MPM:bodies:outputs or MPM:outputs (latter preferred) 
     bodyObject["target_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_Y"); // global
-    bodyObject["track_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_X" << "Position_Z" << "Velocity_X" << "Velocity_Z" << "Pressure"); // global
+    bodyObject["track_attribs"] = QJsonArray::fromStringList(QStringList() << "Position_X" << "Position_Z" << "Pressure"); // global
     // Use initialize list for arrray
     QJsonArray trackParticleIdsArray = QJsonArray();
     int trackedIDs[1] = {0};

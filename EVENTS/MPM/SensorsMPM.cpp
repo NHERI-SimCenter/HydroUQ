@@ -228,6 +228,14 @@ SensorsMPM::~SensorsMPM()
 
 }
 
+void SensorsMPM::clear(void)
+{
+  for (int i=0; i<numAddedTabs; i++) {
+    if (i >= numReserveTabs) break;
+    addedSensor[i]->clear();
+  }
+}
+
 bool
 SensorsMPM::outputToJSON(QJsonObject &jsonObject)
 {

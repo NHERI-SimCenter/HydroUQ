@@ -166,6 +166,8 @@ bool CoupledDigitalTwin::outputAppDataToJSON(QJsonObject &jsonObject) {
 
     jsonObject["EventClassification"]="Hydro";
     jsonObject["Application"] = "CoupledDigitalTwin";
+    jsonObject["type"] = "CoupledDigitalTwin";
+
     QJsonObject dataObj;
     jsonObject["ApplicationData"] = dataObj;
 

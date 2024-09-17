@@ -45,6 +45,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QGroupBox>
 #include <QVector>
 #include <RemoteService.h>
+#include <RandomVariablesContainer.h>
 
 // #include <QHBoxLayout>
 // #include <QVBoxLayout>
@@ -67,7 +68,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 class QComboBox; // WE-UQ
 class QStackedWidget; // WE-UQ
 class UserDefinedApplication; // WE-UQ
-class RandomVariablesContainer;
+// class RandomVariablesContainer;
 
 class HydroEventSelection : public  SimCenterAppWidget
 {
@@ -76,6 +77,8 @@ public:
    //  explicit HydroEventSelection(RandomVariablesContainer *,
 	// 			 GeneralInformationWidget* generalInfoWidget,
 	// 			 QWidget *parent = 0);
+   //  explicit HydroEventSelection(RandomVariablesContainer *,  QWidget *parent = 0); 
+
     explicit HydroEventSelection(RandomVariablesContainer *, RemoteService* remoteService, QWidget *parent = 0); // WE-UQ
     ~HydroEventSelection();
 
@@ -109,8 +112,9 @@ private:
    SimCenterAppWidget *theWaveDigitalFlume;
    SimCenterAppWidget *theCoupledDigitalTwin;
    SimCenterAppWidget *theMPM;    
+   SimCenterAppWidget *theTaichiEvent;
+   SimCenterAppWidget *theStochasticWaves;
    SimCenterAppWidget *theSPH;
-   SimCenterAppWidget *theSimpleWaves;
    SimCenterAppWidget *theExistingEvents;
 
    RandomVariablesContainer *theRandomVariablesContainer;

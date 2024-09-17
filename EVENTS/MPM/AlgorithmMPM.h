@@ -61,12 +61,14 @@ class SC_CheckBox;
 
 class AlgorithmMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     AlgorithmMPM(QWidget *parent = 0);
     virtual ~AlgorithmMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
+    void clear(void);
 
     void enableFBAR (bool isChecked);
     void enableASFLIP (bool isChecked);
