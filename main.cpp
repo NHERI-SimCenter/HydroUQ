@@ -1,37 +1,40 @@
 // Written: fmckenna
 // Modified: Ajay B Harish (Feb 2021)
+// Modified: Justin Bonus (2024)
 // Purpose: the typical Qt main for running a QMainWindow
 
 // Include headers
+
+#include <MainWindowWorkflowApp.h>
 #include <QApplication>
-#include <QCoreApplication>
-#include <QDir>
 #include <QFile>
-#include <QObject>
-#include <QFile>
-// #include <QOpenGLWidget>
-#include <QDebug>
-#include <QStandardPaths>
-#include <QStatusBar>
-#include <QTextStream>
 #include <QThread>
+#include <QObject>
+#include <TapisV3.h>
+#include <WorkflowAppHydroUQ.h>
+#include <QCoreApplication>
+
+
 #include <QTime>
+#include <QTextStream>
+#include <QOpenGLWidget>
+#include <QStandardPaths>
+#include <QDir>
+#include <QDebug>
 
 #include <GoogleAnalytics.h>
-#include <TapisV3.h>
-#include <MainWindowWorkflowApp.h>
-#include <WorkflowAppHydroUQ.h>
-
-// #include <QCoreApplication>
 
 #include <QSvgWidget>
+#include <QStatusBar>
 #include <QWebEngineView>
-#include <QtWebEngine>
+// #include <QtWebEngine>
 
 //#include <QtGlobal> // for for Q_OS_WIN, etc.
-#include <stdlib.h>
 //#include <QSurfaceFormat>
-#include <SimCenterPreferences.h>
+// #include <SimCenterPreferences.h>
+#include <stdlib.h>
+
+
 
 #ifdef ENDLN
 #undef ENDLN
@@ -83,36 +86,43 @@ int main(int argc, char *argv[])
     // QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 
     // code to reset openGL version .. keep around in case need again
-    QSurfaceFormat glFormat;
+    // QSurfaceFormat glFormat;
     // glFormat.setVersion(3, 3);
-    glFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
-    QSurfaceFormat::setDefaultFormat(glFormat);
+    // glFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
+    // QSurfaceFormat::setDefaultFormat(glFormat);
 
 // #endif
     // QApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-    QGuiApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    // QGuiApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     // QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     // QApplication::setAttribute(Qt::AA_UseOpenGLES);
-
-    
 // #endif
 
+// Extensive documentation on how to set up OpenGL on Windows, macOS, and Linux can be found at:
+// https://doc.qt.io/qt-5/windows-requirements.html
 #ifdef Q_OS_WIN
-    QApplication::setAttribute(Qt::AA_UseOpenGLES);
-    // QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
+    QApplication::setAttribute(Qt::AA_UseOpenGLES); // Use ANGLE on Windows
+#else
+#ifdef Q_OS_MACOS
+    QApplication::setAttribute(Qt::AA_UseDesktopOpenGL); // Use Desktop OpenGL on macOS
+#else // Linux
+    QApplication::setAttribute(Qt::AA_UseOpenGLES); // Use OpenGLES on Linux
+    // QApplication::setAttribute(Qt::AA_ShareOpenGLContexts); 
 #endif
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
 
 
+    // QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("3.2.1");
+    QCoreApplication::setApplicationVersion("4.0.0");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     Q_INIT_RESOURCE(images);
     Q_INIT_RESOURCE(images1);
+    // Q_INIT_RESOURCE(resources);
     
     // Q_INIT_RESOURCE(Resources);
 
@@ -130,6 +140,25 @@ int main(int argc, char *argv[])
     // full path to debug.log file
     logFilePath = logFilePath + QDir::separator() + QString("debug.log"); 
 
+
+    // remove old log file
+    QFile debugFile(logFilePath);
+    debugFile.remove();
+
+    QByteArray envVar = qgetenv("QTDIR"); // check if the app is run in Qt Creator
+
+    // Issues with web engine (notably with hardware acceleration) are
+    // sometimes resolved by setting various flags.
+    // https://github.com/probonopd/linuxdeployqt/issues/554
+    // qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu --no-sandbox");
+    // qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--ignore-gpu-blacklist --ignore-gpu-blocklist  --enable-gpu-rasterization --use-gl=egl");
+    // qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--ignore-gpu-blacklist --ignore-gpu-blocklist  --enable-gpu-rasterization");
+    if (envVar.isEmpty())
+        logToFile = true;
+
+    qInstallMessageHandler(customMessageOutput);
+    // qDebug() << "logFile: " << logFilePath;
+
     /******************  code to reset openGL version .. keep around in case need again
     QSurfaceFormat glFormat;
     glFormat.setVersion(3, 3);
@@ -140,12 +169,9 @@ int main(int argc, char *argv[])
     //
     // window scaling
     //
+
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling); 
-
-
-    // remove old log file
-    // QFile debugFile(logFilePath); 
-    // debugFile.remove(); 
+    // QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     QApplication a(argc, argv);
 
@@ -154,16 +180,6 @@ int main(int argc, char *argv[])
     // QtWebEngine::initialize(); // Initialize the QtWebEngine
     // QQmlApplicationEngine engine; // This one only for qt quick applications
     // engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
-    //  check if the app is run in Qt Creator
-    QByteArray envVar = qgetenv("QTDIR"); 
-
-    if (envVar.isEmpty())
-        logToFile = true;
-
-    qInstallMessageHandler(customMessageOutput);
-
-    qDebug() << "logFile: " << logFilePath;
 
 
 
@@ -177,6 +193,7 @@ int main(int argc, char *argv[])
     QString dirName("HydroUQ"); // this is the default directory for the application
     // AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName);
     TapisV3 *theRemoteService = new TapisV3(tenant, storage, &dirName);        
+
 
     // create the main window
     WorkflowAppWidget *theInputApp = new WorkflowAppHydroUQ(theRemoteService);
@@ -192,7 +209,7 @@ int main(int argc, char *argv[])
     w.setVersion(version);
 
     // Citation
-    QString citeText("1) Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.2.0 (v3.2.0). Zenodo. https://doi.org/10.5281/zenodo.10902090 \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
+    QString citeText("1) Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 4.0.0 (v4.0.0). Zenodo. https://doi.org/10.5281/zenodo.10902090 \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
     w.setCite(citeText);
 
     // Link to repository
@@ -200,7 +217,7 @@ int main(int argc, char *argv[])
     w.setDocumentationURL(manualURL);
 
     // Link to message board
-    QString messageBoardURL("http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0");
+    QString messageBoardURL("https://github.com/orgs/NHERI-SimCenter/discussions/categories/hydro-uq");
     w.setFeedbackURL(messageBoardURL);
 
     // Move remote interface to a thread
@@ -210,65 +227,59 @@ int main(int argc, char *argv[])
     QWidget::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();
 
-
     // Show the main window, set styles & start the event loop
     w.show();
     w.statusBar()->showMessage("Ready", 5000);
 
 
 #ifdef Q_OS_WIN
-#define STYLESHEET ":/styleCommon/stylesheetWIN.qss"
     QFile file(":/styleCommon/stylesheetWIN.qss");
-#endif
-
+#else
 #ifdef Q_OS_MACOS
-#define STYLESHEET ":/styleCommon/stylesheetMAC.qss"
     QFile file(":/styleCommon/stylesheetMAC.qss");
-#endif
-
+#else
 #ifdef Q_OS_LINUX
-#define STYLESHEET ":/styleCommon/stylesheetLinux.qss"
-    // QFile file(":/styleCommon/stylesheetMAC.qss");
     QFile file(":/styleCommon/stylesheetLinux.qss");
+#else
+    QFile file(":/styleCommon/stylesheetMAC.qss"); 
+#endif 
 #endif
-
-#ifdef Q_OS_UNIX
-#ifndef Q_OS_LINUX
-#ifndef Q_OS_MACOS
-#define STYLESHEET ":/styleCommon/stylesheetLinux.qss"
-    // QFile file(":/styleCommon/stylesheetMAC.qss");
-    QFile file(":/styleCommon/stylesheetLinux.qss");
-#endif
-#endif
-#endif
-
-#ifndef STYLESHEET
-#define STYLESHEET ":/styleCommon/stylesheetLinux.qss"
-    QFile file(":/styleCommon/stylesheetLinux.qss");
 #endif
 
 
     // Show error message
-    if(file.open(QFile::ReadOnly)) {
+    if (file.open(QFile::ReadOnly)) {
         a.setStyleSheet(file.readAll());
         file.close();
     } else {
         qDebug() << "could not open stylesheet";
     }
 
-    /* ***************************************************************** 
+
+    /* *****************************************************************  
     //Setting Google Analytics Tracking Information
     GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
     GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
     GoogleAnalytics::CreateSessionId();
     GoogleAnalytics::StartSession();
-
+    // GoogleAnalytics::SetScreenName("HydroUQ");
     // Opening a QWebEngineView and using github to get app geographic usage
     QWebEngineView view;
+    // view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    // view.setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
+    // view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);
+    // view.setAttribute(Qt::WA_TranslucentBackground);
+    // view.setAttribute(Qt::WA_NoSystemBackground);
+    // view.setUrl(QUrl("https://github.com/NHERI-SimCenter/HydroUQ/tree/master/GA4.html"));
     view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
     view.resize(1024, 750);
     view.show();
+    // view.raise();
+    // view.activateWindow();
     view.hide();
+    // view.close();
+    // view.deleteLater();
+
     ******************************************************************* */
     
     // Result of execution
@@ -277,8 +288,10 @@ int main(int argc, char *argv[])
     // On done with event loop, logout & stop the thread
     theRemoteService->logout();
     thread->quit();
-
+    
     // Close Google Analytics session
+    // GoogleAnalytics::SetAPISecret("");
+    // GoogleAnalytics::SetMeasurementId("");
     GoogleAnalytics::EndSession();
 
     // Complete

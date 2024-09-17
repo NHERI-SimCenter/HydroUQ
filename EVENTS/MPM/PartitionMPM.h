@@ -67,6 +67,7 @@ public:
     virtual ~PartitionMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
+    void clear(void);
     bool copyFiles(QString &dirName);
 
     bool setDefaultModelID(int modelID);

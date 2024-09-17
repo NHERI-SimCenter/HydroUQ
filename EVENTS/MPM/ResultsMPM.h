@@ -40,7 +40,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written by: JustinBonus
 
 #include <SC_ResultsWidget.h>
-#include <QList>
+// #include <QList>
 // #include <MPM.h>
 class MPM;
 class InputWidgetParameters;
@@ -63,10 +63,10 @@ class QRadioButton;
 class QString;
 
 
-class ResultsMPM: public SC_ResultsWidget
+class ResultsMPM : public SC_ResultsWidget
 {
-    Q_OBJECT
     friend class MPM; // Allow MPM to access private members. TODO: use a better vis architecture (e.g. MVC, VIPER, etc.) 
+    Q_OBJECT
 public:
     explicit ResultsMPM(MPM *parent = 0);
     ~ResultsMPM() override;
@@ -84,11 +84,12 @@ signals:
 public slots:
     void onProcessSensorsClicked(void);
     void onPlotSpectraClicked(void); // S
-    void onPlotPressureClicked(void); // P
-    void onPlotElevationClicked(void); // E
-    void onPlotForceClicked(void); // F
+    // void onPlotPressureClicked(void); // P
+    // void onPlotElevationClicked(void); // E
+    // void onPlotForceClicked(void); // F
     bool simulationCompleted();
-    void plotSensors(MPM *host);
+    void plotSensors(void);
+    bool copyFiles(QString &dirName);
 
 private:
 
@@ -110,23 +111,23 @@ private:
     QComboBox            *bodyNumS;
     QComboBox            *deviceNumS;
 
-    // E - Plot Elevation
-    QGroupBox            *plotElevationGroup;
-    QGridLayout          *plotElevationLayout;
-    QPushButton          *plotElevation;
-    QComboBox            *profileNameE;
+    // // E - Plot Elevation
+    // QGroupBox            *plotElevationGroup;
+    // QGridLayout          *plotElevationLayout;
+    // QPushButton          *plotElevation;
+    // QComboBox            *profileNameE;
 
-    // F - Plot Force
-    QGroupBox            *plotForceGroup;
-    QGridLayout          *plotForceLayout;
-    QPushButton          *plotForce;
-    QComboBox            *profileNameF;
+    // // F - Plot Force
+    // QGroupBox            *plotForceGroup;
+    // QGridLayout          *plotForceLayout;
+    // QPushButton          *plotForce;
+    // QComboBox            *profileNameF;
 
-    // P - Plot Pressure
-    QGroupBox            *plotPressureGroup;
-    QGridLayout          *plotPressureLayout;
-    QPushButton          *plotPressure;
-    QComboBox            *profileNameP;
+    // // P - Plot Pressure
+    // QGroupBox            *plotPressureGroup;
+    // QGridLayout          *plotPressureLayout;
+    // QPushButton          *plotPressure;
+    // QComboBox            *profileNameP;
 
 public:
 

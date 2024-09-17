@@ -170,7 +170,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 4, 1, 1);
 
-  duration = new SC_DoubleLineEdit("duration",26.0);
+  duration = new SC_DoubleLineEdit("duration", 1.0);
   timeBoxLayout->addWidget(new QLabel("Duration (tf-t0)"), numRow, 0, 1, 1, Qt::AlignRight);
   timeBoxLayout->addWidget(duration, numRow, 1, 1, 3);  
   timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -433,6 +433,37 @@ SettingsMPM::SettingsMPM(QWidget *parent)
 SettingsMPM::~SettingsMPM()
 {
 
+}
+
+void SettingsMPM::clear(void) {
+  cflNumber->clear();
+  gravityX->clear();
+  gravityY->clear();
+  gravityZ->clear();
+  gridCellSize->clear();
+  domainSizeX->clear();
+  domainSizeY->clear();
+  domainSizeZ->clear();
+  mirrorDomainX->setChecked(false);
+  mirrorDomainY->setChecked(false);
+  mirrorDomainZ->setChecked(false);
+  timeStep->clear();
+  timeIntegration->setCurrentIndex(0);
+  initialTime->clear();
+  duration->clear();
+  froudeScaling->setChecked(false);
+  froudeLengthRatio->clear();
+  froudeTimeRatio->clear();
+  cauchyScaling->setChecked(false);
+  cauchyBulkRatio->clear();
+  numGPUs->clear();
+  modelsPerGPU->clear();
+  hpcCardName->clear();
+  hpcCardArchitecture->clear();
+  hpcCardGlobalMemory->clear();
+  hpcCardComputeCapability->clear();
+  hpcCardBrand->clear();
+  hpc->setCurrentIndex(0);
 }
 
 bool

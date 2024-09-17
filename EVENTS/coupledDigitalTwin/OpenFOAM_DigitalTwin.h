@@ -57,6 +57,7 @@ class SC_FileEdit;
 
 class OpenFOAM_DigitalTwin : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     OpenFOAM_DigitalTwin(QWidget *parent = 0);
     virtual ~OpenFOAM_DigitalTwin();

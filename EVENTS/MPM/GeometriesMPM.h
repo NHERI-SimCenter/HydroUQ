@@ -62,12 +62,14 @@ class SC_CheckBox;
 class GeometryMPM; // Individual geometries
 class GeometriesMPM : public SimCenterWidget
 {
+    Q_OBJECT
 public:
     GeometriesMPM(QWidget *parent = 0);
     virtual ~GeometriesMPM();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
+    void clear(void);
     bool setBodyPreset(int index);
     bool setDigitalTwin(int twinIdx);
 signals:

@@ -134,7 +134,7 @@ SensorMPM::SensorMPM(QWidget *parent)
   velociMetersTable  = new SC_TableEdit("velociMeterLocs", listVM, 2, dataVM);
   
   QStringList  listLC; listLC << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
-  QStringList  dataLC; dataLC << "LoadCell1" << "45.799" << "2.10" << "1.35" << "0.025" << "0.575" << "0.950" ;  
+  QStringList  dataLC; dataLC << "LoadCell1" << "45.799" << "2.075" << "1.35" << "0.025" << "0.575" << "0.950" ;  
   loadCellsTable  = new SC_TableEdit("loadCellLocs", listLC, 1, dataLC);
 
   QStringList  listPM; listPM << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
@@ -181,7 +181,7 @@ SensorMPM::SensorMPM(QWidget *parent)
 
   QStringList attributesOnGridList;
   attributesOnGridList << "Mass" << "Force" << "Momentum" << "Velocity"; // Acceleration, Pressure
-  QStringList operationList; operationList << "Sum" << "Max" << "Min" << "Count" << "Average" << "Variance";
+  QStringList operationList; operationList << "Sum" << "Max" << "Min" << "Count" << "Average";
 
   toggle = new SC_ComboBox("toggle", yesNo); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
   type = new SC_ComboBox("type", typeParticleList); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
@@ -199,10 +199,10 @@ SensorMPM::SensorMPM(QWidget *parent)
   // directionWG->setCurrentIndex(0); // N/A, non vector
   output_frequencyWG = new SC_DoubleLineEdit("output_frequency", 30.0);
 
-  toggleVM  = new SC_ComboBox("toggle", noYes); // velocity meter (velocity on grid)
+  toggleVM  = new SC_ComboBox("toggle", yesNo); // velocity meter (velocity on grid)
   typeVM  = new SC_ComboBox("type", typeGridParticleList); // velocity meter (velocity on grid)
   attributeVM = new SC_ComboBox("attribute", QStringList() << "Velocity" << "Velocity_X" << "Velocity_Y" << "Velocity_Z" << "Velocity_Magnitude");
-  operationVM = new SC_ComboBox("operation", QStringList() << "Average" << "Max" << "Min");
+  operationVM = new SC_ComboBox("operation", QStringList() << "Max" << "Average");
   directionVM = new SC_ComboBox("direction", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
   directionVM->setCurrentIndex(0); // X
   output_frequencyVM = new SC_DoubleLineEdit("output_frequency", 30.0);
@@ -210,7 +210,7 @@ SensorMPM::SensorMPM(QWidget *parent)
   toggleLC  = new SC_ComboBox("toggle", yesNo); // load cell (force on grid)
   typeLC  = new SC_ComboBox("type", typeGridList); // load cell (force on grid)
   attributeLC = new SC_ComboBox("attribute", QStringList() << "Force" << "Force_X" << "Force_Y" << "Force_Z" << "Force_Magnitude");
-  operationLC = new SC_ComboBox("operation", QStringList() << "Sum");
+  operationLC = new SC_ComboBox("operation", QStringList() << "Sum" << "Max" << "Average");
   directionLC = new SC_ComboBox("direction", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
   directionLC->setCurrentIndex(3); // X+
   output_frequencyLC = new SC_DoubleLineEdit("output_frequency", 120.0);
@@ -218,7 +218,7 @@ SensorMPM::SensorMPM(QWidget *parent)
   togglePM = new SC_ComboBox("toggle", yesNo); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
   typePM = new SC_ComboBox("type", typeParticleList); // wave gauge (elevation rel. to grav. vec. Sensor particle free surface)
   attributePM = new SC_ComboBox("attribute", QStringList() << "Pressure");
-  operationPM = new SC_ComboBox("operation", QStringList() << "Average");
+  operationPM = new SC_ComboBox("operation", QStringList() << "Max" << "Average");
   directionPM = new SC_ComboBox("direction", QStringList() << "N/A");
   // directionPM->setCurrentIndex(0); // N/A, non vector
   output_frequencyPM = new SC_DoubleLineEdit("output_frequency", 30.0);
@@ -335,6 +335,7 @@ SensorMPM::SensorMPM(QWidget *parent)
       setSensorType(SensorTypeEnum::CUSTOM);
     } else if (val == "Wave-Gauges") {
       setSensorType(SensorTypeEnum::WAVE_GAUGE);
+
       toggleWG->setCurrentText("Yes");
       typeWG->setCurrentIndex(0);
       attributeWG->setCurrentText("Elevation");
@@ -343,7 +344,7 @@ SensorMPM::SensorMPM(QWidget *parent)
       output_frequencyWG->setText("30.0");
     } else if (val == "Velocimeters") {
       setSensorType(SensorTypeEnum::VELOCITY_METER);
-      toggleVM->setCurrentText("Yes");
+      toggleVM->setCurrentText("No");
       typeVM->setCurrentIndex(0);
       attributeVM->setCurrentText("Velocity");
       operationVM->setCurrentText("Average");
@@ -359,7 +360,7 @@ SensorMPM::SensorMPM(QWidget *parent)
       output_frequencyLC->setText("120.0");
     } else if (val == "Piezometers") {
       setSensorType(SensorTypeEnum::PIEZO_METER);
-      togglePM->setCurrentText("Yes");
+      togglePM->setCurrentText("No");
       typePM->setCurrentIndex(0);
       attributePM->setCurrentText("Pressure");
       operationPM->setCurrentText("Average");
@@ -375,6 +376,49 @@ SensorMPM::~SensorMPM()
 
 }
 
+void SensorMPM::clear(void)
+{
+  // customTable->clear();
+  // waveGaugesTable->clear();
+  // velociMetersTable->clear();
+  // loadCellsTable->clear();
+  // piezoMetersTable->clear();
+
+  toggle->setCurrentText("No");
+  type->setCurrentText("particles");
+  attribute->setCurrentText("Position_Y");
+  operation->setCurrentText("Max");
+  direction->setCurrentText("N/A");
+  output_frequency->setText("30.0");
+
+  toggleWG->setCurrentText("Yes");
+  typeWG->setCurrentText("particles");
+  attributeWG->setCurrentText("Elevation");
+  operationWG->setCurrentText("Max");
+  directionWG->setCurrentText("N/A");
+  output_frequencyWG->setText("30.0");
+
+  toggleVM->setCurrentText("No");
+  typeVM->setCurrentText("grid");
+  attributeVM->setCurrentText("Velocity");
+  operationVM->setCurrentText("Max");
+  directionVM->setCurrentText("X+");
+  output_frequencyVM->setText("30.0");
+
+  toggleLC->setCurrentText("Yes");
+  typeLC->setCurrentText("grid");
+  attributeLC->setCurrentText("Force");
+  operationLC->setCurrentText("Sum");
+  directionLC->setCurrentText("X+");
+  output_frequencyLC->setText("30.0");
+
+  togglePM->setCurrentText("No");
+  typePM->setCurrentText("particles");
+  attributePM->setCurrentText("Pressure");
+  operationPM->setCurrentText("Max");
+  directionPM->setCurrentText("N/A");
+  output_frequencyPM->setText("30.0");
+}
 
 bool
 SensorMPM::setSensorType(int type)
@@ -545,7 +589,7 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
         waveGaugesObject["domain_start"] = domain_start;
         waveGaugesObject["domain_end"] = domain_end;
       }
-
+      if (toggleWG->currentText() == "Yes") {
       sensorsArray.append(waveGaugesObject);
       if (typeWG->currentText() == "grid") {
         gridSensorsArray.append(waveGaugesObject);
@@ -553,6 +597,7 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
       } else {
         particleSensorsArray.append(waveGaugesObject);
         jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+      }
       }
     }
     return true;
@@ -595,13 +640,15 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
         velociMetersObject["domain_end"] = domain_end;
       }
 
-      sensorsArray.append(velociMetersObject);
-      if (typeVM->currentText() == "grid") {
-        gridSensorsArray.append(velociMetersObject);
-        jsonObject["grid-sensors"] = gridSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
-      } else {
-        particleSensorsArray.append(velociMetersObject);
-        jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+      if (toggleVM->currentText() == "Yes") {
+        sensorsArray.append(velociMetersObject);
+        if (typeVM->currentText() == "grid") {
+          gridSensorsArray.append(velociMetersObject);
+          jsonObject["grid-sensors"] = gridSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+        } else {
+          particleSensorsArray.append(velociMetersObject);
+          jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+        }
       }
     }
     return true;
@@ -643,7 +690,7 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
         loadCellsObject["domain_start"] = domain_start;
         loadCellsObject["domain_end"] = domain_end;
       }
-
+      if (toggleLC->currentText() == "Yes") {
       sensorsArray.append(loadCellsObject);
       if (typeLC->currentText() == "grid") { 
         gridSensorsArray.append(loadCellsObject);
@@ -651,6 +698,7 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
       } else {
         particleSensorsArray.append(loadCellsObject);
         jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+      }
       }
     }
     return true;
@@ -691,13 +739,15 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
         piezoMetersObject["domain_end"] = domain_end;
       }
 
-      sensorsArray.append(piezoMetersObject);
-      if (typePM->currentText() == "grid") {
-        gridSensorsArray.append(piezoMetersObject);
-        jsonObject["grid-sensors"] = gridSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
-      } else {
-        particleSensorsArray.append(piezoMetersObject);
-        jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+      if (togglePM->currentText() == "Yes") {
+        sensorsArray.append(piezoMetersObject);
+        if (typePM->currentText() == "grid") {
+          gridSensorsArray.append(piezoMetersObject);
+          jsonObject["grid-sensors"] = gridSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+        } else {
+          particleSensorsArray.append(piezoMetersObject);
+          jsonObject["particle-sensors"] = particleSensorsArray; // ClaymoreUW, to be deprecated (use "sensors" instead)
+        }
       }
     }
     return true;

@@ -837,6 +837,11 @@ GeometryMPM::~GeometryMPM()
 
 }
 
+void GeometryMPM::clear(void)
+{
+
+}
+
 bool
 GeometryMPM::setBodyPreset(int index)
 {

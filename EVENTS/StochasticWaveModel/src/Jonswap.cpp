@@ -37,48 +37,47 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written: JustinBonus
 // Adapted from work of: mhgardner
 // #include <Jonswap.h>
+#include <QLabel>
 #include <QComboBox>
+#include <QSpinBox>
+// #include <QDoubleSpinBox>
 #include <QDebug>
-#include <QDoubleSpinBox>
+#include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QFormLayout>
+#include <QGridLayout>
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QJsonObject>
-#include <QLabel>
-#include <QSpinBox>
-#include <QString>
-#include <QVBoxLayout>
-#include <QComboBox>
-#include <QHBoxLayout>
-#include <SC_DoubleLineEdit.h>
-#include <QFormLayout>
-
-#include <RandomVariablesContainer.h>
-#include <SimCenterWidget.h>
-#include <SC_FileEdit.h>
-#include <SC_IntLineEdit.h>
 #include <QDoubleValidator>
-#include <SimCenterGraphPlot.h>
 #include <QVector>
 #include <QTextStream>
 #include <QFile>
+#include <QDir>
 #include <QMessageBox>
-
-#include <stdexcept>
-
 #include <QLineEdit>
-#include <QDoubleValidator>
-#include <QFormLayout>
-#include <QGridLayout>
-#include <SC_ComboBox.h>
-#include <QString>
-
-
+#include <QStringList>
+// #include <QString>
+#include <QRadioButton>
+#include <QCheckBox>
 #include <QPushButton>
 #include <QFileDialog>
 #include <QPixmap>
-#include <StochasticWaveModel/include/Jonswap.h>
+#include <QScrollArea>
+
+#include <RandomVariablesContainer.h>
+#include <SC_ComboBox.h>
+// #include <SC_DoubleSpinBox.h>
+#include <SimCenterWidget.h>
+// #include <SC_FileEdit.h>
+#include <SC_IntLineEdit.h>
+// #include <SC_DoubleLineEdit.h>
+#include <SimCenterGraphPlot.h>
+#include <LineEditRV.h>
+#include <stdexcept>
 #include <math.h>
+
+#include <StochasticWaveModel/include/Jonswap.h>
 
 Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
                                    QWidget* parent)
@@ -86,41 +85,61 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
 {
 
   QPushButton *showPlotButton = NULL;
-//     // Initialize member variables
-  dragCoefficient = new LineEditRV(randomVariables);
-  dragCoefficient->setText("2.1");
+  theDomainImageButton = NULL;
+  thePlot = NULL;
 
-  dragArea = new LineEditRV(randomVariables);
-  dragArea->setText("15.0");
+  modelDescription = new QLabel(tr(" Sample JONSWAP spectras (empirical sea-state) for stochastic loads on monopile-like structures. "
+                                   "\n The welib Python package provides validated JONSWAP distributions and Wheeler-corrected Morison wave loads on simple monopile structures. "
+                                   "\n Use-case: Quantify how sea-level rise (e.g., from climate-change, storm-surges, tides) influences stochastic structural loads. "));
+  //fontsize 
+  modelDescription->setStyleSheet("QLabel { font-size : 12px; }");
+  
 
-  peakPeriod = new LineEditRV(randomVariables);
-  peakPeriod->setText("12.0");
 
-  significantWaveHeight = new LineEditRV(randomVariables);
-  significantWaveHeight->setText("8.1");
+  // modelDescription->setStyleSheet("QLabel { color : gray; }");
+  // Put modelDescription in a scroll area
+  QScrollArea *scrollArea = new QScrollArea;
+  scrollArea->setWidget(modelDescription);
+  scrollArea->setWidgetResizable(true);
+  scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+  scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
+
+  // Initialize member variables
   waterDepth = new LineEditRV(randomVariables);
   waterDepth->setText("30.0");
-
   tidalSLR = new LineEditRV(randomVariables);
   tidalSLR->setText("3.0");
-
   stormSurgeSLR = new LineEditRV(randomVariables);
   stormSurgeSLR->setText("10.0");
-
   climateChangeSLR = new LineEditRV(randomVariables);
   climateChangeSLR->setText("4.0");
 
-  recorderOriginX = new LineEditRV(randomVariables);
-  recorderOriginX->setText("0.0");
-
-  recorderCountZ = new SC_IntLineEdit("recorderCountZ", 2);
+  significantWaveHeight = new LineEditRV(randomVariables);
+  significantWaveHeight->setText("8.1");
+  peakPeriod = new LineEditRV(randomVariables);
+  peakPeriod->setText("12.0");
 
   timeStep = new LineEditRV(randomVariables);
   timeStep->setText("0.1");
-
   timeDuration = new LineEditRV(randomVariables);
   timeDuration->setText("3600.0");
+
+  recorderOriginX = new LineEditRV(randomVariables);
+  recorderOriginX->setText("0.0");
+  recorderCountZ = new SC_IntLineEdit("recorderCountZ", 2);
+
+  dragCoefficient = new LineEditRV(randomVariables);
+  dragCoefficient->setText("2.1");
+  dragArea = new LineEditRV(randomVariables);
+  dragArea->setText("15.0");
+
+  exposureCategory = new QComboBox();
+  exposureCategory->addItem("NATO 5");
+  exposureCategory->addItem("NATO 4");
+  exposureCategory->addItem("NATO 3");
+  exposureCategory->addItem("NATO 2");
+  exposureCategory->addItem("NATO 1");
 
 //   exposureCategory = new QComboBox();
 //   exposureCategory->addItem("JONSWAP");
@@ -145,23 +164,17 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   parameters->addRow(new QLabel(tr("Climate Change Sea Level Rise [ft]")), climateChangeSLR);
 
 
+  // exposureCategory->setCurrentIndex(5);
 
-  exposureCategory = new QComboBox();
-  exposureCategory->addItem("NATO 5");
-  exposureCategory->addItem("NATO 4");
-  exposureCategory->addItem("NATO 3");
-  exposureCategory->addItem("NATO 2");
-  exposureCategory->addItem("NATO 1");
-
-  // parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
-  parameters->addRow(new QLabel(tr("Sea State Category")), exposureCategory);
-  parameters->addRow(new QLabel(tr("")), new QLabel(tr("")));
 
 
   parameters->addRow(new QLabel(tr("Significant Wave Height [ft]")), significantWaveHeight);
   parameters->addRow(new QLabel(tr("Peak Wave Period [s]")), peakPeriod);
   parameters->addRow(new QLabel(tr("Time Step [s]")), timeStep);
   parameters->addRow(new QLabel(tr("Time Duration [s]")), timeDuration);
+  // parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
+  parameters->addRow(new QLabel(tr("Sea State Category")), exposureCategory);
+  parameters->addRow(new QLabel(tr("")), new QLabel(tr("")));
   parameters->addRow(new QLabel(tr("")), new QLabel(tr("")));
   parameters->addRow(new QLabel(tr("Load Recorder Origin [ft]")), recorderOriginX);
   parameters->addRow(new QLabel(tr("Load Recorder Count [#]")), recorderCountZ);
@@ -170,20 +183,6 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   parameters->addRow(new QLabel(tr("Drag Area [ft^2]")), dragArea);
   parameters->addRow(new QLabel(tr("")), new QLabel(tr("")));
 
-
-
-
-  // Initialize member variables
-  // dragCoefficient = new LineEditRV(randomVariables);
-  // dragCoefficient->setText("1.5");
-
-  // gustWindSpeed = new LineEditRV(randomVariables);
-  // gustWindSpeed->setText("50.0");
-
-  // exposureCategory = new QComboBox();
-  // exposureCategory->addItem("B");
-  // exposureCategory->addItem("C");
-  // exposureCategory->addItem("D");
 
   seed = new QSpinBox();
   seed->setMinimum(1);
@@ -199,13 +198,7 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   //   label->setAlignment(Qt::AlignRight);
   // }
   // parameters->addRow(new QLabel(tr("Gust Wind Speed (mph)")), gustWindSpeed);
-  // gustWindSpeed->setToolTip("3 sec gust speed at height of 10m (33ft)");
-  // Add description label
-  modelDescription =
-      new QLabel(tr("This model provides wave spectra using a "
-                    "JONSWAP empirical distribution. "
-                    "The open-source welib library computes JONSWAP-"
-                    "sampled wave's Morison loads on the structure."));
+
   //model_description_->setStyleSheet("QLabel { color : gray; }");
 
 
@@ -226,9 +219,9 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
 
   // parametersWidget = new QWidget();
   // parametersWidget->setLayout(parametersLayout);
-  QVBoxLayout * plotLayout = new QVBoxLayout(this);
-  QWidget *plotWidget = new QWidget();
-  plotWidget->setLayout(plotLayout);
+  // QVBoxLayout * plotLayout = new QVBoxLayout(this);
+  // QWidget *plotWidget = new QWidget();
+  // plotWidget->setLayout(plotLayout);
 
   thePlot = new SimCenterGraphPlot(QString("Time [s]"),QString("Power Spectral Density [m^2 / Hz]"), 700, 350);
   // Maintain aspect ratio but allow resizing
@@ -236,8 +229,6 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   thePlot->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
   QHBoxLayout* fileFormLayout = new QHBoxLayout();
-
-
 
   dataDir = this->createTextEntry(tr("Wave Spectra (*.csv)"), fileFormLayout, 400, 100);
   dataDir->setMinimumWidth(200);
@@ -262,7 +253,7 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   fileFormLayout->addWidget(showPlotButton, 2);
 
 
-  fileFormLayout->addWidget(thePileImageButton,3 );
+  // fileFormLayout->addWidget(thePileImageButton,3 );
 
   // add empty 
 
@@ -285,7 +276,7 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
 
 
 
-  int plotNumRow = 12;
+  // int plotNumRow = 12;
   // layout->addWidget(plotWidget, plotNumRow++, 0, 1, 5);
 
   theDomainImageButton = new QPushButton();
@@ -300,29 +291,34 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
 
 
 
-  parametersLayout->addWidget(plotWidget);
-  parametersLayout->addWidget(thePlot);
+
   thePlot->hide();
+  thePlot->clear();
+  // thePileFigure->hide();
+  // theDomainImageButton->hide();
+
+  // parametersLayout->addWidget(plotWidget);
+  parametersLayout->addWidget(thePlot);
   connect(chooseFileButton, &QPushButton::clicked, this, [=](){
-        QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"),"", "CSV File (*.csv)");
+        QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"),"", "CSV Files (*.csv)");
         if (!fileName.isEmpty()) {
             dataDir->setText(fileName);
         }
     });
 
-  dataDir->setText(QString(":/WaveSpectra.csv"));
+  // QString spectraFileString = "Examples/hdro-0005/data/WaveSpectra.csv";
+  dataDir->setText("Examples/hdro-0005/data/WaveSpectra.csv");
 
 
-  this->thePlot->hide();
-  this->thePlot->clear();
-  this->updateDistributionPlot();
-  this->thePlot->show();
+  updateDistributionPlot();
+
 
   // parametersLayout->addWidget(plotWidget);
   // parametersLayout->addWidget(theDomainImageButton);
   parametersLayout->addStretch();
-  this->updateDistributionPlot();
-  layout->addWidget(modelDescription);
+  this->updateDistributionPlot(); // show the plot when the widget is created
+  // layout->addWidget(modelDescription);
+  layout->addWidget(scrollArea);
   layout->addLayout(parametersLayout);
   layout->addLayout(seedLayout);
   layout->addWidget(fileFormWidget);
@@ -330,12 +326,17 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   layout->addStretch();
   this->setLayout(layout);
 
+  thePlot->show();
+  theDomainImageButton->show();
+  thePileFigure->show();
 
 
   // Place the plot in the layout
   connect(dataDir,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
-  connect(a,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
-  connect(b,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+  // connect(dataDir, 
+  
+  // connect(a,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+  // connect(b,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
   connect(showPlotButton, &QPushButton::clicked, this, [=](){ thePlot->hide(); this->updateDistributionPlot(); thePlot->show();});
   // connect (spectraFile, &SC_FileEdit::fileChanged, this, [=](){
   //     QString fileName = spectraFile->getFilename();
@@ -416,7 +417,7 @@ bool
 Jonswap::copyFiles(QString &destDir)
 {
   if (dataDir->text().isEmpty()) {
-    dataDir->setText("qrc:/Examples/hdro-0005/data/WaveSpectra.csv");
+    dataDir->setText(":Examples/hdro-0005/data/WaveSpectra.csv");
     this->errorMessage("WARNING: StochasticWave - spectra ideal filename had not been set when trying to call copyFiles(), using default file: " + dataDir->text());
     QFile::copy(dataDir->text(), destDir);
     return true;
@@ -428,7 +429,7 @@ Jonswap::copyFiles(QString &destDir)
   QString timeSeriesFileName = dataDir->text();
   timeSeriesFileName.replace("WaveSpectra.csv", "WaveSpectraGenerated.csv"); // temp fix assuming spectra file name
   if (dataDir->text().isEmpty()) {
-    dataDir->setText("qrc:/Examples/hdro-0005/data/WaveSpectraGenerated.csv");
+    dataDir->setText(":Examples/hdro-0005/data/WaveSpectraGenerated.csv");
     this->errorMessage("WARNING: StochasticWave - spectra generated filename had not been set when trying to call copyFiles(), using default file: " + dataDir->text());
     QFile::copy(dataDir->text(), destDir);
     return true;
@@ -502,13 +503,36 @@ bool readCSVRowSpectra (QTextStream &in, QStringList *row) {
 
 }
 
+void Jonswap::clear() {
+  thePlot->hide();
+  // theDomainImageButton->hide();
+  waterDepth->clear();
+  tidalSLR->clear();
+  stormSurgeSLR->clear();
+  climateChangeSLR->clear();
+  significantWaveHeight->clear();
+  peakPeriod->clear();
+  recorderOriginX->clear();
+  recorderCountZ->clear();
+  timeStep->clear();
+  timeDuration->clear();
+  dragCoefficient->clear();
+  dragArea->clear();
+
+  // seed->setEnabled(false);
+  seed->setValue(500);
+  useSeed->setChecked(false);
+  dataDir->setText("");
+  thePlot->clear();
+  // exposureCategory->setCurrentIndex(0);
+}
 
 void
 Jonswap::updateDistributionPlot() {
     int numSteps = 100;
     int numStepsTimeSeries = 100;
     if (dataDir->text().isEmpty()) {
-        dataDir->setText("qrc:/Examples/hdro-0005/data/WaveSpectra.csv"); // hardcoded for quick fix
+        dataDir->setText(":Examples/hdro-0005/data/WaveSpectra.csv"); // hardcoded for quick fix
         this->errorMessage("ERROR: StochasticWave - data has not been set, using default");
         // return;
     }
@@ -630,8 +654,6 @@ bool Jonswap::outputToJSON(QJsonObject& jsonObject) {
   jsonObject["type"] = "StochasticWave";
   jsonObject["EventClassification"] = "Hydro";
 
-  // jsonObject["type"] = "StochasticWindWittigSinha";
-  // jsonObject["EventClassification"] = "Wind";
 
   waterDepth->outputToJSON(jsonObject, QString("waterDepth"));
   tidalSLR->outputToJSON(jsonObject, QString("tidalSLR"));
@@ -662,6 +684,11 @@ bool Jonswap::outputToJSON(QJsonObject& jsonObject) {
 bool Jonswap::inputFromJSON(QJsonObject& jsonObject) {
   bool result = true;
 
+  // theDomainImageButton->hide();
+  thePlot->hide();
+
+
+
   waterDepth->inputFromJSON(jsonObject, QString("waterDepth"));
   tidalSLR->inputFromJSON(jsonObject, QString("tidalSLR"));
   stormSurgeSLR->inputFromJSON(jsonObject, QString("stormSurgeSLR"));
@@ -676,6 +703,7 @@ bool Jonswap::inputFromJSON(QJsonObject& jsonObject) {
   dragArea->inputFromJSON(jsonObject, QString("dragArea"));
 
 
+
   // gustWindSpeed->inputFromJSON(jsonObject, QString("gustSpeed"));
 
   if (jsonObject.contains("exposureCategory")) {
@@ -684,24 +712,42 @@ bool Jonswap::inputFromJSON(QJsonObject& jsonObject) {
       if (theValue.isString()) {
         QString exposure  = theValue.toString();
         exposureCategory->setCurrentText(exposure);
+        // exposureCategory->setCurrentIndex(exposureCategory->findText(exposure));
       }
   }
 
-  if (jsonObject.value("seed").isString()) {
-    useSeed->setChecked(false);    
-  } else {
-    useSeed->setChecked(true);
-    seed->setValue(jsonObject.value("seed").toInt());    
+  if (jsonObject.contains("seed")) {
+    QJsonValue theValue = jsonObject["seed"];
+    if (theValue.isString()) {
+      useSeed->setChecked(false);
+    } else if (theValue.isDouble()) {
+      useSeed->setChecked(true);
+      seed->setValue(theValue.toInt());
+    }
   }
+  else { 
+    if (jsonObject.value("seed").isString()) {
+      seed->setEnabled(false);    
+    } else {
+      seed->setEnabled(true);
+      seed->setValue(jsonObject.value("seed").toInt());    
+    }
+  }
+  theDomainImageButton->show();
+
+  thePlot->clear();
+  updateDistributionPlot();
+  thePlot->show();
+
 
   return result;
-  }
+}
 
-  void Jonswap::provideSeed(const bool& checked) {
+void Jonswap::provideSeed(const bool& checked) {
   if (checked) {
     seed->setEnabled(true);
   } else {
     seed->setEnabled(false);
     seed->setValue(500);
   }
-  }
+}
