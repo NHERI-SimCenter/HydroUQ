@@ -1,4 +1,4 @@
-version: 3.1.{build}
+version: 4.0.{build}
 
 image:
   - Visual Studio 2019
@@ -26,10 +26,10 @@ for:
     install:
        - uname
        - rm -rf HydroUQ
-       - rm -rf SimCenterBackend
+       - rm -rf SimCenterBackendApplications
        - rm -rf SimCenterCommon
-       - git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
-       - git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
+       - git clone https://github.com/JustinBonus/SimCenterBackendApplications.git
+       - git clone https://github.com/JustinBonus/SimCenterCommon.git
        - git clone https://github.com/JustinBonus/HydroUQ.git
 
     build_script:
@@ -67,7 +67,7 @@ for:
     install:
        - uname
        - rm -rf HydroUQ
-       - rm -rf SimCenterBackend
+       - rm -rf SimCenterBackendApplications
        - rm -rf SimCenterCommon
        - sudo update-alternatives --set gcc /usr/bin/gcc-8
        - sudo apt-get update       
@@ -76,8 +76,8 @@ for:
        - pip install conan==1.60.1
        - conan user
        - conan remote add simcenter https://nherisimcenter.jfrog.io/artifactory/api/conan/simcenter
-       - git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
-       - git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
+       - git clone https://github.com/JustinBonus/SimCenterBackendApplications.git
+       - git clone https://github.com/JustinBonus/SimCenterCommon.git
        - git clone https://github.com/JustinBonus/HydroUQ.git
        
     build_script:
@@ -125,10 +125,10 @@ for:
 
     install:
        - cmd: rm -rf HydroUQ
-       - cmd: rm -rf SimCenterBackend
+       - cmd: rm -rf SimCenterBackendApplications
        - cmd: rm -rf SimCenterCommon
-       - cmd: git clone https://github.com/NHERI-SimCenter/SimCenterBackendApplications.git
-       - cmd: git clone https://github.com/NHERI-SimCenter/SimCenterCommon.git
+       - cmd: git clone https://github.com/JustinBonus/SimCenterBackendApplications.git
+       - cmd: git clone https://github.com/JustinBonus/SimCenterCommon.git
        - cmd: git clone https://github.com/JustinBonus/HydroUQ.git
        - cmd: dir
 
