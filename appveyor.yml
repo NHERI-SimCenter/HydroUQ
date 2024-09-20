@@ -139,7 +139,7 @@ for:
       - cmd: mkdir build
       - cmd: cd build
       - cmd: conan install .. --build missing
-      - cmd: cmake .. -G "Visual Studio 16 2019"
+      - cmd: cmake -DCMAKE_CXX_STANDARD=17-DCMAKE_CXX_STANDARD_REQUIRED=ON -DCMAKE_CXX_EXTENSIONS=OFF .. -G "Visual Studio 16 2019"
       - cmd: cmake --build . --config Release
       - cmd: cmake --install .
       - cmd: cd ..
