@@ -34,7 +34,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmk
+// Written: JustinBonus
 
 #include "TaichiEvent.h"
 #include <QScrollArea>
@@ -43,7 +43,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QJsonObject>
-
+#include <QDebug>
+#include <QString>
 #include <BasicTaichiEvent.h>
 // #include <SettingsTaichiEvent.h>
 // #include <VisualizeTaichiEvent.h>
@@ -59,12 +60,12 @@ TaichiEvent::TaichiEvent(QWidget *parent)
     QWidget     *mainGroup = new QWidget();
     QGridLayout *mainLayout = new QGridLayout();
 
-    QLabel *generalDescriptionLabel = new QLabel("General Event - Taichi High-Performance Numerical Simulation: "
-                                                 "\n --> Specify Settings for simulation. "						 
-                                                 "\n --> Define Bodies that are to be simulated. "
-                                                 "\n --> Specify Boundaries for simulation. "
-                                                 "\n --> Specify Sensors for recording. "
-                                                 "\n --> Visualize scene.");
+    QLabel *generalDescriptionLabel = new QLabel("General Event - Taichi Lang High-Performance Numerical Simulations: "
+                                                 "\n 1. Specify Settings for simulation. "						 
+                                                 "\n 2. Define Bodies that are to be simulated. "
+                                                 "\n 3. Specify Boundaries for simulation. "
+                                                 "\n 4. Specify Sensors for recording. "
+                                                 "\n 5. Visualize scene.");
 
 
 

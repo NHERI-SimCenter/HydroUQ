@@ -37,7 +37,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmk
+// Written: JustinBonus (2024)
 
 #include <SimCenterAppWidget.h>
 
@@ -51,7 +51,7 @@ class BasicTaichiEvent;
 
 class TaichiEvent : public SimCenterAppWidget
 {
-   // Q_OBJECT
+   Q_OBJECT
 public:
    TaichiEvent(QWidget *parent = 0);
    ~TaichiEvent();
