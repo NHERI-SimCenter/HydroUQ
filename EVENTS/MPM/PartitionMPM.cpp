@@ -35,6 +35,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 #include "PartitionMPM.h"
+#include <QString>
 #include <QLabel>
 #include <QComboBox>
 #include <QGroupBox>

@@ -49,7 +49,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QJsonArray>
 
 
-#include <SensorMPM.h>
+#include "SensorMPM.h"
 
 // #include <SC_FileEdit.h>
 #include <SC_TableEdit.h>
