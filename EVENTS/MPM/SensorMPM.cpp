@@ -57,7 +57,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
 SensorMPM::SensorMPM(QWidget *parent)
-  :SimCenterWidget(parent)
+  : SimCenterWidget(parent)
 {
   //
   // This file creates the widgets used to define the sensors for the MPM application

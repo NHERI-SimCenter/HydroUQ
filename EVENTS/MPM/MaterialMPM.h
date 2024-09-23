@@ -114,16 +114,16 @@ private:
   //                        ///< - dim));
   // static constexpr PREC Msqr = 3.423772074299613; // M * M;
 
-  SC_DoubleLineEdit *relativeToPressure = nullptr;
-  SC_DoubleLineEdit *relativeToTemperature = nullptr;
+  // SC_DoubleLineEdit *relativeToPressure = nullptr;
+  // SC_DoubleLineEdit *relativeToTemperature = nullptr;
 
-  SC_DoubleLineEdit *thermalConductivity = nullptr;
-  SC_DoubleLineEdit *specificHeat = nullptr;
+  // SC_DoubleLineEdit *thermalConductivity = nullptr;
+  // SC_DoubleLineEdit *specificHeat = nullptr;
 
-  SC_DoubleLineEdit *porosity = nullptr;
-  SC_DoubleLineEdit *permeability = nullptr;
-  SC_DoubleLineEdit *grainSize = nullptr;
-  SC_DoubleLineEdit *concentration = nullptr;
+  // SC_DoubleLineEdit *porosity = nullptr;
+  // SC_DoubleLineEdit *permeability = nullptr;
+  // SC_DoubleLineEdit *grainSize = nullptr;
+  // SC_DoubleLineEdit *concentration = nullptr;
 };
 
 #endif // MATERIAL_MPM_H

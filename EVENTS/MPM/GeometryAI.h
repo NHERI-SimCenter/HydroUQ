@@ -62,13 +62,13 @@ class QDoubleSpinBox;
 class QLabel;
 class QRadioButton;
 class QString;
-//class QStringList;
+class QStringList;
 
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
 class SC_StringLineEdit;
 class SC_ComboBox;
-class SC_TableEdit;
+// class SC_TableEdit;
 class SC_FileEdit;
 class SC_CheckBox;
 
@@ -78,7 +78,7 @@ class GeometryAI: public SimCenterWidget
 
 public:
     explicit GeometryAI(QWidget *parent = 0);
-    ~GeometryAI(); // override // virtual
+    virtual ~GeometryAI(); // override // virtual
 
     bool inputFromJSON(QJsonObject &jsonObject); // override
     bool outputToJSON(QJsonObject &jsonObject); // override 
@@ -134,8 +134,6 @@ private:
     // QString             *promptPath;
     // QString             *outputPath;
     // QDir                *promptsDir;
-
-public:
 
 };
 

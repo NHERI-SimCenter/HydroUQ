@@ -40,7 +40,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 /**
  *  @author  JustinBonus
  *  @date    1/2024
- *  @version 3.0
+ *  @version 4.0
  *
  *  @section DESCRIPTION
  *
@@ -64,6 +64,7 @@ class SC_ComboBox;
 class SensorMPM : public SimCenterWidget
 {
     Q_OBJECT
+
 public:
     SensorMPM(QWidget *parent = 0);
     virtual ~SensorMPM();

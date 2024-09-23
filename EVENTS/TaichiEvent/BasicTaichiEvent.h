@@ -39,18 +39,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 /**
  *  @author  JustinBonus
- *  @date    7/2024
- *  @version 1.0
+ *  @date    9/2024
+ *  @version 4.0
  *
  *  @section DESCRIPTION
  *
- *  This is the class providing the Basic Tab for the CoupledTaichiEvent
+ *  This is the class providing the Basic Tab for the TaichiEvent
  */
 
 #include <SimCenterWidget.h>
 
 class QJsonObject;
 class SC_FileEdit;
+class QString;
+class QLabel;
+class SimCenterPreferences;
 
 class BasicTaichiEvent : public SimCenterWidget
 {
@@ -61,12 +64,12 @@ public:
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
-
+    QString pyScriptsPath(void);
 signals:
 
 private:
-  SC_FileEdit *theBasicPyScript;
-  SC_FileEdit *theSurfaceFile;
+  SC_FileEdit *theBackendScript;
+  SC_FileEdit *theSimulationScript;
 };
 
 #endif // BASIC_TAICHI_EVENT_H

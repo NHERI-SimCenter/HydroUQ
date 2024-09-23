@@ -55,8 +55,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_CheckBox.h>
 
 
-MaterialMPM::MaterialMPM(QWidget *parent)
-  :SimCenterWidget(parent)
+MaterialMPM::MaterialMPM(QWidget *parent) : SimCenterWidget(parent)
 {
 
   // --- Material
