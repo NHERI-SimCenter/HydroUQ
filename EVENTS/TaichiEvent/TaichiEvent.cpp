@@ -46,11 +46,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QDebug>
 #include <QString>
 #include <BasicTaichiEvent.h>
-// #include <SettingsTaichiEvent.h>
-// #include <VisualizeTaichiEvent.h>
-// #include <BodiesTaichiEvent.h>
-// #include <BoundariesTaichiEvent.h>
-// #include <OutputsTaichiEvent.h>
+#include <CelerisTaichiEvent.h>
 
 TaichiEvent::TaichiEvent(QWidget *parent)
     : SimCenterAppWidget(parent)
@@ -73,17 +69,9 @@ TaichiEvent::TaichiEvent(QWidget *parent)
 
     QTabWidget *theTabWidget = new QTabWidget();
     inputBasic = new BasicTaichiEvent();
+    inputCeleris = new CelerisTaichiEvent();
     theTabWidget->addTab(inputBasic, "Basic");
-    // inputSettings = new SettingsTaichiEvent();
-    // theTabWidget->addTab(inputSettings, "Settings");
-    // inputBodies = new BodiesTaichiEvent();
-    // theTabWidget->addTab(inputBodies, "Bodies");
-    // inputBoundaries = new BoundariesTaichiEvent();
-    // theTabWidget->addTab(inputBoundaries, "Boundaries");
-    // inputOutputs = new OutputsTaichiEvent();
-    // theTabWidget->addTab(inputOutputs, "Outputs");
-    // inputVisualize = new VisualizeTaichiEvent();
-    // theTabWidget->addTab(inputVisualize, "Visualization");    
+    theTabWidget->addTab(inputCeleris, "Celeris");
     mainLayout->addWidget(theTabWidget, 1, 0);
     
     
@@ -119,47 +107,19 @@ bool TaichiEvent::inputFromJSON(QJsonObject &jsonObject)
 {
   this->clear();
   
-  /*
-    if (jsonObject.contains("buildingWidth")) {
-    QJsonValue theValue = jsonObject["buildingWidth"];
-    QString selection = theValue.toString();
-    buildingWidthWidget->setText(selection);
-    } else
-    return false;
-  */
-  
   inputBasic->inputFromJSON(jsonObject);
-  // inputSettings->inputFromJSON(jsonObject);
-  // inputBodies->inputFromJSON(jsonObject);
-  // inputBoundaries->inputFromJSON(jsonObject);
-  // inputSensors->inputFromJSON(jsonObject);
-  // inputOutputs->inputFromJSON(jsonObject);
-  // inputVisualize->inputFromJSON(jsonObject);
-  
+  inputCeleris->inputFromJSON(jsonObject);
+
   return true;
 }
 
 bool TaichiEvent::outputToJSON(QJsonObject &jsonObject)
 {
-  jsonObject["EventClassification"]="Hydro";
+  jsonObject["EventClassification"] = "Hydro";
   jsonObject["Application"] = "TaichiEvent";
 
   inputBasic->outputToJSON(jsonObject); 
-  // inputSettings->outputToJSON(jsonObject);
-  // inputBodies->outputToJSON(jsonObject);
-  // inputBoundaries->outputToJSON(jsonObject);
-  // inputSensors->outputToJSON(jsonObject);
-  // inputOutputs->outputToJSON(jsonObject);
-  // inputVisualize->outputToJSON(jsonObject);
-  
-  /*
-    if (jsonObject.contains("buildingWidth")) {
-    QJsonValue theValue = jsonObject["buildingWidth"];
-    QString selection = theValue.toString();
-    buildingWidthWidget->setText(selection);
-    } else
-    return false;
-  */
+  inputCeleris->outputToJSON(jsonObject);
   
   return true;
 }
@@ -171,7 +131,7 @@ bool TaichiEvent::outputAppDataToJSON(QJsonObject &jsonObject) {
     // and all data to be used in ApplicationData
     //
 
-    jsonObject["EventClassification"]="Hydro";
+    jsonObject["EventClassification"] = "Hydro";
     jsonObject["Application"] = "TaichiEvent";
     QJsonObject dataObj;
     jsonObject["ApplicationData"] = dataObj;
@@ -187,34 +147,43 @@ bool TaichiEvent::inputAppDataFromJSON(QJsonObject &jsonObject) {
 
 bool TaichiEvent::copyFiles(QString &destDir) {
   if (inputBasic->copyFiles(destDir) == false) {
-    qDebug() << "TaichiEvent::copyFiles: failed to copy basic files";
+    qDebug() << "BasicTaichiEvent::copyFiles: failed to copy basic files";
     return false;
   }
-  return inputBasic->copyFiles(destDir);
-
-  // Careful with combining these two functions, as the second one will not be called due to return above
-  // if (inputBoundaries->copyFiles(destDir) == false)
-  //   return false;
-  // return inputBodies->copyFiles(destDir);
- }
+  if (inputCeleris->copyFiles(destDir) == false) {
+    qDebug() << "CelerisTaichiEvent::copyFiles: failed to copy celeris files";
+    return false;
+  }
+  return true;
+}
 
 bool TaichiEvent::supportsLocalRun() {
-  // TODO: Check if the selected model supports local run
+
+  //
+  // Allows use on local machines with Taichi Lang installed (python -m pip install taichi)
+  //
+
   return true;
 }
 
 bool TaichiEvent::outputCitation(QJsonObject &jsonObject) {
   QJsonObject citeTaichi;
-  // QJsonObject citeBodies;
-  // QJsonObject citeBoundaries;
+  QJsonObject citeCeleris;
+
   citeTaichi["citation"] = "Yuanming Hu (2019). Taichi Lang.";
   citeTaichi["description"] = "HydroUQ applied Taichi for two-way coupled CFD-FEA, developed in this thesis as the Taichi software. It couples Boundaries and Bodies for the simulation of civil engineering structures subject to multi-hazards via the PreCICE coupling library.";
-  // citeBoundaries["citation"] = "Greenshields, Christopher. (2023). Boundaries v11 User Guide. Boundaries Foundation.";
-  // citeBoundaries["description"] = "HydroUQ uses Boundaries for high-quality 3D Navier-Stokes solutions. Boundaries is a free, open-source software package for computational fluid dynamics (CFD) that is widely used in academia and industry. It is developed by the Boundaries Foundation, which is a non-profit organization that promotes the use of open-source software in engineering and science.";
-  // citeBodies["citation"] = "McKenna, F., Scott, M. H., and Fenves, G. L. (2010) “Nonlinear finite-element analysis software architecture using object composition.” Journal of Computing in Civil Engineering, 24(1):95-107.";
-  // citeBodies["description"] = "HydroUQ incorporates Bodies for defining structural models in the SimCenter workflow. Bodies is a software framework for developing applications to simulate the performance of structural and geotechnical systems subjected to earthquakes. It is developed by the Pacific Earthquake Engineering Research Center (PEER) at the University of California, Berkeley.";
+  
+  citeCeleris["title"] = "Celeris Base: An interactive and immersive Boussinesq-type nearshore wave simulation software";
+  citeCeleris["citation"] = "Sasan Tavakkol and Patrick Lynett (2020). Celeris Base: An interactive and immersive Boussinesq-type nearshore wave simulation software.";
+  citeCeleris["description"] = "Celeris Advent enabled researchers and engineers for the first time to simulate nearshore waves with a Boussinesq-type model, faster than real-time and in an interactive environment. However, its development platform and implementation complexity hindered researchers from developing it further and made adding new features to the software a daunting task. The software used graphics shaders to solve scientific equations which could be confusing for many. The visualization environment was wired from scratch which made it very difficult to add features such as virtual reality. Solution method: A new software is developed completely from scratch following Celeris Advent, called Celeris Base. This software uses the same hybrid finite volume–finite difference scheme to solve the extended Boussinesq equations, but using a variant of shaders called compute shaders, removing possible barriers for other researchers to understand the code and develop it further. The software is developed in Unity3D, a popular game engine with a large and helpful community as well as thousands of ready to use plugins. Celeris Base is equipped with virtual reality and is the first nearshore simulation software to provide this feature.";
+  citeCeleris["doi"] = "https://doi.org/10.1016/j.cpc.2019.106966.";
+  citeCeleris["license"] = "MIT License";
+  citeCeleris["keywords"] = "Celeris; Boussinesq; Wave modeling; Immersive; Interactive; GPU";
+  citeCeleris["year"] = "2020";
+  citeCeleris["author"] = "Sasan Tavakkol and Patrick Lynett";
+  citeCeleris["journal"] = "Computer Physics Communications";
+
   jsonObject["Taichi"] = citeTaichi;
-  // jsonObject["MLS-MPM"] =  citeBoundaries;
-  // jsonObject["Bodies"] =  citeBodies;
+  jsonObject["Celeris"] =  citeCeleris;
   return true;
 }
