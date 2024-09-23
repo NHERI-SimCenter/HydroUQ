@@ -1,5 +1,5 @@
-#ifndef BASIC_TAICHI_EVENT_H
-#define BASIC_TAICHI_EVENT_H
+#ifndef CELERIS_TAICHI_EVENT_H
+#define CELERIS_TAICHI_EVENT_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2024, The Regents of the University of California (Regents).
@@ -42,9 +42,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  *  @date    9/2024
  *  @version 4.0
  *
- *  @section DESCRIPTION
+ *  @section CelerisTaichiEvent simulates a hazard event (EVT) via the Celeris
+ *  wave solver (nonlinear shallow water and Boussinesq equations) within the
+ *  Taichi Lang framework. Taichi Lang is a domain-specific language for high-
+ *  performance computation which abstracts the underlying hardware and data-
+ *  parallelism in a Python-like syntax. The Celeris wave solver is a high-
+ *  performance, open-source, and parallelized wave solver for simulating 
+ *  nonlinear shallow water and Boussinesq equations. The Celeris wave solver
+ *  includes various man-made and natural wave obstacles, such as mangroves,
+ *  seawalls, and islands, and can simulate wave propagation and runup. The
+ *  application includes sensors/recorders for measuring wave height, velocity,
+ *  etc., and can visualize said quantities in near or faster-than-real-time.
+ * 
+ *  
  *
- *  This is the class providing the Basic Tab for the TaichiEvent
+ *  This is the class providing the Celeris Tab for the TaichiEvent
  */
 
 #include <SimCenterWidget.h>
@@ -55,12 +67,12 @@ class QString;
 class QLabel;
 class SimCenterPreferences;
 
-class BasicTaichiEvent : public SimCenterWidget
+class CelerisTaichiEvent : public SimCenterWidget
 {
     // Q_OBJECT
 public:
-    BasicTaichiEvent(QWidget *parent = 0);
-    virtual ~BasicTaichiEvent();
+    CelerisTaichiEvent(QWidget *parent = 0);
+    virtual ~CelerisTaichiEvent();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
@@ -68,9 +80,13 @@ public:
 signals:
 
 private:
-  SC_FileEdit *theBackendScript;
+  SC_FileEdit *theCelerisPyScript;
   SC_FileEdit *theSimulationScript;
+  SC_FileEdit *theConfigurationFile;
+  SC_FileEdit *theBathymetryFile;
+  SC_FileEdit *theWaveFile;
+  SC_FileEdit *theSensorScript;
 };
 
-#endif // BASIC_TAICHI_EVENT_H
+#endif // CELERIS_TAICHI_EVENT_H
 

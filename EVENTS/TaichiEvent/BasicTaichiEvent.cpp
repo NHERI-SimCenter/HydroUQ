@@ -54,21 +54,20 @@ BasicTaichiEvent::BasicTaichiEvent(QWidget *parent)
   QString defaultWorkflowScript = pyScriptsPath() + QDir::separator() + defaultWorkflowFilename;
   QString defaultSimulationScript = pyScriptsPath() + QDir::separator() + defaultSimulationFilename;
 
-  theBasicPyScript = new SC_FileEdit("basicPyScript");
-  theSurfaceFile = new SC_FileEdit("interfaceSurface");
-  theBasicPyScript->setToolTip("Workflow backend script (*.py) which launches the TaichiEvent simulation script. Handles the inputs and outputs for coupling Taichi Lang to the SimCenter workflow.");
-  theSurfaceFile->setToolTip("Simulation script (*.py) which defines the TaichiEvent numerical simulation program. This script is launched from the workflow backend script in the SimCenter workflow.");
-  theBasicPyScript->setFilename(defaultWorkflowScript);
-  theSurfaceFile->setFilename(defaultSimulationScript);
+  theBackendScript = new SC_FileEdit("basicPyScript");
+  theSimulationScript = new SC_FileEdit("interfaceSurface");
+  theBackendScript->setToolTip("Workflow backend script (*.py) which launches the TaichiEvent simulation script. Handles the inputs and outputs for coupling Taichi Lang to the SimCenter workflow.");
+  theSimulationScript->setToolTip("Simulation script (*.py) which defines the TaichiEvent numerical simulation program. This script is launched from the workflow backend script in the SimCenter workflow.");
+  theBackendScript->setFilename(defaultWorkflowScript);
+  theSimulationScript->setFilename(defaultSimulationScript);
 
   QGridLayout *theLayout = new QGridLayout();
-  theLayout->addWidget(new QLabel("Workflow Backend Script"),0,0);
-  theLayout->addWidget(theBasicPyScript, 0,1);
-  theLayout->addWidget(new QLabel("Taichi Lang Simulation Script"),1,0);
-  theLayout->addWidget(theSurfaceFile, 1,1);
+  theLayout->addWidget(new QLabel("Workflow Backend Script (*.py)"),0,0);
+  theLayout->addWidget(theBackendScript, 0,1);
+  theLayout->addWidget(new QLabel("Taichi Lang Simulation Script (*.py)"),1,0);
+  theLayout->addWidget(theSimulationScript, 1,1);
   theLayout->setRowStretch(2,1);
   this->setLayout(theLayout);
-    
 }
 
 BasicTaichiEvent::~BasicTaichiEvent()
@@ -79,16 +78,16 @@ BasicTaichiEvent::~BasicTaichiEvent()
 bool
 BasicTaichiEvent::outputToJSON(QJsonObject &jsonObject)
 {
-  theBasicPyScript->outputToJSON(jsonObject);
-  theSurfaceFile->outputToJSON(jsonObject);  
+  theBackendScript->outputToJSON(jsonObject);
+  theSimulationScript->outputToJSON(jsonObject);  
   return true;
 }
 
 bool
 BasicTaichiEvent::inputFromJSON(QJsonObject &jsonObject)
 {
-  theBasicPyScript->inputFromJSON(jsonObject);
-  theSurfaceFile->inputFromJSON(jsonObject);    
+  theBackendScript->inputFromJSON(jsonObject);
+  theSimulationScript->inputFromJSON(jsonObject);    
   return true;
 }
 
@@ -107,15 +106,15 @@ BasicTaichiEvent::copyFiles(QString &destDir)
   QString defaultSimulationFilename = "pbf2d.py";
   QString defaultWorkflowScript = pyScriptsPath() + QDir::separator() + defaultWorkflowFilename;
   QString defaultSimulationScript = pyScriptsPath() + QDir::separator() + defaultSimulationFilename;
-  if (theBasicPyScript->copyFile(destDir) != true) {
-    theBasicPyScript->setFilename(defaultWorkflowScript);
-    if (theBasicPyScript->copyFile(destDir) != true) {
+  if (theBackendScript->copyFile(destDir) != true) {
+    theBackendScript->setFilename(defaultWorkflowScript);
+    if (theBackendScript->copyFile(destDir) != true) {
       return false;
     }
   }
-  if (theSurfaceFile->copyFile(destDir) != true) {
-    theSurfaceFile->setFilename(defaultSimulationScript);
-    if (theSurfaceFile->copyFile(destDir) != true) {
+  if (theSimulationScript->copyFile(destDir) != true) {
+    theSimulationScript->setFilename(defaultSimulationScript);
+    if (theSimulationScript->copyFile(destDir) != true) {
       return false;
     }
   }
