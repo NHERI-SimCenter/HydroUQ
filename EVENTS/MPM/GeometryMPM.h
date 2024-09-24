@@ -60,7 +60,7 @@ class SC_TableEdit;
 class SC_FileEdit;
 class SC_CheckBox;
 
-class GeometryAI; // Provide optional AI geometry generation, e.g. with point-e library and various backend scripts - Justin Bonus
+// class GeometryAI; // Provide optional AI geometry generation, e.g. with point-e library and various backend scripts - Justin Bonus
 
 class GeometryMPM : public SimCenterWidget
 {

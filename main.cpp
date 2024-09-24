@@ -14,7 +14,7 @@
 #include <WorkflowAppHydroUQ.h>
 #include <QCoreApplication>
 
-
+#include <QString>
 #include <QTime>
 #include <QTextStream>
 #include <QOpenGLWidget>
@@ -24,16 +24,20 @@
 
 #include <GoogleAnalytics.h>
 
-#include <QSvgWidget>
 #include <QStatusBar>
 #include <QWebEngineView>
 // #include <QtWebEngine>
+// #include <QWebEngineView>
+// #include <QWebEngineSettings>
+// #include <QWebEngineProfile>
+// #include <QQmlApplicationEngine>
 
-//#include <QtGlobal> // for for Q_OS_WIN, etc.
-//#include <QSurfaceFormat>
 // #include <SimCenterPreferences.h>
-#include <stdlib.h>
+// #include <QSurfaceFormat>
 
+#include <QtGlobal>
+#include <stdio.h>
+#include <stdlib.h>
 
 
 #ifdef ENDLN
@@ -47,9 +51,11 @@
 #endif
 
 
-static QString logFilePath;
-static bool logToFile = false;
-
+// Set up logging of output messages for user debugging
+static QString logFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
+      + QDir::separator() + QCoreApplication::applicationName();
+constexpr bool logToFileDefault = false;
+// static bool logToFile; // To be changed to true if the app is run in Qt Creator, using QTDIR env variable as proxy
 
  // customMessgaeOutput code taken from web:
  // https://stackoverflow.com/questions/4954140/how-to-redirect-qdebug-qwarning-qcritical-etc-output
@@ -63,6 +69,16 @@ void customMessageOutput(QtMsgType type, const QMessageLogContext &context, cons
     QString logLevelName = msgLevelHash[type];
     QByteArray logLevelMsg = logLevelName.toLocal8Bit();
 
+    // TODO: Better way to check if the app is run in Qt Creator than QTDIR, as its not guaranteed to only belong to Qt Creator
+    static bool logToFile; // Compiler should default static bool init to 0. Changes to true if the app is run in Qt Creator, using QTDIR env variable as proxy
+    static bool logToStdErr; // If true, output to  stderr
+    QByteArray envVar = qgetenv("QTDIR"); // check if the app is run in Qt Creator
+    if (envVar.isEmpty()) {
+        logToFile = true;
+    } else {
+        logToFile = false;
+    }
+    
     if (logToFile) {
         QString txt = QString("%1 %2: %3 (%4)").arg(formattedTime, logLevelName, msg,  context.file);
         QFile outFile(logFilePath);
@@ -70,10 +86,13 @@ void customMessageOutput(QtMsgType type, const QMessageLogContext &context, cons
         QTextStream ts(&outFile);
         ts << txt << Qt::endl;
         outFile.close();
-    } else {
+    } 
+    
+    if (logToStdErr || (!logToFile && !logToStdErr)) {
         fprintf(stderr, "%s %s: %s (%s:%u, %s)\n", formattedTimeMsg.constData(), logLevelMsg.constData(), localMsg.constData(), context.file, context.line, context.function);
         fflush(stderr);
     }
+
 
     if (type == QtFatalMsg)
          abort();
@@ -117,35 +136,34 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("4.0.0");
+    QCoreApplication::setApplicationVersion("4.0.1");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     Q_INIT_RESOURCE(images);
     Q_INIT_RESOURCE(images1);
     // Q_INIT_RESOURCE(resources);
-    
     // Q_INIT_RESOURCE(Resources);
 
+    //
     // Set up logging of output messages for user debugging
-    logFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
-      + QDir::separator() + QCoreApplication::applicationName();
+    //
 
-    // Make sure tool dir exists in Documentss folder
+    if (logFilePath.isEmpty()) { 
+        qDebug() << QString("Could not find Documents Location: ") << logFilePath;
+        logFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
+                      + QDir::separator() + QCoreApplication::applicationName();
+    }
     QDir dirWork(logFilePath);
-    if (!dirWork.exists())
+    if (!dirWork.exists()) {
         if (!dirWork.mkpath(logFilePath)) {
             qDebug() << QString("Could not create Working Dir: ") << logFilePath; 
+            qDebug() << QString("May relate to permissions or disk space for the path... rerun with sudo or as an admin...");
         }
-
-    // full path to debug.log file
+    }
     logFilePath = logFilePath + QDir::separator() + QString("debug.log"); 
-
-
-    // remove old log file
     QFile debugFile(logFilePath);
     debugFile.remove();
 
-    QByteArray envVar = qgetenv("QTDIR"); // check if the app is run in Qt Creator
 
     // Issues with web engine (notably with hardware acceleration) are
     // sometimes resolved by setting various flags.
@@ -153,8 +171,15 @@ int main(int argc, char *argv[])
     // qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu --no-sandbox");
     // qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--ignore-gpu-blacklist --ignore-gpu-blocklist  --enable-gpu-rasterization --use-gl=egl");
     // qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--ignore-gpu-blacklist --ignore-gpu-blocklist  --enable-gpu-rasterization");
-    if (envVar.isEmpty())
-        logToFile = true;
+    // logToFile = logToFileDefault;
+    // if constexpr (false) {
+    //     QByteArray envVar = qgetenv("QTDIR"); // check if the app is run in Qt Creator
+    //     if (envVar.isEmpty()) {
+    //         logToFile = true;
+    //     } else {
+    //         logToFile = false;
+    //     }
+    // }
 
     qInstallMessageHandler(customMessageOutput);
     // qDebug() << "logFile: " << logFilePath;
@@ -221,17 +246,41 @@ int main(int argc, char *argv[])
 
     w.setFeedbackURL(messageBoardURL);
 
+    //
     // Move remote interface to a thread
+    //
+
     QThread *thread = new QThread(); 
     theRemoteService->moveToThread(thread); 
-    QWidget::connect(thread, SIGNAL(finished()), theRemoteService, SLOT(deleteLater()));
-    QWidget::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+    // QWidget::connect(thread, SIGNAL(finished()), theRemoteService, SLOT(deleteLater()));
+    // QWidget::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+
+    // https://wiki.qt.io/QThreads_general_usage
+    // TODO, error handling
+    // connect( worker, &TapisV3::error, this, &MyClass::errorString);
+    // connect( thread, &QThread::started, theRemoteService, &TapisV3::process);
+    // connect( theRemoteService, &TapisV3::finished, thread, &QThread::quit);
+    // connect( theRemoteService, &TapisV3::finished, theRemoteService, &TapisV3::deleteLater);
+    // connect( thread, &QThread::finished, thread, &QThread::deleteLater);
+    // connect( theRemoteService, SLOT(error()), this, SLOT(errorString())); // TODO: make slot for error handling, should it be in the main window?
+    QObject::connect(thread, SIGNAL(started()), theRemoteService, SLOT(process()));
+    QObject::connect(theRemoteService, SIGNAL(finished()), thread, SLOT(quit())); 
+    QObject::connect(theRemoteService, SIGNAL(finished()), theRemoteService, SLOT(deleteLater())); // ? is finished() a signal of theRemoteService?
+    // QObject::connect(thread, SIGNAL(finished()), theRemoteService, SLOT(deleteLater())); 
+    QObject::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();
 
-    // Show the main window, set styles & start the event loop
-    w.show();
-    w.statusBar()->showMessage("Ready", 5000);
+    constexpr int startupDelay = 6000; // milliseconds
 
+    //
+    // Show the main window, set styles & start the event loop
+    //
+    
+    // https://www.qtcentre.org/threads/62377-Best-place-for-setting-stylesheet
+	// Moving this to the place after MainWindow creation fixes unwanted padding,
+	// but may produce really weird results on Mac OS X when styling combobox drop-down area.
+    // w.show();
+    // w.statusBar()->showMessage("Ready", startupDelay);
 
 #ifdef Q_OS_WIN
     QFile file(":/styleCommon/stylesheetWIN.qss");
@@ -247,14 +296,16 @@ int main(int argc, char *argv[])
 #endif
 #endif
 
-
-    // Show error message
     if (file.open(QFile::ReadOnly)) {
         a.setStyleSheet(file.readAll());
+        qDebug() << "Stylesheet loaded: " << file.fileName();
         file.close();
     } else {
-        qDebug() << "could not open stylesheet";
+        qDebug() << "Could not open stylesheet: " << file.fileName();
     }
+
+    w.show();
+    w.statusBar()->showMessage("Ready", startupDelay);
 
 
 #ifdef _SC_RELEASE
@@ -264,7 +315,7 @@ int main(int argc, char *argv[])
     GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
     GoogleAnalytics::CreateSessionId();
     GoogleAnalytics::StartSession();
-    // GoogleAnalytics::SetScreenName("HydroUQ");
+
     // Opening a QWebEngineView and using github to get app geographic usage
     QWebEngineView view;
     // view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
@@ -281,6 +332,7 @@ int main(int argc, char *argv[])
     // view.close();
     // view.deleteLater();    
     view.hide();
+
 #endif
     
     // Result of execution
@@ -288,11 +340,19 @@ int main(int argc, char *argv[])
 
     // On done with event loop, logout & stop the thread
     theRemoteService->logout();
-    thread->quit();
-    
+
+    // Clean up
+    theRemoteService = nullptr;
+    theInputApp = nullptr; 
+    thread = nullptr;
+    // thread->deleteLater();
+
+
     // Close Google Analytics session
-    // GoogleAnalytics::SetAPISecret("");
-    // GoogleAnalytics::SetMeasurementId("");
+    // GoogleAnalytics::SetClientId("");
+    // GoogleAnalytics::SetSessionId("");
+    GoogleAnalytics::SetMeasurementId("");
+    GoogleAnalytics::SetAPISecret("");
     GoogleAnalytics::EndSession();
 
     // Complete

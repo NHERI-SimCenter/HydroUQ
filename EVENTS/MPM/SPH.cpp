@@ -1093,7 +1093,7 @@ bool SPH::copyFiles(QString &destDir) {
 
     if (result == false) {
         QString errorMessage; errorMessage = "SPH - failed to copy file: " + caseDir() + " to: " + destDir;
-        emit sendFatalMessage(errorMessage);
+        fatalMessage(errorMessage);
         qDebug() << errorMessage;
     }
 

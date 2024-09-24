@@ -37,21 +37,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: fmk
+// Written: JustinBonus (2024)
 
 #include <SimCenterAppWidget.h>
 
 class BasicTaichiEvent;
-// class SettingsTaichiEvent;
-// class BodiesTaichiEvent;
-// class BoundariesTaichiEvent;
-// class SensorsTaichiEvent;
-// class OutputsTaichiEvent;
-// class VisualizeTaichiEvent;
+class CelerisTaichiEvent;
 
 class TaichiEvent : public SimCenterAppWidget
 {
-   // Q_OBJECT
+   Q_OBJECT
 public:
    TaichiEvent(QWidget *parent = 0);
    ~TaichiEvent();
@@ -70,13 +65,8 @@ public slots:
    void clear(void);
 
 private:
-  BasicTaichiEvent    *inputBasic;
-//   SettingsTaichiEvent  *inputSettings;
-//   BodiesTaichiEvent    *inputBodies;
-//   BoundariesTaichiEvent    *inputBoundaries;
-//   SensorsTaichiEvent   *inputSensors;
-//   OutputsTaichiEvent   *inputOutputs; // a great name!
-//   VisualizeTaichiEvent *inputVisualize;
+   BasicTaichiEvent    *inputBasic;
+   CelerisTaichiEvent  *inputCeleris;
 };
 
 #endif // TAICHI_EVENT_H

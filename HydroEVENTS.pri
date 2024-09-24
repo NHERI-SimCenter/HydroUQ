@@ -66,6 +66,7 @@ SOURCES += \
     $$PWD/EVENTS/MPM/ExecutionSPH.cpp \
     $$PWD/EVENTS/TaichiEvent/TaichiEvent.cpp \
     $$PWD/EVENTS/TaichiEvent/BasicTaichiEvent.cpp \
+    $$PWD/EVENTS/TaichiEvent/CelerisTaichiEvent.cpp \
     $$PWD/EVENTS/Celeris/Celeris.cpp \
     $$PWD/EVENTS/Celeris/WebGPU.cpp \
     $$PWD/EVENTS/Celeris/volumetric.cpp \
@@ -126,6 +127,7 @@ HEADERS += \
     $$PWD/EVENTS/MPM/ExecutionSPH.h \
     $$PWD/EVENTS/TaichiEvent/TaichiEvent.h \
     $$PWD/EVENTS/TaichiEvent/BasicTaichiEvent.h \
+    $$PWD/EVENTS/TaichiEvent/CelerisTaichiEvent.h \
     $$PWD/EVENTS/Celeris/Celeris.h \
     $$PWD/EVENTS/Celeris/WebGPU.h \
     $$PWD/EVENTS/Celeris/volumetric.h \

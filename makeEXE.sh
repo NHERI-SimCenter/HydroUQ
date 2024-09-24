@@ -8,6 +8,13 @@ mkdir -p build
 cd build
 rm -fr Hydro_UQ.app
 
+#
+# Use c++17 standard so we have if constexpr, etc.
+# TODO: Make sure there aren't old 'make' and conan files laying around
+#
+
+CXXFLAGS="—std=c++17:$CXXFLAGS"
+
 # conan install
 conan install .. --build missing
 status=$?
@@ -27,7 +34,7 @@ then
 fi
 
 # make
-make
+make -j5
 status=$?;
 if [[ $status != 0 ]]
 then

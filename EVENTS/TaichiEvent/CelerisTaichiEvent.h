@@ -1,8 +1,8 @@
-#ifndef SENSORS_MPM_H
-#define SENSORS_MPM_H
+#ifndef CELERIS_TAICHI_EVENT_H
+#define CELERIS_TAICHI_EVENT_H
 
 /* *****************************************************************************
-Copyright (c) 2016-2023, The Regents of the University of California (Regents).
+Copyright (c) 2016-2024, The Regents of the University of California (Regents).
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without 
@@ -39,43 +39,54 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 /**
  *  @author  JustinBonus
- *  @date    1/2024
- *  @version 3.0
+ *  @date    9/2024
+ *  @version 4.0
  *
- *  @section DESCRIPTION
+ *  @section CelerisTaichiEvent simulates a hazard event (EVT) via the Celeris
+ *  wave solver (nonlinear shallow water and Boussinesq equations) within the
+ *  Taichi Lang framework. Taichi Lang is a domain-specific language for high-
+ *  performance computation which abstracts the underlying hardware and data-
+ *  parallelism in a Python-like syntax. The Celeris wave solver is a high-
+ *  performance, open-source, and parallelized wave solver for simulating 
+ *  nonlinear shallow water and Boussinesq equations. The Celeris wave solver
+ *  includes various man-made and natural wave obstacles, such as mangroves,
+ *  seawalls, and islands, and can simulate wave propagation and runup. The
+ *  application includes sensors/recorders for measuring wave height, velocity,
+ *  etc., and can visualize said quantities in near or faster-than-real-time.
+ * 
+ *  
  *
- *  This is the class providing the Sensors Tab for MPM
+ *  This is the class providing the Celeris Tab for the TaichiEvent
  */
 
 #include <SimCenterWidget.h>
-#include <QVector>
-class QJsonObject;
-class QJsonArray;
-// class SC_FileEdit;
-class SC_ComboBox;
-class SC_TableEdit;
-class SC_DoubleLineEdit;
 
-class SensorMPM;
-class SensorsMPM : public SimCenterWidget
+class QJsonObject;
+class SC_FileEdit;
+class QString;
+class QLabel;
+class SimCenterPreferences;
+
+class CelerisTaichiEvent : public SimCenterWidget
 {
-    Q_OBJECT
+    // Q_OBJECT
 public:
-    SensorsMPM(QWidget *parent = 0);
-    virtual ~SensorsMPM();
+    CelerisTaichiEvent(QWidget *parent = 0);
+    virtual ~CelerisTaichiEvent();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
-    void clear(void);
+    QString pyScriptsPath(void);
 signals:
 
 private:
-    int numReserveTabs = 8;
-    int numAddedTabs = 0;
-    // QVector<SimCenterWidget*> addedSensor {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
-
-    QVector<SensorMPM*> addedSensor {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+  SC_FileEdit *theCelerisPyScript;
+  SC_FileEdit *theSimulationScript;
+  SC_FileEdit *theConfigurationFile;
+  SC_FileEdit *theBathymetryFile;
+  SC_FileEdit *theWaveFile;
+  SC_FileEdit *theSensorScript;
 };
 
-#endif // SENSORS_MPM_H
+#endif // CELERIS_TAICHI_EVENT_H
 

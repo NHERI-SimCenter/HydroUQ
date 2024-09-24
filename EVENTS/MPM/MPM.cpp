@@ -1798,7 +1798,7 @@ bool MPM::copyFiles(QString &destDir) {
     if (!result) 
     {
         QString errorMessage; errorMessage = "MPM - failed to copy files in: " + caseDir() + " to: " + destDirCase;
-        emit sendFatalMessage(errorMessage);
+        fatalMessage(errorMessage);
         qDebug() << errorMessage;
         return false;
     }

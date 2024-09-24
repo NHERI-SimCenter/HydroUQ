@@ -51,6 +51,7 @@
 // #include <QtMath>
 #include <QVector3D>
 
+
 // #include <QThread>
 #include <QProcess>
 
@@ -68,6 +69,7 @@
 #include <Qt3DCore/QEntity>
 #include <QQuaternion>
 #include <Qt3DExtras/QOrbitCameraController>
+
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <Qt3DCore/QBuffer>
 #include <Qt3DCore/QAttribute>

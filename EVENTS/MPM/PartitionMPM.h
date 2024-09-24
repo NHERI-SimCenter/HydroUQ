@@ -51,6 +51,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 class QJsonObject;
 class QJsonArray;
+class QString;
+class QLabel;
 class SC_DoubleLineEdit;
 class SC_IntLineEdit;
 class SC_StringLineEdit;

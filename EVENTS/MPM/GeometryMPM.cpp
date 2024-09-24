@@ -66,7 +66,8 @@ GeometryMPM::GeometryMPM(QWidget *parent)
 
   QGridLayout *layout = new QGridLayout();
   
-  QStringList bodyList; bodyList << "Fluid" << "Debris" << "Structure" << "Custom" << "Generative AI";
+  QStringList bodyList; 
+  bodyList << "Fluid" << "Debris" << "Structure" << "Custom" << "Generative AI";
   bodyPreset = new SC_ComboBox("body_preset", bodyList);
   layout->addWidget(new QLabel("Body Preset"), numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(bodyPreset,numRow++,1, 1, 3);
