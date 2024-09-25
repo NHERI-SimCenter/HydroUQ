@@ -344,7 +344,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   paddleWidget = new QWidget();
   paddleWidget->setLayout(paddleLayout);
   // /**
-  QHBoxLayout * plotLayout = new QHBoxLayout(paddleWidget);
+  QHBoxLayout * plotLayout = new QHBoxLayout();
   QWidget *plotWidget = new QWidget();
   plotWidget->setLayout(plotLayout);
   // **/
