@@ -46,6 +46,8 @@ WaveDigitalFlume::WaveDigitalFlume(RandomVariablesContainer *theRV, QWidget *par
     : SimCenterAppWidget(parent), theRemoteService(NULL)
     , ui(new Ui::WaveDigitalFlume)
 {
+  theSettings = 0;
+  
     // Start the UI
     ui->setupUi(this);
 
@@ -70,7 +72,9 @@ WaveDigitalFlume::~WaveDigitalFlume()
 void WaveDigitalFlume::initialize()
 {
     // Add project page
-    ui->stackedWidget->addWidget(new projectsettings(4)); // Project settings
+    theSettings = new projectsettings(4);
+  
+    ui->stackedWidget->addWidget(theSettings); // Project settings
     ui->stackedWidget->addWidget(new bathymetry(4)); // Bathymetry
     ui->stackedWidget->addWidget(new swcfdint(0)); // SW-CFD interface: Check this if working
     ui->stackedWidget->addWidget(new buildings(0)); // Buildings/Structures
@@ -89,7 +93,7 @@ void WaveDigitalFlume::initialize()
     simtype = 4;
 
     // Activate wave flume
-    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->activateflume(simtype))
+    if (theSettings->activateflume(simtype))
     {
         qDebug() << "Error";
     }
@@ -112,7 +116,7 @@ bool WaveDigitalFlume::outputToJSON(QJsonObject &jsonObject)
     QMap<QString, QString> *singleData;
     this->clearAllData();
     singleData = new QMap<QString,QString>;
-    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->getData(*singleData,simtype))
+    if (theSettings->getData(*singleData,simtype))
     {
         allData.insert(0, singleData);
     }
@@ -295,20 +299,31 @@ void WaveDigitalFlume::refresh_projsettings()
 //    singleData = new QMap<QString,QString>;
     int numberOfPanes = 1;
     simtype = 4;
-    for (int i=0;i<numberOfPanes;i++) {
+
+    /* numberOfPaes == 1 .. why a for loop
+    for (int i=0;i<numberOfPanes;i++) {  
         singleData = new QMap<QString,QString>;
         if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(i))->getData(*singleData,simtype))
         {
             allData.insert(i, singleData);
         }
         // Activate wave flume
-        if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->activateflume(simtype))
+        if (theSettings->activateflume(simtype))
         {
             qDebug() << "Error";
         }
-
     }
+    */
 
+    singleData = new QMap<QString,QString>;
+    if (theSettings->getData(*singleData,simtype)) {
+      allData.insert(0, singleData);
+    }
+    
+    if (theSettings->activateflume(simtype)) {
+      qDebug() << "Error";
+    }    
+	
     // Search for simulation type
     //QMap<QString, QString> *singleDataSet = allData.value(0);
     //QString simty = singleDataSet->value("SimulationType");
@@ -369,7 +384,7 @@ void WaveDigitalFlume::on_SimOptions_itemDoubleClicked(QTreeWidgetItem *item, in
 
     // Disable sim type
     simtype = 4;
-    if (dynamic_cast<projectsettings *>(ui->stackedWidget->widget(0))->activateflume(simtype))
+    if (theSettings->activateflume(simtype))
     {
         qDebug() << "Error";
     }

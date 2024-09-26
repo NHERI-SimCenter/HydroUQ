@@ -82,6 +82,7 @@ class WaveDigitalFlume;
 
 class AgaveCurl;
 
+
 class WaveDigitalFlume : public SimCenterAppWidget
 {
     Q_OBJECT
@@ -115,6 +116,7 @@ private:
     QString applicationname = "Hydro-UQ";
     QString applicationversion = "3.2.0";
     AgaveCurl *theRemoteService;
+    projectsettings *theSettings;
 };
 
 #endif // WAVEDIGITALFLUME_H

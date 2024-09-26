@@ -13,7 +13,7 @@
 #include <TapisV3.h>
 #include <WorkflowAppHydroUQ.h>
 #include <QCoreApplication>
-
+#include <QMessageBox>
 #include <QString>
 #include <QTime>
 #include <QTextStream>
@@ -21,6 +21,7 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QDebug>
+#include <QPushButton>
 
 #include <GoogleAnalytics.h>
 
@@ -52,9 +53,9 @@
 
 
 // Set up logging of output messages for user debugging
-static QString logFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
-      + QDir::separator() + QCoreApplication::applicationName();
-constexpr bool logToFileDefault = false;
+static QString logFilePath;
+static bool logToFile = false;
+
 // static bool logToFile; // To be changed to true if the app is run in Qt Creator, using QTDIR env variable as proxy
 
  // customMessgaeOutput code taken from web:
@@ -101,21 +102,6 @@ void customMessageOutput(QtMsgType type, const QMessageLogContext &context, cons
 
 int main(int argc, char *argv[])
 {
-// #ifdef Q_OS_MACOS
-    // QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-
-    // code to reset openGL version .. keep around in case need again
-    // QSurfaceFormat glFormat;
-    // glFormat.setVersion(3, 3);
-    // glFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
-    // QSurfaceFormat::setDefaultFormat(glFormat);
-
-// #endif
-    // QApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-    // QGuiApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-    // QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
-    // QApplication::setAttribute(Qt::AA_UseOpenGLES);
-// #endif
 
 // Extensive documentation on how to set up OpenGL on Windows, macOS, and Linux can be found at:
 // https://doc.qt.io/qt-5/windows-requirements.html
@@ -136,7 +122,7 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("4.0.0");
+    QCoreApplication::setApplicationVersion("4.0.1");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     Q_INIT_RESOURCE(images);
@@ -148,19 +134,29 @@ int main(int argc, char *argv[])
     // Set up logging of output messages for user debugging
     //
 
-    if (logFilePath.isEmpty()) { 
-        qDebug() << QString("Could not find Documents Location: ") << logFilePath;
-        logFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
-                      + QDir::separator() + QCoreApplication::applicationName();
-    }
+    logFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
+      + QDir::separator() + QCoreApplication::applicationName();
+
+    // make sure tool dir exists in Documents folder
     QDir dirWork(logFilePath);
-    if (!dirWork.exists()) {
-        if (!dirWork.mkpath(logFilePath)) {
-            qDebug() << QString("Could not create Working Dir: ") << logFilePath; 
-            qDebug() << QString("May relate to permissions or disk space for the path... rerun with sudo or as an admin...");
-        }
-    }
-    logFilePath = logFilePath + QDir::separator() + QString("debug.log"); 
+    if (!dirWork.exists())
+      if (!dirWork.mkpath(logFilePath)) {
+	qDebug() << QString("Could not create Working Dir: ") << logFilePath;
+	QMessageBox msgBox;
+	msgBox.setIcon(QMessageBox::Critical);
+	msgBox.setText("FATAL: You do not have permissions to write to your Documents folder. You need this access to run this application.");
+	//  msg = msg + text + QString("\n Please report this as a bug to SimCenter.");
+	//msgBox.setInformativeText(text);
+	msgBox.setWindowTitle("Fatal Error");
+	QPushButton *exitButton = msgBox.addButton(QMessageBox::Ok);
+	QObject::connect(exitButton, &QPushButton::clicked, qApp, &QApplication::quit);
+	msgBox.exec();	    
+      }
+
+    // full path to debug.log file
+    logFilePath = logFilePath + QDir::separator() + QString("debug.log");
+
+    // remove old log file
     QFile debugFile(logFilePath);
     debugFile.remove();
 
@@ -181,7 +177,13 @@ int main(int argc, char *argv[])
     //     }
     // }
 
-    qInstallMessageHandler(customMessageOutput);
+    QByteArray envVar = qgetenv("QTDIR");       //  check if the app is run in Qt Creator
+
+    if (envVar.isEmpty())
+        logToFile = true;
+
+    qInstallMessageHandler(customMessageOutput);    
+
     // qDebug() << "logFile: " << logFilePath;
 
     /******************  code to reset openGL version .. keep around in case need again
@@ -213,10 +215,8 @@ int main(int argc, char *argv[])
 
     // create a remote interface
     QString tenant("designsafe");
-    // QString storage("agave://designsafe.storage.default/"); 
     QString storage("designsafe.storage.default/");        
     QString dirName("HydroUQ"); // this is the default directory for the application
-    // AgaveCurl *theRemoteService = new AgaveCurl(tenant, storage, &dirName);
     TapisV3 *theRemoteService = new TapisV3(tenant, storage, &dirName);        
 
 
@@ -243,6 +243,7 @@ int main(int argc, char *argv[])
 
     // Link to message board
     QString messageBoardURL("https://github.com/orgs/NHERI-SimCenter/discussions/categories/hydro-uq");
+
     w.setFeedbackURL(messageBoardURL);
 
     //
@@ -251,25 +252,14 @@ int main(int argc, char *argv[])
 
     QThread *thread = new QThread(); 
     theRemoteService->moveToThread(thread); 
-    // QWidget::connect(thread, SIGNAL(finished()), theRemoteService, SLOT(deleteLater()));
-    // QWidget::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 
-    // https://wiki.qt.io/QThreads_general_usage
-    // TODO, error handling
-    // connect( worker, &TapisV3::error, this, &MyClass::errorString);
-    // connect( thread, &QThread::started, theRemoteService, &TapisV3::process);
-    // connect( theRemoteService, &TapisV3::finished, thread, &QThread::quit);
-    // connect( theRemoteService, &TapisV3::finished, theRemoteService, &TapisV3::deleteLater);
-    // connect( thread, &QThread::finished, thread, &QThread::deleteLater);
-    // connect( theRemoteService, SLOT(error()), this, SLOT(errorString())); // TODO: make slot for error handling, should it be in the main window?
+
     QObject::connect(thread, SIGNAL(started()), theRemoteService, SLOT(process()));
     QObject::connect(theRemoteService, SIGNAL(finished()), thread, SLOT(quit())); 
     QObject::connect(theRemoteService, SIGNAL(finished()), theRemoteService, SLOT(deleteLater())); // ? is finished() a signal of theRemoteService?
     // QObject::connect(thread, SIGNAL(finished()), theRemoteService, SLOT(deleteLater())); 
     QObject::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();
-
-    constexpr int startupDelay = 6000; // milliseconds
 
     //
     // Show the main window, set styles & start the event loop
@@ -281,18 +271,17 @@ int main(int argc, char *argv[])
     // w.show();
     // w.statusBar()->showMessage("Ready", startupDelay);
 
+    
 #ifdef Q_OS_WIN
     QFile file(":/styleCommon/stylesheetWIN.qss");
-#else
+#endif
+
 #ifdef Q_OS_MACOS
     QFile file(":/styleCommon/stylesheetMAC.qss");
-#else
+#endif
+
 #ifdef Q_OS_LINUX
     QFile file(":/styleCommon/stylesheetLinux.qss");
-#else
-    QFile file(":/styleCommon/stylesheetMAC.qss"); 
-#endif 
-#endif
 #endif
 
     if (file.open(QFile::ReadOnly)) {
@@ -304,47 +293,33 @@ int main(int argc, char *argv[])
     }
 
     w.show();
+    constexpr int startupDelay = 6000; // milliseconds
     w.statusBar()->showMessage("Ready", startupDelay);
 
 
+#ifdef _SC_RELEASE
+
     //Setting Google Analytics Tracking Information
+    qDebug() << "HydroUQ -- running Release Build";
     GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
     GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
     GoogleAnalytics::CreateSessionId();
     GoogleAnalytics::StartSession();
-    /* *****************************************************************  
+
     // Opening a QWebEngineView and using github to get app geographic usage
     QWebEngineView view;
-    // view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-    // view.setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
-    // view.setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);
-    // view.setAttribute(Qt::WA_TranslucentBackground);
-    // view.setAttribute(Qt::WA_NoSystemBackground);
-    // view.setUrl(QUrl("https://github.com/NHERI-SimCenter/HydroUQ/tree/master/GA4.html"));
     view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
     view.resize(1024, 750);
     view.show();
-    // view.raise();
-    // view.activateWindow();
     view.hide();
-    // view.close();
-    // view.deleteLater();
-    ******************************************************************* */
+
+#endif
     
     // Result of execution
     int res = a.exec();
 
     // On done with event loop, logout & stop the thread
     theRemoteService->logout();
-
-    // https://stackoverflow.com/questions/23923354/does-qthreadquit-immediately-end-the-thread-or-does-it-wait-until-returning
-    // thread->m_abort = true; // Tell the thread to abort
-    // thread->abort(); // Abort the thread
-    // if (!thread->wait(startupDelay)) // Wait until it actually has (max startupDelay)
-    // {
-    //     thread->quit(); // Thread didn't exit in time, probably deadlocked, terminate it!
-    //     thread->wait(); // We have to wait again here!
-    // }
 
     // Clean up
     theRemoteService = nullptr;
