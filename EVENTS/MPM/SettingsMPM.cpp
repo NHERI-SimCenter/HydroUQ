@@ -116,7 +116,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   for (int i=0; i<3; ++i) dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-(i+1))->widget()->setToolTip("Size of the Cartesian grid's cells. Assumed to be cubes, so volume is dx^3. Smaller values provide more accurate results, but require more computer memory, O(dx^3), and smaller time-steps, O(dx^-1).");
 
   domainSizeX = new SC_DoubleLineEdit("domain_X", 90);
-  domainSizeY = new SC_DoubleLineEdit("domain_Y", 2.9);
+  domainSizeY = new SC_DoubleLineEdit("domain_Y", 4.5);
   domainSizeZ = new SC_DoubleLineEdit("domain_Z", 3.6);  
   dimensionsBoxLayout->addWidget(new QLabel("Full Domain (X,Y,Z)"), numRow, 0, 1, 1, Qt::AlignRight);  
   dimensionsBoxLayout->addWidget(domainSizeX, numRow, 1, 1, 1);
@@ -127,6 +127,9 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   mirrorDomainX = new SC_CheckBox("mirrorDomainX",false);
   mirrorDomainY = new SC_CheckBox("mirrorDomainY",false);
   mirrorDomainZ = new SC_CheckBox("mirrorDomainZ",false);
+  mirrorDomainX->setEnabled(false);
+  mirrorDomainY->setEnabled(false);
+  mirrorDomainZ->setEnabled(false);
   dimensionsBoxLayout->addWidget(new QLabel("Mirror On YZ-XZ-XY"), numRow, 0, 1, 1, Qt::AlignRight);
   dimensionsBoxLayout->addWidget(mirrorDomainX, numRow, 1, 1, 1);  
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignCenter);
@@ -170,7 +173,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 4, 1, 1);
 
-  duration = new SC_DoubleLineEdit("duration", 1.0);
+  duration = new SC_DoubleLineEdit("duration", 5.0);
   timeBoxLayout->addWidget(new QLabel("Duration (tf-t0)"), numRow, 0, 1, 1, Qt::AlignRight);
   timeBoxLayout->addWidget(duration, numRow, 1, 1, 3);  
   timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);

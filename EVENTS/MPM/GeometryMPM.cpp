@@ -111,8 +111,8 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   layout->addWidget(new QLabel("m"), numRow++, 4, 1, 1);  
 
   length = new SC_DoubleLineEdit("span_x", 84.0);  
-  height = new SC_DoubleLineEdit("span_y", 4.6);  
-  width = new SC_DoubleLineEdit("span_z", 3.65);
+  height = new SC_DoubleLineEdit("span_y", 4.5);  
+  width = new SC_DoubleLineEdit("span_z", 3.6);
   layout->addWidget(new QLabel("Dimensions (X,Y,Z)"), numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(length, numRow, 1, 1, 1);  
   layout->addWidget(height, numRow, 2, 1, 1);  
@@ -250,7 +250,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
 
   facilityLength = new SC_DoubleLineEdit("facility_span_x",104.0);  
   facilityHeight = new SC_DoubleLineEdit("facility_span_y",4.6);  
-  facilityWidth = new SC_DoubleLineEdit("facility_span_z",3.658);
+  facilityWidth = new SC_DoubleLineEdit("facility_span_z",3.6);
   dimensionsBoxLayout->addWidget(new QLabel("Facility Dimensions (X,Y,Z)"), numDimRow, 0);
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   dimensionsBoxLayout->addWidget(facilityLength, numDimRow, 1);  
@@ -356,7 +356,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
     if (val == "Hinsdale Large Wave Flume (OSU LWF)") {
       facilityLength->setText("84.0");
       facilityHeight->setText("4.6");
-      facilityWidth->setText("3.65");
+      facilityWidth->setText("3.6");
       if (bodyPreset->currentText() == "Fluid") {
         objectType->setCurrentText("OSU LWF");
       }
@@ -554,7 +554,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       if (bodyPreset->currentText() == "Fluid") {
         length->setText("84.0");
         height->setText("2.0");
-        width->setText("3.65");
+        width->setText("3.6");
         originX->setText("1.9");
         originY->setText("0.0");
         originZ->setText("0.0");
@@ -711,7 +711,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
     if (val == "Fluid") {
       length->setText("84.0");
       height->setText("2.0");
-      width->setText("3.65");
+      width->setText("3.6");
       originX->setText("1.9"); // wave-maker paddle neutral at OSU LWF
       originY->setText("0.0");
       originZ->setText("0.0");
@@ -720,7 +720,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       facility->setCurrentText("Hinsdale Large Wave Flume (OSU LWF)");
       facilityLength->setText("104.0");
       facilityHeight->setText("4.6");
-      facilityWidth->setText("3.658");
+      facilityWidth->setText("3.6");
       standingWaterLevel->setEnabled(true);
       standingWaterLevel->show();
       standingWaterLevel->setText("2.0");
@@ -1114,17 +1114,17 @@ GeometryMPM::setDigitalTwin(int twinIdx)
     }
     else if (twinIdx == 2) { // UW WASIRF
       objectType->setCurrentIndex(0); 
-      length->setText(QString::number(0.1016));
-      height->setText(QString::number(0.0254));
-      width->setText(QString::number(0.0254));
+      length->setText(QString::number(0.10));
+      height->setText(QString::number(0.025));
+      width->setText(QString::number(0.025));
       // TODO: Recheck specs of the debris from Nikkis work (4x1x1"?)
       originX->setText(QString::number(4.0)); 
       originY->setText(QString::number(0.2)); // Recheck the height
       originZ->setText(QString::number(0.5873));
       applyArray->setChecked(false);
-      spacingX->setText(QString::number(0.1016));
-      spacingY->setText(QString::number(0.0254));
-      spacingZ->setText(QString::number(0.0254));
+      spacingX->setText(QString::number(0.10));
+      spacingY->setText(QString::number(0.025));
+      spacingZ->setText(QString::number(0.025));
       arrayX->setText(QString::number(1));
       arrayY->setText(QString::number(1));
       arrayZ->setText(QString::number(1));
