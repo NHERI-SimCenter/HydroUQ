@@ -17,7 +17,7 @@
             "Application": "OpenSeesInput",
             "ApplicationData": {
                 "fileName": "Frame.tcl",
-                "filePath": "/home/justinbonus/SimCenter/HydroUQ/build/Examples/hdro-0005/src"
+                "filePath": "{Current_Dir}/."
             }
         },
         "Simulation": {
@@ -153,23 +153,13 @@
         "parallelExecution": true,
         "samplingMethodData": {
             "method": "LHS",
-            "samples": 20,
+            "samples": 30,
             "seed": 1
         },
         "saveWorkDir": false,
+        "uqEngine": "Dakota",
         "uqType": "Sensitivity Analysis"
     },
-    "correlationMatrix": [
-        1,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        1
-    ],
     "localAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
     "numQoI": 4,
     "numRV": 3,

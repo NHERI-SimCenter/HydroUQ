@@ -90,8 +90,8 @@ PartitionMPM::PartitionMPM(QWidget *parent)
 
   // TODO: Update default to the simulation domain dimensions set in the settings tab
   partitionDimensions_X = new SC_DoubleLineEdit("partition_dimensions_x", 90.0);
-  partitionDimensions_Y = new SC_DoubleLineEdit("partition_dimensions_y", 2.9);
-  partitionDimensions_Z = new SC_DoubleLineEdit("partition_dimensions_z", 3.65);
+  partitionDimensions_Y = new SC_DoubleLineEdit("partition_dimensions_y", 4.5);
+  partitionDimensions_Z = new SC_DoubleLineEdit("partition_dimensions_z", 3.6);
   layout->addWidget(new QLabel("Partition Dimensions (X,Y,Z)"), numRow, 0);
   layout->itemAt(layout->count()-1)->setAlignment(Qt::AlignRight);
   layout->addWidget(partitionDimensions_X, numRow, 1);

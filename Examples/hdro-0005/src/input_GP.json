@@ -151,19 +151,9 @@
             "trainingSeed": 1
         },
         "saveWorkDir": true,
+        "uqEngine": "Dakota",
         "uqType": "Forward Propagation"
     },
-    "correlationMatrix": [
-        1,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        1
-    ],
     "localAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
     "randomVariables": [
         {
