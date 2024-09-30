@@ -14,9 +14,6 @@
 
   <items>
     <map id="hdro-0005" base="hdro-0005" type="hdro" />
-    <map id="hdro-1005" base="hdro-1005" type="hdro" />
-    <map id="hdro-2005" base="hdro-2005" type="hdro" />
-    <map id="hdro-3005" base="hdro-3005" type="hdro" />
     <map id="hdro-0010" base="hdro-0010" type="hdro" />
     <map id="hdro-0001" base="hdro-0001" type="hdro" />
     <map id="hdro-0002" base="hdro-0002" type="hdro" />
