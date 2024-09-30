@@ -327,9 +327,9 @@ GeometryAI::showImage(QString &text)
     text = text.replace(" ", "");
 
     QString ext = ".png";
-    QString plotPath = QDir::cleanPath("/home/justinbonus/SimCenter/point-e/point_e/examples/output") + QDir::separator() 
+    QString plotPath = SimCenterPreferences::getInstance()->getLocalWorkDir() + QDir::separator() 
                         + textPrompt->text() 
-                        + ext;
+                        + ext; // Temp hard-code, to be in SimCenterBackendApplications/modules/tools 
 
     if(QFileInfo::exists(plotPath))
     {
