@@ -31,25 +31,13 @@ QT += core gui charts concurrent network sql qml 3dcore 3drender 3dextras prints
 QT += webengine webenginewidgets 
 QT += webenginecore
 QT += webchannel 
-QT += websockets
-QT += svg multimedia
+QT += svg 
 QT += 3dinput 
 QT += 3dlogic 
 QT += 3dquick 
 QT += 3dquickextras 
 QT += datavisualization 
 
-# QT += quickcontrols
-# QT += quickcontrols2
-# QT += wayland
-# QT += x11extras
-# QT += webglplugin-no-lgpl 
-# QT += webglplugin
-# QT += webkit webview 
-# QT += webkitwidgets
-# QT += webkit webkitwidgets
-# QT += tools
-# QT += declarative
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets 
 greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
