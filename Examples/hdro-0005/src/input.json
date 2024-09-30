@@ -142,10 +142,11 @@
         "parallelExecution": true,
         "samplingMethodData": {
             "method": "LHS",
-            "samples": 20,
+            "samples": 100,
             "seed": 1
         },
-        "saveWorkDir": true,
+        "saveWorkDir": false,
+        "uqEngine": "Dakota",
         "uqType": "Forward Propagation"
     },
     "correlationMatrix": [

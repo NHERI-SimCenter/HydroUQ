@@ -114,6 +114,45 @@
         "Difficulty": "1"
       }
     },
+    "hdro-0010":{
+      "id": "hdro-0010",
+      "title": "Forward Sampling (LHS) - Simple Wave Maker - Taichi Event",
+      "base": "hdro-0010",
+      "doc": [
+        "hdro-0010/src/input.json",
+        "hdro-0005/src/Frame.tcl",
+        "hdro-0005/src/postprocess.py",
+        "hdro-0005/src/recorder.tcl",
+        "hdro-0010/figures/hdro-0010_EVT.png",
+        "hdro-0010/figures/hdro-0010_EVT_Single.png",
+        "hdro-0010/README.rst"
+      ],
+      "entry_point": "hdro-0010/./input.json",
+      "summary": "Forward sample a 2D wave maker piston's generated wave implemented in the high-performance Taichi Lang. The structure is a simple 1-story OpenSees frame structure. Engineering Demand Parameters are PFA, RMSA, PFD, and PID. The wave loading is generated using a stochastic wave spectra (JONSWAP). The wave loading is applied to the floors as lateral forces.",
+      "logo": "figures/hdro-0010_EVT_Single.png",
+      "categories": {
+        "Difficulty": "0"
+      }
+    },
+    "hdro-0011": {
+      "id": "hdro-0011",
+      "title": "Forward Sampling (LHS) - Breaking Wave at the Oregon State Large Wave Flume (OSU LWF) - Taichi Event",
+      "base": "hdro-0011",
+      "doc": [
+        "hdro-0011/src/input.json",
+        "hdro-0005/src/Frame.tcl",
+        "hdro-0005/src/postprocess.py",
+        "hdro-0005/src/recorder.tcl",
+        "hdro-0005/figures/hdro-0005_WaveTimeSeries.png",
+        "hdro-0005/README.rst"
+      ],
+      "entry_point": "hdro-0011/./input.json",
+      "summary": "Forward sample a 3D wave maker piston's generated breaking wave within the Oregon State University's Large Wave Flume (OSU LWF) according to experiments by Mascarenas 2022. Implemented in the high-performance Taichi Lang. The structure is a simple 1-story OpenSees frame structure. Engineering Demand Parameters are PFA, RMSA, PFD, and PID. The wave loading is generated using a stochastic wave spectra (JONSWAP). The wave loading is applied to the floors as lateral forces. Produced in-part during the 2024 SimCenter REU program with participant Trey Gower.",
+      "logo": "figures/hdro-0005_WaveTimeSeries.png",
+      "categories": {
+        "Difficulty": "1"
+      }
+    },
     "hdro-3005": {
       "id": "hdro-3005",
       "title": "Forward Sampling (LHS) Surrogate Model (GP) - Stochastic Wave Loading on a Frame Structure - JONSWAP Spectra",
