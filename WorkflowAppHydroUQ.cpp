@@ -38,6 +38,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "WorkflowAppHydroUQ.h"
 #include <MainWindowWorkflowApp.h>
+#include <Utils/FileOperations.h>
 
 #include <QPushButton>
 #include <QScrollArea>
@@ -432,15 +433,20 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     }
 
     QString tmpDirName = QString("tmp.SimCenter");
-    localWorkDir.mkdir(tmpDirName); // defaultWorkDirString should start as "tmp.SimCenter"
-    // {
     QString tmpDirectoryString = localWorkDir.absoluteFilePath(tmpDirName);
     QDir tmpDirectory(tmpDirectoryString);
     if (tmpDirectory.exists()) {
+      if (SCUtils::isSafeToRemoveRecursivily(tmpDirectoryString))      
         tmpDirectory.removeRecursively();
-    } else {
-        tmpDirectory.mkpath(tmpDirectoryString);
+      else {
+	QString msg("The Program stopped, it was about to recursivily remove: ");
+	msg += tmpDirName;
+	fatalMessage(msg);
+	return;	
+      }      
     }
+    
+    tmpDirectory.mkpath(tmpDirectoryString);
     tmpDirectory.mkdir(defaultSubDir);
     defaultWorkDir = QDir(tmpDirectoryString);
 
