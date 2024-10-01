@@ -147,6 +147,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     // theEventSelection = new HydroEventSelection(theRVs, theGI);
     theAnalysisSelection = new FEA_Selection(true);
     theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity); // ForwardReliabilitySensitivitySurrogate
+    theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivitySurrogate); // ForwardReliabilitySensitivitySurrogate
     theEDP_Selection = new HydroEDP_Selection(theRVs);
     theResults = theUQ_Selection->getResults();
 
@@ -212,11 +213,11 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
     connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));
 
-    /** 
+    // /** 
     // KZ connect queryEVT and the reply
     connect(theUQ_Selection, SIGNAL(queryEVT()), theEventSelection, SLOT(replyEventType()));
     connect(theEventSelection, SIGNAL(typeEVT(QString)), theUQ_Selection, SLOT(setEventType(QString)));
-    **/
+    // **/
 
 
     //

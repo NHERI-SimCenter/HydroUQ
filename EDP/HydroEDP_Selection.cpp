@@ -65,8 +65,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <StandardWindEDP.h>
 #include <StandardEarthquakeEDP.h>
 #include "EDP/StandardHydroEDP.h"
-#include "EDP/StandardTsunamiEDP.h"
-#include "EDP/StandardStormSurgeEDP.h"
+// #include "EDP/StandardTsunamiEDP.h"
+// #include "EDP/StandardStormSurgeEDP.h"
+#include "SurrogateEDP.h"
 #include <UserDefinedEDP.h>
 
 
@@ -90,8 +91,9 @@ HydroEDP_Selection::HydroEDP_Selection(QWidget *parent)
     edpSelection->addItem(tr("Standard Earthquake"));
     edpSelection->addItem(tr("Standard Wind"));
     edpSelection->addItem(tr("Standard Hydro"));
-    edpSelection->addItem(tr("Standard Tsunami"));
-    edpSelection->addItem(tr("Standard Storm Surge"));
+    // edpSelection->addItem(tr("Standard Tsunami"));
+    // edpSelection->addItem(tr("Standard Storm Surge"));
+    edpSelection->addItem(tr("None (only for surrogate)"));
     edpSelection->addItem(tr("User Defined"));
     edpSelection->setObjectName("EDPSelectionComboBox");
 
@@ -100,9 +102,10 @@ HydroEDP_Selection::HydroEDP_Selection(QWidget *parent)
     edpSelection->setItemData(1, "Common earthquake engineering demand parameters (EDPs).", Qt::ToolTipRole);
     edpSelection->setItemData(2, "Common wind engineering demand parameters (EDPs).", Qt::ToolTipRole);
     edpSelection->setItemData(3, "Common hydrodynamic engineering demand parameters (EDPs).", Qt::ToolTipRole);
-    edpSelection->setItemData(4, "A tsunami event with measurement of established tsunami demand parameters (EDPs) for coastal structures (e.g. residential, commercial).", Qt::ToolTipRole);
-    edpSelection->setItemData(5, "A hurricane storm surge event with measurement of established hydrodynamic storm surge demand parameters (EDPs) for affected structures (e.g. residential, commercial).", Qt::ToolTipRole);
-    edpSelection->setItemData(6, "User-defined selection of engineering demand parameters (EDPs) for custom workflows.", Qt::ToolTipRole);
+    // edpSelection->setItemData(4, "A tsunami event with measurement of established tsunami demand parameters (EDPs) for coastal structures (e.g. residential, commercial).", Qt::ToolTipRole);
+    // edpSelection->setItemData(5, "A hurricane storm surge event with measurement of established hydrodynamic storm surge demand parameters (EDPs) for affected structures (e.g. residential, commercial).", Qt::ToolTipRole);
+    edpSelection->setItemData(4, "No EDPs will be generated, only surrogate data will be used.", Qt::ToolTipRole);
+    edpSelection->setItemData(5, "User-defined selection of engineering demand parameters (EDPs) for custom workflows.", Qt::ToolTipRole);
     theSelectionLayout->addWidget(label);
     theSelectionLayout->addWidget(edpSelection);
     theSelectionLayout->addStretch();
@@ -122,21 +125,32 @@ HydroEDP_Selection::HydroEDP_Selection(QWidget *parent)
     theStandardEarthquakeEDPs = new StandardEarthquakeEDP();
     theStandardWindEDPs = new StandardWindEDP();
     theStandardHydroEDPs = new StandardHydroEDP();
-    theStandardTsunamiEDPs = new StandardTsunamiEDP();
-    theStandardStormSurgeEDPs = new StandardStormSurgeEDP();
+    // theStandardTsunamiEDPs = new StandardTsunamiEDP();
+    // theStandardStormSurgeEDPs = new StandardStormSurgeEDP();
+    // theSurrogateEDPs = new SurrogateEDP();
     theUserDefinedEDPs = new UserDefinedEDP();
     
     theStackedWidget->addWidget(theStandardEDPs);
     theStackedWidget->addWidget(theStandardEarthquakeEDPs);
     theStackedWidget->addWidget(theStandardWindEDPs);
     theStackedWidget->addWidget(theStandardHydroEDPs);
-    theStackedWidget->addWidget(theStandardTsunamiEDPs);
-    theStackedWidget->addWidget(theStandardStormSurgeEDPs);
+    // theStackedWidget->addWidget(theStandardTsunamiEDPs);
+    // theStackedWidget->addWidget(theStandardStormSurgeEDPs);
     theStackedWidget->addWidget(theUserDefinedEDPs);
-    theStackedWidget->setCurrentIndex(0);
+    
+    SurrogateEDP * theSurrogateEDPs_tmp = SurrogateEDP::getInstance();
+    theSurrogateEDPs = theSurrogateEDPs_tmp;
+
+    connect(theSurrogateEDPs_tmp, &SurrogateEDP::surrogateSelected, [=](){
+       edpSelection->setCurrentIndex(4);
+    });
+    theStackedWidget->addWidget(theSurrogateEDPs);
+
+
     layout->addWidget(theStackedWidget);
     this->setLayout(layout);
 
+    theStackedWidget->setCurrentIndex(0);
     theCurrentEDP=theStandardEDPs;
 
     connect(edpSelection, SIGNAL(currentIndexChanged(QString)), this,
@@ -191,17 +205,23 @@ void HydroEDP_Selection::edpSelectionChanged(const QString &arg1)
         theCurrentEDP = theStandardHydroEDPs;
     }
 
-    else if(arg1 == "Standard Tsunami" || arg1 == "StandardTsunamiEDP") {
+    // else if(arg1 == "Standard Tsunami" || arg1 == "StandardTsunamiEDP") {
+    //     theStackedWidget->setCurrentIndex(4);
+    //     theCurrentEDP = theStandardTsunamiEDPs;
+    // }
+
+    // else if(arg1 == "Standard Storm Surge" || arg1 == "StandardStormSurgeEDP") {
+    //     theStackedWidget->setCurrentIndex(5);
+    //     theCurrentEDP = theStandardStormSurgeEDPs;
+    // }
+
+    else if (arg1 == "None (only for surrogate)" || arg1 == "SurrogateEDP") {
         theStackedWidget->setCurrentIndex(4);
-        theCurrentEDP = theStandardTsunamiEDPs;
+        theCurrentEDP = theSurrogateEDPs;
     }
 
-    else if(arg1 == "Standard Storm Surge" || arg1 == "StandardStormSurgeEDP") {
-        theStackedWidget->setCurrentIndex(5);
-        theCurrentEDP = theStandardStormSurgeEDPs;
-    }
     else if(arg1 == "User Defined" || arg1 == "UserDefinedEDP") {
-        theStackedWidget->setCurrentIndex(6);
+        theStackedWidget->setCurrentIndex(5);
         theCurrentEDP = theUserDefinedEDPs;
     }
     else {
@@ -253,17 +273,21 @@ HydroEDP_Selection::inputAppDataFromJSON(QJsonObject &jsonObject)
             (type == QString("StandardHydroEDP")) || (type == QString("Standard Hydro"))) {
         index = 3;
     } 
-    else if ((type == QString("StandardTsunamiEDP")) ||
-               (type == QString("Standard Tsunami EDPs")) || (type == QString("Standard Tsunami"))) {
+    // else if ((type == QString("StandardTsunamiEDP")) ||
+    //            (type == QString("Standard Tsunami EDPs")) || (type == QString("Standard Tsunami"))) {
+    //     index = 4;
+    // } 
+    // else if ((type == QString("StandardStormSurgeEDP")) ||
+    //            (type == QString("Standard Storm Surge EDPs") || (type == QString("Standard Storm Surge")))) {
+    //     index = 5;
+    // } 
+    else if ((type == QString("SurrogateEDP")) ||
+               (type == QString("Surrogate EDPs")) || (type == QString("Surrogate")) || (type == QString("None (only for surrogate)"))) {
         index = 4;
-    } 
-    else if ((type == QString("StandardStormSurgeEDP")) ||
-               (type == QString("Standard Storm Surge EDPs") || (type == QString("Standard Storm Surge")))) {
-        index = 5;
-    } 
+    }
     else if ((type == QString("UserDefinedEDP")) ||
                (type == QString("User Defined EDPs")) || (type == QString("User Defined"))) {
-        index = 6;
+        index = 5;
     } 
     else {
         errorMessage("HydroEDP_Selection - no valid type found");

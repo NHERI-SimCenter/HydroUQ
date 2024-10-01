@@ -54,8 +54,10 @@ class QStackedWidget;
 // class StandardWindEDP;
 // class StandardEarthquakeEDP;
 // class StandardEDP;
+// #include <SurrogateEDP.h>
 // class UserDefinedEDP;
 class UserDefinedApplication;
+
 //class RandomVariablesContainer;
 
 class HydroEDP_Selection : public SimCenterAppWidget
@@ -90,10 +92,10 @@ private:
    SimCenterAppWidget *theStandardEarthquakeEDPs;
    SimCenterAppWidget *theStandardWindEDPs;
    SimCenterAppWidget *theStandardHydroEDPs;
-   SimCenterAppWidget *theStandardTsunamiEDPs;
-   SimCenterAppWidget *theStandardStormSurgeEDPs;
+   // SimCenterAppWidget *theStandardTsunamiEDPs;
+   // SimCenterAppWidget *theStandardStormSurgeEDPs;
+   SimCenterAppWidget *theSurrogateEDPs;
    SimCenterAppWidget *theUserDefinedEDPs;
-
    //RandomVariablesContainer *theRandomVariables;
 };
 

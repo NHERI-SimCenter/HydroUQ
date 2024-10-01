@@ -42,6 +42,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <RandomVariablesContainer.h>
 // #include <InputWidgetParameters.h>
+#include "SimCenterPreferences.h"
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QProcess>
+#include <QString>
+#include <QStringList>
+#include <QTextStream>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
+
+#include <QStackedWidget>
+#include <QComboBox>
+
+#include <QLineEdit>
 
 #include <cstring>
 #include <vector>
@@ -63,6 +79,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <sstream>
 #include <fstream>
 #include <iostream>
+
 using namespace std;
 #include <QGridLayout>
 
@@ -86,10 +103,15 @@ StandardHydroEDP::StandardHydroEDP(QWidget *parent)
     QGridLayout *scriptLayout = new QGridLayout();
 
     // add stuff to enter Additional Input
-    QLabel *labelAI = new QLabel("Additional Input");
+    QLabel *labelAI = new QLabel("Additional Input / Recorder Script");
     additionalInputLE = new QLineEdit;
     // Set the background text to (Optional)
-    additionalInputLE->setPlaceholderText("(Optional)");
+    additionalInputLE->setPlaceholderText("(Optional. Check-in HydroUQ/Examples/EDP for example additional input scripts, e.g. OpenSees recorder tcl scripts.)");
+
+    QFileInfo fileAI(SimCenterPreferences::getInstance()->getAppDir() + QDir::separator() + "Examples" + QDir::separator() + "EDP" + QDir::separator() + "StandardHydroEDP_FrameRecorder.tcl");
+    additionalInputLE->setText(fileAI.absoluteFilePath());
+    additionalInputLE->setReadOnly(true);
+    additionalInputLE->setToolTip("This file is used to set-up the recorders / sensors / probes in the output of the structural response simulation, FEM, after the UQ workflow completes. Often it is a tcl script that contains the OpenSees recorder commands.");
 
     QPushButton *chooseAdditionalInputButton = new QPushButton();
     chooseAdditionalInputButton->setText(tr("Choose"));
@@ -99,11 +121,15 @@ StandardHydroEDP::StandardHydroEDP(QWidget *parent)
     scriptLayout->addWidget(chooseAdditionalInputButton, 0, 4);
 
     // add stuff to enter processing script
-    QLabel *labelPS = new QLabel("Processing Script");
+    QLabel *labelPS = new QLabel("Post-Processing / EDP Extractor Script");
     processingScriptLE = new QLineEdit;
-    processingScriptLE->setText("StandardHydroEDP_PostProcess.py");
+    // Set the background text to (Optional)
+    processingScriptLE->setPlaceholderText("(Required. Check-in HydroUQ/Examples/EDP for example post-processing scripts, e.g. OpenSees post-processing tcl scripts.)");
+
+    QFileInfo fileLE(SimCenterPreferences::getInstance()->getAppDir() + QDir::separator() + "Examples" + QDir::separator() + "EDP" + QDir::separator() + "StandardHydroEDP_FramePost.tcl");
+    processingScriptLE->setText(fileLE.absoluteFilePath());
     processingScriptLE->setReadOnly(true);
-    processingScriptLE->setToolTip("This script is used to process the output of the event simulation, EVT, to extract the Engineering Demand Parameters (EDPs) into a results.out file.");
+    processingScriptLE->setToolTip("This script is used to process the output of the structural response simulation, FEM, to extract the Engineering Demand Parameters (EDPs) into a file for analysis, results.out, after the UQ workflow completes.");
 
 
     QPushButton *chooseProcessingScriptButton = new QPushButton();
@@ -179,30 +205,47 @@ StandardHydroEDP::StandardHydroEDP(QWidget *parent)
     edp->setLayout(edpLayout);
     edpLayout->addStretch();
     // make QStrings for EDP input
-    QString edp1  = "max_force"; // max force on the structure or component
-    QString edp2  = "max_pressure"; // max pressure  on the structure or component
-    QString edp3  = "total_impulse"; // total impulse on the structure or component, integral of force-time series
+
+    QString edp1 = "peak-floor-displacement_1_1";
+    // QString edp2 = "peak-interstory-drift";
+    QString edp3 = "peak-floor-acceleration_1_1";
+    // QString edp4 = "root-mean-square-acceleration";
+    QString edp5 = "peak-floor-force_1_1"; // max force on the structure or component
+    QString edp6 = "peak-floor-pressure_1_1"; // max pressure  on the structure or component
+
+    // QString edp1 = "Disp";
+    // QString edp2 = "RMSA";
+    // QString edp3 = "Force";
+    // QString edp4 = "Pressure";
+
+    // QString edp7  = "total_floor_impulse"; // total impulse on the structure or component, integral of force-time series
+    // QString edp10 = "max_interstory_drift"; // interstory drift, i.e. max relative displacement of floor n+1 vs floor n...
+    // QString edp11 = "max_roof_drift"; // roof drift, i.e. max relative displacement of top floor to ground
+
+    // QString edp1  = "max_force"; // max force on the structure or component
+    // QString edp2  = "max_pressure"; // max pressure  on the structure or component
+    // QString edp3  = "total_impulse"; // total impulse on the structure or component, integral of force-time series
+    // QString edp10 = "max_interstory_drift"; // interstory drift, i.e. max relative displacement of floor n+1 vs floor n...
+    // QString edp11 = "max_roof_drift"; // roof drift, i.e. max relative displacement of top floor to ground
     // QString edp4  = "max_wave_velocity"; // max wave velocity at a characteristic location near the structure
     // QString edp5  = "max_wave_height"; // max wave elevation at a characteristic location near the structure
     // QString edp6  = "average_wave_velocity"; // average wave elevation at a characteristic location near the structure
     // QString edp7  = "average_wave_height"; // average wave elevation at a characteristic location near the structure
     // QString edp8  = "total_wave_duration"; // wave duration based on exceeding a threshold of some variable at a characteristic location near the structure
     // QString edp9  = "total_wave_momentum_flux"; // wave momentum flux based at a characteristic location near the structure
-    QString edp10 = "max_interstory_drift"; // interstory drift, i.e. max relative displacement of floor n+1 vs floor n...
-    QString edp11 = "max_roof_drift"; // roof drift, i.e. max relative displacement of top floor to ground
     // QString edp12 = "max_abs_acceleration"; // absolute maximum of acceleration
     // QString edp13 = "max_rel_disp"; // floor relative displacement
 
     this->addEDP(edp1); 
-    this->addEDP(edp2); 
+    // this->addEDP(edp2); 
     this->addEDP(edp3); 
-    // this->addEDP(edp4); 
-    // this->addEDP(edp5); 
-    // this->addEDP(edp6); 
+    // this->addEDP(edp4);
+    this->addEDP(edp5);
+    this->addEDP(edp6);
     // this->addEDP(edp7);
     // this->addEDP(edp8); 
-    this->addEDP(edp10); 
-    this->addEDP(edp11); 
+    // this->addEDP(edp10); 
+    // this->addEDP(edp11); 
 
     sa->setWidget(edp);
     layout->addWidget(sa);
@@ -282,12 +325,14 @@ StandardHydroEDP::outputToJSON(QJsonObject &jsonObject)
         QFileInfo fileInfoPS(fileName);
         if (fileInfoPS.exists()) {
 
-            jsonObject["fileNameAI"]= fileInfoPS.fileName();
-            jsonObject["filePathAI"]=fileInfoPS.path();
+            jsonObject["fileNameAI"] = fileInfoPS.fileName();
+            jsonObject["filePathAI"] = fileInfoPS.path();
 
         } else {
             this->errorMessage("StandardHydroEDP :: additional script does not exist");
         }
+    } else {
+       this->errorMessage("StandardHydroEDP :: no additional script");
     }
 
 
@@ -336,11 +381,11 @@ StandardHydroEDP::inputFromJSON(QJsonObject &jsonObject)
             processingScriptLE->setText(QDir(filePath).filePath(fileName));
 
         } else {
-           this->errorMessage("StandardHydroEDP ::inputFromJSON  no filePathPS exists");
+           this->errorMessage("StandardHydroEDP ::inputFromJSON  no filefilePathPS exists");
         }
 
     } else {
-        this->errorMessage("StandardHydroEDP ::inputFromJSON  no NamePS exists");
+        this->errorMessage("StandardHydroEDP ::inputFromJSON  no fileNamePS exists");
     }
 
     if (jsonObject.contains("fileNameAI")) {
@@ -356,8 +401,10 @@ StandardHydroEDP::inputFromJSON(QJsonObject &jsonObject)
         } else {
          this->errorMessage("StandardHydroEDP ::inputFromJSON  no filePathAI exists");
         }
-    }
 
+    } else {
+        this->errorMessage("StandardHydroEDP ::inputFromJSON  no fileNameAI exists");
+    }
 
 
     if (jsonObject.contains("EDP")) {
@@ -430,7 +477,7 @@ StandardHydroEDP::copyFiles(QString &dirName) {
          }
      }
     else {
-        this->errorMessage(QString("ERROR: copyFiles: no processing script"));
+        this->errorMessage(QString("ERROR: copyFiles: failed to copy post-procesing script in EDP tab:") + filename);
         return false;
     }
 
@@ -438,7 +485,7 @@ StandardHydroEDP::copyFiles(QString &dirName) {
      if (!filename.isEmpty()) {
 
          if (this->copyFile(filename, dirName) ==  false) {
-             this->errorMessage(QString("ERROR: copyFiles: failed to copy") + filename);
+             this->errorMessage(QString("ERROR: copyFiles: failed to copy additional input script in EDP tab:") + filename);
              return false;
          }
      }
