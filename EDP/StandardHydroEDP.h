@@ -45,7 +45,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QVector>
 #include <QGridLayout>
 #include <QComboBox>
-
+class QLineEdit;
 class EDP;
 // class InputWidgetParameters;
 

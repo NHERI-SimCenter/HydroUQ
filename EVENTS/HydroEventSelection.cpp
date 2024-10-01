@@ -424,7 +424,11 @@ void HydroEventSelection::eventSelectionChanged(const QString &arg1)
     return;
 }
 
-
+void
+HydroEventSelection::replyEventType(void)
+{
+    emit typeEVT("Hydro"); // used in surrogate
+}
 
 void
 HydroEventSelection::sendStatusMessage(QString message) {
