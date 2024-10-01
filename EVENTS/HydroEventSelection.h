@@ -94,6 +94,7 @@ signals:
     void statusMessage(QString message);
     void errorMessage(QString message);
     void fatalMessage(QString message);
+    void typeEVT(QString type);
 
 public slots:
    void eventSelectionChanged(int arg1);
@@ -101,6 +102,7 @@ public slots:
    void sendStatusMessage(QString message); // WE-UQ
    void sendErrorMessage(QString message); // WE-UQ
    void sendFatalMessage(QString message); // WE-UQ
+   void replyEventType(void);
 
 private:
    QComboBox   *eventSelection;
