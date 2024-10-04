@@ -136,7 +136,6 @@ HydroEDP_Selection::HydroEDP_Selection(QWidget *parent)
     theStackedWidget->addWidget(theStandardHydroEDPs);
     // theStackedWidget->addWidget(theStandardTsunamiEDPs);
     // theStackedWidget->addWidget(theStandardStormSurgeEDPs);
-    theStackedWidget->addWidget(theUserDefinedEDPs);
     
     SurrogateEDP * theSurrogateEDPs_tmp = SurrogateEDP::getInstance();
     theSurrogateEDPs = theSurrogateEDPs_tmp;
@@ -145,6 +144,7 @@ HydroEDP_Selection::HydroEDP_Selection(QWidget *parent)
        edpSelection->setCurrentIndex(4);
     });
     theStackedWidget->addWidget(theSurrogateEDPs);
+    theStackedWidget->addWidget(theUserDefinedEDPs);
 
 
     layout->addWidget(theStackedWidget);
