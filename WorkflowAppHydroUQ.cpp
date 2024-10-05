@@ -146,7 +146,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theEventSelection = new HydroEventSelection(theRVs, theService);
     // theEventSelection = new HydroEventSelection(theRVs, theGI);
     theAnalysisSelection = new FEA_Selection(true);
-    theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity); // ForwardReliabilitySensitivitySurrogate
+    // theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity); // ForwardReliabilitySensitivitySurrogate
     theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivitySurrogate); // ForwardReliabilitySensitivitySurrogate
     theEDP_Selection = new HydroEDP_Selection(theRVs);
     theResults = theUQ_Selection->getResults();
@@ -267,8 +267,8 @@ constexpr bool DEV_MODE = true; // Set to true for development mode, false for p
 
 // Quickly enable/disable tools here for compile-time
 constexpr bool USE_CLAYMORE_TOOL = true;
-constexpr bool USE_TAICHI_TOOL = false;
-constexpr bool USE_NOAA_TOOL = false; 
+constexpr bool USE_TAICHI_TOOL = true;
+constexpr bool USE_NOAA_TOOL = true; 
 constexpr bool USE_CELERIS_TOOL = false;
 constexpr bool USE_WEBGPU_TOOL = false;
 
@@ -322,36 +322,35 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         // currentTool = miniMPMTool; // TODO: Make this more dynamics / use a better interface
     }
 
-    // if constexpr (USE_TAICHI_TOOL) {
-    //     queues.clear(); queues << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    //     TaichiEvent *miniTaichi = new TaichiEvent();
-    //     appName =  "simcenter-taichi-frontera"; // Frontera
-    //     QString appVersion = "1.0.0";
-    //     QString machine = "frontera";
-    //     SC_RemoteAppTool *miniTaichiTool = new SC_RemoteAppTool(appName, appVersion, machine, queues, theRemoteService, miniTaichi, theToolDialog);
-    //     theToolDialog->addTool(miniTaichiTool, "General Event (Taichi)");
-    //     QAction *showTaichi = toolsMenu->addAction("General Event (&Taichi)");  
-    //     connect(showTaichi, &QAction::triggered, this,[this, theDialog=theToolDialog, miniT = miniTaichiTool] {
-    //         theDialog->showTool("General Event (Taichi)");
-    //     });
+    if constexpr (USE_TAICHI_TOOL) {
+        queues.clear(); queues << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+        TaichiEvent *miniTaichi = new TaichiEvent();
+        appName =  "simcenter-taichi-frontera"; // Frontera
+        QString appVersion = "1.0.0";
+        QString machine = "frontera";
+        SC_RemoteAppTool *miniTaichiTool = new SC_RemoteAppTool(appName, appVersion, machine, queues, theRemoteService, miniTaichi, theToolDialog);
+        theToolDialog->addTool(miniTaichiTool, "General Event (Taichi)");
+        QAction *showTaichi = toolsMenu->addAction("General Event (&Taichi)");  
+        connect(showTaichi, &QAction::triggered, this,[this, theDialog=theToolDialog, miniT = miniTaichiTool] {
+            theDialog->showTool("General Event (Taichi)");
+        });
 
-    // }
+    }
 
 
-    // if constexpr (USE_NOAA_TOOL) {
-    //     DigitalCoast *miniDC = new DigitalCoast();
-    //     QString appNameDC =  "simcenter-noaa-dc-frontera"; // Frontera
-    //     QString systemNameDC = "frontera";
-    //     QString appVersion = "1.0.0";
-    //     QString machine = "frontera";
-    //     QList<QString> queuesDC; queuesDC << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    //     SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, appVersion, machine, queuesDC, theRemoteService, miniDC, theToolDialog);
-    //     theToolDialog->addTool(miniDCTool, "Sea-Level Rise (NOAA Digital Coast)");
-    //     QAction *showDC = toolsMenu->addAction("Sea-Level Rise (&NOAA Digital Coast)");
-    //     connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
-    //         theDialog->showTool("Sea-Level Rise (NOAA Digital Coast)");
-    //     });
-    // }
+    if constexpr (USE_NOAA_TOOL) {
+        DigitalCoast *miniDC = new DigitalCoast();
+        QString appNameDC =  "noaa-digital-coast-localhost"; // Frontera
+        QString appVersion = "1.0.0";
+        QString machine = "localhost";
+        queues.clear(); queues << "chromium"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+        SC_RemoteAppTool *miniDCTool = new SC_RemoteAppTool(appNameDC, appVersion, machine, queues, theRemoteService, miniDC, theToolDialog);
+        theToolDialog->addTool(miniDCTool, "Sea-Level Rise (NOAA Digital Coast)");
+        QAction *showDC = toolsMenu->addAction("Sea-Level Rise (&NOAA Digital Coast)");
+        connect(showDC, &QAction::triggered, this,[this, theDialog=theToolDialog, miniD = miniDCTool] {
+            theDialog->showTool("Sea-Level Rise (NOAA Digital Coast)");
+        });
+    }
 
     // if constexpr (USE_CELERIS_TOOL) {
     //     Celeris *miniCeleris = new Celeris();
