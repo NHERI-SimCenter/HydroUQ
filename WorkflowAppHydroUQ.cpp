@@ -38,6 +38,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "WorkflowAppHydroUQ.h"
 #include <MainWindowWorkflowApp.h>
+#include <Utils/FileOperations.h>
 
 #include <QPushButton>
 #include <QScrollArea>
@@ -432,15 +433,20 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     }
 
     QString tmpDirName = QString("tmp.SimCenter");
-    localWorkDir.mkdir(tmpDirName); // defaultWorkDirString should start as "tmp.SimCenter"
-    // {
     QString tmpDirectoryString = localWorkDir.absoluteFilePath(tmpDirName);
     QDir tmpDirectory(tmpDirectoryString);
     if (tmpDirectory.exists()) {
+      if (SCUtils::isSafeToRemoveRecursivily(tmpDirectoryString))      
         tmpDirectory.removeRecursively();
-    } else {
-        tmpDirectory.mkpath(tmpDirectoryString);
+      else {
+	QString msg("The Program stopped, it was about to recursivily remove: ");
+	msg += tmpDirName;
+	fatalMessage(msg);
+	return;	
+      }      
     }
+    
+    tmpDirectory.mkpath(tmpDirectoryString);
     tmpDirectory.mkdir(defaultSubDir);
     defaultWorkDir = QDir(tmpDirectoryString);
 
@@ -1293,7 +1299,7 @@ WorkflowAppHydroUQ::getMaxNumParallelTasks() {
 int
 WorkflowAppHydroUQ::createCitation(QJsonObject &citation, QString citeFile) {
 
-    QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.2.0 (v3.2.0). Zenodo. https://doi.org/10.5281/zenodo.4731073 \",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
+    QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 4.0.0 (v4.0.0). Zenodo. https://doi.org/10.5281/zenodo.13865413\",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
 
     QJsonDocument docC = QJsonDocument::fromJson(cit.toUtf8());
     if(!docC.isNull()) {

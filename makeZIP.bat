@@ -3,7 +3,7 @@ REM ## make the exe .. it assumes Hydro-UQ_Windows_Download exists with vcredist
 
 cd build
 conan install .. --build missing
-qmake ..\Hydro-UQ.pro
+qmake QMAKE_CXXFLAGS+=-D_SC_RELEASE ..\Hydro-UQ.pro
 nmake
 
 REM ## copy application into folder and winddeployqt it
