@@ -314,10 +314,34 @@ int main(int argc, char *argv[])
     view.hide();
 
 #endif
+
+
+#ifdef _ANALYTICS
+
+    //Setting Google Analytics Tracking Information
+    qDebug() << "compiled with: ANALYTICS";    
+    GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
+    GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
+    GoogleAnalytics::CreateSessionId();
+    GoogleAnalytics::StartSession();
+
+#endif    
     
     // Result of execution
     int res = a.exec();
 
+#ifdef _GA_AFTER
+
+    // Opening a QWebEngineView and using github to get app geographic usage 
+    qDebug() << "compiled with: GA_AFTER";   
+    QWebEngineView view;
+    view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
+    view.resize(1024, 750);
+    view.show();
+    view.hide();
+
+#endif    
+    
     // On done with event loop, logout & stop the thread
     theRemoteService->logout();
 

@@ -13,29 +13,33 @@ rm -fr Hydro_UQ.app
 # TODO: Make sure there aren't old 'make' and conan files laying around
 #
 
-CXXFLAGS="—std=c++17:$CXXFLAGS"
-
 # conan install
 conan install .. --build missing
 status=$?
-if [[ $status != 0 ]]
-then
-    echo "Hydro-UQ: conan install failed";
-    exit $status;
-fi
+if [[ $status != 0 ]]; then echo "Hydro-UQ: conan install failed"; exit $status; fi
 
 # qmake
-qmake ../Hydro-UQ.pro
-status=$?
-if [[ $status != 0 ]]
-then
-    echo "Hydro-UQ: qmake failed";
-    exit $status;
+
+if [ -n "$release" ] && [ "$release" = "release" ]; then
+    echo "******** RELEASE BUILD *************"    
+    qmake QMAKE_CXXFLAGS+="-D_SC_RELEASE" ../Hydro-UQ.pro
+    if [[ $status != 0 ]]; then echo "Hydro-UQ: qmake failed"; exit $status; fi    
+else
+    echo "********* NON RELEASE BUILD ********"
+    qmake ../Hydro-UQ.pro
+    if [[ $status != 0 ]]; then echo "Hydro-UQ: qmake failed"; exit $status; fi    
 fi
 
+
+
+#
 # make
-make -j5
+#
+
+touch ../WorkflowAppHydroUQ.cpp
+make -j 4
 status=$?;
+
 if [[ $status != 0 ]]
 then
     echo "Hydro-UQ: make failed";

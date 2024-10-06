@@ -1,16 +1,12 @@
+#!/bin/bash
+
 #
 # parse args
 #
 
 DMG_METHOD="NEW"
 
-for arg in "$@"
-do
-    if [ "$arg" == "--old" ] || [ "$arg" == "-o" ] || [ $arg == "-OLD" ]; then
-	DMG_METHOD="OLD"
-    fi
-done
-
+release=${1:-"NO_RELEASE"}
 
 #
 # Paramaters
@@ -37,7 +33,8 @@ pathToDakota="/Users/fmckenna/dakota/dakota-6.16.0"
 # build it
 #
 
-./makeEXE.sh
+source ./makeEXE.sh $release
+
 cd build
 rm $DMG_FILENAME
 
@@ -57,11 +54,17 @@ fi
 macdeployqt ./Hydro_UQ.app 
 
 # copy applications folderm opensees and dakota
-echo "cp -fR $pathToBackendApps/applications ./$APP_FILE/Contents/MacOS"
-cp -fR $pathToBackendApps/applications ./$APP_FILE/Contents/MacOS
+
+#echo "cp -fR $pathToBackendApps/applications ./$APP_FILE/Contents/MacOS"
+mkdir  ./$APP_FILE/Contents/MacOS/applications
+cp -fR $pathToBackendApps/applications ./$APP_FILE/Contents/MacOS/
 mkdir  ./$APP_FILE/Contents/MacOS/applications/opensees
+#mkdir  ./$APP_FILE/Contents/MacOS/applications/opensees/bin
+#mkdir  ./$APP_FILE/Contents/Resources/opensees
 mkdir  ./$APP_FILE/Contents/MacOS/applications/dakota
-echo "cp -fr $pathToOpenSees/* $pathApp/Contents/MacOS/applications/opensees"
+
+#cp -fr $pathToOpenSees/bin/* ./$APP_FILE/Contents/MacOS/applications/opensees/bin
+#cp -fr $pathToOpenSees/lib/* ./$APP_FILE/Contents/Resources/opensees
 cp -fr $pathToOpenSees/* ./$APP_FILE/Contents/MacOS/applications/opensees
 cp -fr $pathToDakota/*  ./$APP_FILE/Contents/MacOS/applications/dakota
 
@@ -94,10 +97,10 @@ declare -a notWantedApp=("createBIM"
 for app in "${notWantedApp[@]}"
 do
    echo "removing $app"
-   rm -fr ./$APP_FILE/Contents/MacOS/applications/$app
+#   rm -fr ./$APP_FILE/Contents/MacOS/applications/$app
 done
 
-find ./$APP_FILE -name __pycache__ -exec rm -rf {} +;
+#find ./$APP_FILE -name __pycache__ -exec rm -rf {} +;
 
 #
 # load my credential file
@@ -118,7 +121,6 @@ fi
 source $userID
 echo $appleID    
 
-
 if [ "${DMG_METHOD}" == "NEW" ]; then
 
     #
@@ -126,9 +128,10 @@ if [ "${DMG_METHOD}" == "NEW" ]; then
     # brew install create-dmg
     #
 
-    echo "codesign --deep --force --verbose --options=runtime  --sign "$appleCredential" $APP_FILE"
-    codesign --deep --force --verbose --options=runtime  --sign "$appleCredential" $APP_FILE    
-    
+    echo "codesign --deep --force --verbose --options runtime --timestamp  --sign "$appleCredential" $APP_FILE"
+
+    codesign --deep --force --verbose --options runtime --timestamp  --sign "$appleCredential" $APP_FILE    
+
     mkdir app
     mv $APP_FILE app
     
@@ -161,6 +164,7 @@ else
     hdiutil create $DMG_FILENAME -fs HFS+ -srcfolder ./$APP_FILE -format UDZO -volname $APP_NAME
     
     status=$?
+    
     if [[ $status != 0 ]]
     then
 	echo "DMG Creation FAILED cd build and try the following:"
@@ -169,7 +173,6 @@ else
 	echo "xcrun altool --notarize-app -u $appleID -p $appleAppPassword -f ./$DMG_FILENAME --primary-bundle-id altool"
 	echo "xcrun altool --notarization-info ID  -u $appleID  -p $appleAppPassword"
 	echo "xcrun stapler staple \"$APP_NAME\" $DMG_FILENAME"
-	exit $status;
     fi
 
     #codesign dmg

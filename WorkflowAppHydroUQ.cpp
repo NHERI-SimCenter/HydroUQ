@@ -156,7 +156,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //
 
     localApp = new LocalApplication("sWHALE.py");
-    remoteApp = new RemoteApplication("sWHALE.py", theService);
+    remoteApp = new RemoteApplication("sWHALE.py", theService, nullptr, nullptr);
 
     //QStringList filesToDownload; filesToDownload << "inputRWHALE.json" << "input_data.zip" << "Results.zip";
     theJobManager = new RemoteJobManager(theService);
@@ -168,57 +168,52 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     // connect signals and slots for (1) local and (2) remote application runs.
     //
 
-
-    
-    // connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     connect(localApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir) 
     {
         currentApp = localApp;
         setUpForApplicationRun(workingDir, subDir);
     });
-    /*************************
-    connect(this,SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
-    connect(localApp,SIGNAL(runComplete()), this, SLOT(runComplete()));
-    connect(localApp,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+    connect(localApp, SIGNAL(runComplete()), this, SLOT(runComplete())); // swao with next?
+    connect(localApp, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+    connect(localApp,SIGNAL(sendErrorMessage(QString)),
+	    this,SLOT(errorMessage(QString)));
+    connect(localApp,SIGNAL(sendStatusMessage(QString)),
+	    this,SLOT(statusMessage(QString)));
+    connect(localApp,SIGNAL(sendFatalMessage(QString)),
+	    this,SLOT(fatalMessage(QString)));
+    
 
-    // connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
-    **************************/
     connect(remoteApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir) 
     {
         currentApp = remoteApp;
         setUpForApplicationRun(workingDir, subDir);
     });
-    /************************
-    connect(theJobManager,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
-    connect(theJobManager,SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
-    connect(remoteApp,SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));
-    connect(remoteApp,SIGNAL(successfullJobStart()), this, SLOT(runComplete()));
-    connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
-    connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));   
-    
-    // connect(theRunLocalWidget, SIGNAL(runButtonPressed(QString, QString)), this, SLOT(runLocal(QString, QString)));
-    *************************/
-
-    //connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
-    connect(this, SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
-    connect(localApp, SIGNAL(runComplete()), this, SLOT(runComplete())); // swao with next?
-    connect(localApp, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
-
-    //connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
-    connect(theJobManager, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
-    connect(theJobManager, SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
-
     connect(remoteApp, SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));;
     connect(remoteApp, SIGNAL(successfullJobStart()), this, SLOT(runComplete()));
-    connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
+    connect(remoteApp,SIGNAL(sendErrorMessage(QString)),
+	    this,SLOT(errorMessage(QString)));
+    connect(remoteApp,SIGNAL(sendStatusMessage(QString)),
+	    this,SLOT(statusMessage(QString)));
+    connect(remoteApp,SIGNAL(sendFatalMessage(QString)),
+	    this,SLOT(fatalMessage(QString)));        
+    
+    connect(theJobManager, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+    connect(theJobManager, SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
     connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));
+    connect(theJobManager,SIGNAL(sendErrorMessage(QString)),
+	    this,SLOT(errorMessage(QString)));
+    connect(theJobManager,SIGNAL(sendStatusMessage(QString)),
+	    this,SLOT(statusMessage(QString)));
+    connect(theJobManager,SIGNAL(sendFatalMessage(QString)),
+	    this,SLOT(fatalMessage(QString)));
+    
+    connect(this, SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));    
 
-    // /** 
+    connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
+
     // KZ connect queryEVT and the reply
     connect(theUQ_Selection, SIGNAL(queryEVT()), theEventSelection, SLOT(replyEventType()));
-    connect(theEventSelection, SIGNAL(typeEVT(QString)), theUQ_Selection, SLOT(setEventType(QString)));
-    // **/
-
+    connect(theEventSelection, SIGNAL(typeEVT(QString)), theUQ_Selection, SLOT(setEventType(QString)));    
 
     //
     // create layout to hold component selection
