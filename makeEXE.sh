@@ -1,5 +1,7 @@
 #!/bin/bash 
 
+release=${1:-"NO_RELEASE"}
+
 #
 # create build dir if does not exist, cd to build, conan install and then qmake
 # 
@@ -15,19 +17,19 @@ rm -fr Hydro_UQ.app
 
 # conan install
 conan install .. --build missing
-status=$?
-if [[ $status != 0 ]]; then echo "Hydro-UQ: conan install failed"; exit $status; fi
+cmd_status=$?
+if [[ $cmd_status != 0 ]]; then echo "Hydro-UQ: conan install failed"; exit $cmd_status; fi
 
 # qmake
 
 if [ -n "$release" ] && [ "$release" = "release" ]; then
     echo "******** RELEASE BUILD *************"    
-    qmake QMAKE_CXXFLAGS+="-D_SC_RELEASE" ../Hydro-UQ.pro
-    if [[ $status != 0 ]]; then echo "Hydro-UQ: qmake failed"; exit $status; fi    
+    qmake QMAKE_CXXFLAGS+=-D_SC_RELEASE ../Hydro-UQ.pro
+    if [[ $cmd_status != 0 ]]; then echo "Hydro-UQ: qmake failed"; exit $cmd_status; fi    
 else
     echo "********* NON RELEASE BUILD ********"
     qmake ../Hydro-UQ.pro
-    if [[ $status != 0 ]]; then echo "Hydro-UQ: qmake failed"; exit $status; fi    
+    if [[ $cmd_status != 0 ]]; then echo "Hydro-UQ: qmake failed"; exit $cmd_status; fi    
 fi
 
 
@@ -38,12 +40,12 @@ fi
 
 touch ../WorkflowAppHydroUQ.cpp
 make -j 4
-status=$?;
+cmd_status=$?;
 
-if [[ $status != 0 ]]
+if [[ $cmd_status != 0 ]]
 then
     echo "Hydro-UQ: make failed";
-    exit $status;
+    exit $cmd_status;
 fi
 
 if [[ "$OSTYPE" == "darwin"* ]]

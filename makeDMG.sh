@@ -121,7 +121,7 @@ fi
 source $userID
 echo $appleID    
 
-if [ "${DMG_METHOD}" == "NEW" ]; then
+if [ "${DMG_METHOD}" = "NEW" ]; then
 
     #
     # mv app into empty folder for create-dmg to work
@@ -163,9 +163,9 @@ else
     echo "hdiutil create $DMG_FILENAME -fs HFS+ -srcfolder ./$APP_FILE -format UDZO -volname $APP_NAME"
     hdiutil create $DMG_FILENAME -fs HFS+ -srcfolder ./$APP_FILE -format UDZO -volname $APP_NAME
     
-    status=$?
+    cmd_status=$?
     
-    if [[ $status != 0 ]]
+    if [[ $cmd_status != 0 ]]
     then
 	echo "DMG Creation FAILED cd build and try the following:"
 	echo "hdiutil create $DMG_FILENAME -fs HFS+ -srcfolder ./$APP_FILE -format UDZO -volname $APP_NAME"    
