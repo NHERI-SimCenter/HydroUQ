@@ -695,7 +695,7 @@ WorkflowAppHydroUQ::processResults(QString &dirName)
 
     QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
     if (oldResults != NULL) {
-        this->errorMessage("WorkflowAppHydroUQ::processResults() - Deleting oldResults");
+        this->statusMessage("WorkflowAppHydroUQ::processResults() - Deleting oldResults");
         delete oldResults;
     }
     // if (oldResults != NULL && oldResults != theResults) {;
@@ -741,7 +741,7 @@ WorkflowAppHydroUQ::clear(void)
 
     QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults); // The "swap" takes care of deleting the oldResults widget that was swapped out from theComponentSelection. theResults is the new widget that was swapped in and is now owned by theComponentSelection. oldResults is the old widget that was swapped out and is now owned by this function so it needs to be deleted, though smart pointers could take care of this if we refactor the code to use them.
     if (oldResults != NULL && oldResults != theResults) {
-        this->errorMessage("WorkflowAppHydroUQ::clear() - Deleting oldResults");
+        this->statusMessage("WorkflowAppHydroUQ::clear() - Deleting oldResults");
         delete oldResults;
     }
 
@@ -1110,8 +1110,8 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
         
 
         // Adding extra job parameters for MPM, already has "driverFile", "errorFile", "inputFile", "outputFile"
-        QStringList requiredEnvVars = {"driverFile", "inputFile", "publicDirectory", "programFile", "defaultMaxRunTime", "maxRunTime"};
-        QStringList defaultEnvVars = {"sc_driver", "scInput.json", "../mpm-public-ls6", "osu_lwf", "1440", "120"};
+        QStringList requiredEnvVars = {"publicDirectory", "programFile", "defaultMaxRunTime", "maxRunTime"};
+        QStringList defaultEnvVars = {"../mpm-public-ls6", "osu_lwf", "1440", "120"};
         for (auto reqVar : requiredEnvVars)
         {
             if (eventAppData.contains(reqVar))
