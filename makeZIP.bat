@@ -66,7 +66,15 @@ rmdir /s /q .\applications\createEVENT\stochasticGroundMotion
 rmdir /s /q .\applications\createEVENT\windTunnelExperiment
 
 
+REM ## zip it up with 7zip
 
+set sevenzip_path="C:\Program Files\7-Zip\7z.exe"
+cd ..
+if exist .\HydroUQ_Windows_Download.zip (
+    del .\HydroUQ_Windows_Download.zip
+    echo File deleted.
+)
+%sevenzip_path% a -tzip .\HydroUQ_Windows_Download.zip  .\HydroUQ_Windows_Download
 
 
 
