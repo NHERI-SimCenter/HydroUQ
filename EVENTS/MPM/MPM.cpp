@@ -389,7 +389,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     theTabWidget->setIconSize(QSize(sizePrimaryTabs,sizePrimaryTabs));
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
-// #define NO_MPM_QT3D true
+#define NO_MPM_QT3D true
 #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
 // #ifdef _WIN32
     // Only allow 3D visualization on Windows and Linux for now, Mac had issues with Qt3D 
