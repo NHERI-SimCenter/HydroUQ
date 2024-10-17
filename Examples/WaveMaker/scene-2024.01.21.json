@@ -1,0 +1,235 @@
+{
+	"simulation": {
+		"fps": 5,
+		"frames": 200,
+		"time": 0,
+		"default_dt": 4e-5,
+		"default_dx": 0.05,
+		"domain": [90, 3.0, 1.85],
+		"gravity": [0,-9.81,0],
+		"save_path": "./",
+		"save_suffix": ".bgeo",
+		"particles_output_exterior_only": true,
+		"froude_scaling": 1.0
+	},
+	"bodies": [
+		{
+			"gpu": 0,
+			"model": 0,
+			"type": "particles",
+			"constitutive": "JFluid",
+			"output_attribs": ["Pressure"],
+			"track_particle_id": [0],
+			"track_attribs": ["Position_X"],
+			"target_attribs": ["Position_Y"],
+			"ppc": 8,
+			"CFL": 0.4,
+			"rho": 1000,
+			"bulk_modulus": 2.2e8,
+			"gamma": 7.1,
+			"viscosity": 0.001,
+			"use_ASFLIP": false,
+			"use_FEM": false,
+			"use_FBAR": true,
+			"alpha": 0,
+			"beta_min": 0,
+			"beta_max": 0,
+			"FBAR_ratio": 0.995,
+			"FBAR_fused_kernel": true,
+			"velocity": [0, 0, 0],
+			"geometry": [
+					{
+						"object": "OSU LWF",
+						"operation": "Add",
+						"span": [88.1, 2.0, 1.85],
+						"offset": [1.9, 0.0, 0.0],
+						"array": [1, 1, 1],
+						"spacing": [0, 0, 0]
+					}
+				],
+				"partition_start": [1.9, 0.2, 0],
+				"partition_end": [14, 2.0, 1.85]
+		},
+		{
+			"gpu": 1,
+			"model": 0,
+			"type": "particles",
+			"color": "blue",
+			"constitutive": "JFluid",
+			"output_attribs": ["Pressure"],
+			"track_particle_id": [0],
+			"track_attribs": ["Position_X"],
+			"target_attribs": ["Position_Y"],
+			"ppc": 8,
+			"CFL": 0.4,
+			"rho": 1000,
+			"bulk_modulus": 2.2e8,
+			"gamma": 7.1,
+			"viscosity": 0.001,
+			"use_ASFLIP": false,
+			"use_FEM": false,
+			"use_FBAR": true,
+			"alpha": 0,
+			"beta_min": 0,
+			"beta_max": 0,
+			"FBAR_ratio": 0.995,
+			"FBAR_fused_kernel": true,
+			"velocity": [0, 0, 0],
+			"geometry": [
+				{
+					"object": "OSU LWF",
+					"operation": "add",
+					"span": [88.1, 2.0, 1.85],
+					"offset": [1.9, 0.0, 0.0],
+					"array": [1, 1, 1],
+					"spacing": [0, 0, 0]
+				}
+			],
+			"partition_start": [14, 0.2, 0],
+			"partition_end": [28, 2.0, 1.85]
+		},
+		{
+			"gpu": 2,
+			"model": 0,
+			"type": "particles",
+			"color": "blue",
+			"constitutive": "JFluid",
+			"output_attribs": ["Pressure"],
+			"track_particle_id": [0],
+			"track_attribs": ["Position_X"],
+			"target_attribs": ["Position_Y"],
+			"ppc": 8,
+			"CFL": 0.4,
+			"rho": 1000,
+			"bulk_modulus": 2.2e8,
+			"gamma": 7.1,
+			"viscosity": 0.001,
+			"use_ASFLIP": false,
+			"use_FEM": false,
+			"use_FBAR": true,
+			"alpha": 0,
+			"beta_min": 0,
+			"beta_max": 0,
+			"FBAR_ratio": 0.995,
+			"FBAR_fused_kernel": true,
+			"velocity": [0, 0, 0],
+			"geometry": [
+				{
+					"object": "OSU LWF",
+					"operation": "add",
+					"span": [88.1, 2.0, 1.85],
+					"offset": [1.9, 0.0, 0.0],
+					"array": [1, 1, 1],
+					"spacing": [0, 0, 0]
+				}
+			],
+			"partition_start": [28,0,0],
+			"partition_end": [88.1, 2.0, 1.85]
+		},
+		{
+			"gpu": 2,
+			"model": 1,
+			"type": "particles",
+			"constitutive": "FixedCorotated",
+			"output_attribs": ["ID", "Velocity_X", "Velocity_Y", "Velocity_Z", "Pressure"],
+			"track_particle_id": [0],
+			"track_attribs": ["Position_X"],
+			"target_attribs": ["Position_Y"],
+			"ppc": 8.0,
+			"CFL": 0.4,
+			"rho": 988,
+			"youngs_modulus": 1e8,
+			"poisson_ratio": 0.3,
+			"use_ASFLIP": true,
+			"use_FEM": false,
+			"use_FBAR": true,
+			"alpha": 0,
+			"beta_min": 0,
+			"beta_max": 0,
+			"FBAR_ratio": 0.0,
+			"velocity": [0, 0, 0],
+			"geometry": [
+				{
+					"object": "Box",
+					"operation": "add",
+					"span": [0.5, 0.05, 0.1],
+					"offset": [40.385, 2.0, 0.125],
+					"array": [4, 1, 4],
+					"spacing": [1.0, 0, 0.5],
+					"track_particle_id": [0,159]
+				}
+			],
+			"partition_start": [0,0,0],
+			"partition_end": [90,4.5,1.85]
+		}
+	],
+	"boundaries": [
+		{
+			"object": "Wall",
+			"contact": "Separable",
+			"domain_start": [0.0, 0.0, 0.0],
+			"domain_end": [90, 4.5, 1.85]
+		},
+		{
+			"object": "OSU LWF",
+			"contact": "Separable",
+			"domain_start": [0.0, 0.0, -0.2],
+			"domain_end": [90, 4.5, 3.85]
+		},	
+		{
+			"object": "Box",
+			"contact": "Separable",
+			"domain_start": [45.79, 2.10, 1.317],
+			"domain_end": [46.805, 2.75, 2.333]
+		},
+		{
+			"object": "OSU Paddle",
+			"contact": "Separable",
+			"domain_start": [1.715, -0.2, -0.2],
+			"domain_end": [1.915, 5, 4],
+			"time": [0, 180],
+			"file": "WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv",
+			"output_frequency": 1200
+		}	
+	],
+	"grid-sensors": [
+		{
+			"attribute": "Force",
+			"operation": "Sum",
+			"direction": "X+",
+			"output_frequency": 120,
+			"domain_start": [45.79, 2.15, 1.400],
+			"domain_end": [45.805, 2.65, 2.250]
+		}
+	],
+	"particle-sensors": [
+		{
+			"attribute": "Elevation",
+			"operation": "Max",
+			"output_frequency": 60,
+			"domain_start": [15.95, 1.5, 0.5],
+			"domain_end":   [16.05, 2.5, 0.6]
+		},
+		{
+			"attribute": "Elevation",
+			"operation": "Max",
+			"output_frequency": 60,
+			"domain_start": [34.219, 1.5, 0.5],
+			"domain_end": [34.319, 2.5, 0.6]
+		},
+		{
+			"attribute": "Elevation",
+			"operation": "Max",
+			"output_frequency": 60,
+			"domain_start": [38.064, 1.5, 0.5],
+			"domain_end": [38.164, 2.5, 0.6]
+		},
+		{
+			"attribute": "Elevation",
+			"operation": "Max",
+			"output_frequency": 60,
+			"domain_start": [45.690, 1.5, 0.5],
+			"domain_end": [45.790, 2.615, 0.6]
+		}
+	]
+}

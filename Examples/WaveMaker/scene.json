@@ -1,0 +1,164 @@
+{
+	"simulation": {
+		"fps": 10,
+		"frames": 100,
+		"time": 0,
+		"default_dt": 1e-3,
+		"default_dx": 0.05,
+		"domain": [8, 8, 8],
+		"gravity": [0,-9.80665,0],
+		"save_path": "./",
+		"save_suffix": ".bgeo",
+		"particles_output_exterior_only": true,
+		"froude_scaling": 1.0
+	},
+	"bodies": [
+		{
+			"gpu": 0,
+			"model": 0,
+			"type": "particles",
+			"output_attribs": ["Pressure", "ID"],
+			"track_particle_id": [0, 100000, 200000, 300000],
+			"track_attribs": ["Position_X", "Position_Y", "Position_Z", "Velocity_Magnitude", "Velocity_X",  "Velocity_Y", "Velocity_Z"],
+			"output": {
+				"attribs": ["Position_X", "Position_Y", "Position_Z", "Velocity_Magnitude", "Velocity_X",  "Velocity_Y", "Velocity_Z"],
+				"exterior_only": true,
+				"exterior_threshold": 128
+			},
+			"trackers": {
+				"ids": [0, 100000, 200000, 300000],
+				"attribs": ["Position_X", "Position_Y", "Position_Z", "Velocity_Magnitude", "Velocity_X",  "Velocity_Y", "Velocity_Z"]
+			},
+			"target_attribs": ["Position_Y"],
+
+			"velocity": [0, -1, 0],
+			"algorithm": {
+				"type": "particles",
+				"ppc": 8.0,
+				"use_FEM": false,
+				"use_ASFLIP": true,
+				"use_FBAR": true,
+				"ASFLIP_alpha": 0.3,
+				"ASFLIP_beta_min": 0,
+				"ASFLIP_beta_max": 0,
+				"FBAR_psi": 0.99,
+				"FBAR_fused_kernel": true
+			},
+			"material": {
+				"constitutive": "JFluid",
+				"CFL": 0.5,
+				"rho": 1000,
+				"bulk_modulus": 1e7,
+				"gamma": 7.1,
+				"viscosity": 0.001
+			},
+			"geometry": [
+				{
+					"object": "Box",
+					"operation": "Add",
+					"span": [8, 2.4, 0.5],
+					"offset": [0, 1.6, 0],
+					"rotate": [0,0,0],
+					"fulcrum": [0.0, 0.0, 0.0]
+				}
+			]
+		},
+		{
+			"gpu": 0,
+			"model": 1,
+			"type": "particles",
+			"output_attribs": ["Pressure", "VonMisesStress", "Dilation", "ID"],
+			"track_particle_id": [0, 100000, 200000, 300000, 400000],
+			"track_attribs": ["Position_X", "Position_Y", "Position_Z", "Velocity_X", "Velocity_Y",  "Velocity_Z"],
+			"target_attribs": ["Position_Y"],
+			"velocity": [0, 0, 0],
+			"material": {
+				"constitutive": "DruckerPrager",
+				"CFL": 0.5,
+				"rho": 2000,
+				"youngs_modulus": 1e7,
+				"poisson_ratio": 0.2,
+				"cohesion": 0.00005,
+				"friction_angle": 60,
+				"logJp0": 0.0,
+				"beta": 0.0,
+				"SandVolCorrection": true
+			},
+			"algorithm": {
+				"type": "particles",
+				"ppc": 8.0,
+				"use_FEM": false,
+				"use_ASFLIP": true,
+				"use_FBAR": true,
+				"ASFLIP_alpha": 0,
+				"ASFLIP_beta_min": 0,
+				"ASFLIP_beta_max": 0,
+				"FBAR_psi": 0.5,
+				"FBAR_fused_kernel": false
+			},
+			"geometry": [
+				{
+					"object": "Box",
+					"operation": "Add",
+					"span": [2, 2, 2],
+					"offset": [3.0, 0.0, 4.6],
+					"rotate": [0,45,0],
+					"fulcrum": [4.0, 1.0, 5.6]
+				}
+			]
+		}
+	],
+	"boundaries": [
+		{
+			"type": "grid",
+			"object": "Wall",
+			"contact": "Separable",
+			"domain_start":[0,0,0],
+			"domain_end": [8,8,8]
+		},
+		{
+			"type": "grid",
+			"object": "Box",
+			"contact": "Separable",
+			"domain_start": [-0.2, -0.2, -0.2],
+			"domain_end": [8.2, 1.6, 3.2]
+		}
+	],
+	"grid-sensors": [
+		{
+			"type": "grid",
+			"attribute": "Force",
+			"operation": "Sum",
+			"direction": "Z+",
+			"output_frequency": 60,
+			"domain_start": [3.5, -0.1, 8],
+			"domain_end": [4.5, 0.5, 8.1]
+		}
+	],
+	"particle-sensors": [
+		{
+			"type": "particles",
+			"attribute": "Elevation",
+			"operation": "Max",
+			"output_frequency": 60,
+			"domain_start": [4.0, 1.6, 0.0],
+			"domain_end":   [4.1, 8.0, 0.1]
+		},
+		{
+			"type": "particles",
+			"attribute": "Elevation",
+			"operation": "Max",
+			"output_frequency": 60,
+			"domain_start": [0.0, 1.6, 0.0],
+			"domain_end":   [0.1, 8.0, 0.1]
+		},
+		{
+			"type": "particles",
+			"attribute": "Elevation",
+			"operation": "Max",
+			"output_frequency": 60,
+			"domain_start": [4.0, 0.0, 5.15],
+			"domain_end":   [4.1, 2.5, 5.25]
+		}
+	]
+}
