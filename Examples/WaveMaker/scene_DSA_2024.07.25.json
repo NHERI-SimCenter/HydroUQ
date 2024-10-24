@@ -1,0 +1,127 @@
+{
+	"simulation": {
+		"fps": 60,
+		"frames": 360,
+		"default_dt": 1e-4,
+		"default_dx": 0.00125,
+		"domain": [1.0, 1.0, 1.0],
+		"gravity": [4.905, -8.49571, 0],
+		"save_path": "./",
+		"save_suffix": ".bgeo",
+		"froude_scaling": 1.0,
+		"particles_output_exterior_only": false
+	},
+	"bodies": [
+		{
+			"gpu": 0,
+			"model": 0,
+			"type": "particles",
+			"constitutive": "DruckerPrager",
+			"output_attribs": ["Velocity_X", "Pressure", "VonMisesStress", "Dilation"],
+			"track_particle_id": [0],
+			"track_attribs": ["Position_X"],
+			"target_attribs": ["Position_Y"],
+			"material": {
+				"constitutive": "DruckerPrager",
+				"CFL": 0.3,
+				"rho": 1750,
+				"youngs_modulus": 1e7,
+				"poisson_ratio": 0.3,
+				"friction_angle": 32.5,
+				"cohesion": 0.000,
+				"logJp0": -0.01,
+				"SandVolCorrection": true,
+				"beta": 0.5
+			},
+			"algorithm": {
+				"ppc": 8.0,
+				"type": "particles",
+				"use_ASFLIP": true,
+				"use_FEM": false,
+				"use_FBAR": true,
+				"ASFLIP_alpha": 0,
+				"ASFLIP_beta_min": 0,
+				"ASFLIP_beta_max": 0,
+				"FBAR_psi": 0.9
+			},
+			"geometry": [
+				{
+					"object": "box",
+					"operation": "Add",
+					"offset": [0.14, 0.0, 0.4775],
+					"span": [0.210, 0.045, 0.045],
+					"domain_start": [0,0,0],
+					"domain_end": [1.0, 1.0, 1.0]
+				},
+				{
+					"object": "box",
+					"operation": "subtract",
+					"offset": [1.0, 1.0, 1.0],
+					"span": [0.1,0.1,0.1],
+					"domain_start": [1.0, 1.0, 1.0],
+					"domain_end": [1.1, 1.1, 1.1]
+				}
+			],
+			"velocity": [0, 0, 0]
+		}
+	],
+	"boundaries": [
+		{
+			"object": "Wall",
+			"contact": "Separable",
+			"domain_start":[0,0,0],
+			"domain_end": [1.0, 1.0, 1.0],
+			"duration":[0,180],
+			"friction_static": 0.0,
+			"friction_dynamic": 0.0
+		},
+		{
+			"object": "box",
+			"contact": "Separable",
+			"domain_start":[0.0, 0.0, 0.5225],
+			"domain_end": [0.6, 0.075, 0.55]
+		},
+		{
+			"object": "box",
+			"contact": "Separable",
+			"domain_start":[0.0, 0.0, 0.45],
+			"domain_end": [0.6, 0.075, 0.4775]
+		},
+		{
+			"object": "Plane",
+			"contact": "Separable",
+			"domain_start":[0.50, 0.0 ,0.0],
+			"domain_end": [2.232, 1.0, 1.0],
+			"duration":[0,180],
+			"friction_static": 2.0,
+			"friction_dynamic": 2.0
+		},
+		{
+			"object": "Plane",
+			"contact": "Separable",
+			"domain_start": [0.0, 0.0,0.0],
+			"domain_end": [0.5, 0.0, 1.0],
+			"friction_static": 3.0,
+			"friction_dynamic": 2.0
+		}
+	],
+	"grid-sensors": [
+		{
+			"attribute": "Force",
+			"operation": "Sum",
+			"direction": "X+",
+			"output_frequency": 60,
+			"domain_start": [80, -0.25, -0.25],
+			"domain_end": [80.5, 1.6, 2.25]
+		}
+	],
+	"particle-sensors": [
+		{
+			"attribute": "Elevation",
+			"operation": "Max",
+			"output_frequency": 60,
+			"domain_start": [16.0, 0.0, 0.0],
+			"domain_end":   [16.1, 2.0, 2.0]
+		}
+	]
+}

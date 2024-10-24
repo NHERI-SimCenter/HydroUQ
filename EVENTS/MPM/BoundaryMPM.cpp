@@ -320,7 +320,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   paddleLayout->addWidget(new QLabel("m"),numRow++, 4);
   
   paddleDisplacementFile = new SC_FileEdit("paddleDisplacementFile");
-  QString paddleName = QString("WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv");
+  QString paddleName = QString("Examples/WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv");
   paddleDisplacementFile->setFilename(paddleName);
   // paddleDisplacementFile->setFilter("CSV Files (*.csv)");
   
@@ -486,9 +486,9 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   structLayout->addWidget(loadCellFace,numRow++,1);
 
   // numRow = 2;
-  structLength = new SC_DoubleLineEdit("structLength",1.016);
+  structLength = new SC_DoubleLineEdit("structLength",1.0);
   structHeight = new SC_DoubleLineEdit("structHeight",0.625);
-  structWidth = new SC_DoubleLineEdit("structWidth",1.016);
+  structWidth = new SC_DoubleLineEdit("structWidth",1.0);
   structLayout->addWidget(new QLabel("Dimensions (X,Y,Z)"),numRow, 0);
   structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
   structLayout->addWidget(structLength,numRow,1);
