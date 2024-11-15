@@ -65,6 +65,7 @@ SOURCES += \
     $$PWD/EVENTS/MPM/CaseSPH.cpp \
     $$PWD/EVENTS/MPM/ExecutionSPH.cpp \
     $$PWD/EVENTS/TaichiEvent/TaichiEvent.cpp \
+    $$PWD/EVENTS/TaichiEvent/CelerisTaichi.cpp \
     $$PWD/EVENTS/TaichiEvent/BasicTaichiEvent.cpp \
     $$PWD/EVENTS/TaichiEvent/CelerisTaichiEvent.cpp \
     $$PWD/EVENTS/Celeris/Celeris.cpp \
@@ -126,6 +127,7 @@ HEADERS += \
     $$PWD/EVENTS/MPM/CaseSPH.h \
     $$PWD/EVENTS/MPM/ExecutionSPH.h \
     $$PWD/EVENTS/TaichiEvent/TaichiEvent.h \
+    $$PWD/EVENTS/TaichiEvent/CelerisTaichi.h \
     $$PWD/EVENTS/TaichiEvent/BasicTaichiEvent.h \
     $$PWD/EVENTS/TaichiEvent/CelerisTaichiEvent.h \
     $$PWD/EVENTS/Celeris/Celeris.h \

@@ -2,10 +2,10 @@
 #define CELERIS_TAICHI_EVENT_H
 
 /* *****************************************************************************
-Copyright (c) 2016-2024, The Regents of the University of California (Regents).
+Copyright (c) 2016-2017, The Regents of the University of California (Regents).
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without 
+Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
 1. Redistributions of source code must retain the above copyright notice, this
@@ -20,7 +20,7 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
 ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -29,64 +29,42 @@ The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 
-REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
 THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS 
-PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, 
+THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS
+PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
 UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-/**
- *  @author  JustinBonus
- *  @date    9/2024
- *  @version 4.0
- *
- *  @section CelerisTaichiEvent simulates a hazard event (EVT) via the Celeris
- *  wave solver (nonlinear shallow water and Boussinesq equations) within the
- *  Taichi Lang framework. Taichi Lang is a domain-specific language for high-
- *  performance computation which abstracts the underlying hardware and data-
- *  parallelism in a Python-like syntax. The Celeris wave solver is a high-
- *  performance, open-source, and parallelized wave solver for simulating 
- *  nonlinear shallow water and Boussinesq equations. The Celeris wave solver
- *  includes various man-made and natural wave obstacles, such as mangroves,
- *  seawalls, and islands, and can simulate wave propagation and runup. The
- *  application includes sensors/recorders for measuring wave height, velocity,
- *  etc., and can visualize said quantities in near or faster-than-real-time.
- * 
- *  
- *
- *  This is the class providing the Celeris Tab for the TaichiEvent
- */
+// Written: JustinBonus (2024)
 
-#include <SimCenterWidget.h>
+#include <SimCenterAppWidget.h>
 
-class QJsonObject;
-class SC_FileEdit;
-class QString;
-class QLabel;
-class SimCenterPreferences;
+class CelerisTaichi;
 
-class CelerisTaichiEvent : public SimCenterWidget
+class CelerisTaichiEvent : public SimCenterAppWidget
 {
-    // Q_OBJECT
+   Q_OBJECT
 public:
-    CelerisTaichiEvent(QWidget *parent = 0);
-    virtual ~CelerisTaichiEvent();
-    bool outputToJSON(QJsonObject &jsonObject);
-    bool inputFromJSON(QJsonObject &jsonObject);
-    bool copyFiles(QString &dirName);
-    QString pyScriptsPath(void);
+   CelerisTaichiEvent(QWidget *parent = 0);
+   ~CelerisTaichiEvent();
+
+   bool inputFromJSON(QJsonObject &rvObject);
+   bool outputToJSON(QJsonObject &rvObject);  
+   bool outputAppDataToJSON(QJsonObject &rvObject);
+   bool inputAppDataFromJSON(QJsonObject &rvObject);
+   bool copyFiles(QString &dirName);
+   bool outputCitation(QJsonObject &jsonObject) override;
+   bool supportsLocalRun() override;
+
 signals:
 
+public slots:
+   void clear(void);
+
 private:
-  SC_FileEdit *theCelerisPyScript;
-  SC_FileEdit *theSimulationScript;
-  SC_FileEdit *theConfigurationFile;
-  SC_FileEdit *theBathymetryFile;
-  SC_FileEdit *theWaveFile;
-  SC_FileEdit *theSensorScript;
+   CelerisTaichi  *inputCeleris;
 };
 
 #endif // CELERIS_TAICHI_EVENT_H
-

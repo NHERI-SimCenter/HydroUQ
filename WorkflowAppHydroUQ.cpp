@@ -262,7 +262,7 @@ constexpr bool DEV_MODE = true; // Set to true for development mode, false for p
 
 // Quickly enable/disable tools here for compile-time
 constexpr bool USE_CLAYMORE_TOOL = true;
-constexpr bool USE_TAICHI_TOOL = true;
+constexpr bool USE_TAICHI_TOOL = false;
 constexpr bool USE_NOAA_TOOL = true; 
 constexpr bool USE_CELERIS_TOOL = false;
 constexpr bool USE_WEBGPU_TOOL = false;
@@ -303,7 +303,7 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
             appName = "simcenter-claymore-lonestar6"; // Lonestar6 public app for ClaymoreUW MPM
             queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
         }
-        QString appVersion = "1.0.1";
+        QString appVersion = "1.0.0";
         QString machine = "lonestar6"; // "ls6";
         SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, appVersion, machine, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
         // delete miniMPM; // Clean up the MPM object after creating the tool?
