@@ -1,8 +1,8 @@
 /* *****************************************************************************
-Copyright (c) 2016-2023, The Regents of the University of California (Regents).
+Copyright (c) 2016-2017, The Regents of the University of California (Regents).
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without 
+Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
 1. Redistributions of source code must retain the above copyright notice, this
@@ -17,7 +17,7 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
 ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -26,169 +26,156 @@ The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 
-REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
 THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS 
-PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, 
+THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS
+PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
 UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-#include <CelerisTaichiEvent.h>
+// Written: JustinBonus
+
+#include "TaichiEvent.h"
+#include <QScrollArea>
+#include <QLineEdit>
+#include <QTabWidget>
+#include <QVBoxLayout>
 #include <QLabel>
-#include <QString>
-#include <QGridLayout>
 #include <QJsonObject>
-#include <QJsonArray>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
-#include <SC_FileEdit.h>
-#include <SimCenterPreferences.h>
+#include <QDebug>
+#include <QString>
+#include <CelerisTaichiEvent.h>
+#include <CelerisTaichi.h>
 
 CelerisTaichiEvent::CelerisTaichiEvent(QWidget *parent)
-  :SimCenterWidget(parent)
+    : SimCenterAppWidget(parent)
 {
-  QString defaultWorkflowFilename = "CelerisTaichiEvent.py";
-  QString defaultSimulationFilename = "setrun.py";
-  QString defaultConfigurationFilename = "config.json";
-  QString defaultBathymetryFilename = "test_curve.xyz";
-  QString defaultWaveFilename = "irrWaves.txt";
-  QString defaultSensorFilename = "euler.py";
-  QString sourceDir = "celeris";
-  QString defaultWorkflowScript = pyScriptsPath() + QDir::separator() + defaultWorkflowFilename;
-  QString defaultSimulationScript = pyScriptsPath() + QDir::separator() + defaultSimulationFilename;
-  QString defaultConfigurationFile = pyScriptsPath() + QDir::separator() + defaultConfigurationFilename;
-  QString defaultBathymetryFile = pyScriptsPath() + QDir::separator() + defaultBathymetryFilename;
-  QString defaultWaveFile = pyScriptsPath() + QDir::separator() + defaultWaveFilename;
-  QString defaultSensorFile = pyScriptsPath() + QDir::separator() + defaultSensorFilename;
+    int windowWidth = 800;
 
-  theCelerisPyScript = new SC_FileEdit("basicPyScript");
-  theSimulationScript = new SC_FileEdit("interfaceSurface");
-  theConfigurationFile = new SC_FileEdit("configFile");
-  theBathymetryFile = new SC_FileEdit("bathymetryFile");
-  theWaveFile = new SC_FileEdit("waveFile");
-  theSensorScript = new SC_FileEdit("sensorPyScript");
-  theCelerisPyScript->setToolTip("Workflow backend script (*.py) which launches the CelerisTaichiEvent simulation script. Handles the inputs and outputs for coupling Celeris Taichi Lang to the SimCenter workflow.");
-  theSensorScript->setToolTip("Simulation script (*.py) which defines the CelerisTaichiEvent numerical simulation program. This script is launched from the workflow backend script in the SimCenter workflow.");
-  theConfigurationFile->setToolTip("Configuration file (*.json) which defines the CelerisTaichiEvent simulation parameters.");
-  theBathymetryFile->setToolTip("Bathymetry file (*.xyz) which defines the CelerisTaichiEvent bathymetry.");
-  theWaveFile->setToolTip("Wave input file (*.txt) which defines the CelerisTaichiEvent wave input.");
-  theSensorScript->setToolTip("Sensor script (*.py) which defines the CelerisTaichiEvent sensor output.");
+    QWidget     *mainGroup = new QWidget();
+    QGridLayout *mainLayout = new QGridLayout();
 
-  theCelerisPyScript->setFilename(defaultWorkflowScript);
-  theSimulationScript->setFilename(defaultSimulationScript);
-  theConfigurationFile->setFilename(defaultConfigurationFile);
-  theBathymetryFile->setFilename(defaultBathymetryFile);
-  theWaveFile->setFilename(defaultWaveFile);
-  theSensorScript->setFilename(defaultSensorFile);
+    QLabel *generalDescriptionLabel = new QLabel("General Event - Celeris Wave-Solver (Taichi Lang): "
+                                                 "\n 1. Specify Settings for simulation. "						 
+                                                 "\n 2. Define Bodies that are to be simulated. "
+                                                 "\n 3. Specify Boundaries for simulation. "
+                                                 "\n 4. Specify Sensors for recording. "
+                                                 "\n 5. Visualize scene.");
 
-  QGridLayout *theLayout = new QGridLayout();
-  theLayout->addWidget(new QLabel("Workflow Backend Script (*.py)"),0,0);
-  theLayout->addWidget(theCelerisPyScript, 0,1);
-  theLayout->addWidget(new QLabel("Celeris Simulation Script (*.py)"),1,0);
-  theLayout->addWidget(theSimulationScript, 1,1);
-  theLayout->addWidget(new QLabel("Celeris Configuration File (*.json)"),2,0);
-  theLayout->addWidget(theConfigurationFile, 2,1);
-  theLayout->addWidget(new QLabel("Celeris Bathymetry File (*.xyz)"),3,0);
-  theLayout->addWidget(theBathymetryFile, 3,1);
-  theLayout->addWidget(new QLabel("Celeris Wave Input File (*.txt)"),4,0);
-  theLayout->addWidget(theWaveFile, 4,1);
-  theLayout->addWidget(new QLabel("Celeris Sensor Script (*.py)"),5,0);
-  theLayout->addWidget(theSensorScript, 5,1);
-  theLayout->setRowStretch(6,1);
-  this->setLayout(theLayout);
+
+
+    mainLayout->addWidget(generalDescriptionLabel, 0, 0);
+
+    QTabWidget *theTabWidget = new QTabWidget();
+    inputCeleris = new CelerisTaichi();
+    theTabWidget->addTab(inputCeleris, "Celeris");
+    mainLayout->addWidget(theTabWidget, 0, 0);
+    
+    
+    mainGroup->setLayout(mainLayout);
+    mainGroup->setMaximumWidth(windowWidth);
+    
+    QScrollArea *scrollArea = new QScrollArea();
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setLineWidth(1);
+    scrollArea->setFrameShape(QFrame::NoFrame);
+    scrollArea->setWidget(mainGroup);
+    scrollArea->setMaximumWidth(windowWidth + 25);
+
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->addWidget(scrollArea);
+    this->setLayout(layout);
 }
+
 
 CelerisTaichiEvent::~CelerisTaichiEvent()
 {
 
 }
 
-bool
-CelerisTaichiEvent::outputToJSON(QJsonObject &jsonObject)
+
+void CelerisTaichiEvent::clear(void)
 {
-  theCelerisPyScript->outputToJSON(jsonObject);
-  theSimulationScript->outputToJSON(jsonObject);
-  theConfigurationFile->outputToJSON(jsonObject);
-  theBathymetryFile->outputToJSON(jsonObject);
-  theWaveFile->outputToJSON(jsonObject);
-  theSensorScript->outputToJSON(jsonObject);
+
+}
+
+
+bool CelerisTaichiEvent::inputFromJSON(QJsonObject &jsonObject)
+{
+  this->clear();
+  
+  inputCeleris->inputFromJSON(jsonObject);
+
   return true;
 }
 
-bool
-CelerisTaichiEvent::inputFromJSON(QJsonObject &jsonObject)
+bool CelerisTaichiEvent::outputToJSON(QJsonObject &jsonObject)
 {
-  theCelerisPyScript->inputFromJSON(jsonObject);
-  theSimulationScript->inputFromJSON(jsonObject);
-  theConfigurationFile->inputFromJSON(jsonObject);
-  theBathymetryFile->inputFromJSON(jsonObject);
-  theWaveFile->inputFromJSON(jsonObject);
-  theSensorScript->inputFromJSON(jsonObject);
+  jsonObject["EventClassification"] = "Hydro";
+  jsonObject["Application"] = "CelerisTaichiEvent";
+
+  inputCeleris->outputToJSON(jsonObject);
+  
   return true;
 }
 
-QString CelerisTaichiEvent::pyScriptsPath()
-{
-    QString backendAppDir = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
-             + QString("applications") + QDir::separator() + QString("createEVENT") + QDir::separator()
-             + QString("CelerisTaichiEvent");
-    return backendAppDir;
+bool CelerisTaichiEvent::outputAppDataToJSON(QJsonObject &jsonObject) {
+
+    //
+    // per API, need to add name of application to be called in Application
+    // and all data to be used in ApplicationData
+    //
+
+    jsonObject["EventClassification"] = "Hydro";
+    jsonObject["Application"] = "CelerisTaichiEvent";
+    QJsonObject dataObj;
+    jsonObject["ApplicationData"] = dataObj;
+
+    return true;
+}
+bool CelerisTaichiEvent::inputAppDataFromJSON(QJsonObject &jsonObject) {
+
+    Q_UNUSED(jsonObject);
+    return true;
 }
 
-bool
-CelerisTaichiEvent::copyFiles(QString &destDir)
-{
-  QString defaultWorkflowFilename = "CelerisTaichiEvent.py";
-  QString defaultSimulationFilename = "setrun.py";
-  QString defaultConfigurationFilename = "config.json";
-  QString defaultBathymetryFilename = "test_curve.xyz";
-  QString defaultWaveFilename = "irrWaves.txt";
-  QString defaultSensorFilename = "euler.py";
-  QString sourceDir = "celeris";
-  QString defaultWorkflowScript = pyScriptsPath() + QDir::separator() + defaultWorkflowFilename;
-  QString defaultSimulationScript = pyScriptsPath() + QDir::separator() + defaultSimulationFilename;
-  QString defaultConfigurationFile = pyScriptsPath() + QDir::separator() + defaultConfigurationFilename;
-  QString defaultBathymetryFile = pyScriptsPath() + QDir::separator() + defaultBathymetryFilename;
-  QString defaultWaveFile = pyScriptsPath() + QDir::separator() + defaultWaveFilename;
-  QString defaultSensorFile = pyScriptsPath() + QDir::separator() + defaultSensorFilename;
-  if (theCelerisPyScript->copyFile(destDir) != true) {
-    theCelerisPyScript->setFilename(defaultWorkflowScript);
-    if (theCelerisPyScript->copyFile(destDir) != true) {
-      return false;
-    }
-  }
-  if (theSimulationScript->copyFile(destDir) != true) {
-    theSimulationScript->setFilename(defaultSimulationScript);
-    if (theSimulationScript->copyFile(destDir) != true) {
-      return false;
-    }
-  }
-  if (theConfigurationFile->copyFile(destDir) != true) {
-    theConfigurationFile->setFilename(defaultConfigurationFile);
-    if (theConfigurationFile->copyFile(destDir) != true) {
-      return false;
-    }
-  }
-  if (theBathymetryFile->copyFile(destDir) != true) {
-    theBathymetryFile->setFilename(defaultBathymetryFile);
-    if (theBathymetryFile->copyFile(destDir) != true) {
-      return false;
-    }
-  }
-  if (theWaveFile->copyFile(destDir) != true) {
-    theWaveFile->setFilename(defaultWaveFile);
-    if (theWaveFile->copyFile(destDir) != true) {
-      return false;
-    }
-  }
-  if (theSensorScript->copyFile(destDir) != true) {
-    theSensorScript->setFilename(defaultSimulationScript);
-    if (theSensorScript->copyFile(destDir) != true) {
-      return false;
-    }
+
+bool CelerisTaichiEvent::copyFiles(QString &destDir) {
+  if (inputCeleris->copyFiles(destDir) == false) {
+    qDebug() << "CelerisTaichiEvent::copyFiles: failed to copy celeris files";
+    return false;
   }
   return true;
 }
 
+bool CelerisTaichiEvent::supportsLocalRun() {
+
+  //
+  // Allows use on local machines with Taichi Lang installed (python -m pip install taichi)
+  //
+
+  return true;
+}
+
+bool CelerisTaichiEvent::outputCitation(QJsonObject &jsonObject) {
+  QJsonObject citeTaichi;
+  QJsonObject citeCeleris;
+
+  citeTaichi["citation"] = "Yuanming Hu (2019). Taichi Lang.";
+  citeTaichi["description"] = "HydroUQ applied Taichi for two-way coupled CFD-FEA, developed in this thesis as the Taichi software. It couples Boundaries and Bodies for the simulation of civil engineering structures subject to multi-hazards via the PreCICE coupling library.";
+  
+  citeCeleris["title"] = "Celeris Base: An interactive and immersive Boussinesq-type nearshore wave simulation software";
+  citeCeleris["citation"] = "Sasan Tavakkol and Patrick Lynett (2020). Celeris Base: An interactive and immersive Boussinesq-type nearshore wave simulation software.";
+  citeCeleris["description"] = "Celeris Advent enabled researchers and engineers for the first time to simulate nearshore waves with a Boussinesq-type model, faster than real-time and in an interactive environment. However, its development platform and implementation complexity hindered researchers from developing it further and made adding new features to the software a daunting task. The software used graphics shaders to solve scientific equations which could be confusing for many. The visualization environment was wired from scratch which made it very difficult to add features such as virtual reality. Solution method: A new software is developed completely from scratch following Celeris Advent, called Celeris Base. This software uses the same hybrid finite volume–finite difference scheme to solve the extended Boussinesq equations, but using a variant of shaders called compute shaders, removing possible barriers for other researchers to understand the code and develop it further. The software is developed in Unity3D, a popular game engine with a large and helpful community as well as thousands of ready to use plugins. Celeris Base is equipped with virtual reality and is the first nearshore simulation software to provide this feature.";
+  citeCeleris["doi"] = "https://doi.org/10.1016/j.cpc.2019.106966.";
+  citeCeleris["license"] = "MIT License";
+  citeCeleris["keywords"] = "Celeris; Boussinesq; Wave modeling; Immersive; Interactive; GPU";
+  citeCeleris["year"] = "2020";
+  citeCeleris["author"] = "Sasan Tavakkol and Patrick Lynett";
+  citeCeleris["journal"] = "Computer Physics Communications";
+
+  jsonObject["Taichi"] = citeTaichi;
+  jsonObject["Celeris"] =  citeCeleris;
+  return true;
+}

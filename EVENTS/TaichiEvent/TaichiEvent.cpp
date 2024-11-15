@@ -46,7 +46,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QDebug>
 #include <QString>
 #include <BasicTaichiEvent.h>
-#include <CelerisTaichiEvent.h>
+// #include <CelerisTaichiEvent.h>
 
 TaichiEvent::TaichiEvent(QWidget *parent)
     : SimCenterAppWidget(parent)
@@ -69,9 +69,7 @@ TaichiEvent::TaichiEvent(QWidget *parent)
 
     QTabWidget *theTabWidget = new QTabWidget();
     inputBasic = new BasicTaichiEvent();
-    inputCeleris = new CelerisTaichiEvent();
     theTabWidget->addTab(inputBasic, "Basic");
-    theTabWidget->addTab(inputCeleris, "Celeris");
     mainLayout->addWidget(theTabWidget, 1, 0);
     
     
@@ -108,7 +106,6 @@ bool TaichiEvent::inputFromJSON(QJsonObject &jsonObject)
   this->clear();
   
   inputBasic->inputFromJSON(jsonObject);
-  inputCeleris->inputFromJSON(jsonObject);
 
   return true;
 }
@@ -119,7 +116,6 @@ bool TaichiEvent::outputToJSON(QJsonObject &jsonObject)
   jsonObject["Application"] = "TaichiEvent";
 
   inputBasic->outputToJSON(jsonObject); 
-  inputCeleris->outputToJSON(jsonObject);
   
   return true;
 }
@@ -147,11 +143,7 @@ bool TaichiEvent::inputAppDataFromJSON(QJsonObject &jsonObject) {
 
 bool TaichiEvent::copyFiles(QString &destDir) {
   if (inputBasic->copyFiles(destDir) == false) {
-    qDebug() << "BasicTaichiEvent::copyFiles: failed to copy basic files";
-    return false;
-  }
-  if (inputCeleris->copyFiles(destDir) == false) {
-    qDebug() << "CelerisTaichiEvent::copyFiles: failed to copy celeris files";
+    qDebug() << "TaichiEvent::copyFiles: failed to copy basic files";
     return false;
   }
   return true;
@@ -168,22 +160,10 @@ bool TaichiEvent::supportsLocalRun() {
 
 bool TaichiEvent::outputCitation(QJsonObject &jsonObject) {
   QJsonObject citeTaichi;
-  QJsonObject citeCeleris;
 
   citeTaichi["citation"] = "Yuanming Hu (2019). Taichi Lang.";
   citeTaichi["description"] = "HydroUQ applied Taichi for two-way coupled CFD-FEA, developed in this thesis as the Taichi software. It couples Boundaries and Bodies for the simulation of civil engineering structures subject to multi-hazards via the PreCICE coupling library.";
-  
-  citeCeleris["title"] = "Celeris Base: An interactive and immersive Boussinesq-type nearshore wave simulation software";
-  citeCeleris["citation"] = "Sasan Tavakkol and Patrick Lynett (2020). Celeris Base: An interactive and immersive Boussinesq-type nearshore wave simulation software.";
-  citeCeleris["description"] = "Celeris Advent enabled researchers and engineers for the first time to simulate nearshore waves with a Boussinesq-type model, faster than real-time and in an interactive environment. However, its development platform and implementation complexity hindered researchers from developing it further and made adding new features to the software a daunting task. The software used graphics shaders to solve scientific equations which could be confusing for many. The visualization environment was wired from scratch which made it very difficult to add features such as virtual reality. Solution method: A new software is developed completely from scratch following Celeris Advent, called Celeris Base. This software uses the same hybrid finite volume–finite difference scheme to solve the extended Boussinesq equations, but using a variant of shaders called compute shaders, removing possible barriers for other researchers to understand the code and develop it further. The software is developed in Unity3D, a popular game engine with a large and helpful community as well as thousands of ready to use plugins. Celeris Base is equipped with virtual reality and is the first nearshore simulation software to provide this feature.";
-  citeCeleris["doi"] = "https://doi.org/10.1016/j.cpc.2019.106966.";
-  citeCeleris["license"] = "MIT License";
-  citeCeleris["keywords"] = "Celeris; Boussinesq; Wave modeling; Immersive; Interactive; GPU";
-  citeCeleris["year"] = "2020";
-  citeCeleris["author"] = "Sasan Tavakkol and Patrick Lynett";
-  citeCeleris["journal"] = "Computer Physics Communications";
 
   jsonObject["Taichi"] = citeTaichi;
-  jsonObject["Celeris"] =  citeCeleris;
   return true;
 }
