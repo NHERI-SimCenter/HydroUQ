@@ -120,7 +120,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <Celeris/Celeris.h>
 // #include <Celeris/WebGPU.h>
 #include <NOAA/DigitalCoast.h>
-
+#include <Utils/FileOperations.h>
+#include <FronteraMachine.h>
 // static pointer for global procedure set in constructor
 static WorkflowAppHydroUQ *theApp = 0;
 
@@ -153,9 +154,9 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //
     // Set workflow scripts
     //
-
+    TapisMachine *theMachine = new FronteraMachine();
     localApp = new LocalApplication("sWHALE.py");
-    remoteApp = new RemoteApplication("sWHALE.py", theService);
+    remoteApp = new RemoteApplication("sWHALE.py", theService, theMachine, nullptr);
 
     //QStringList filesToDownload; filesToDownload << "inputRWHALE.json" << "input_data.zip" << "Results.zip";
     theJobManager = new RemoteJobManager(theService);
@@ -266,6 +267,7 @@ constexpr bool DEV_MODE = true; // Set to true for development mode, false for p
 
 // Quickly enable/disable tools here for compile-time
 constexpr bool USE_CLAYMORE_TOOL = true;
+constexpr bool USE_MPM_EVENT_TOOL = true;
 constexpr bool USE_TAICHI_TOOL = false;
 constexpr bool USE_NOAA_TOOL = true; 
 constexpr bool USE_CELERIS_TOOL = false;
@@ -301,14 +303,16 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         }
 
         if constexpr (DEV_MODE) {
-            appName = "simcenter-claymore-lonestar6"; // Lonestar6 dev app for ClaymoreUW MPM, Justin Bonus (bonusj) 
+            appName = "simcenter-claymore-ls6"; // Lonestar6 dev app for ClaymoreUW MPM, Justin Bonus (bonusj) 
             queues << "gpu-a100-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
         } else {
-            appName = "simcenter-claymore-lonestar6"; // Lonestar6 public app for ClaymoreUW MPM
+            appName = "simcenter-claymore-ls6"; // Lonestar6 public app for ClaymoreUW MPM
             queues << "gpu-a100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
         }
-        QString appVersion = "1.0.0";
-        QString machine = "lonestar6"; // "ls6";
+        // QString appVersion = "1.0.0";
+        // QString machine = "lonestar6"; // "ls6";
+        QString appVersion = "1.0.1";
+        QString machine = "ls6"; // "ls6";
         SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, appVersion, machine, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
         // delete miniMPM; // Clean up the MPM object after creating the tool?
         
