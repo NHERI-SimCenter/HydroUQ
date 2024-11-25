@@ -3,7 +3,7 @@ REM ## make the exe .. it assumes Hydro-UQ_Windows_Download exists with vcredist
 
 cd build
 conan install .. --build missing
-qmake ..\Hydro-UQ.pro
+qmake QMAKE_CXXFLAGS+=-D_SC_RELEASE ..\Hydro-UQ.pro
 nmake
 
 REM ## copy application into folder and winddeployqt it
@@ -66,7 +66,15 @@ rmdir /s /q .\applications\createEVENT\stochasticGroundMotion
 rmdir /s /q .\applications\createEVENT\windTunnelExperiment
 
 
+REM ## zip it up with 7zip
 
+set sevenzip_path="C:\Program Files\7-Zip\7z.exe"
+cd ..
+if exist .\HydroUQ_Windows_Download.zip (
+    del .\HydroUQ_Windows_Download.zip
+    echo File deleted.
+)
+%sevenzip_path% a -tzip .\HydroUQ_Windows_Download.zip  .\HydroUQ_Windows_Download
 
 
 
