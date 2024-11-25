@@ -114,6 +114,7 @@ private:
    SimCenterAppWidget *theWaveDigitalFlume;
    SimCenterAppWidget *theCoupledDigitalTwin;
    SimCenterAppWidget *theMPM;    
+   SimCenterAppWidget *theMPMEvent;
    SimCenterAppWidget *theTaichiEvent;
    SimCenterAppWidget *theCelerisTaichiEvent;
    SimCenterAppWidget *theStochasticWaves;
