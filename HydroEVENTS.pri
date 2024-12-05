@@ -7,6 +7,7 @@ INCLUDEPATH += $$PWD/EVENTS/GeoClawOpenFOAM
 INCLUDEPATH += $$PWD/EVENTS/WaveDigitalFlume
 INCLUDEPATH += $$PWD/EVENTS/coupledDigitalTwin
 INCLUDEPATH += $$PWD/EVENTS/MPM
+INCLUDEPATH += $$PWD/EVENTS/MPMEvent
 INCLUDEPATH += $$PWD/EVENTS/TaichiEvent
 INCLUDEPATH += $$PWD/EVENTS/Celeris
 INCLUDEPATH += $$PWD/EVENTS/Celeris/js
@@ -64,7 +65,10 @@ SOURCES += \
     $$PWD/EVENTS/MPM/SPH.cpp \
     $$PWD/EVENTS/MPM/CaseSPH.cpp \
     $$PWD/EVENTS/MPM/ExecutionSPH.cpp \
+    $$PWD/EVENTS/MPMEvent/MPMEvent.cpp \
+    $$PWD/EVENTS/MPMEvent/BasicMPMEvent.cpp \
     $$PWD/EVENTS/TaichiEvent/TaichiEvent.cpp \
+    $$PWD/EVENTS/TaichiEvent/CelerisTaichi.cpp \
     $$PWD/EVENTS/TaichiEvent/BasicTaichiEvent.cpp \
     $$PWD/EVENTS/TaichiEvent/CelerisTaichiEvent.cpp \
     $$PWD/EVENTS/Celeris/Celeris.cpp \
@@ -125,7 +129,10 @@ HEADERS += \
     $$PWD/EVENTS/MPM/SPH.h \
     $$PWD/EVENTS/MPM/CaseSPH.h \
     $$PWD/EVENTS/MPM/ExecutionSPH.h \
+    $$PWD/EVENTS/MPMEvent/MPMEvent.h \
+    $$PWD/EVENTS/MPMEvent/BasicMPMEvent.h \
     $$PWD/EVENTS/TaichiEvent/TaichiEvent.h \
+    $$PWD/EVENTS/TaichiEvent/CelerisTaichi.h \
     $$PWD/EVENTS/TaichiEvent/BasicTaichiEvent.h \
     $$PWD/EVENTS/TaichiEvent/CelerisTaichiEvent.h \
     $$PWD/EVENTS/Celeris/Celeris.h \

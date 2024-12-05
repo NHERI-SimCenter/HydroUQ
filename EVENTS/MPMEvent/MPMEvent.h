@@ -1,5 +1,5 @@
-#ifndef CELERIS_TAICHI_EVENT_H
-#define CELERIS_TAICHI_EVENT_H
+#ifndef MPM_EVENT_H
+#define MPM_EVENT_H
 
 /* *****************************************************************************
 Copyright (c) 2016-2017, The Regents of the University of California (Regents).
@@ -41,14 +41,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <SimCenterAppWidget.h>
 
-class CelerisTaichi;
+class BasicMPMEvent;
 
-class CelerisTaichiEvent : public SimCenterAppWidget
+class MPMEvent : public SimCenterAppWidget
 {
    Q_OBJECT
 public:
-   CelerisTaichiEvent(QWidget *parent = 0);
-   ~CelerisTaichiEvent();
+   MPMEvent(QWidget *parent = 0);
+   ~MPMEvent();
 
    bool inputFromJSON(QJsonObject &rvObject);
    bool outputToJSON(QJsonObject &rvObject);  
@@ -64,7 +64,7 @@ public slots:
    void clear(void);
 
 private:
-   CelerisTaichi  *inputCeleris;
+   BasicMPMEvent    *inputBasic;
 };
 
-#endif // CELERIS_TAICHI_EVENT_H
+#endif // MPM_EVENT_H

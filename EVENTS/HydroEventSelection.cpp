@@ -66,8 +66,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <WaveDigitalFlume/WaveDigitalFlume.h>
 #include <coupledDigitalTwin/CoupledDigitalTwin.h>
 #include <MPM/MPM.h>
+#include <MPMEvent/MPMEvent.h>
 #include <StochasticWaveModel/include/StochasticWaveInput.h>
 #include <TaichiEvent/TaichiEvent.h>
+#include <TaichiEvent/CelerisTaichiEvent.h>
 #include <MPM/SPH.h>
 //*********************************************************************************
 // Main Hydro event
@@ -78,7 +80,9 @@ enum class Event_b : bool {
     WaveDigitalFlume_b = false,
     CoupledDigitalTwin_b = true,
     ClaymoreUW_b = true,
+    BasicClaymoreUW_b = true,
     TaichiEvent_b = true,
+    CelerisTaichiEvent_b = true,
     StochasticWaves_b = true,
     SPH_b = false
 };
@@ -88,8 +92,10 @@ enum class Event_e : int {
     GeoClawOpenFOAM_e = Start_e,
     WaveDigitalFlume_e,
     CoupledDigitalTwin_e,
-    ClaymoreUW_e,   
+    ClaymoreUW_e, 
+    BasicClaymoreUW_e,  
     TaichiEvent_e,
+    CelerisTaichiEvent_e,
     StochasticWaves_e,
     SPH_e,
     Last_e, // For C++ iteration
@@ -101,7 +107,9 @@ const int EventSelectionIndexArray[] = {
     static_cast<int>(Event_e::WaveDigitalFlume_e),
     static_cast<int>(Event_e::CoupledDigitalTwin_e),
     static_cast<int>(Event_e::ClaymoreUW_e),
+    static_cast<int>(Event_e::BasicClaymoreUW_e),
     static_cast<int>(Event_e::TaichiEvent_e),
+    static_cast<int>(Event_e::CelerisTaichiEvent_e),
     static_cast<int>(Event_e::StochasticWaves_e),
     static_cast<int>(Event_e::SPH_e)
 };
@@ -111,7 +119,9 @@ const bool EventSelectionEnabledArray[] = {
     static_cast<bool>(Event_b::WaveDigitalFlume_b),
     static_cast<bool>(Event_b::CoupledDigitalTwin_b),
     static_cast<bool>(Event_b::ClaymoreUW_b),
+    static_cast<bool>(Event_b::BasicClaymoreUW_b),
     static_cast<bool>(Event_b::TaichiEvent_b),
+    static_cast<bool>(Event_b::CelerisTaichiEvent_b),
     static_cast<bool>(Event_b::StochasticWaves_b),
     static_cast<bool>(Event_b::SPH_b)
 };
@@ -121,7 +131,9 @@ const QString EventSelectionStringArray[] = {
     static_cast<QString>("WaveDigitalFlume"),
     static_cast<QString>("CoupledDigitalTwin"),
     static_cast<QString>("MPM"),
+    static_cast<QString>("MPMEvent"),
     static_cast<QString>("TaichiEvent"),
+    static_cast<QString>("CelerisTaichiEvent"),
     static_cast<QString>("StochasticWave"),
     static_cast<QString>("SPH")
 };
@@ -131,7 +143,9 @@ const QString EventSelectionDisplayArray[] = {
     "Digital Twin (GeoClaw and OpenFOAM)",
     "Digital Twin (OpenFOAM and OpenSees)",
     "Digital Twin (MPM)",
+    "General Event (MPM)",
     "General Event (Taichi)",
+    "General Event (Celeris)",
     "Stochastic Wave Loading",
     "Digital Twin (SPH)"
 };
@@ -141,7 +155,9 @@ const QString EventSelectionToolTipArray[] = {
     "Shallow-Water-Equations -> Finite-Volume-Method -> Finite-Element-Analysis (GeoClaw -> OpenFOAM -> OpenSees) [Multi-CPU]",
     "Finite-Volume-Method <-> Finite-Element-Analysis (OpenFOAM <-> OpenSees) [Multi-CPU]",
     "Material-Point-Method (ClaymoreUW MPM) [Multi-GPU]",
+    "Material-Point-Method JSON Input (ClaymoreUW MPM) [Multi-GPU]",
     "Taichi Numerical Simulation (Taichi Lang) [CPU-GPU]",
+    "Wave-Solver (Celeris) [CPU-GPU]",
     "Stochastic Wave Loading By Sea-State Spectra (welib) [CPU]",
     "Smoothed-Particle-Hydrodynamics (DualSPHysics) [CPU-GPU]"
 };
@@ -229,9 +245,17 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
                 theMPM = new MPM(theRandomVariablesContainer);
                 theStackedWidget->addWidget(theMPM);
                 break;
+            case (Event_e::BasicClaymoreUW_e):
+                theMPMEvent = new MPMEvent(theRandomVariablesContainer);
+                theStackedWidget->addWidget(theMPMEvent);
+                break;
             case (Event_e::TaichiEvent_e):
                 theTaichiEvent = new TaichiEvent(theRandomVariablesContainer);
                 theStackedWidget->addWidget(theTaichiEvent);
+                break;
+            case (Event_e::CelerisTaichiEvent_e):
+                theCelerisTaichiEvent = new CelerisTaichiEvent(theRandomVariablesContainer);
+                theStackedWidget->addWidget(theCelerisTaichiEvent);
                 break;
             case (Event_e::StochasticWaves_e):
                 theStochasticWaves = new StochasticWaveInput(theRandomVariablesContainer);
@@ -279,8 +303,14 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     if constexpr (indexDefault == Event_e::ClaymoreUW_e) {
         theCurrentEvent = theMPM;
     }
+    if constexpr (indexDefault == Event_e::BasicClaymoreUW_e) {
+        theCurrentEvent = theMPMEvent;
+    }
     if constexpr (indexDefault == Event_e::TaichiEvent_e) {
         theCurrentEvent = theTaichiEvent;
+    }
+    if constexpr (indexDefault == Event_e::CelerisTaichiEvent_e) {
+        theCurrentEvent = theCelerisTaichiEvent;
     }
     if constexpr (indexDefault == Event_e::StochasticWaves_e) {
         theCurrentEvent = theStochasticWaves;
@@ -372,9 +402,19 @@ void HydroEventSelection::eventSelectionChanged(int arg1)
             // theCurrentEvent = theMPM;
         }        
     }
+    if constexpr (static_cast<bool>(Event_b::BasicClaymoreUW_b)) {
+        if (arg1 == static_cast<int>(Event_e::BasicClaymoreUW_e)) {
+            theCurrentEvent = theMPMEvent;
+        }
+    }
     if constexpr (static_cast<bool>(Event_b::TaichiEvent_b)) {
         if (arg1 == static_cast<int>(Event_e::TaichiEvent_e)) {
             theCurrentEvent = theTaichiEvent;
+        }
+    }
+    if constexpr (static_cast<bool>(Event_b::CelerisTaichiEvent_b)) {
+        if (arg1 == static_cast<int>(Event_e::CelerisTaichiEvent_e)) {
+            theCurrentEvent = theCelerisTaichiEvent;
         }
     }
     if constexpr (static_cast<bool>(Event_b::StochasticWaves_b)) {

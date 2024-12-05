@@ -36,7 +36,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // Written: JustinBonus
 
-#include "TaichiEvent.h"
+#include "MPMEvent.h"
 #include <QScrollArea>
 #include <QLineEdit>
 #include <QTabWidget>
@@ -45,10 +45,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QJsonObject>
 #include <QDebug>
 #include <QString>
-#include <BasicTaichiEvent.h>
+#include <BasicMPMEvent.h>
 // #include <CelerisTaichiEvent.h>
 
-TaichiEvent::TaichiEvent(QWidget *parent)
+MPMEvent::MPMEvent(QWidget *parent)
     : SimCenterAppWidget(parent)
 {
     int windowWidth = 800;
@@ -68,7 +68,7 @@ TaichiEvent::TaichiEvent(QWidget *parent)
     mainLayout->addWidget(generalDescriptionLabel, 0, 0);
 
     QTabWidget *theTabWidget = new QTabWidget();
-    inputBasic = new BasicTaichiEvent();
+    inputBasic = new BasicMPMEvent();
     theTabWidget->addTab(inputBasic, "Basic");
     mainLayout->addWidget(theTabWidget, 1, 0);
     
@@ -89,19 +89,19 @@ TaichiEvent::TaichiEvent(QWidget *parent)
 }
 
 
-TaichiEvent::~TaichiEvent()
+MPMEvent::~MPMEvent()
 {
 
 }
 
 
-void TaichiEvent::clear(void)
+void MPMEvent::clear(void)
 {
 
 }
 
 
-bool TaichiEvent::inputFromJSON(QJsonObject &jsonObject)
+bool MPMEvent::inputFromJSON(QJsonObject &jsonObject)
 {
   this->clear();
   
@@ -110,17 +110,17 @@ bool TaichiEvent::inputFromJSON(QJsonObject &jsonObject)
   return true;
 }
 
-bool TaichiEvent::outputToJSON(QJsonObject &jsonObject)
+bool MPMEvent::outputToJSON(QJsonObject &jsonObject)
 {
   jsonObject["EventClassification"] = "Hydro";
-  jsonObject["Application"] = "TaichiEvent";
+  jsonObject["Application"] = "MPMEvent";
 
   inputBasic->outputToJSON(jsonObject); 
   
   return true;
 }
 
-bool TaichiEvent::outputAppDataToJSON(QJsonObject &jsonObject) {
+bool MPMEvent::outputAppDataToJSON(QJsonObject &jsonObject) {
 
     //
     // per API, need to add name of application to be called in Application
@@ -128,28 +128,28 @@ bool TaichiEvent::outputAppDataToJSON(QJsonObject &jsonObject) {
     //
 
     jsonObject["EventClassification"] = "Hydro";
-    jsonObject["Application"] = "TaichiEvent";
+    jsonObject["Application"] = "MPMEvent";
     QJsonObject dataObj;
     jsonObject["ApplicationData"] = dataObj;
 
     return true;
 }
-bool TaichiEvent::inputAppDataFromJSON(QJsonObject &jsonObject) {
+bool MPMEvent::inputAppDataFromJSON(QJsonObject &jsonObject) {
 
     Q_UNUSED(jsonObject);
     return true;
 }
 
 
-bool TaichiEvent::copyFiles(QString &destDir) {
+bool MPMEvent::copyFiles(QString &destDir) {
   if (inputBasic->copyFiles(destDir) == false) {
-    qDebug() << "TaichiEvent::copyFiles: failed to copy basic files";
+    qDebug() << "MPMEvent::copyFiles: failed to copy basic files";
     return false;
   }
   return true;
 }
 
-bool TaichiEvent::supportsLocalRun() {
+bool MPMEvent::supportsLocalRun() {
 
   //
   // Allows use on local machines with Taichi Lang installed (python -m pip install taichi)
@@ -158,12 +158,15 @@ bool TaichiEvent::supportsLocalRun() {
   return true;
 }
 
-bool TaichiEvent::outputCitation(QJsonObject &jsonObject) {
-  QJsonObject citeTaichi;
-
-  citeTaichi["citation"] = "Yuanming Hu (2019). Taichi Lang.";
-  citeTaichi["description"] = "HydroUQ applied Taichi for two-way coupled CFD-FEA, developed in this thesis as the Taichi software. It couples Boundaries and Bodies for the simulation of civil engineering structures subject to multi-hazards via the PreCICE coupling library.";
-
-  jsonObject["Taichi"] = citeTaichi;
+bool MPMEvent::outputCitation(QJsonObject &jsonObject) {
+    QJsonObject citeClaymore;
+    QJsonObject citeClaymoreUW;
+    
+    citeClaymore["citation"] = "Wang, Xinlei and Qiu Yuxing, et al. (2020). “A massively parallel and scalable multi-GPU material point method.”";
+    citeClaymore["description"] = "The Multi-GPU Material Point Method software, claymore, which is the predeccesor to ClaymoreUW MPM. It is a highly optimized C++/CUDA code for explicit MLS-MPM simulations on multiple NVIDIA GPUs. It is designed primarily for back-end computer graphics usage.";
+    citeClaymoreUW["citation"] = "Bonus, Justin (2023). “Evaluation of Fluid-Driven Debris Impacts in a High-Performance Multi-GPU Material Point Method.” PhD thesis, University of Washington, Seattle, WA.";
+    citeClaymoreUW["description"] = "The ClaymoreUW Multi-GPU Material Point Method software developed in this PhD thesis is the engineering refactor of the claymore MPM software. It is a highly optimized C++/CUDA code for explicit MLS-MPM simulations on multiple NVIDIA GPUs. It features higher computational precision, validated accuracy in multiple debris-fluid-structure interaction problems, new algorithms (ASFLIP, F-Bar antilocking), an expanded user-interface, and improved material behavior.";
+    jsonObject["claymore"] = citeClaymore;
+    jsonObject["ClaymoreUW"] = citeClaymoreUW;
   return true;
 }

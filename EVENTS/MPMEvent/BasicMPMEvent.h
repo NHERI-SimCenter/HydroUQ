@@ -1,11 +1,11 @@
-#ifndef CELERIS_TAICHI_EVENT_H
-#define CELERIS_TAICHI_EVENT_H
+#ifndef BASIC_MPM_EVENT_H
+#define BASIC_MPM_EVENT_H
 
 /* *****************************************************************************
-Copyright (c) 2016-2017, The Regents of the University of California (Regents).
+Copyright (c) 2016-2024, The Regents of the University of California (Regents).
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without
+Redistribution and use in source and binary forms, with or without 
 modification, are permitted provided that the following conditions are met:
 
 1. Redistributions of source code must retain the above copyright notice, this
@@ -20,7 +20,7 @@ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
 ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -29,42 +29,52 @@ The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 
-REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
 THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS
-PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS 
+PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, 
 UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 *************************************************************************** */
 
-// Written: JustinBonus (2024)
+/**
+ *  @author  JustinBonus
+ *  @date    9/2024
+ *  @version 4.0
+ *
+ *  @section DESCRIPTION
+ *
+ *  This is the class providing the Basic Tab for the MPMEvent
+ */
 
-#include <SimCenterAppWidget.h>
+#include <SimCenterWidget.h>
 
-class CelerisTaichi;
+class QJsonObject;
+class SC_FileEdit;
+class SC_IntLineEdit;
+class QString;
+class QLabel;
+class SimCenterPreferences;
 
-class CelerisTaichiEvent : public SimCenterAppWidget
+class BasicMPMEvent : public SimCenterWidget
 {
-   Q_OBJECT
+    // Q_OBJECT
 public:
-   CelerisTaichiEvent(QWidget *parent = 0);
-   ~CelerisTaichiEvent();
-
-   bool inputFromJSON(QJsonObject &rvObject);
-   bool outputToJSON(QJsonObject &rvObject);  
-   bool outputAppDataToJSON(QJsonObject &rvObject);
-   bool inputAppDataFromJSON(QJsonObject &rvObject);
-   bool copyFiles(QString &dirName);
-   bool outputCitation(QJsonObject &jsonObject) override;
-   bool supportsLocalRun() override;
-
+    BasicMPMEvent(QWidget *parent = 0);
+    virtual ~BasicMPMEvent();
+    bool outputToJSON(QJsonObject &jsonObject);
+    bool inputFromJSON(QJsonObject &jsonObject);
+    bool copyFiles(QString &dirName);
+    QString pyScriptsPath(void);
 signals:
 
-public slots:
-   void clear(void);
-
 private:
-   CelerisTaichi  *inputCeleris;
+  SC_FileEdit *theBackendApp;
+  SC_FileEdit *theBackendScript;
+  SC_FileEdit *theSimulationScript;
+  SC_FileEdit *theResourceFile;
+  SC_IntLineEdit *theMaxMinutes;
 };
 
-#endif // CELERIS_TAICHI_EVENT_H
+#endif // BASIC_MPM_EVENT_H
+

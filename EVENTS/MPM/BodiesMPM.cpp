@@ -312,12 +312,12 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   }
 
   // Set initial algorithm preset
-  fluidAlgorithm->enableASFLIP(true);
+  fluidAlgorithm->enableASFLIP(false);
   fluidAlgorithm->setASFLIP_alpha(0.0);
   fluidAlgorithm->setASFLIP_betaMin(0.0);
   fluidAlgorithm->setASFLIP_betaMax(0.0);
   fluidAlgorithm->enableFBAR(true);
-  fluidAlgorithm->setFBAR_psi(0.85);
+  fluidAlgorithm->setFBAR_psi(0.95);
   fluidAlgorithm->enableFBAR_fusedG2P2G(true);
 
   debrisAlgorithm->enableASFLIP(false);
@@ -326,7 +326,7 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   debrisAlgorithm->setASFLIP_betaMax(0.0);
   debrisAlgorithm->enableFBAR(false);
   debrisAlgorithm->setFBAR_psi(0.0);
-  debrisAlgorithm->enableFBAR_fusedG2P2G(false);
+  debrisAlgorithm->enableFBAR_fusedG2P2G(true);
 
   structureAlgorithm->enableASFLIP(false);
   structureAlgorithm->setASFLIP_alpha(0.0);
