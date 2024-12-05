@@ -1756,7 +1756,7 @@ bool MPM::outputAppDataToJSON(QJsonObject &jsonObject) {
     jsonObject["programFile"] = "osu_lwf"; // <- ClaymoreUW MPM executable filename on remote machine. Can be changed depending on compiled optimizations, versions, digital twin, etc.
     jsonObject["maxRunTime"] = "120"; // <- Maximum run time for the simulation, timeout if exceeded
     jsonObject["defaultMaxRunTime"] = "1440";
-    jsonObject["publicDirectory"] = "../mpm-public-ls6";
+    jsonObject["publicDirectory"] = "./"; // "../mpm-public-ls6"
     jsonObject["inputFile"] = "scInput.json"; // <- Input file for the simulation
     jsonObject["driverFile"] = "sc_driver"; // <- Python script to run the simulation
 
