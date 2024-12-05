@@ -38,6 +38,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "WorkflowAppHydroUQ.h"
 #include <MainWindowWorkflowApp.h>
+#include <Utils/FileOperations.h>
 
 #include <QPushButton>
 #include <QScrollArea>
@@ -146,7 +147,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theEventSelection = new HydroEventSelection(theRVs, theService);
     // theEventSelection = new HydroEventSelection(theRVs, theGI);
     theAnalysisSelection = new FEA_Selection(true);
-    theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity); // ForwardReliabilitySensitivitySurrogate
+    // theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity); // ForwardReliabilitySensitivitySurrogate
     theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivitySurrogate); // ForwardReliabilitySensitivitySurrogate
     theEDP_Selection = new HydroEDP_Selection(theRVs);
     theResults = theUQ_Selection->getResults();
@@ -158,6 +159,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     localApp = new LocalApplication("sWHALE.py");
     remoteApp = new RemoteApplication("sWHALE.py", theService, theMachine, nullptr);
 
+
     //QStringList filesToDownload; filesToDownload << "inputRWHALE.json" << "input_data.zip" << "Results.zip";
     theJobManager = new RemoteJobManager(theService);
 
@@ -168,57 +170,52 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     // connect signals and slots for (1) local and (2) remote application runs.
     //
 
-
-    
-    // connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
     connect(localApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir) 
     {
         currentApp = localApp;
         setUpForApplicationRun(workingDir, subDir);
     });
-    /*************************
-    connect(this,SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
-    connect(localApp,SIGNAL(runComplete()), this, SLOT(runComplete()));
-    connect(localApp,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+    connect(localApp, SIGNAL(runComplete()), this, SLOT(runComplete())); // swao with next?
+    connect(localApp, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+    connect(localApp,SIGNAL(sendErrorMessage(QString)),
+	    this,SLOT(errorMessage(QString)));
+    connect(localApp,SIGNAL(sendStatusMessage(QString)),
+	    this,SLOT(statusMessage(QString)));
+    connect(localApp,SIGNAL(sendFatalMessage(QString)),
+	    this,SLOT(fatalMessage(QString)));
+    
 
-    // connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
-    **************************/
     connect(remoteApp, &Application::setupForRun, this, [this](QString &workingDir, QString &subDir) 
     {
         currentApp = remoteApp;
         setUpForApplicationRun(workingDir, subDir);
     });
-    /************************
-    connect(theJobManager,SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
-    connect(theJobManager,SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
-    connect(remoteApp,SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));
-    connect(remoteApp,SIGNAL(successfullJobStart()), this, SLOT(runComplete()));
-    connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
-    connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));   
-    
-    // connect(theRunLocalWidget, SIGNAL(runButtonPressed(QString, QString)), this, SLOT(runLocal(QString, QString)));
-    *************************/
-
-    //connect(localApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
-    connect(this, SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));
-    connect(localApp, SIGNAL(runComplete()), this, SLOT(runComplete())); // swao with next?
-    connect(localApp, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
-
-    //connect(remoteApp,SIGNAL(setupForRun(QString &,QString &)), this, SLOT(setUpForApplicationRun(QString &,QString &)));
-    connect(theJobManager, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
-    connect(theJobManager, SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
-
     connect(remoteApp, SIGNAL(successfullJobStart()), theRunWidget, SLOT(hide()));;
     connect(remoteApp, SIGNAL(successfullJobStart()), this, SLOT(runComplete()));
-    connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
+    connect(remoteApp,SIGNAL(sendErrorMessage(QString)),
+	    this,SLOT(errorMessage(QString)));
+    connect(remoteApp,SIGNAL(sendStatusMessage(QString)),
+	    this,SLOT(statusMessage(QString)));
+    connect(remoteApp,SIGNAL(sendFatalMessage(QString)),
+	    this,SLOT(fatalMessage(QString)));        
+    
+    connect(theJobManager, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+    connect(theJobManager, SIGNAL(loadFile(QString&)), this, SLOT(loadFile(QString&)));
     connect(theJobManager, SIGNAL(closeDialog()), this, SLOT(runComplete()));
+    connect(theJobManager,SIGNAL(sendErrorMessage(QString)),
+	    this,SLOT(errorMessage(QString)));
+    connect(theJobManager,SIGNAL(sendStatusMessage(QString)),
+	    this,SLOT(statusMessage(QString)));
+    connect(theJobManager,SIGNAL(sendFatalMessage(QString)),
+	    this,SLOT(fatalMessage(QString)));
+    
+    connect(this, SIGNAL(setUpForApplicationRunDone(QString&, QString &)), theRunWidget, SLOT(setupForRunApplicationDone(QString&, QString &)));    
 
-    // /** 
+    connect(theService, SIGNAL(closeDialog()), this, SLOT(runComplete()));
+
     // KZ connect queryEVT and the reply
     connect(theUQ_Selection, SIGNAL(queryEVT()), theEventSelection, SLOT(replyEventType()));
-    connect(theEventSelection, SIGNAL(typeEVT(QString)), theUQ_Selection, SLOT(setEventType(QString)));
-    // **/
-
+    connect(theEventSelection, SIGNAL(typeEVT(QString)), theUQ_Selection, SLOT(setEventType(QString)));    
 
     //
     // create layout to hold component selection
@@ -436,15 +433,20 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     }
 
     QString tmpDirName = QString("tmp.SimCenter");
-    localWorkDir.mkdir(tmpDirName); // defaultWorkDirString should start as "tmp.SimCenter"
-    // {
     QString tmpDirectoryString = localWorkDir.absoluteFilePath(tmpDirName);
     QDir tmpDirectory(tmpDirectoryString);
     if (tmpDirectory.exists()) {
+      if (SCUtils::isSafeToRemoveRecursivily(tmpDirectoryString))      
         tmpDirectory.removeRecursively();
-    } else {
-        tmpDirectory.mkpath(tmpDirectoryString);
+      else {
+	QString msg("The Program stopped, it was about to recursivily remove: ");
+	msg += tmpDirName;
+	fatalMessage(msg);
+	return;	
+      }      
     }
+    
+    tmpDirectory.mkpath(tmpDirectoryString);
     tmpDirectory.mkdir(defaultSubDir);
     defaultWorkDir = QDir(tmpDirectoryString);
 
@@ -698,7 +700,7 @@ WorkflowAppHydroUQ::processResults(QString &dirName)
 
     QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
     if (oldResults != NULL) {
-        this->errorMessage("WorkflowAppHydroUQ::processResults() - Deleting oldResults");
+        this->statusMessage("WorkflowAppHydroUQ::processResults() - Deleting oldResults");
         delete oldResults;
     }
     // if (oldResults != NULL && oldResults != theResults) {;
@@ -744,7 +746,7 @@ WorkflowAppHydroUQ::clear(void)
 
     QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults); // The "swap" takes care of deleting the oldResults widget that was swapped out from theComponentSelection. theResults is the new widget that was swapped in and is now owned by theComponentSelection. oldResults is the old widget that was swapped out and is now owned by this function so it needs to be deleted, though smart pointers could take care of this if we refactor the code to use them.
     if (oldResults != NULL && oldResults != theResults) {
-        this->errorMessage("WorkflowAppHydroUQ::clear() - Deleting oldResults");
+        this->statusMessage("WorkflowAppHydroUQ::clear() - Deleting oldResults");
         delete oldResults;
     }
 
@@ -1113,8 +1115,8 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
         
 
         // Adding extra job parameters for MPM, already has "driverFile", "errorFile", "inputFile", "outputFile"
-        QStringList requiredEnvVars = {"driverFile", "inputFile", "publicDirectory", "programFile", "defaultMaxRunTime", "maxRunTime"};
-        QStringList defaultEnvVars = {"sc_driver", "scInput.json", "../mpm-public-ls6", "osu_lwf", "1440", "120"};
+        QStringList requiredEnvVars = {"publicDirectory", "programFile", "defaultMaxRunTime", "maxRunTime"};
+        QStringList defaultEnvVars = {"../mpm-public-ls6", "osu_lwf", "1440", "120"};
         for (auto reqVar : requiredEnvVars)
         {
             if (eventAppData.contains(reqVar))
@@ -1297,7 +1299,7 @@ WorkflowAppHydroUQ::getMaxNumParallelTasks() {
 int
 WorkflowAppHydroUQ::createCitation(QJsonObject &citation, QString citeFile) {
 
-    QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 3.2.0 (v3.2.0). Zenodo. https://doi.org/10.5281/zenodo.4731073 \",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
+    QString cit("{\"HydroUQ\": { \"citations\": [{\"citation\": \"Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 4.0.0 (v4.0.0). Zenodo. https://doi.org/10.5281/zenodo.13865413\",\"description\": \"This is the overall tool reference used to indicate the version of the tool.\"},{\"citation\": \"Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706\",\"description\": \" This marker paper describes the SimCenter application framework, which was designed to simulate the impacts of natural hazards on the built environment. It is a necessary attribute for publishing work resulting from the use of SimCenter tools, software, and datasets.\"}]}}");
 
     QJsonDocument docC = QJsonDocument::fromJson(cit.toUtf8());
     if(!docC.isNull()) {

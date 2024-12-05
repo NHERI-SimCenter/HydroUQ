@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("4.0.1");
+    QCoreApplication::setApplicationVersion("4.0.2");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     Q_INIT_RESOURCE(images);
@@ -234,7 +234,7 @@ int main(int argc, char *argv[])
     w.setVersion(version);
 
     // Citation
-    QString citeText("1) Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 4.0.0 (v4.0.0). Zenodo. https://doi.org/10.5281/zenodo.10902090 \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
+    QString citeText("1) Frank McKenna, Justin Bonus, Ajay B Harish, & Nicolette Lewis. (2024). NHERI-SimCenter/HydroUQ: Version 4.0.0 (v4.0.0). Zenodo. https://doi.org/10.5281/zenodo.13865413 \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
     w.setCite(citeText);
 
     // Link to repository
@@ -314,10 +314,34 @@ int main(int argc, char *argv[])
     view.hide();
 
 #endif
+
+
+#ifdef _ANALYTICS
+
+    //Setting Google Analytics Tracking Information
+    qDebug() << "compiled with: ANALYTICS";    
+    GoogleAnalytics::SetMeasurementId("G-MC7SGPGWVQ");
+    GoogleAnalytics::SetAPISecret("LrEiuSuaSqeh_v1928odog");
+    GoogleAnalytics::CreateSessionId();
+    GoogleAnalytics::StartSession();
+
+#endif    
     
     // Result of execution
     int res = a.exec();
 
+#ifdef _GA_AFTER
+
+    // Opening a QWebEngineView and using github to get app geographic usage 
+    qDebug() << "compiled with: GA_AFTER";   
+    QWebEngineView view;
+    view.setUrl(QUrl("https://nheri-simcenter.github.io/HydroUQ/GA4.html"));
+    view.resize(1024, 750);
+    view.show();
+    view.hide();
+
+#endif    
+    
     // On done with event loop, logout & stop the thread
     theRemoteService->logout();
 
