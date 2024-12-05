@@ -1116,7 +1116,7 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
 
         // Adding extra job parameters for MPM, already has "driverFile", "errorFile", "inputFile", "outputFile"
         QStringList requiredEnvVars = {"publicDirectory", "programFile", "defaultMaxRunTime", "maxRunTime"};
-        QStringList defaultEnvVars = {"../mpm-public-ls6", "osu_lwf", "1440", "120"};
+        QStringList defaultEnvVars = {"./", "osu_lwf", "1440", "120"};
         for (auto reqVar : requiredEnvVars)
         {
             if (eventAppData.contains(reqVar))
