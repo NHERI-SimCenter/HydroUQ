@@ -1495,12 +1495,18 @@ bool MPM::inputFromJSON(QJsonObject &jsonObject)
 
   // openFoamVersion->setCurrentText(jsonObject["OpenFoamVersion"].toString());
 
-  // mpmSettings->inputFromJSON(jsonObject);
-  // mpmBodies->inputFromJSON(jsonObject);
-  // mpmBoundaries->inputFromJSON(jsonObject);
-  // mpmSensors->inputFromJSON(jsonObject);
-  // mpmOutputs->inputFromJSON(jsonObject);
-  // mpmResults->inputFromJSON(jsonObject);
+    if (mpmSettings)
+      mpmSettings->inputFromJSON(jsonObject);
+    if (mpmBodies)
+      mpmBodies->inputFromJSON(jsonObject);
+    if (mpmBoundaries)
+      mpmBoundaries->inputFromJSON(jsonObject);
+    if (mpmSensors)
+      mpmSensors->inputFromJSON(jsonObject);
+    if (mpmOutputs)
+      mpmOutputs->inputFromJSON(jsonObject);
+    if (mpmResults) 
+      mpmResults->inputFromJSON(jsonObject);
 
   this->showVisualization();
   return true;
