@@ -118,9 +118,9 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   QGridLayout *dimensionsBoxLayout = new QGridLayout();
 
   int numRow = 0;  
-  flumeLength = new SC_DoubleLineEdit("flumeLength",104.0);  
+  flumeLength = new SC_DoubleLineEdit("flumeLength",90.0);  
   flumeHeight = new SC_DoubleLineEdit("flumeHeight",4.6);  
-  flumeWidth = new SC_DoubleLineEdit("flumeWidth",3.658);
+  flumeWidth = new SC_DoubleLineEdit("flumeWidth",3.6);
   dimensionsBoxLayout->addWidget(new QLabel("Dimensions (X,Y,Z)"), numRow, 0);
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   dimensionsBoxLayout->addWidget(flumeLength, numRow, 1);    
@@ -214,9 +214,9 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   
   connect(facility, &QComboBox::currentTextChanged, [=](QString val) {
     if (val == "Hinsdale Large Wave Flume (OSU LWF)") {
-      flumeLength->setText("104.0");
+      flumeLength->setText("90.0");
       flumeHeight->setText("4.6");
-      flumeWidth->setText("3.658");
+      flumeWidth->setText("3.6");
       QStringList newDataBathXZ; newDataBathXZ << "0.0" << "0.0" 
                  << "16.275" << "0.226" 
                  << "19.933" << "0.226" 
