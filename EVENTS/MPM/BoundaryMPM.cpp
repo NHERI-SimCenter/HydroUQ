@@ -1300,7 +1300,8 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
       // }
 
       // boundariesObject["file"] = paddleDisplacementFile->getFilename() ; // Paddle motion file
-      boundariesObject["file"] = QString("WaveMaker/") + paddleFile; // Paddle motion file assuming use of Data directory for claymore (TODO: relative paths)
+      // QString("WaveMaker/") + paddleFile; // Paddle motion file assuming use of Data directory for claymore (TODO: relative paths)
+      boundariesObject["file"] = QString("../") + QString("wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv"); 
       boundariesObject["output_frequency"] = 1200.0; // TODO: Either be user set or read-in from motion_file
       boundariesObject["friction_static"] = 0.0;
       boundariesObject["friction_dynamic"] = 0.0;
@@ -1327,7 +1328,9 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
         paddleTimeArray.append(a->text().toDouble());
         paddleTimeArray.append(b->text().toDouble());
         // boundariesObject["time"] = paddleTimeArray;
-        boundariesObject["file"] = QString(dataDir->text());
+        // boundariesObject["file"] = QString(dataDir->text());
+        boundariesObject["file"] = QString("../") + QString("wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv");
+        boundariesObject["output_frequency"] = 1200.0; // TODO: Either be user set or read-in from motion_file
         boundariesObject["object"] = QString("OSU Paddle");
     }
 
