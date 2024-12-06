@@ -260,7 +260,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 }
 
 // Development mode for tools
-constexpr bool DEV_MODE = true; // Set to true for development mode, false for production mode
+constexpr bool DEV_MODE = false; // Set to true for development mode, false for production mode
 
 // Quickly enable/disable tools here for compile-time
 constexpr bool USE_CLAYMORE_TOOL = true;
