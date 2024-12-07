@@ -320,7 +320,7 @@ BodiesMPM::BodiesMPM(QWidget *parent)
   fluidAlgorithm->setFBAR_psi(0.95);
   fluidAlgorithm->enableFBAR_fusedG2P2G(true);
 
-  debrisAlgorithm->enableASFLIP(false);
+  debrisAlgorithm->enableASFLIP(true);
   debrisAlgorithm->setASFLIP_alpha(0.0);
   debrisAlgorithm->setASFLIP_betaMin(0.0);
   debrisAlgorithm->setASFLIP_betaMax(0.0);

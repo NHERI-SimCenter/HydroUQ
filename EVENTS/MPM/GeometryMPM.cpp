@@ -744,10 +744,13 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       length->setText("0.5");
       height->setText("0.05");
       width->setText("0.1");
-      originX->setText("43.8");
+      originX->setText("40.3");
       originY->setText("2.0");
-      originZ->setText("1.325");
+      originZ->setText("0.325");
       applyArray->setChecked(true);
+      arrayX->setText("4");
+      arrayY->setText("1");
+      arrayZ->setText("4");
       bathStack->setCurrentIndex(1);
       bathStack->hide();
       bathStack->setDisabled(true);
