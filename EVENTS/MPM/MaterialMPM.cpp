@@ -134,7 +134,7 @@ MaterialMPM::MaterialMPM(QWidget *parent) : SimCenterWidget(parent)
 
   numRow = 0;
 
-  bulkModulus = new SC_DoubleLineEdit("bulk_modulus", 2.2e9);
+  bulkModulus = new SC_DoubleLineEdit("bulk_modulus", 2.2e8);
   jfluidLayout->addWidget(new QLabel("Bulk Modulus"),numRow, 0, 1, 1, Qt::AlignRight);
   jfluidLayout->addWidget(bulkModulus, numRow, 1);
   jfluidLayout->itemAt(jfluidLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -304,7 +304,7 @@ MaterialMPM::MaterialMPM(QWidget *parent) : SimCenterWidget(parent)
       constitutive->addItems(shortConstitutiveList);
       constitutive->setCurrentIndex(0); 
       density->setText("1000");
-      bulkModulus->setText("2.1e9");
+      bulkModulus->setText("2.1e8");
       bulkModulusDerivative->setText("7.15");
       viscosity->setText("1.0e-3");
     } else if (val == "Water (Ocean)" ) {
