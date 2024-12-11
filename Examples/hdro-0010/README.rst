@@ -26,8 +26,9 @@ Overview
    
    TaichiEvent EVT of the pbf2d.py example. Includes a linear piston wave-maker creating breaking waves using local HPC resources (e.g. vectorized CPU, GPU).
 
-In this local workflow example, basic uncertainty quantification methods (Forward, Sensitivity, Reliability) are applied to the response of a simple structure loaded by stochastic wave spectra.
+In this local workflow example, we demonstrate high-performance computation making use of your personal computer's hardware (both CPU and GPU). A linear actuator (i.e. piston) produces a wave in real-time with automatic visualization via the Taichi Lang framework [Hu2019]_. This replicates the basic physics of wave-makers in real facilities, such as Oregon State University's Large Wave Flume.
 
+.. _hdro-0010-setup:
 
 Set-Up
 ------
@@ -37,201 +38,45 @@ Set-Up
    :width: 600
    :figclass: align-center
    
-   HydroUQ's desktop GUI for the NHERI OSU LWF digital wave-flume twin.
+   Uncertainty Quantification (UQ) tab with forward propagation selected.
 
-Details for the experiments are available in various publications. Namely, the work of Andrew Winter [Winter2020]_ [Winter2019]_, Krishnendu Shekhar [Shekhar2020]_ and Dakota Mascarenas [Mascarenas2022]_ [Mascarenas2022PORTS]_.  The simulations replicated in this example appeared originally in Bonus 2023 [Bonus2023Dissertation]_.
-
-Experiments were performed in the NHERI OSU LWF, a 100 meter long flume with adjustable bathymetry, in order to quantify stochastic impact loads of ordered and disordered debris-fields on effectively rigid, raised structure. 
+First we select forward propagation using the Dakota UQ engine under the ``UQ`` tab. We will be looking at parallel execution of multiple simulations, set by the samples variable.
 
 .. figure:: figures/hdro-0005_GI.png
    :align: center
    :width: 600
    :figclass: align-center
    
-   NHERI OSU LWF facilty's experimental schematic used in this example. Adapted from Winter 2019 [Winter2019]_, and Mascarenas 2022 [Mascarenas2022]_.
+   General Information (GI) tab with placeholder values as no structure is being analyzed in this example.
 
-This example may help to produce a robust database (numerical and physical) from which to eventually be able to extract both the first principles of wave-driven debris-field phenomena and design guidelines on induced forces. 
-
-We validate against two very similar (but not identical) physical studies done in the OSU LWF by [Shekhar2020]_ and [Mascarenas2022]_, indicating high accuracy of our model and low bias to minor experiment specifications. 
-
-Results for free surface elevation and streamwise structural loads are to be recorded for validation at a specified interval. 
-
-Qualitatively, an MPM simulation of debris impacts on a raised structure in the OSU LWF is shown below.
+The general information tab, ``GI``, is left unmodified as in this example we are not looking at a structure, just a wave maker. Note that this example can be extrapolated to include structural analysis due to the produced wave's loading.
 
 .. figure:: figures/hdro-0005_SIM.png
    :align: center
    :width: 600
    :figclass: align-center
 
-   OSU LWF debris impact photos from HydroUQ's MPM simulations.
+   Structural Information Model tab (SIM) set to a placeholder structure, as this example does not require a structre. 
 
-It appears similar in the mechanism of debris impact, stalling, and deflection relative to the structure and flow for a similar case in Mascarenas 2022 [Mascarenas2022]_.
+The simulation tab, ``SIM``, is not neccesary either, due to no structure being used, however it must be filled in regardless.
 
 .. figure:: figures/hdro-0010_EVT.png
    :align: center
    :width: 600
    :figclass: align-center
 
-   OSU LWF debris impact photos from Mascarenas 2022 [Mascarenas2022]_ experiments.
+   Event tab (EVT) set to the TaichiEvent module for high-performance numerical simulations. Specifically, it is set to run a fluid simulation of a linear piston wave-maker generating breaking waves, similar to the OSU LWF.
 
-
-The experiments by Shekhar et al. 2020 [Shekhar2020]_ are also shown below for comparison. These tests had a slightly different configuartion, primarily the debris were located 0.5 meters further upstream from the box and the water level was 0.10-0.15 meters lower than the 2.0 meter datum used in the simulations and Mascarenas 2022 [Mascarenas2022]_ experiments.
+Opening the event tab, ``EVT``, set the event to be TaichiEvent. Set the workflow script to be TaichiEvent.py and the simulation script to be pbf2d.py, found at applications/createEVENT/TaichiEvent/.
 
 .. figure:: figures/hdro-0005_EDP.png
    :align: center
    :width: 600
    :figclass: align-center
 
-   OSU LWF debris impact photos from Shekhar et al. 2020 [Shekhar2020]_ experiments.
+   Engineering Demand Parameters tab (EDP).
 
-Similar figures can be made for the whole range of order debris-array experiments done at the OSU LWF. However, this example focuses on teaching you how to replicate the above results.
-
-
-.. _hdro-0010-setup:
-
-
-
-A step-by-step walkthrough on replicating an MPM simulation result from Bonus 2023 [Bonus2023Dissertation]_ is provided below.
-
-Open ``Settings``. Here we set the simulation time, the time step, and the number of processors to use, among other pre-simulation decisions.
-
-.. figure:: figures/hdro-0005_RV.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-
-   HydroUQ Settings GUI
-
-
-Open ``Bodies`` / ``Fluid`` / ``Material``. Here we set the material properties of the fluid and the debris.
-
-.. figure:: figures/hdro-0005_RES_Summary_Forward.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-
-   HydroUQ Bodies Fluid Material GUI
-
-Open ``Bodies`` / ``Fluid`` / ``Geometry``. Here we set the geometry of the flume, the debris, and the raised structure. 
-
-.. figure:: figures/hdro-0005_RES_Scatter.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-
-   HydroUQ Bodies Fluid Geometry GUI
-
-
-Open ``Algorithm``. Here we set the algorithm parameters for the simulation. We choose to apply F-Bar antilocking to aid in the pressure field's accuracy on the fluid. The associated toggle must be checked, and the antilocking ratio set to 0.9, loosely.
-
-.. figure:: figures/hdro-0005_RES_Cumulative_Forward.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-
-   HydroUQ Bodies Fluid Algorithm GUI
-
-Open ``Bodies`` / ``Fluid`` / ``Partitions``. Here we set the number of partitions for the simulation. This is the domain decomposition across discrete hardware units, i.e. Multi-GPUs. These may be kept as their default values. 
-
-.. figure:: figures/hdro-0005_RES_HistogramForward.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-
-   HydroUQ Bodies Fluid Partitions GUI
-
-Moving onto the creation of an ordered debris-array, we set the debris properties in the ``Bodies`` / ``Debris`` / ``Material`` tab. We will assume debris are made of HDPE plastic, as in experiments by Mascarenas 2022 [Mascarenas2022]_ and Shekhar et al. 2020 [Shekhar2020]_.
-
-.. figure:: figures/hdro-0005_RV_Sensitivity.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-
-   HydroUQ Bodies Debris Material GUI
-
-Open ``Bodies`` / ``Debris`` / ``Geometry``. Here we set the debris properties, such as the number of debris, the size of the debris, and the spacing between the debris. Rotation is another option, though not used in this example. We've elected to use an 8 x 4 grid of debris (longitudinal axis parallel to long-axis of the flume).
-
-.. figure:: figures/hdro-0005_RES_Summary_Sensitivity.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-
-   HydroUQ Bodies Debris Geometry GUI
-
-The ``Bodies`` / ``Debris`` / ``Algorithm`` and ``Debris`` / ``Partitions`` tabs are not used in this example, but are available for more advanced users.
-
-Open ``Bodies`` / ``Structures``. Uncheck the box that enables this body, if it is checked. We will not model the structure as a body in this example, instead, we will modify it as a boundary later.
-
-.. figure:: figures/hdro-0005_RES_Scatter_Sensitivity.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-   
-   HydroUQ Bodies Structures GUI
-
-Open ``Boundaries`` / ``Wave Flume``. We will set the boundary to be a rigid body, with a fixed separable velocity condition, that is faithful to the digital tiwn of the NHERI OSU LWF. Bathmyetry joint points should be identical to the ones used in ``Bodeis`` / ``FLuid``.
-
-.. figure:: figures/hdro-0005_RES_Summary_Reliability.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-
-   HydroUQ Boundaries Wave Flume Facility GUI
-
-Open ``Boundaries`` / ``Wave Generator``. Fill in the appropriate file-path for the wave generator paddle motion. It is designed to produce near-solitary like waves.
-
-.. figure:: figures/hdro-0005_forces.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-   
-   HydroUQ Boundaries Wave Generator GUI
-
-Open ``Boundaries`` / ``Rigid Structure``. This is where we will specify the raised structure as a boundary condition. By doing so, we can determine exact loads on the rigid boundary grid-nodes, which may then be mapped to the FEM tab for nonlinear UQ structural response analysis.
-
-.. figure:: figures/hdro-0005_moments.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-
-   HydroUQ Boundaries Rigid Structure GUI
-
-Open ``Boundaries`` / ``RigidWalls``.
-
-.. figure:: figures/hdro-0005_IntegratedPileLoads.png
-   :align: center
-   :width: 600
-   :figclass: align-center
-
-   HydroUQ Boundaries Wave-Flume Facility GUI
-
-Open ``Sensors`` / ``Wave Gauges``. Set the ``Use these sensor?`` box to ``True`` so that the simulation will output results for the instruments we set on this page.
-
-Three wave gauges will be defined. The first is located prior to the bathymetry ramps, the second partially up the ramps, and the third near the bathymetry crest, debris, and raised structure. 
-
-Set the origins and dimensions of each wave as in the table below. To match experimental conditions, we also apply a 120 Hz sampling rate to the wave gauges, meaning they record data every 0.0083 seconds. 
-
-
-
-.. Open ``Sensors`` / ``Load Cells``. Set the ``Use these sensor?`` box to ``True`` so that the simulation will output results for the instruments we set on this page.
-
-.. .. figure:: figures/GUI_Sensors_LoadCells.PNG
-..    :align: center
-..    :width: 600
-..    :figclass: align-center
-   
-..    HydroUQ Sensors Load-Cells GUI
-
-
-.. Open ``Outputs``. Here we set the non-physical output parameters for the simulation, e.g. attributes to save per frame and file extension types. The particle bodies' output frequency is set to 10 Hz (0.1 seconds), meaning the simulation will output results every 0.1 seconds. This is decent for animations without taking too much space. Fill in the rest of the data in the figure into your GUI to ensure all your outputs match this example.
-
-.. .. figure:: figures/GUI_Outputs.PNG
-..    :align: center
-..    :width: 600
-..    :figclass: align-center
-   
-..    HydroUQ Outputs GUI
-
+As we are not looking at a structure, the ``EDP`` tab is not necessary. However, note that in coastal engineering intensity measures such as wave height, velocity, and momentum flux are often taken to be EDPs. It is possible in the SimCenter workflow to implement such IMs as custom EDPs if you wish to extrapolate this example for structural analysis.
 
 
 .. _hdro-0010-simulation:
@@ -251,24 +96,11 @@ Analysis
 --------
 
 
-This completes our HydroUQ validation example for stochastic wave-loading on a simple frame structure.
-
+No further analysis is performed in this simple demonstration of the Taichi Lang framework within HydroUQ. As Taichi Lang is a powerful language for numerical simulation, it can be extrapolated to run essentially any form of simulation with subsequent analysis. Contact the NHERI SimCenter developer team for assistance in doing so if desired.
 
 .. _hdro-0010-references:
 
 References
 ----------
 
-.. [Winter2019] Winter, A. (2019). "Effects of Flow Shielding and Channeling on Tsunami-Induced Loading of Coastal Structures." PhD thesis. University of Washington, Seattle.
-
-.. [Winter2020] Andrew O Winter, Mohammad S Alam, Krishnendu Shekhar, Michael R Motley, Marc O Eberhard, Andre R Barbosa, Pedro Lomonaco, Pedro Arduino, Daniel T Cox (2019). "Tsunami-Like Wave Forces on an Elevated Coastal Structure: Effects of Flow Shielding and Channeling." Journal of Waterway, Port, Coastal, and Ocean Engineering.
-
-.. [Shekhar2020] Shekhar, K., Mascarenas, D., and Cox, D. (2020). "Wave-Driven Debris Impact on a Raised Structure in the Large Wave Flume." 17th International Conference on Hydroinformatics, Seoul, South Korea.
-
-.. [Mascarenas2022] Mascarenas, Dakota. (2022). "Quantification of Wave-Driven Debris Impact on a Raised Structure in a Large Wave Flume." Masters thesis. University of Washington, Seattle.
-
-.. [Mascarenas2022PORTS] Mascarenas, Dakota, Motley, M., Eberhard, M. (2022). "Wave-Driven Debris Impact on a Raised Structure in the Large Wave Flume." Journal of Waterway, Port, Coastal, and Ocean Engineering.
-
-.. [Bonus2023Dissertation] Bonus, Justin (2023). "Evaluation of Fluid-Driven Debris Impacts in a High-Performance Multi-GPU Material Point Method." PhD thesis. University of Washington, Seattle.
-
-
+.. [Hu2019] Hu, Yuanming et al. (2019). "Taichi: a language for high-performance computation on spatially sparse data structures." ACM Transactions on Graphics (TOG). Volume 38.
