@@ -44,15 +44,19 @@
       "base": "hdro-0010",
       "doc": [
         "hdro-0010/src/input.json",
-        "hdro-0005/src/Frame.tcl",
-        "hdro-0005/src/postprocess.py",
-        "hdro-0005/src/recorder.tcl",
+        "hdro-0010/src/Frame.tcl",
+        "hdro-0010/src/postprocess.py",
+        "hdro-0010/src/recorder.tcl",
+        "hdro-0010/figures/hdro-0010_UQ.png",
+        "hdro-0010/figures/hdro-0010_GI.png",
+        "hdro-0010/figures/hdro-0010_SIM.png",
+        "hdro-0010/figures/hdro-0010_EDP.png",
         "hdro-0010/figures/hdro-0010_EVT.png",
         "hdro-0010/figures/hdro-0010_EVT_Single.png",
         "hdro-0010/README.rst"
       ],
       "entry_point": "hdro-0010/./input.json",
-      "summary": "Forward sample a 2D wave maker piston's generated wave implemented in the high-performance Taichi Lang. The structure is a simple 1-story OpenSees frame structure. Engineering Demand Parameters are PFA, RMSA, PFD, and PID. The wave loading is generated using a stochastic wave spectra (JONSWAP). The wave loading is applied to the floors as lateral forces.",
+      "summary": "Forward sample a linear wave maker piston's generated wave implemented in the high-performance Taichi Lang.",
       "logo": "figures/hdro-0010_EVT_Single.png",
       "categories": {
         "Difficulty": "0"
