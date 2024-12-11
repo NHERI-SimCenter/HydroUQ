@@ -33,7 +33,7 @@ In this local workflow example, we demonstrate high-performance computation maki
 Set-Up
 ------
 
-.. figure:: figures/hdro-0005_UQ.png
+.. figure:: figures/hdro-0010_UQ.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -42,7 +42,7 @@ Set-Up
 
 First we select forward propagation using the Dakota UQ engine under the ``UQ`` tab. We will be looking at parallel execution of multiple simulations, set by the samples variable.
 
-.. figure:: figures/hdro-0005_GI.png
+.. figure:: figures/hdro-0010_GI.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -51,7 +51,7 @@ First we select forward propagation using the Dakota UQ engine under the ``UQ`` 
 
 The general information tab, ``GI``, is left unmodified as in this example we are not looking at a structure, just a wave maker. Note that this example can be extrapolated to include structural analysis due to the produced wave's loading.
 
-.. figure:: figures/hdro-0005_SIM.png
+.. figure:: figures/hdro-0010_SIM.png
    :align: center
    :width: 600
    :figclass: align-center
@@ -69,7 +69,7 @@ The simulation tab, ``SIM``, is not neccesary either, due to no structure being 
 
 Opening the event tab, ``EVT``, set the event to be TaichiEvent. Set the workflow script to be TaichiEvent.py and the simulation script to be pbf2d.py, found at applications/createEVENT/TaichiEvent/.
 
-.. figure:: figures/hdro-0005_EDP.png
+.. figure:: figures/hdro-0010_EDP.png
    :align: center
    :width: 600
    :figclass: align-center
