@@ -17,33 +17,26 @@ Tsunami Debris Motion Through a Scaled Port Setting - WU TWB Digital Twin - MPM
 Outline
 -------
 
-Example to demonstrate how to run a MPM simulation to determine loads on an array of port buildings during a tsunami with respect to debris impacts and damming. After, we perform
-an OpenSees simulation of one building assuming uncertainties in the building properties.
+Example to demonstrate how to run a MPM simulation to determine loads on an array of port buildings during a tsunami with respect to debris impacts and damming. Replicates at low resolution the comparative analysis paper results of [Bonus2025]_.
 
-The Waseda University Tsunami Wave Basin (WU TBW) flume is 4 meters wide (from X=-2m to X=2 m), 1 meter tall (Z=0.0m to Z=1.0m), and 9 meters long (Y=0.0m to Y=9.0m). 
-
-The case is initialized with a still water level of 0.23 meters. 
-
-Results for free surface, velocity, and pressure, as well as structural load forces, are output at a specified interval to match experimental instruments. 
-
-
-
-.. figure:: figures/TOKYO_BoreFrontImage_Debris3_o5x1_Frame20_29072023.png
+.. figure:: figures/TOKYO_MPM_ObstacleEffect_AllCases_y0.25to0.375_Persp_2024.04.03.png
    :align: center
    :width: 600
    :figclass: align-center
 
-   Simulation of MPM debris impacts on one row of five obstacles
+   Simulation of three MPM tsunami debris simulations on zero, one, and two rows of five obstacles replicating a port-setting at a Froude scale of 1:40.
 
+Stochastic experiments were performed at the Waseda University Tsunami Wave Basin (WU TBW) flume. Here we replicate it in a simple digital twin with HydroUQ's MPM module. The flume is 4 meters wide (from X=-2m to X=2 m), 1 meter tall (Z=0.0m to Z=1.0m), and 9 meters long (Y=0.0m to Y=9.0m). The case is initialized with a still water level of 0.23 meters. 
 
-.. figure:: figures/B4_Flume_Schematic.png
+.. figure:: figures/TOKYO_Flume_Schematic_2024.04.05.png
    :align: center
    :width: 600
    :figclass: align-center
     
-   Schematic of the flume and sensor locations
+   Schematic of Waseda University's Tsunami Wave Basin (WU TWB) and sensor locations
 
-	
+"Smart" debris were used in the experiments, shown below. In MPM they are modeled as fixed-corotated debris.
+
 .. figure:: figures/B4_Debris_Picture.PNG
    :align: center
    :width: 600
@@ -51,6 +44,14 @@ Results for free surface, velocity, and pressure, as well as structural load for
     
    Smart debris used in experiments
 
+
+
+.. _hdro-0004-setup:
+
+Set-Up
+----------
+
+To configure the digital twin case in HydroUQ, the following settings will be specified.
 
 .. _hdro-0004-simulation:
 
@@ -130,6 +131,41 @@ Extract the Zip folder either on DesignSafe or on your local machine. You will n
    :figclass: align-center
    
    Locate the zip folder and extract it to somewhere convenient
+
+
+
+Comparative results between the Material Point Method (MPM, HydroUQ), Smoothed Particle Hydrodynamics (SPH, DualSPHysics), and the Finite Volume Method (FVM, STAR-CCM+).:
+	
+
+.. figure:: figures/Benchmark4_Wave_Gauge_Plots4_2024.04.27.png
+   :align: center
+   :width: 600
+   :figclass: align-center
+   
+   Comparative results for wave gauge free-surface measurements
+
+.. figure:: figures/Benchmark4_Debris_Displacement_BoxAndWhiskers_2024.04.27.png
+   :align: center
+   :width: 600
+   :figclass: align-center
+   
+   Comparative results for debris displacement
+
+
+.. figure:: figures/Benchmark4_Debris_Spread_BoxAndWhiskers_2024.04.27.png
+   :align: center
+   :width: 600
+   :figclass: align-center
+   
+   Comparative results for debris spreading angle
+
+
+.. figure:: figures/Benchmark4_Obstacle_Load_Plots3_2024.04.27.png
+   :align: center
+   :width: 600
+   :figclass: align-center
+   
+   Comparative results for debris-structure loads
 
 
 .. The results folder should look something like this. 
@@ -240,6 +276,6 @@ Extract the Zip folder either on DesignSafe or on your local machine. You will n
 References
 ----------
 
-
+[Bonus2025] Justin Bonus, Felix Spröer, Andrew Winter, Pedro Arduino, Clemens Krautwald, Michael Motley, Nils Goseberg (2025). "Tsunami Debris Motion and Loads in a Scaled Port Setting: Comparative Analysis of Three State-of-the-Art Methods Against Experiments." Coastal Engineering. Volume 197. https://doi.org/10.1016/j.coastaleng.2024.104672.
 
 
