@@ -28,6 +28,7 @@ Overview
 
 In this local workflow example, we demonstrate high-performance computation making use of your personal computer's hardware (both CPU and GPU). A linear actuator (i.e. piston) produces a wave in real-time with automatic visualization via the Taichi Lang framework [Hu2019]_. This replicates the basic physics of wave-makers in real facilities, such as Oregon State University's Large Wave Flume.
 
+
 .. _hdro-0010-setup:
 
 Set-Up
@@ -84,10 +85,7 @@ As we are not looking at a structure, the ``EDP`` tab is not necessary. However,
 Simulation
 ----------
 
-We assume most computers will be able to run this simulation within a few minutes if samples are kept below 100.
-
-.. warning::
-   Only ask for what you need in terms of recorder count, time-step size, random variables, and UQ samples. Otherwise, you will end up with massive amounts of data which can slow simulations due to I/O constraints.
+We assume most modern computers will be able to run 1 - 10 of these simulations (set by samples in the ``UQ`` tab) in parallel in real-time (60 frames-per-second) or near real-time. A pop-up GUI(s) should appear once the ``RUN`` button is clicked at the bottom of the HydroUQ desktop app. The ``taichi`` PyPi will be automatically installed if your system does not currently have it. The backend graphics library is automatically swapped out by Taichi to meet your systems capabilities, though there are some edge-cases which you may contact NHERI SimCenter developers for assistance on. 
 
 
 .. _hdro-0010-analysis:
@@ -95,8 +93,8 @@ We assume most computers will be able to run this simulation within a few minute
 Analysis
 --------
 
-
 No further analysis is performed in this simple demonstration of the Taichi Lang framework within HydroUQ. As Taichi Lang is a powerful language for numerical simulation, it can be extrapolated to run essentially any form of simulation with subsequent analysis. Contact the NHERI SimCenter developer team for assistance in doing so if desired.
+
 
 .. _hdro-0010-references:
 
