@@ -1460,13 +1460,16 @@ bool MPM::outputCitation(QJsonObject &jsonObject)
 {
     QJsonObject citeClaymore;
     QJsonObject citeClaymoreUW;
-    
-    citeClaymore["citation"] = "Wang, Xinlei and Qiu Yuxing, et al. (2020). “A massively parallel and scalable multi-GPU material point method.”";
+    QJsonObject citeValidationCE;
+    citeClaymore["citation"] = "Wang, Xinlei and Qiu Yuxing, et al. (2020). “A massively parallel and scalable multi-GPU material point method.” ACM Transactions on Graphics (TOG), Volume 39, Issue 4. https://doi.org/10.1145/3386569.3392442";
     citeClaymore["description"] = "The Multi-GPU Material Point Method software, claymore, which is the predeccesor to ClaymoreUW MPM. It is a highly optimized C++/CUDA code for explicit MLS-MPM simulations on multiple NVIDIA GPUs. It is designed primarily for back-end computer graphics usage.";
     citeClaymoreUW["citation"] = "Bonus, Justin (2023). “Evaluation of Fluid-Driven Debris Impacts in a High-Performance Multi-GPU Material Point Method.” PhD thesis, University of Washington, Seattle, WA.";
     citeClaymoreUW["description"] = "The ClaymoreUW Multi-GPU Material Point Method software developed in this PhD thesis is the engineering refactor of the claymore MPM software. It is a highly optimized C++/CUDA code for explicit MLS-MPM simulations on multiple NVIDIA GPUs. It features higher computational precision, validated accuracy in multiple debris-fluid-structure interaction problems, new algorithms (ASFLIP, F-Bar antilocking), an expanded user-interface, and improved material behavior.";
+    citeValidationCE["citation"] = "Justin Bonus, Felix Spröer, Andrew Winter, Pedro Arduino, Clemens Krautwald, Michael Motley, Nils Goseberg. (2024). Tsunami debris motion and loads in a scaled port setting: Comparative analysis of three state-of-the-art numerical methods against experiments. Coastal Engineering. Volume 197. https://doi.org/10.1016/j.coastaleng.2024.104672.";
+    citeValidationCE["description"] = "Validates the HydroUQ Material Point Method module for tsunami debris motion and loads in a digital twin's scaled port setting. Compares against stochastic experiments, smoothed particle hydrodynamics (DualSPHysics), and the finite volume method (STAR-CCM+), with MPM proving particularly strong for debris studies.";
     jsonObject["claymore"] = citeClaymore;
     jsonObject["ClaymoreUW"] = citeClaymoreUW;
+    jsonObject["Validation"] = citeValidationCE;
     return true;
 }
 
