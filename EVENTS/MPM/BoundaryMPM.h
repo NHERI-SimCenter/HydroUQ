@@ -165,6 +165,7 @@ private:
   SC_DoubleLineEdit   *paddleLength;    
   SC_DoubleLineEdit   *paddleHeight;
   SC_DoubleLineEdit   *paddleWidth;
+  SC_DoubleLineEdit   *paddleFrequency;
 
   SC_DoubleLineEdit   *waveMag;
   SC_DoubleLineEdit   *waveCelerity;
