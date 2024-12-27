@@ -550,15 +550,12 @@ GeometryAI::simulationCompleted()
     return true;
 }
 
-// bool GeometryAI::copyFiles(QString &dirName)
-// {
-//     return true;
-// }
+bool GeometryAI::copyFiles(QString &dirName)
+{
+    Q_UNUSED(dirName);
+    return true;
+}
 
-// void GeometryAI::clear(void)
-// {
-//     return;
-// }
 
 // void GeometryAI::onExecuteScriptClicked(void)
 // {

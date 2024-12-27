@@ -80,12 +80,13 @@ public:
     explicit GeometryAI(QWidget *parent = 0);
     virtual ~GeometryAI(); // override // virtual
 
+    void clear(void); // override
     bool inputFromJSON(QJsonObject &jsonObject); // override
     bool outputToJSON(QJsonObject &jsonObject); // override 
-    void clear(void); // override
+    bool copyFiles(QString &dirName); // override
+    
     bool executeTextPromptsScripts(QString &dirName);     
-    bool executeImagePromptsScripts(QString &dirName);     
-    // void clear(void); 
+    bool executeImagePromptsScripts(QString &dirName);      
     bool showImage (QString &fileName);
 signals:
 

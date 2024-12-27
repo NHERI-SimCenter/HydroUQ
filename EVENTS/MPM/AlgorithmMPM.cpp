@@ -255,16 +255,20 @@ AlgorithmMPM::~AlgorithmMPM()
 
 void AlgorithmMPM::clear(void)
 {
-  // theOpenSeesPyScript->clear();
-  // theSurfaceFile->clear();
+  numericalMethod->setCurrentIndex(0);
+  particlesPerCell->clear();
+  useASFLIP->setChecked(true);
+  useFBAR->setChecked(true);
+  ASFLIP_alpha->clear();
+  ASFLIP_betaMin->clear();
+  ASFLIP_betaMax->clear();
+  FBAR_psi->clear();
+  useFBAR_fusedG2P2G->setChecked(true);
 }
 
 bool
 AlgorithmMPM::outputToJSON(QJsonObject &jsonObject)
 {
-  // theOpenSeesPyScript->outputToJSON(jsonObject);
-  // theSurfaceFile->outputToJSON(jsonObject);  
-
   // Note: ClaymoreUW will also need these defined in the JSON model/body object, not just the nested JSON partition/device object
   // Future schema
   QJsonObject algorithmObject;
@@ -278,59 +282,46 @@ AlgorithmMPM::outputToJSON(QJsonObject &jsonObject)
   algorithmObject["ASFLIP_beta_max"] = ASFLIP_betaMax->text().toDouble();
   algorithmObject["FBAR_psi"] = FBAR_psi->text().toDouble();
   jsonObject["algorithm"] = algorithmObject;
-
-  // ClaymoreUW artifacts, Global algorithm settings. TODO: Deprecate
-  // jsonObject["type"] = numericalMethod->currentText();
-  // jsonObject["ppc"] = particlesPerCell->text().toDouble();
-  // jsonObject["use_ASFLIP"] = useASFLIP->isChecked();
-  // jsonObject["use_FBAR"] = useFBAR->isChecked();
-  // jsonObject["FBAR_fused_kernel"] = useFBAR_fusedG2P2G->isChecked(); // TODO: Rename
-  // jsonObject["alpha"] = ASFLIP_alpha->text().toDouble(); // TODO: Rename
-  // jsonObject["beta_min"] = ASFLIP_betaMin->text().toDouble(); // TODO: Rename
-  // jsonObject["beta_max"] = ASFLIP_betaMax->text().toDouble(); // TODO: Rename
-  // jsonObject["FBAR_ratio"] = FBAR_psi->text().toDouble(); // TODO: Rename?
-
   return true;
 }
 
 bool
 AlgorithmMPM::inputFromJSON(QJsonObject &jsonObject)
 {
+ 
+  this->clear(); // Clear all bodies
 
 
-  if (jsonObject.contains("algorithm")) {
-    QJsonObject algorithmObject = jsonObject["algorithm"].toObject();
-    if (algorithmObject.contains("type")) {
-      QString type = algorithmObject["type"].toString();
-      int index = numericalMethod->findText(type);
-      if (index != -1) {
-        numericalMethod->setCurrentIndex(index);
-      }
+  if (jsonObject.contains("type")) {
+    QString type = jsonObject["type"].toString();
+    int index = numericalMethod->findText(type);
+    if (index != -1) {
+      numericalMethod->setCurrentIndex(index);
     }
-    if (algorithmObject.contains("ppc")) {
-      particlesPerCell->setText(QString::number(algorithmObject["ppc"].toDouble()));
-    }
-    if (algorithmObject.contains("use_ASFLIP")) {
-      useASFLIP->setChecked(algorithmObject["use_ASFLIP"].toBool());
-    }
-    if (algorithmObject.contains("use_FBAR")) {
-      useFBAR->setChecked(algorithmObject["use_FBAR"].toBool());
-    }
-    if (algorithmObject.contains("FBAR_fused_kernel")) {
-      useFBAR_fusedG2P2G->setChecked(algorithmObject["FBAR_fused_kernel"].toBool());
-    }
-    if (algorithmObject.contains("ASFLIP_alpha")) {
-      ASFLIP_alpha->setText(QString::number(algorithmObject["ASFLIP_alpha"].toDouble()));
-    }
-    if (algorithmObject.contains("ASFLIP_beta_min")) {
-      ASFLIP_betaMin->setText(QString::number(algorithmObject["ASFLIP_beta_min"].toDouble()));
-    }
-    if (algorithmObject.contains("ASFLIP_beta_max")) {
-      ASFLIP_betaMax->setText(QString::number(algorithmObject["ASFLIP_beta_max"].toDouble()));
-    }
-    if (algorithmObject.contains("FBAR_psi")) {
-      FBAR_psi->setText(QString::number(algorithmObject["FBAR_psi"].toDouble()));
-    }
+  }
+  if (jsonObject.contains("ppc")) {
+    particlesPerCell->setText(QString::number(jsonObject["ppc"].toDouble()));
+  }
+  if (jsonObject.contains("use_ASFLIP")) {
+    useASFLIP->setChecked(jsonObject["use_ASFLIP"].toBool());
+  }
+  if (jsonObject.contains("use_FBAR")) {
+    useFBAR->setChecked(jsonObject["use_FBAR"].toBool());
+  }
+  if (jsonObject.contains("FBAR_fused_kernel")) {
+    useFBAR_fusedG2P2G->setChecked(jsonObject["FBAR_fused_kernel"].toBool());
+  }
+  if (jsonObject.contains("ASFLIP_alpha")) {
+    ASFLIP_alpha->setText(QString::number(jsonObject["ASFLIP_alpha"].toDouble()));
+  }
+  if (jsonObject.contains("ASFLIP_beta_min")) {
+    ASFLIP_betaMin->setText(QString::number(jsonObject["ASFLIP_beta_min"].toDouble()));
+  }
+  if (jsonObject.contains("ASFLIP_beta_max")) {
+    ASFLIP_betaMax->setText(QString::number(jsonObject["ASFLIP_beta_max"].toDouble()));
+  }
+  if (jsonObject.contains("FBAR_psi")) {
+    FBAR_psi->setText(QString::number(jsonObject["FBAR_psi"].toDouble()));
   }
 
   return true;
@@ -339,9 +330,7 @@ AlgorithmMPM::inputFromJSON(QJsonObject &jsonObject)
 bool
 AlgorithmMPM::copyFiles(QString &destDir)
 {
-  // if (theOpenSeesPyScript->copyFile(destDir) != true)
-  //   return false;
-  // return theSurfaceFile->copyFile(destDir);    
+  Q_UNUSED(destDir);
   return true;
 }
 

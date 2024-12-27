@@ -216,22 +216,24 @@ OutputsMPM::~OutputsMPM()
 
 void OutputsMPM::clear(void)
 {
-  // vtkBodies_Output->clear();
-  // vtkCheckpoints_Output->clear();
-  // vtkBoundaries_Output->clear();
-  // vtkSensors_Output->clear();
-  // vtkEnergies_Output->clear();
 
-  // outputBodies_Dt->clear();
-  // outputCheckpoints_Dt->clear();
-  // outputBoundaries_Dt->clear();
-  // outputEnergies_Dt->clear();
+  vtkBodies_Output->setCurrentIndex(vtkBodies_Output->findText("BGEO"));
+  vtkCheckpoints_Output->setCurrentIndex(vtkCheckpoints_Output->findText("BGEO"));
+  vtkBoundaries_Output->setCurrentIndex(vtkBoundaries_Output->findText("OBJ"));
+  vtkSensors_Output->setCurrentIndex(vtkSensors_Output->findText("CSV"));
+  vtkEnergies_Output->setCurrentIndex(vtkEnergies_Output->findText("CSV"));
 
-  // useKineticEnergy->clear();
-  // usePotentialEnergy->clear();
-  // useStrainEnergy->clear();
+  outputBodies_Dt->clear();
+  outputCheckpoints_Dt->clear();
+  outputBoundaries_Dt->clear();
+  outputEnergies_Dt->clear();
 
-  // bodies_OutputExteriorOnly->clear();
+  useKineticEnergy->setChecked(false);
+  usePotentialEnergy->setChecked(false);
+  useStrainEnergy->setChecked(false);
+
+  bodies_OutputExteriorOnly->setChecked(false);
+
   // bodiesAttribsTable->clear();
 }
 
@@ -289,22 +291,42 @@ bool
 OutputsMPM::inputFromJSON(QJsonObject &jsonObject)
 {
 
-  // vtkBodies_Output->inputFromJSON(jsonObject);  
-  // vtkSensors_Output->inputFromJSON(jsonObject);
-  // outputBodies_Dt->inputFromJSON(jsonObject);
-  // outputSensors_Dt->inputFromJSON(jsonObject);
-  // outputSensors_FM->inputFromJSON(jsonObject);
-  // outputSensors_FSP->inputFromJSON(jsonObject);
-  // outputSensors_FP->inputFromJSON(jsonObject);
-  // outputSensors_SC->inputFromJSON(jsonObject);
-  // freeSurfaceProbes->inputFromJSON(jsonObject);
-  // fieldProbes->inputFromJSON(jsonObject);
-  // sectionCuts->inputFromJSON(jsonObject);
+  this->clear();
+
+  QJsonObject outputsObject = jsonObject["outputs"].toObject();
+  vtkBodies_Output->setCurrentIndex(vtkBodies_Output->findText(outputsObject["bodies_save_suffix"].toString()));
+  vtkCheckpoints_Output->setCurrentIndex(vtkCheckpoints_Output->findText(outputsObject["checkpoints_save_suffix"].toString()));
+  vtkBoundaries_Output->setCurrentIndex(vtkBoundaries_Output->findText(outputsObject["boundaries_save_suffix"].toString()));
+  vtkSensors_Output->setCurrentIndex(vtkSensors_Output->findText(outputsObject["sensors_save_suffix"].toString()));
+  vtkEnergies_Output->setCurrentIndex(vtkEnergies_Output->findText(outputsObject["energies_save_suffix"].toString()));
+
+  outputBodies_Dt->inputFromJSON(outputsObject);
+  outputCheckpoints_Dt->inputFromJSON(outputsObject);
+  outputBoundaries_Dt->inputFromJSON(outputsObject);
+  outputEnergies_Dt->inputFromJSON(outputsObject);
+
+  useKineticEnergy->setChecked(outputsObject["useKineticEnergy"].toBool());
+  usePotentialEnergy->setChecked(outputsObject["usePotentialEnergy"].toBool());
+  useStrainEnergy->setChecked(outputsObject["useStrainEnergy"].toBool());
+
+  // Each row of table becomes an array of strings, all arrays occupy a single array called "output_attribs"
+  // In-post, sort each array element (i.e. row of table) into the appropiate JSON body object based on the row order
+  // I.e., row 1 of table is added to the first JSON body object (should correspond to tab order I think)
+  QJsonObject bodiesAttribsObject;
+  bodiesAttribsObject["bodiesAttribsTable"] = outputsObject["output_attribs"].toArray();
+  bodiesAttribsTable->inputFromJSON(bodiesAttribsObject);
+
+  // TODO: Deprecate ClaymoreUW artifacts (save_suffix, fps, particles_output_exterior_only in "simulation" object, handled in MPM.cpp)
+  QJsonObject simulationObject = jsonObject["simulation"].toObject();
+  outputBodies_Dt->setText(QString::number(simulationObject["fps"].toDouble()));
+  vtkBodies_Output->setCurrentIndex(vtkBodies_Output->findText(simulationObject["save_suffix"].toString()));
+  bodies_OutputExteriorOnly->setChecked(simulationObject["particles_output_exterior_only"].toBool());
   
   return true;
 }
 
 bool
 OutputsMPM::copyFiles(QString &dirName) {
+  Q_UNUSED(dirName);
   return true;
 }

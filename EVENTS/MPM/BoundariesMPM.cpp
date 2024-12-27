@@ -419,9 +419,7 @@ SC_DoubleLineEdit* BoundariesMPM::getSpacingZWidget(BoundaryMPM* theBoundary)
 }
 
 
-
 // bool BoundariesMPM::addBoundary(BoundaryMPM* theBoundary)
-
 
 
 // bool

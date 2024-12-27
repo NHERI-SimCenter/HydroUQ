@@ -844,6 +844,40 @@ GeometryMPM::~GeometryMPM()
 void GeometryMPM::clear(void)
 {
 
+  bodyPreset->setCurrentIndex(0);
+  objectType->setCurrentIndex(0);
+  operationType->setCurrentIndex(0);
+  facility->setCurrentIndex(0);
+  facilityLength->setText("0.0");
+  facilityHeight->setText("0.0");
+  facilityWidth->setText("0.0");
+  standingWaterLevel->setText("0.0");
+  fillFlumeUptoSWL->setChecked(false);
+  bathymetryComboBox->setCurrentIndex(0);
+  // bathXZData->reset();
+  QString dummyFilename = "";
+  bathSTL->setFilename(dummyFilename);
+  geometryFile->setFilename(dummyFilename);
+  checkpointBGEO->setFilename(dummyFilename);
+  length->setText("1.0");
+  height->setText("1.0");
+  width->setText("1.0");
+  radius->setText("0.5");
+  longAxis->setCurrentIndex(0);
+  originX->setText("0.0");
+  originY->setText("0.0");
+  originZ->setText("0.0");
+  applyArray->setChecked(false);
+  arrayX->setText("1");
+  arrayY->setText("1");
+  arrayZ->setText("1");
+  applyRotation->setChecked(false);
+  rotateFulcrumX->setText("0.0");
+  rotateFulcrumY->setText("0.0");
+  rotateFulcrumZ->setText("0.0");
+  // trackerTable->reset();
+  // theGenAI->clear();
+
 }
 
 bool
@@ -970,6 +1004,29 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
     if (0) geometryObject["origin"] = originArray; // Future schema
     else   geometryObject["offset"] = originArray; // ClayoreUW artifact, to be deprecated
   }
+
+
+  if (geometryObject["object"].toString() == "Cylinder" || geometryObject["object"].toString() == "Cone" || geometryObject["object"].toString() == "Ring") {
+    geometryObject["long_axis"] = longAxis->currentText();
+    geometryObject["radius"] = radius->text().toDouble();
+  } 
+
+  if (geometryObject["object"].toString() == "Sphere") {
+    geometryObject["radius"] = radius->text().toDouble();
+  }
+
+  if (geometryObject["object"].toString() == "File") {
+    if (geometryFile->getFilename().isEmpty() == false) {
+      geometryObject["file"] = geometryFile->getFilename();
+    }
+    if (checkpointBGEO->getFilename().isEmpty() == false) {
+      geometryObject["file"] = checkpointBGEO->getFilename();
+    }
+    if (geometryObject["file"].toString().isEmpty()) {
+      // QDebug() << "Error: No geometry or checkpoint file selected for bodies object type: File";
+    }
+  }
+
   
   geometryObject["apply_array"] = applyArray->isChecked();
   if (applyArray->isChecked()) {
@@ -1039,17 +1096,139 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 GeometryMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  // theOpenSeesPyScript->inputFromJSON(jsonObject);
-  // theSurfaceFile->inputFromJSON(jsonObject);    
+  this->clear();
+
+  if (jsonObject.contains("body_preset")) {
+    bodyPreset->setCurrentText(jsonObject["body_preset"].toString());
+  }
+  if (jsonObject.contains("object")) {
+    objectType->setCurrentText(jsonObject["object"].toString());
+  }
+  if (jsonObject.contains("operation")) {
+    if (jsonObject["operation"].toString() == "add") {
+      operationType->setCurrentText("Add (OR)");
+    } else if (jsonObject["operation"].toString() == "subtract") {
+      operationType->setCurrentText("Subtract (NOT)");
+    } else if (jsonObject["operation"].toString() == "intersect") {
+      operationType->setCurrentText("Intersect (AND)");
+    } else if (jsonObject["operation"].toString() == "difference") {
+      operationType->setCurrentText("Difference (XOR)");
+    } else {
+      operationType->setCurrentText("Add (OR)");
+    }
+  }
+  if (jsonObject.contains("facility")) {
+    facility->setCurrentText(jsonObject["facility"].toString());
+  }
+  if (jsonObject.contains("facility_dimensions")) {
+    QJsonArray facilityDims = jsonObject["facility_dimensions"].toArray();
+    facilityLength->setText(QString::number(facilityDims[0].toDouble()));
+    facilityHeight->setText(QString::number(facilityDims[1].toDouble()));
+    facilityWidth->setText(QString::number(facilityDims[2].toDouble()));
+  }
+  if (jsonObject.contains("standing_water_level")) {
+    standingWaterLevel->setText(QString::number(jsonObject["standing_water_level"].toDouble()));
+  }
+  if (jsonObject.contains("fill_flume_upto_SWL")) {
+    fillFlumeUptoSWL->setChecked(jsonObject["fill_flume_upto_SWL"].toBool());
+  }
+  if (jsonObject.contains("span")) {
+    QJsonArray spanArray = jsonObject["span"].toArray();
+    length->setText(QString::number(spanArray[0].toDouble()));
+    height->setText(QString::number(spanArray[1].toDouble()));
+    width->setText(QString::number(spanArray[2].toDouble()));
+  }
+  if (jsonObject.contains("offset")) {
+    QJsonArray originArray = jsonObject["offset"].toArray();
+    originX->setText(QString::number(originArray[0].toDouble()));
+    originY->setText(QString::number(originArray[1].toDouble()));
+    originZ->setText(QString::number(originArray[2].toDouble()));
+  }
+
+  if (jsonObject.contains("bathymetryXZ")) {
+    QJsonArray bathXZArray = jsonObject["bathymetryXZ"].toArray();
+    QJsonObject bathXZObject;
+    bathXZObject["bathXZData"] = bathXZArray;
+    bathXZData->inputFromJSON(bathXZObject);
+  }
+
+  if (jsonObject.contains("radius")) {
+    radius->setText(QString::number(jsonObject["radius"].toDouble()));
+  }
+
+  if (jsonObject.contains("long_axis")) {
+    longAxis->setCurrentText(jsonObject["long_axis"].toString());
+  }
+
+  if (jsonObject.contains("apply_array")) {
+    applyArray->setChecked(jsonObject["apply_array"].toBool());
+  }
+  if (jsonObject.contains("array")) {
+    QJsonArray arrayDims = jsonObject["array"].toArray();
+    arrayX->setText(QString::number(arrayDims[0].toInt()));
+    arrayY->setText(QString::number(arrayDims[1].toInt()));
+    arrayZ->setText(QString::number(arrayDims[2].toInt()));
+  }
+  if (jsonObject.contains("spacing")) {
+    QJsonArray spacingArray = jsonObject["spacing"].toArray();
+    spacingX->setText(QString::number(spacingArray[0].toDouble()));
+    spacingY->setText(QString::number(spacingArray[1].toDouble()));
+    spacingZ->setText(QString::number(spacingArray[2].toDouble()));
+  }
+  if (jsonObject.contains("apply_rotation")) {
+    applyRotation->setChecked(jsonObject["apply_rotation"].toBool());
+  }
+  if (jsonObject.contains("rotate")) {
+    QJsonArray rotateAngles = jsonObject["rotate"].toArray();
+    rotateAngleX->setText(QString::number(rotateAngles[0].toDouble()));
+    rotateAngleY->setText(QString::number(rotateAngles[1].toDouble()));
+    rotateAngleZ->setText(QString::number(rotateAngles[2].toDouble()));
+  }
+  if (jsonObject.contains("fulcrum")) {
+    QJsonArray rotateFulcrum = jsonObject["fulcrum"].toArray();
+    rotateFulcrumX->setText(QString::number(rotateFulcrum[0].toDouble()));
+    rotateFulcrumY->setText(QString::number(rotateFulcrum[1].toDouble()));
+    rotateFulcrumZ->setText(QString::number(rotateFulcrum[2].toDouble()));
+  }
+  if (jsonObject.contains("track_particle_id")) {
+    QJsonArray trackerArray = jsonObject["track_particle_id"].toArray();
+    // trackerTable->reset();
+    QJsonObject trackerObject;
+    trackerObject["trackerTable"] = trackerArray;
+    trackerTable->inputFromJSON(trackerObject);
+  }
+
+  theGenAI->inputFromJSON(jsonObject); // text-prompt and image-prompt
+
   return true;
 }
 
 bool
 GeometryMPM::copyFiles(QString &destDir)
 {
-  // if (theOpenSeesPyScript->copyFile(destDir) != true)
-  //   return false;
-  // return theSurfaceFile->copyFile(destDir);    
+
+  // Copy the bathymetry file to the destination directory
+  if (bathSTL->getFilename().isEmpty() == false) {
+    if (bathSTL->copyFile(destDir) == false) {
+      // QDebug() << "Error: Failed to copy bathymetry file";
+      // return false;
+    }
+  }
+
+  if (geometryFile->getFilename().isEmpty() == false) {
+    if (geometryFile->copyFile(destDir) == false) {
+      // QDebug() << "Error: Failed to copy geometry file";
+      // return false;
+    }
+  }
+
+  if (checkpointBGEO->getFilename().isEmpty() == false) {
+    if (checkpointBGEO->copyFile(destDir) == false) {
+      // QDebug() << "Error: Failed to copy checkpoint BGEO file";
+      // return false;
+    }
+  }
+
   return true;
 }
 
