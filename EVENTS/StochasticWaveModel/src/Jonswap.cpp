@@ -40,7 +40,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QLabel>
 #include <QComboBox>
 #include <QSpinBox>
-// #include <QDoubleSpinBox>
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -141,21 +140,21 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   exposureCategory->addItem("NATO 2");
   exposureCategory->addItem("NATO 1");
 
-//   exposureCategory = new QComboBox();
-//   exposureCategory->addItem("JONSWAP");
+  //   exposureCategory = new QComboBox();
+  //   exposureCategory->addItem("JONSWAP");
 
-//   seed = new QSpinBox();
-//   seed->setMinimum(1);
-//   seed->setMaximum(2147483647);
-//   seed->setValue(500);  
-//   seed->setEnabled(false);
-//   useSeed = new QRadioButton("Provide seed value");
-//   useSeed->setChecked(false);
+  //   seed = new QSpinBox();
+  //   seed->setMinimum(1);
+  //   seed->setMaximum(2147483647);
+  //   seed->setValue(500);  
+  //   seed->setEnabled(false);
+  //   useSeed = new QRadioButton("Provide seed value");
+  //   useSeed->setChecked(false);
 
 
-//   exposureCategory = new QComboBox();
-//   exposureCategory->addItem("JONSWAP");
-// //   exposureCategory->addItem("Pierson-Moskowitz");
+  //   exposureCategory = new QComboBox();
+  //   exposureCategory->addItem("JONSWAP");
+  // //   exposureCategory->addItem("Pierson-Moskowitz");
   QFormLayout *parameters = new QFormLayout();
 
   parameters->addRow(new QLabel(tr("Median Sea Level [ft]")), waterDepth);
@@ -163,22 +162,17 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   parameters->addRow(new QLabel(tr("Storm-Surge Sea Level Rise [ft]")), stormSurgeSLR);
   parameters->addRow(new QLabel(tr("Climate Change Sea Level Rise [ft]")), climateChangeSLR);
 
-
-  // exposureCategory->setCurrentIndex(5);
-
-
-
   parameters->addRow(new QLabel(tr("Significant Wave Height [ft]")), significantWaveHeight);
   parameters->addRow(new QLabel(tr("Peak Wave Period [s]")), peakPeriod);
   parameters->addRow(new QLabel(tr("Time Step [s]")), timeStep);
   parameters->addRow(new QLabel(tr("Time Duration [s]")), timeDuration);
-  // parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
+
   parameters->addRow(new QLabel(tr("Sea State Category")), exposureCategory);
   parameters->addRow(new QLabel(tr("")), new QLabel(tr("")));
   parameters->addRow(new QLabel(tr("")), new QLabel(tr("")));
   parameters->addRow(new QLabel(tr("Load Recorder Origin [ft]")), recorderOriginX);
   parameters->addRow(new QLabel(tr("Load Recorder Count [#]")), recorderCountZ);
-  // parameters->addRow(new QLabel(tr("Wave Spectrum")), exposureCategory);
+
   parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
   parameters->addRow(new QLabel(tr("Drag Area [ft^2]")), dragArea);
   parameters->addRow(new QLabel(tr("")), new QLabel(tr("")));
@@ -200,7 +194,6 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   // parameters->addRow(new QLabel(tr("Gust Wind Speed (mph)")), gustWindSpeed);
 
   //model_description_->setStyleSheet("QLabel { color : gray; }");
-
 
 
   // Construct required layouts
@@ -225,7 +218,7 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
 
   thePlot = new SimCenterGraphPlot(QString("Time [s]"),QString("Power Spectral Density [m^2 / Hz]"), 700, 350);
   // Maintain aspect ratio but allow resizing
-  thePlot->setMinimumSize(650,400);
+  thePlot->setMinimumSize(400,250);
   thePlot->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
   QHBoxLayout* fileFormLayout = new QHBoxLayout();
@@ -237,31 +230,29 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   QPushButton *chooseFileButton = new QPushButton("Choose");
   chooseFileButton->setMinimumWidth(100);
   chooseFileButton->setMaximumWidth(100);
-  fileFormLayout->addWidget(chooseFileButton, 1);
+
   // a = this->createTextEntry(tr("Min"), plotLayout, 100, 100);
   // b = this->createTextEntry(tr("Max"), plotLayout, 100, 100);
+  fileFormLayout->addWidget(chooseFileButton, 1);
   showPlotButton = new QPushButton("Sample Wave Spectra");
   showPlotButton->setMinimumWidth(200);
   showPlotButton->setMaximumWidth(200);
-
-  QPushButton* thePileImageButton = new QPushButton("Plot Loads");
-  thePileImageButton->setMinimumWidth(150);
-  thePileImageButton->setMaximumWidth(150);
+  fileFormLayout->addWidget(showPlotButton, 2);
+  
+  // // For plotting the monopile loads image
+  // QPushButton* thePileImageButton = new QPushButton("Plot Loads");
+  // thePileImageButton->setMinimumWidth(150);
+  // thePileImageButton->setMaximumWidth(150);
   QWidget* fileFormWidget = new QWidget();
   fileFormWidget->setLayout(fileFormLayout);
-
-  fileFormLayout->addWidget(showPlotButton, 2);
-
-
   // fileFormLayout->addWidget(thePileImageButton,3 );
 
-  // add empty 
-
-  QPixmap pixmapPile(":/icons/forces.png");
-  QPushButton* thePileFigure = new QPushButton();
-  thePileFigure->setIcon(pixmapPile);
-  thePileFigure->setIconSize(pixmapPile.rect().size()*1.0);
-  thePileFigure->setFixedSize(pixmapPile.rect().size()*1.0);
+  // // Show forces, etc. on monopile structure
+  // QPixmap pixmapPile(":/icons/forces.png");
+  // QPushButton* thePileFigure = new QPushButton();
+  // thePileFigure->setIcon(pixmapPile);
+  // thePileFigure->setIconSize(pixmapPile.rect().size()*1.0);
+  // thePileFigure->setFixedSize(pixmapPile.rect().size()*1.0);
 
   // QHBoxLayout *pileFigureLayout = new QHBoxLayout();
   // pileFigureLayout->addWidget(thePileFigure);
@@ -275,21 +266,18 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   // plotLayout->setStretch(5,1);
 
 
-
   // int plotNumRow = 12;
   // layout->addWidget(plotWidget, plotNumRow++, 0, 1, 5);
 
   theDomainImageButton = new QPushButton();
   QPixmap pixmapDomain(":/icons/HydroLoadPile.png");
 
-  pixmapDomain.scaled(800, 400, Qt::KeepAspectRatio,Qt::SmoothTransformation);
+  pixmapDomain.scaled(500, 250, Qt::KeepAspectRatio,Qt::SmoothTransformation);
 
   theDomainImageButton->setIcon(pixmapDomain);
   theDomainImageButton->setIconSize(pixmapDomain.rect().size()*1.00);
   theDomainImageButton->setFixedSize(pixmapDomain.rect().size()*1.00);
   parametersLayout->addWidget(theDomainImageButton);
-
-
 
 
   thePlot->hide();
@@ -322,18 +310,17 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   layout->addLayout(parametersLayout);
   layout->addLayout(seedLayout);
   layout->addWidget(fileFormWidget);
-  layout->addWidget(thePileFigure);
+  // layout->addWidget(thePileFigure);
   layout->addStretch();
   this->setLayout(layout);
 
   thePlot->show();
   theDomainImageButton->show();
-  thePileFigure->show();
+  // thePileFigure->show();
 
 
   // Place the plot in the layout
-  connect(dataDir,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
-  // connect(dataDir, 
+  connect(dataDir,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot())); 
   
   // connect(a,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
   // connect(b,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
@@ -364,7 +351,6 @@ Jonswap::createTextEntry(QString text,
                                             int maxL)
 {
     QVBoxLayout *entryLayout = new QVBoxLayout();
-    //QHBoxLayout *entryLayout = new QHBoxLayout();
     QLabel *entryLabel = new QLabel(text);
 
     QLineEdit *res = new QLineEdit();
@@ -376,7 +362,6 @@ Jonswap::createTextEntry(QString text,
     entryLayout->addWidget(res);
 
     entryLayout->setSpacing(0);
-    //    entryLayout->setMargin(0);
 
     theLayout->addLayout(entryLayout);
 
