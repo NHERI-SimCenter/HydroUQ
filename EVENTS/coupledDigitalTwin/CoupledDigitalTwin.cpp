@@ -108,7 +108,11 @@ CoupledDigitalTwin::~CoupledDigitalTwin()
 
 void CoupledDigitalTwin::clear(void)
 {
-
+  inputSettings->clear();
+  inputOpenSees->clear();
+  inputOpenFOAM->clear();
+  inputOutputs->clear();
+  inputVisualize->clear();
 }
 
 
@@ -181,9 +185,15 @@ bool CoupledDigitalTwin::inputAppDataFromJSON(QJsonObject &jsonObject) {
 
 
 bool CoupledDigitalTwin::copyFiles(QString &destDir) {
-  if (inputOpenFOAM->copyFiles(destDir) == false)
-    return false;
-  return inputOpenSees->copyFiles(destDir);
+  if (inputOpenFOAM->copyFiles(destDir) == false) {
+    qDebug() << "CoupledDigitalTwin - failed to copy inputOpenFOAM files";
+    // return false;
+  }
+  if (inputOpenSees->copyFiles(destDir) == false) {
+    qDebug() << "CoupledDigitalTwin - failed to copy inputOpenSees files";
+    // return false;
+  }
+  return true;
  }
 
 bool CoupledDigitalTwin::outputCitation(QJsonObject &jsonObject) {

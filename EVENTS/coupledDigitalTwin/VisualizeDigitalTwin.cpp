@@ -35,6 +35,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 #include <VisualizeDigitalTwin.h>
+#include <QJsonObject>
+#include <QJsonArray>
 
 VisualizeDigitalTwin::VisualizeDigitalTwin(QWidget *parent)
   :SimCenterWidget(parent)
@@ -43,6 +45,12 @@ VisualizeDigitalTwin::VisualizeDigitalTwin(QWidget *parent)
 }
 
 VisualizeDigitalTwin::~VisualizeDigitalTwin()
+{
+
+}
+
+void
+VisualizeDigitalTwin::clear(void)
 {
 
 }
@@ -56,6 +64,9 @@ VisualizeDigitalTwin::outputToJSON(QJsonObject &jsonObject)
 bool
 VisualizeDigitalTwin::inputFromJSON(QJsonObject &jsonObject)
 {
+  this->clear();
+
   return true;
 }
+
 
