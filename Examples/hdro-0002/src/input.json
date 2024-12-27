@@ -9,10 +9,14 @@
             {
                 "Application": "MPM",
                 "ApplicationData": {
-                    "programFile": "fbar",
-                    "maxRunTime": "1440"
                 },
-                "EventClassification": "Hydro"
+                "EventClassification": "Hydro",
+                "defaultMaxRunTime": "1440",
+                "driverFile": "sc_driver",
+                "inputFile": "scInput.json",
+                "maxRunTime": "120",
+                "programFile": "osu_lwf",
+                "publicDirectory": "./"
             }
         ],
         "Modeling": {
@@ -65,10 +69,10 @@
                         "ASFLIP_beta_max": 0,
                         "ASFLIP_beta_min": 0,
                         "FBAR_fused_kernel": true,
-                        "FBAR_psi": 0.9,
+                        "FBAR_psi": 0.95,
                         "ppc": 8,
                         "type": "particles",
-                        "use_ASFLIP": true,
+                        "use_ASFLIP": false,
                         "use_FBAR": true
                     },
                     "geometry": [
@@ -110,7 +114,7 @@
                             "facility_dimensions": [
                                 104,
                                 4.6,
-                                3.658
+                                3.6
                             ],
                             "fill_flume_upto_SWL": true,
                             "object": "OSU LWF",
@@ -123,7 +127,7 @@
                             "span": [
                                 84,
                                 2,
-                                3.65
+                                3.6
                             ],
                             "standing_water_level": 2,
                             "track_particle_id": [
@@ -133,28 +137,26 @@
                     ],
                     "gpu": 0,
                     "material": {
-                        "CFL": 0.425,
+                        "CFL": 0.5,
                         "bulk_modulus": 210000000,
                         "constitutive": "JFluid",
-                        "gamma": 7.125,
+                        "gamma": 7.15,
                         "material_preset": "Water (Fresh)",
                         "rho": 1000,
                         "viscosity": 0.001
                     },
                     "model": 0,
+                    "name": "fluid",
                     "output_attribs": [
                         "ID",
-                        "Pressure",
-                        "Velocity_X",
-                        "Velocity_Y",
-                        "Velocity_Z"
+                        "Pressure"
                     ],
                     "partition": [
                         {
                             "gpu": 0,
                             "model": 0,
                             "partition_end": [
-                                23.9,
+                                31.9,
                                 2.9,
                                 3.6
                             ],
@@ -168,12 +170,12 @@
                             "gpu": 1,
                             "model": 0,
                             "partition_end": [
-                                51.9,
+                                61.9,
                                 2.9,
                                 3.6
                             ],
                             "partition_start": [
-                                23.9,
+                                31.9,
                                 0,
                                 0
                             ]
@@ -187,14 +189,14 @@
                                 3.6
                             ],
                             "partition_start": [
-                                51.9,
+                                61.9,
                                 0,
                                 0
                             ]
                         }
                     ],
                     "partition_end": [
-                        23.9,
+                        31.9,
                         2.9,
                         3.6
                     ],
@@ -207,10 +209,9 @@
                         "Position_Y"
                     ],
                     "track_attribs": [
-                        "Position_Y",
+                        "Position_X",
                         "Position_Z",
-                        "Velocity_X",
-                        "Velocity_Y"
+                        "Pressure"
                     ],
                     "track_particle_id": [
                         0
@@ -227,28 +228,28 @@
                         "ASFLIP_alpha": 0,
                         "ASFLIP_beta_max": 0,
                         "ASFLIP_beta_min": 0,
-                        "FBAR_fused_kernel": false,
+                        "FBAR_fused_kernel": true,
                         "FBAR_psi": 0,
                         "ppc": 8,
                         "type": "particles",
                         "use_ASFLIP": true,
-                        "use_FBAR": true
+                        "use_FBAR": false
                     },
                     "geometry": [
                         {
                             "apply_array": true,
-                            "apply_rotation": false,
+                            "apply_rotation": true,
                             "array": [
+                                4,
                                 1,
-                                1,
-                                2
+                                4
                             ],
                             "body_preset": "Debris",
                             "facility": "Hinsdale Large Wave Flume (OSU LWF)",
                             "facility_dimensions": [
                                 84,
                                 4.6,
-                                3.65
+                                3.6
                             ],
                             "fulcrum": [
                                 0,
@@ -257,9 +258,9 @@
                             ],
                             "object": "Box",
                             "offset": [
-                                42.5,
+                                40.3,
                                 2,
-                                1.575
+                                0.325
                             ],
                             "operation": "add",
                             "rotate": [
@@ -268,9 +269,9 @@
                                 0
                             ],
                             "spacing": [
-                                0.80,
-                                0.35,
-                                0.40
+                                1,
+                                1,
+                                1
                             ],
                             "span": [
                                 0.5,
@@ -284,14 +285,15 @@
                     ],
                     "gpu": 0,
                     "material": {
-                        "CFL": 0.425,
+                        "CFL": 0.5,
                         "constitutive": "FixedCorotated",
                         "material_preset": "Plastic",
                         "poisson_ratio": 0.3,
                         "rho": 981,
-                        "youngs_modulus": 80000000
+                        "youngs_modulus": 100000000
                     },
                     "model": 1,
+                    "name": "debris",
                     "output_attribs": [
                         "ID",
                         "Pressure",
@@ -330,11 +332,8 @@
                     ],
                     "track_attribs": [
                         "Position_X",
-                        "Position_Y",
                         "Position_Z",
-                        "Velocity_X",
-                        "Velocity_Y",
-                        "Velocity_Z"
+                        "Pressure"
                     ],
                     "track_particle_id": [
                         0
@@ -352,10 +351,10 @@
                         "ASFLIP_beta_max": 0,
                         "ASFLIP_beta_min": 0,
                         "FBAR_fused_kernel": true,
-                        "FBAR_psi": 0.9,
+                        "FBAR_psi": 0.95,
                         "ppc": 8,
                         "type": "particles",
-                        "use_ASFLIP": true,
+                        "use_ASFLIP": false,
                         "use_FBAR": true
                     },
                     "geometry": [
@@ -397,7 +396,7 @@
                             "facility_dimensions": [
                                 104,
                                 4.6,
-                                3.658
+                                3.6
                             ],
                             "fill_flume_upto_SWL": true,
                             "object": "OSU LWF",
@@ -410,9 +409,9 @@
                             "span": [
                                 84,
                                 2,
-                                3.65
+                                3.6
                             ],
-                            "standing_water_level": 2.0,
+                            "standing_water_level": 2,
                             "track_particle_id": [
                                 0
                             ]
@@ -420,28 +419,26 @@
                     ],
                     "gpu": 1,
                     "material": {
-                        "CFL": 0.425,
+                        "CFL": 0.5,
                         "bulk_modulus": 210000000,
                         "constitutive": "JFluid",
-                        "gamma": 7.125,
+                        "gamma": 7.15,
                         "material_preset": "Water (Fresh)",
                         "rho": 1000,
                         "viscosity": 0.001
                     },
                     "model": 0,
+                    "name": "fluid",
                     "output_attribs": [
                         "ID",
-                        "Pressure",
-                        "Velocity_X",
-                        "Velocity_Y",
-                        "Velocity_Z"
+                        "Pressure"
                     ],
                     "partition": [
                         {
                             "gpu": 0,
                             "model": 0,
                             "partition_end": [
-                                23.9,
+                                31.9,
                                 2.9,
                                 3.6
                             ],
@@ -455,12 +452,12 @@
                             "gpu": 1,
                             "model": 0,
                             "partition_end": [
-                                51.9,
+                                61.9,
                                 2.9,
                                 3.6
                             ],
                             "partition_start": [
-                                23.9,
+                                31.9,
                                 0,
                                 0
                             ]
@@ -474,19 +471,19 @@
                                 3.6
                             ],
                             "partition_start": [
-                                51.9,
+                                61.9,
                                 0,
                                 0
                             ]
                         }
                     ],
                     "partition_end": [
-                        51.9,
+                        61.9,
                         2.9,
                         3.6
                     ],
                     "partition_start": [
-                        23.9,
+                        31.9,
                         0,
                         0
                     ],
@@ -495,9 +492,8 @@
                     ],
                     "track_attribs": [
                         "Position_X",
-                        "Position_Y",
-                        "Velocity_X",
-                        "Velocity_Y"
+                        "Position_Z",
+                        "Pressure"
                     ],
                     "track_particle_id": [
                         0
@@ -515,10 +511,10 @@
                         "ASFLIP_beta_max": 0,
                         "ASFLIP_beta_min": 0,
                         "FBAR_fused_kernel": true,
-                        "FBAR_psi": 0.9,
+                        "FBAR_psi": 0.95,
                         "ppc": 8,
                         "type": "particles",
-                        "use_ASFLIP": true,
+                        "use_ASFLIP": false,
                         "use_FBAR": true
                     },
                     "geometry": [
@@ -560,7 +556,7 @@
                             "facility_dimensions": [
                                 104,
                                 4.6,
-                                3.658
+                                3.6
                             ],
                             "fill_flume_upto_SWL": true,
                             "object": "OSU LWF",
@@ -573,7 +569,7 @@
                             "span": [
                                 84,
                                 2,
-                                3.65
+                                3.6
                             ],
                             "standing_water_level": 2,
                             "track_particle_id": [
@@ -583,28 +579,26 @@
                     ],
                     "gpu": 2,
                     "material": {
-                        "CFL": 0.425,
+                        "CFL": 0.5,
                         "bulk_modulus": 210000000,
                         "constitutive": "JFluid",
-                        "gamma": 7.125,
+                        "gamma": 7.15,
                         "material_preset": "Water (Fresh)",
                         "rho": 1000,
                         "viscosity": 0.001
                     },
                     "model": 0,
+                    "name": "fluid",
                     "output_attribs": [
                         "ID",
-                        "Pressure",
-                        "Velocity_X",
-                        "Velocity_Y",
-                        "Velocity_Z"
+                        "Pressure"
                     ],
                     "partition": [
                         {
                             "gpu": 0,
                             "model": 0,
                             "partition_end": [
-                                23.9,
+                                31.9,
                                 2.9,
                                 3.6
                             ],
@@ -618,12 +612,12 @@
                             "gpu": 1,
                             "model": 0,
                             "partition_end": [
-                                51.9,
+                                61.9,
                                 2.9,
                                 3.6
                             ],
                             "partition_start": [
-                                23.9,
+                                31.9,
                                 0,
                                 0
                             ]
@@ -637,7 +631,7 @@
                                 3.6
                             ],
                             "partition_start": [
-                                51.9,
+                                61.9,
                                 0,
                                 0
                             ]
@@ -649,7 +643,7 @@
                         3.6
                     ],
                     "partition_start": [
-                        51.9,
+                        61.9,
                         0,
                         0
                     ],
@@ -658,9 +652,8 @@
                     ],
                     "track_attribs": [
                         "Position_X",
-                        "Position_Y",
-                        "Velocity_X",
-                        "Velocity_Y"
+                        "Position_Z",
+                        "Pressure"
                     ],
                     "track_particle_id": [
                         0
@@ -677,16 +670,36 @@
                 {
                     "contact": "Separable",
                     "domain_end": [
-                        104,
+                        90,
                         4.6,
-                        3.658
+                        3.6
                     ],
                     "domain_start": [
                         0,
                         0,
                         0
                     ],
+                    "friction_dynamic": 0,
+                    "friction_static": 0,
                     "object": "OSU LWF"
+                },
+                {
+                    "contact": "Separable",
+                    "domain_end": [
+                        1.9,
+                        4.7,
+                        3.75
+                    ],
+                    "domain_start": [
+                        1.7,
+                        -0.1,
+                        -0.1
+                    ],
+                    "file": "..//wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv",
+                    "friction_dynamic": 0,
+                    "friction_static": 0,
+                    "object": "OSU Paddle",
+                    "output_frequency": 1200
                 },
                 {
                     "array": [
@@ -696,15 +709,17 @@
                     ],
                     "contact": "Separable",
                     "domain_end": [
-                        46.815999999999995,
-                        2.725,
+                        46.8,
+                        2.625,
                         2.325
                     ],
                     "domain_start": [
                         45.8,
-                        2.10,
+                        2,
                         1.325
                     ],
+                    "friction_dynamic": 0,
+                    "friction_static": 0,
                     "object": "Box",
                     "spacing": [
                         0,
@@ -716,7 +731,7 @@
                     "contact": "Separable",
                     "domain_end": [
                         90,
-                        2.9,
+                        4.5,
                         3.6
                     ],
                     "domain_start": [
@@ -724,6 +739,8 @@
                         0,
                         0
                     ],
+                    "friction_dynamic": 0,
+                    "friction_static": 0,
                     "object": "Walls"
                 }
             ],
@@ -734,59 +751,22 @@
                 "hpc_card_compute_capability": 80,
                 "hpc_card_global_memory": 40,
                 "hpc_card_name": "A100",
+                "hpc_queue": "gpu-a100",
                 "models_per_gpu": 3,
                 "num_gpus": 3
             },
             "grid-sensors": [
                 {
-                    "attribute": "Velocity",
-                    "direction": "X+",
-                    "domain_end": [
-                        16.05,
-                        2.75,
-                        0.45
-                    ],
-                    "domain_start": [
-                        16,
-                        1.5,
-                        0.4
-                    ],
-                    "name": "VelocityMeter1",
-                    "operation": "Average",
-                    "output_frequency": 30,
-                    "toggle": true,
-                    "type": "grid"
-                },
-                {
-                    "attribute": "Velocity",
-                    "direction": "X+",
-                    "domain_end": [
-                        43.849999999999994,
-                        2.75,
-                        0.45
-                    ],
-                    "domain_start": [
-                        43.8,
-                        1.75,
-                        0.4
-                    ],
-                    "name": "VelocityMeter2",
-                    "operation": "Average",
-                    "output_frequency": 30,
-                    "toggle": true,
-                    "type": "grid"
-                },
-                {
                     "attribute": "Force",
                     "direction": "X+",
                     "domain_end": [
                         45.824,
-                        2.675,
+                        2.6500000000000004,
                         2.3
                     ],
                     "domain_start": [
                         45.799,
-                        2.149,
+                        2.075,
                         1.35
                     ],
                     "name": "LoadCell1",
@@ -836,7 +816,7 @@
                     "attribute": "Elevation",
                     "direction": "N/A",
                     "domain_end": [
-                        16.075,
+                        16.05,
                         2.75,
                         0.45
                     ],
@@ -855,7 +835,7 @@
                     "attribute": "Elevation",
                     "direction": "N/A",
                     "domain_end": [
-                        26.075,
+                        26.05,
                         2.75,
                         0.45
                     ],
@@ -874,7 +854,7 @@
                     "attribute": "Elevation",
                     "direction": "N/A",
                     "domain_end": [
-                        38.075,
+                        38.05,
                         2.75,
                         0.45
                     ],
@@ -904,12 +884,12 @@
                 "default_dx": 0.1,
                 "domain": [
                     90,
-                    2.9,
+                    4.5,
                     3.6
                 ],
-                "duration": 2,
-                "fps": 60,
-                "frames": 30,
+                "duration": 5,
+                "fps": 10,
+                "frames": 50,
                 "froude_scaling": 1,
                 "froude_time_ratio": 1,
                 "gravity": [
@@ -932,25 +912,25 @@
             },
             "subtype": "MPM",
             "type": "MPM"
-        }        
+        }
     ],
     "GeneralInformation": {
-        "NumberOfStories": 3,
+        "NumberOfStories": 1,
         "PlanArea": 129600,
         "StructureType": "RM1",
         "YearBuilt": 1990,
         "depth": 360,
-        "height": 0.3,
+        "height": 144,
         "location": {
             "latitude": 37.8715,
             "longitude": -122.273
         },
-        "name": "",
+        "name": "The Orange Box",
         "planArea": 129600,
-        "stories": 3,
+        "stories": 1,
         "units": {
-            "force": "N",
-            "length": "m",
+            "force": "kips",
+            "length": "in",
             "temperature": "C",
             "time": "sec"
         },
@@ -971,45 +951,23 @@
                 "Ktheta": 10000000000,
                 "bx": 0.1,
                 "by": 0.1,
-                "height": 0.1,
+                "height": 144,
                 "kx": 100,
                 "ky": 100,
-                "weight": 144
-            },
-            {
-                "Fyx": 1000000,
-                "Fyy": 1000000,
-                "Ktheta": 10000000000,
-                "bx": 0.1,
-                "by": 0.1,
-                "height": 0.1,
-                "kx": 100,
-                "ky": 100,
-                "weight": 144
-            },
-            {
-                "Fyx": 1000000,
-                "Fyy": 1000000,
-                "Ktheta": 10000000000,
-                "bx": 0.1,
-                "by": 0.1,
-                "height": 0.1,
-                "kx": 100,
-                "ky": 100,
-                "weight": 144
+                "weight": 100
             }
         ],
         "dampingRatio": 0.02,
-        "height": 0.1,
+        "height": 144,
         "massX": 0,
         "massY": 0,
-        "numStories": 3,
+        "numStories": 1,
         "randomVar": [
         ],
         "responseX": 0,
         "responseY": 0,
         "type": "MDOF_BuildingModel",
-        "weight": 144
+        "weight": 100
     },
     "Simulation": {
         "Application": "OpenSees-Simulation",
@@ -1029,22 +987,29 @@
         "parallelExecution": true,
         "samplingMethodData": {
             "method": "LHS",
-            "samples": 5,
+            "samples": 2,
             "seed": 1
         },
         "saveWorkDir": true,
         "uqType": "Forward Propagation"
     },
-    "localAppDir": "C:/Users/nsaoirse/Desktop/HydroUQ_Windows_Download",
-    "nodeCount": 1,
-    "numP": 1,
-    "processorsOnEachNode": 1,
+    "localAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
     "randomVariables": [
+        {
+            "distribution": "Normal",
+            "inputType": "Parameters",
+            "mean": 0,
+            "name": "dummy",
+            "refCount": 0,
+            "stdDev": 1,
+            "value": "RV.dummy",
+            "variableClass": "Uncertain"
+        }
     ],
-    "remoteAppDir": "/work2/00477/tg457427/frontera/SimCenterBackendApplications/v4.2.0",
+    "remoteAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
     "resultType": "SimCenterUQResultsSampling",
-    "runType": "runningRemote",
+    "runType": "runningLocal",
     "summary": [
     ],
-    "workingDir": "C:/Users/nsaoirse/Documents/HydroUQ/RemoteWorkDir"
+    "workingDir": "/home/justinbonus/Documents/HydroUQ/LocalWorkDir"
 }
