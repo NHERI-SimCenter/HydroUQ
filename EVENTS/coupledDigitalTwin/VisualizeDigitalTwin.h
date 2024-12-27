@@ -54,13 +54,13 @@ class QLineEdit;
 
 class VisualizeDigitalTwin : public SimCenterWidget
 {
-    Q_OBJECT
+    // Q_OBJECT
 public:
     VisualizeDigitalTwin(QWidget *parent = 0);
     virtual ~VisualizeDigitalTwin();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-
+    void clear(void);
 signals:
 
 private:

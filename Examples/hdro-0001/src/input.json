@@ -334,7 +334,7 @@
             "latitude": 37.8715,
             "longitude": -122.273
         },
-        "name": "",
+        "name": "Multi-Story Building",
         "planArea": 129600,
         "stories": 4,
         "units": {
@@ -429,8 +429,8 @@
         "parallelExecution": true,
         "samplingMethodData": {
             "method": "LHS",
-            "samples": 500,
-            "seed": 700
+            "samples": 3,
+            "seed": 1
         },
         "saveWorkDir": true,
         "uqType": "Forward Propagation"

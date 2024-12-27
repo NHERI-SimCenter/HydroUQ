@@ -110,14 +110,14 @@ PartitionMPM::~PartitionMPM()
 
 void PartitionMPM::clear(void)
 {
-  // deviceNumber->clear();
-  // bodyNumber->clear();
-  // partitionOrigin_X->clear();
-  // partitionOrigin_Y->clear();
-  // partitionOrigin_Z->clear();
-  // partitionDimensions_X->clear();
-  // partitionDimensions_Y->clear();
-  // partitionDimensions_Z->clear();
+  deviceNumber->clear();
+  bodyNumber->clear();
+  partitionOrigin_X->clear();
+  partitionOrigin_Y->clear();
+  partitionOrigin_Z->clear();
+  partitionDimensions_X->clear();
+  partitionDimensions_Y->clear();
+  partitionDimensions_Z->clear();
 }
 
 bool
@@ -285,12 +285,46 @@ PartitionMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 PartitionMPM::inputFromJSON(QJsonObject &jsonObject)
 {
+  this->clear();
+
+  constexpr bool useUpdatedSchema = false; // TODO: Update to new schema
+  if (useUpdatedSchema) {
+    if (jsonObject.contains("device")) {
+      deviceNumber->setText(QString::number(jsonObject["device"].toInt()));
+    }
+    if (jsonObject.contains("body")) {
+      bodyNumber->setText(QString::number(jsonObject["body"].toInt()));
+    }
+  } else {
+    if (jsonObject.contains("gpu")) {
+      deviceNumber->setText(QString::number(jsonObject["gpu"].toInt()));
+    }
+    if (jsonObject.contains("model")) {
+      bodyNumber->setText(QString::number(jsonObject["model"].toInt()));
+    }
+  }
+
+  if (jsonObject.contains("partition_start")) {
+    QJsonArray partition_start = jsonObject["partition_start"].toArray();
+    partitionOrigin_X->setText(QString::number(partition_start[0].toDouble()));
+    partitionOrigin_Y->setText(QString::number(partition_start[1].toDouble()));
+    partitionOrigin_Z->setText(QString::number(partition_start[2].toDouble()));
+  }
+
+  if (jsonObject.contains("partition_end")) {
+    QJsonArray partition_end = jsonObject["partition_end"].toArray();
+    partitionDimensions_X->setText(QString::number(partition_end[0].toDouble() - partitionOrigin_X->text().toDouble()));
+    partitionDimensions_Y->setText(QString::number(partition_end[1].toDouble() - partitionOrigin_Y->text().toDouble()));
+    partitionDimensions_Z->setText(QString::number(partition_end[2].toDouble() - partitionOrigin_Z->text().toDouble()));
+  }
+
   return true;
 }
 
 bool
 PartitionMPM::copyFiles(QString &destDir)
 { 
+  Q_UNUSED(destDir);
   return true;
 }
 

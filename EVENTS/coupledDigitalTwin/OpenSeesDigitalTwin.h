@@ -54,14 +54,14 @@ class SC_FileEdit;
 
 class OpenSeesDigitalTwin : public SimCenterWidget
 {
-    Q_OBJECT
+    // Q_OBJECT
 public:
     OpenSeesDigitalTwin(QWidget *parent = 0);
     virtual ~OpenSeesDigitalTwin();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
-  
+    void clear(void);
 signals:
 
 private:

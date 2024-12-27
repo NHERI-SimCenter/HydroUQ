@@ -68,10 +68,10 @@ class SensorMPM : public SimCenterWidget
 public:
     SensorMPM(QWidget *parent = 0);
     virtual ~SensorMPM();
+    void clear(void);
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-    void clear(void);
-    // bool copyFiles(QString &dirName);
+    bool copyFiles(QString &dirName);
 
     bool setSensorType(int type);
   

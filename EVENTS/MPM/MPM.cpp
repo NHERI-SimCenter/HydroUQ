@@ -1816,36 +1816,35 @@ bool MPM::copyFiles(QString &destDir) {
     //  Copy files from all the major sub-widgets
     //
 
-    if (mpmSettings->copyFiles(destDir) == false) 
-    {
-      qDebug() << "MPM - failed to copy mpmSettings files";
-      // return false;
-    }
-    if (mpmBodies->copyFiles(destDir) == false)
-    {
-      qDebug() << "MPM - failed to copy mpmBodies files";
-      // return false;
-    }
+    // if (mpmSettings->copyFiles(destDir) == false) 
+    // {
+    //   qDebug() << "MPM - failed to copy mpmSettings files";
+    //   // return false;
+    // }
+    // if (mpmBodies->copyFiles(destDir) == false)
+    // {
+    //   qDebug() << "MPM - failed to copy mpmBodies files";
+    //   // return false;
+    // }
     if (mpmBoundaries->copyFiles(destDir) == false)
     {
-      qDebug() << "MPM - failed to copy boundaries files";
+      qDebug() << "MPM - failed to copy mpmBoundaries files";
       // return false;
     }
-    if (mpmSensors->copyFiles(destDir) == false)
-    {
-      qDebug() << "MPM - failed to copy mpmSensors files";
-      // return false;
-    }
+    // if (mpmSensors->copyFiles(destDir) == false)
+    // {
+    //   qDebug() << "MPM - failed to copy mpmSensors files";
+    //   // return false;
+    // }
     // if (mpmOutputs->copyFiles(destDir) == false)
     // {
     //   qDebug() << "MPM - failed to copy mpmOutputs files";
-    //   return false;
+    //   // return false;
     // }
     // if (mpmResults->copyFiles(destDir) == false)
     // {
-    //   qDebug() << "MPM - failed to copy results files";
-    //   qDebug() << "MPM - skipping mpmResults copy files";
-    //   return false;
+    //   qDebug() << "MPM - failed to copy mpmResults files";
+    //   // return false;
     // }
 
     return true;

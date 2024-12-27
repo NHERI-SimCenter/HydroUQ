@@ -108,7 +108,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   QGridLayout *dimensionsBoxLayout = new QGridLayout();
   dimensionsBox->setLayout(dimensionsBoxLayout);  
 
-  gridCellSize = new SC_DoubleLineEdit("defaultDx", 0.10);
+  gridCellSize = new SC_DoubleLineEdit("default_dx", 0.10);
   dimensionsBoxLayout->addWidget(new QLabel("Grid Cell Size (dx)"), numRow, 0, 1, 1, Qt::AlignRight);
   dimensionsBoxLayout->addWidget(gridCellSize, numRow, 1, 1, 3);
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth); 
@@ -151,7 +151,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
 
   numRow = 0;
 
-  timeStep = new SC_DoubleLineEdit("defaultDt", 1e-4);
+  timeStep = new SC_DoubleLineEdit("default_dt", 1e-4);
   timeBoxLayout->addWidget(new QLabel("Max Time Step (dt)"), numRow, 0, 1, 1, Qt::AlignRight);
   timeBoxLayout->addWidget(timeStep, numRow, 1, 1, 3);
   timeBoxLayout->setColumnStretch(1, 1); // Add this line to make the middle column expand
@@ -167,7 +167,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   timeBoxLayout->addWidget(new QLabel(""), numRow++, 4, 1, 1);
 
 
-  initialTime = new SC_DoubleLineEdit("initialTime", 0.0);
+  initialTime = new SC_DoubleLineEdit("initial_time", 0.0);
   timeBoxLayout->addWidget(new QLabel("Initial Time (t0)"), numRow, 0, 1, 1, Qt::AlignRight);
   timeBoxLayout->addWidget(initialTime, numRow, 1, 1, 3);  
   timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -196,27 +196,27 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   scalingSettingsLayout->setColumnStretch(1, 1); // Add this line to make the middle column expand
   scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
-  froudeScaling = new SC_CheckBox("froudeScaling",false);
+  froudeScaling = new SC_CheckBox("use_froude_scaling",false);
   scalingSettingsLayout->addWidget(new QLabel("Apply Froude?"), numRow, 0, 1, 1, Qt::AlignRight);
   scalingSettingsLayout->addWidget(froudeScaling, numRow++, 1, 1, 1);  
 
-  froudeLengthRatio = new SC_DoubleLineEdit("lengthRatio",1.0);
+  froudeLengthRatio = new SC_DoubleLineEdit("froude_scaling",1.0); // froude_length_ratio
   scalingSettingsLayout->addWidget(new QLabel("Length Ratio"), numRow, 0, 1, 1, Qt::AlignRight);
   scalingSettingsLayout->addWidget(froudeLengthRatio, numRow, 1, 1, 3);  
   scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   scalingSettingsLayout->addWidget(new QLabel("m/m"), numRow++, 4, 1, 1);
   
-  froudeTimeRatio = new SC_DoubleLineEdit("timeRatio",1.0);
+  froudeTimeRatio = new SC_DoubleLineEdit("froude_time_ratio",1.0);
   scalingSettingsLayout->addWidget(new QLabel("Time Ratio"), numRow, 0, 1, 1, Qt::AlignRight);
   scalingSettingsLayout->addWidget(froudeTimeRatio, numRow, 1, 1, 3);  
   scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   scalingSettingsLayout->addWidget(new QLabel("s/s"), numRow++, 4, 1, 1);
   
-  cauchyScaling = new SC_CheckBox("cauchyScaling",false);
+  cauchyScaling = new SC_CheckBox("use_cauchy_scaling",false);
   scalingSettingsLayout->addWidget(new QLabel("Apply Cauchy?"), numRow, 0, 1, 1, Qt::AlignRight);
   scalingSettingsLayout->addWidget(cauchyScaling, numRow++, 1, 1, 1);  
 
-  cauchyBulkRatio = new SC_DoubleLineEdit("bulkRatio",1.0);
+  cauchyBulkRatio = new SC_DoubleLineEdit("cauchy_bulk_ratio",1.0);
   scalingSettingsLayout->addWidget(new QLabel("Elasticity Ratio"), numRow, 0, 1, 1, Qt::AlignRight);
   scalingSettingsLayout->addWidget(cauchyBulkRatio, numRow, 1, 1, 3);  
   scalingSettingsLayout->itemAt(scalingSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -305,39 +305,39 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
 
-  numGPUs = new SC_IntLineEdit("numGPUs", 3);  
+  numGPUs = new SC_IntLineEdit("num_gpus", 3);  
   gpuSettingsLayout->addWidget(new QLabel("Max Number of GPUs"), numRow, 0, 1, 1, Qt::AlignRight);
   gpuSettingsLayout->addWidget(numGPUs, numRow++, 1, 1, 3);
   gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
-  modelsPerGPU = new SC_IntLineEdit("modelsPerGPU", 3);
+  modelsPerGPU = new SC_IntLineEdit("models_per_gpu", 3);
   gpuSettingsLayout->addWidget(new QLabel("Max Bodies Per GPU"), numRow, 0, 1, 1, Qt::AlignRight);
   gpuSettingsLayout->addWidget(modelsPerGPU, numRow++, 1, 1, 3);  
   gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
-  hpcCardBrand = new SC_StringLineEdit("hpcCardBrand", "NVIDIA");
+  hpcCardBrand = new SC_StringLineEdit("hpc_card_brand", "NVIDIA");
   gpuSettingsLayout->addWidget(new QLabel("GPU Brand"), numRow, 0, 1, 1, Qt::AlignRight);
   gpuSettingsLayout->addWidget(hpcCardBrand, numRow, 1, 1, 3); 
   gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   gpuSettingsLayout->addWidget(new QLabel(""), numRow++, 4, 1, 1);
 
-  hpcCardName = new SC_StringLineEdit("hpcCardName","A100");
+  hpcCardName = new SC_StringLineEdit("hpc_card_name","A100");
   gpuSettingsLayout->addWidget(new QLabel("GPU Name"), numRow, 0, 1, 1, Qt::AlignRight);
   gpuSettingsLayout->addWidget(hpcCardName, numRow++, 1, 1, 3); 
   gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
-  hpcCardArchitecture = new SC_StringLineEdit("hpcCardArchitecture", "Ampere");
+  hpcCardArchitecture = new SC_StringLineEdit("hpc_card_architecture", "Ampere");
   gpuSettingsLayout->addWidget(new QLabel("GPU Architecture"), numRow, 0, 1, 1, Qt::AlignRight);
   gpuSettingsLayout->addWidget(hpcCardArchitecture, numRow++, 1, 1, 3); 
   gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
-  hpcCardGlobalMemory = new SC_IntLineEdit("hpcCardGlobalMemory", 40);
+  hpcCardGlobalMemory = new SC_IntLineEdit("hpc_card_global_memory", 40);
   gpuSettingsLayout->addWidget(new QLabel("GPU Global Memory"), numRow, 0, 1, 1, Qt::AlignRight);
   gpuSettingsLayout->addWidget(hpcCardGlobalMemory, numRow, 1, 1, 3); 
   gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   gpuSettingsLayout->addWidget(new QLabel("GB"), numRow++, 4, 1, 1);
   
-  hpcCardComputeCapability = new SC_IntLineEdit("hpcCardComputeCapability", 80);
+  hpcCardComputeCapability = new SC_IntLineEdit("hpc_card_compute_capability", 80);
   gpuSettingsLayout->addWidget(new QLabel("GPU Compute Capability"), numRow, 0, 1, 1, Qt::AlignRight);
   gpuSettingsLayout->addWidget(hpcCardComputeCapability, numRow, 1, 1, 3); 
   gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -431,6 +431,17 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   layout->setRowStretch(3,1);
   hpc->setCurrentIndex(1); // Start with "TACC - UT Austin - Lonestar6", as it is more powerful than Frontera in double-precision
   hpc->setCurrentIndex(0); // For now, Default to "TACC - UT Austin - Frontera" for now, as Tapis apps are already made for Frontera over Lonestar6
+
+  // So user doesn't change HPC specs
+  numGPUs->setEnabled(false);
+  modelsPerGPU->setEnabled(false);
+  hpcQueue->setEnabled(false);
+  hpcCardName->setEnabled(false);
+  hpcCardBrand->setEnabled(false);
+  hpcCardArchitecture->setEnabled(false);
+  hpcCardComputeCapability->setEnabled(false);
+  hpcCardGlobalMemory->setEnabled(false);
+  
 }
 
 SettingsMPM::~SettingsMPM()
@@ -461,6 +472,7 @@ void SettingsMPM::clear(void) {
   cauchyBulkRatio->clear();
   numGPUs->clear();
   modelsPerGPU->clear();
+  hpcQueue->clear();
   hpcCardName->clear();
   hpcCardArchitecture->clear();
   hpcCardGlobalMemory->clear();
@@ -520,100 +532,79 @@ SettingsMPM::outputToJSON(QJsonObject &jsonObject)
   scalingObject["froude_time_ratio"] = froudeTimeRatio->text().toDouble();
   scalingObject["use_cauchy_scaling"] = cauchyScaling->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
   scalingObject["cauchy_bulk_ratio"] = cauchyBulkRatio->text().toDouble();
-  jsonObject["scaling"] = scalingObject;
 
   // // For future use, not in ClaymoreUW yet as a separate "computer" object
   QJsonObject computerObject;
   computerObject["num_gpus"] = numGPUs->text().toInt();
   computerObject["models_per_gpu"] = modelsPerGPU->text().toInt();
+  computerObject["hpc_queue"] = hpcQueue->text();
   computerObject["hpc_card_name"] = hpcCardName->text();
   computerObject["hpc_card_architecture"] = hpcCardArchitecture->text();
   computerObject["hpc_card_global_memory"] = hpcCardGlobalMemory->text().toInt();
   computerObject["hpc_card_compute_capability"] = hpcCardComputeCapability->text().toInt();
   computerObject["hpc_card_brand"] = hpcCardBrand->text();
   computerObject["hpc"] = QJsonValue(hpc->currentText()).toString();
-  jsonObject["computer"] = computerObject;
 
   jsonObject["simulation"] = settingsObject;
+  jsonObject["scaling"] = scalingObject;
+  jsonObject["computer"] = computerObject;
 
-
-
-  // domainSizeX->outputToJSON(jsonObject);
-  // domainSizeY->outputToJSON(jsonObject);
-  // domainSizeZ->outputToJSON(jsonObject);
-  // gridCellSize->outputToJSON(jsonObject);
-  // mirrorDomainX->outputToJSON(jsonObject);
-  // mirrorDomainY->outputToJSON(jsonObject);
-  // mirrorDomainZ->outputToJSON(jsonObject);
-
-  // timeStep->outputToJSON(jsonObject);
-  // timeIntegration->outputToJSON(jsonObject);
-  // initialTime->outputToJSON(jsonObject);
-  // duration->outputToJSON(jsonObject);
-
-  // cflNumber->outputToJSON(jsonObject);
-  // gravityX->outputToJSON(jsonObject);
-  // gravityY->outputToJSON(jsonObject);
-  // gravityZ->outputToJSON(jsonObject);
-
-  // froudeScaling->outputToJSON(jsonObject);
-  // froudeLengthRatio->outputToJSON(jsonObject);
-  // froudeTimeRatio->outputToJSON(jsonObject);
-  // cauchyScaling->outputToJSON(jsonObject);
-  // cauchyBulkRatio->outputToJSON(jsonObject);
-
-  // numGPUs->outputToJSON(jsonObject);
-  // modelsPerGPU->outputToJSON(jsonObject);  
-  // hpcCardName->outputToJSON(jsonObject);
-  // hpcCardArchitecture->outputToJSON(jsonObject);
-  // hpcCardGlobalMemory->outputToJSON(jsonObject);
-  // hpcCardComputeCapability->outputToJSON(jsonObject);
-  // hpcCardBrand->outputToJSON(jsonObject);
-  // hpc->outputToJSON(jsonObject);
   return true;
 }
 
 bool
 SettingsMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  domainSizeX->inputFromJSON(jsonObject);
-  domainSizeY->inputFromJSON(jsonObject);
-  domainSizeZ->inputFromJSON(jsonObject);
-  gridCellSize->inputFromJSON(jsonObject);
-  mirrorDomainX->inputFromJSON(jsonObject);
-  mirrorDomainY->inputFromJSON(jsonObject);
-  mirrorDomainZ->inputFromJSON(jsonObject);
+  QJsonObject settingsObject = jsonObject["simulation"].toObject();
+  QJsonObject scalingObject = jsonObject["scaling"].toObject();
+  QJsonObject computerObject = jsonObject["computer"].toObject();
 
-  timeStep->inputFromJSON(jsonObject);
-  timeIntegration->inputFromJSON(jsonObject);
-  initialTime->inputFromJSON(jsonObject);
-  duration->inputFromJSON(jsonObject);
+  QJsonArray domainArray = settingsObject["domain"].toArray();
+  domainSizeX->setText(QString::number(domainArray[0].toDouble()));
+  domainSizeY->setText(QString::number(domainArray[1].toDouble()));
+  domainSizeZ->setText(QString::number(domainArray[2].toDouble()));
+  
+  QJsonArray mirrorArray = settingsObject["mirror_domain"].toArray();
+  mirrorDomainX->setChecked(mirrorArray[0].toBool());
+  mirrorDomainY->setChecked(mirrorArray[1].toBool());
+  mirrorDomainZ->setChecked(mirrorArray[2].toBool());
+  
+  gridCellSize->inputFromJSON(settingsObject);
 
-  cflNumber->inputFromJSON(jsonObject);
-  gravityX->inputFromJSON(jsonObject);
-  gravityY->inputFromJSON(jsonObject);
-  gravityZ->inputFromJSON(jsonObject);
+  initialTime->inputFromJSON(settingsObject);
+  duration->inputFromJSON(settingsObject);
+  timeStep->inputFromJSON(settingsObject);
+  framesPerSecond->inputFromJSON(settingsObject);
+  cflNumber->inputFromJSON(settingsObject);
+  timeIntegration->inputFromJSON(settingsObject);
 
-  froudeScaling->inputFromJSON(jsonObject);
-  froudeLengthRatio->inputFromJSON(jsonObject);
-  froudeTimeRatio->inputFromJSON(jsonObject);
-  cauchyScaling->inputFromJSON(jsonObject);
-  cauchyBulkRatio->inputFromJSON(jsonObject);
+  QJsonArray gravityArray = settingsObject["gravity"].toArray();
+  gravityX->setText(QString::number(gravityArray[0].toDouble()));
+  gravityY->setText(QString::number(gravityArray[1].toDouble()));
+  gravityZ->setText(QString::number(gravityArray[2].toDouble()));
 
-  numGPUs->inputFromJSON(jsonObject);
-  modelsPerGPU->inputFromJSON(jsonObject);
-  hpcCardName->inputFromJSON(jsonObject);
-  hpcCardArchitecture->inputFromJSON(jsonObject);
-  hpcCardGlobalMemory->inputFromJSON(jsonObject);
-  hpcCardComputeCapability->inputFromJSON(jsonObject);
-  hpcCardBrand->inputFromJSON(jsonObject);
-  hpc->inputFromJSON(jsonObject);
+  froudeScaling->inputFromJSON(scalingObject);
+  cauchyScaling->inputFromJSON(scalingObject);
+  froudeLengthRatio->inputFromJSON(scalingObject);
+  froudeTimeRatio->inputFromJSON(scalingObject);
+  cauchyBulkRatio->inputFromJSON(scalingObject);
+
+  hpc->inputFromJSON(computerObject);
+  hpcQueue->inputFromJSON(computerObject);
+  hpcCardBrand->inputFromJSON(computerObject);
+  hpcCardName->inputFromJSON(computerObject);
+  hpcCardArchitecture->inputFromJSON(computerObject);
+  hpcCardGlobalMemory->inputFromJSON(computerObject);
+  hpcCardComputeCapability->inputFromJSON(computerObject);
+  numGPUs->inputFromJSON(computerObject);
+  modelsPerGPU->inputFromJSON(computerObject);
   return true;
 }
 
 bool
 SettingsMPM::copyFiles(QString& destDir)
 {
+  Q_UNUSED(destDir);
   return true;
 }
 

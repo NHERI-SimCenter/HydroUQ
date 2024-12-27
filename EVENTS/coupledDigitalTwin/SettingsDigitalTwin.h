@@ -56,13 +56,13 @@ class SC_ComboBox;
 
 class SettingsDigitalTwin : public SimCenterWidget
 {
-    Q_OBJECT
+    // Q_OBJECT
 public:
     SettingsDigitalTwin(QWidget *parent = 0);
     virtual ~SettingsDigitalTwin();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-
+    void clear(void);
 signals:
 
 private:

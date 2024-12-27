@@ -457,7 +457,7 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
     }
     bodyObject["track_particle_id"] = trackParticleIdsArray; // global
     bodyObject["type"] = QJsonValue(QString("particles")); // global
-
+    bodyObject["name"] = QJsonValue(QString("fluid")); // global
     bodiesArray.append(bodyObject);
   }
 
@@ -500,7 +500,8 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
     }
     bodyObject["track_particle_id"] = trackParticleIdsArray; // global
     bodyObject["type"] = QJsonValue(QString("particles")); // global
-    
+    bodyObject["name"] = QJsonValue(QString("debris")); // global
+
     // Place the new body JSON object into the main bodies array
     bodiesArray.append(bodyObject);
   }
@@ -546,7 +547,7 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
     }
     bodyObject["track_particle_id"] = trackParticleIdsArray; // global
     bodyObject["type"] = QJsonValue(QString("particles")); // global
-
+    bodyObject["name"] = QJsonValue(QString("structure")); // global
     bodiesArray.append(bodyObject);
   }
 
@@ -599,6 +600,7 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
         }
         bodyObject["track_particle_id"] = trackParticleIdsArray; // global
         bodyObject["type"] = QJsonValue(QString("particles")); // global
+        bodyObject["name"] = QJsonValue(QString("custom_") + QString::number(i+1)); // global
 
         QJsonArray bodyVelocityArray; // Need to find a spot for a bodies global initial conditions in the schema
         bodyVelocityArray.append(QJsonValue(0.0).toDouble());
@@ -620,14 +622,39 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 BodiesMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  // TODO: Implement inputFromJSON for all bodies
-  // theOpenSeesPyScript->inputFromJSON(jsonObject);
-  // theSurfaceFile->inputFromJSON(jsonObject);    
-  // fluidGeometries->inputFromJSON(jsonObject);
-  // fluidMaterial->inputFromJSON(jsonObject);
-  // fluidAlgorithm->inputFromJSON(jsonObject);
-  // fluidPartitions->inputFromJSON(jsonObject);
-  // fluidOutputs->inputFromJSON(jsonObject);
+  this->clear(); // Clear all bodies
+
+  // Input all bodies
+  QJsonArray bodiesArray = jsonObject["bodies"].toArray();
+  for (int i=0; i<bodiesArray.size(); i++) {
+    QJsonObject bodyObject = bodiesArray[i].toObject();
+    QJsonObject materialObject = bodyObject["material"].toObject();
+    QJsonObject algorithmObject = bodyObject["algorithm"].toObject();
+    if (bodyObject["name"].toString() == "fluid") {
+      fluidGeometries->inputFromJSON(bodyObject);
+      fluidMaterial->inputFromJSON(materialObject);
+      fluidAlgorithm->inputFromJSON(algorithmObject);
+      fluidPartitions->inputFromJSON(bodyObject);
+    } else if (bodyObject["name"].toString() == "debris") {
+      debrisGeometries->inputFromJSON(bodyObject);
+      debrisMaterial->inputFromJSON(materialObject);
+      debrisAlgorithm->inputFromJSON(algorithmObject);
+      debrisPartitions->inputFromJSON(bodyObject);
+    } else if (bodyObject["name"].toString() == "structure") {
+      structureGeometries->inputFromJSON(bodyObject);
+      structureMaterial->inputFromJSON(materialObject);
+      structureAlgorithm->inputFromJSON(algorithmObject);
+      structurePartitions->inputFromJSON(bodyObject);
+    } else if (bodyObject["name"].toString().startsWith("custom_")) {
+      int customIdx = bodyObject["name"].toString().split("_")[1].toInt();
+      if (customIdx >= numReserveTabs) break;
+      addedGeometries[customIdx]->inputFromJSON(bodyObject);
+      addedMaterial[customIdx]->inputFromJSON(materialObject);
+      addedAlgorithm[customIdx]->inputFromJSON(algorithmObject);
+      addedPartitions[customIdx]->inputFromJSON(bodyObject);
+    }
+  }
+
   // toggleFluid->setChecked(true); // Enable body by default if it exists in the JSON
   // toggleDebris->setChecked(true); // Enable body by default if it exists in the JSON
   // toggleStructure->setChecked(true); // Enable body by default if it exists in the JSON
@@ -637,9 +664,27 @@ BodiesMPM::inputFromJSON(QJsonObject &jsonObject)
 bool
 BodiesMPM::copyFiles(QString &destDir)
 {
-  // if (theOpenSeesPyScript->copyFile(destDir) != true)
-  //   return false;
-  // return theSurfaceFile->copyFile(destDir);    
+  fluidGeometries->copyFiles(destDir);
+  fluidMaterial->copyFiles(destDir);
+  fluidAlgorithm->copyFiles(destDir);
+  fluidPartitions->copyFiles(destDir);
+
+  debrisGeometries->copyFiles(destDir);
+  debrisMaterial->copyFiles(destDir);
+  debrisAlgorithm->copyFiles(destDir);
+  debrisPartitions->copyFiles(destDir);
+
+  structureGeometries->copyFiles(destDir);
+  structureMaterial->copyFiles(destDir);
+  structureAlgorithm->copyFiles(destDir);
+  structurePartitions->copyFiles(destDir);
+
+  for (int i=0; i<numAddedTabs; i++) {
+    addedGeometries[i]->copyFiles(destDir);
+    addedMaterial[i]->copyFiles(destDir);
+    addedAlgorithm[i]->copyFiles(destDir);
+    addedPartitions[i]->copyFiles(destDir);
+  }
 
   return true;
 }

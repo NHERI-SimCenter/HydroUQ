@@ -43,6 +43,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QStringList>
 #include <QJsonArray>
 #include <QTabWidget>
+#include <QDebug>
+
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <SC_TableEdit.h>
 #include <SC_ComboBox.h>
@@ -55,7 +59,7 @@ OutputsDigitalTwin::OutputsDigitalTwin(QWidget *parent)
 {
 
   //
-  // create all litlle widgets
+  // create all widgets
   //
   
   QStringList yesNo; yesNo << "Yes" << "No";
@@ -89,7 +93,7 @@ OutputsDigitalTwin::OutputsDigitalTwin(QWidget *parent)
   sectionCuts  = new SC_TableEdit("cutSurfaceLocsDirsFields", listSC, 1, dataSC);
 
   // 
-  // now add the widgets to Grpup Boxes
+  // now add the widgets to Group Boxes
   //
 
   QGroupBox *openseesBox = new QGroupBox("OpenSees Outputs");
@@ -170,6 +174,22 @@ OutputsDigitalTwin::~OutputsDigitalTwin()
 
 }
 
+void 
+OutputsDigitalTwin::clear(void)
+{
+  vtkOS_Output->clear();
+  vtkOF_Output->clear();
+  outputOS_Dt->clear();
+  outputOF_Dt->clear();
+  outputOF_FM->clear();
+  outputOF_FSP->clear();
+  outputOF_FP->clear();
+  outputOF_SC->clear();
+  // freeSurfaceProbes->clear();
+  // fieldProbes->clear();
+  // sectionCuts->clear();
+}
+
 bool
 OutputsDigitalTwin::outputToJSON(QJsonObject &jsonObject)
 {
@@ -191,6 +211,7 @@ OutputsDigitalTwin::outputToJSON(QJsonObject &jsonObject)
 bool
 OutputsDigitalTwin::inputFromJSON(QJsonObject &jsonObject)
 {
+  this->clear();
 
   vtkOS_Output->inputFromJSON(jsonObject);  
   vtkOF_Output->inputFromJSON(jsonObject);

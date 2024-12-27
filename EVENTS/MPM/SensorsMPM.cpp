@@ -291,8 +291,10 @@ SensorsMPM::inputFromJSON(QJsonObject &jsonObject)
 bool
 SensorsMPM::copyFiles(QString &destDir)
 {
-  // if (theOpenSeesPyScript->copyFile(destDir) != true)
-  //   return false;
+  for (int i=0; i<numAddedTabs; i++) {
+    if (i >= numReserveTabs) break;
+    addedSensor[i]->copyFiles(destDir);
+  }
   return true;    
 }
 

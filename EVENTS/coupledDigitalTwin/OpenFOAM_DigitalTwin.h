@@ -57,14 +57,14 @@ class SC_FileEdit;
 
 class OpenFOAM_DigitalTwin : public SimCenterWidget
 {
-    Q_OBJECT
+    // Q_OBJECT
 public:
     OpenFOAM_DigitalTwin(QWidget *parent = 0);
     virtual ~OpenFOAM_DigitalTwin();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);  
-
+    void clear(void);
 signals:
 
 private:

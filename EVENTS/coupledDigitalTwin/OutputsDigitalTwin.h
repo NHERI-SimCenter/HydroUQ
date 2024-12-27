@@ -56,14 +56,14 @@ class SC_DoubleLineEdit;
 
 class OutputsDigitalTwin : public SimCenterWidget
 {
-    Q_OBJECT
+    // Q_OBJECT
 public:
   
     OutputsDigitalTwin(QWidget *parent = 0);
     virtual ~OutputsDigitalTwin();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
-
+    void clear(void);
 signals:
 
 private:
