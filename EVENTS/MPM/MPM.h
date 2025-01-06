@@ -81,7 +81,7 @@ namespace Qt3DExtras {
 
 class MPM : public SimCenterAppWidget
 {
-   friend class ResultsMPM; // Allow ResultsMPM to access private members. TODO: use a better vis architecture
+   // friend class ResultsMPM; // Allow ResultsMPM to access private members. TODO: use a better vis architecture
    
    Q_OBJECT 
 
@@ -118,7 +118,7 @@ public:
    QString simulationType();
    //  QString foamDictsPath(); // For OpenFOAM from WE-UQ, not MPM
 
-   SC_ResultsWidget* getResultsWidget(QWidget *parent); // For vis of output data results 
+   // SC_ResultsWidget* getResultsWidget(QWidget *parent); // For vis of output data results 
 
    void hideVisualization(void);
    void showVisualization(void);

@@ -165,10 +165,10 @@ PartitionsMPM::~PartitionsMPM()
 void PartitionsMPM::clear(void)
 {
   // Clear all partitions
-  for (int i=0; i<numAddedTabs; i++) {
-    if (i >= numReserveTabs) break;
-    addedPartition[i]->clear();
-  }
+  // for (int i=0; i<numAddedTabs; i++) {
+  //   if (i >= numReserveTabs) break;
+  //   addedPartition[i]->clear();
+  // }
 }
 
 void

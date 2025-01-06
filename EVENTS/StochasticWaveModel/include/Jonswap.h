@@ -139,7 +139,11 @@ class Jonswap : public SimCenterAppWidget {
                     int minL=100,
                     int maxL=100);
 
+
   public slots:
+    void computeSpectra(void);
+
+    void updateJSON(void);
   
     void clear(void);
 
@@ -176,8 +180,10 @@ class Jonswap : public SimCenterAppWidget {
     //  SC_FileEdit *spectraFile; /**< file containing wave spectra */
     //  SC_FileEdit *kinematicsFile; /**< file containing bathymetry data */
     SimCenterGraphPlot *thePlot;
-    QPushButton *theDomainImageButton;
+    SimCenterGraphPlot *thePlotTimeSeries;
+    // QPushButton *theDomainImageButton;
     QLineEdit *dataDir;
+    QLineEdit *timeSeriesDir;
     QString inpty;
 
     // QLineEdit *mean;
