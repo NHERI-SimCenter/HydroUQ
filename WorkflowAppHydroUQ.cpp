@@ -96,6 +96,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QList>
 #include <QMenuBar>
 
+#include <Stampede3Machine.h>
+#include <FronteraMachine.h>
 #include <SC_ToolDialog.h>
 #include <SC_RemoteAppTool.h>
 #include <SC_LocalAppTool.h>
@@ -122,7 +124,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // #include <Celeris/WebGPU.h>
 #include <NOAA/DigitalCoast.h>
 #include <Utils/FileOperations.h>
-#include <FronteraMachine.h>
+
 // static pointer for global procedure set in constructor
 static WorkflowAppHydroUQ *theApp = 0;
 
@@ -147,7 +149,6 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theEventSelection = new HydroEventSelection(theRVs, theService);
     // theEventSelection = new HydroEventSelection(theRVs, theGI);
     theAnalysisSelection = new FEA_Selection(true);
-    // theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity); // ForwardReliabilitySensitivitySurrogate
     theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivitySurrogate); // ForwardReliabilitySensitivitySurrogate
     theEDP_Selection = new HydroEDP_Selection(theRVs);
     theResults = theUQ_Selection->getResults();
@@ -175,8 +176,8 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
         currentApp = localApp;
         setUpForApplicationRun(workingDir, subDir);
     });
-    connect(localApp, SIGNAL(runComplete()), this, SLOT(runComplete())); // swao with next?
     connect(localApp, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+    connect(localApp, SIGNAL(runComplete()), this, SLOT(runComplete())); // swao with next?
     connect(localApp,SIGNAL(sendErrorMessage(QString)),
 	    this,SLOT(errorMessage(QString)));
     connect(localApp,SIGNAL(sendStatusMessage(QString)),
@@ -228,6 +229,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //
     // create the component selection & add the components to it
     //
+
     theComponentSelection = new SimCenterComponentSelection();
     horizontalLayout->addWidget(theComponentSelection);
     horizontalLayout->setAlignment(Qt::AlignLeft);
@@ -242,18 +244,18 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     
     theComponentSelection->displayComponent("UQ"); // Initial page on startup
     
-
-    // access a web page which will increment the usage count for this tool
-    manager = new QNetworkAccessManager(this);
-    connect(manager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(replyFinished(QNetworkReply*)));
-    manager->get(QNetworkRequest(QUrl("http://opensees.berkeley.edu/OpenSees/developer/eeuq/use.php"))); // EE-UQ?
-
     //
     // set the defults in the General Info
     //
 
     theGI->setDefaultProperties(1,144,360,360,37.8715,-122.2730); // Berkeley, kips and inches
+
+    // access a web page which will increment the usage count for this tool
+    // manager = new QNetworkAccessManager(this);
+    // connect(manager, SIGNAL(finished(QNetworkReply*)),
+    //         this, SLOT(replyFinished(QNetworkReply*)));
+    // manager->get(QNetworkRequest(QUrl("http://opensees.berkeley.edu/OpenSees/developer/eeuq/use.php"))); // EE-UQ?
+
 
     ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
     theDialog->appendInfoMessage("Welcome to HydroUQ");    
@@ -271,7 +273,6 @@ constexpr bool USE_CELERIS_TOOL = false;
 constexpr bool USE_WEBGPU_TOOL = false;
 
 
-// Imported from WE-UQ for EmptyDomainCFD Tool
 void
 WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
 
@@ -436,14 +437,14 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     QString tmpDirectoryString = localWorkDir.absoluteFilePath(tmpDirName);
     QDir tmpDirectory(tmpDirectoryString);
     if (tmpDirectory.exists()) {
-      if (SCUtils::isSafeToRemoveRecursivily(tmpDirectoryString))      
-        tmpDirectory.removeRecursively();
-      else {
-	QString msg("The Program stopped, it was about to recursivily remove: ");
-	msg += tmpDirName;
-	fatalMessage(msg);
-	return;	
-      }      
+        if (SCUtils::isSafeToRemoveRecursivily(tmpDirectoryString))      
+            tmpDirectory.removeRecursively();
+        else {
+            QString msg("The Program stopped, it was about to recursivily remove: ");
+            msg += tmpDirName;
+            fatalMessage(msg);
+            return;	
+        }      
     }
     
     tmpDirectory.mkpath(tmpDirectoryString);
@@ -949,10 +950,17 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     QDir destinationDirectory(tmpDirectory);
 
     if (destinationDirectory.exists()) {
-      destinationDirectory.removeRecursively();
-    } else {
-      destinationDirectory.mkpath(tmpDirectory);
+        if (SCUtils::isSafeToRemoveRecursivily(tmpDirectory)) {
+            destinationDirectory.removeRecursively();
+        }
+        else {
+            QString msg("The Program stopped, it was about to recursivily remove: ");
+            msg.append(tmpDirectory);
+            fatalMessage(msg);
+        }
     }
+
+    destinationDirectory.mkpath(tmpDirectory);
 
     // Used in other places temporarily, 
     // e.g. citation output for Tools to avoid passing parameters

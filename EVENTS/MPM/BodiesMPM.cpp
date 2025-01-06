@@ -393,24 +393,24 @@ BodiesMPM::~BodiesMPM()
 void BodiesMPM::clear(void)
 {
   // Clear all bodies
-  fluidGeometries->clear();
-  fluidMaterial->clear();
-  fluidAlgorithm->clear();
-  fluidPartitions->clear();
-  debrisGeometries->clear();
-  debrisMaterial->clear();
-  debrisAlgorithm->clear();
-  debrisPartitions->clear();
-  structureGeometries->clear();
-  structureMaterial->clear();
-  structureAlgorithm->clear();
-  structurePartitions->clear();
-  for (int i=0; i<numAddedTabs; i++) {
-    addedGeometries[i]->clear();
-    addedMaterial[i]->clear();
-    addedAlgorithm[i]->clear();
-    addedPartitions[i]->clear();
-  }
+  // fluidGeometries->clear();
+  // fluidMaterial->clear();
+  // fluidAlgorithm->clear();
+  // fluidPartitions->clear();
+  // debrisGeometries->clear();
+  // debrisMaterial->clear();
+  // debrisAlgorithm->clear();
+  // debrisPartitions->clear();
+  // structureGeometries->clear();
+  // structureMaterial->clear();
+  // structureAlgorithm->clear();
+  // structurePartitions->clear();
+  // for (int i=0; i<numAddedTabs; i++) {
+  //   addedGeometries[i]->clear();
+  //   addedMaterial[i]->clear();
+  //   addedAlgorithm[i]->clear();
+  //   addedPartitions[i]->clear();
+  // }
 }
 
 bool

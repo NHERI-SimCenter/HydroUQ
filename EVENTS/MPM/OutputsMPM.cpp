@@ -217,24 +217,23 @@ OutputsMPM::~OutputsMPM()
 void OutputsMPM::clear(void)
 {
 
-  vtkBodies_Output->setCurrentIndex(vtkBodies_Output->findText("BGEO"));
-  vtkCheckpoints_Output->setCurrentIndex(vtkCheckpoints_Output->findText("BGEO"));
-  vtkBoundaries_Output->setCurrentIndex(vtkBoundaries_Output->findText("OBJ"));
-  vtkSensors_Output->setCurrentIndex(vtkSensors_Output->findText("CSV"));
-  vtkEnergies_Output->setCurrentIndex(vtkEnergies_Output->findText("CSV"));
+  // vtkBodies_Output->setCurrentIndex(vtkBodies_Output->findText("BGEO"));
+  // vtkCheckpoints_Output->setCurrentIndex(vtkCheckpoints_Output->findText("BGEO"));
+  // vtkBoundaries_Output->setCurrentIndex(vtkBoundaries_Output->findText("OBJ"));
+  // vtkSensors_Output->setCurrentIndex(vtkSensors_Output->findText("CSV"));
+  // vtkEnergies_Output->setCurrentIndex(vtkEnergies_Output->findText("CSV"));
 
-  outputBodies_Dt->clear();
-  outputCheckpoints_Dt->clear();
-  outputBoundaries_Dt->clear();
-  outputEnergies_Dt->clear();
+  // outputBodies_Dt->clear();
+  // outputCheckpoints_Dt->clear();
+  // outputBoundaries_Dt->clear();
+  // outputEnergies_Dt->clear();
 
-  useKineticEnergy->setChecked(false);
-  usePotentialEnergy->setChecked(false);
-  useStrainEnergy->setChecked(false);
+  // useKineticEnergy->setChecked(false);
+  // usePotentialEnergy->setChecked(false);
+  // useStrainEnergy->setChecked(false);
 
-  bodies_OutputExteriorOnly->setChecked(false);
+  // bodies_OutputExteriorOnly->setChecked(false);
 
-  // bodiesAttribsTable->clear();
 }
 
 bool
