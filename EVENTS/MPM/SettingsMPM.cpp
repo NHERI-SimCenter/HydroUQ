@@ -293,13 +293,13 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   numRow = 0;
 
   QStringList hpcList; hpcList  << "TACC - UT Austin - Lonestar6" << "TACC - UT Austin - Frontera" << "TACC - UT Austin - Stampede3" << "Hyak - UW Seattle - Klone" << "ACCESS - TAMU - ACES" << "Your Computer" ;
-  hpc = new SC_ComboBox("hpcSubType", hpcList);
+  hpc = new SC_ComboBox("hpc", hpcList);
   gpuSettingsLayout->addWidget(new QLabel("Computing Facility"), numRow, 0, 1, 1, Qt::AlignRight);
   gpuSettingsLayout->addWidget(hpc,numRow++,1, 1, 3);
   gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   gpuSettingsLayout->setColumnStretch(1, 1); // Add this line to make the middle column expand
 
-  hpcQueue = new SC_StringLineEdit("hpcQueue", "gpu-a100");
+  hpcQueue = new SC_StringLineEdit("hpc_queue", "gpu-a100");
   gpuSettingsLayout->addWidget(new QLabel("Queue"), numRow, 0, 1, 1, Qt::AlignRight);
   gpuSettingsLayout->addWidget(hpcQueue, numRow++, 1, 1, 3);
   gpuSettingsLayout->itemAt(gpuSettingsLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -555,41 +555,120 @@ SettingsMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 SettingsMPM::inputFromJSON(QJsonObject &jsonObject)
 {
+  if (!jsonObject.contains("simulation")) {
+    qDebug() << "Missing 'simulation' object in JSON object";
+    // return false;
+  }
+  if (!jsonObject.contains("scaling")) {
+    qDebug() << "Missing 'scaling' object in JSON object";
+    // return false;
+  }
+  if (!jsonObject.contains("computer")) {
+    qDebug() << "Missing 'computer' object in JSON object";
+    // return false;
+  }
+
   QJsonObject settingsObject = jsonObject["simulation"].toObject();
   QJsonObject scalingObject = jsonObject["scaling"].toObject();
   QJsonObject computerObject = jsonObject["computer"].toObject();
 
-  QJsonArray domainArray = settingsObject["domain"].toArray();
-  domainSizeX->setText(QString::number(domainArray[0].toDouble()));
-  domainSizeY->setText(QString::number(domainArray[1].toDouble()));
-  domainSizeZ->setText(QString::number(domainArray[2].toDouble()));
+  if (settingsObject.contains("domain")) {
+    qDebug() << "Found 'domain' array in simulation JSON object";
+    QJsonArray domainArray = settingsObject["domain"].toArray();
+    domainSizeX->setText(QString::number(domainArray[0].toDouble()));
+    domainSizeY->setText(QString::number(domainArray[1].toDouble()));
+    domainSizeZ->setText(QString::number(domainArray[2].toDouble()));
+  }
+  // QJsonArray mirrorArray = settingsObject["mirror_domain"].toArray();
+  // mirrorDomainX->setChecked(mirrorArray[0].toBool());
+  // mirrorDomainY->setChecked(mirrorArray[1].toBool());
+  // mirrorDomainZ->setChecked(mirrorArray[2].toBool());
   
-  QJsonArray mirrorArray = settingsObject["mirror_domain"].toArray();
-  mirrorDomainX->setChecked(mirrorArray[0].toBool());
-  mirrorDomainY->setChecked(mirrorArray[1].toBool());
-  mirrorDomainZ->setChecked(mirrorArray[2].toBool());
-  
-  gridCellSize->inputFromJSON(settingsObject);
+  if (settingsObject.contains("default_dx")) {
+    qDebug() << "Found 'default_dx' in simulation JSON object";
+    gridCellSize->inputFromJSON(settingsObject);
+  }
+  if (settingsObject.contains("initial_time")) {
+    qDebug() << "Found 'initial_time' in simulation JSON object";
+    initialTime->inputFromJSON(settingsObject);
+  } else {
+    qDebug() << "Missing 'initial_time' in simulation JSON object";
+    if (settingsObject.contains("time")) {
+      qDebug() << "Found 'time' in simulation JSON object";
+      initialTime->inputFromJSON(settingsObject);
+    }
+  }
+  if (settingsObject.contains("duration")) {
+    qDebug() << "Found 'duration' in simulation JSON object";
+    duration->inputFromJSON(settingsObject);
+  }
+  if (settingsObject.contains("default_dt")) {
+    qDebug() << "Found 'default_dt' in simulation JSON object";
+    timeStep->inputFromJSON(settingsObject);
+  }
+  if (settingsObject.contains("frames")) {
+    qDebug() << "Found 'frames' in simulation JSON object. Note that it is to be placed in outputs, not settings, tab.";
 
-  initialTime->inputFromJSON(settingsObject);
-  duration->inputFromJSON(settingsObject);
-  timeStep->inputFromJSON(settingsObject);
-  framesPerSecond->inputFromJSON(settingsObject);
-  cflNumber->inputFromJSON(settingsObject);
-  timeIntegration->inputFromJSON(settingsObject);
+  }
+  if (settingsObject.contains("fps")) {
+    qDebug() << "Found 'fps' in simulation JSON object. Note that it is to be placed in outputs, not settings, tab.";
+  }
 
-  QJsonArray gravityArray = settingsObject["gravity"].toArray();
-  gravityX->setText(QString::number(gravityArray[0].toDouble()));
-  gravityY->setText(QString::number(gravityArray[1].toDouble()));
-  gravityZ->setText(QString::number(gravityArray[2].toDouble()));
+  if (settingsObject.contains("cfl")) {
+    qDebug() << "Found 'cfl' in simulation JSON object";
+    cflNumber->setText(QString::number(settingsObject["cfl"].toDouble()));
+  }
+  if (settingsObject.contains("time_integration")) {
+    qDebug() << "Found 'time_integration' in simulation JSON object";
+    timeIntegration->inputFromJSON(settingsObject);
+    qDebug() << "timeIntegration->currentText() = " << settingsObject["time_integration"].toString();
+    timeIntegration->setCurrentText(settingsObject["time_integration"].toString());
+  }
 
-  froudeScaling->inputFromJSON(scalingObject);
-  cauchyScaling->inputFromJSON(scalingObject);
-  froudeLengthRatio->inputFromJSON(scalingObject);
+  if (settingsObject.contains("gravity")) {
+    qDebug() << "Found 'gravity' array in simulation JSON object";
+    QJsonArray gravityArray = settingsObject["gravity"].toArray();
+    gravityX->setText(QString::number(gravityArray[0].toDouble()));
+    gravityY->setText(QString::number(gravityArray[1].toDouble()));
+    gravityZ->setText(QString::number(gravityArray[2].toDouble()));
+  }
+  if (scalingObject.contains("use_froude_scaling")) {
+    qDebug() << "Found 'use_froude_scaling' in scaling JSON object";
+    froudeScaling->setChecked(scalingObject["use_froude_scaling"].toBool());
+  }
+  if (scalingObject.contains("use_cauchy_scaling")) {
+    qDebug() << "Found 'use_cauchy_scaling' in scaling JSON object";
+    cauchyScaling->setChecked(scalingObject["use_cauchy_scaling"].toBool());
+  }
+  // froudeScaling->inputFromJSON(scalingObject);
+  // cauchyScaling->inputFromJSON(scalingObject);
+  if (scalingObject.contains("froude_scaling"))  {
+    qDebug() << "Found 'froude_scaling' in scaling JSON object";
+    froudeLengthRatio->inputFromJSON(scalingObject); // Old schema
+  } else {
+    qDebug() << "Missing 'froude_scaling' in scaling JSON object";
+    if (settingsObject.contains("froude_scaling")) {
+      qDebug() << "Found 'froude_scaling' in simulation JSON object";
+      froudeLengthRatio->inputFromJSON(settingsObject);
+    } else {
+      qDebug() << "Missing 'froude_scaling' in simulation JSON object";
+      if (scalingObject.contains("froude_length_ratio")) {
+        qDebug() << "Found 'froude_length_ratio' in scaling JSON object";
+        froudeLengthRatio->setText(QString::number(scalingObject["froude_length_ratio"].toDouble()));
+      }
+    }
+    // froudeLengthRatio->setText(QString::number(scalingObject["froude_scaling"].toDouble()));
+  }
+  // froudeLengthRatio->inputFromJSON(scalingObject);
   froudeTimeRatio->inputFromJSON(scalingObject);
   cauchyBulkRatio->inputFromJSON(scalingObject);
 
-  hpc->inputFromJSON(computerObject);
+  if (computerObject.contains("hpc")) {
+    qDebug() << "Found 'hpc' in computer JSON object";
+    hpc->setCurrentText(computerObject["hpc"].toString());
+  }
+  // hpc->inputFromJSON(computerObject);
+  
   hpcQueue->inputFromJSON(computerObject);
   hpcCardBrand->inputFromJSON(computerObject);
   hpcCardName->inputFromJSON(computerObject);

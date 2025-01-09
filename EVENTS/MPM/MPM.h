@@ -108,12 +108,12 @@ public:
    void readCaseData();
 
    void importMainDomainJsonFile(QJsonObject &rvObject);
-   QVector<QVector<double>> readTxtData(QString fileName);
+   // QVector<QVector<double>> readTxtData(QString fileName);
 
    void executeBackendScript();
    void updateJSON();
    QString caseDir();
-   QString templateDictDir();
+   // QString templateDictDir();
    QString pyScriptsPath();
    QString simulationType();
    //  QString foamDictsPath(); // For OpenFOAM from WE-UQ, not MPM

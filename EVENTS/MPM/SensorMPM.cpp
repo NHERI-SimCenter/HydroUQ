@@ -96,7 +96,7 @@ SensorMPM::SensorMPM(QWidget *parent)
   thePiezoMeters->setLayout(pmLayout);
   
   // ===========================================================================
-  sensorType = new SC_ComboBox("sensorPreset", QStringList() << "Custom" << "Wave-Gauges" << "Velocimeters" << "Load-Cells" << "Piezometers");
+  sensorType = new SC_ComboBox("preset", QStringList() << "Custom" << "Wave-Gauges" << "Velocimeters" << "Load-Cells" << "Piezometers");
   layout->addWidget(new QLabel("Sensor Preset"));
   layout->addWidget(sensorType);
   layout->addWidget(stackedWidget);
@@ -123,9 +123,9 @@ SensorMPM::SensorMPM(QWidget *parent)
 
 
   QStringList  listWG; listWG << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
-  QStringList  dataWG; dataWG << "WaveGauge1" << "16.0" << "1.75" << "0.4" << "0.05" << "1.00" << "0.05" 
-				                      << "WaveGauge2" << "26.0" << "1.75" << "0.4" << "0.05" << "1.00" << "0.05" 
-				                      << "WaveGauge3" << "38.0" << "1.75" << "0.4" << "0.05" << "1.00" << "0.05" ;
+  QStringList  dataWG; dataWG << "WaveGauge1" << "16.0" << "1.5" << "0.4" << "0.1" << "2.50" << "0.1" 
+				                      << "WaveGauge2" << "34.269" << "1.5" << "0.4" << "0.1" << "2.50" << "0.1" 
+				                      << "WaveGauge3" << "38.114" << "1.5" << "0.4" << "0.1" << "2.50" << "0.1" ;
   waveGaugesTable = new SC_TableEdit("waveGaugeLocs",  listWG, 3, dataWG);
   
   QStringList  listVM; listVM << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
@@ -134,8 +134,9 @@ SensorMPM::SensorMPM(QWidget *parent)
   velociMetersTable  = new SC_TableEdit("velociMeterLocs", listVM, 2, dataVM);
   
   QStringList  listLC; listLC << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
-  QStringList  dataLC; dataLC << "LoadCell1" << "45.799" << "2.075" << "1.35" << "0.025" << "0.575" << "0.950" ;  
-  loadCellsTable  = new SC_TableEdit("loadCellLocs", listLC, 1, dataLC);
+  QStringList  dataLC; dataLC << "LoadCell1" << "45.799" << "2.0" << "1.35" << "0.025" << "0.3" << "1.0" 
+                              << "LoadCell2" << "45.799" << "2.3" << "1.35" << "0.025" << "0.3" << "1.0" ;    
+  loadCellsTable  = new SC_TableEdit("loadCellLocs", listLC, 2, dataLC);
 
   QStringList  listPM; listPM << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
   QStringList  dataPM; dataPM << "PiezoMeter1" << "16.0" << "1.00" << "0.4" << "0.05" << "0.05" << "0.05" 
@@ -508,6 +509,7 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
       QJsonObject customObject;
       QJsonArray customArray = tableArraysCustom["customLocs"].toArray()[i].toArray();
       // customObject["toggle"] = QJsonValue(toggle->currentText()).toString();
+      customObject["preset"] = QJsonValue(sensorType->currentText()).toString();
       customObject["toggle"] = (QJsonValue(toggle->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
       customObject["type"] = QJsonValue(type->currentText()).toString();
       customObject["attribute"] = QJsonValue(attribute->currentText()).toString();
@@ -557,6 +559,7 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
       QJsonObject waveGaugesObject;
       QJsonArray waveGaugeArray = tableArraysWG["waveGaugeLocs"].toArray()[i].toArray();
       // waveGaugesObject["toggle"] = QJsonValue(toggleWG->currentText()).toString();
+      waveGaugesObject["preset"] = QJsonValue(sensorType->currentText()).toString();
       waveGaugesObject["toggle"] = (QJsonValue(toggleWG->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
       waveGaugesObject["type"] = QJsonValue(typeWG->currentText()).toString();
       waveGaugesObject["attribute"] = QJsonValue(attributeWG->currentText()).toString();
@@ -606,6 +609,7 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
       QJsonObject velociMetersObject;
       QJsonArray velociMeterArray = tableArraysVM["velociMeterLocs"].toArray()[i].toArray();
       // velociMetersObject["toggle"] = QJsonValue(toggleVM->currentText()).toString();
+      velociMetersObject["preset"] = QJsonValue(sensorType->currentText()).toString();
       velociMetersObject["toggle"] = (QJsonValue(toggleVM->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
       velociMetersObject["type"] = QJsonValue(typeVM->currentText()).toString();
       velociMetersObject["attribute"] = QJsonValue(attributeVM->currentText()).toString();
@@ -657,6 +661,7 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
       QJsonObject loadCellsObject;
       QJsonArray loadCellArray = tableArraysLC["loadCellLocs"].toArray()[i].toArray();
       // loadCellsObject["toggle"] = QJsonValue(toggleLC->currentText()).toString();
+      loadCellsObject["preset"] = QJsonValue(sensorType->currentText()).toString();
       loadCellsObject["toggle"] = (QJsonValue(toggleLC->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
       loadCellsObject["type"] = QJsonValue(typeLC->currentText()).toString();
       loadCellsObject["attribute"] = QJsonValue(attributeLC->currentText()).toString();
@@ -706,6 +711,7 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
     for (int i = 0; i < tableArraysWG["piezoMeterLocs"].toArray().size(); ++i) {
       QJsonObject piezoMetersObject;
       QJsonArray piezoMeterArray = tableArraysPM["piezoMeterLocs"].toArray()[i].toArray();
+      piezoMetersObject["preset"] = QJsonValue(sensorType->currentText()).toString();
       piezoMetersObject["toggle"] = (QJsonValue(togglePM->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
       piezoMetersObject["type"] = QJsonValue(typePM->currentText()).toString();
       piezoMetersObject["attribute"] = QJsonValue(attributePM->currentText()).toString();
@@ -754,7 +760,7 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
   } else {
     // Debug
     qDebug() << "SensorMPM::outputToJSON() - Error: Invalid sensor type";
-    return false; 
+    // return false; 
   }
   if (0) jsonObject["sensors"] = sensorsArray; // future schema
   return true;
@@ -763,41 +769,88 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 SensorMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  
-  sensorType->setCurrentIndex(0); // Custom default
+  // Exit early for now while debugging
+  return true;
 
-  toggleWG->inputFromJSON(jsonObject);
-  typeWG->inputFromJSON(jsonObject);
-  attributeWG->inputFromJSON(jsonObject);
-  operationWG->inputFromJSON(jsonObject);
-  directionWG->inputFromJSON(jsonObject);
-  output_frequencyWG->inputFromJSON(jsonObject);  
-  waveGaugesTable->inputFromJSON(jsonObject);
-  
-  toggleVM->inputFromJSON(jsonObject);
-  typeVM->inputFromJSON(jsonObject);
-  attributeVM->inputFromJSON(jsonObject);
-  operationVM->inputFromJSON(jsonObject);
-  directionVM->inputFromJSON(jsonObject);
-  output_frequencyVM->inputFromJSON(jsonObject);
-  velociMetersTable->inputFromJSON(jsonObject);
-  
-  toggleLC->inputFromJSON(jsonObject);
-  typeLC->inputFromJSON(jsonObject);
-  attributeLC->inputFromJSON(jsonObject);
-  operationLC->inputFromJSON(jsonObject);
-  directionLC->inputFromJSON(jsonObject);
-  output_frequencyLC->inputFromJSON(jsonObject);
-  loadCellsTable->inputFromJSON(jsonObject);
+  // ----
+  // sensorType->setCurrentIndex(0); // Custom default
+  if (jsonObject.contains("preset")) {
+    QString sensorPreset = jsonObject["preset"].toString();
+    if (sensorPreset == "Custom") {
+      setSensorType(0);
+    } else if (sensorPreset == "Wave-Gauges") {
+      setSensorType(1);
+    } else if (sensorPreset == "Velocimeters") {
+      setSensorType(2);
+    } else if (sensorPreset == "Load-Cells") {
+      setSensorType(3);
+    } else if (sensorPreset == "Piezometers") {
+      setSensorType(4);
+    }
+  }
+  else {
+    if (jsonObject.contains("attribute")) {
+      QString sensorAttribute = jsonObject["attribute"].toString();
+      if (sensorAttribute == "Elevation" || sensorAttribute == "Position_Y") {
+        setSensorType(1);
+      } else if (sensorAttribute == "Velocity" || sensorAttribute == "Velocity_X" || sensorAttribute == "Velocity_Y" || sensorAttribute == "Velocity_Z" || sensorAttribute == "Velocity_Magnitude") {
+        setSensorType(2);
+      } else if (sensorAttribute == "Force" || sensorAttribute == "Force_X" || sensorAttribute == "Force_Y" || sensorAttribute == "Force_Z" || sensorAttribute == "Force_Magnitude") {
+        setSensorType(3);
+      } else if (sensorAttribute == "Pressure") {
+        setSensorType(4);
+      }
+    }  else {
+      setSensorType(0);
+    }
+  }
 
-  togglePM->inputFromJSON(jsonObject);
-  typePM->inputFromJSON(jsonObject);
-  attributePM->inputFromJSON(jsonObject);
-  operationPM->inputFromJSON(jsonObject);
-  directionPM->inputFromJSON(jsonObject);
-  output_frequencyPM->inputFromJSON(jsonObject);
-  piezoMetersTable->inputFromJSON(jsonObject);
-
+  if (sensorType->currentIndex() == 0) {
+    toggle->inputFromJSON(jsonObject);
+    type->inputFromJSON(jsonObject);
+    attribute->inputFromJSON(jsonObject);
+    operation->inputFromJSON(jsonObject);
+    direction->inputFromJSON(jsonObject);
+    output_frequency->inputFromJSON(jsonObject);
+    customTable->inputFromJSON(jsonObject);
+  }
+  else if (sensorType->currentIndex() == 1) {
+    toggleWG->inputFromJSON(jsonObject);
+    typeWG->inputFromJSON(jsonObject);
+    attributeWG->inputFromJSON(jsonObject);
+    operationWG->inputFromJSON(jsonObject);
+    directionWG->inputFromJSON(jsonObject);
+    output_frequencyWG->inputFromJSON(jsonObject);  
+    waveGaugesTable->inputFromJSON(jsonObject);
+  }
+  else if (sensorType->currentIndex() == 2) {
+    toggleVM->inputFromJSON(jsonObject);
+    typeVM->inputFromJSON(jsonObject);
+    attributeVM->inputFromJSON(jsonObject);
+    operationVM->inputFromJSON(jsonObject);
+    directionVM->inputFromJSON(jsonObject);
+    output_frequencyVM->inputFromJSON(jsonObject);
+    velociMetersTable->inputFromJSON(jsonObject);
+  }
+  else if (sensorType->currentIndex() == 3) {
+    toggleLC->inputFromJSON(jsonObject);
+    typeLC->inputFromJSON(jsonObject);
+    attributeLC->inputFromJSON(jsonObject);
+    operationLC->inputFromJSON(jsonObject);
+    directionLC->inputFromJSON(jsonObject);
+    output_frequencyLC->inputFromJSON(jsonObject);
+    loadCellsTable->inputFromJSON(jsonObject);
+  }
+  else if (sensorType->currentIndex() == 4) {
+    togglePM->inputFromJSON(jsonObject);
+    typePM->inputFromJSON(jsonObject);
+    attributePM->inputFromJSON(jsonObject);
+    operationPM->inputFromJSON(jsonObject);
+    directionPM->inputFromJSON(jsonObject);
+    output_frequencyPM->inputFromJSON(jsonObject);
+    // Make sure to append to the table, it may have multiple sensors
+    piezoMetersTable->inputFromJSON(jsonObject);
+  }
 
   return true;
 }

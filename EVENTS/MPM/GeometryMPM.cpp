@@ -75,8 +75,8 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   // numRow = 0;
 
   // -----------------------------------------------------------------------------------
-  QList <QString> objectList; objectList << "Box" << "Sphere" << "Cylinder" << "Cone" << "Ring" << "File" << "Checkpoint" << "OSU LWF" << "OSU DWB" << "UW WASIRF" << "WU TWB" << "USGS DFF" << "NICHE" << "Custom" << "Generative AI";
-  objectType = new SC_ComboBox("object_type", objectList);
+  QList <QString> objectList; objectList << "Box" << "Sphere" << "Cylinder" << "File" << "Checkpoint" << "OSU LWF" << "OSU DWB" << "UW WASIRF" << "WU TWB" << "USGS DFF" << "NICHE" << "Custom" << "Generative AI"; //  "Cone" << "Ring"
+  objectType = new SC_ComboBox("object", objectList);
   layout->addWidget(new QLabel("Object Type"), numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(objectType,numRow++, 1, 1, 3);
   layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -90,7 +90,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
 
 
   QList <QString> operationList;  operationList << "Add (OR)" << "Subtract (NOT)" << "Intersect (AND)" << "Difference (XOR)";
-  operationType = new SC_ComboBox("operation_type", operationList);
+  operationType = new SC_ComboBox("operation", operationList);
   layout->addWidget(new QLabel("Operation On Prior Geometry"), numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(operationType, numRow++, 1, 1, 3);
   layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -119,6 +119,31 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   layout->addWidget(width, numRow, 3, 1, 1);  
   layout->addWidget(new QLabel("m"), numRow++, 4, 1, 1);
 
+
+  // QWidget *sphereWidget = new QWidget();
+  // QGridLayout *sphereLayout = new QGridLayout();
+  // radius = new SC_DoubleLineEdit("radius", 0.0);
+  // radius->setEnabled(false);
+  // sphereLayout->addWidget(new QLabel("Radius"), numRow, 0, 1, 1, Qt::AlignRight);
+  // sphereLayout->addWidget(radius, numRow, 1, 1, 3);
+  // sphereLayout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  // sphereLayout->addWidget(new QLabel("m"), numRow++, 4, 1, 1);
+  // sphereWidget->setLayout(sphereLayout);
+  // layout->addWidget(sphereWidget, numRow++, 0, 1, 5);
+  // sphereWidget->hide();
+
+  // QWidget *cylinderWidget = new QWidget();
+  // QGridLayout *cylinderLayout = new QGridLayout();
+  // longAxis = new SC_ComboBox("axis", QStringList() << "" << "X" << "Y" << "Z");
+  // longAxis->setEnabled(false);
+  // cylinderLayout->addWidget(new QLabel("Long Axis"), numRow, 0, 1, 1, Qt::AlignRight);
+  // cylinderLayout->addWidget(longAxis, numRow++, 1, 1, 3);
+  // cylinderLayout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
+  // cylinderWidget->setLayout(cylinderLayout);
+  // layout->addWidget(cylinderWidget, numRow++, 0, 1, 5);
+  // cylinderWidget->hide();
+
+
   radius = new SC_DoubleLineEdit("radius", 0.0);
   radius->setEnabled(false);
   layout->addWidget(new QLabel("Radius"), numRow, 0, 1, 1, Qt::AlignRight);
@@ -127,7 +152,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   layout->addWidget(new QLabel("m"), numRow++, 4, 1, 1);
 
   QStringList longAxisList; longAxisList << "" << "X" << "Y" << "Z";
-  longAxis = new SC_ComboBox("long_axis", longAxisList);
+  longAxis = new SC_ComboBox("axis", longAxisList);
   longAxis->setEnabled(false);
   layout->addWidget(new QLabel("Long Axis"), numRow, 0, 1, 1, Qt::AlignRight);  
   layout->addWidget(longAxis, numRow++, 1, 1, 3);
@@ -243,7 +268,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   dimensionsBox->setLayout(dimensionsBoxLayout);
 
   QStringList facilityList; facilityList << "Hinsdale Large Wave Flume (OSU LWF)" << "Hinsdale Directional Wave Basin (OSU DWB)" <<  "Wind-Air-Sea Interaction Facility (UW WASIRF)" << "Waseda University's Tsunami Wave Basin (WU TWB)" << "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)" << "NICHE Full-Scale Wind-Wave Flume" << "Custom";
-  facility = new SC_ComboBox("domainSubType",facilityList);
+  facility = new SC_ComboBox("facility",facilityList);
   dimensionsBoxLayout->addWidget(new QLabel("Digital Twin Facility"),numDimRow,0);
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   dimensionsBoxLayout->addWidget(facility,numDimRow++,1, 1, 4);
@@ -258,24 +283,29 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   dimensionsBoxLayout->addWidget(facilityWidth, numDimRow, 3);  
   dimensionsBoxLayout->addWidget(new QLabel("m"), numDimRow++, 4);
 
-  standingWaterLevel = new SC_DoubleLineEdit("standingWaterLevel",2.0);
+  standingWaterLevel = new SC_DoubleLineEdit("standing_water_level",2.0);
   dimensionsBoxLayout->addWidget(new QLabel("Still Water Level (SWL)"), numDimRow, 0);
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   dimensionsBoxLayout->addWidget(standingWaterLevel, numDimRow, 1);  
   dimensionsBoxLayout->addWidget(new QLabel("m"), numDimRow++, 2);
 
-  fillFlumeUptoSWL = new SC_CheckBox("fillFlumeUptoSWL");
+  fillFlumeUptoSWL = new SC_CheckBox("fill_flume_upto_SWL");
   dimensionsBoxLayout->addWidget(new QLabel("Fill flume to SWL with fluid?"),numDimRow, 0);  
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
   dimensionsBoxLayout->addWidget(fillFlumeUptoSWL,numDimRow++, 1);
   
-  int numBathRow = 0;
+  int numBathRow = 2;
   dimensionsBoxLayout->addWidget(new QLabel("Flume Bathymetry Type"),numDimRow,0);
   dimensionsBoxLayout->itemAt(dimensionsBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
 
   QStringList bathOptions; bathOptions << "Point List" << "STL File";
   bathymetryComboBox = new SC_ComboBox("bathymetryComboBox", bathOptions);
+  customBathymetryToggle = new SC_CheckBox("use_custom_bathymetry");
+  customBathymetryToggle->setChecked(false);
+  customBathymetryToggle->setEnabled(true);
+  customBathymetryToggle->setToolTip("Toggle custom bathymetry on/off. If off, the default bathymetry for the selected facility will be used. E.g., the bathymetry of the OSU LWF in Mascarenas 2022.");
   dimensionsBoxLayout->addWidget(bathymetryComboBox, numDimRow++, 1);
+
   QStringList bathXZHeadings; bathXZHeadings << "Joint Position (X)" << "Joint Position (Y)";
   QStringList dataBathXZ; dataBathXZ<< "0.0" << "0.0" 
                  << "16.275" << "0.226" 
@@ -284,13 +314,16 @@ GeometryMPM::GeometryMPM(QWidget *parent)
                  << "45.536" << "1.750" 
                  << "82.106" << "1.750" 
                  << "89.46"  << "2.363";
-  bathXZData = new SC_TableEdit("bathXZData", bathXZHeadings, 7, dataBathXZ);
+  bathXZData = new SC_TableEdit("bathymetry", bathXZHeadings, 7, dataBathXZ);
   bathSTL = new SC_FileEdit("bathSTL");
 
   QWidget *ptWidget = new QWidget(); 
   QGridLayout *ptLayout = new QGridLayout();
-  ptLayout->addWidget(bathXZData, 0, 0, 2, 2);
-  ptLayout->setRowStretch(1,1);
+  ptLayout->addWidget(new QLabel("Use Custom Bathymetry?"),0,0);
+  ptLayout->addWidget(customBathymetryToggle,0,1);
+  ptLayout->addWidget(new QLabel("Bathymetry Data"),1,0);
+  ptLayout->addWidget(bathXZData, 2, 0, 2, 4); 
+  ptLayout->setRowStretch(3,1);
   ptWidget->setLayout(ptLayout);
 
   QWidget *stlWidget = new QWidget();
@@ -306,13 +339,14 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   bathStack->addWidget(stlWidget);
   
   dimensionsBoxLayout->addWidget(bathStack,numDimRow++,0, 1, numBathRow);
+  numDimRow += numBathRow;
   dimensionsBoxLayout->setRowStretch(numDimRow,1);
   layout->addWidget(dimensionsBox,numRow++,0,numDimRow,5);
   numRow = numRow+numDimRow;
 
   QStringList trackerHeadings; trackerHeadings << "1st" << "2nd" << "3rd" << "4th" << "5th";
   QStringList trackerData; trackerData << "0" << "" << "" << "" << "";
-  trackerTable = new SC_TableEdit("trackerTable", trackerHeadings, 1, trackerData);
+  trackerTable = new SC_TableEdit("track_particle_id", trackerHeadings, 1, trackerData);
   layout->addWidget(new QLabel("Identify Particle IDs to Place Trackers On"), numRow++, 1, 1, 3);
   layout->addWidget(trackerTable, numRow++, 0, 1, 5);
   
@@ -367,7 +401,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
                  << "45.536" << "1.750" 
                  << "82.106" << "1.750" 
                  << "89.46"  << "2.363";
-      delete bathXZData; bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 7, newDataBathXZ);
+      delete bathXZData; bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 7, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "Hinsdale Directional Wave Basin (OSU DWB)") {
       facilityLength->setText("48.8");
@@ -382,7 +416,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
                  << "45.0" << "1.0"
                  << "45.0" << "0.0" 
                  << "48.8" << "0.0";
-      delete bathXZData; bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 6, newDataBathXZ);
+      delete bathXZData; bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 6, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "Wind-Air-Sea Interaction Facility (UW WASIRF)") {
       facilityLength->setText("12.19");
@@ -393,7 +427,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       }
       QStringList newDataBathXZ; newDataBathXZ << "0.00" << "0.0" 
                  << "12.0" << "0.0";
-      delete bathXZData; bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 2, newDataBathXZ);
+      delete bathXZData; bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 2, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "Waseda University's Tsunami Wave Basin (WU TWB)") {
       facilityLength->setText("9.0");
@@ -406,7 +440,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
                  << "4.45" << "0" 
                  << "4.45" << "0.255" 
                  << "9.00" << "0.255";
-      delete bathXZData; bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 4, newDataBathXZ);
+      delete bathXZData; bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 4, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)") {
       facilityLength->setText("90.0");
@@ -421,7 +455,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
                  << "81.00" << "0.176" // 10 deg, 1:0.176 (ASSUME CATANARY JOINT AS LINEAR SEGMENTS TO FLATTEN 30DEG SLOPE REL TO ROTATED GRAVITY VECTOR)
                  << "82.00" << "0.540" // 20 deg, 1:0.364
                  << "100.0" << "10.926"; // 30deg, 1:0.577 
-      delete bathXZData; bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 6, newDataBathXZ);
+      delete bathXZData; bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 6, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "NICHE Full-Scale Wind-Wave Flume") {
       facilityLength->setText("300.0");
@@ -537,7 +571,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       longAxis->setDisabled(true);
       // radius->hide();
       // longAxis->hide();
-    } else if (val == "OSU LWF") {
+    } else if (val == "OSU LWF" || val == "OSU LWF Ramp") {
       facility->setCurrentText("Hinsdale Large Wave Flume (OSU LWF)");
       length->setEnabled(true);
       length->show();
@@ -559,7 +593,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
         originY->setText("0.0");
         originZ->setText("0.0");
       }
-    } else if (val == "OSU DWB") {
+    } else if (val == "OSU DWB" || val == "OSU DWB Ramp") {
       facility->setCurrentText("Hinsdale Directional Wave Basin (OSU DWB)");
       length->setEnabled(true);
       length->show();
@@ -603,7 +637,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
         originY->setText("0.0");
         originZ->setText("0.0");
       }
-    } else if (val == "WU TWB") {
+    } else if (val == "WU TWB" || val == "TOKYO Harbor") {
       facility->setCurrentText("Waseda University's Tsunami Wave Basin (WU TWB)");
       length->setEnabled(true);
       length->show();
@@ -625,7 +659,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
         originY->setText("0.0");
         originZ->setText("0.0");
       }
-    } else if (val == "USGS DFF") {
+    } else if (val == "USGS DFF" || val == "USGS Ramp") {
       facility->setCurrentText("U.S. Geo. Survey's Debris Flow Flume (USGS DFF)");
       length->setEnabled(true);
       length->show();
@@ -854,6 +888,7 @@ void GeometryMPM::clear(void)
   standingWaterLevel->setText("0.0");
   fillFlumeUptoSWL->setChecked(false);
   bathymetryComboBox->setCurrentIndex(0);
+  // delete bathXZData; bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 7, dataBathXZ);
   // bathXZData->reset();
   QString dummyFilename = "";
   bathSTL->setFilename(dummyFilename);
@@ -886,7 +921,7 @@ GeometryMPM::setBodyPreset(int index)
   // Way to set the body preset from higher levels, 
   // e.g. to set the geometry body preset to "Debris" if the user adds a debris template in bodies
   if (index < 0 || index > bodyPreset->count()) {
-    // QDebug() << "Error: Invalid body preset index";
+    // qDebug() << "Error: Invalid body preset index";
     return false;
   }
   bodyPreset->setCurrentIndex(index);
@@ -980,16 +1015,19 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
     else   geometryObject["offset"] = originArray; // ClayoreUW artifact, to be deprecated
 
     // User point-list input bathymetry
-    if (bathXZData->isEnabled()) {
-      QJsonObject tableBath;
-      bathXZData->outputToJSON(tableBath);
-      QJsonArray bathXZArray;
-      
-      for (int i = 0; i < tableBath["bathXZData"].toArray().size(); i++) {
-        bathXZArray.append(tableBath["bathXZData"].toArray()[i].toArray());
+    if (bathymetryComboBox->currentText() == "Point List") {
+      geometryObject["use_custom_bathymetry"] = customBathymetryToggle->isChecked();
+      if (customBathymetryToggle->isChecked()) {
+        QJsonObject tableBath;
+        bathXZData->outputToJSON(tableBath);
+        QJsonArray bathXZArray;
+        for (int i = 0; i < tableBath["bathymetry"].toArray().size(); i++) {
+          bathXZArray.append(tableBath["bathymetry"].toArray()[i].toArray());
+        }
+        geometryObject["bathymetry"] = bathXZArray;
       }
-      geometryObject["bathymetryXZ"] = bathXZArray;
     }
+
     // TODO: Add user file-input bathymetry to JSON 
   } else {
     spanArray.append(length->text().toDouble());
@@ -1007,7 +1045,7 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
 
 
   if (geometryObject["object"].toString() == "Cylinder" || geometryObject["object"].toString() == "Cone" || geometryObject["object"].toString() == "Ring") {
-    geometryObject["long_axis"] = longAxis->currentText();
+    geometryObject["axis"] = longAxis->currentText();
     geometryObject["radius"] = radius->text().toDouble();
   } 
 
@@ -1018,16 +1056,21 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
   if (geometryObject["object"].toString() == "File") {
     if (geometryFile->getFilename().isEmpty() == false) {
       geometryObject["file"] = geometryFile->getFilename();
-    }
-    if (checkpointBGEO->getFilename().isEmpty() == false) {
-      geometryObject["file"] = checkpointBGEO->getFilename();
+    } else {
+      qDebug() << "Error: No geometry or checkpoint file selected for bodies object type: File";
     }
     if (geometryObject["file"].toString().isEmpty()) {
-      // QDebug() << "Error: No geometry or checkpoint file selected for bodies object type: File";
+      qDebug() << "Error: No geometry or checkpoint file selected for bodies object type: File";
+    }
+  }
+  if (geometryObject["object"].toString() == "Checkpoint") {
+    if (checkpointBGEO->getFilename().isEmpty() == false) {
+      geometryObject["file"] = checkpointBGEO->getFilename();
+    } else {
+      qDebug() << "Error: No checkpoint file selected for bodies object type: Checkpoint";
     }
   }
 
-  
   geometryObject["apply_array"] = applyArray->isChecked();
   if (applyArray->isChecked()) {
     QJsonArray arrayDims;
@@ -1062,8 +1105,8 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
     QJsonObject trackerObject;
     trackerTable->outputToJSON(trackerObject);
     QJsonArray trackerArray;
-    for (int i = 0; i < trackerObject["trackerTable"].toArray().size(); i++) {
-      QJsonArray temp_array = trackerObject["trackerTable"].toArray()[i].toArray();
+    for (int i = 0; i < trackerObject["track_particle_id"].toArray().size(); i++) {
+      QJsonArray temp_array = trackerObject["track_particle_id"].toArray()[i].toArray();
       for (int j = 0; j < temp_array.size(); j++) {
         if (temp_array[j].toString().isEmpty() == false) continue; 
         temp_array.removeAt(j);
@@ -1084,11 +1127,12 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
   }
   
   jsonObject["geometry"] = geometryObject;
-  if (jsonObject.find("track_particle_id") == jsonObject.end()) 
+  if (jsonObject.find("track_particle_id") == jsonObject.end()) {
     jsonObject["track_particle_id"] = QJsonArray() << "0";
-  else if (jsonObject.find("track_particle_id") != jsonObject.end() && jsonObject["track_particle_id"].toArray().size() < 1)
+  }
+  else if (jsonObject.find("track_particle_id") != jsonObject.end() && jsonObject["track_particle_id"].toArray().size() < 1) {
     jsonObject["track_particle_id"] =  QJsonArray() << "0";
-  
+  }
 
   return true;
 }
@@ -1096,30 +1140,87 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 GeometryMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  this->clear();
+  // this->clear();
 
   if (jsonObject.contains("body_preset")) {
+    qDebug() << "inputFromJSON(): INFO: Body Preset: " << jsonObject["body_preset"].toString();
     bodyPreset->setCurrentText(jsonObject["body_preset"].toString());
+    // Trigger the body preset change event
+    this->setBodyPreset(bodyPreset->currentIndex());
+  } else {
+    qDebug() << "inputFromJSON(): WARN: No body preset found in JSON object";
   }
+  if (jsonObject.contains("facility")) {
+    qDebug() << "inputFromJSON(): INFO: Facility: " << jsonObject["facility"].toString();
+    facility->setCurrentText(jsonObject["facility"].toString());
+    // Trigger the facility change event
+  } else {
+    qDebug() << "inputFromJSON(): WARN: No facility found in JSON object";
+  }
+
   if (jsonObject.contains("object")) {
+    // TODO: Add Bathymetry object in qstringlist and qcombobox
+    qDebug() << "inputFromJSON(): INFO: Object Type: " << jsonObject["object"].toString();
+    if (jsonObject["object"].toString() == "Bathymetry" || jsonObject["object"].toString() == "bathymetry") {
+      objectType->setCurrentText("OSU LWF");
+    }
+
     objectType->setCurrentText(jsonObject["object"].toString());
+    // Trigger the object type change event
+    qDebug() << "inputFromJSON(): INFO: Object Type: " << jsonObject["object"].toString();
+  } else {
+    qDebug() << "inputFromJSON(): WARN: No object type found in JSON object for object type: " << objectType->currentText();
+    if (objectType->currentText() == "") {
+      qDebug() << "inputFromJSON(): WARN: No object type found in JSON object, setting default object type to Box";
+      objectType->setCurrentText("Box");
+    }
   }
+
+
+  if (objectType->currentText() == "Generative AI") {
+    qDebug() << "inputFromJSON(): INFO: Generative AI object type selected";
+    theGenAI->inputFromJSON(jsonObject);
+    qDebug() << "inputFromJSON(): INFO: Generative AI object type selected";
+  }
+
+  if (objectType->currentText() == "File" || objectType->currentText() == "file" || objectType->currentText() == "SDF" || objectType->currentText() == "sdf") {
+    if (jsonObject.contains("file")) {
+      qDebug() << "inputFromJSON(): INFO: Geometry File: " << jsonObject["file"].toString();
+      QString fileString = jsonObject["file"].toString();
+      geometryFile->setFilename(fileString);
+    } else {
+      qDebug() << "inputFromJSON(): WARN: No geometry file found in JSON object for object type: " << objectType->currentText();
+    }
+  }
+  if (objectType->currentText() == "Checkpoint" || objectType->currentText() == "checkpoint") {
+      if (jsonObject.contains("file")) {
+        qDebug() << "inputFromJSON(): INFO: Checkpoint File: " << jsonObject["file"].toString();
+        QString fileString = jsonObject["file"].toString();
+        checkpointBGEO->setFilename(fileString);
+      } else {
+        qDebug() << "inputFromJSON(): WARN: No checkpoint file found in JSON object for object type: " << objectType->currentText();
+      }
+
+  }
+
   if (jsonObject.contains("operation")) {
-    if (jsonObject["operation"].toString() == "add") {
+    if (jsonObject["operation"].toString() == "add" || jsonObject["operation"].toString() == "Add" || jsonObject["operation"].toString() == "addition" || jsonObject["operation"].toString() == "Addition") {
       operationType->setCurrentText("Add (OR)");
-    } else if (jsonObject["operation"].toString() == "subtract") {
+    } else if (jsonObject["operation"].toString() == "subtract" || jsonObject["operation"].toString() == "Subtract" || jsonObject["operation"].toString() == "subtraction" || jsonObject["operation"].toString() == "Subtraction") {
       operationType->setCurrentText("Subtract (NOT)");
-    } else if (jsonObject["operation"].toString() == "intersect") {
+    } else if (jsonObject["operation"].toString() == "intersect" || jsonObject["operation"].toString() == "Intersect" || jsonObject["operation"].toString() == "intersection" || jsonObject["operation"].toString() == "Intersection") {
       operationType->setCurrentText("Intersect (AND)");
-    } else if (jsonObject["operation"].toString() == "difference") {
+    } else if (jsonObject["operation"].toString() == "difference" || jsonObject["operation"].toString() == "Difference") {
       operationType->setCurrentText("Difference (XOR)");
     } else {
       operationType->setCurrentText("Add (OR)");
     }
+  } else {
+    qDebug() << "inputFromJSON(): WARN: No operation type found in JSON object for object type: " << objectType->currentText();
   }
-  if (jsonObject.contains("facility")) {
-    facility->setCurrentText(jsonObject["facility"].toString());
-  }
+
+
+
   if (jsonObject.contains("facility_dimensions")) {
     QJsonArray facilityDims = jsonObject["facility_dimensions"].toArray();
     facilityLength->setText(QString::number(facilityDims[0].toDouble()));
@@ -1128,78 +1229,123 @@ GeometryMPM::inputFromJSON(QJsonObject &jsonObject)
   }
   if (jsonObject.contains("standing_water_level")) {
     standingWaterLevel->setText(QString::number(jsonObject["standing_water_level"].toDouble()));
+    qDebug() << "inputFromJSON(): INFO: SWL: " << jsonObject["standing_water_level"].toDouble();
   }
   if (jsonObject.contains("fill_flume_upto_SWL")) {
     fillFlumeUptoSWL->setChecked(jsonObject["fill_flume_upto_SWL"].toBool());
+    qDebug() << "inputFromJSON(): INFO: Fill Flume Up to SWL: " << jsonObject["fill_flume_upto_SWL"].toBool();
   }
   if (jsonObject.contains("span")) {
     QJsonArray spanArray = jsonObject["span"].toArray();
     length->setText(QString::number(spanArray[0].toDouble()));
     height->setText(QString::number(spanArray[1].toDouble()));
     width->setText(QString::number(spanArray[2].toDouble()));
+    qDebug() << "inputFromJSON(): INFO: Span: " << spanArray[0].toDouble() << " x " << spanArray[1].toDouble() << " x " << spanArray[2].toDouble();
+  } else {
+    length->setText("1.0");
+    height->setText("1.0");
+    width->setText("1.0");
+    qDebug() << "inputFromJSON(): WARN: No span found in JSON object, setting default span to 1.0 x 1.0 x 1.0";
   }
+
   if (jsonObject.contains("offset")) {
     QJsonArray originArray = jsonObject["offset"].toArray();
     originX->setText(QString::number(originArray[0].toDouble()));
     originY->setText(QString::number(originArray[1].toDouble()));
     originZ->setText(QString::number(originArray[2].toDouble()));
+    qDebug() << "inputFromJSON(): INFO: Origin: " << originArray[0].toDouble() << " x " << originArray[1].toDouble() << " x " << originArray[2].toDouble();
+  } else {
+    originX->setText("0.0");
+    originY->setText("0.0");
+    originZ->setText("0.0");
+    qDebug() << "inputFromJSON(): WARN: No origin found in JSON object, setting default origin to 0.0 x 0.0 x 0.0";
   }
 
-  if (jsonObject.contains("bathymetryXZ")) {
-    QJsonArray bathXZArray = jsonObject["bathymetryXZ"].toArray();
+  if (jsonObject.contains("use_custom_bathymetry")) {
+    qDebug() << "inputFromJSON(): INFO: Custom Bathymetry: " << jsonObject["use_custom_bathymetry"].toBool();
+    customBathymetryToggle->setChecked(jsonObject["use_custom_bathymetry"].toBool());
+    bathymetryComboBox->setCurrentText("Point List");
+  }
+
+  if (jsonObject.contains("bathymetry")) {
+    QJsonArray bathXZArray = jsonObject["bathymetry"].toArray();
     QJsonObject bathXZObject;
-    bathXZObject["bathXZData"] = bathXZArray;
+    bathXZObject["bathymetry"] = bathXZArray;
     bathXZData->inputFromJSON(bathXZObject);
+    qDebug() << "inputFromJSON(): INFO: Bathymetry: " << bathXZArray.size() << " points";
+  } else {
+    if (customBathymetryToggle->isChecked()) {
+      qDebug() << "inputFromJSON(): WARN: No bathymetry found in JSON object despite custom bathymetry toggle being checked!";
+    }
   }
 
   if (jsonObject.contains("radius")) {
+    qDebug() << "inputFromJSON(): INFO: Radius: " << jsonObject["radius"].toDouble();
     radius->setText(QString::number(jsonObject["radius"].toDouble()));
-  }
+  } 
 
-  if (jsonObject.contains("long_axis")) {
-    longAxis->setCurrentText(jsonObject["long_axis"].toString());
+  if (jsonObject.contains("axis")) {
+    qDebug() << "inputFromJSON(): INFO: Axis: " << jsonObject["axis"].toString();
+    longAxis->setCurrentText(jsonObject["axis"].toString());
   }
 
   if (jsonObject.contains("apply_array")) {
+    qDebug() << "inputFromJSON(): INFO: Apply Array: " << jsonObject["apply_array"].toBool();
     applyArray->setChecked(jsonObject["apply_array"].toBool());
   }
+
   if (jsonObject.contains("array")) {
     QJsonArray arrayDims = jsonObject["array"].toArray();
+    applyArray->setChecked(true);
     arrayX->setText(QString::number(arrayDims[0].toInt()));
     arrayY->setText(QString::number(arrayDims[1].toInt()));
     arrayZ->setText(QString::number(arrayDims[2].toInt()));
+    qDebug() << "inputFromJSON(): INFO: Array: " << arrayDims[0].toInt() << " x " << arrayDims[1].toInt() << " x " << arrayDims[2].toInt();
   }
   if (jsonObject.contains("spacing")) {
     QJsonArray spacingArray = jsonObject["spacing"].toArray();
     spacingX->setText(QString::number(spacingArray[0].toDouble()));
     spacingY->setText(QString::number(spacingArray[1].toDouble()));
     spacingZ->setText(QString::number(spacingArray[2].toDouble()));
+    qDebug() << "inputFromJSON(): INFO: Spacing: " << spacingArray[0].toDouble() << " x " << spacingArray[1].toDouble() << " x " << spacingArray[2].toDouble();
   }
   if (jsonObject.contains("apply_rotation")) {
+    qDebug() << "inputFromJSON(): INFO: Apply Rotation: " << jsonObject["apply_rotation"].toBool();
     applyRotation->setChecked(jsonObject["apply_rotation"].toBool());
   }
   if (jsonObject.contains("rotate")) {
     QJsonArray rotateAngles = jsonObject["rotate"].toArray();
+    applyRotation->setChecked(true);
     rotateAngleX->setText(QString::number(rotateAngles[0].toDouble()));
     rotateAngleY->setText(QString::number(rotateAngles[1].toDouble()));
     rotateAngleZ->setText(QString::number(rotateAngles[2].toDouble()));
+    qDebug() << "inputFromJSON(): INFO: Rotate: " << rotateAngles[0].toDouble() << " x " << rotateAngles[1].toDouble() << " x " << rotateAngles[2].toDouble();
   }
   if (jsonObject.contains("fulcrum")) {
     QJsonArray rotateFulcrum = jsonObject["fulcrum"].toArray();
     rotateFulcrumX->setText(QString::number(rotateFulcrum[0].toDouble()));
     rotateFulcrumY->setText(QString::number(rotateFulcrum[1].toDouble()));
     rotateFulcrumZ->setText(QString::number(rotateFulcrum[2].toDouble()));
+    qDebug() << "inputFromJSON(): INFO: Fulcrum: " << rotateFulcrum[0].toDouble() << " x " << rotateFulcrum[1].toDouble() << " x " << rotateFulcrum[2].toDouble();
   }
+  /*
   if (jsonObject.contains("track_particle_id")) {
+    qDebug() << "inputFromJSON(): INFO: Loading tracker table from JSON object";
     QJsonArray trackerArray = jsonObject["track_particle_id"].toArray();
+    qDebug() << "inputFromJSON(): INFO: Tracker Array Size: " << trackerArray.size();
     // trackerTable->reset();
     QJsonObject trackerObject;
-    trackerObject["trackerTable"] = trackerArray;
+    trackerObject["track_particle_id"] = trackerArray;
     trackerTable->inputFromJSON(trackerObject);
+    qDebug() << "inputFromJSON(): INFO: Successfully loaded tracker table from JSON object";
   }
+  */
 
-  theGenAI->inputFromJSON(jsonObject); // text-prompt and image-prompt
+  qDebug() << "inputFromJSON(): INFO: Successfully loaded geometry from JSON object";
 
+  // qDebug() << "inputFromJSON(): INFO: Loading generative AI settings from JSON object";
+  // theGenAI->inputFromJSON(jsonObject); // text-prompt and image-prompt
+  // qDebug() << "inputFromJSON(): INFO: Successfully loaded generative AI settings from JSON object";
   return true;
 }
 
@@ -1210,21 +1356,21 @@ GeometryMPM::copyFiles(QString &destDir)
   // Copy the bathymetry file to the destination directory
   if (bathSTL->getFilename().isEmpty() == false) {
     if (bathSTL->copyFile(destDir) == false) {
-      // QDebug() << "Error: Failed to copy bathymetry file";
+      qDebug() << "Error: Failed to copy bathymetry file";
       // return false;
     }
   }
 
   if (geometryFile->getFilename().isEmpty() == false) {
     if (geometryFile->copyFile(destDir) == false) {
-      // QDebug() << "Error: Failed to copy geometry file";
+      qDebug() << "Error: Failed to copy geometry file";
       // return false;
     }
   }
 
   if (checkpointBGEO->getFilename().isEmpty() == false) {
     if (checkpointBGEO->copyFile(destDir) == false) {
-      // QDebug() << "Error: Failed to copy checkpoint BGEO file";
+      qDebug() << "Error: Failed to copy checkpoint BGEO file";
       // return false;
     }
   }
@@ -1238,7 +1384,7 @@ GeometryMPM::setDigitalTwin(int twinIdx)
   // Way to set the digital twin from higher levels,
   // e.g. to set the geometry digital twin to "Hinsdale Large Wave Flume (OSU LWF)" if the user selects the OSU LWF digital twin
   if (twinIdx < 0 || twinIdx > facility->count()) {
-    // QDebug() << "Error: Invalid digital twin index";
+    qDebug() << "Error: Invalid digital twin index";
     return false;
   }
   facility->setCurrentIndex(twinIdx);

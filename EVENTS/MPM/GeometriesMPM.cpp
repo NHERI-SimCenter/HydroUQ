@@ -207,17 +207,21 @@ GeometriesMPM::inputFromJSON(QJsonObject &jsonObject)
 {
 
   // Clear all geometries
-  this->clear();
+  // this->clear();
 
   // Input all geometries (held in JSON array)
   if (jsonObject.contains("geometry") == false) {
     qDebug() << "GeometriesMPM::inputFromJSON geometry not found in JSON";
-    return false;
+    // return false;
   }
   QJsonArray geometryArray = jsonObject["geometry"].toArray();
   for (int i=0; i<geometryArray.size(); i++) {
     if (i >= numReserveTabs) {
-      qDebug() << "GeometriesMPM::inputFromJSON too many geometries in JSON";
+      qDebug() << "GeometriesMPM::inputFromJSON too many geometries in JSON, exceeded reserved tabs";
+      break;
+    }
+    if (i >= numAddedTabs){
+      qDebug() << "GeometriesMPM::inputFromJSON too many geometries in JSON, exceeded current tabs";
       break;
     }
     QJsonObject geometryObject = geometryArray[i].toObject();
