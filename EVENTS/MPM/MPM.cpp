@@ -62,6 +62,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <SC_DoubleLineEdit.h>
 #include <SC_IntLineEdit.h>
+#include <Utils/FileOperations.h>
+// #include <QJsonDocument>
 
 #include <Qt3DExtras/QCuboidMesh>
 #include <Qt3DExtras/QPhongMaterial>
@@ -1340,10 +1342,10 @@ bool MPM::initialize()
 void MPM::updateJSON()
 {
     // Write most recent EVT state to JSON becase it is needed for pre-processing steps / mesh generation before the final simulation is run.
-    // In future only one JSON file in temp.SimCenter directory might be enough
+    // In future only one JSON file in tmp.SimCenter directory might be enough
     QString inputFileName = "MPM.json";
-    QString inputFilePath = caseDir() + QDir::separator() + "inputData" + QDir::separator() + inputFileName;
-    QString outputFilePath = caseDir() + QDir::separator() + "inputData" + QDir::separator() + inputFileName;
+    QString inputFilePath = caseDir() + QDir::separator() + inputFileName;
+    QString outputFilePath = caseDir() + QDir::separator() + inputFileName;
 
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::WriteOnly | QFile::Text))
@@ -1368,21 +1370,27 @@ void MPM::executeBackendScript()
     // 
 
     updateJSON(); 
+    QString jsonFile = caseDir() + QDir::separator() + "MPM.json";
     QString scriptName = "MPM.py"; // "setup_case.py";
     QString scriptPath = pyScriptsPath() + QDir::separator() + scriptName; 
-    QString templatePath = templateDictDir();
-    QString jsonPath = caseDir() + QDir::separator() + "inputData";
-    QString outputPath = caseDir();
+    QString outputFile = caseDir() + QDir::separator() + "EVENT.json";
+    if (QFileInfo(outputFile).exists() == false) {
+      // Create the empty EVENT.json file if it doesn't exist
+      QFile file(outputFile);
+      file.open(QIODevice::WriteOnly);
+      file.close();
+    }
+
     if (QFileInfo(scriptPath).exists())
     {
       QString program = SimCenterPreferences::getInstance()->getPython();
-      QStringList arguments; arguments << scriptPath << jsonPath << templatePath << outputPath;
+      QStringList arguments; arguments << scriptPath << "--filenameAIM" << jsonFile << "--filenameEVENT" << outputFile;
       QProcess *process = new QProcess(this);
       process->start(program, arguments);
       process->waitForFinished(-1);
       process->close();
       // process->deleteLater();
-
+      
     } 
     else 
     {
@@ -1393,11 +1401,8 @@ void MPM::executeBackendScript()
 
 void MPM::readCaseData()
 {
-    //Write it to JSON becase it is needed for the mesh generation before the final simulation is run.
-    //In future only one JSON file in tmp.SimCenter directory might be enough
     QString inputFileName = "MPM.json";
     QString inputFilePath = caseDir() + QDir::separator() 
-                            + "inputData" + QDir::separator() 
                             + inputFileName;
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
@@ -1438,23 +1443,6 @@ void MPM::onBrowseCaseDirectoryButtonClicked(void)
     return;
 }
 
-void MPM::clear(void)
-{
-    this->hideVisualization();
-
-    if (mpmSettings)
-      mpmSettings->clear();
-    if (mpmBodies)
-      mpmBodies->clear();
-    if (mpmBoundaries)
-      mpmBoundaries->clear();
-    if (mpmSensors)
-      mpmSensors->clear();
-    if (mpmOutputs)
-      mpmOutputs->clear();
-    if (mpmResults) 
-      mpmResults->clear();
-}
 
 bool MPM::outputCitation(QJsonObject &jsonObject)
 {
@@ -1473,24 +1461,51 @@ bool MPM::outputCitation(QJsonObject &jsonObject)
     return true;
 }
 
+void MPM::clear(void)
+{
+    this->hideVisualization();
+
+    if (mpmSettings) {
+      mpmSettings->clear();
+      // qDebug() << "MPM::clear: mpmSettings->clear() returned false";
+    }
+    if (mpmBodies) {
+      mpmBodies->clear();
+      // qDebug() << "MPM::clear: mpmBodies->clear() returned false";
+    }
+    if (mpmBoundaries) {
+      mpmBoundaries->clear();
+      // qDebug() << "MPM::clear: mpmBoundaries->clear() returned false";
+    }
+    if (mpmSensors) {
+      mpmSensors->clear();
+      // qDebug() << "MPM::clear: mpmSensors->clear() returned false";
+    }
+    if (mpmOutputs) {
+      mpmOutputs->clear();
+      // qDebug() << "MPM::clear: mpmOutputs->clear() returned false";
+    }
+}
+
 bool MPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  return true;
+  // return true;
   // Exiting early to debug
 
   this->clear();
-  
+
+  /*
   QString newCaseDirectoryPath(jsonObject["caseDirectoryPath"].toString());
 
   if (newCaseDirectoryPath.isEmpty()) {
     qDebug() << "MPM::inputFromJSON: newCaseDirectoryPath is empty in JSON input.";
-    return false;
+    // return false;
   }
 
   QDir newCaseDir(newCaseDirectoryPath);
   if (!newCaseDir.exists()) {
     qDebug() << "MPM::inputFromJSON: newCaseDir does not exist in folder structure: " << newCaseDirectoryPath;
-    return false;
+    // return false;
   }
 
   if (newCaseDirectoryPath != caseDirectoryPathWidget->text()) {
@@ -1498,22 +1513,72 @@ bool MPM::inputFromJSON(QJsonObject &jsonObject)
   }
 
   caseDirectoryPathWidget->setText(jsonObject["caseDirectoryPath"].toString());
+  */
 
-  // openFoamVersion->setCurrentText(jsonObject["OpenFoamVersion"].toString());
+  // Read in the input JSON file
+  // If its a worfklow file, ClaymoreUW MPM data will be nested in the "Events" array as an object
+  // If its a standalone file, ClaymoreUW MPM data will be the root object
+  QJsonArray eventsArray;
+  QJsonObject eventObject;
+  if (jsonObject.contains("Events")) {
+    if (jsonObject["Events"].isArray()) {
+      qDebug() << "MPM::inputFromJSON: jsonObject contains 'Events' array";
+      if (jsonObject["Events"].toArray().size() > 0) {
+        eventsArray = jsonObject["Events"].toArray();
+        if (eventsArray[0].isObject()) {
+          qDebug() << "MPM::inputFromJSON: use the first object in the 'Events' array as input JSON object";
+          eventObject = eventsArray[0].toObject();
+        }
+      }
+    }
+  } else {
+    qDebug() << "MPM::inputFromJSON: eventObject is the root jsonObject";
+    eventObject = jsonObject;
+  }
 
-    if (mpmSettings)
-      mpmSettings->inputFromJSON(jsonObject);
-    if (mpmBodies)
-      mpmBodies->inputFromJSON(jsonObject);
-    if (mpmBoundaries)
-      mpmBoundaries->inputFromJSON(jsonObject);
-    if (mpmSensors)
-      mpmSensors->inputFromJSON(jsonObject);
-    if (mpmOutputs)
-      mpmOutputs->inputFromJSON(jsonObject);
-    if (mpmResults) 
-      // mpmResults->inputFromJSON(jsonObject);
-
+  if (mpmSettings) {
+    qDebug() << "MPM::inputFromJSON: mpmSettings exists";
+    if (mpmSettings->inputFromJSON(eventObject) == false) {
+      qDebug() << "MPM::inputFromJSON: mpmSettings->inputFromJSON() returned false";
+    } else {
+      qDebug() << "MPM::inputFromJSON: mpmSettings->inputFromJSON() returned true";
+    }
+  }
+  if (mpmBodies) {
+    qDebug() << "MPM::inputFromJSON: mpmBodies exists";
+    if (mpmBodies->inputFromJSON(eventObject) == false) {
+      qDebug() << "MPM::inputFromJSON: mpmBodies->inputFromJSON() returned false";
+    } else {
+      qDebug() << "MPM::inputFromJSON: mpmBodies->inputFromJSON() returned true";
+    }
+  }
+  if (mpmBoundaries) {
+    qDebug() << "MPM::inputFromJSON: mpmBoundaries exists";
+    if (mpmBoundaries->inputFromJSON(eventObject) == false) {
+      qDebug() << "MPM::inputFromJSON: mpmBoundaries->inputFromJSON() returned false";
+    } else {
+      qDebug() << "MPM::inputFromJSON: mpmBoundaries->inputFromJSON() returned true";
+    }
+  }
+  if (mpmSensors) {
+    qDebug() << "MPM::inputFromJSON: mpmSensors exists";
+    if (mpmSensors->inputFromJSON(eventObject) == false) {
+      qDebug() << "MPM::inputFromJSON: mpmSensors->inputFromJSON() returned false";
+    } else {
+      qDebug() << "MPM::inputFromJSON: mpmSensors->inputFromJSON() returned true";
+    }
+  }
+  if (mpmOutputs) {
+    qDebug() << "MPM::inputFromJSON: mpmOutputs exists";
+    if (mpmOutputs->inputFromJSON(eventObject) == false) {
+      qDebug() << "MPM::inputFromJSON: mpmOutputs->inputFromJSON() returned false";
+    } else {
+      qDebug() << "MPM::inputFromJSON: mpmOutputs->inputFromJSON() returned true";
+    }
+  }
+  if (mpmResults) {
+    // mpmResults->inputFromJSON(jsonObject);
+  }
   this->showVisualization();
   return true;
 }
@@ -1806,13 +1871,15 @@ bool MPM::copyFiles(QString &destDir) {
     {
         destDirCaseDir.mkpath("."); // Make the directory if it doesn't exist
     }
+
+
     bool result = this->copyPath(caseDir(), destDirCase, false); // False means don't copy the directory itself, just the contents
     if (!result) 
     {
-        QString errorMessage; errorMessage = "MPM - failed to copy files in: " + caseDir() + " to: " + destDirCase;
+        QString errorMessage; errorMessage = "MPM - failed to copy case files in: " + caseDir() + " to: " + destDirCase;
         fatalMessage(errorMessage);
         qDebug() << errorMessage;
-        return false;
+        // return false;
     }
 
     //
@@ -1824,11 +1891,11 @@ bool MPM::copyFiles(QString &destDir) {
     //   qDebug() << "MPM - failed to copy mpmSettings files";
     //   // return false;
     // }
-    // if (mpmBodies->copyFiles(destDir) == false)
-    // {
-    //   qDebug() << "MPM - failed to copy mpmBodies files";
-    //   // return false;
-    // }
+    if (mpmBodies->copyFiles(destDir) == false)
+    {
+      qDebug() << "MPM - failed to copy mpmBodies files";
+      // return false;
+    }
     if (mpmBoundaries->copyFiles(destDir) == false)
     {
       qDebug() << "MPM - failed to copy mpmBoundaries files";
@@ -1860,16 +1927,28 @@ bool MPM::cleanCase()
     //  Remove the primary folders and log file within the case directory recursively
     // 
 
-    QDir zeroDir(caseDir() + QDir::separator() + "0");
-    QDir constDir(caseDir() + QDir::separator() + "constant");
-    QDir systemDir(caseDir() + QDir::separator() + "system");
-    QDir templatedir(caseDir() + QDir::separator() + "templatedir");
-    QDir inputFiles(caseDir() + QDir::separator() + "inputFiles");
-    zeroDir.removeRecursively();
-    constDir.removeRecursively();
-    systemDir.removeRecursively();
-    templatedir.removeRecursively();
-    inputFiles.removeRecursively();
+    // QDir zeroDir(caseDir() + QDir::separator() + "0");
+    // QDir constDir(caseDir() + QDir::separator() + "constant");
+    // QDir systemDir(caseDir() + QDir::separator() + "system");
+    QString templatedirName = QString("templatedir");
+    QString templatedirString = caseDir() + QDir::separator() + templatedirName;
+    QDir templatedir(templatedirString);
+    QDir inputFiles(caseDir() + QDir::separator() + "inputData");
+    // zeroDir.removeRecursively();
+    // constDir.removeRecursively();
+    // systemDir.removeRecursively();
+    if (templatedir.exists()) {
+      if (SCUtils::isSafeToRemoveRecursivily(templatedir.path())) {
+        templatedir.removeRecursively();
+      }
+    }
+    if (inputFiles.exists()) {
+      if (SCUtils::isSafeToRemoveRecursivily(inputFiles.path())) {
+        inputFiles.removeRecursively();
+      }
+    }
+    // templatedir.removeRecursively();
+    // inputFiles.removeRecursively();
     QFile logFile(caseDir() + QDir::separator() + "log.txt");
     if (logFile.exists()) {
       logFile.remove();
@@ -1883,14 +1962,14 @@ bool MPM::removeOldFiles()
     // Remove extra files if they exist in case directory's "0" folder
     //
     
-    auto removeFile = [this](QString filePath) {
-        QFile file(caseDir() + QDir::separator() + "0" + QDir::separator() + filePath);
-        if (file.exists()) { 
-            qDebug() << "Removing old file: " << filePath;
-            file.remove();
-        }
-    };
-    removeFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "oldFile");
+    // auto removeFile = [this](QString filePath) {
+    //     QFile file(caseDir() + QDir::separator() + "0" + QDir::separator() + filePath);
+    //     if (file.exists()) { 
+    //         qDebug() << "Removing old file: " << filePath;
+    //         file.remove();
+    //     }
+    // };
+    // removeFile(caseDir() + QDir::separator() + "0" + QDir::separator() + "oldFile");
     return true;
 }
 
@@ -1922,51 +2001,51 @@ bool MPM::setupCase()
     return true;
 }
 
-// From WE-UQ EmptyDomainCFD
-QVector<QVector<double>> MPM::readTxtData(QString fileName)
-{
-    int colCount  = 0;
-    QVector<QVector<double>>  data;
-    QFile inputFileTest(fileName);
-    if (inputFileTest.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&inputFileTest);
+// // From WE-UQ EmptyDomainCFD
+// QVector<QVector<double>> MPM::readTxtData(QString fileName)
+// {
+//     int colCount  = 0;
+//     QVector<QVector<double>>  data;
+//     QFile inputFileTest(fileName);
+//     if (inputFileTest.open(QIODevice::ReadOnly))
+//     {
+//        QTextStream in(&inputFileTest);
 
-       while (!in.atEnd())
-       {
-            QString line = in.readLine();
-            QStringList  fields = line.split(" ");
-            colCount  = fields.size();
-            break;
-       }
-       inputFileTest.close();
-    }
+//        while (!in.atEnd())
+//        {
+//             QString line = in.readLine();
+//             QStringList  fields = line.split(" ");
+//             colCount  = fields.size();
+//             break;
+//        }
+//        inputFileTest.close();
+//     }
 
-    for (int i=0; i < colCount; i++)
-    {
-        QVector<double> row;
-        data.append(row);
-    }
+//     for (int i=0; i < colCount; i++)
+//     {
+//         QVector<double> row;
+//         data.append(row);
+//     }
 
-    int count  = 0;
-    QFile inputFile(fileName);
-    if (inputFile.open(QIODevice::ReadOnly))
-    {
-       QTextStream in(&inputFile);
-       while (!in.atEnd())
-       {
-            QString line = in.readLine();
-            QStringList  fields = line.split(" ");
-            for (int i=0; i < colCount; i++)
-            {
-                data[i].append(fields[i].toDouble());
-            }
-       }
-       inputFile.close();
-    }
+//     int count  = 0;
+//     QFile inputFile(fileName);
+//     if (inputFile.open(QIODevice::ReadOnly))
+//     {
+//        QTextStream in(&inputFile);
+//        while (!in.atEnd())
+//        {
+//             QString line = in.readLine();
+//             QStringList  fields = line.split(" ");
+//             for (int i=0; i < colCount; i++)
+//             {
+//                 data[i].append(fields[i].toDouble());
+//             }
+//        }
+//        inputFile.close();
+//     }
 
-    return data;
-}
+//     return data;
+// }
 
 bool MPM::isCaseConfigured()
 {
@@ -1999,17 +2078,17 @@ QString MPM::pyScriptsPath()
     return backendAppDir;
 }
 
-// Probably not needed for anything but OpenFOAM
-QString MPM::templateDictDir()
-{
-    QString templateSubFolder = QString("templateOF10Dicts");// "templateMPMDicts";
-    QString templateDictsDir = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
-                                + QString("applications") + QDir::separator() 
-                                + QString("createEVENT") + QDir::separator()
-                                + QString("MPM") + QDir::separator() 
-                                + templateSubFolder;
-    return templateDictsDir;
-}
+// // Probably not needed for anything but OpenFOAM
+// QString MPM::templateDictDir()
+// {
+//     QString templateSubFolder = QString("templateOF10Dicts");// "templateMPMDicts";
+//     QString templateDictsDir = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
+//                                 + QString("applications") + QDir::separator() 
+//                                 + QString("createEVENT") + QDir::separator()
+//                                 + QString("MPM") + QDir::separator() 
+//                                 + templateSubFolder;
+//     return templateDictsDir;
+// }
 
 QString MPM::simulationType()
 {

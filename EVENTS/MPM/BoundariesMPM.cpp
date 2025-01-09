@@ -459,12 +459,37 @@ BoundariesMPM::inputFromJSON(QJsonObject &jsonObject)
   // }
   // bathSTL->inputFromJSON(jsonObject);
   // paddleDisplacementFile->inputFromJSON(jsonObject);
-  for (int i=0; i<numAddedTabs; i++) {
-    if (i >= numReserveTabs) break; // Don't copy files for unreserved tabs
-    addedBoundary[i]->inputFromJSON(jsonObject);
+  QJsonArray boundariesArray  = jsonObject["boundaries"].toArray();
+  int numBoundaries = boundariesArray.size();
+  for (int i=0; i<numBoundaries; i++) {
+    if (i >= numReserveTabs) {
+      qDebug() << "Exceeded number of reserved boundary tabs" << numReserveTabs << "for boundary" << i;
+      break; // Don't add more than the reserved number of tabs
+    }
+    if (i >= numAddedTabs) {
+      // Add a new tab if there are more boundaries than tabs
+      qDebug() << "Exceeded number of added boundary tabs" << numAddedTabs << "for boundary" << i;
+      // TODO: Add a new tab for the boundary
+
+      // tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Custom " + QString::number(numAddedTabs + 1));
+      // int sizeBodyTabs = 20;
+      // tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
+      // theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
+      // theAddedLayout[numAddedTabs]->addWidget(addedBoundary[numAddedTabs]);
+      // numAddedTabs += 1;
+      break;
+    }
+    if (boundariesArray[i].isObject() == false) {
+      qDebug() << "BoundariesMPM::inputFromJSON boundary is not an object in JSON";
+      // return false;
+      continue;
+    }
+    QJsonObject boundaryObject = boundariesArray[i].toObject();
+    if (addedBoundary[i]->inputFromJSON(boundaryObject) == false) {
+      qDebug() << "inputFromJSON(): Failed to input boundary " << i;
+      // return false;
+    }
   }
-
-
   return true;
 }
 
@@ -473,17 +498,19 @@ bool
 BoundariesMPM::copyFiles(QString &destDir)
 {
   // Copy files for each boundary tab to the destination directory
-  bool flag = true; // copyFile returns false on error. So if any of these fail, flag will be false
   for (int i=0; i<numAddedTabs; i++) {
     if (i >= numReserveTabs) break; // Don't copy files for unreserved tabs
-    flag &= addedBoundary[i]->copyFiles(destDir);
-    
+    if (addedBoundary[i]->copyFiles(destDir) == false) {
+      qDebug() << "copyFiles(): Failed to copy files for boundary " << i;
+      // return false;
+    } 
+
     // Perform copyFile on each added boundary tab's contained files (e.g. velocity motion, STL/OBJ, bathymetry file, etc.)
     // flag &= addedBoundary[i].velFile->copyFile(destDir);
     // flag &= addedBoundary[i].paddleDisplacementFile->copyFile(destDir);
     // flag &= addedBoundary[i].bathSTL->copyFile(destDir);
   }
-  return flag; // True if all copyFile return true (i.e., no errors)
+  return true; // True if all copyFile return true (i.e., no errors)
 }
 
 bool

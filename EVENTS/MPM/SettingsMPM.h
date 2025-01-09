@@ -85,7 +85,7 @@ private:
     SC_DoubleLineEdit *duration; // MPM simulation duration, [initialTime, initialTime + duration]
     SC_DoubleLineEdit *timeStep; // MPM time step size 
     SC_DoubleLineEdit *cflNumber; // Courant-Friedrichs-Lewy number (typically 0.5), dt = CFL * dx / v_max
-    SC_IntLineEdit    *framesPerSecond; // Number of frames per second for full animation output
+    // SC_IntLineEdit    *framesPerSecond; // Number of frames per second for full animation output
     SC_ComboBox       *timeIntegration; // Time integration scheme, e.g., Explicit, Semi-implicit, etc.
     // external field settings
     SC_DoubleLineEdit *gravityX; 

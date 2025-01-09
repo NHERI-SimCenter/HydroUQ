@@ -76,7 +76,7 @@ MaterialMPM::MaterialMPM(QWidget *parent) : SimCenterWidget(parent)
   layout->addWidget(materialPreset, numRow++, 1);
   layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
-  QStringList constitutiveList; constitutiveList << "JFluid" << "FixedCorotated" << "NeoHookean" << "DruckerPrager" << "CamClay" << "VonMises" <<"CoupleUP" << "Custom";  
+  QStringList constitutiveList; constitutiveList << "JFluid" << "FixedCorotated" << "NeoHookean" << "DruckerPrager" << "CamClay" << "Custom";  
   constitutive = new SC_ComboBox("constitutive", constitutiveList);
   layout->addWidget(new QLabel("Constitutive Law"),numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(constitutive, numRow++, 1);
@@ -571,31 +571,31 @@ MaterialMPM::~MaterialMPM()
 
 void MaterialMPM::clear(void) 
 {
-  materialPreset->setCurrentIndex(0);
-  constitutive->setCurrentIndex(0);
-  CFL->clear();
-  density->clear();
-  bulkModulus->clear();
-  viscosity->clear();
-  bulkModulusDerivative->clear();
-  youngsModulus->clear();
-  poissonsRatio->clear();
-  cohesion->clear();
-  frictionAngle->clear();
-  dilationAngle->clear();
-  beta->clear();
-  useVolumeCorrection->setChecked(false);
-  useHardening->setChecked(false);
-  xi->clear();
-  logJp->clear();
-  Mohr->clear();
+  // materialPreset->setCurrentIndex(0);
+  // constitutive->setCurrentIndex(0);
+  // CFL->clear();
+  // density->clear();
+  // bulkModulus->clear();
+  // viscosity->clear();
+  // bulkModulusDerivative->clear();
+  // youngsModulus->clear();
+  // poissonsRatio->clear();
+  // cohesion->clear();
+  // frictionAngle->clear();
+  // dilationAngle->clear();
+  // beta->clear();
+  // useVolumeCorrection->setChecked(false);
+  // useHardening->setChecked(false);
+  // xi->clear();
+  // logJp->clear();
+  // Mohr->clear();
 }
 
 bool
 MaterialMPM::setMaterialPreset(int index)
 {
   if (index < 0 || index > materialPreset->count()) {
-    // qDebug() << "MaterialMPM::setMaterialPreset() - Invalid index";
+    qDebug() << "MaterialMPM::setMaterialPreset() - Invalid index";
     return false;
   }
   materialPreset->setCurrentIndex(index);
@@ -615,11 +615,11 @@ MaterialMPM::outputToJSON(QJsonObject &jsonObject)
     materialObject["viscosity"] = viscosity->text().toDouble();
     materialObject["gamma"] = bulkModulusDerivative->text().toDouble();
   }
-  else if (constitutive->currentText() == "FixedCorotated") {
+  else if (constitutive->currentText() == "FixedCorotated" || constitutive->currentText() == "NeoHookean") {
     materialObject["youngs_modulus"] = youngsModulus->text().toDouble();
     materialObject["poisson_ratio"] = poissonsRatio->text().toDouble();
   }
-  else if (constitutive->currentText() == "DruckerPrager") {
+  else if (constitutive->currentText() == "DruckerPrager" || constitutive->currentText() == "Sand") {
     materialObject["youngs_modulus"] = youngsModulus->text().toDouble();
     materialObject["poisson_ratio"] = poissonsRatio->text().toDouble();
     materialObject["cohesion"] = cohesion->text().toDouble();
@@ -628,7 +628,7 @@ MaterialMPM::outputToJSON(QJsonObject &jsonObject)
     materialObject["beta"] = beta->text().toDouble(); // Needed ?
     materialObject["SandVolCorrection"] = useVolumeCorrection->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
   }
-  else if (constitutive->currentText() == "CamClay") {
+  else if (constitutive->currentText() == "CamClay" || constitutive->currentText() == "NACC") {
     materialObject["youngs_modulus"] = youngsModulus->text().toDouble();
     materialObject["poisson_ratio"] = poissonsRatio->text().toDouble();
     materialObject["cohesion"] = cohesion->text().toDouble(); // Needed ?
@@ -665,6 +665,7 @@ MaterialMPM::inputFromJSON(QJsonObject &jsonObject)
   }
   if (jsonObject.contains("constitutive")) {
     QString constitutive_law = jsonObject["constitutive"].toString();
+    // May be DruckerPrager -> Sand and CamClay -> NACC mapping issues
     int index = constitutive->findText(constitutive_law);
     if (index != -1) {
       constitutive->setCurrentIndex(index);

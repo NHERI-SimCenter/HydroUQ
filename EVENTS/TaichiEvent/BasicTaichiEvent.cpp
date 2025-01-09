@@ -54,8 +54,8 @@ BasicTaichiEvent::BasicTaichiEvent(QWidget *parent)
   QString defaultWorkflowScript = pyScriptsPath() + QDir::separator() + defaultWorkflowFilename;
   QString defaultSimulationScript = pyScriptsPath() + QDir::separator() + defaultSimulationFilename;
 
-  theBackendScript = new SC_FileEdit("basicPyScript");
-  theSimulationScript = new SC_FileEdit("interfaceSurface");
+  theBackendScript = new SC_FileEdit("backendScript");
+  theSimulationScript = new SC_FileEdit("simulationScript");
   theBackendScript->setToolTip("Workflow backend script (*.py) which launches the TaichiEvent simulation script. Handles the inputs and outputs for coupling Taichi Lang to the SimCenter workflow.");
   theSimulationScript->setToolTip("Simulation script (*.py) which defines the TaichiEvent numerical simulation program. This script is launched from the workflow backend script in the SimCenter workflow.");
   theBackendScript->setFilename(defaultWorkflowScript);

@@ -66,7 +66,7 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   int maxWidth = 1280;
 
   QStringList numericalMethodList; numericalMethodList << "particles" << "meshes";
-  numericalMethod = new SC_ComboBox("NumericalMethod", numericalMethodList);
+  numericalMethod = new SC_ComboBox("type", numericalMethodList);
   layout->addWidget(new QLabel("Numerical Form"),numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(numericalMethod, numRow++, 1, 1, 2);
   layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -94,7 +94,7 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
 
   ASFLIPGroupBox->setVisible(true);
 
-  ASFLIP_alpha = new SC_DoubleLineEdit("alpha", 0.0);
+  ASFLIP_alpha = new SC_DoubleLineEdit("ASFLIP_alpha", 0.0);
   ASFLIPLayout->addWidget(new QLabel("Velocity Ratio, A"),numBodyRow, 0, 1, 1, Qt::AlignRight);
   ASFLIPLayout->addWidget(ASFLIP_alpha, numBodyRow, 1, 1, 2);
   ASFLIPLayout->itemAt(ASFLIPLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -102,14 +102,14 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   for (int i=0; i<3; ++i) ASFLIPLayout->itemAt(ASFLIPLayout->count()-(1+i))->widget()->setToolTip("ASFLIP advection ratio, alpha. Mixes PIC particle velocity (damped) with FLIP velocity (noisey) to balance stability and advection accuracy. Value of zero is no advection, value of one is full advection. For stiff simulations, the range of 0.0 to 0.9 is generally recommended. See Bonus 2023 (Dissertation), Chapter 5, and Fei et al. 2021 (ASFLIP Paper) for more details.");
 
   // ASFLIPLayout->addToolTip("alpha = 0.5 is a good starting point.");
-  ASFLIP_betaMin = new SC_DoubleLineEdit("beta_min", 0.0);
+  ASFLIP_betaMin = new SC_DoubleLineEdit("ASFLIP_beta_min", 0.0);
   ASFLIPLayout->addWidget(new QLabel("Min. Position Ratio, b"),numBodyRow, 0, 1, 1, Qt::AlignRight);
   ASFLIPLayout->addWidget(ASFLIP_betaMin, numBodyRow, 1, 1, 2);
   ASFLIPLayout->itemAt(ASFLIPLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   ASFLIPLayout->addWidget(new QLabel("[0, min(1,B)]"),numBodyRow++, 3, 1, 1);
   for (int i=0; i<3; ++i) ASFLIPLayout->itemAt(ASFLIPLayout->count()-(1+i))->widget()->setToolTip("ASFLIP advection position ratio maximum, Max(Beta). Upper-bound for the linear mix of PIC particle position (damped) with FLIP position (noisey) to balance stability, advection accuracy. Further, partially decouples particle motion from the filtered, sticky MPM grid when a condition is met (e.g. 2 percent volumetric tension on a near-surface particle). Can significantly improve contact between material bodies that are separating or sliding. Value of zero reverts to MPM's sticky contact, value of one fully applies PIC-FLIP velocity modes (throttled by velocity ratio, alpha) on individual particles to their position update. For material bodies that may need non-sticky contact, the range of 0.0 to 0.05 is reasonable but caution is recommended as there is a high-risk for instabilities and penetratative impacts. See Bonus 2023 (Dissertation), Chapter 5, and Fei et al. 2021 (ASFLIP Paper) for more details.");
 
-  ASFLIP_betaMax = new SC_DoubleLineEdit("beta_max", 0.0);
+  ASFLIP_betaMax = new SC_DoubleLineEdit("ASFLIP_beta_max", 0.0);
   ASFLIPLayout->addWidget(new QLabel("Max. Position Ratio, B"),numBodyRow, 0, 1, 1, Qt::AlignRight);
   ASFLIPLayout->addWidget(ASFLIP_betaMax, numBodyRow, 1, 1, 2);
   ASFLIPLayout->itemAt(ASFLIPLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -129,7 +129,7 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   FBARGroupBox->setVisible(true);
 
 
-  FBAR_psi = new SC_DoubleLineEdit("FBAR_ratio", 0.0);
+  FBAR_psi = new SC_DoubleLineEdit("FBAR_psi", 0.0);
   FBARLayout->addWidget(new QLabel("Antilocking Ratio"),numBodyRow, 0, 1, 1, Qt::AlignRight);
   FBARLayout->addWidget(FBAR_psi, numBodyRow, 1, 1, 2);
   FBARLayout->itemAt(FBARLayout->count()-1)->widget()->setMaximumWidth(maxWidth);

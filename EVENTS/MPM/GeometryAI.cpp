@@ -507,8 +507,12 @@ GeometryAI::image2pointcloud()
 bool
 GeometryAI::inputFromJSON(QJsonObject &jsonObject)
 {
-    textPrompt->setText(jsonObject["text-prompt"].toString());
-    imagePrompt->setText(jsonObject["image-prompt"].toString());
+    if (jsonObject.contains("text-prompt")) {
+        textPrompt->setText(jsonObject["text-prompt"].toString());
+    }
+    if (jsonObject.contains("image-prompt")) {
+        imagePrompt->setText(jsonObject["image-prompt"].toString());
+    }
     return true;
 }
 

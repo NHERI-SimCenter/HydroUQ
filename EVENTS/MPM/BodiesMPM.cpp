@@ -622,36 +622,56 @@ BodiesMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 BodiesMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  this->clear(); // Clear all bodies
+  // this->clear(); // Clear all bodies
 
   // Input all bodies
   QJsonArray bodiesArray = jsonObject["bodies"].toArray();
   for (int i=0; i<bodiesArray.size(); i++) {
+    qDebug() << "inputFromJSON(): Body " << i;
     QJsonObject bodyObject = bodiesArray[i].toObject();
     QJsonObject materialObject = bodyObject["material"].toObject();
     QJsonObject algorithmObject = bodyObject["algorithm"].toObject();
     if (bodyObject["name"].toString() == "fluid") {
-      fluidGeometries->inputFromJSON(bodyObject);
+      qDebug() << "Fluid Body";
+      qDebug() << "inputFromJSON() material";
       fluidMaterial->inputFromJSON(materialObject);
+      qDebug() << "inputFromJSON() algorithm";
       fluidAlgorithm->inputFromJSON(algorithmObject);
+      qDebug() << "inputFromJSON() partitions";
       fluidPartitions->inputFromJSON(bodyObject);
+      qDebug() << "inputFromJSON() skip geometries";
+      fluidGeometries->inputFromJSON(bodyObject);
     } else if (bodyObject["name"].toString() == "debris") {
-      debrisGeometries->inputFromJSON(bodyObject);
+      qDebug() << "Debris Body";
+      qDebug() << "inputFromJSON() material";
       debrisMaterial->inputFromJSON(materialObject);
+      qDebug() << "inputFromJSON() algorithm";
       debrisAlgorithm->inputFromJSON(algorithmObject);
+      qDebug() << "inputFromJSON() partitions";
       debrisPartitions->inputFromJSON(bodyObject);
+      qDebug() << "inputFromJSON() skip geometries";
+      debrisGeometries->inputFromJSON(bodyObject);
     } else if (bodyObject["name"].toString() == "structure") {
-      structureGeometries->inputFromJSON(bodyObject);
+      qDebug() << "Structure Body";
       structureMaterial->inputFromJSON(materialObject);
+      qDebug() << "inputFromJSON() algorithm";
       structureAlgorithm->inputFromJSON(algorithmObject);
+      qDebug() << "inputFromJSON() partitions";
       structurePartitions->inputFromJSON(bodyObject);
+      qDebug() << "inputFromJSON() skip geometries";
+      structureGeometries->inputFromJSON(bodyObject);
     } else if (bodyObject["name"].toString().startsWith("custom_")) {
       int customIdx = bodyObject["name"].toString().split("_")[1].toInt();
       if (customIdx >= numReserveTabs) break;
-      addedGeometries[customIdx]->inputFromJSON(bodyObject);
+      qDebug() << "Custom Body " << customIdx;
+      qDebug() << "inputFromJSON() material";
       addedMaterial[customIdx]->inputFromJSON(materialObject);
+      qDebug() << "inputFromJSON() algorithm";
       addedAlgorithm[customIdx]->inputFromJSON(algorithmObject);
+      qDebug() << "inputFromJSON() partitions";
       addedPartitions[customIdx]->inputFromJSON(bodyObject);
+      qDebug() << "inputFromJSON() skip geometries";
+      addedGeometries[customIdx]->inputFromJSON(bodyObject);
     }
   }
 
