@@ -235,7 +235,13 @@ bool
 GeometriesMPM::copyFiles(QString &destDir)
 {
   for (int i=0; i<numAddedTabs; i++) {
-    addedGeometry[i]->copyFiles(destDir);
+    if (i >= numReserveTabs) break; // Don't copy files for unreserved tabs
+    if (addedGeometry[i]->copyFiles(destDir) == false) {
+      qDebug() << "Error: Failed to copy geometry files to " << destDir << " for geometry " << i;
+      // return false;
+    } else {
+      qDebug() << "Success: Copied geometry files to " << destDir << " for geometry " << i;
+    }
   }
   return true;
 }

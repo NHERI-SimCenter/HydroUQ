@@ -947,10 +947,15 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     QDir workDir(workingDir);
 
     QString tmpDirectory = workDir.absoluteFilePath(tmpDirName);
+    qDebug() << "tmpDirectory: " << tmpDirectory;
+    
     QDir destinationDirectory(tmpDirectory);
 
+
     if (destinationDirectory.exists()) {
+        qDebug() << "Destination Directory Exists, trying to remove it";
         if (SCUtils::isSafeToRemoveRecursivily(tmpDirectory)) {
+            qDebug() << "Removing Destination Directory Recursivily";
             destinationDirectory.removeRecursively();
         }
         else {
@@ -959,29 +964,54 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
             fatalMessage(msg);
         }
     }
-
-    destinationDirectory.mkpath(tmpDirectory);
-
     // Used in other places temporarily, 
     // e.g. citation output for Tools to avoid passing parameters
     defaultWorkDir = destinationDirectory;
     defaultSubDir = subDir;
 
+    qDebug() << "defaultWorkDir: " << defaultWorkDir;
+    qDebug() << "defaultSubDir: " << defaultSubDir;
+
+    destinationDirectory.mkpath(tmpDirectory);
     QString templateDirectory  = destinationDirectory.absoluteFilePath(subDir);
+    qDebug() << "templateDirectory: " << templateDirectory;
     destinationDirectory.mkpath(templateDirectory);
+
+
+
 
     // copyPath(path, tmpDirectory, false);
     if (theSIM->copyFiles(templateDirectory) == false) {
       errorMessage("Workflow Failed to start as SIM failed in copyFiles");
       return;
+    } else {
+      qDebug() << "SIM copyFiles() successful";
     }
     if (theEventSelection->copyFiles(templateDirectory) == false) {
       errorMessage("Workflow Failed to start as EVENT failed in copyFiles");
       return;
+    } else {
+      qDebug() << "EVENT copyFiles() successful";
     }
-    theAnalysisSelection->copyFiles(templateDirectory);
-    theUQ_Selection->copyFiles(templateDirectory);
-    theEDP_Selection->copyFiles(templateDirectory);
+
+    if (theAnalysisSelection->copyFiles(templateDirectory) == false) {
+      errorMessage("Workflow Failed to start as FEM failed in copyFiles");
+      return;
+    } else {
+      qDebug() << "FEM copyFiles() successful";
+    }
+    if (theUQ_Selection->copyFiles(templateDirectory) == false) {
+        errorMessage("Workflow Failed to start as UQ failed in copyFiles");
+        return;
+    } else {
+        qDebug() << "UQ copyFiles() successful";
+    }
+    if (theEDP_Selection->copyFiles(templateDirectory) == false) {
+        errorMessage("Workflow Failed to start as EDP failed in copyFiles");
+        return;
+    } else {
+        qDebug() << "EDP copyFiles() successful";
+    }
 
     //
     // in new templatedir dir save the UI data into dakota.json or scInput.json file (same result as using saveAs)
@@ -989,10 +1019,13 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     //
 
     QString inputFile = templateDirectory + QDir::separator() + tr("scInput.json");
+    qDebug() << "inputFile: " << inputFile;
+
 
     QFile file(inputFile);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
         //errorMessage();
+        qDebug() << "ERROR - FATAL - WorkflowAppHydroUQ::setUpForApplicationRun failed to open file for writing";
         return;
     }
     QJsonObject json;
@@ -1253,6 +1286,8 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     // json.insert("citations",citations);
 
     // statusMessage("Set-Up Done .. Now Starting HydroUQ Application");
+    qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Set-Up Done .. Now Starting HydroUQ Application";
+    qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Emitting setUpForApplicationRunDone( " << tmpDirectory << ", " << inputFile << " )";
     emit setUpForApplicationRunDone(tmpDirectory, inputFile);
     return;
 }

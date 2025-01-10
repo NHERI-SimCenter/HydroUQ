@@ -684,26 +684,110 @@ BodiesMPM::inputFromJSON(QJsonObject &jsonObject)
 bool
 BodiesMPM::copyFiles(QString &destDir)
 {
-  fluidGeometries->copyFiles(destDir);
-  fluidMaterial->copyFiles(destDir);
-  fluidAlgorithm->copyFiles(destDir);
-  fluidPartitions->copyFiles(destDir);
+  qDebug() << "BodiesMPM::copyFiles()";
+  qDebug() << "destDir: " << destDir;
 
-  debrisGeometries->copyFiles(destDir);
-  debrisMaterial->copyFiles(destDir);
-  debrisAlgorithm->copyFiles(destDir);
-  debrisPartitions->copyFiles(destDir);
+  qDebug() << "MPM->copyFiles(): fluid->copyFiles()";
+  {
+    if (fluidGeometries) {
+      qDebug() << "fluidGeometries->copyFiles()";
+      if (fluidGeometries->copyFiles(destDir) == false) qDebug() << "fluidGeometries->copyFiles() failed";
+      else qDebug() << "fluidGeometries->copyFiles() succeeded";
+    }
 
-  structureGeometries->copyFiles(destDir);
-  structureMaterial->copyFiles(destDir);
-  structureAlgorithm->copyFiles(destDir);
-  structurePartitions->copyFiles(destDir);
+    if (fluidMaterial) {
+      qDebug() << "fluidMaterial->copyFiles()";
+      if (fluidMaterial->copyFiles(destDir) == false) qDebug() << "fluidMaterial->copyFiles() failed";
+      else qDebug() << "fluidMaterial->copyFiles() succeeded";
+    }
 
+    if (fluidAlgorithm) {
+      qDebug() << "fluidAlgorithm->copyFiles()";
+      if (fluidAlgorithm->copyFiles(destDir) == false) qDebug() << "fluidAlgorithm->copyFiles() failed";
+      else qDebug() << "fluidAlgorithm->copyFiles() succeeded";
+    }
+    
+    if (fluidPartitions) {
+      qDebug() << "fluidPartitions->copyFiles()";
+      if (fluidPartitions->copyFiles(destDir) == false) qDebug() << "fluidPartitions->copyFiles() failed";
+      else qDebug() << "fluidPartitions->copyFiles() succeeded";
+    }
+  }
+  
+  qDebug() << "MPM->copyFiles(): debris->copyFiles()";
+  {
+    if (debrisGeometries) {
+      qDebug() << "debrisGeometries->copyFiles()";
+      if (debrisGeometries->copyFiles(destDir) == false) qDebug() << "debrisGeometries->copyFiles() failed";
+      else qDebug() << "debrisGeometries->copyFiles() succeeded";
+    }
+
+    if (debrisMaterial) {
+      qDebug() << "debrisMaterial->copyFiles()";
+      if (debrisMaterial->copyFiles(destDir) == false) qDebug() << "debrisMaterial->copyFiles() failed";
+      else qDebug() << "debrisMaterial->copyFiles() succeeded";
+    }
+
+    if (debrisAlgorithm) {
+      qDebug() << "debrisAlgorithm->copyFiles()";
+      if (debrisAlgorithm->copyFiles(destDir) == false) qDebug() << "debrisAlgorithm->copyFiles() failed";
+      else qDebug() << "debrisAlgorithm->copyFiles() succeeded";
+    }
+
+    if (debrisPartitions) {
+      qDebug() << "debrisPartitions->copyFiles()";
+      if (debrisPartitions->copyFiles(destDir) == false) qDebug() << "debrisPartitions->copyFiles() failed";
+      else qDebug() << "debrisPartitions->copyFiles() succeeded";
+    }
+  }
+
+  qDebug() << "MPM->copyFiles(): structure->copyFiles()";
+  {
+    if (structureGeometries) {
+      qDebug() << "structureGeometries->copyFiles()";
+      if (structureGeometries->copyFiles(destDir) == false) qDebug() << "structureGeometries->copyFiles() failed";
+      else qDebug() << "structureGeometries->copyFiles() succeeded";
+    }
+
+    if (structureMaterial) {
+      qDebug() << "structureMaterial->copyFiles()";
+      if (structureMaterial->copyFiles(destDir) == false) qDebug() << "structureMaterial->copyFiles() failed";
+      else qDebug() << "structureMaterial->copyFiles() succeeded";
+    }
+
+    if (structureAlgorithm) {
+      qDebug() << "structureAlgorithm->copyFiles()";
+      if (structureAlgorithm->copyFiles(destDir) == false) qDebug() << "structureAlgorithm->copyFiles() failed";
+      else qDebug() << "structureAlgorithm->copyFiles() succeeded";
+    }
+
+    if (structurePartitions) {
+      qDebug() << "structurePartitions->copyFiles()";
+      if (structurePartitions->copyFiles(destDir) == false) qDebug() << "structurePartitions->copyFiles() failed";
+      else qDebug() << "structurePartitions->copyFiles() succeeded";
+    }
+  }
+
+  qDebug() << "MPM->copyFiles(): added->copyFiles()";
   for (int i=0; i<numAddedTabs; i++) {
-    addedGeometries[i]->copyFiles(destDir);
-    addedMaterial[i]->copyFiles(destDir);
-    addedAlgorithm[i]->copyFiles(destDir);
-    addedPartitions[i]->copyFiles(destDir);
+    qDebug() << "MPM->copyFiles(): added[" << i << "]->copyFiles()";
+    if (addedGeometries[i]) {
+      if (addedGeometries[i]->copyFiles(destDir) == false) qDebug() << "addedGeometries->copyFiles() failed";
+      else qDebug() << "addedGeometries->copyFiles() succeeded";
+    }
+    if (addedMaterial[i]) {
+      if (addedMaterial[i]->copyFiles(destDir) == false) qDebug() << "addedMaterial->copyFiles() failed";
+      else qDebug() << "addedMaterial->copyFiles() succeeded";
+    }
+
+    if (addedAlgorithm[i]) {
+      if (addedAlgorithm[i]->copyFiles(destDir) == false) qDebug() << "addedAlgorithm->copyFiles() failed";
+      else qDebug() << "addedAlgorithm->copyFiles() succeeded";
+    }
+    if (addedPartitions[i]) {
+      if (addedPartitions[i]->copyFiles(destDir) == false) qDebug() << "addedPartitions->copyFiles() failed";
+      else qDebug() << "addedPartitions->copyFiles() succeeded";
+    }
   }
 
   return true;
