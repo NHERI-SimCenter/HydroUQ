@@ -605,6 +605,7 @@ bool
 PartitionsMPM::copyFiles(QString &destDir)
 {
   for (int i=0; i<numAddedTabs; i++) {
+    qDebug() << "Copying files for partition " << i << " to " << destDir;
     addedPartition[i]->copyFiles(destDir);
   }
   return true;

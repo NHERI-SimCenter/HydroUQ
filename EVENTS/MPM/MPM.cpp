@@ -1374,23 +1374,29 @@ void MPM::executeBackendScript()
     QString scriptName = "MPM.py"; // "setup_case.py";
     QString scriptPath = pyScriptsPath() + QDir::separator() + scriptName; 
     QString outputFile = caseDir() + QDir::separator() + "EVENT.json";
+    /*
     if (QFileInfo(outputFile).exists() == false) {
       // Create the empty EVENT.json file if it doesn't exist
       QFile file(outputFile);
       file.open(QIODevice::WriteOnly);
       file.close();
     }
-
+    */
     if (QFileInfo(scriptPath).exists())
     {
+      qDebug() << "Running script: " << scriptPath;
       QString program = SimCenterPreferences::getInstance()->getPython();
+      qDebug() << "Program: " << program;
       QStringList arguments; arguments << scriptPath << "--filenameAIM" << jsonFile << "--filenameEVENT" << outputFile;
+      qDebug() << "Arguments: " << jsonFile << " " << outputFile;
+      qDebug() << "MPM: Skipping running program with arguments for debug purposes.";
+      /*
       QProcess *process = new QProcess(this);
       process->start(program, arguments);
       process->waitForFinished(-1);
       process->close();
       // process->deleteLater();
-      
+      */
     } 
     else 
     {
@@ -1466,23 +1472,33 @@ void MPM::clear(void)
     this->hideVisualization();
 
     if (mpmSettings) {
+      qDebug() << "MPM::clear: mpmSettings->clear() started";
       mpmSettings->clear();
+      qDebug() << "MPM::clear: mpmSettings->clear() finished";
       // qDebug() << "MPM::clear: mpmSettings->clear() returned false";
     }
     if (mpmBodies) {
+      qDebug() << "MPM::clear: mpmBodies->clear() started";
       mpmBodies->clear();
+      qDebug() << "MPM::clear: mpmBodies->clear() finished";
       // qDebug() << "MPM::clear: mpmBodies->clear() returned false";
     }
     if (mpmBoundaries) {
+      qDebug() << "MPM::clear: mpmBoundaries->clear() started";
       mpmBoundaries->clear();
+      qDebug() << "MPM::clear: mpmBoundaries->clear() finished";
       // qDebug() << "MPM::clear: mpmBoundaries->clear() returned false";
     }
     if (mpmSensors) {
+      qDebug() << "MPM::clear: mpmSensors->clear() started";
       mpmSensors->clear();
+      qDebug() << "MPM::clear: mpmSensors->clear() finished";
       // qDebug() << "MPM::clear: mpmSensors->clear() returned false";
     }
     if (mpmOutputs) {
+      qDebug() << "MPM::clear: mpmOutputs->clear() started";
       mpmOutputs->clear();
+      qDebug() << "MPM::clear: mpmOutputs->clear() finished";
       // qDebug() << "MPM::clear: mpmOutputs->clear() returned false";
     }
 }
@@ -1857,12 +1873,15 @@ bool MPM::inputAppDataFromJSON(QJsonObject &jsonObject) {
 
 
 bool MPM::copyFiles(QString &destDir) {
+    qDebug() << "MPM - copying files";
+    qDebug() << "MPM - destDir: " << destDir;
     //
     //  Copy the files in the case directory to the destination directory
     //  This is the directory where the simulations will be run / staged
     //  Should pull together any files needed for the simulation, e.g. specified input files
     //
 
+    /*
     executeBackendScript();
     QString caseName = "MPM";
     QString destDirCase = destDir + QDir::separator() + caseName;
@@ -1881,6 +1900,7 @@ bool MPM::copyFiles(QString &destDir) {
         qDebug() << errorMessage;
         // return false;
     }
+    */
 
     //
     //  Copy files from all the major sub-widgets
@@ -1893,13 +1913,17 @@ bool MPM::copyFiles(QString &destDir) {
     // }
     if (mpmBodies->copyFiles(destDir) == false)
     {
-      qDebug() << "MPM - failed to copy mpmBodies files";
+      qDebug() << "MPM - failed to copy mpmBodies files to: " << destDir;
       // return false;
+    } else {
+      qDebug() << "MPM - copied mpmBodies files to: " << destDir;
     }
     if (mpmBoundaries->copyFiles(destDir) == false)
     {
-      qDebug() << "MPM - failed to copy mpmBoundaries files";
+      qDebug() << "MPM - failed to copy mpmBoundaries files to: " << destDir;
       // return false;
+    } else {
+      qDebug() << "MPM - copied mpmBoundaries files to: " << destDir;
     }
     // if (mpmSensors->copyFiles(destDir) == false)
     // {

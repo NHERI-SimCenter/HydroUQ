@@ -503,7 +503,9 @@ BoundariesMPM::copyFiles(QString &destDir)
     if (addedBoundary[i]->copyFiles(destDir) == false) {
       qDebug() << "copyFiles(): Failed to copy files for boundary " << i;
       // return false;
-    } 
+    } else {
+      qDebug() << "copyFiles(): Copied files for boundary " << i;
+    }
 
     // Perform copyFile on each added boundary tab's contained files (e.g. velocity motion, STL/OBJ, bathymetry file, etc.)
     // flag &= addedBoundary[i].velFile->copyFile(destDir);

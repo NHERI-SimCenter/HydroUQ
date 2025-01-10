@@ -317,6 +317,9 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   bathXZData = new SC_TableEdit("bathymetry", bathXZHeadings, 7, dataBathXZ);
   bathSTL = new SC_FileEdit("bathSTL");
 
+  geometryFile = nullptr;
+  checkpointBGEO = nullptr;
+
   QWidget *ptWidget = new QWidget(); 
   QGridLayout *ptLayout = new QGridLayout();
   ptLayout->addWidget(new QLabel("Use Custom Bathymetry?"),0,0);
@@ -891,9 +894,9 @@ void GeometryMPM::clear(void)
   // delete bathXZData; bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 7, dataBathXZ);
   // bathXZData->reset();
   QString dummyFilename = "";
-  bathSTL->setFilename(dummyFilename);
-  geometryFile->setFilename(dummyFilename);
-  checkpointBGEO->setFilename(dummyFilename);
+  if (bathSTL != nullptr) bathSTL->setFilename(dummyFilename);
+  if (geometryFile != nullptr) geometryFile->setFilename(dummyFilename);
+  if (checkpointBGEO != nullptr) checkpointBGEO->setFilename(dummyFilename);
   length->setText("1.0");
   height->setText("1.0");
   width->setText("1.0");
@@ -1054,20 +1057,24 @@ GeometryMPM::outputToJSON(QJsonObject &jsonObject)
   }
 
   if (geometryObject["object"].toString() == "File") {
-    if (geometryFile->getFilename().isEmpty() == false) {
-      geometryObject["file"] = geometryFile->getFilename();
-    } else {
-      qDebug() << "Error: No geometry or checkpoint file selected for bodies object type: File";
-    }
-    if (geometryObject["file"].toString().isEmpty()) {
-      qDebug() << "Error: No geometry or checkpoint file selected for bodies object type: File";
+    if (geometryFile != nullptr) {
+      if (geometryFile->getFilename().isEmpty() == false) {
+        geometryObject["file"] = geometryFile->getFilename();
+      } else {
+        qDebug() << "Error: No geometry or checkpoint file selected for bodies object type: File";
+      }
+      if (geometryObject["file"].toString().isEmpty()) {
+        qDebug() << "Error: No geometry or checkpoint file selected for bodies object type: File";
+      }
     }
   }
   if (geometryObject["object"].toString() == "Checkpoint") {
-    if (checkpointBGEO->getFilename().isEmpty() == false) {
-      geometryObject["file"] = checkpointBGEO->getFilename();
-    } else {
-      qDebug() << "Error: No checkpoint file selected for bodies object type: Checkpoint";
+    if (checkpointBGEO != nullptr) {
+      if (checkpointBGEO->getFilename().isEmpty() == false) {
+        geometryObject["file"] = checkpointBGEO->getFilename();
+      } else {
+        qDebug() << "Error: No checkpoint file selected for bodies object type: Checkpoint";
+      }
     }
   }
 
@@ -1187,7 +1194,11 @@ GeometryMPM::inputFromJSON(QJsonObject &jsonObject)
     if (jsonObject.contains("file")) {
       qDebug() << "inputFromJSON(): INFO: Geometry File: " << jsonObject["file"].toString();
       QString fileString = jsonObject["file"].toString();
-      geometryFile->setFilename(fileString);
+      if (geometryFile != nullptr) {
+        geometryFile->setFilename(fileString);
+      } else {
+        qDebug() << "inputFromJSON(): WARN: geometryFile widget is nullptr";
+      }
     } else {
       qDebug() << "inputFromJSON(): WARN: No geometry file found in JSON object for object type: " << objectType->currentText();
     }
@@ -1196,7 +1207,11 @@ GeometryMPM::inputFromJSON(QJsonObject &jsonObject)
       if (jsonObject.contains("file")) {
         qDebug() << "inputFromJSON(): INFO: Checkpoint File: " << jsonObject["file"].toString();
         QString fileString = jsonObject["file"].toString();
-        checkpointBGEO->setFilename(fileString);
+        if (checkpointBGEO != nullptr) {
+          checkpointBGEO->setFilename(fileString);
+        } else {
+          qDebug() << "inputFromJSON(): WARN: checkpointBGEO widget is nullptr";
+        }
       } else {
         qDebug() << "inputFromJSON(): WARN: No checkpoint file found in JSON object for object type: " << objectType->currentText();
       }
@@ -1354,24 +1369,42 @@ GeometryMPM::copyFiles(QString &destDir)
 {
 
   // Copy the bathymetry file to the destination directory
-  if (bathSTL->getFilename().isEmpty() == false) {
-    if (bathSTL->copyFile(destDir) == false) {
-      qDebug() << "Error: Failed to copy bathymetry file";
-      // return false;
+  if (bathSTL != nullptr) {
+    qDebug() << "GeometryMPM->copyFiles(): bathSTL exists";
+    if (bathSTL->getFilename().isEmpty() == false) {
+      qDebug() << "Copying " << bathSTL->getFilename() << " to " << destDir;
+      if (bathSTL->copyFile(destDir) == false) {
+        qDebug() << "Error: Failed to copy bathymetry file to: " << destDir;
+        // return false;
+      } else {
+        qDebug() << "Copied bathymetry file to: " << destDir;
+      }
     }
   }
 
-  if (geometryFile->getFilename().isEmpty() == false) {
-    if (geometryFile->copyFile(destDir) == false) {
-      qDebug() << "Error: Failed to copy geometry file";
-      // return false;
+  if (geometryFile != nullptr) {
+    qDebug() << "GeometryMPM->copyFiles(): geometryFile exists";
+    if (geometryFile->getFilename().isEmpty() == false) {
+      qDebug() << "Copying " << geometryFile->getFilename() << " to " << destDir;
+      if (geometryFile->copyFile(destDir) == false) {
+        qDebug() << "Error: Failed to copy geometry file to: " << destDir;
+        // return false;
+      } else {
+        qDebug() << "Copied geometry file to: " << destDir;
+      }
     }
   }
 
-  if (checkpointBGEO->getFilename().isEmpty() == false) {
-    if (checkpointBGEO->copyFile(destDir) == false) {
-      qDebug() << "Error: Failed to copy checkpoint BGEO file";
-      // return false;
+  if (checkpointBGEO != nullptr) {
+    qDebug() << "GeometryMPM->copyFiles(): checkpointBGEO exists";
+    if (checkpointBGEO->getFilename().isEmpty() == false) {
+      qDebug() << "Copying " << checkpointBGEO->getFilename() << " to " << destDir;
+      if (checkpointBGEO->copyFile(destDir) == false) {
+        qDebug() << "Error: Failed to copy checkpoint BGEO file";
+        // return false;
+      } else {
+        qDebug() << "Copied checkpoint BGEO file to: " << destDir;
+      }
     }
   }
 

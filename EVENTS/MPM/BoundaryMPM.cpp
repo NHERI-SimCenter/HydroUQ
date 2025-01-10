@@ -382,6 +382,9 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
 
   // /**
+  dataDir = nullptr;
+  
+
   thePlot = new SimCenterGraphPlot(QString("Time [s]"),QString("Displacement [m]"), 500, 500);
   if (inpty==QString("Periodic Waves")) {
       alpha = this->createTextEntry(tr("Height"), periodicLayout, 0);
@@ -1955,23 +1958,32 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
 bool
 BoundaryMPM::copyFiles(QString &destDir)
 {
-  if (inpty==QString("Preset Paddle - OSU LWF") || inpty==QString("Preset Paddle - OSU DWB") || inpty==QString("Paddle")) {
+  // if (inpty==QString("Preset Paddle - OSU LWF") || inpty==QString("Preset Paddle - OSU DWB") || inpty==QString("Paddle")) {
 
+  qDebug() << "BoundaryMPM::copyFiles(): destDir: " << destDir;
+
+  if (dataDir != nullptr) {
     if (QFile::copy(dataDir->text(), destDir) == false) {
-        qDebug() << "ERROR: copying paddle displacement file: " << dataDir->text() << " to " << destDir;
-    } else {
-      if (paddleDisplacementFile) {
-        if (paddleDisplacementFile->copyFile(destDir) == false) {
-          qDebug() << "ERROR: copying paddle displacement file: " << paddleDisplacementFile->getFilename() << " to " << destDir;
-        }
-      }
+      qDebug() << "ERROR: copying paddle displacement file: " << dataDir->text() << " to " << destDir;
     }
+  } else {
+    qDebug() << "ERROR: copying paddle displacement file: dataDir is nullptr";
+  }
+  
+  if (paddleDisplacementFile != nullptr) {
+    if (paddleDisplacementFile->copyFile(destDir) == false) {
+      qDebug() << "ERROR: copying paddle displacement file: " << paddleDisplacementFile->getFilename() << " to " << destDir;
+    }
+  } else {
+    qDebug() << "ERROR: copying paddle displacement file: paddleDisplacementFile is nullptr";
   }
 
-  if (bathSTL) {
+  if (bathSTL != nullptr) {
     if (bathSTL->copyFile(destDir) == false) {
       qDebug() << "ERROR: copying bathymetry file: " << bathSTL->getFilename() << " to " << destDir;
     }
+  } else {
+    qDebug() << "ERROR: copying bathymetry file: bathSTL is nullptr";
   }
 
   return true;    
