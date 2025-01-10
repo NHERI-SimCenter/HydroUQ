@@ -40,7 +40,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QLabel>
 #include <QComboBox>
 #include <QSpinBox>
-// #include <QDoubleSpinBox>
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -64,6 +63,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QFileDialog>
 #include <QPixmap>
 #include <QScrollArea>
+#include <QProcess>
+#include <SimCenterPreferences.h>
+#include <QJsonDocument>
+// #include <GeneralInformationWidget.h>
 
 #include <RandomVariablesContainer.h>
 #include <SC_ComboBox.h>
@@ -85,8 +88,11 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
 {
 
   QPushButton *showPlotButton = NULL;
-  theDomainImageButton = NULL;
+  QPushButton *showPlotButtonTimeSeries = NULL;
+
+  // theDomainImageButton = NULL;
   thePlot = NULL;
+  thePlotTimeSeries = NULL;
 
   modelDescription = new QLabel(tr(" Sample JONSWAP spectras (empirical sea-state) for stochastic loads on monopile-like structures. "
                                    "\n The welib Python package provides validated JONSWAP distributions and Wheeler-corrected Morison wave loads on simple monopile structures. "
@@ -121,13 +127,22 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   peakPeriod->setText("12.0");
 
   timeStep = new LineEditRV(randomVariables);
-  timeStep->setText("0.1");
+  timeStep->setText("1.0");
   timeDuration = new LineEditRV(randomVariables);
-  timeDuration->setText("3600.0");
+  timeDuration->setText("300.0");
 
   recorderOriginX = new LineEditRV(randomVariables);
   recorderOriginX->setText("0.0");
+  // Base off of stories in GI
   recorderCountZ = new SC_IntLineEdit("recorderCountZ", 2);
+  recorderCountZ->setToolTip("Number of load recorders on the structure, should be equal to the number of floors in the building (i.e., stories + 1).");
+  // GeneralInformationWidget *theGI = GeneralInformationWidget::getInstance();
+  // theGI->getNumberOfFloors();
+
+  // connect(theGI, &GeneralInformationWidget::floorsChanged, [=](int floors){
+  //   recorderCountZ->setText(QString::number(floors));
+  // });
+
 
   dragCoefficient = new LineEditRV(randomVariables);
   dragCoefficient->setText("2.1");
@@ -141,21 +156,21 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   exposureCategory->addItem("NATO 2");
   exposureCategory->addItem("NATO 1");
 
-//   exposureCategory = new QComboBox();
-//   exposureCategory->addItem("JONSWAP");
+  //   exposureCategory = new QComboBox();
+  //   exposureCategory->addItem("JONSWAP");
 
-//   seed = new QSpinBox();
-//   seed->setMinimum(1);
-//   seed->setMaximum(2147483647);
-//   seed->setValue(500);  
-//   seed->setEnabled(false);
-//   useSeed = new QRadioButton("Provide seed value");
-//   useSeed->setChecked(false);
+  //   seed = new QSpinBox();
+  //   seed->setMinimum(1);
+  //   seed->setMaximum(2147483647);
+  //   seed->setValue(500);  
+  //   seed->setEnabled(false);
+  //   useSeed = new QRadioButton("Provide seed value");
+  //   useSeed->setChecked(false);
 
 
-//   exposureCategory = new QComboBox();
-//   exposureCategory->addItem("JONSWAP");
-// //   exposureCategory->addItem("Pierson-Moskowitz");
+  //   exposureCategory = new QComboBox();
+  //   exposureCategory->addItem("JONSWAP");
+  // //   exposureCategory->addItem("Pierson-Moskowitz");
   QFormLayout *parameters = new QFormLayout();
 
   parameters->addRow(new QLabel(tr("Median Sea Level [ft]")), waterDepth);
@@ -163,22 +178,17 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   parameters->addRow(new QLabel(tr("Storm-Surge Sea Level Rise [ft]")), stormSurgeSLR);
   parameters->addRow(new QLabel(tr("Climate Change Sea Level Rise [ft]")), climateChangeSLR);
 
-
-  // exposureCategory->setCurrentIndex(5);
-
-
-
   parameters->addRow(new QLabel(tr("Significant Wave Height [ft]")), significantWaveHeight);
   parameters->addRow(new QLabel(tr("Peak Wave Period [s]")), peakPeriod);
   parameters->addRow(new QLabel(tr("Time Step [s]")), timeStep);
   parameters->addRow(new QLabel(tr("Time Duration [s]")), timeDuration);
-  // parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
+
   parameters->addRow(new QLabel(tr("Sea State Category")), exposureCategory);
   parameters->addRow(new QLabel(tr("")), new QLabel(tr("")));
   parameters->addRow(new QLabel(tr("")), new QLabel(tr("")));
   parameters->addRow(new QLabel(tr("Load Recorder Origin [ft]")), recorderOriginX);
   parameters->addRow(new QLabel(tr("Load Recorder Count [#]")), recorderCountZ);
-  // parameters->addRow(new QLabel(tr("Wave Spectrum")), exposureCategory);
+
   parameters->addRow(new QLabel(tr("Drag Coefficient")), dragCoefficient);
   parameters->addRow(new QLabel(tr("Drag Area [ft^2]")), dragArea);
   parameters->addRow(new QLabel(tr("")), new QLabel(tr("")));
@@ -202,9 +212,9 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   //model_description_->setStyleSheet("QLabel { color : gray; }");
 
 
-
   // Construct required layouts
   QVBoxLayout* layout = new QVBoxLayout();
+  // QVBoxLayout* graphLayout = new QVBoxLayout();
   QHBoxLayout* seedLayout = new QHBoxLayout();
   QHBoxLayout* parametersLayout = new QHBoxLayout();
 
@@ -215,6 +225,8 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   seedLayout->addStretch();
   parametersLayout->addLayout(parameters);
 
+
+
   // mainLayout->setColumnStretch(4,1);
 
   // parametersWidget = new QWidget();
@@ -223,45 +235,78 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   // QWidget *plotWidget = new QWidget();
   // plotWidget->setLayout(plotLayout);
 
-  thePlot = new SimCenterGraphPlot(QString("Time [s]"),QString("Power Spectral Density [m^2 / Hz]"), 700, 350);
-  // Maintain aspect ratio but allow resizing
-  thePlot->setMinimumSize(650,400);
+  thePlot = new SimCenterGraphPlot(QString("Frequency [Hz]"),QString("Power Spectral Density [ft^2 / Hz]"), 700, 350);
+  thePlot->setMinimumSize(400,250);
   thePlot->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-  QHBoxLayout* fileFormLayout = new QHBoxLayout();
+  thePlotTimeSeries = new SimCenterGraphPlot(QString("Time [s]"),QString("Surface Displacement [ft]"), 700, 350);
+  thePlotTimeSeries->setMinimumSize(400,250);
+  thePlotTimeSeries->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+  QHBoxLayout* fileFormLayout = new QHBoxLayout();
   dataDir = this->createTextEntry(tr("Wave Spectra (*.csv)"), fileFormLayout, 400, 100);
   dataDir->setMinimumWidth(200);
-  // dataDir->setMaximumWidth(700);
-  // plotLayout->addWidget(dataDir, 0);
+
+  QHBoxLayout* fileFormLayoutTimeSeries = new QHBoxLayout();
+  timeSeriesDir = this->createTextEntry(tr("Wave Time Series (*.csv)"), fileFormLayoutTimeSeries, 400, 100);
+  timeSeriesDir->setMinimumWidth(200);
+
   QPushButton *chooseFileButton = new QPushButton("Choose");
   chooseFileButton->setMinimumWidth(100);
   chooseFileButton->setMaximumWidth(100);
+
+  QPushButton *chooseTimeSeriesFileButton = new QPushButton("Choose");
+  chooseTimeSeriesFileButton->setMinimumWidth(100);
+  chooseTimeSeriesFileButton->setMaximumWidth(100);
+
+
   fileFormLayout->addWidget(chooseFileButton, 1);
-  // a = this->createTextEntry(tr("Min"), plotLayout, 100, 100);
-  // b = this->createTextEntry(tr("Max"), plotLayout, 100, 100);
   showPlotButton = new QPushButton("Sample Wave Spectra");
   showPlotButton->setMinimumWidth(200);
   showPlotButton->setMaximumWidth(200);
+  fileFormLayout->addWidget(showPlotButton, 2);
 
-  QPushButton* thePileImageButton = new QPushButton("Plot Loads");
-  thePileImageButton->setMinimumWidth(150);
-  thePileImageButton->setMaximumWidth(150);
+  fileFormLayoutTimeSeries->addWidget(chooseTimeSeriesFileButton, 1);
+  showPlotButtonTimeSeries = new QPushButton("Sample Time Series");
+  showPlotButtonTimeSeries->setMinimumWidth(200);
+  showPlotButtonTimeSeries->setMaximumWidth(200);
+  fileFormLayoutTimeSeries->addWidget(showPlotButtonTimeSeries, 2);
+
+  // // For plotting the monopile loads image
+  // QPushButton* thePileImageButton = new QPushButton("Plot Loads");
+  // thePileImageButton->setMinimumWidth(150);
+  // thePileImageButton->setMaximumWidth(150);
   QWidget* fileFormWidget = new QWidget();
   fileFormWidget->setLayout(fileFormLayout);
 
-  fileFormLayout->addWidget(showPlotButton, 2);
+  QWidget* fileFormWidgetTimeSeries = new QWidget();
+  fileFormWidgetTimeSeries->setLayout(fileFormLayoutTimeSeries);
+
+  QVBoxLayout *spectraLayout = new QVBoxLayout();
+  spectraLayout->addWidget(fileFormWidget);
+  spectraLayout->addWidget(thePlot);
+
+  QVBoxLayout *timeLayout = new QVBoxLayout();
+  timeLayout->addWidget(fileFormWidgetTimeSeries);
+  timeLayout->addWidget(thePlotTimeSeries);
+  // fileSelectLayout->addWidget(fileFormWidgetTimeSeries);
+  // fileSelectLayout->addWidget(fileFormWidget);
 
 
+  parametersLayout->addLayout(spectraLayout);
+  parametersLayout->addLayout(timeLayout);
+
+
+  // parametersLayout->addWidget(fileFormWidget);
+  // parametersLayout->addWidget(fileFormWidgetTimeSeries);
   // fileFormLayout->addWidget(thePileImageButton,3 );
 
-  // add empty 
-
-  QPixmap pixmapPile(":/icons/forces.png");
-  QPushButton* thePileFigure = new QPushButton();
-  thePileFigure->setIcon(pixmapPile);
-  thePileFigure->setIconSize(pixmapPile.rect().size()*1.0);
-  thePileFigure->setFixedSize(pixmapPile.rect().size()*1.0);
+  // // Show forces, etc. on monopile structure
+  // QPixmap pixmapPile(":/icons/forces.png");
+  // QPushButton* thePileFigure = new QPushButton();
+  // thePileFigure->setIcon(pixmapPile);
+  // thePileFigure->setIconSize(pixmapPile.rect().size()*1.0);
+  // thePileFigure->setFixedSize(pixmapPile.rect().size()*1.0);
 
   // QHBoxLayout *pileFigureLayout = new QHBoxLayout();
   // pileFigureLayout->addWidget(thePileFigure);
@@ -275,30 +320,32 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   // plotLayout->setStretch(5,1);
 
 
-
   // int plotNumRow = 12;
   // layout->addWidget(plotWidget, plotNumRow++, 0, 1, 5);
 
+  /*
   theDomainImageButton = new QPushButton();
   QPixmap pixmapDomain(":/icons/HydroLoadPile.png");
 
-  pixmapDomain.scaled(800, 400, Qt::KeepAspectRatio,Qt::SmoothTransformation);
+  pixmapDomain.scaled(500, 250, Qt::KeepAspectRatio,Qt::SmoothTransformation);
 
   theDomainImageButton->setIcon(pixmapDomain);
   theDomainImageButton->setIconSize(pixmapDomain.rect().size()*1.00);
   theDomainImageButton->setFixedSize(pixmapDomain.rect().size()*1.00);
-  parametersLayout->addWidget(theDomainImageButton);
+  */
 
-
-
-
-  thePlot->hide();
-  thePlot->clear();
   // thePileFigure->hide();
   // theDomainImageButton->hide();
 
   // parametersLayout->addWidget(plotWidget);
-  parametersLayout->addWidget(thePlot);
+  // parametersLayout->addWidget(thePlot);
+  // parametersLayout->addWidget(thePlotTimeSeries);
+
+  
+
+  parametersLayout->addLayout(spectraLayout);
+  parametersLayout->addLayout(timeLayout);
+
   connect(chooseFileButton, &QPushButton::clicked, this, [=](){
         QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"),"", "CSV Files (*.csv)");
         if (!fileName.isEmpty()) {
@@ -306,38 +353,66 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
         }
     });
 
+  connect(chooseTimeSeriesFileButton, &QPushButton::clicked, this, [=](){
+        QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"),"", "CSV Files (*.csv)");
+        if (!fileName.isEmpty()) {
+            timeSeriesDir->setText(fileName);
+        }
+    });
+
   // QString spectraFileString = "Examples/hdro-0005/data/WaveSpectra.csv";
   dataDir->setText("Examples/hdro-0005/data/WaveSpectra.csv");
+  timeSeriesDir->setText("Examples/hdro-0005/data/WaveTimeSeries.csv");
 
-
-  updateDistributionPlot();
 
 
   // parametersLayout->addWidget(plotWidget);
   // parametersLayout->addWidget(theDomainImageButton);
+
   parametersLayout->addStretch();
-  this->updateDistributionPlot(); // show the plot when the widget is created
   // layout->addWidget(modelDescription);
   layout->addWidget(scrollArea);
   layout->addLayout(parametersLayout);
   layout->addLayout(seedLayout);
-  layout->addWidget(fileFormWidget);
-  layout->addWidget(thePileFigure);
+  // layout->addWidget(fileFormWidget);
+  // layout->addWidget(fileFormWidgetTimeSeries);
+  // layout->addWidget(theDomainImageButton);
+  // layout->addWidget(thePileFigure);
   layout->addStretch();
   this->setLayout(layout);
 
+  thePlot->hide();
+  thePlot->clear();
+  thePlotTimeSeries->hide();
+  thePlotTimeSeries->clear();
+  // updateDistributionPlot();
+  this->updateDistributionPlot(); // show the plot when the widget is created
   thePlot->show();
-  theDomainImageButton->show();
-  thePileFigure->show();
+  thePlotTimeSeries->show();
+  // theDomainImageButton->show();
+  // thePileFigure->show();
+
 
 
   // Place the plot in the layout
-  connect(dataDir,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
-  // connect(dataDir, 
-  
+  connect(dataDir,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot())); 
+  connect(timeSeriesDir,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
   // connect(a,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
   // connect(b,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+
+  connect(showPlotButton, &QPushButton::clicked, this, [=](){
+        thePlot->hide();
+        this->computeSpectra();
+        thePlot->show();
+    });
+
+  connect(showPlotButtonTimeSeries, &QPushButton::clicked, this, [=](){
+        thePlotTimeSeries->hide();
+        this->computeSpectra();
+        thePlotTimeSeries->show();
+    });
   connect(showPlotButton, &QPushButton::clicked, this, [=](){ thePlot->hide(); this->updateDistributionPlot(); thePlot->show();});
+  connect(showPlotButtonTimeSeries, &QPushButton::clicked, this, [=](){ thePlotTimeSeries->hide(); this->updateDistributionPlot(); thePlotTimeSeries->show();});
   // connect (spectraFile, &SC_FileEdit::fileChanged, this, [=](){
   //     QString fileName = spectraFile->getFilename();
   //     dataDir->setText(fileName);
@@ -350,10 +425,229 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
       thePlot->show();
   });
 
+  connect(timeSeriesDir, &QLineEdit::editingFinished, this, [=](){
+      thePlotTimeSeries->hide();
+      this->updateDistributionPlot();
+      thePlotTimeSeries->show();
+  });
+
+
+
+
 
   // Connect slots
   connect(useSeed, &QRadioButton::toggled, this,
           &Jonswap::provideSeed);
+}
+
+void Jonswap::updateJSON()
+{
+    // Write most recent EVT state to JSON becase it is needed for pre-processing steps / mesh generation before the final simulation is run.
+    // In future only one JSON file in temp.SimCenter directory might be enough
+    QString inputFileName = "Jonswap.json";
+    auto prefs = SimCenterPreferences::getInstance();
+    QString localWorkDirectoryString = prefs->getLocalWorkDir();
+    QDir localWorkDir(localWorkDirectoryString);
+    if (!localWorkDir.exists()) {
+        localWorkDir.mkpath(".");
+    }
+
+    QString tmpDirName = "tmp.SimCenter";
+    localWorkDir.mkdir(tmpDirName);
+    QDir tmpDir = QDir(localWorkDir.absoluteFilePath(tmpDirName));
+    if (!tmpDir.exists()) {
+        tmpDir.mkpath(".");
+    }
+
+    QString subDirName = "stochasticWave"; // "tmp.SimCenter"; "templatedir";
+    localWorkDir.mkdir(subDirName);
+    QDir workingDir = QDir(localWorkDir.absoluteFilePath(subDirName));
+    if (!workingDir.exists()) {
+        workingDir.mkpath(".");
+    }
+    QString workingDirPath = localWorkDir.absoluteFilePath(subDirName);
+    qDebug() << "workingDirPath: " << workingDirPath;
+    // QDir workingDir = QDir(localWorkDir.absoluteFilePath(subDirName));
+    // workingDirPath = localWorkDir.absoluteFilePath(subDirName);
+
+    QString inputFilePath  = localWorkDir.absoluteFilePath(tmpDirName) + QDir::separator() + inputFileName;
+    QString outputFilePath = localWorkDir.absoluteFilePath(tmpDirName) + QDir::separator() + inputFileName;
+
+    qDebug() << "inputFilePath: " << inputFilePath;
+    qDebug() << "outputFilePath: " << outputFilePath;
+
+
+    QFile jsonFile(inputFilePath);
+    // if it exists, remove it
+    if (jsonFile.exists()) {
+        jsonFile.remove();
+    }
+    
+    if (!jsonFile.open(QFile::WriteOnly | QFile::Text))
+    {
+        qDebug() << "Cannot find the path: " << inputFilePath;
+    } 
+
+    
+
+    QJsonObject eventObject;
+    this->outputToJSON(eventObject);
+
+
+    QJsonArray eventsArray;
+    eventsArray.append(eventObject);
+    QJsonObject pseudoObject;
+    pseudoObject["Events"] = eventsArray;
+
+    QJsonDocument jsonDoc(pseudoObject);
+    jsonFile.write(jsonDoc.toJson());
+    jsonFile.close();
+
+    // while open(jsonFile, 'w') as f:
+    //     json.dump(pseudoObject, f, indent=4)
+
+    // QJsonDocument jsonDoc(pseudoObject);
+    // jsonFile.write(jsonDoc.toJson());
+    // jsonFile.close();
+    return;
+}
+// Function that runs a python script to generate the wave spectra and time series
+// Saves the wave spectra and time series to csv files. 
+// Plots the wave spectra and time series
+void Jonswap::computeSpectra() {
+  // Get the input parameters
+  this->updateJSON();
+
+
+  auto prefs = SimCenterPreferences::getInstance();
+  
+  //
+  //  Update JSON input file and then pass arguments to a python script. Runs script to prepare case directory.
+  //  Python scripts hosted remotely by SimCenterBackendApplications/modules/createEVENT/*
+  // 
+
+
+  QString inputFileName = "Jonswap.json";
+  QString localWorkDirectoryString = prefs->getLocalWorkDir();
+  QDir localWorkDir(localWorkDirectoryString);
+  if (!localWorkDir.exists()) {
+      localWorkDir.mkpath(".");
+  }
+
+  QString tmpDirName = "tmp.SimCenter";
+  // localWorkDir.mkdir(tmpDirName);
+  // QDir tmpDir = QDir(localWorkDir.absoluteFilePath(tmpDirName));
+  // if (!tmpDir.exists()) {
+  //     tmpDir.mkpath(".");
+  // }
+
+  QString subDirName = "stochasticWave"; // "tmp.SimCenter"; "templatedir";
+  // localWorkDir.mkdir(subDirName);
+  // QDir workingDir = QDir(localWorkDir.absoluteFilePath(subDirName));
+  // if (!workingDir.exists()) {
+  //     workingDir.mkpath(".");
+  // }
+  // QString workingDirPath = localWorkDir.absoluteFilePath(subDirName);
+  // workingDirPath = localWorkDir.absoluteFilePath(subDirName);
+  // qDebug() << "workingDirPath: " << workingDirPath;
+  QString inputFilePath  = localWorkDir.absoluteFilePath(tmpDirName) + QDir::separator() + inputFileName;
+
+  // QString outputFilePath = caseDir() + QDir::separator() + inputFileName;
+
+  // QFile jsonFile(inputFilePath);
+  // if (!jsonFile.open(QFile::WriteOnly | QFile::Text))
+  // {
+  //     qDebug() << "Cannot find the path: " << inputFilePath;
+  // }
+  // QString inputFilePath = caseDir() + QDir::separator() + "inputData" + QDir::separator() + inputFileName;
+
+  // updateJSON(); 
+  QString scriptName = "Jonswap.py"; // "setup_case.py";
+  QString scriptPath = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
+            + QString("applications") + QDir::separator() + QString("createEVENT") + QDir::separator()
+            + QString("stochasticWave") + QDir::separator() + scriptName; 
+
+
+  QString outputPath = localWorkDir.absoluteFilePath(tmpDirName);
+
+  qDebug() << "scriptPath: " << scriptPath;
+  qDebug() << "inputFilePath: " << inputFilePath;
+
+  // QString outputPath = caseDir();
+  if (QFileInfo(scriptPath).exists() )
+  {
+    qDebug() << "Running the script: " << scriptPath << " with input file: " << inputFilePath << " and output path: " << outputPath;
+    QString program = SimCenterPreferences::getInstance()->getPython();
+    
+    
+
+    QStringList arguments; arguments << scriptPath << inputFilePath << outputPath;
+    QProcess *process = new QProcess();
+
+    // process->setWorkingDirectory(workingDirPath);
+    process->start(program, arguments);
+    
+    process->waitForFinished(-1);
+    process->close();
+    // process->deleteLater();
+
+  } 
+  else 
+  {
+    qDebug() << "Cannot find the script path: " << scriptPath;
+    return;
+  }
+
+
+  // Plot the wave spectra
+  thePlot->hide();
+  thePlotTimeSeries->hide();
+
+  dataDir->setText(outputPath + QDir::separator() + "WaveSpectraGenerated.csv");
+  timeSeriesDir->setText(outputPath + QDir::separator() + "WaveTimeSeries.csv");
+
+  this->updateDistributionPlot();
+
+  thePlot->show();
+  thePlotTimeSeries->show();
+
+
+  // QString 
+
+  // // Run the python script
+  // QString command = "python3 -m StochasticWaveModel.generate_wave_spectra ";
+  // command += waterDepthString + " ";
+  // command += tidalSLRString + " ";
+  // command += stormSurgeSLRString + " ";
+  // command += climateChangeSLRString + " ";
+  // command += significantWaveHeightString + " ";
+  // command += peakPeriodString + " ";
+  // command += recorderOriginXString + " ";
+  // command += recorderCountZString + " ";
+  // command += timeStepString + " ";
+  // command += timeDurationString + " ";
+  // command += dragCoefficientString + " ";
+  // command += dragAreaString + " ";
+  // command += exposureCategoryString + " ";
+  // command += seedString + " ";
+  // command += dataDirString + " ";
+  // command += timeSeriesDirString;
+
+  // // Run the command
+  // system(command.toStdString().c_str());
+
+  // // Plot the wave spectra
+  // thePlot->clear();
+  // thePlot->addGraph();
+  // thePlot->setAxisLabels("Time [s]", "Power Spectral Density [m^2 / Hz]");
+  // thePlot->plotFile(dataDirString);
+
+  // // Plot the time series
+  // thePlotTimeSeries->clear();
+  // thePlotTimeSeries->addGraph();
+  // thePlotTimeSeries->setAxisLabels("Time [s]", "
+  // Displacement [m]");
+  // thePlotTimeSeries->plotFile(timeSeriesDirString);
 }
 
 
@@ -364,7 +658,6 @@ Jonswap::createTextEntry(QString text,
                                             int maxL)
 {
     QVBoxLayout *entryLayout = new QVBoxLayout();
-    //QHBoxLayout *entryLayout = new QHBoxLayout();
     QLabel *entryLabel = new QLabel(text);
 
     QLineEdit *res = new QLineEdit();
@@ -376,7 +669,6 @@ Jonswap::createTextEntry(QString text,
     entryLayout->addWidget(res);
 
     entryLayout->setSpacing(0);
-    //    entryLayout->setMargin(0);
 
     theLayout->addLayout(entryLayout);
 
@@ -426,14 +718,24 @@ Jonswap::copyFiles(QString &destDir)
     QFile::copy(dataDir->text(), destDir);
 
 
-  QString timeSeriesFileName = dataDir->text();
-  timeSeriesFileName.replace("WaveSpectra.csv", "WaveSpectraGenerated.csv"); // temp fix assuming spectra file name
-  if (dataDir->text().isEmpty()) {
-    dataDir->setText(":Examples/hdro-0005/data/WaveSpectraGenerated.csv");
-    this->errorMessage("WARNING: StochasticWave - spectra generated filename had not been set when trying to call copyFiles(), using default file: " + dataDir->text());
-    QFile::copy(dataDir->text(), destDir);
+  // QString spectraFileName = dataDir->text();
+  // QString timeSeriesFileName = timeSeriesDir->text();
+  // timeSeriesFileName.replace("WaveSpectra.csv", "WaveSpectraGenerated.csv"); // temp fix assuming spectra file name
+  // if (dataDir->text().isEmpty()) {
+  //   dataDir->setText(":Examples/hdro-0005/data/WaveTimeSeries.csv");
+  //   this->errorMessage("WARNING: StochasticWave - spectra generated filename had not been set when trying to call copyFiles(), using default file: " + dataDir->text());
+  //   QFile::copy(dataDir->text(), destDir);
+  //   return true;
+  // }
+
+  if (timeSeriesDir->text().isEmpty()) {
+    timeSeriesDir->setText(":Examples/hdro-0005/data/WaveTimeSeries.csv");
+    this->errorMessage("WARNING: StochasticWave - time series filename had not been set when trying to call copyFiles(), using default file: " + timeSeriesDir->text());
+    QFile::copy(timeSeriesDir->text(), destDir);
     return true;
   }
+  else 
+    QFile::copy(timeSeriesDir->text(), destDir);
 
   // if (spectraFile->getFilename() != nullptr) {
   //   if (!spectraFile->copyFile(destDir))
@@ -505,6 +807,7 @@ bool readCSVRowSpectra (QTextStream &in, QStringList *row) {
 
 void Jonswap::clear() {
   thePlot->hide();
+  thePlotTimeSeries->hide();
   // theDomainImageButton->hide();
   waterDepth->clear();
   tidalSLR->clear();
@@ -519,11 +822,14 @@ void Jonswap::clear() {
   dragCoefficient->clear();
   dragArea->clear();
 
+
   // seed->setEnabled(false);
   seed->setValue(500);
   useSeed->setChecked(false);
   dataDir->setText("");
+  timeSeriesDir->setText("");
   thePlot->clear();
+  thePlotTimeSeries->clear();
   // exposureCategory->setCurrentIndex(0);
 }
 
@@ -533,19 +839,35 @@ Jonswap::updateDistributionPlot() {
     int numStepsTimeSeries = 100;
     if (dataDir->text().isEmpty()) {
         dataDir->setText(":Examples/hdro-0005/data/WaveSpectra.csv"); // hardcoded for quick fix
-        this->errorMessage("ERROR: StochasticWave - data has not been set, using default");
+        this->errorMessage("ERROR: StochasticWave - wave-spectra data has not been set, using default");
         // return;
     }
+    if (timeSeriesDir->text().isEmpty()) {
+        timeSeriesDir->setText(":Examples/hdro-0005/data/WaveTimeSeries.csv"); // hardcoded for quick fix
+        this->errorMessage("ERROR: StochasticWave - time-series data has not been set, using default");
+        // return;
+    }
+
     QString csvFileName = dataDir->text();
     QFile csv(csvFileName);
     csv.open(QFile::ReadOnly | QFile::Text);
-
     QTextStream in(&csv);
+
+    QString csvFileNameTimeSeries = timeSeriesDir->text();
+    QFile csvTimeSeries(csvFileNameTimeSeries);
+    csvTimeSeries.open(QFile::ReadOnly | QFile::Text);
+    QTextStream inTimeSeries(&csvTimeSeries);
+
     QStringList row;
     QStringList firstColumn;
     QStringList secondColumn;
 
+    QStringList rowTimeSeries;
+    QStringList firstColumnTimeSeries;
+    QStringList secondColumnTimeSeries;
+
     numSteps = 0; // reset
+    numStepsTimeSeries = 0; // reset
 
     // Assume no header lines
     while (readCSVRowSpectra(in, &row)) {
@@ -553,9 +875,16 @@ Jonswap::updateDistributionPlot() {
         secondColumn.append(row[1]);
         numSteps++;
     }
-
     csv.close();
 
+    while (readCSVRowSpectra(inTimeSeries, &rowTimeSeries)) {
+        firstColumnTimeSeries.append(rowTimeSeries[0]);
+        secondColumnTimeSeries.append(rowTimeSeries[1]);
+        numStepsTimeSeries++;
+    }
+    csvTimeSeries.close();
+    
+    
     QVector<double> x(numSteps); // time
     QVector<double> y(numSteps); // displacement
     for (int i=0; i<numSteps; i++) {
@@ -563,47 +892,39 @@ Jonswap::updateDistributionPlot() {
         y[i] = secondColumn[i].toDouble();
     }
 
-    // look for the file WaveTimeSeries.csv adjacent to the WaveSpectra.csv
-    QString timeSeriesFileName = csvFileName;
-    // timeSeriesFileName.replace("WaveSpectra.csv", "WaveTimeSeries.csv");
-    // timeSeriesFileName.replace("WaveSpectra.csv", "WaveTimeSeries.csv");
-    timeSeriesFileName.replace("WaveSpectra.csv", "WaveSpectraGenerated.csv");
-    QFile timeSeriesFile(timeSeriesFileName);
-    timeSeriesFile.open(QFile::ReadOnly | QFile::Text);
-
-    QTextStream inTimeSeries(&timeSeriesFile);
-    QStringList rowTimeSeries;
-    QStringList firstColumnTimeSeries;
-    QStringList secondColumnTimeSeries;
-
-    numStepsTimeSeries = 0; // reset
-
-    
-
-
-    // Assume no header lines
-
-    while (readCSVRowSpectra(inTimeSeries, &rowTimeSeries)) {
-        firstColumnTimeSeries.append(rowTimeSeries[0]);
-        secondColumnTimeSeries.append(rowTimeSeries[1]);
-        numStepsTimeSeries++;
-    }
-
-    timeSeriesFile.close();
-
     QVector<double> xG(numStepsTimeSeries); // time
     QVector<double> yG(numStepsTimeSeries); // displacement
     for (int i=0; i<numStepsTimeSeries; i++) {
         xG[i] = firstColumnTimeSeries[i].toDouble();
         yG[i] = secondColumnTimeSeries[i].toDouble();
     }
-
-    // plot
     thePlot->clear();
     thePlot->drawPDF(x,y);
-    // thePlot->addLine(xG,yG, 1, 65, 74, 82);
-    thePlot->drawPDF(xG,yG);
     thePlot->show();
+
+
+
+
+    // look for the file WaveTimeSeries.csv adjacent to the WaveSpectra.csv
+    // QString spectraFileName = csvFileName;
+    // QString timeSeriesFileName = csvTimeSeries;//.fileName();
+
+    // spectraFileName.replace("WaveSpectra.csv", "WaveSpectraGenerated.csv");
+    // QFile spectraFile(spectraFileName);
+    // spectraFile.open(QFile::ReadOnly | QFile::Text);
+
+    // QFile timeSeriesFile(timeSeriesFileName);
+    // timeSeriesFile.open(QFile::ReadOnly | QFile::Text);
+
+
+    // QTextStream inSpectra(&spectraFile);
+    // QTextStream inTimeSeries(&timeSeriesFile);
+
+    // plot
+    // thePlot->addLine(xG,yG, 1, 65, 74, 82);
+    thePlotTimeSeries->clear();
+    thePlotTimeSeries->drawPDF(xG,yG);
+    thePlotTimeSeries->show();
     return;
 
     
@@ -686,7 +1007,7 @@ bool Jonswap::inputFromJSON(QJsonObject& jsonObject) {
 
   // theDomainImageButton->hide();
   thePlot->hide();
-
+  thePlotTimeSeries->hide();
 
 
   waterDepth->inputFromJSON(jsonObject, QString("waterDepth"));
@@ -733,11 +1054,13 @@ bool Jonswap::inputFromJSON(QJsonObject& jsonObject) {
       seed->setValue(jsonObject.value("seed").toInt());    
     }
   }
-  theDomainImageButton->show();
+  // theDomainImageButton->show();
 
   thePlot->clear();
+  thePlotTimeSeries->clear();
   updateDistributionPlot();
   thePlot->show();
+  thePlotTimeSeries->show();
 
 
   return result;

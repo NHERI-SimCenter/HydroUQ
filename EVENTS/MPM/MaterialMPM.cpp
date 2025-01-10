@@ -76,7 +76,7 @@ MaterialMPM::MaterialMPM(QWidget *parent) : SimCenterWidget(parent)
   layout->addWidget(materialPreset, numRow++, 1);
   layout->itemAt(layout->count()-1)->widget()->setMaximumWidth(maxWidth);
 
-  QStringList constitutiveList; constitutiveList << "JFluid" << "FixedCorotated" << "NeoHookean" << "DruckerPrager" << "CamClay" << "VonMises" <<"CoupleUP" << "Custom";  
+  QStringList constitutiveList; constitutiveList << "JFluid" << "FixedCorotated" << "NeoHookean" << "DruckerPrager" << "CamClay" << "Custom";  
   constitutive = new SC_ComboBox("constitutive", constitutiveList);
   layout->addWidget(new QLabel("Constitutive Law"),numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(constitutive, numRow++, 1);
@@ -595,7 +595,7 @@ bool
 MaterialMPM::setMaterialPreset(int index)
 {
   if (index < 0 || index > materialPreset->count()) {
-    // qDebug() << "MaterialMPM::setMaterialPreset() - Invalid index";
+    qDebug() << "MaterialMPM::setMaterialPreset() - Invalid index";
     return false;
   }
   materialPreset->setCurrentIndex(index);
@@ -605,7 +605,6 @@ MaterialMPM::setMaterialPreset(int index)
 bool
 MaterialMPM::outputToJSON(QJsonObject &jsonObject)
 {
-  // Future schema
   QJsonObject materialObject; 
   materialObject["material_preset"] = QJsonValue(materialPreset->currentText()).toString();
   materialObject["constitutive"] = QJsonValue(constitutive->currentText()).toString();
@@ -616,11 +615,11 @@ MaterialMPM::outputToJSON(QJsonObject &jsonObject)
     materialObject["viscosity"] = viscosity->text().toDouble();
     materialObject["gamma"] = bulkModulusDerivative->text().toDouble();
   }
-  else if (constitutive->currentText() == "FixedCorotated") {
+  else if (constitutive->currentText() == "FixedCorotated" || constitutive->currentText() == "NeoHookean") {
     materialObject["youngs_modulus"] = youngsModulus->text().toDouble();
     materialObject["poisson_ratio"] = poissonsRatio->text().toDouble();
   }
-  else if (constitutive->currentText() == "DruckerPrager") {
+  else if (constitutive->currentText() == "DruckerPrager" || constitutive->currentText() == "Sand") {
     materialObject["youngs_modulus"] = youngsModulus->text().toDouble();
     materialObject["poisson_ratio"] = poissonsRatio->text().toDouble();
     materialObject["cohesion"] = cohesion->text().toDouble();
@@ -629,60 +628,115 @@ MaterialMPM::outputToJSON(QJsonObject &jsonObject)
     materialObject["beta"] = beta->text().toDouble(); // Needed ?
     materialObject["SandVolCorrection"] = useVolumeCorrection->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
   }
-  else if (constitutive->currentText() == "CamClay") {
+  else if (constitutive->currentText() == "CamClay" || constitutive->currentText() == "NACC") {
     materialObject["youngs_modulus"] = youngsModulus->text().toDouble();
     materialObject["poisson_ratio"] = poissonsRatio->text().toDouble();
     materialObject["cohesion"] = cohesion->text().toDouble(); // Needed ?
     materialObject["friction_angle"] = frictionAngle->text().toDouble(); // Needed ?
     materialObject["hardeningOn"] = useHardening->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
     materialObject["logJp0"] = logJp->text().toDouble();
-    //
+    
     materialObject["xi"] = xi->text().toDouble();
     materialObject["beta"] = beta->text().toDouble();
+    // WARN: Mohr is squared in the constitutive model in ClaymoreUW for now
     materialObject["Mohr"] = (Mohr->text().toDouble() * Mohr->text().toDouble());
-    //
+    
     materialObject["hardening_ratio"] = xi->text().toDouble();
     materialObject["cohesion_ratio"] = beta->text().toDouble(); 
     materialObject["mohr_friction"] = Mohr->text().toDouble();
   }
   jsonObject["material"] = materialObject;
 
-  // ClaymoreUW artifacts, global material values. TODO: Deprecate
-  // jsonObject["material_preset"] = QJsonValue(materialPreset->currentText()).toString();
-  // jsonObject["constitutive"] = QJsonValue(constitutive->currentText()).toString();
-  // jsonObject["CFL"] = CFL->text().toDouble(); // TODO: Rename? "cfl"? Might be reserved in other contexts
-  // jsonObject["rho"] = density->text().toDouble();
-  // jsonObject["bulk_modulus"] = bulkModulus->text().toDouble();
-  // jsonObject["youngs_modulus"] = youngsModulus->text().toDouble();
-  // jsonObject["poisson_ratio"] = poissonsRatio->text().toDouble();
-  // jsonObject["viscosity"] = viscosity->text().toDouble();
-  // // TODO: Equation of state options (Murnaghan-Tait, Cole, Birch, etc. or JFluid, PA-JB Fluid, etc.)
-  // jsonObject["gamma"] = bulkModulusDerivative->text().toDouble(); // TODO: Rename
-  // // jsonObject["surface_tension"] = surfaceTension->text().toDouble(); // TODO: Implement
-  // jsonObject["logJp0"] = logJp->text().toDouble();
-  // jsonObject["SandVolCorrection"] = useVolumeCorrection->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
-  // jsonObject["cohesion"] = cohesion->text().toDouble(); // TODO: Specify units, I believe this is log(strain) currently hence small values
-  // jsonObject["friction_angle"] = frictionAngle->text().toDouble();
-  // jsonObject["dilation_angle"] = dilationAngle->text().toDouble(); // TODO: Check if this is used
-  // jsonObject["hardeningOn"] = useHardening->isChecked() ? QJsonValue(true).toBool() : QJsonValue(false).toBool();
-  // jsonObject["xi"] = xi->text().toDouble(); // TODO: Rename
-  // jsonObject["beta"] = beta->text().toDouble(); // TODO: Rename
-  // jsonObject["Mohr"] = (Mohr->text().toDouble() * Mohr->text().toDouble()); // TODO: Rename
   return true;
 }
 
 bool
 MaterialMPM::inputFromJSON(QJsonObject &jsonObject)
 {
+
+  this->clear();
+  
+  if (jsonObject.contains("material_preset")) {
+    QString material_preset = jsonObject["material_preset"].toString();
+    int index = materialPreset->findText(material_preset);
+    if (index != -1) {
+      materialPreset->setCurrentIndex(index);
+    }
+  }
+  if (jsonObject.contains("constitutive")) {
+    QString constitutive_law = jsonObject["constitutive"].toString();
+    // May be DruckerPrager -> Sand and CamClay -> NACC mapping issues
+    int index = constitutive->findText(constitutive_law);
+    if (index != -1) {
+      constitutive->setCurrentIndex(index);
+    }
+  }
+  if (jsonObject.contains("CFL")) {
+    CFL->setText(QString::number(jsonObject["CFL"].toDouble()));
+  }
+  if (jsonObject.contains("rho")) {
+    density->setText(QString::number(jsonObject["rho"].toDouble()));
+  }
+  if (jsonObject.contains("bulk_modulus")) {
+    bulkModulus->setText(QString::number(jsonObject["bulk_modulus"].toDouble()));
+  }
+  if (jsonObject.contains("youngs_modulus")) {
+    youngsModulus->setText(QString::number(jsonObject["youngs_modulus"].toDouble()));
+  }
+  if (jsonObject.contains("poisson_ratio")) {
+    poissonsRatio->setText(QString::number(jsonObject["poisson_ratio"].toDouble()));
+  }
+  if (jsonObject.contains("viscosity")) {
+    viscosity->setText(QString::number(jsonObject["viscosity"].toDouble()));
+  }
+  if (jsonObject.contains("gamma")) {
+    bulkModulusDerivative->setText(QString::number(jsonObject["gamma"].toDouble()));
+  }
+  if (jsonObject.contains("cohesion")) {
+    cohesion->setText(QString::number(jsonObject["cohesion"].toDouble()));
+  }
+  if (jsonObject.contains("friction_angle")) {
+    frictionAngle->setText(QString::number(jsonObject["friction_angle"].toDouble()));
+  }
+  if (jsonObject.contains("dilation_angle")) {
+    dilationAngle->setText(QString::number(jsonObject["dilation_angle"].toDouble()));
+  }
+  if (jsonObject.contains("beta")) {
+    beta->setText(QString::number(jsonObject["beta"].toDouble()));
+  }
+  if (jsonObject.contains("SandVolCorrection")) {
+    useVolumeCorrection->setChecked(jsonObject["SandVolCorrection"].toBool());
+  }
+  if (jsonObject.contains("hardeningOn")) {
+    useHardening->setChecked(jsonObject["hardeningOn"].toBool());
+  }
+  if (jsonObject.contains("xi")) {
+    xi->setText(QString::number(jsonObject["xi"].toDouble()));
+  }
+  if (jsonObject.contains("logJp0")) {
+    logJp->setText(QString::number(jsonObject["logJp0"].toDouble()));
+  }
+  // WARN: Mohr is squared in the constitutive model in ClaymoreUW for now (but we dont adjust here)
+  if (jsonObject.contains("Mohr")) {
+    Mohr->setText(QString::number(jsonObject["Mohr"].toDouble()));
+  }
+  if (jsonObject.contains("hardening_ratio")) {
+    xi->setText(QString::number(jsonObject["hardening_ratio"].toDouble()));
+  }
+  if (jsonObject.contains("cohesion_ratio")) {
+    beta->setText(QString::number(jsonObject["cohesion_ratio"].toDouble()));
+  }
+  if (jsonObject.contains("mohr_friction")) {
+    Mohr->setText(QString::number(jsonObject["mohr_friction"].toDouble()));
+  }
+
   return true;
 }
 
 bool
 MaterialMPM::copyFiles(QString &destDir)
 {
-  // if (theOpenSeesPyScript->copyFile(destDir) != true)
-  //   return false;
-  // return theSurfaceFile->copyFile(destDir);    
+  Q_UNUSED(destDir);
   return true;
 }
 

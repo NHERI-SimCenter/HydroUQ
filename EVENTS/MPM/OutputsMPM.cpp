@@ -113,7 +113,7 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   QStringList bodiesAttribsStrings; bodiesAttribsStrings << "ID" << "Pressure" << "" << "" << "" 
                                      << "ID" << "Pressure" << "Velocity_X" << "Velocity_Y" << "Velocity_Z" 
                                      << "ID" << "Pressure" << "VonMisesStress" << "DefGrad_Invariant2" << "DefGrad_Invariant3" ;
-  bodiesAttribsTable = new SC_TableEdit("bodiesAttribsTable", bodiesAttribsHeadings, 3, bodiesAttribsStrings);
+  bodiesAttribsTable = new SC_TableEdit("output_attribs", bodiesAttribsHeadings, 3, bodiesAttribsStrings);
   bodiesLayout->addWidget(new QLabel("Output Attributes"), numRow, 0, 1, 1, Qt::AlignRight);
   bodiesLayout->addWidget(bodiesAttribsTable,numRow++, 1, 1, 3);
   bodiesLayout->itemAt(bodiesLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
@@ -216,23 +216,24 @@ OutputsMPM::~OutputsMPM()
 
 void OutputsMPM::clear(void)
 {
-  // vtkBodies_Output->clear();
-  // vtkCheckpoints_Output->clear();
-  // vtkBoundaries_Output->clear();
-  // vtkSensors_Output->clear();
-  // vtkEnergies_Output->clear();
+
+  // vtkBodies_Output->setCurrentIndex(vtkBodies_Output->findText("BGEO"));
+  // vtkCheckpoints_Output->setCurrentIndex(vtkCheckpoints_Output->findText("BGEO"));
+  // vtkBoundaries_Output->setCurrentIndex(vtkBoundaries_Output->findText("OBJ"));
+  // vtkSensors_Output->setCurrentIndex(vtkSensors_Output->findText("CSV"));
+  // vtkEnergies_Output->setCurrentIndex(vtkEnergies_Output->findText("CSV"));
 
   // outputBodies_Dt->clear();
   // outputCheckpoints_Dt->clear();
   // outputBoundaries_Dt->clear();
   // outputEnergies_Dt->clear();
 
-  // useKineticEnergy->clear();
-  // usePotentialEnergy->clear();
-  // useStrainEnergy->clear();
+  // useKineticEnergy->setChecked(false);
+  // usePotentialEnergy->setChecked(false);
+  // useStrainEnergy->setChecked(false);
 
-  // bodies_OutputExteriorOnly->clear();
-  // bodiesAttribsTable->clear();
+  // bodies_OutputExteriorOnly->setChecked(false);
+
 }
 
 bool
@@ -264,8 +265,8 @@ OutputsMPM::outputToJSON(QJsonObject &jsonObject)
   QJsonObject bodiesAttribsObject;
   QJsonArray bodiesAttribsArray;
   bodiesAttribsTable->outputToJSON(bodiesAttribsObject);
-  for (int i = 0; i < bodiesAttribsObject["bodiesAttribsTable"].toArray().size(); i++) {
-    QJsonArray temp_array = bodiesAttribsObject["bodiesAttribsTable"].toArray()[i].toArray();
+  for (int i = 0; i < bodiesAttribsObject["output_attribs"].toArray().size(); i++) {
+    QJsonArray temp_array = bodiesAttribsObject["output_attribs"].toArray()[i].toArray();
     for (int j = 0; j < temp_array.size(); j++) {
       if (temp_array[j].toString().isEmpty()) {
         temp_array.removeAt(j);
@@ -289,22 +290,98 @@ bool
 OutputsMPM::inputFromJSON(QJsonObject &jsonObject)
 {
 
-  // vtkBodies_Output->inputFromJSON(jsonObject);  
-  // vtkSensors_Output->inputFromJSON(jsonObject);
-  // outputBodies_Dt->inputFromJSON(jsonObject);
-  // outputSensors_Dt->inputFromJSON(jsonObject);
-  // outputSensors_FM->inputFromJSON(jsonObject);
-  // outputSensors_FSP->inputFromJSON(jsonObject);
-  // outputSensors_FP->inputFromJSON(jsonObject);
-  // outputSensors_SC->inputFromJSON(jsonObject);
-  // freeSurfaceProbes->inputFromJSON(jsonObject);
-  // fieldProbes->inputFromJSON(jsonObject);
-  // sectionCuts->inputFromJSON(jsonObject);
+  // this->clear();
+
+  QJsonObject outputsObject = jsonObject["outputs"].toObject();
+  // vtkBodies_Output->setCurrentIndex(vtkBodies_Output->findText(outputsObject["bodies_save_suffix"].toString()));
+  // vtkCheckpoints_Output->setCurrentIndex(vtkCheckpoints_Output->findText(outputsObject["checkpoints_save_suffix"].toString()));
+  // vtkBoundaries_Output->setCurrentIndex(vtkBoundaries_Output->findText(outputsObject["boundaries_save_suffix"].toString()));
+  // vtkSensors_Output->setCurrentIndex(vtkSensors_Output->findText(outputsObject["sensors_save_suffix"].toString()));
+  // vtkEnergies_Output->setCurrentIndex(vtkEnergies_Output->findText(outputsObject["energies_save_suffix"].toString()));
+
+  outputBodies_Dt->inputFromJSON(outputsObject);
+  // outputCheckpoints_Dt->inputFromJSON(outputsObject);
+  // outputBoundaries_Dt->inputFromJSON(outputsObject);
+  // outputEnergies_Dt->inputFromJSON(outputsObject);
+
+  // useKineticEnergy->setChecked(outputsObject["useKineticEnergy"].toBool());
+  // usePotentialEnergy->setChecked(outputsObject["usePotentialEnergy"].toBool());
+  // useStrainEnergy->setChecked(outputsObject["useStrainEnergy"].toBool());
+
+  // Each row of table becomes an array of strings, all arrays occupy a single array called "output_attribs"
+  // In-post, sort each array element (i.e. row of table) into the appropiate JSON body object based on the row order
+  // I.e., row 1 of table is added to the first JSON body object (should correspond to tab order I think)
   
+  // if (outputsObject.contains("output_attribs")) {
+  //   QJsonObject bodiesAttribsObject;
+  //   QJsonArray bodiesAttribsArray = outputsObject["output_attribs"].toArray();
+  //   int maxAttribs = 5;
+  //   for (int i = 0; i < bodiesAttribsArray.size(); i++) {
+  //     QJsonArray temp_array = bodiesAttribsArray[i].toArray();
+  //     if (temp_array.size() > maxAttribs) {
+  //       qDebug() << "OutputsMPM::inputFromJSON too many attributes in JSON, exceeded max";
+  //       break;
+  //   }
+    
+  //   for (int j = 0; j < maxAttribs; j++) {
+  //     if (temp_array[j].toString().isEmpty()) {
+  //       temp_array.removeAt(j);
+  //       j--;
+  //     }
+  //   }
+  //   bodiesAttribsObject["output_attribs"].append(temp_array);
+  //   }
+  //   bodiesAttribsObject["output_attribs"] = outputsObject["output_attribs"].toArray();
+    
+    
+  // QStringList bodiesAttribsHeadings; bodiesAttribsHeadings << "1st" << "2nd" << "3rd" << "4th" << "5th";
+  // QStringList bodiesAttribsStrings; bodiesAttribsStrings << "ID" << "Pressure" << "" << "" << "" 
+  //                                    << "ID" << "Pressure" << "Velocity_X" << "Velocity_Y" << "Velocity_Z" 
+  //                                    << "ID" << "Pressure" << "VonMisesStress" << "DefGrad_Invariant2" << "DefGrad_Invariant3" ;
+  //   bodiesAttribsTable->hide();
+  //   delete bodiesAttribsTable; 
+  //   bodiesAttribsTable = nullptr;
+  //   bodiesAttribs
+  //   bodiesAttribsTable = new SC_TableEdit("bodiesAttribsTable", bodiesAttribsHeadings, 3, bodiesAttribsStrings);
+  //   bodiesAttribsTable->inputFromJSON(bodiesAttribsObject);
+  // } else {
+  //   qDebug() << "OutputsMPM::inputFromJSON output_attribs not found in JSON";
+  // }
+
+  // TODO: Deprecate ClaymoreUW artifacts (save_suffix, fps, particles_output_exterior_only in "simulation" object, handled in MPM.cpp)
+  
+  QJsonObject simulationObject = jsonObject["simulation"].toObject();
+  if (simulationObject.contains("fps")) {
+    qDebug() << "OutputsMPM::inputFromJSON fps found in JSON";
+    outputBodies_Dt->setText(QString::number(simulationObject["fps"].toDouble()));
+  }
+  if (simulationObject.contains("save_suffix")) {
+    qDebug() << "OutputsMPM::inputFromJSON save_suffix found in simulation object JSON";
+    qDebug() << "Note: schema will eventually use bodies_save_suffix in outputs object";
+    QString saveSuffix = simulationObject["save_suffix"].toString();
+    if (saveSuffix == "BGEO" || saveSuffix == ".bgeo" || saveSuffix == "bgeo") {
+      vtkBodies_Output->setCurrentIndex(vtkBodies_Output->findText(QString("BGEO")));
+    } else if (saveSuffix == "GEO" || saveSuffix == ".geo" || saveSuffix == "geo") {
+      vtkBodies_Output->setCurrentIndex(vtkBodies_Output->findText(QString("GEO")));
+    } else if (saveSuffix == "CSV" || saveSuffix == ".csv" || saveSuffix == "csv") {
+      vtkBodies_Output->setCurrentIndex(vtkBodies_Output->findText(QString("CSV")));
+    } else if (saveSuffix == "TXT" || saveSuffix == ".txt" || saveSuffix == "txt") {
+      vtkBodies_Output->setCurrentIndex(vtkBodies_Output->findText(QString("TXT")));
+    }
+  } else {
+    qDebug() << "OutputsMPM::inputFromJSON save_suffix not found in JSON";
+  } 
+  if (simulationObject.contains("particles_output_exterior_only")) {
+    qDebug() << "OutputsMPM::inputFromJSON particles_output_exterior_only found in JSON";
+    bodies_OutputExteriorOnly->setChecked(simulationObject["particles_output_exterior_only"].toBool());
+  } else {
+    qDebug() << "OutputsMPM::inputFromJSON particles_output_exterior_only not found in JSON";
+  }
   return true;
 }
 
 bool
 OutputsMPM::copyFiles(QString &dirName) {
+  Q_UNUSED(dirName);
   return true;
 }

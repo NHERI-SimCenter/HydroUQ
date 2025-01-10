@@ -39,6 +39,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QComboBox>
 #include <QGroupBox>
 #include <QGridLayout>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QDebug>
+
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
 #include <SC_IntLineEdit.h>
@@ -111,7 +115,7 @@ SettingsDigitalTwin::SettingsDigitalTwin(QWidget *parent)
   QStringList couplingList; couplingList << "Implicit" << "Explicit";
   couplingScheme = new SC_ComboBox("CouplingScheme", couplingList);
 
-  QStringList couplingMethod; couplingMethod << "Constant" << "Aitken" << "IQN-ILS" << "IQN-IMVJ" << "Broyden";  
+  QStringList couplingMethod; couplingMethod << "IQN-IMVJ" << "Constant" << "Aitken" << "IQN-ILS" << "Broyden";  
   couplingDataMethod = new SC_ComboBox("couplingDataAccelerationMethod", couplingMethod);
   
   initialRelaxationFactor = new SC_DoubleLineEdit("initialRelaxationFactor", 0.6);
@@ -141,6 +145,29 @@ SettingsDigitalTwin::SettingsDigitalTwin(QWidget *parent)
 SettingsDigitalTwin::~SettingsDigitalTwin()
 {
 
+}
+
+void
+SettingsDigitalTwin::clear(void)
+{
+  timeStep->clear();
+  simulationLength->clear();
+  preloadStructure->clear();
+  runPreliminaryAnalysis->clear();
+
+  adjustTimestep->clear();
+  turbulance->clear();  
+
+  gravZ->clear();    
+  
+  couplingScheme->clear();
+  couplingDataMethod->clear();
+  initialRelaxationFactor->clear();
+  maxCouplingIterations->clear();
+  maxCouplingIterationConvergence->clear();
+  dataMappingScheme->clear();
+  outputDataFromCoupling->clear();
+  maxCouplingIterationDataFrequency->clear();
 }
 
 bool
@@ -173,6 +200,8 @@ SettingsDigitalTwin::outputToJSON(QJsonObject &jsonObject)
 bool
 SettingsDigitalTwin::inputFromJSON(QJsonObject &jsonObject)
 {
+  this->clear();
+
   numProcessors->inputFromJSON(jsonObject);
   startEvent->inputFromJSON(jsonObject);
   timeStep->inputFromJSON(jsonObject);

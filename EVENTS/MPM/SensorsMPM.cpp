@@ -270,29 +270,117 @@ SensorsMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 SensorsMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  if (jsonObject.contains("sensors") == false) return false;
-  if (jsonObject["sensors"].isArray() == false) return false;
-  if (jsonObject["sensors"].toArray().size() == 0) return false;
-  QJsonArray theArray = jsonObject["sensors"].toArray();
-  numAddedTabs = (theArray.size() <= numReserveTabs) ? theArray.size() : numReserveTabs;
-  int shift = 0;
-  for (int i=0; i<theArray.size(); i++) {
-    int j = i - shift;
-    if (j >= numReserveTabs) break;
-    if (theArray[i].isObject() == false) { shift=shift+1; continue;}
-    if (addedSensor[j] == nullptr) addedSensor[j] = new SensorMPM();
-    QJsonObject theObject = theArray[i].toObject();
-    addedSensor[i]->inputFromJSON(theObject);
-    // numAddedTabs += 1; // May go out of bounds if it doesnt start at 0
+  // if (jsonObject.contains("grid-sensors") == false) {
+  //   qDebug() << "SensorsMPM::inputFromJSON grid-sensors not found in JSON";
+  //   // return false;
+  // }
+  // if (jsonObject["grid-sensors"].isArray() == false) {
+  //   qDebug() << "SensorsMPM::inputFromJSON grid-sensors is not an array in JSON";
+  //   // return false;
+  // }
+  // if (jsonObject["grid-sensors"].toArray().size() == 0) {
+  //   qDebug() << "SensorsMPM::inputFromJSON grid-sensors is empty in JSON";
+  //   // return false;
+  // }
+  // QJsonArray theGridSensorArray = jsonObject["grid-sensors"].toArray();
+
+  // for (int i=0; i<theGridSensorArray.size(); i++) {
+  //   if (theGridSensorArray[i].isObject() == false) {
+  //     qDebug() << "SensorsMPM::inputFromJSON grid-sensors is not an object in JSON";
+  //     // return false;
+  //     continue
+  //   }
+  //   // if (addedSensor[i] == nullptr) addedSensor[i] = new SensorMPM();
+  //   // QJsonObject theObject = theGridSensorArray[i].toObject();
+  //   // addedSensor[i]->inputFromJSON(theObject);
+  // }
+
+
+  if (jsonObject.contains("particle-sensors") == false) {
+    qDebug() << "SensorsMPM::inputFromJSON particle-sensors not found in JSON";
+    // return false;
+  } else {
+    if (jsonObject["particle-sensors"].isArray() == false) {
+    qDebug() << "SensorsMPM::inputFromJSON particle-sensors is not an array in JSON";
+    // return false;
+    } else {
+      if (jsonObject["particle-sensors"].toArray().size() == 0) {
+        qDebug() << "SensorsMPM::inputFromJSON particle-sensors is empty in JSON";
+        // return false;
+      } else {
+        QJsonArray theParticleSensorArray = jsonObject["particle-sensors"].toArray();
+        for (auto theSensorObject : theParticleSensorArray) {
+          if (theSensorObject.isObject() == false) {
+            qDebug() << "SensorsMPM::inputFromJSON particle-sensors is not an object in JSON";
+            // return false;
+            continue;
+          }
+          qDebug() << "SensorsMPM::inputFromJSON particle-sensors is an object in JSON";
+        // For now, the mapping to the sensor tabs is messy so we won't inputFromJSON
+        }
+      }
+    }
   }
+  
+  if (jsonObject.contains("grid-sensors") == false) {
+    qDebug() << "SensorsMPM::inputFromJSON grid-sensors not found in JSON";
+    // return false;
+  } else {
+    if (jsonObject["grid-sensors"].isArray() == false) {
+    qDebug() << "SensorsMPM::inputFromJSON grid-sensors is not an array in JSON";
+    // return false;
+    } else {
+      if (jsonObject["grid-sensors"].toArray().size() == 0) {
+        qDebug() << "SensorsMPM::inputFromJSON grid-sensors is empty in JSON";
+        // return false;
+      } else {
+        QJsonArray theGridSensorArray = jsonObject["grid-sensors"].toArray();
+        for (auto theSensorObject : theGridSensorArray) {
+          if (theSensorObject.isObject() == false) {
+            qDebug() << "SensorsMPM::inputFromJSON grid-sensors is not an object in JSON";
+            // return false;
+            continue;
+          }
+          qDebug() << "SensorsMPM::inputFromJSON grid-sensors is an object in JSON";
+          // For now, the mapping to the sensor tabs is messy so we won't inputFromJSON
+        }
+      }
+    }
+  }
+
+
+  // for (int i=0; i<theParticleSensorArray.size(); i++) {
+  //   if (theParticleSensorArray[i].isObject() == false) {
+  //     qDebug() << "SensorsMPM::inputFromJSON particle-sensors is not an object in JSON";
+  //     // return false;
+  //     continue
+  //   }
+  //   // if (addedSensor[i] == nullptr) addedSensor[i] = new SensorMPM();
+  //   // QJsonObject theObject = theParticleSensorArray[i].toObject();
+  //   // addedSensor[i]->inputFromJSON(theObject);
+  // }
+
+  // numAddedTabs = (theArray.size() <= numReserveTabs) ? theArray.size() : numReserveTabs;
+  // int shift = 0;
+  // for (int i=0; i<theArray.size(); i++) {
+  //   int j = i - shift;
+  //   if (j >= numReserveTabs) break;
+  //   if (theArray[i].isObject() == false) { shift=shift+1; continue;}
+  //   if (addedSensor[j] == nullptr) addedSensor[j] = new SensorMPM();
+  //   QJsonObject theObject = theArray[i].toObject();
+  //   addedSensor[i]->inputFromJSON(theObject);
+  //   // numAddedTabs += 1; // May go out of bounds if it doesnt start at 0
+  // }
   return true;
 }
 
 bool
 SensorsMPM::copyFiles(QString &destDir)
 {
-  // if (theOpenSeesPyScript->copyFile(destDir) != true)
-  //   return false;
+  for (int i=0; i<numAddedTabs; i++) {
+    if (i >= numReserveTabs) break;
+    addedSensor[i]->copyFiles(destDir);
+  }
   return true;    
 }
 

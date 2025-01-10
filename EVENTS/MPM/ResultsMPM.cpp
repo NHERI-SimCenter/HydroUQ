@@ -321,7 +321,7 @@ ResultsMPM::~ResultsMPM()
 void 
 ResultsMPM::clear(void)
 {
-
+    
 }
 
 bool

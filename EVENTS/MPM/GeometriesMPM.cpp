@@ -171,7 +171,6 @@ GeometriesMPM::~GeometriesMPM()
 
 void GeometriesMPM::clear(void)
 {
-  // Clear all geometries
   for (int i=0; i<numAddedTabs; i++) {
     addedGeometry[i]->clear();
   }
@@ -206,12 +205,44 @@ GeometriesMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 GeometriesMPM::inputFromJSON(QJsonObject &jsonObject)
 {
+
+  // Clear all geometries
+  // this->clear();
+
+  // Input all geometries (held in JSON array)
+  if (jsonObject.contains("geometry") == false) {
+    qDebug() << "GeometriesMPM::inputFromJSON geometry not found in JSON";
+    // return false;
+  }
+  QJsonArray geometryArray = jsonObject["geometry"].toArray();
+  for (int i=0; i<geometryArray.size(); i++) {
+    if (i >= numReserveTabs) {
+      qDebug() << "GeometriesMPM::inputFromJSON too many geometries in JSON, exceeded reserved tabs";
+      break;
+    }
+    if (i >= numAddedTabs){
+      qDebug() << "GeometriesMPM::inputFromJSON too many geometries in JSON, exceeded current tabs";
+      break;
+    }
+    QJsonObject geometryObject = geometryArray[i].toObject();
+    addedGeometry[i]->inputFromJSON(geometryObject);
+  }
+
   return true;
 }
 
 bool
 GeometriesMPM::copyFiles(QString &destDir)
 {
+  for (int i=0; i<numAddedTabs; i++) {
+    if (i >= numReserveTabs) break; // Don't copy files for unreserved tabs
+    if (addedGeometry[i]->copyFiles(destDir) == false) {
+      qDebug() << "Error: Failed to copy geometry files to " << destDir << " for geometry " << i;
+      // return false;
+    } else {
+      qDebug() << "Success: Copied geometry files to " << destDir << " for geometry " << i;
+    }
+  }
   return true;
 }
 

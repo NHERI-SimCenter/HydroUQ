@@ -49,7 +49,7 @@ class SettingsDigitalTwin;
 
 class CoupledDigitalTwin : public SimCenterAppWidget
 {
-   Q_OBJECT
+   // Q_OBJECT
 public:
    CoupledDigitalTwin(QWidget *parent = 0);
    ~CoupledDigitalTwin();

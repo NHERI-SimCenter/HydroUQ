@@ -79,36 +79,6 @@
                         {
                             "apply_array": false,
                             "apply_rotation": false,
-                            "bathymetryXZ": [
-                                [
-                                    0,
-                                    0
-                                ],
-                                [
-                                    16.275,
-                                    0.226
-                                ],
-                                [
-                                    19.933,
-                                    0.226
-                                ],
-                                [
-                                    30.906,
-                                    1.14
-                                ],
-                                [
-                                    45.536,
-                                    1.75
-                                ],
-                                [
-                                    82.106,
-                                    1.75
-                                ],
-                                [
-                                    89.46,
-                                    2.363
-                                ]
-                            ],
                             "body_preset": "Fluid",
                             "facility": "Hinsdale Large Wave Flume (OSU LWF)",
                             "facility_dimensions": [
@@ -126,13 +96,14 @@
                             "operation": "add",
                             "span": [
                                 84,
-                                2,
+                                1.85,
                                 3.6
                             ],
-                            "standing_water_level": 2,
+                            "standing_water_level": 1.85,
                             "track_particle_id": [
-                                0
-                            ]
+                                "0"
+                            ],
+                            "use_custom_bathymetry": false
                         }
                     ],
                     "gpu": 0,
@@ -170,7 +141,7 @@
                             "gpu": 1,
                             "model": 0,
                             "partition_end": [
-                                61.9,
+                                91.9,
                                 2.9,
                                 3.6
                             ],
@@ -184,12 +155,12 @@
                             "gpu": 2,
                             "model": 0,
                             "partition_end": [
-                                91.9,
+                                121.9,
                                 2.9,
                                 3.6
                             ],
                             "partition_start": [
-                                61.9,
+                                91.9,
                                 0,
                                 0
                             ]
@@ -279,7 +250,7 @@
                                 0.1
                             ],
                             "track_particle_id": [
-                                0
+                                "0"
                             ]
                         }
                     ],
@@ -361,36 +332,6 @@
                         {
                             "apply_array": false,
                             "apply_rotation": false,
-                            "bathymetryXZ": [
-                                [
-                                    0,
-                                    0
-                                ],
-                                [
-                                    16.275,
-                                    0.226
-                                ],
-                                [
-                                    19.933,
-                                    0.226
-                                ],
-                                [
-                                    30.906,
-                                    1.14
-                                ],
-                                [
-                                    45.536,
-                                    1.75
-                                ],
-                                [
-                                    82.106,
-                                    1.75
-                                ],
-                                [
-                                    89.46,
-                                    2.363
-                                ]
-                            ],
                             "body_preset": "Fluid",
                             "facility": "Hinsdale Large Wave Flume (OSU LWF)",
                             "facility_dimensions": [
@@ -408,13 +349,14 @@
                             "operation": "add",
                             "span": [
                                 84,
-                                2,
+                                1.85,
                                 3.6
                             ],
-                            "standing_water_level": 2,
+                            "standing_water_level": 1.85,
                             "track_particle_id": [
-                                0
-                            ]
+                                "0"
+                            ],
+                            "use_custom_bathymetry": false
                         }
                     ],
                     "gpu": 1,
@@ -452,7 +394,7 @@
                             "gpu": 1,
                             "model": 0,
                             "partition_end": [
-                                61.9,
+                                91.9,
                                 2.9,
                                 3.6
                             ],
@@ -466,19 +408,19 @@
                             "gpu": 2,
                             "model": 0,
                             "partition_end": [
-                                91.9,
+                                121.9,
                                 2.9,
                                 3.6
                             ],
                             "partition_start": [
-                                61.9,
+                                91.9,
                                 0,
                                 0
                             ]
                         }
                     ],
                     "partition_end": [
-                        61.9,
+                        91.9,
                         2.9,
                         3.6
                     ],
@@ -521,36 +463,6 @@
                         {
                             "apply_array": false,
                             "apply_rotation": false,
-                            "bathymetryXZ": [
-                                [
-                                    0,
-                                    0
-                                ],
-                                [
-                                    16.275,
-                                    0.226
-                                ],
-                                [
-                                    19.933,
-                                    0.226
-                                ],
-                                [
-                                    30.906,
-                                    1.14
-                                ],
-                                [
-                                    45.536,
-                                    1.75
-                                ],
-                                [
-                                    82.106,
-                                    1.75
-                                ],
-                                [
-                                    89.46,
-                                    2.363
-                                ]
-                            ],
                             "body_preset": "Fluid",
                             "facility": "Hinsdale Large Wave Flume (OSU LWF)",
                             "facility_dimensions": [
@@ -568,13 +480,14 @@
                             "operation": "add",
                             "span": [
                                 84,
-                                2,
+                                1.85,
                                 3.6
                             ],
-                            "standing_water_level": 2,
+                            "standing_water_level": 1.85,
                             "track_particle_id": [
-                                0
-                            ]
+                                "0"
+                            ],
+                            "use_custom_bathymetry": false
                         }
                     ],
                     "gpu": 2,
@@ -612,7 +525,7 @@
                             "gpu": 1,
                             "model": 0,
                             "partition_end": [
-                                61.9,
+                                91.9,
                                 2.9,
                                 3.6
                             ],
@@ -626,24 +539,24 @@
                             "gpu": 2,
                             "model": 0,
                             "partition_end": [
-                                91.9,
+                                121.9,
                                 2.9,
                                 3.6
                             ],
                             "partition_start": [
-                                61.9,
+                                91.9,
                                 0,
                                 0
                             ]
                         }
                     ],
                     "partition_end": [
-                        91.9,
+                        121.9,
                         2.9,
                         3.6
                     ],
                     "partition_start": [
-                        61.9,
+                        91.9,
                         0,
                         0
                     ],
@@ -681,7 +594,8 @@
                     ],
                     "friction_dynamic": 0,
                     "friction_static": 0,
-                    "object": "OSU LWF"
+                    "object": "OSU LWF",
+                    "use_custom_bathymetry": false
                 },
                 {
                     "contact": "Separable",
@@ -695,7 +609,7 @@
                         -0.1,
                         -0.1
                     ],
-                    "file": "..//wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv",
+                    "file": "..//wmdisp_1200hz.csv",
                     "friction_dynamic": 0,
                     "friction_static": 0,
                     "object": "OSU Paddle",
@@ -761,23 +675,44 @@
                     "direction": "X+",
                     "domain_end": [
                         45.824,
-                        2.6500000000000004,
-                        2.3
+                        2.3,
+                        2.35
                     ],
                     "domain_start": [
                         45.799,
-                        2.075,
+                        2,
                         1.35
                     ],
                     "name": "LoadCell1",
                     "operation": "Sum",
                     "output_frequency": 120,
+                    "preset": "Load-Cells",
+                    "toggle": true,
+                    "type": "grid"
+                },
+                {
+                    "attribute": "Force",
+                    "direction": "X+",
+                    "domain_end": [
+                        45.824,
+                        2.5999999999999996,
+                        2.35
+                    ],
+                    "domain_start": [
+                        45.799,
+                        2.3,
+                        1.35
+                    ],
+                    "name": "LoadCell2",
+                    "operation": "Sum",
+                    "output_frequency": 120,
+                    "preset": "Load-Cells",
                     "toggle": true,
                     "type": "grid"
                 }
             ],
             "outputs": {
-                "bodies_output_freq": 10,
+                "bodies_output_freq": 1,
                 "bodies_save_suffix": "BGEO",
                 "boundaries_output_freq": 30,
                 "boundaries_save_suffix": "OBJ",
@@ -816,18 +751,19 @@
                     "attribute": "Elevation",
                     "direction": "N/A",
                     "domain_end": [
-                        16.05,
-                        2.75,
-                        0.45
+                        16.1,
+                        4,
+                        0.5
                     ],
                     "domain_start": [
                         16,
-                        1.75,
+                        1.5,
                         0.4
                     ],
                     "name": "WaveGauge1",
                     "operation": "Max",
                     "output_frequency": 30,
+                    "preset": "Wave-Gauges",
                     "toggle": true,
                     "type": "particles"
                 },
@@ -835,18 +771,19 @@
                     "attribute": "Elevation",
                     "direction": "N/A",
                     "domain_end": [
-                        26.05,
-                        2.75,
-                        0.45
+                        34.369,
+                        4,
+                        0.5
                     ],
                     "domain_start": [
-                        26,
-                        1.75,
+                        34.269,
+                        1.5,
                         0.4
                     ],
                     "name": "WaveGauge2",
                     "operation": "Max",
                     "output_frequency": 30,
+                    "preset": "Wave-Gauges",
                     "toggle": true,
                     "type": "particles"
                 },
@@ -854,18 +791,19 @@
                     "attribute": "Elevation",
                     "direction": "N/A",
                     "domain_end": [
-                        38.05,
-                        2.75,
-                        0.45
+                        38.214,
+                        4,
+                        0.5
                     ],
                     "domain_start": [
-                        38,
-                        1.75,
+                        38.114,
+                        1.5,
                         0.4
                     ],
                     "name": "WaveGauge3",
                     "operation": "Max",
                     "output_frequency": 30,
+                    "preset": "Wave-Gauges",
                     "toggle": true,
                     "type": "particles"
                 }
@@ -880,16 +818,16 @@
             "simulation": {
                 "cauchy_bulk_ratio": 1,
                 "cfl": 0.5,
-                "default_dt": 0.0001,
+                "default_dt": 0.001,
                 "default_dx": 0.1,
                 "domain": [
                     90,
                     4.5,
                     3.6
                 ],
-                "duration": 5,
-                "fps": 10,
-                "frames": 50,
+                "duration": 25,
+                "fps": 1,
+                "frames": 25,
                 "froude_scaling": 1,
                 "froude_time_ratio": 1,
                 "gravity": [
@@ -925,7 +863,7 @@
             "latitude": 37.8715,
             "longitude": -122.273
         },
-        "name": "The Orange Box",
+        "name": "",
         "planArea": 129600,
         "stories": 1,
         "units": {
@@ -942,8 +880,8 @@
         "Fyx": 1000000,
         "Fyy": 1000000,
         "Krz": 10000000000,
-        "Kx": 100,
-        "Ky": 100,
+        "Kx": "RV.k",
+        "Ky": "RV.k",
         "ModelData": [
             {
                 "Fyx": 1000000,
@@ -952,9 +890,9 @@
                 "bx": 0.1,
                 "by": 0.1,
                 "height": 144,
-                "kx": 100,
-                "ky": 100,
-                "weight": 100
+                "kx": "RV.k",
+                "ky": "RV.k",
+                "weight": "RV.w"
             }
         ],
         "dampingRatio": 0.02,
@@ -967,7 +905,7 @@
         "responseX": 0,
         "responseY": 0,
         "type": "MDOF_BuildingModel",
-        "weight": 100
+        "weight": "RV.w"
     },
     "Simulation": {
         "Application": "OpenSees-Simulation",
@@ -986,30 +924,52 @@
     "UQ": {
         "parallelExecution": true,
         "samplingMethodData": {
-            "method": "LHS",
-            "samples": 2,
-            "seed": 1
+            "method": "Gaussian Process Regression",
+            "samplingMethod": "LHS",
+            "samplingSamples": 1000,
+            "samplingSeed": 104,
+            "surrogateSurfaceMethod": "gaussian_process surfpack",
+            "trainingMethod": "LHS",
+            "trainingSamples": 20,
+            "trainingSeed": 104
         },
         "saveWorkDir": true,
         "uqType": "Forward Propagation"
     },
+    "coresPerNode": 8,
+    "execSystemId": "frontera",
+    "execSystemLogicalQueue": "rtx",
     "localAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "maxMinutes": 120,
+    "memoryMB": 128000,
+    "nodeCount": 1,
+    "numP": 8,
     "randomVariables": [
         {
             "distribution": "Normal",
             "inputType": "Parameters",
-            "mean": 0,
-            "name": "dummy",
-            "refCount": 0,
-            "stdDev": 1,
-            "value": "RV.dummy",
+            "mean": 100,
+            "name": "w",
+            "refCount": 1,
+            "stdDev": 10,
+            "value": "RV.w",
+            "variableClass": "Uncertain"
+        },
+        {
+            "distribution": "Normal",
+            "inputType": "Parameters",
+            "mean": 100,
+            "name": "k",
+            "refCount": 1,
+            "stdDev": 10,
+            "value": "RV.k",
             "variableClass": "Uncertain"
         }
     ],
-    "remoteAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "remoteAppDir": "/work2/00477/tg457427/frontera/SimCenterBackendApplications/v4.6.0",
     "resultType": "SimCenterUQResultsSampling",
-    "runType": "runningLocal",
+    "runType": "runningRemote",
     "summary": [
     ],
-    "workingDir": "/home/justinbonus/Documents/HydroUQ/LocalWorkDir"
+    "workingDir": "/home/justinbonus/Documents/HydroUQ/RemoteWorkDir"
 }

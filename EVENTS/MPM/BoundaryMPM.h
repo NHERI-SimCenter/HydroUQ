@@ -134,8 +134,8 @@ public slots:
 
 private:
 
-    QLineEdit *mean; 
-    QLineEdit *standardDev;
+    // QLineEdit *mean; 
+    // QLineEdit *standardDev;
     QLineEdit *alpha;
     QLineEdit *beta; 
     QLineEdit *a; 
@@ -156,7 +156,7 @@ private:
   SC_DoubleLineEdit *flumeOriginY;
   SC_DoubleLineEdit *flumeOriginZ;  
   SC_ComboBox       *bathymetryComboBox;
-
+  SC_CheckBox       *customBathymetryToggle;
   SC_FileEdit       *bathSTL;
   SC_TableEdit      *bathXZData;  
 
@@ -197,7 +197,7 @@ private:
   SC_DoubleLineEdit *structDynamicFrictionWallY;
   SC_DoubleLineEdit *structDynamicFrictionWallZ;  
   
-  SC_CheckBox      *autoCreateLoadCells;
+  // SC_CheckBox      *autoCreateLoadCells;
   SC_ComboBox      *loadCellFace;
 
   SC_CheckBox         *applyArray;
@@ -208,13 +208,13 @@ private:
   SC_DoubleLineEdit   *structSpacingY;
   SC_DoubleLineEdit   *structSpacingZ;
 
-  SC_CheckBox       *applyRotation;    
-  SC_DoubleLineEdit *structRotateAngleX;
-  SC_DoubleLineEdit *structRotateAngleY;
-  SC_DoubleLineEdit *structRotateAngleZ;
-  SC_DoubleLineEdit *structRotateFulcrumX;
-  SC_DoubleLineEdit *structRotateFulcrumY;
-  SC_DoubleLineEdit *structRotateFulcrumZ;
+  // SC_CheckBox       *applyRotation;    
+  // SC_DoubleLineEdit *structRotateAngleX;
+  // SC_DoubleLineEdit *structRotateAngleY;
+  // SC_DoubleLineEdit *structRotateAngleZ;
+  // SC_DoubleLineEdit *structRotateFulcrumX;
+  // SC_DoubleLineEdit *structRotateFulcrumY;
+  // SC_DoubleLineEdit *structRotateFulcrumZ;
 
   // walls
   SC_ComboBox       *wallsContactType;
@@ -233,19 +233,19 @@ private:
   SC_DoubleLineEdit *dynamicFrictionWallY;
   SC_DoubleLineEdit *dynamicFrictionWallZ;  
 
-  SC_CheckBox       *applyInletOutlet;
-  SC_ComboBox       *inletOutletTypeSubX;
-  SC_ComboBox       *inletOutletTypeSubY;
-  SC_ComboBox       *inletOutletTypeSubZ;
-  SC_ComboBox       *inletOutletTypePlusX;
-  SC_ComboBox       *inletOutletTypePlusY;
-  SC_ComboBox       *inletOutletTypePlusZ;
-  SC_FileEdit       *inletOutletFileSubX;
-  SC_FileEdit       *inletOutletFileSubY;
-  SC_FileEdit       *inletOutletFileSubZ;
-  SC_FileEdit       *inletOutletFilePlusX;
-  SC_FileEdit       *inletOutletFilePlusY;
-  SC_FileEdit       *inletOutletFilePlusZ;
+//   SC_CheckBox       *applyInletOutlet;
+//   SC_ComboBox       *inletOutletTypeSubX;
+//   SC_ComboBox       *inletOutletTypeSubY;
+//   SC_ComboBox       *inletOutletTypeSubZ;
+//   SC_ComboBox       *inletOutletTypePlusX;
+//   SC_ComboBox       *inletOutletTypePlusY;
+//   SC_ComboBox       *inletOutletTypePlusZ;
+//   SC_FileEdit       *inletOutletFileSubX;
+//   SC_FileEdit       *inletOutletFileSubY;
+//   SC_FileEdit       *inletOutletFileSubZ;
+//   SC_FileEdit       *inletOutletFilePlusX;
+//   SC_FileEdit       *inletOutletFilePlusY;
+//   SC_FileEdit       *inletOutletFilePlusZ;
   QWidget *theCustom;
   QWidget *theWaveFlume;
   QWidget *theWaveGeneration; 

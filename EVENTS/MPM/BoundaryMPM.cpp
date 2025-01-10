@@ -147,7 +147,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   // bathBox->setLayout(bathBoxLayout);
   // QStringList bathXZHeadings; bathXZHeadings << "Position in Flume (X)" << "Elevation (Y)";
   // QStringList dataBathXZ; dataBathXZ << "35" << "0" << "42" << "1.75" << "56" << "2.5" << "105" << "2.5";
-  // bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 4, dataBathXZ);
+  // bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 4, dataBathXZ);
 
   // bathBoxLayout->addWidget(new QLabel("Bathymetry Segments"),numRow++,0,1,4);    
   // bathBoxLayout->addWidget(bathXZData,numRow++,0,1,4);  
@@ -157,12 +157,16 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   // Stack for bathymetry
   QStringList bathOptions; bathOptions << "Point List" << "STL File";
   bathymetryComboBox = new SC_ComboBox("bathType",bathOptions);
-  
+  customBathymetryToggle = new SC_CheckBox("use_custom_bathymetry");
+  customBathymetryToggle->setChecked(false);
+  customBathymetryToggle->setEnabled(true);
+  customBathymetryToggle->setToolTip("Toggle custom bathymetry on/off. If off, the default bathymetry for the selected facility will be used. E.g., the bathymetry of the OSU LWF in Mascarenas 2022.");  
+
   QStringList bathXZHeadings; bathXZHeadings << "Joint Position (X)" << "Joint Position (Y)";
   QStringList dataBathXZ; dataBathXZ << "0" << "0" << "16.275" << "0.226" << "19.933" << "0.226" << "30.906" << "1.140" << "45.536" << "1.750" << "82.106" << "1.750" << "89.46" << "2.363";
   // wmn = 2 or 1.91 something for OSU LWF
   int bathXZPairs = 7;
-  bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, bathXZPairs, dataBathXZ);
+  bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, bathXZPairs, dataBathXZ);
   bathSTL = new SC_FileEdit("bathSTL");
   QString bathFilename = QString("Examples/hdro-0001/src/flumeFloor.stl");
   bathSTL->setFilename(bathFilename);
@@ -170,8 +174,10 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   QWidget *ptWidget = new QWidget(); // going to add figure which is why the layout
   QGridLayout *ptLayout = new QGridLayout();
-  ptLayout->addWidget(bathXZData, 0, 0);
-  ptLayout->setRowStretch(1,1);
+  ptLayout->addWidget(new QLabel("Use Custom Bathymetry?"),0,0);
+  ptLayout->addWidget(customBathymetryToggle,0,1);
+  ptLayout->addWidget(bathXZData, 1, 0, 2, 4);
+  ptLayout->setRowStretch(3,1);
   ptWidget->setLayout(ptLayout);
 
   QWidget *stlWidget = new QWidget();
@@ -225,7 +231,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
                  << "82.106" << "1.750" 
                  << "89.46"  << "2.363";
       delete bathXZData;
-      bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 7, newDataBathXZ);
+      bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 7, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "Hinsdale Directional Wave Basin (OSU DWB)") {
       flumeLength->setText("48.8");
@@ -238,7 +244,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
                  << "45.0" << "0.0" 
                  << "48.8" << "0.0";
       delete bathXZData;
-      bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 6, newDataBathXZ);
+      bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 6, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "Wind-Air-Sea Interaction Facility (UW WASIRF)") {
       flumeLength->setText("12.19");
@@ -247,7 +253,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
       QStringList newDataBathXZ; newDataBathXZ << "0.00" << "0.0" 
                  << "12.0" << "0.0";
       delete bathXZData;
-      bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 2, newDataBathXZ);
+      bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 2, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "Waseda University's Tsunami Wave Basin (WU TWB)") {
       flumeLength->setText("9.0");
@@ -258,7 +264,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
                  << "4.45" << "0.255" 
                  << "9.00" << "0.255";
       delete bathXZData;
-      bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 4, newDataBathXZ);
+      bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 4, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
     } else if (val == "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)") {
       flumeLength->setText("90.0");
@@ -271,7 +277,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
                  << "82.00" << "0.540" // 20 deg, 1:0.364
                  << "100.0" << "10.926"; // 30deg, 1:0.577 
       delete bathXZData;
-      bathXZData = new SC_TableEdit("bathXZData",bathXZHeadings, 6, newDataBathXZ);
+      bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 6, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
     } 
   });
@@ -284,7 +290,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   // wave generator
   numRow = 0;
-  QStringList listWaveGeneration; listWaveGeneration << "Preset Paddle - OSU LWF" << "Periodic Waves" << "Preset Paddle - OSU DWB" ;
+  QStringList listWaveGeneration; listWaveGeneration << "Preset Paddle - OSU LWF" << "Preset Paddle - OSU DWB"; // "Periodic Waves"
   generationMethod = new SC_ComboBox("generationMethod",listWaveGeneration);
   generationMethod->setEnabled(false);
 
@@ -376,12 +382,19 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
 
   // /**
+  dataDir = nullptr;
+  
+
   thePlot = new SimCenterGraphPlot(QString("Time [s]"),QString("Displacement [m]"), 500, 500);
   if (inpty==QString("Periodic Waves")) {
       alpha = this->createTextEntry(tr("Height"), periodicLayout, 0);
       beta  = this->createTextEntry(tr("Celerity"), periodicLayout, 1);
       a = this->createTextEntry(tr("Period"), periodicLayout, 2);
       b  = this->createTextEntry(tr("Duration"), periodicLayout, 3);
+      alpha->setText("0.5");
+      beta->setText("4.0");
+      a->setText("1.0");
+      b->setText("2.0");
       showPlotButton = new QPushButton("Show Plot");
       periodicLayout->addWidget(showPlotButton, 1,4);
 
@@ -397,6 +410,8 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
     plotLayout->addWidget(chooseFileButton, 1);
     a = this->createTextEntry(tr("Min(t)"), plotLayout, 2);
     b = this->createTextEntry(tr("Max(t)"), plotLayout, 3);
+    a->setText("0.0");
+    b->setText("1.0");
     showPlotButton = new QPushButton("Show Plot");
     plotLayout->addWidget(showPlotButton, 4);
 
@@ -588,11 +603,11 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   structLayout->addWidget(structArrayBox, numRow++, 0, 2, 5);
   numRow += 1; // Adjust for groupbox
 
-  autoCreateLoadCells = new SC_CheckBox("autoCreateLoadCells");
-  autoCreateLoadCells->setChecked(true);
-  structLayout->addWidget(new QLabel("Auto-Create Load-Cells (Force Sensors)?"),numRow, 0);
-  structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
-  structLayout->addWidget(autoCreateLoadCells,numRow++, 1);
+  // autoCreateLoadCells = new SC_CheckBox("autoCreateLoadCells");
+  // autoCreateLoadCells->setChecked(true);
+  // structLayout->addWidget(new QLabel("Auto-Create Load-Cells (Force Sensors)?"),numRow, 0);
+  // structLayout->itemAt(structLayout->count()-1)->setAlignment(Qt::AlignRight);
+  // structLayout->addWidget(autoCreateLoadCells,numRow++, 1);
 
   structLayout->setRowStretch(numRow+1,1);
 
@@ -740,42 +755,42 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   numRow += numFrictionRow;
 
   // Inlet/Outlet
-  applyInletOutlet = new SC_CheckBox("applyInletOutlet");
-  applyInletOutlet->setChecked(false);
-  applyInletOutlet->setEnabled(false); // TODO: Wall inlet/outlet not implemented yet 
-  wallsLayout->addWidget(new QLabel("Apply Inlet/Outlet?"),numRow, 0);
-  wallsLayout->itemAt(wallsLayout->count()-1)->setAlignment(Qt::AlignRight);
-  wallsLayout->addWidget(applyInletOutlet,numRow++, 1);
+  // applyInletOutlet = new SC_CheckBox("applyInletOutlet");
+  // applyInletOutlet->setChecked(false);
+  // applyInletOutlet->setEnabled(false); // TODO: Wall inlet/outlet not implemented yet 
+  // wallsLayout->addWidget(new QLabel("Apply Inlet/Outlet?"),numRow, 0);
+  // wallsLayout->itemAt(wallsLayout->count()-1)->setAlignment(Qt::AlignRight);
+  // wallsLayout->addWidget(applyInletOutlet,numRow++, 1);
 
 
-  QGroupBox *inletOutletBox = new QGroupBox("");
-  QGridLayout *inletOutletBoxLayout = new QGridLayout();
-  inletOutletBox->setLayout(inletOutletBoxLayout);
-  int numInOutRow = 0;
-  QStringList inletOutletList; inletOutletList << "None" 
-                                               << "Inlet - Steady"  << "Inlet - OpenFOAM"  << "Inlet - GeoClaw"  << "Inlet - SWE File" 
-                                               << "Outlet - Steady" << "Outlet - OpenFOAM" << "Outlet - GeoClaw" << "Outlet - SWE File";
-  inletOutletTypeSubX = new SC_ComboBox("inletOutletTypeSubX",inletOutletList);
-  inletOutletTypeSubY = new SC_ComboBox("inletOutletTypeSubY",inletOutletList);
-  inletOutletTypeSubZ = new SC_ComboBox("inletOutletTypeSubZ",inletOutletList);
-  inletOutletTypePlusX = new SC_ComboBox("inletOutletTypePlusX",inletOutletList);
-  inletOutletTypePlusY = new SC_ComboBox("inletOutletTypePlusY",inletOutletList);
-  inletOutletTypePlusZ = new SC_ComboBox("inletOutletTypePlusZ",inletOutletList);
-  inletOutletBoxLayout->addWidget(new QLabel("Inlet-Outlet at (X-,Y-,Z-) Walls"),numInOutRow, 0);
-  inletOutletBoxLayout->itemAt(inletOutletBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  inletOutletBoxLayout->addWidget(inletOutletTypeSubX,numInOutRow,1);
-  inletOutletBoxLayout->addWidget(inletOutletTypeSubY,numInOutRow,2);
-  inletOutletBoxLayout->addWidget(inletOutletTypeSubZ,numInOutRow++,3);
-  inletOutletBoxLayout->addWidget(new QLabel("Inlet-Outlet at (X+,Y+,Z+) Walls"),numInOutRow, 0);
-  inletOutletBoxLayout->itemAt(inletOutletBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
-  inletOutletBoxLayout->addWidget(inletOutletTypePlusX,numInOutRow,1);
-  inletOutletBoxLayout->addWidget(inletOutletTypePlusY,numInOutRow,2);
-  inletOutletBoxLayout->addWidget(inletOutletTypePlusZ,numInOutRow++,3);
-  inletOutletBoxLayout->setRowStretch(numInOutRow,1);
-  inletOutletBox->setVisible(false); // TODO: Wall inlet/outlet not implemented yet
-  // numRow = numRow+1;  
-  wallsLayout->addWidget(inletOutletBox, numRow+numInOutRow, 0, 2, 4);
-  numRow += numInOutRow;
+  // QGroupBox *inletOutletBox = new QGroupBox("");
+  // QGridLayout *inletOutletBoxLayout = new QGridLayout();
+  // inletOutletBox->setLayout(inletOutletBoxLayout);
+  // int numInOutRow = 0;
+  // QStringList inletOutletList; inletOutletList << "None" 
+  //                                              << "Inlet - Steady"  << "Inlet - OpenFOAM"  << "Inlet - GeoClaw"  << "Inlet - SWE File" 
+  //                                              << "Outlet - Steady" << "Outlet - OpenFOAM" << "Outlet - GeoClaw" << "Outlet - SWE File";
+  // inletOutletTypeSubX = new SC_ComboBox("inletOutletTypeSubX",inletOutletList);
+  // inletOutletTypeSubY = new SC_ComboBox("inletOutletTypeSubY",inletOutletList);
+  // inletOutletTypeSubZ = new SC_ComboBox("inletOutletTypeSubZ",inletOutletList);
+  // inletOutletTypePlusX = new SC_ComboBox("inletOutletTypePlusX",inletOutletList);
+  // inletOutletTypePlusY = new SC_ComboBox("inletOutletTypePlusY",inletOutletList);
+  // inletOutletTypePlusZ = new SC_ComboBox("inletOutletTypePlusZ",inletOutletList);
+  // inletOutletBoxLayout->addWidget(new QLabel("Inlet-Outlet at (X-,Y-,Z-) Walls"),numInOutRow, 0);
+  // inletOutletBoxLayout->itemAt(inletOutletBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
+  // inletOutletBoxLayout->addWidget(inletOutletTypeSubX,numInOutRow,1);
+  // inletOutletBoxLayout->addWidget(inletOutletTypeSubY,numInOutRow,2);
+  // inletOutletBoxLayout->addWidget(inletOutletTypeSubZ,numInOutRow++,3);
+  // inletOutletBoxLayout->addWidget(new QLabel("Inlet-Outlet at (X+,Y+,Z+) Walls"),numInOutRow, 0);
+  // inletOutletBoxLayout->itemAt(inletOutletBoxLayout->count()-1)->setAlignment(Qt::AlignRight);
+  // inletOutletBoxLayout->addWidget(inletOutletTypePlusX,numInOutRow,1);
+  // inletOutletBoxLayout->addWidget(inletOutletTypePlusY,numInOutRow,2);
+  // inletOutletBoxLayout->addWidget(inletOutletTypePlusZ,numInOutRow++,3);
+  // inletOutletBoxLayout->setRowStretch(numInOutRow,1);
+  // inletOutletBox->setVisible(false); // TODO: Wall inlet/outlet not implemented yet
+  // // numRow = numRow+1;  
+  // wallsLayout->addWidget(inletOutletBox, numRow+numInOutRow, 0, 2, 4);
+  // numRow += numInOutRow;
   // numRow += 4;
   wallsLayout->setRowStretch(numRow+2, 1);
 
@@ -812,37 +827,37 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   });
 
 
-  connect(applyInletOutlet, &QCheckBox::stateChanged, [=](int state) {
-    if (state == Qt::Checked) {
-      inletOutletTypeSubX->setEnabled(true);
-      inletOutletTypeSubY->setEnabled(true);
-      inletOutletTypeSubZ->setEnabled(true);
-      inletOutletTypePlusX->setEnabled(true);
-      inletOutletTypePlusY->setEnabled(true);
-      inletOutletTypePlusZ->setEnabled(true);
-      inletOutletTypeSubX->setVisible(true);
-      inletOutletTypeSubY->setVisible(true);
-      inletOutletTypeSubZ->setVisible(true);
-      inletOutletTypePlusX->setVisible(true);
-      inletOutletTypePlusY->setVisible(true);
-      inletOutletTypePlusZ->setVisible(true);
-      inletOutletBox->setVisible(true);
-    } else {
-      inletOutletTypeSubX->setEnabled(false);
-      inletOutletTypeSubY->setEnabled(false);
-      inletOutletTypeSubZ->setEnabled(false);
-      inletOutletTypePlusX->setEnabled(false);
-      inletOutletTypePlusY->setEnabled(false);
-      inletOutletTypePlusZ->setEnabled(false);
-      inletOutletTypeSubX->setVisible(false);
-      inletOutletTypeSubY->setVisible(false);
-      inletOutletTypeSubZ->setVisible(false);
-      inletOutletTypePlusX->setVisible(false);
-      inletOutletTypePlusY->setVisible(false);
-      inletOutletTypePlusZ->setVisible(false);
-      inletOutletBox->setVisible(false);
-    }
-  });
+  // connect(applyInletOutlet, &QCheckBox::stateChanged, [=](int state) {
+  //   if (state == Qt::Checked) {
+  //     inletOutletTypeSubX->setEnabled(true);
+  //     inletOutletTypeSubY->setEnabled(true);
+  //     inletOutletTypeSubZ->setEnabled(true);
+  //     inletOutletTypePlusX->setEnabled(true);
+  //     inletOutletTypePlusY->setEnabled(true);
+  //     inletOutletTypePlusZ->setEnabled(true);
+  //     inletOutletTypeSubX->setVisible(true);
+  //     inletOutletTypeSubY->setVisible(true);
+  //     inletOutletTypeSubZ->setVisible(true);
+  //     inletOutletTypePlusX->setVisible(true);
+  //     inletOutletTypePlusY->setVisible(true);
+  //     inletOutletTypePlusZ->setVisible(true);
+  //     inletOutletBox->setVisible(true);
+  //   } else {
+  //     inletOutletTypeSubX->setEnabled(false);
+  //     inletOutletTypeSubY->setEnabled(false);
+  //     inletOutletTypeSubZ->setEnabled(false);
+  //     inletOutletTypePlusX->setEnabled(false);
+  //     inletOutletTypePlusY->setEnabled(false);
+  //     inletOutletTypePlusZ->setEnabled(false);
+  //     inletOutletTypeSubX->setVisible(false);
+  //     inletOutletTypeSubY->setVisible(false);
+  //     inletOutletTypeSubZ->setVisible(false);
+  //     inletOutletTypePlusX->setVisible(false);
+  //     inletOutletTypePlusY->setVisible(false);
+  //     inletOutletTypePlusZ->setVisible(false);
+  //     inletOutletBox->setVisible(false);
+  //   }
+  // });
 
 
 }
@@ -854,12 +869,7 @@ BoundaryMPM::~BoundaryMPM()
 
 void BoundaryMPM::clear(void)
 {
-  // clear all widgets
-  // theCustom->clear();
-  // theWaveFlume->clear();
-  // theWaveGeneration->clear();
-  // theStructures->clear();
-  // theWalls->clear();
+  // TODO: clear all widgets
 }
 
 bool
@@ -1256,6 +1266,17 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
     boundariesObject["friction_static"] = 0.0;
     boundariesObject["friction_dynamic"] = 0.0;
 
+    // User point-list input bathymetry
+    boundariesObject["use_custom_bathymetry"] = customBathymetryToggle->isChecked();
+    if (customBathymetryToggle->isChecked()) {
+      QJsonObject tableBath;
+      bathXZData->outputToJSON(tableBath);
+      QJsonArray bathArray;
+      for (int i = 0; i < tableBath["bathymetry"].toArray().size(); i++) {
+        bathArray.append(tableBath["bathymetry"].toArray()[i].toArray());
+      }
+      boundariesObject["bathymetry"] = bathArray;
+    }
 
     // Maybe add SWL, bools, wave-maker neutral, etc. here
     boundariesArray.append(boundariesObject);
@@ -1317,7 +1338,7 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
         // check for error condition, an entry had no value
         if ((alpha->text().isEmpty())||(beta->text().isEmpty())||(a->text().isEmpty())||(b->text().isEmpty())) {
             this->errorMessage("ERROR: Periodic Waves - data has not been set");
-            return false;
+            // return false;
         }
         boundariesObject["wave_height"]=alpha->text().toDouble();
         boundariesObject["wave_celerity"]=beta->text().toDouble();
@@ -1498,105 +1519,472 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
 bool
 BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
 {
-  bathSTL->inputFromJSON(jsonObject);
-  paddleDisplacementFile->inputFromJSON(jsonObject);
+  this->clear();
 
+  // bathSTL->inputFromJSON(jsonObject);
+  // paddleDisplacementFile->inputFromJSON(jsonObject);
 
-    //
-    // for all entries, make sure i exists and if it does get it, otherwise return error
-    //
-
-    if (jsonObject.contains("object")) {
-        inpty=jsonObject["object"].toString();
-    } else {
-        inpty = "Parameters";
-    }
-
-    if (inpty==QString("Periodic Waves")) {
-      if (jsonObject.contains("wave_height")) {
-          double theAlphaValue = jsonObject["wave_height"].toDouble();
-          alpha->setText(QString::number(theAlphaValue));
-      } else {
-          this->errorMessage("ERROR: Periodic Waves - no \"alpha\" entry");
-          return false;
-      }
-      if (jsonObject.contains("wave_celerity")) {
-          double theBetaValue = jsonObject["wave_celerity"].toDouble();
-          beta->setText(QString::number(theBetaValue));
-      } else {
-          this->errorMessage("ERROR: Periodic Waves  - no \"beta\" entry");
-          return false;
-      }
-      if (jsonObject.contains("wave_period")) {
-          double theAValue = jsonObject["wave_period"].toDouble();
-          a->setText(QString::number(theAValue));
-      } else {
-          this->errorMessage("ERROR: Periodic Waves  - no \"a\" entry");
-          return false;
-      }
-      if (jsonObject.contains("wave_duration")) {
-          double theBValue = jsonObject["wave_duration"].toDouble();
-          b->setText(QString::number(theBValue));
-      } else {
-          this->errorMessage("ERROR: Periodic Waves - no \"b\" entry");
-          return false;
-      }
-
-    } else if (inpty==QString("Preset Paddle - OSU LWF")) {
-      if (jsonObject.contains("time")) {
-          QJsonArray theTimeArray = jsonObject["time"].toArray();
-          a->setText(QString::number(theTimeArray[0].toDouble()));
-          b->setText(QString::number(theTimeArray[1].toDouble()));
-      } else {
-          this->errorMessage("ERROR: Paddle Motion - no \"time\" entry");
-          return false;
-      }
-      if (jsonObject.contains("file")) {
-          QString theDataDir = jsonObject["file"].toString();
-          dataDir->setText(theDataDir);
-      } else {
-          this->errorMessage("ERROR: Paddle Motion - no \"file\" entry");
-          return false;
-      }
-    } else if (inpty==QString("Preset Paddle - OSU DWB")) {
-      if (jsonObject.contains("time")) {
-          QJsonArray theTimeArray = jsonObject["time"].toArray();
-          a->setText(QString::number(theTimeArray[0].toDouble()));
-          b->setText(QString::number(theTimeArray[1].toDouble()));
-      } else {
-          this->errorMessage("ERROR: Paddle Motion - no \"time\" entry");
-          return false;
-      }
-      if (jsonObject.contains("file")) {
-          QString theDataDir = jsonObject["file"].toString();
-          dataDir->setText(theDataDir);
-      } else {
-          this->errorMessage("ERROR: Paddle Motion - no \"file\" entry");
-          return false;
-      }
-    }
   
-    //this->updateDistributionPlot();
-    return true;
+  enum BoundaryTypeEnum : int {CUSTOM, WAVE_FLUME, WAVE_GENERATOR, RIGID_STRUCTURE, RIGID_WALLS};
+  // Wave Flume Facility
+
+
+  
+  // if (stackedWidget->currentIndex() == BoundaryTypeEnum::CUSTOM) {
+   
+  //   return true;
+  // }
+
+
+  //
+  // for all entries, make sure i exists and if it does get it, otherwise return error
+  //
+
+  if (jsonObject.contains("object")) {
+      inpty=jsonObject["object"].toString();
+      // boundaryType->setCurrentText(inpty);
+  } else {
+      inpty = QString("Custom");
+  }
+
+
+
+  if (inpty==QString("OSU LWF") || inpty==QString("OSU LWF Ramp") ||
+      inpty==QString("OSU DWB") || inpty==QString("OSU DWB Ramp") ||
+      inpty==QString("OSU TWB Ramp") || inpty==QString("OSU TWB Ramp") ||
+      inpty==QString("UW WASIRF") || inpty==QString("Flume Facility") ||
+      inpty==QString("WU TWB") || inpty==QString("WU TWB Harbor") ||
+      inpty==QString("TOKYO Flume") || inpty==QString("TOKYO Harbor") ||
+      inpty==QString("USGS Ramp") || inpty==QString("USGS Flume") ||
+      inpty==QString("Bathymetry") || inpty==QString("bathymetry")) {
+    boundaryType->setCurrentText("Flume Facility");
+    stackedWidget->setCurrentIndex(1);
+    if (jsonObject.contains("facility")) {
+        facility->setCurrentText(jsonObject["facility"].toString());
+    } else {
+        this->errorMessage("ERROR: Wave Flume Facility - no \"facility\" entry");
+        // return false;
+    }
+
+    // if (jsonObject.contains("contact")) {
+    //     waveFlumeContactType->setCurrentText(jsonObject["contact"].toString());
+    // } else {
+    //     this->errorMessage("ERROR: Wave Flume Facility - no \"contact\" entry");
+    //     return false;
+    // }
+    if (jsonObject.contains("origin")) {
+        QJsonArray theOriginArray = jsonObject["origin"].toArray();
+        flumeOriginX->setText(QString::number(theOriginArray[0].toDouble()));
+        flumeOriginY->setText(QString::number(theOriginArray[1].toDouble()));
+        flumeOriginZ->setText(QString::number(theOriginArray[2].toDouble()));
+    } else {
+        this->errorMessage("ERROR: Wave Flume Facility - no \"origin\" entry");
+        return false;
+    }
+    if (jsonObject.contains("dimensions")) {
+        QJsonArray theDimensionsArray = jsonObject["dimensions"].toArray();
+        flumeLength->setText(QString::number(theDimensionsArray[0].toDouble()));
+        flumeHeight->setText(QString::number(theDimensionsArray[1].toDouble()));
+        flumeWidth->setText(QString::number(theDimensionsArray[2].toDouble()));
+    } else {
+        this->errorMessage("ERROR: Wave Flume Facility - no \"dimensions\" entry");
+        return false;
+    }
+
+    if (jsonObject.contains("use_custom_bathymetry")) {
+        customBathymetryToggle->setChecked(jsonObject["use_custom_bathymetry"].toBool());
+    } else {
+        // this->errorMessage("ERROR: Wave Flume Facility - no \"use_custom_bathymetry\" entry");
+        customBathymetryToggle->setChecked(false);
+        // return false;
+    }
+    if (jsonObject.contains("bathymetry")) {
+        if (!customBathymetryToggle->isChecked()) {
+            qDebug() << "ERROR: Wave Flume Facility - use_custom_bathymetry not set to true despite bathymetry points provided";
+            // return false;
+        }
+        QJsonArray theBathymetryArray = jsonObject["bathymetry"].toArray();
+        QJsonObject theBathymetryObject;
+        theBathymetryObject["bathymetry"] = theBathymetryArray;
+        bathXZData->inputFromJSON(theBathymetryObject);
+    } else {
+        if (customBathymetryToggle->isChecked()) {
+            qDebug() << "ERROR: Wave Flume Facility - use_custom_bathymetry set to true but no bathymetry points provided";
+            // return false;
+        }
+        qDebug() << "ERROR: Wave Flume Facility - no \"bathymetry\" entry";
+        
+        // return false;
+    }
+  } 
+  else if (inpty==QString("OSU Paddle") || 
+              inpty==QString("OSU LWF Paddle") || 
+              inpty==QString("Preset Paddle - OSU LWF") || 
+              inpty==QString("Preset Paddle - OSU DWB") ||
+              inpty==QString("Preset Paddle - OSU TWB") || 
+              inpty==QString("OSU TWB Paddle") || 
+              inpty==QString("OSU DWB Paddle") || 
+              inpty==QString("Paddle") || 
+              inpty==QString("Wave Generator")
+              ) {
+    boundaryType->setCurrentText("Wave Generator");
+    stackedWidget->setCurrentIndex(2);
+    if (jsonObject.contains("contact")) {
+        paddleContactType->setCurrentText(jsonObject["contact"].toString());
+    } else {
+        this->errorMessage("ERROR: Wave Generator - no \"contact\" entry");
+        paddleContactType->setCurrentText("Separable");
+        // return false;
+    }
+    if (jsonObject.contains("origin")) {
+        QJsonArray theOriginArray = jsonObject["origin"].toArray();
+        paddleOriginX->setText(QString::number(theOriginArray[0].toDouble()));
+        paddleOriginY->setText(QString::number(theOriginArray[1].toDouble()));
+        paddleOriginZ->setText(QString::number(theOriginArray[2].toDouble()));
+    } else {
+        this->errorMessage("ERROR: Wave Generator - no \"origin\" entry, try domain_start");
+        if (jsonObject.contains("domain_start")) {
+            QJsonArray domainStartArray = jsonObject["domain_start"].toArray();
+            paddleOriginX->setText(QString::number(domainStartArray[0].toDouble()));
+            paddleOriginY->setText(QString::number(domainStartArray[1].toDouble()));
+            paddleOriginZ->setText(QString::number(domainStartArray[2].toDouble()));
+        } else {
+            this->errorMessage("ERROR: Wave Generator - no \"domain_start\" entry");
+            paddleOriginX->setText("0.0");
+            paddleOriginY->setText("0.0");
+            paddleOriginZ->setText("0.0");
+            // return false;
+        }
+    }
+    if (jsonObject.contains("dimensions")) {
+        QJsonArray theDimensionsArray = jsonObject["domain_end"].toArray();
+        paddleLength->setText(QString::number(theDimensionsArray[0].toDouble()));
+        paddleHeight->setText(QString::number(theDimensionsArray[1].toDouble()));
+        paddleWidth->setText(QString::number(theDimensionsArray[2].toDouble()));
+    } else {
+        this->errorMessage("ERROR: Wave Generator - no \"dimensions\" entry");
+        if (jsonObject.contains("domain_start")) {
+            QJsonArray domainStartArray = jsonObject["domain_start"].toArray();
+            QJsonArray domainEndArray = jsonObject["domain_end"].toArray();
+            paddleLength->setText(QString::number(domainEndArray[0].toDouble() - domainStartArray[0].toDouble()));
+            paddleHeight->setText(QString::number(domainEndArray[1].toDouble() - domainStartArray[1].toDouble()));
+            paddleWidth->setText(QString::number(domainEndArray[2].toDouble() - domainStartArray[2].toDouble()));
+        } else {
+            this->errorMessage("ERROR: Wave Generator - no \"domain_end\" entry");
+            // return false;
+        }
+    }
+    if (jsonObject.contains("output_frequency")) {
+        double theFrequencyValue = jsonObject["output_frequency"].toDouble();
+        paddleFrequency->setText(QString::number(theFrequencyValue));
+    } else {
+        this->errorMessage("ERROR: Wave Generator - no \"output_frequency\" entry");
+        // return false;
+    }
+
+    // if (inpty==QString("Periodic Waves")) {
+    //   if (jsonObject.contains("wave_height")) {
+    //       double theAlphaValue = jsonObject["wave_height"].toDouble();
+    //       alpha->setText(QString::number(theAlphaValue));
+    //   } else {
+    //       this->errorMessage("ERROR: Periodic Waves - no \"alpha\" entry");
+    //       return false;
+    //   }
+    //   if (jsonObject.contains("wave_celerity")) {
+    //       double theBetaValue = jsonObject["wave_celerity"].toDouble();
+    //       beta->setText(QString::number(theBetaValue));
+    //   } else {
+    //       this->errorMessage("ERROR: Periodic Waves  - no \"beta\" entry");
+    //       return false;
+    //   }
+    //   if (jsonObject.contains("wave_period")) {
+    //       double theAValue = jsonObject["wave_period"].toDouble();
+    //       a->setText(QString::number(theAValue));
+    //   } else {
+    //       this->errorMessage("ERROR: Periodic Waves  - no \"a\" entry");
+    //       return false;
+    //   }
+    //   if (jsonObject.contains("wave_duration")) {
+    //       double theBValue = jsonObject["wave_duration"].toDouble();
+    //       b->setText(QString::number(theBValue));
+    //   } else {
+    //       this->errorMessage("ERROR: Periodic Waves - no \"b\" entry");
+    //       return false;
+    //   }
+
+    if (jsonObject.contains("time")) {
+        QJsonArray theTimeArray = jsonObject["time"].toArray();
+        if (theTimeArray[0].toDouble() > theTimeArray[1].toDouble()) {
+            // this->errorMessage("ERROR: Paddle Motion - time start is greater than time end");
+            b->setText(QString::number(theTimeArray[0].toDouble() + 1.0));
+            a->setText(QString::number(theTimeArray[1].toDouble()));
+            // return false;
+        } else if (theTimeArray[0].toDouble() == theTimeArray[1].toDouble()) {
+            a->setText(QString::number(theTimeArray[0].toDouble()));
+            b->setText(QString::number(theTimeArray[1].toDouble() + 1.0));
+        } else {
+            a->setText(QString::number(theTimeArray[0].toDouble()));
+            b->setText(QString::number(theTimeArray[1].toDouble()));
+        }
+    } else {
+        this->errorMessage("ERROR: Paddle Motion - no \"time\" entry");
+        a->setText("0.0");
+        b->setText("1.0");
+        // return false;
+    }
+    if (jsonObject.contains("file")) {
+        QString theDataDir = jsonObject["file"].toString();
+        dataDir->setText(theDataDir);
+        paddleDisplacementFile->setFilename(theDataDir);
+    } else {
+        this->errorMessage("ERROR: Paddle Motion - no \"file\" entry");
+        // return false;
+    }
+  }
+
+  else if (inpty==QString("Rigid Structures") || inpty==QString("Rigid Structure") || 
+      inpty==QString("Structure") || inpty==QString("Box") || inpty==QString("box") ||
+      inpty==QString("cylinder") || inpty==QString("sphere") ||
+      inpty==QString("Cylinder") || inpty==QString("Sphere")) {
+    boundaryType->setCurrentText("Rigid Structures");
+    stackedWidget->setCurrentIndex(3);
+    if (jsonObject.contains("object")) {
+        structObjectType->setCurrentText(jsonObject["object"].toString());
+    } else {
+        this->errorMessage("ERROR: Rigid Structures - no \"object\" entry");
+        structObjectType->setCurrentText("Box");
+        // return false;
+    }
+    if (jsonObject.contains("contact")) {
+        structContactType->setCurrentText(jsonObject["contact"].toString());
+    } else {
+        this->errorMessage("ERROR: Rigid Structures - no \"contact\" entry");
+        structContactType->setCurrentText("Separable");
+        // return false;
+    }
+    if (jsonObject.contains("origin")) {
+        QJsonArray theOriginArray = jsonObject["origin"].toArray();
+        structOriginLength->setText(QString::number(theOriginArray[0].toDouble()));
+        structOriginHeight->setText(QString::number(theOriginArray[1].toDouble()));
+        structOriginWidth->setText(QString::number(theOriginArray[2].toDouble()));
+    } else {
+        this->errorMessage("ERROR: Rigid Structures - no \"origin\" entry");
+        if (jsonObject.contains("domain_start")) {
+            QJsonArray domainStartArray = jsonObject["domain_start"].toArray();
+            structOriginLength->setText(QString::number(domainStartArray[0].toDouble()));
+            structOriginHeight->setText(QString::number(domainStartArray[1].toDouble()));
+            structOriginWidth->setText(QString::number(domainStartArray[2].toDouble()));
+        } else {
+            this->errorMessage("ERROR: Rigid Structures - no \"domain_start\" entry");
+            structOriginLength->setText("0.0");
+            structOriginHeight->setText("0.0");
+            structOriginWidth->setText("0.0");
+            // return false;
+        }
+    }
+    if (jsonObject.contains("dimensions")) {
+        QJsonArray theDimensionsArray = jsonObject["dimensions"].toArray();
+        structLength->setText(QString::number(theDimensionsArray[0].toDouble()));
+        structHeight->setText(QString::number(theDimensionsArray[1].toDouble()));
+        structWidth->setText(QString::number(theDimensionsArray[2].toDouble()));
+    } else {
+        this->errorMessage("ERROR: Rigid Structures - no \"dimensions\" entry");
+        if (jsonObject.contains("domain_end")) {
+            QJsonArray domainEndArray = jsonObject["domain_end"].toArray();
+            structLength->setText(QString::number(domainEndArray[0].toDouble() - structOriginLength->text().toDouble()));
+            structHeight->setText(QString::number(domainEndArray[1].toDouble() - structOriginHeight->text().toDouble()));
+            structWidth->setText(QString::number(domainEndArray[2].toDouble() - structOriginWidth->text().toDouble()));
+        } else {
+            this->errorMessage("ERROR: Rigid Structures - no \"domain_end\" entry");
+            structLength->setText("1.0");
+            structHeight->setText("1.0");
+            structWidth->setText("1.0");
+        }
+        // return false;
+    }  
+
+    if (jsonObject.contains("array")) {
+        applyArray->setChecked(true);
+        QJsonArray theArrayArray = jsonObject["array"].toArray();
+        structArrayX->setText(QString::number(theArrayArray[0].toInt()));
+        structArrayY->setText(QString::number(theArrayArray[1].toInt()));
+        structArrayZ->setText(QString::number(theArrayArray[2].toInt()));
+    } else {
+        this->errorMessage("ERROR: Rigid Structures - no \"array\" entry");
+        structArrayX->setText("1");
+        structArrayY->setText("1");
+        structArrayZ->setText("1");
+        applyArray->setChecked(false);
+    }
+    if (jsonObject.contains("spacing")) {
+        QJsonArray theSpacingArray = jsonObject["spacing"].toArray();
+        structSpacingX->setText(QString::number(theSpacingArray[0].toDouble()));
+        structSpacingY->setText(QString::number(theSpacingArray[1].toDouble()));
+        structSpacingZ->setText(QString::number(theSpacingArray[2].toDouble()));
+    } else {
+        this->errorMessage("ERROR: Rigid Structures - no \"spacing\" entry");
+        structSpacingX->setText("0.0");
+        structSpacingY->setText("0.0");
+        structSpacingZ->setText("0.0");
+        // return false;
+    }
+    /*
+    if (jsonObject.contains("rotate")) {
+        applyRotation->setChecked(true);
+        QJsonArray theRotateArray = jsonObject["rotate"].toArray();
+        structRotateAngleX->setText(QString::number(theRotateArray[0].toDouble()));
+        structRotateAngleY->setText(QString::number(theRotateArray[1].toDouble()));
+        structRotateAngleZ->setText(QString::number(theRotateArray[2].toDouble()));
+    } else {
+        this->errorMessage("ERROR: Rigid Structures - no \"rotate\" entry");
+        applyRotation->setChecked(false);
+        structRotateAngleX->setText("0.0");
+        structRotateAngleY->setText("0.0");
+        structRotateAngleZ->setText("0.0");
+        // return false;
+    }
+    if (jsonObject.contains("fulcrum")) {
+        QJsonArray theFulcrumArray = jsonObject["fulcrum"].toArray();
+        structRotateFulcrumX->setText(QString::number(theFulcrumArray[0].toDouble()));
+        structRotateFulcrumY->setText(QString::number(theFulcrumArray[1].toDouble()));
+        structRotateFulcrumZ->setText(QString::number(theFulcrumArray[2].toDouble()));
+    } else {
+        this->errorMessage("ERROR: Rigid Structures - no \"fulcrum\" entry");
+        structRotateFulcrumX->setText("0.0");
+        structRotateFulcrumY->setText("0.0");
+        structRotateFulcrumZ->setText("0.0");
+        // return false;
+    }
+    */
+  } 
+  else if (inpty==QString("Walls") || 
+          inpty==QString("Rigid Walls") || 
+          inpty==QString("Rigid Wall") || 
+          inpty==QString("Domain") || 
+          inpty==QString("Wall")) {
+    boundaryType->setCurrentText("Rigid Walls");
+    stackedWidget->setCurrentIndex(4);
+    if (jsonObject.contains("contact")) {
+        wallsContactType->setCurrentText(jsonObject["contact"].toString());
+    } else {
+        this->errorMessage("ERROR: Rigid Walls - no \"contact\" entry");
+        wallsContactType->setCurrentText("Separable");
+        // return false;
+    }
+    if (jsonObject.contains("origin")) {
+        QJsonArray theOriginArray = jsonObject["origin"].toArray();
+        originLength->setText(QString::number(theOriginArray[0].toDouble()));
+        originHeight->setText(QString::number(theOriginArray[1].toDouble()));
+        originWidth->setText(QString::number(theOriginArray[2].toDouble()));
+    } else {
+        this->errorMessage("ERROR: Rigid Walls - no \"origin\" entry");
+        if (jsonObject.contains("domain_start")) {
+            QJsonArray domainStartArray = jsonObject["domain_start"].toArray();
+            originLength->setText(QString::number(domainStartArray[0].toDouble()));
+            originHeight->setText(QString::number(domainStartArray[1].toDouble()));
+            originWidth->setText(QString::number(domainStartArray[2].toDouble()));
+        } else {
+            this->errorMessage("ERROR: Rigid Walls - no \"domain_start\" entry");
+            originLength->setText("0.0");
+            originHeight->setText("0.0");
+            originWidth->setText("0.0");
+            // return false;
+        }
+    }
+    if (jsonObject.contains("dimensions")) {
+        QJsonArray theDimensionsArray = jsonObject["dimensions"].toArray();
+        wallsLength->setText(QString::number(theDimensionsArray[0].toDouble()));
+        wallsHeight->setText(QString::number(theDimensionsArray[1].toDouble()));
+        wallsWidth->setText(QString::number(theDimensionsArray[2].toDouble()));
+    } else {
+        this->errorMessage("ERROR: Rigid Walls - no \"dimensions\" entry");
+        if (jsonObject.contains("domain_end")) {
+            QJsonArray domainEndArray = jsonObject["domain_end"].toArray();
+            wallsLength->setText(QString::number(domainEndArray[0].toDouble() - originLength->text().toDouble()));
+            wallsHeight->setText(QString::number(domainEndArray[1].toDouble() - originHeight->text().toDouble()));
+            wallsWidth->setText(QString::number(domainEndArray[2].toDouble() - originWidth->text().toDouble()));
+        } else {
+            this->errorMessage("ERROR: Rigid Walls - no \"domain_end\" entry");
+            // return false;
+        }
+        // return false;
+    }
+  }
+    // if (jsonObject.contains("friction")) {
+    //     // QJsonObject theFrictionObject = jsonObject["friction"].toObject();
+    //     // QJsonArray theStaticFrictionArray = theFrictionObject["static"].toArray();
+    //     // staticFrictionWallX->setText(QString::number(theStaticFrictionArray[0].toDouble()));
+    //     // staticFrictionWallY->setText(QString::number(theStaticFrictionArray[1].toDouble()));
+    //     // staticFrictionWallZ->setText(QString::number(theStaticFrictionArray[2].toDouble()));
+    //     // QJsonArray theDynamicFrictionArray = theFrictionObject["dynamic"].toArray();
+    //     // dynamicFrictionWallX->setText(QString::number(theDynamicFrictionArray[0].toDouble()));
+    //     // dynamicFrictionWallY->setText(QString::number(theDynamicFrictionArray[1].toDouble()));
+    //     // dynamicFrictionWallZ->setText(QString::number(theDynamicFrictionArray[2].toDouble()));
+    // } else {
+    //     this->errorMessage("ERROR: Rigid Walls - no \"friction\" entry");
+    //     // return false;
+    // }
+
+  // else if (inpty==QString("Rigid")
+
+  //  else if (inpty==QString("Preset Paddle - OSU DWB")) {
+  //   if (jsonObject.contains("time")) {
+  //       QJsonArray theTimeArray = jsonObject["time"].toArray();
+  //       a->setText(QString::number(theTimeArray[0].toDouble()));
+  //       b->setText(QString::number(theTimeArray[1].toDouble()));
+  //   } else {
+  //       this->errorMessage("ERROR: Paddle Motion - no \"time\" entry");
+  //       // return false;
+  //   }
+  //   if (jsonObject.contains("file")) {
+  //       QString theDataDir = jsonObject["file"].toString();
+  //       dataDir->setText(theDataDir);
+  //   } else {
+  //       this->errorMessage("ERROR: Paddle Motion - no \"file\" entry");
+  //       // return false;
+  //   }
+  // }
+
+  else {
+    boundaryType->setCurrentText("Custom");
+    stackedWidget->setCurrentIndex(0);
+    qDebug() << "ERROR: inputFromJSON(): Boundary type falls through presets so it is considered custom, may not be implemented in HydroUQ yet";
+  }
+
+  //this->updateDistributionPlot();
+  return true;
 }
 
 bool
 BoundaryMPM::copyFiles(QString &destDir)
 {
-    if (inpty==QString("Preset Paddle - OSU LWF") || inpty==QString("Preset Paddle - OSU DWB") || inpty==QString("Paddle")) {
-        return QFile::copy(dataDir->text(), destDir);
-    } else {
-        return true;
+  // if (inpty==QString("Preset Paddle - OSU LWF") || inpty==QString("Preset Paddle - OSU DWB") || inpty==QString("Paddle")) {
+
+  qDebug() << "BoundaryMPM::copyFiles(): destDir: " << destDir;
+
+  if (dataDir != nullptr) {
+    if (QFile::copy(dataDir->text(), destDir) == false) {
+      qDebug() << "ERROR: copying paddle displacement file: " << dataDir->text() << " to " << destDir;
     }
-  if (bathSTL) {
-    if (!bathSTL->copyFile(destDir))
-      qDebug() << "Error copying bathymetry file: " << bathSTL->getFilename();
+  } else {
+    qDebug() << "ERROR: copying paddle displacement file: dataDir is nullptr";
   }
-  if (paddleDisplacementFile) {
-    if (!paddleDisplacementFile->copyFile(destDir))
-      qDebug() << "Error copying paddle displacement file: " << paddleDisplacementFile->getFilename();
+  
+  if (paddleDisplacementFile != nullptr) {
+    if (paddleDisplacementFile->copyFile(destDir) == false) {
+      qDebug() << "ERROR: copying paddle displacement file: " << paddleDisplacementFile->getFilename() << " to " << destDir;
+    }
+  } else {
+    qDebug() << "ERROR: copying paddle displacement file: paddleDisplacementFile is nullptr";
   }
 
+  if (bathSTL != nullptr) {
+    if (bathSTL->copyFile(destDir) == false) {
+      qDebug() << "ERROR: copying bathymetry file: " << bathSTL->getFilename() << " to " << destDir;
+    }
+  } else {
+    qDebug() << "ERROR: copying bathymetry file: bathSTL is nullptr";
+  }
 
   return true;    
 }
@@ -1662,15 +2050,15 @@ void
 BoundaryMPM::updateDistributionPlot() {
     double alp=0, bet=0, aa=0, bb=0, me=0, st=0;
     int numSteps = 100;
-    if ((this->inpty)==QString("Periodic Waves")) {
-        alp=alpha->text().toDouble();
-        bet=beta->text().toDouble();
-        aa=a->text().toDouble();
-        bb=b->text().toDouble();
-        me = (aa*bet+bb*alp)/(alp+bet);
-        st = sqrt( alp*bet*(bb-aa)/pow(alp+bet,2)/(alp+bet+1)  );
-     } 
-     else if (((this->inpty)==QString("Preset Paddle - OSU LWF")) || (this->inpty==QString("Preset Paddle - OSU DWB")) || (this->inpty==QString("Paddle"))) {
+    // if ((this->inpty)==QString("Periodic Waves")) {
+    //     alp=alpha->text().toDouble();
+    //     bet=beta->text().toDouble();
+    //     aa=a->text().toDouble();
+    //     bb=b->text().toDouble();
+    //     me = (aa*bet+bb*alp)/(alp+bet);
+    //     st = sqrt( alp*bet*(bb-aa)/pow(alp+bet,2)/(alp+bet+1)  );
+    //  } 
+     if (((this->inpty)==QString("Preset Paddle - OSU LWF")) || (this->inpty==QString("Preset Paddle - OSU DWB")) || (this->inpty==QString("Paddle"))) {
         if (dataDir->text().isEmpty()) {
             this->errorMessage("ERROR: Paddle Motion - data has not been set");
             return;
@@ -1724,24 +2112,24 @@ BoundaryMPM::updateDistributionPlot() {
         return;
     }
 
-    if (this->inpty==QString("Periodic Waves")) {
-      if (alp >= 0.0 && bet > 0.0 && me != aa) {
-          double min = aa; // defined in x>0
-          double max = bb;
-          QVector<double> x(100);
-          QVector<double> y(100);
-          for (int i=0; i<100; i++) {
-              double xi = min + i*(max-min)/99;
-              x[i] = xi;
-              double betai=tgamma(alp)*tgamma(bet)/tgamma(alp+bet);
-              y[i] = pow(xi-aa,alp-1)*pow(bb-xi,bet-1)/betai/pow(bb-aa,alp+bet-1);
-          }
-          thePlot->clear();
-          thePlot->drawPDF(x,y);
-      } else {
-          thePlot->clear();
-      }
-    }
+    // if (this->inpty==QString("Periodic Waves")) {
+    //   if (alp >= 0.0 && bet > 0.0 && me != aa) {
+    //       double min = aa; // defined in x>0
+    //       double max = bb;
+    //       QVector<double> x(100);
+    //       QVector<double> y(100);
+    //       for (int i=0; i<100; i++) {
+    //           double xi = min + i*(max-min)/99;
+    //           x[i] = xi;
+    //           double betai=tgamma(alp)*tgamma(bet)/tgamma(alp+bet);
+    //           y[i] = pow(xi-aa,alp-1)*pow(bb-xi,bet-1)/betai/pow(bb-aa,alp+bet-1);
+    //       }
+    //       thePlot->clear();
+    //       thePlot->drawPDF(x,y);
+    //   } else {
+    //       thePlot->clear();
+    //   }
+    // }
 
 
 //        else {
@@ -1909,8 +2297,8 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
     // Make sure the walls fit the wave flume's dimensions
     applyCoulombFriction->setChecked(false);
     applyCoulombFriction->setEnabled(false);
-    applyInletOutlet->setChecked(false);
-    applyInletOutlet->setEnabled(false);
+    // applyInletOutlet->setChecked(false);
+    // applyInletOutlet->setEnabled(false);
     if (twinIdx == 0) { // OSU LWF
       wallsContactType->setCurrentIndex(0); // Separable
       wallsLength->setText(QString::number(90.0));

@@ -116,6 +116,7 @@ private:
   SC_DoubleLineEdit   *facilityHeight;
   SC_DoubleLineEdit   *facilityWidth;
   SC_ComboBox         *bathymetryComboBox;
+  SC_CheckBox         *customBathymetryToggle;
   SC_TableEdit        *bathXZData;  
   SC_FileEdit         *bathSTL;
 

@@ -42,6 +42,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QTabWidget>
 #include <QStackedWidget>
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
@@ -280,6 +282,40 @@ OpenFOAM_DigitalTwin::~OpenFOAM_DigitalTwin()
 
 }
 
+void
+OpenFOAM_DigitalTwin::clear(void)
+{
+  QString dummyFilename = "";
+  facility->clear();
+  flumeLength->clear();
+  flumeHeight->clear();
+  flumeWidth->clear();
+  cellSize->clear();
+  
+  // init Conditions
+  stillWaterLevel->clear();
+  initVel->clear();
+  velFile->setFilename(dummyFilename);
+  refPressure->clear();
+  
+  // turbilence settings
+  referenceLength->clear();
+  turbulanceIntensity->clear();
+  referenceVel->clear();
+  
+  // bathymetry
+  bathymetryComboBox->clear();
+  // bathXZData->clear();
+  bathSTL->setFilename(dummyFilename);
+  
+  // wave generation
+  waveGenComboBox->clear();
+  paddleDisplacementFile->setFilename(dummyFilename);
+  waveMag->clear();
+  waveCelerity->clear();
+  waveRepeatSpeed->clear();
+}
+
 bool
 OpenFOAM_DigitalTwin::outputToJSON(QJsonObject &jsonObject)
 {
@@ -318,6 +354,8 @@ OpenFOAM_DigitalTwin::outputToJSON(QJsonObject &jsonObject)
 bool
 OpenFOAM_DigitalTwin::inputFromJSON(QJsonObject &jsonObject)
 {
+  this->clear();
+
   facility->inputFromJSON(jsonObject);
   flumeLength->inputFromJSON(jsonObject);
   flumeHeight->inputFromJSON(jsonObject);

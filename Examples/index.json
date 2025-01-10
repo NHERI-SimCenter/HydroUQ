@@ -67,17 +67,16 @@
       "title": "Multi-Story Structure - OSU LWF Digital Twin - OpenFOAM",
       "base": "hdro-0001",
       "doc": [
-        "hdro-0001/figures/openfoam.png",
-        "hdro-0001/figures/opensees.png",
         "hdro-0001/figures/Coupled.png",
         "hdro-0001/figures/RV.png",
         "hdro-0001/figures/UQ.png",
         "hdro-0001/figures/FEM.png",
+        "hdro-0001/src/input.json",
         "hdro-0001/README.rst"
       ],
       "entry_point": "hdro-0001/./input.json",
       "summary": "Simple Example of Using the Coupled Digital Twin.",
-      "logo": "figures/openfoam.png",
+      "logo": "figures/Coupled.png",
       "categories": {
         "Difficulty": "1"
       }
@@ -133,8 +132,6 @@
       "title": "Cylinder in Flow - UW WASIRF Digital Twin - OpenFOAM + OpenSees",
       "base": "hdro-0003",
       "doc": [
-        "hdro-0003/figures/openfoam.png",
-        "hdro-0003/figures/opensees.png",
         "hdro-0003/figures/downloadResults.PNG",
         "hdro-0003/figures/DSToolsAndAppsJobsStatus.PNG",
         "hdro-0003/figures/DSToolsAndAppsJobsStatusFinished.PNG",
@@ -155,11 +152,12 @@
         "hdro-0003/figures/TipDisplacement.png",
         "hdro-0003/figures/Velocities.png",
         "hdro-0003/figures/WaveGauges.png",
+        "hdro-0003/src/input.json",
         "hdro-0003/README.rst"
       ],
       "entry_point": "hdro-0003/./input.json",
       "summary": "Example of modeling a cylindrical, partially submerged structure in a fluid flow in a digital twin (UW WASIRF). Uses two-way coupled CFD-FEM simulations, i.e. OpenFOAM + OpenSees.",
-      "logo": "figures/openfoam.png",
+      "logo": "figures/hdro-0003example.png",
       "categories": {
         "Difficulty": "1"
       }

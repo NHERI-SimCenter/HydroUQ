@@ -96,6 +96,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QList>
 #include <QMenuBar>
 
+#include <Stampede3Machine.h>
+#include <FronteraMachine.h>
 #include <SC_ToolDialog.h>
 #include <SC_RemoteAppTool.h>
 #include <SC_LocalAppTool.h>
@@ -122,7 +124,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // #include <Celeris/WebGPU.h>
 #include <NOAA/DigitalCoast.h>
 #include <Utils/FileOperations.h>
-#include <FronteraMachine.h>
+
 // static pointer for global procedure set in constructor
 static WorkflowAppHydroUQ *theApp = 0;
 
@@ -147,7 +149,6 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theEventSelection = new HydroEventSelection(theRVs, theService);
     // theEventSelection = new HydroEventSelection(theRVs, theGI);
     theAnalysisSelection = new FEA_Selection(true);
-    // theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivity); // ForwardReliabilitySensitivitySurrogate
     theUQ_Selection = new UQ_EngineSelection(ForwardReliabilitySensitivitySurrogate); // ForwardReliabilitySensitivitySurrogate
     theEDP_Selection = new HydroEDP_Selection(theRVs);
     theResults = theUQ_Selection->getResults();
@@ -175,8 +176,8 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
         currentApp = localApp;
         setUpForApplicationRun(workingDir, subDir);
     });
-    connect(localApp, SIGNAL(runComplete()), this, SLOT(runComplete())); // swao with next?
     connect(localApp, SIGNAL(processResults(QString&)), this, SLOT(processResults(QString&)));
+    connect(localApp, SIGNAL(runComplete()), this, SLOT(runComplete())); // swao with next?
     connect(localApp,SIGNAL(sendErrorMessage(QString)),
 	    this,SLOT(errorMessage(QString)));
     connect(localApp,SIGNAL(sendStatusMessage(QString)),
@@ -228,6 +229,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //
     // create the component selection & add the components to it
     //
+
     theComponentSelection = new SimCenterComponentSelection();
     horizontalLayout->addWidget(theComponentSelection);
     horizontalLayout->setAlignment(Qt::AlignLeft);
@@ -242,18 +244,18 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     
     theComponentSelection->displayComponent("UQ"); // Initial page on startup
     
-
-    // access a web page which will increment the usage count for this tool
-    manager = new QNetworkAccessManager(this);
-    connect(manager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(replyFinished(QNetworkReply*)));
-    manager->get(QNetworkRequest(QUrl("http://opensees.berkeley.edu/OpenSees/developer/eeuq/use.php"))); // EE-UQ?
-
     //
     // set the defults in the General Info
     //
 
     theGI->setDefaultProperties(1,144,360,360,37.8715,-122.2730); // Berkeley, kips and inches
+
+    // access a web page which will increment the usage count for this tool
+    // manager = new QNetworkAccessManager(this);
+    // connect(manager, SIGNAL(finished(QNetworkReply*)),
+    //         this, SLOT(replyFinished(QNetworkReply*)));
+    // manager->get(QNetworkRequest(QUrl("http://opensees.berkeley.edu/OpenSees/developer/eeuq/use.php"))); // EE-UQ?
+
 
     ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
     theDialog->appendInfoMessage("Welcome to HydroUQ");    
@@ -271,7 +273,6 @@ constexpr bool USE_CELERIS_TOOL = false;
 constexpr bool USE_WEBGPU_TOOL = false;
 
 
-// Imported from WE-UQ for EmptyDomainCFD Tool
 void
 WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
 
@@ -436,14 +437,14 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
     QString tmpDirectoryString = localWorkDir.absoluteFilePath(tmpDirName);
     QDir tmpDirectory(tmpDirectoryString);
     if (tmpDirectory.exists()) {
-      if (SCUtils::isSafeToRemoveRecursivily(tmpDirectoryString))      
-        tmpDirectory.removeRecursively();
-      else {
-	QString msg("The Program stopped, it was about to recursivily remove: ");
-	msg += tmpDirName;
-	fatalMessage(msg);
-	return;	
-      }      
+        if (SCUtils::isSafeToRemoveRecursivily(tmpDirectoryString))      
+            tmpDirectory.removeRecursively();
+        else {
+            QString msg("The Program stopped, it was about to recursivily remove: ");
+            msg += tmpDirName;
+            fatalMessage(msg);
+            return;	
+        }      
     }
     
     tmpDirectory.mkpath(tmpDirectoryString);
@@ -946,34 +947,71 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     QDir workDir(workingDir);
 
     QString tmpDirectory = workDir.absoluteFilePath(tmpDirName);
+    qDebug() << "tmpDirectory: " << tmpDirectory;
+    
     QDir destinationDirectory(tmpDirectory);
 
-    if (destinationDirectory.exists()) {
-      destinationDirectory.removeRecursively();
-    } else {
-      destinationDirectory.mkpath(tmpDirectory);
-    }
 
+    if (destinationDirectory.exists()) {
+        qDebug() << "Destination Directory Exists, trying to remove it";
+        if (SCUtils::isSafeToRemoveRecursivily(tmpDirectory)) {
+            qDebug() << "Removing Destination Directory Recursivily";
+            destinationDirectory.removeRecursively();
+        }
+        else {
+            QString msg("The Program stopped, it was about to recursivily remove: ");
+            msg.append(tmpDirectory);
+            fatalMessage(msg);
+        }
+    }
     // Used in other places temporarily, 
     // e.g. citation output for Tools to avoid passing parameters
     defaultWorkDir = destinationDirectory;
     defaultSubDir = subDir;
 
+    qDebug() << "defaultWorkDir: " << defaultWorkDir;
+    qDebug() << "defaultSubDir: " << defaultSubDir;
+
+    destinationDirectory.mkpath(tmpDirectory);
     QString templateDirectory  = destinationDirectory.absoluteFilePath(subDir);
+    qDebug() << "templateDirectory: " << templateDirectory;
     destinationDirectory.mkpath(templateDirectory);
+
+
+
 
     // copyPath(path, tmpDirectory, false);
     if (theSIM->copyFiles(templateDirectory) == false) {
       errorMessage("Workflow Failed to start as SIM failed in copyFiles");
       return;
+    } else {
+      qDebug() << "SIM copyFiles() successful";
     }
     if (theEventSelection->copyFiles(templateDirectory) == false) {
       errorMessage("Workflow Failed to start as EVENT failed in copyFiles");
       return;
+    } else {
+      qDebug() << "EVENT copyFiles() successful";
     }
-    theAnalysisSelection->copyFiles(templateDirectory);
-    theUQ_Selection->copyFiles(templateDirectory);
-    theEDP_Selection->copyFiles(templateDirectory);
+
+    if (theAnalysisSelection->copyFiles(templateDirectory) == false) {
+      errorMessage("Workflow Failed to start as FEM failed in copyFiles");
+      return;
+    } else {
+      qDebug() << "FEM copyFiles() successful";
+    }
+    if (theUQ_Selection->copyFiles(templateDirectory) == false) {
+        errorMessage("Workflow Failed to start as UQ failed in copyFiles");
+        return;
+    } else {
+        qDebug() << "UQ copyFiles() successful";
+    }
+    if (theEDP_Selection->copyFiles(templateDirectory) == false) {
+        errorMessage("Workflow Failed to start as EDP failed in copyFiles");
+        return;
+    } else {
+        qDebug() << "EDP copyFiles() successful";
+    }
 
     //
     // in new templatedir dir save the UI data into dakota.json or scInput.json file (same result as using saveAs)
@@ -981,10 +1019,13 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     //
 
     QString inputFile = templateDirectory + QDir::separator() + tr("scInput.json");
+    qDebug() << "inputFile: " << inputFile;
+
 
     QFile file(inputFile);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
         //errorMessage();
+        qDebug() << "ERROR - FATAL - WorkflowAppHydroUQ::setUpForApplicationRun failed to open file for writing";
         return;
     }
     QJsonObject json;
@@ -1245,6 +1286,8 @@ WorkflowAppHydroUQ::setUpForApplicationRun(QString &workingDir, QString &subDir)
     // json.insert("citations",citations);
 
     // statusMessage("Set-Up Done .. Now Starting HydroUQ Application");
+    qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Set-Up Done .. Now Starting HydroUQ Application";
+    qDebug() << "WorkflowAppHydroUQ::setUpForApplicationRun - Emitting setUpForApplicationRunDone( " << tmpDirectory << ", " << inputFile << " )";
     emit setUpForApplicationRunDone(tmpDirectory, inputFile);
     return;
 }

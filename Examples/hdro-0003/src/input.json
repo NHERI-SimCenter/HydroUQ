@@ -10,7 +10,8 @@
                 "Application": "CoupledDigitalTwin",
                 "ApplicationData": {
                 },
-                "EventClassification": "Hydro"
+                "EventClassification": "Hydro",
+                "type": "CoupledDigitalTwin"
             }
         ],
         "Modeling": {
@@ -61,19 +62,23 @@
             "EventClassification": "Hydro",
             "SeesVTKOUT": "Yes",
             "SeesVTKOUTRate": 0.1,
-            "SimDuration": 10,
-            "SolutionDT": 0.005,
+            "SimDuration": 0.2,
+            "SolutionDT": 5e-05,
             "Turbulence": "Yes",
-            "bathSTL": ".",
-            "bathSTLPath": ".",
+            "bathSTL": "flumeFloor.stl",
+            "bathSTLPath": "Examples/hdro-0001/src",
             "bathType": "Point List",
             "bathXZData": [
                 [
-                    100,
+                    1,
                     0
                 ],
                 [
-                    105,
+                    1.5,
+                    0
+                ],
+                [
+                    4,
                     0
                 ]
             ],
@@ -190,12 +195,12 @@
             "interfaceSurfacePath": "{Current_Dir}/.",
             "mapType": "Nearest Neighbor",
             "maximumCouplingIterations": 100,
-            "numProcessors": 56,
+            "numProcessors": 16,
             "openSeesPyScript": "OpenSeesModel.py",
             "openSeesPyScriptPath": "{Current_Dir}/.",
-            "outputDataFromCouplingIterations": "No",
-            "paddleDispFile": ".",
-            "paddleDispFilePath": ".",
+            "outputDataFromCouplingIterations": "Yes",
+            "paddleDispFile": "",
+            "paddleDispFilePath": "",
             "periodicWaveCelerity": 1,
             "periodicWaveMagnitude": 1,
             "periodicWaveRepeatPeriod": 1,
@@ -223,7 +228,7 @@
             "latitude": 37.8715,
             "longitude": -122.273
         },
-        "name": "",
+        "name": "Cylinder",
         "planArea": 129600,
         "stories": 3,
         "units": {
@@ -250,7 +255,7 @@
                 "bx": 0.1,
                 "by": 0.1,
                 "height": 0.1,
-                "kx": 100,
+                "kx": "RV.k",
                 "ky": 100,
                 "weight": 144
             },
@@ -261,7 +266,7 @@
                 "bx": 0.1,
                 "by": 0.1,
                 "height": 0.1,
-                "kx": 100,
+                "kx": "RV.k",
                 "ky": 100,
                 "weight": 144
             },
@@ -272,7 +277,7 @@
                 "bx": 0.1,
                 "by": 0.1,
                 "height": 0.1,
-                "kx": 100,
+                "kx": "RV.k",
                 "ky": 100,
                 "weight": 144
             }
@@ -307,22 +312,35 @@
         "parallelExecution": true,
         "samplingMethodData": {
             "method": "LHS",
-            "samples": 500,
-            "seed": 547
+            "samples": 2,
+            "seed": 1
         },
         "saveWorkDir": true,
         "uqType": "Forward Propagation"
     },
-    "localAppDir": "C:/Users/nsaoirse/Desktop/HydroUQ_Windows_Download",
-    "nodeCount": 1,
-    "numP": 56,
-    "processorsOnEachNode": 56,
+    "coresPerNode": 16,
+    "execSystemId": "frontera",
+    "execSystemLogicalQueue": "rtx",
+    "localAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "maxMinutes": 90,
+    "memoryMB": 128000,
+    "nodeCount": 2,
     "randomVariables": [
+        {
+            "distribution": "Normal",
+            "inputType": "Parameters",
+            "mean": 100,
+            "name": "k",
+            "refCount": 1,
+            "stdDev": 10,
+            "value": "RV.k",
+            "variableClass": "Uncertain"
+        }
     ],
     "remoteAppDir": "/work2/00477/tg457427/frontera/SimCenterBackendApplications/v4.2.0",
     "resultType": "SimCenterUQResultsSampling",
     "runType": "runningRemote",
     "summary": [
     ],
-    "workingDir": "C:/Users/nsaoirse/Documents/HydroUQ/RemoteWorkDir"
+    "workingDir": "/home/justinbonus/Documents/HydroUQ/RemoteWorkDir"
 }
