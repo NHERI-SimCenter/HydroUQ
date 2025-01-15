@@ -10,7 +10,8 @@ INCLUDEPATH += $$PWD/EVENTS/MPM
 INCLUDEPATH += $$PWD/EVENTS/MPMEvent
 INCLUDEPATH += $$PWD/EVENTS/TaichiEvent
 INCLUDEPATH += $$PWD/EVENTS/Celeris
-INCLUDEPATH += $$PWD/EVENTS/Celeris/js
+INCLUDEPATH += $$PWD/EVENTS/CelerisWebGPU
+INCLUDEPATH += $$PWD/EVENTS/CelerisWebGPU/js
 INCLUDEPATH += $$PWD/EVENTS/NOAA
 INCLUDEPATH += $$PWD/EVENTS/StochasticWaveModel
 INCLUDEPATH += $$PWD/EVENTS/StochasticWaveModel/include
@@ -68,12 +69,12 @@ SOURCES += \
     $$PWD/EVENTS/MPMEvent/MPMEvent.cpp \
     $$PWD/EVENTS/MPMEvent/BasicMPMEvent.cpp \
     $$PWD/EVENTS/TaichiEvent/TaichiEvent.cpp \
-    $$PWD/EVENTS/TaichiEvent/CelerisTaichi.cpp \
     $$PWD/EVENTS/TaichiEvent/BasicTaichiEvent.cpp \
-    $$PWD/EVENTS/TaichiEvent/CelerisTaichiEvent.cpp \
-    $$PWD/EVENTS/Celeris/Celeris.cpp \
-    $$PWD/EVENTS/Celeris/WebGPU.cpp \
-    $$PWD/EVENTS/Celeris/volumetric.cpp \
+    $$PWD/EVENTS/Celeris/CelerisTaichi.cpp \
+    $$PWD/EVENTS/Celeris/CelerisTaichiEvent.cpp \
+    $$PWD/EVENTS/CelerisWebGPU/Celeris.cpp \
+    $$PWD/EVENTS/CelerisWebGPU/WebGPU.cpp \
+    $$PWD/EVENTS/CelerisWebGPU/volumetric.cpp \
     $$PWD/EVENTS/NOAA/DigitalCoast.cpp \
     $$PWD/EVENTS/StochasticWaveModel/src/StochasticWaveInput.cpp \
     $$PWD/EVENTS/StochasticWaveModel/src/Jonswap.cpp \
@@ -132,12 +133,12 @@ HEADERS += \
     $$PWD/EVENTS/MPMEvent/MPMEvent.h \
     $$PWD/EVENTS/MPMEvent/BasicMPMEvent.h \
     $$PWD/EVENTS/TaichiEvent/TaichiEvent.h \
-    $$PWD/EVENTS/TaichiEvent/CelerisTaichi.h \
     $$PWD/EVENTS/TaichiEvent/BasicTaichiEvent.h \
-    $$PWD/EVENTS/TaichiEvent/CelerisTaichiEvent.h \
-    $$PWD/EVENTS/Celeris/Celeris.h \
-    $$PWD/EVENTS/Celeris/WebGPU.h \
-    $$PWD/EVENTS/Celeris/volumetric.h \
+    $$PWD/EVENTS/Celeris/CelerisTaichi.h \
+    $$PWD/EVENTS/Celeris/CelerisTaichiEvent.h \
+    $$PWD/EVENTS/CelerisWebGPU/Celeris.h \
+    $$PWD/EVENTS/CelerisWebGPU/WebGPU.h \
+    $$PWD/EVENTS/CelerisWebGPU/volumetric.h \
     $$PWD/EVENTS/NOAA/DigitalCoast.h \
     $$PWD/EVENTS/StochasticWaveModel/include/StochasticWaveInput.h \
     $$PWD/EVENTS/StochasticWaveModel/include/Jonswap.h \
