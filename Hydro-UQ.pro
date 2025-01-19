@@ -164,7 +164,7 @@ RESOURCES += \
     resources.qrc \
     objects.qrc \
     styles.qrc \
-    EVENTS/Celeris/volumetric.qrc \
+    EVENTS/CelerisWebGPU/volumetric.qrc \
     $$PWD/images.qrc \
     $$PWD/resources.qrc \
     $$PWD/styles.qrc \

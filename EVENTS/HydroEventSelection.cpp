@@ -69,7 +69,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <MPMEvent/MPMEvent.h>
 #include <StochasticWaveModel/include/StochasticWaveInput.h>
 #include <TaichiEvent/TaichiEvent.h>
-#include <TaichiEvent/CelerisTaichiEvent.h>
+// #include <TaichiEvent/CelerisTaichiEvent.h>
+#include <Celeris/CelerisTaichiEvent.h>
 #include <MPM/SPH.h>
 //*********************************************************************************
 // Main Hydro event
@@ -82,7 +83,7 @@ enum class Event_b : bool {
     ClaymoreUW_b = true,
     BasicClaymoreUW_b = false,
     TaichiEvent_b = true,
-    CelerisTaichiEvent_b = true,
+    Celeris_b = true,
     StochasticWaves_b = true,
     SPH_b = false
 };
@@ -95,7 +96,7 @@ enum class Event_e : int {
     ClaymoreUW_e, 
     BasicClaymoreUW_e,  
     TaichiEvent_e,
-    CelerisTaichiEvent_e,
+    Celeris_e,
     StochasticWaves_e,
     SPH_e,
     Last_e, // For C++ iteration
@@ -109,7 +110,7 @@ const int EventSelectionIndexArray[] = {
     static_cast<int>(Event_e::ClaymoreUW_e),
     static_cast<int>(Event_e::BasicClaymoreUW_e),
     static_cast<int>(Event_e::TaichiEvent_e),
-    static_cast<int>(Event_e::CelerisTaichiEvent_e),
+    static_cast<int>(Event_e::Celeris_e),
     static_cast<int>(Event_e::StochasticWaves_e),
     static_cast<int>(Event_e::SPH_e)
 };
@@ -121,7 +122,7 @@ const bool EventSelectionEnabledArray[] = {
     static_cast<bool>(Event_b::ClaymoreUW_b),
     static_cast<bool>(Event_b::BasicClaymoreUW_b),
     static_cast<bool>(Event_b::TaichiEvent_b),
-    static_cast<bool>(Event_b::CelerisTaichiEvent_b),
+    static_cast<bool>(Event_b::Celeris_b),
     static_cast<bool>(Event_b::StochasticWaves_b),
     static_cast<bool>(Event_b::SPH_b)
 };
@@ -133,7 +134,7 @@ const QString EventSelectionStringArray[] = {
     static_cast<QString>("MPM"),
     static_cast<QString>("MPMEvent"),
     static_cast<QString>("TaichiEvent"),
-    static_cast<QString>("CelerisTaichiEvent"),
+    static_cast<QString>("Celeris"),
     static_cast<QString>("StochasticWave"),
     static_cast<QString>("SPH")
 };
@@ -145,7 +146,7 @@ const QString EventSelectionDisplayArray[] = {
     "Digital Twin (MPM)",
     "General Event (MPM)",
     "General Event (Taichi)",
-    "General Event (Celeris)",
+    "Wave Solver (Celeris)",
     "Stochastic Wave Loading",
     "Digital Twin (SPH)"
 };
@@ -253,9 +254,9 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
                 theTaichiEvent = new TaichiEvent(theRandomVariablesContainer);
                 theStackedWidget->addWidget(theTaichiEvent);
                 break;
-            case (Event_e::CelerisTaichiEvent_e):
-                theCelerisTaichiEvent = new CelerisTaichiEvent(theRandomVariablesContainer);
-                theStackedWidget->addWidget(theCelerisTaichiEvent);
+            case (Event_e::Celeris_e):
+                theCeleris = new CelerisTaichiEvent(theRandomVariablesContainer);
+                theStackedWidget->addWidget(theCeleris);
                 break;
             case (Event_e::StochasticWaves_e):
                 theStochasticWaves = new StochasticWaveInput(theRandomVariablesContainer);
@@ -309,8 +310,8 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     if constexpr (indexDefault == Event_e::TaichiEvent_e) {
         theCurrentEvent = theTaichiEvent;
     }
-    if constexpr (indexDefault == Event_e::CelerisTaichiEvent_e) {
-        theCurrentEvent = theCelerisTaichiEvent;
+    if constexpr (indexDefault == Event_e::Celeris_e) {
+        theCurrentEvent = theCeleris;
     }
     if constexpr (indexDefault == Event_e::StochasticWaves_e) {
         theCurrentEvent = theStochasticWaves;
@@ -412,9 +413,9 @@ void HydroEventSelection::eventSelectionChanged(int arg1)
             theCurrentEvent = theTaichiEvent;
         }
     }
-    if constexpr (static_cast<bool>(Event_b::CelerisTaichiEvent_b)) {
-        if (arg1 == static_cast<int>(Event_e::CelerisTaichiEvent_e)) {
-            theCurrentEvent = theCelerisTaichiEvent;
+    if constexpr (static_cast<bool>(Event_b::Celeris_b)) {
+        if (arg1 == static_cast<int>(Event_e::Celeris_e)) {
+            theCurrentEvent = theCeleris;
         }
     }
     if constexpr (static_cast<bool>(Event_b::StochasticWaves_b)) {
