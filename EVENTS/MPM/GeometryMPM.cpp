@@ -392,7 +392,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   connect(facility, &QComboBox::currentTextChanged, [=](QString val) {
     if (val == "Hinsdale Large Wave Flume (OSU LWF)") {
       facilityLength->setText("84.0");
-      facilityHeight->setText("4.6");
+      facilityHeight->setText("4.5");
       facilityWidth->setText("3.6");
       if (bodyPreset->currentText() == "Fluid") {
         objectType->setCurrentText("OSU LWF");
