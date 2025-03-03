@@ -57,6 +57,11 @@ The ``HydroUQ`` desktop application is a user-facing portal for cutting-edge eng
 - [Overview Web-Page](https://simcenter.designsafe-ci.org/research-tools/hydro-uq)
 - [Forum & Feature Requests](http://simcenter-messageboard.designsafe-ci.org/smf/index.php?board=17.0)
 
+## Data-Repositories
+
+Comparison data of ClaymoreUW MPM to DualSPHysics SPH and STAR-CCM+ CFD against stochastic experiments by Goserberg et al. 2016. For comparison details, see Bonus et al. 2025, "Tsunami Debris Motion and Loads in a Scaled Port Setting: Comparative Analysis of Three State-of-the-Art Numerical Methods", published in Coastal Engineering (https://doi.org/10.1016/j.coastaleng.2024.104672).
+
+https://www.designsafe-ci.org/data/browser/projects/PRJ-5846/workdir
 
 ## Citing HydroUQ
 
