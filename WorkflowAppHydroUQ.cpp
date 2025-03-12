@@ -242,7 +242,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
     
-    theComponentSelection->displayComponent("UQ"); // Initial page on startup
+    theComponentSelection->displayComponent("EVT"); // Initial page on startup
     
     //
     // set the defults in the General Info
@@ -314,10 +314,10 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         SC_RemoteAppTool *miniMPMTool = new SC_RemoteAppTool(appName, appVersion, machine, queues, theRemoteService, miniMPM, theToolDialog); // lonestar6
         // delete miniMPM; // Clean up the MPM object after creating the tool?
         
-        theToolDialog->addTool(miniMPMTool, "Digital Twin (MPM)");
-        QAction *showMPM = toolsMenu->addAction("Digital Twin (&MPM)");
+        theToolDialog->addTool(miniMPMTool, "Digital Flume (MPM)");
+        QAction *showMPM = toolsMenu->addAction("Digital Flume (&MPM)");
         connect(showMPM, &QAction::triggered, this,[this, theDialog=theToolDialog, miniM = miniMPMTool] {
-            theDialog->showTool("Digital Twin (MPM)");
+            theDialog->showTool("Digital Flume (MPM)");
         });
     
         // currentTool = miniMPMTool; // TODO: Make this more dynamics / use a better interface

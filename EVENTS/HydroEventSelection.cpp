@@ -141,14 +141,14 @@ const QString EventSelectionStringArray[] = {
 
 const QString EventSelectionDisplayArray[] = {
     "General Event (GeoClaw and OpenFOAM)",
-    "Digital Twin (GeoClaw and OpenFOAM)",
-    "Digital Twin (OpenFOAM and OpenSees)",
-    "Digital Twin (MPM)",
+    "Digital Flume (GeoClaw and OpenFOAM)",
+    "Digital Flume (OpenFOAM and OpenSees)",
+    "Digital Flume (MPM)",
     "General Event (MPM)",
     "General Event (Taichi)",
     "Wave Solver (Celeris)",
     "Stochastic Wave Loading",
-    "Digital Twin (SPH)"
+    "Digital Flume (SPH)"
 };
 
 const QString EventSelectionToolTipArray[] = {
@@ -328,8 +328,8 @@ HydroEventSelection::HydroEventSelection(RandomVariablesContainer *theRandomVari
     // eventSelection->setCurrentIndex(static_cast<int>(indexDefault));
     // theStackedWidget->setCurrentIndex(static_cast<int>(indexDefault));
 
-    // QString stringForMPM = "Digital Twin (MPM)";
-    // QString stringForFOAMySees = "Digital Twin (OpenFOAM and OpenSees)";
+    // QString stringForMPM = "Digital Flume (MPM)";
+    // QString stringForFOAMySees = "Digital Flume (OpenFOAM and OpenSees)";
 
     // // Connect signal and slots
     // connect(theMPM, SIGNAL(errorMessage(QString)), this, SIGNAL(sendErrorMessage(QString))); // WE-UQ
