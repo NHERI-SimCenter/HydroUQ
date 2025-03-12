@@ -66,7 +66,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QProcess>
 #include <SimCenterPreferences.h>
 #include <QJsonDocument>
-// #include <GeneralInformationWidget.h>
+#include <GeneralInformationWidget.h>
 
 #include <RandomVariablesContainer.h>
 #include <SC_ComboBox.h>
@@ -134,10 +134,11 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   recorderOriginX = new LineEditRV(randomVariables);
   recorderOriginX->setText("0.0");
   // Base off of stories in GI
-  recorderCountZ = new SC_IntLineEdit("recorderCountZ", 2);
+  GeneralInformationWidget *theGI = GeneralInformationWidget::getInstance();
+  // numFloors = theGI->getNumFloors() + 1;
+  int numFloors = 2;
+  recorderCountZ = new SC_IntLineEdit("recorderCountZ", numFloors);
   recorderCountZ->setToolTip("Number of load recorders on the structure, should be equal to the number of floors in the building (i.e., stories + 1).");
-  // GeneralInformationWidget *theGI = GeneralInformationWidget::getInstance();
-  // theGI->getNumberOfFloors();
 
   // connect(theGI, &GeneralInformationWidget::floorsChanged, [=](int floors){
   //   recorderCountZ->setText(QString::number(floors));
@@ -197,7 +198,7 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   seed = new QSpinBox();
   seed->setMinimum(1);
   seed->setMaximum(2147483647);
-  seed->setValue(500);  
+  seed->setValue(500);
   seed->setEnabled(false);
   useSeed = new QRadioButton("Set Random Seed");
   useSeed->setChecked(false);
