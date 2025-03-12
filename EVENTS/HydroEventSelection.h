@@ -116,7 +116,7 @@ private:
    SimCenterAppWidget *theMPM;    
    SimCenterAppWidget *theMPMEvent;
    SimCenterAppWidget *theTaichiEvent;
-   SimCenterAppWidget *theCelerisTaichiEvent;
+   SimCenterAppWidget *theCeleris;
    SimCenterAppWidget *theStochasticWaves;
    SimCenterAppWidget *theSPH;
    SimCenterAppWidget *theExistingEvents;

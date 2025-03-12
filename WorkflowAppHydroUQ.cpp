@@ -120,7 +120,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <MPM/SPH.h>
 #include <StochasticWaveModel/include/StochasticWaveInput.h>
 #include <TaichiEvent/TaichiEvent.h>
-#include <Celeris/Celeris.h>
+#include <CelerisWebGPU/Celeris.h>
 // #include <Celeris/WebGPU.h>
 #include <NOAA/DigitalCoast.h>
 #include <Utils/FileOperations.h>
