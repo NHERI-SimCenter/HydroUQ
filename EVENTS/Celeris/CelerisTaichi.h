@@ -77,6 +77,7 @@ public:
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
     QString pyScriptsPath(void);
+    QString examplesDirPath(void);
 signals:
 
 private:
