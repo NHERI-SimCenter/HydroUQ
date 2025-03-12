@@ -242,7 +242,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
     
-    theComponentSelection->displayComponent("UQ"); // Initial page on startup
+    theComponentSelection->displayComponent("EVT"); // Initial page on startup
     
     //
     // set the defults in the General Info
