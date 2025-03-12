@@ -64,8 +64,8 @@
             "recorderCountZ": 2,
             "recorderOriginX": 0,
             "significantWaveHeight": 8.1,
-            "timeDuration": 3600,
-            "timeStep": 0.1,
+            "timeDuration": 300.0,
+            "timeStep": 1.0,
             "type": "StochasticWave",
             "waterDepth": 30.0,
             "tidalSLR": 3.0,
@@ -78,7 +78,7 @@
         "NumberOfStories": 1,
         "PlanArea": 129600,
         "StructureType": "RM1",
-        "YearBuilt": 1990,
+        "YearBuilt": 2025,
         "depth": 360,
         "height": 576,
         "location": {
@@ -142,7 +142,7 @@
         "parallelExecution": true,
         "samplingMethodData": {
             "method": "LHS",
-            "samples": 100,
+            "samples": 40,
             "seed": 1
         },
         "saveWorkDir": false,

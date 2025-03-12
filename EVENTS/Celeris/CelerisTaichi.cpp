@@ -52,15 +52,15 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
   QString defaultWorkflowFilename = "Celeris.py";
   QString defaultSimulationFilename = "setrun.py";
   QString defaultConfigurationFilename = "config.json";
-  QString defaultBathymetryFilename = "test_curve.xyz";
-  QString defaultWaveFilename = "irrWaves.txt";
+  QString defaultBathymetryFilename = "bathy.txt";
+  QString defaultWaveFilename = "waves.txt";
   QString defaultSensorFilename = "euler.py";
   QString sourceDir = "celeris";
   QString defaultWorkflowScript = pyScriptsPath() + QDir::separator() + defaultWorkflowFilename;
   QString defaultSimulationScript = pyScriptsPath() + QDir::separator() + defaultSimulationFilename;
-  QString defaultConfigurationFile = pyScriptsPath() + QDir::separator() + defaultConfigurationFilename;
-  QString defaultBathymetryFile = pyScriptsPath() + QDir::separator() + defaultBathymetryFilename;
-  QString defaultWaveFile = pyScriptsPath() + QDir::separator() + defaultWaveFilename;
+  QString defaultConfigurationFile = examplesDirPath() + QDir::separator() + QString("OSU_Seaside") + QDir::separator() + defaultConfigurationFilename;
+  QString defaultBathymetryFile = examplesDirPath() + QDir::separator() + QString("OSU_Seaside") + QDir::separator() + defaultBathymetryFilename;
+  QString defaultWaveFile = examplesDirPath() + QDir::separator() + QString("OSU_Seaside") + QDir::separator() + defaultWaveFilename;
   QString defaultSensorFile = pyScriptsPath() + QDir::separator() + defaultSensorFilename;
 
   theCelerisPyScript = new SC_FileEdit("backendScript");
@@ -72,7 +72,7 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
   theCelerisPyScript->setToolTip("Workflow backend script (*.py) which launches the Celeris simulation script. Handles the inputs and outputs for coupling Celeris Taichi Lang to the SimCenter workflow.");
   theSensorScript->setToolTip("Simulation script (*.py) which defines the Celeris numerical simulation program. This script is launched from the workflow backend script in the SimCenter workflow.");
   theConfigurationFile->setToolTip("Configuration file (*.json) which defines the Celeris simulation parameters.");
-  theBathymetryFile->setToolTip("Bathymetry file (*.xyz) which defines the Celeris bathymetry.");
+  theBathymetryFile->setToolTip("Bathymetry file (*.xyz, *.txt) which defines the Celeris bathymetry.");
   theWaveFile->setToolTip("Wave input file (*.txt) which defines the Celeris wave input.");
   theSensorScript->setToolTip("Sensor script (*.py) which defines the Celeris sensor output.");
 
@@ -90,7 +90,7 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
   theLayout->addWidget(theSimulationScript, 1,1);
   theLayout->addWidget(new QLabel("Configuration File (*.json)"),2,0);
   theLayout->addWidget(theConfigurationFile, 2,1);
-  theLayout->addWidget(new QLabel("Bathymetry File (*.xyz)"),3,0);
+  theLayout->addWidget(new QLabel("Bathymetry File (*.txt, *.xyz)"),3,0);
   theLayout->addWidget(theBathymetryFile, 3,1);
   theLayout->addWidget(new QLabel("Wave Input File (*.txt)"),4,0);
   theLayout->addWidget(theWaveFile, 4,1);
@@ -108,10 +108,11 @@ CelerisTaichi::~CelerisTaichi()
 bool
 CelerisTaichi::outputToJSON(QJsonObject &jsonObject)
 {
-  if (theCelerisPyScript->outputToJSON(jsonObject) == false) {
-    qDebug() << "CelerisTaichi::outputToJSON: failed to output celeris py script";
+
+  // if (theCelerisPyScript->outputToJSON(jsonObject) == false) {
+    // qDebug() << "CelerisTaichi::outputToJSON: failed to output celeris py script";
     // return false;
-  }
+  // }
   
   if (theSimulationScript->outputToJSON(jsonObject) == false) {
     qDebug() << "CelerisTaichi::outputToJSON: failed to output simulation script";
@@ -158,31 +159,38 @@ QString CelerisTaichi::pyScriptsPath()
     return backendAppDir;
 }
 
+QString CelerisTaichi::examplesDirPath()
+{
+    QString examplesDir = SimCenterPreferences::getInstance()->getAppDir() + QDir::separator()
+             + QString("Examples");
+    return examplesDir;
+}
+
 bool
 CelerisTaichi::copyFiles(QString &destDir)
 {
   QString defaultWorkflowFilename = "Celeris.py";
   QString defaultSimulationFilename = "setrun.py";
   QString defaultConfigurationFilename = "config.json";
-  QString defaultBathymetryFilename = "test_curve.xyz";
-  QString defaultWaveFilename = "irrWaves.txt";
+  QString defaultBathymetryFilename = "bathy.txt";
+  QString defaultWaveFilename = "waves.txt";
   QString defaultSensorFilename = "euler.py";
   QString sourceDir = "celeris";
   QString defaultWorkflowScript = pyScriptsPath() + QDir::separator() + defaultWorkflowFilename;
   QString defaultSimulationScript = pyScriptsPath() + QDir::separator() + defaultSimulationFilename;
-  QString defaultConfigurationFile = pyScriptsPath() + QDir::separator() + defaultConfigurationFilename;
-  QString defaultBathymetryFile = pyScriptsPath() + QDir::separator() + defaultBathymetryFilename;
-  QString defaultWaveFile = pyScriptsPath() + QDir::separator() + defaultWaveFilename;
+  QString defaultConfigurationFile = examplesDirPath() + QDir::separator() + QString("OSU_Seaside") + QDir::separator() + defaultConfigurationFilename;
+  QString defaultBathymetryFile = examplesDirPath() + QDir::separator() + QString("OSU_Seaside") + QDir::separator() + defaultBathymetryFilename;
+  QString defaultWaveFile = examplesDirPath() + QDir::separator() + QString("OSU_Seaside") + QDir::separator() + defaultWaveFilename;
   QString defaultSensorFile = pyScriptsPath() + QDir::separator() + defaultSensorFilename;
-  if (theCelerisPyScript->copyFile(destDir) != true) {
-    qDebug() << "CelerisTaichi::copyFiles: failed to copy backend workflow script: " << theCelerisPyScript->getFilename();
-    qDebug() << "CelerisTaichi::copyFiles: try defaultWorkflowScript: " << defaultWorkflowScript;
-    theCelerisPyScript->setFilename(defaultWorkflowScript);
-    if (theCelerisPyScript->copyFile(destDir) != true) {
-      qDebug() << "CelerisTaichi::copyFiles: failed to copy backend workflow script";
-      // return false;
-    }
-  }
+  // if (theCelerisPyScript->copyFile(destDir) != true) {
+  //   qDebug() << "CelerisTaichi::copyFiles: failed to copy backend workflow script: " << theCelerisPyScript->getFilename();
+  //   qDebug() << "CelerisTaichi::copyFiles: try defaultWorkflowScript: " << defaultWorkflowScript;
+  //   theCelerisPyScript->setFilename(defaultWorkflowScript);
+  //   if (theCelerisPyScript->copyFile(destDir) != true) {
+  //     qDebug() << "CelerisTaichi::copyFiles: failed to copy backend workflow script";
+  //     // return false;
+  //   }
+  // }
   if (theSimulationScript->copyFile(destDir) != true) {
     qDebug() << "CelerisTaichi::copyFiles: failed to copy simulation script: " << theSimulationScript->getFilename();
     qDebug() << "CelerisTaichi::copyFiles: try defaultSimulationScript: " << defaultSimulationScript;

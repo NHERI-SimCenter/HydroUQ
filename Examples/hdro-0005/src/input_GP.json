@@ -68,8 +68,8 @@
             "significantWaveHeight": 8.1,
             "stormSurgeSLR": 2,
             "tidalSLR": 3,
-            "timeDuration": 3600,
-            "timeStep": 0.1,
+            "timeDuration": 300.0,
+            "timeStep": 1.0,
             "type": "StochasticWave",
             "waterDepth": 30
         }
@@ -78,7 +78,7 @@
         "NumberOfStories": 1,
         "PlanArea": 129600,
         "StructureType": "RM1",
-        "YearBuilt": 1990,
+        "YearBuilt": 2025,
         "depth": 360,
         "height": 576,
         "location": {
@@ -147,7 +147,7 @@
             "samplingSeed": 1,
             "surrogateSurfaceMethod": "gaussian_process surfpack",
             "trainingMethod": "LHS",
-            "trainingSamples": 100,
+            "trainingSamples": 20,
             "trainingSeed": 1
         },
         "saveWorkDir": true,
