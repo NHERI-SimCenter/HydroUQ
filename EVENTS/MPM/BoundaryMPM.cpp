@@ -1562,7 +1562,7 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
     if (jsonObject.contains("facility")) {
         facility->setCurrentText(jsonObject["facility"].toString());
     } else {
-        this->errorMessage("ERROR: Wave Flume Facility - no \"facility\" entry");
+        // this->errorMessage("ERROR: Wave Flume Facility - no \"facility\" entry");
         // return false;
     }
 
@@ -1577,18 +1577,35 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         flumeOriginX->setText(QString::number(theOriginArray[0].toDouble()));
         flumeOriginY->setText(QString::number(theOriginArray[1].toDouble()));
         flumeOriginZ->setText(QString::number(theOriginArray[2].toDouble()));
+    } else if (jsonObject.contains("domain_start")) {
+        QJsonArray theOriginArray = jsonObject["domain_start"].toArray();
+        flumeOriginX->setText(QString::number(theOriginArray[0].toDouble()));
+        flumeOriginY->setText(QString::number(theOriginArray[1].toDouble()));
+        flumeOriginZ->setText(QString::number(theOriginArray[2].toDouble()));
     } else {
-        this->errorMessage("ERROR: Wave Flume Facility - no \"origin\" entry");
-        return false;
+        // this->errorMessage("INFO: Wave Flume Facility - no \"origin\" entry");
+        flumeOriginX->setText(QString::number(0.0));
+        flumeOriginY->setText(QString::number(0.0));
+        flumeOriginZ->setText(QString::number(0.0));
+        // return false;
     }
     if (jsonObject.contains("dimensions")) {
         QJsonArray theDimensionsArray = jsonObject["dimensions"].toArray();
         flumeLength->setText(QString::number(theDimensionsArray[0].toDouble()));
         flumeHeight->setText(QString::number(theDimensionsArray[1].toDouble()));
         flumeWidth->setText(QString::number(theDimensionsArray[2].toDouble()));
+    } else if (jsonObject.contains("domain_end") && jsonObject.contains("domain_start")) {
+        QJsonArray theDimensionsArray = jsonObject["domain_end"].toArray();
+        QJsonArray theOriginArray = jsonObject["domain_start"].toArray();
+        flumeLength->setText(QString::number(theDimensionsArray[0].toDouble() - theOriginArray[0].toDouble()));
+        flumeHeight->setText(QString::number(theDimensionsArray[1].toDouble() - theOriginArray[1].toDouble()));
+        flumeWidth->setText(QString::number(theDimensionsArray[2].toDouble() - theOriginArray[2].toDouble()));
     } else {
-        this->errorMessage("ERROR: Wave Flume Facility - no \"dimensions\" entry");
-        return false;
+        // this->errorMessage("ERROR: Wave Flume Facility - no \"dimensions\" entry");
+        flumeOriginX->setText(QString::number(90.0));
+        flumeOriginY->setText(QString::number(4.5));
+        flumeOriginZ->setText(QString::number(3.6));
+        // return false;
     }
 
     if (jsonObject.contains("use_custom_bathymetry")) {
@@ -1632,7 +1649,7 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
     if (jsonObject.contains("contact")) {
         paddleContactType->setCurrentText(jsonObject["contact"].toString());
     } else {
-        this->errorMessage("ERROR: Wave Generator - no \"contact\" entry");
+        // this->errorMessage("ERROR: Wave Generator - no \"contact\" entry");
         paddleContactType->setCurrentText("Separable");
         // return false;
     }
@@ -1642,14 +1659,14 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         paddleOriginY->setText(QString::number(theOriginArray[1].toDouble()));
         paddleOriginZ->setText(QString::number(theOriginArray[2].toDouble()));
     } else {
-        this->errorMessage("ERROR: Wave Generator - no \"origin\" entry, try domain_start");
+        // this->errorMessage("ERROR: Wave Generator - no \"origin\" entry, try domain_start");
         if (jsonObject.contains("domain_start")) {
             QJsonArray domainStartArray = jsonObject["domain_start"].toArray();
             paddleOriginX->setText(QString::number(domainStartArray[0].toDouble()));
             paddleOriginY->setText(QString::number(domainStartArray[1].toDouble()));
             paddleOriginZ->setText(QString::number(domainStartArray[2].toDouble()));
         } else {
-            this->errorMessage("ERROR: Wave Generator - no \"domain_start\" entry");
+            // this->errorMessage("ERROR: Wave Generator - no \"domain_start\" entry");
             paddleOriginX->setText("0.0");
             paddleOriginY->setText("0.0");
             paddleOriginZ->setText("0.0");
@@ -1657,12 +1674,12 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         }
     }
     if (jsonObject.contains("dimensions")) {
-        QJsonArray theDimensionsArray = jsonObject["domain_end"].toArray();
+        QJsonArray theDimensionsArray = jsonObject["dimensions"].toArray();
         paddleLength->setText(QString::number(theDimensionsArray[0].toDouble()));
         paddleHeight->setText(QString::number(theDimensionsArray[1].toDouble()));
         paddleWidth->setText(QString::number(theDimensionsArray[2].toDouble()));
     } else {
-        this->errorMessage("ERROR: Wave Generator - no \"dimensions\" entry");
+        // this->errorMessage("ERROR: Wave Generator - no \"dimensions\" entry");
         if (jsonObject.contains("domain_start")) {
             QJsonArray domainStartArray = jsonObject["domain_start"].toArray();
             QJsonArray domainEndArray = jsonObject["domain_end"].toArray();
@@ -1670,7 +1687,10 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
             paddleHeight->setText(QString::number(domainEndArray[1].toDouble() - domainStartArray[1].toDouble()));
             paddleWidth->setText(QString::number(domainEndArray[2].toDouble() - domainStartArray[2].toDouble()));
         } else {
-            this->errorMessage("ERROR: Wave Generator - no \"domain_end\" entry");
+            // this->errorMessage("ERROR: Wave Generator - no \"domain_end\" entry");
+            paddleLength->setText("0.2");
+            paddleHeight->setText("4.7");
+            paddleWidth->setText("3.8");
             // return false;
         }
     }
@@ -1727,9 +1747,9 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
             b->setText(QString::number(theTimeArray[1].toDouble()));
         }
     } else {
-        this->errorMessage("ERROR: Paddle Motion - no \"time\" entry");
+        // this->errorMessage("ERROR: Paddle Motion - no \"time\" entry");
         a->setText("0.0");
-        b->setText("1.0");
+        b->setText("180.0");
         // return false;
     }
     if (jsonObject.contains("file")) {
@@ -1751,14 +1771,14 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
     if (jsonObject.contains("object")) {
         structObjectType->setCurrentText(jsonObject["object"].toString());
     } else {
-        this->errorMessage("ERROR: Rigid Structures - no \"object\" entry");
+        // this->errorMessage("ERROR: Rigid Structures - no \"object\" entry");
         structObjectType->setCurrentText("Box");
         // return false;
     }
     if (jsonObject.contains("contact")) {
         structContactType->setCurrentText(jsonObject["contact"].toString());
     } else {
-        this->errorMessage("ERROR: Rigid Structures - no \"contact\" entry");
+        // this->errorMessage("ERROR: Rigid Structures - no \"contact\" entry");
         structContactType->setCurrentText("Separable");
         // return false;
     }
@@ -1768,14 +1788,14 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         structOriginHeight->setText(QString::number(theOriginArray[1].toDouble()));
         structOriginWidth->setText(QString::number(theOriginArray[2].toDouble()));
     } else {
-        this->errorMessage("ERROR: Rigid Structures - no \"origin\" entry");
+        // this->errorMessage("ERROR: Rigid Structures - no \"origin\" entry");
         if (jsonObject.contains("domain_start")) {
             QJsonArray domainStartArray = jsonObject["domain_start"].toArray();
             structOriginLength->setText(QString::number(domainStartArray[0].toDouble()));
             structOriginHeight->setText(QString::number(domainStartArray[1].toDouble()));
             structOriginWidth->setText(QString::number(domainStartArray[2].toDouble()));
         } else {
-            this->errorMessage("ERROR: Rigid Structures - no \"domain_start\" entry");
+            // this->errorMessage("ERROR: Rigid Structures - no \"domain_start\" entry");
             structOriginLength->setText("0.0");
             structOriginHeight->setText("0.0");
             structOriginWidth->setText("0.0");
@@ -1788,7 +1808,7 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         structHeight->setText(QString::number(theDimensionsArray[1].toDouble()));
         structWidth->setText(QString::number(theDimensionsArray[2].toDouble()));
     } else {
-        this->errorMessage("ERROR: Rigid Structures - no \"dimensions\" entry");
+        // this->errorMessage("ERROR: Rigid Structures - no \"dimensions\" entry");
         if (jsonObject.contains("domain_end")) {
             QJsonArray domainEndArray = jsonObject["domain_end"].toArray();
             structLength->setText(QString::number(domainEndArray[0].toDouble() - structOriginLength->text().toDouble()));
@@ -1810,7 +1830,7 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         structArrayY->setText(QString::number(theArrayArray[1].toInt()));
         structArrayZ->setText(QString::number(theArrayArray[2].toInt()));
     } else {
-        this->errorMessage("ERROR: Rigid Structures - no \"array\" entry");
+        // this->errorMessage("ERROR: Rigid Structures - no \"array\" entry");
         structArrayX->setText("1");
         structArrayY->setText("1");
         structArrayZ->setText("1");
@@ -1822,7 +1842,7 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         structSpacingY->setText(QString::number(theSpacingArray[1].toDouble()));
         structSpacingZ->setText(QString::number(theSpacingArray[2].toDouble()));
     } else {
-        this->errorMessage("ERROR: Rigid Structures - no \"spacing\" entry");
+        // this->errorMessage("ERROR: Rigid Structures - no \"spacing\" entry");
         structSpacingX->setText("0.0");
         structSpacingY->setText("0.0");
         structSpacingZ->setText("0.0");
@@ -1877,14 +1897,14 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         originHeight->setText(QString::number(theOriginArray[1].toDouble()));
         originWidth->setText(QString::number(theOriginArray[2].toDouble()));
     } else {
-        this->errorMessage("ERROR: Rigid Walls - no \"origin\" entry");
+        // this->errorMessage("ERROR: Rigid Walls - no \"origin\" entry");
         if (jsonObject.contains("domain_start")) {
             QJsonArray domainStartArray = jsonObject["domain_start"].toArray();
             originLength->setText(QString::number(domainStartArray[0].toDouble()));
             originHeight->setText(QString::number(domainStartArray[1].toDouble()));
             originWidth->setText(QString::number(domainStartArray[2].toDouble()));
         } else {
-            this->errorMessage("ERROR: Rigid Walls - no \"domain_start\" entry");
+            // this->errorMessage("ERROR: Rigid Walls - no \"domain_start\" entry");
             originLength->setText("0.0");
             originHeight->setText("0.0");
             originWidth->setText("0.0");
@@ -1897,14 +1917,17 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         wallsHeight->setText(QString::number(theDimensionsArray[1].toDouble()));
         wallsWidth->setText(QString::number(theDimensionsArray[2].toDouble()));
     } else {
-        this->errorMessage("ERROR: Rigid Walls - no \"dimensions\" entry");
+        // this->errorMessage("ERROR: Rigid Walls - no \"dimensions\" entry");
         if (jsonObject.contains("domain_end")) {
             QJsonArray domainEndArray = jsonObject["domain_end"].toArray();
             wallsLength->setText(QString::number(domainEndArray[0].toDouble() - originLength->text().toDouble()));
             wallsHeight->setText(QString::number(domainEndArray[1].toDouble() - originHeight->text().toDouble()));
             wallsWidth->setText(QString::number(domainEndArray[2].toDouble() - originWidth->text().toDouble()));
         } else {
-            this->errorMessage("ERROR: Rigid Walls - no \"domain_end\" entry");
+            // this->errorMessage("ERROR: Rigid Walls - no \"domain_end\" entry");
+            wallsLength->setText("90.0");
+            wallsHeight->setText("4.5");
+            wallsWidth->setText("3.6");
             // return false;
         }
         // return false;
