@@ -69,7 +69,7 @@
                         "ASFLIP_beta_max": 0,
                         "ASFLIP_beta_min": 0,
                         "FBAR_fused_kernel": true,
-                        "FBAR_psi": 0.95,
+                        "FBAR_psi": 0.9,
                         "ppc": 8,
                         "type": "particles",
                         "use_ASFLIP": false,
@@ -79,36 +79,6 @@
                         {
                             "apply_array": false,
                             "apply_rotation": false,
-                            "bathymetryXZ": [
-                                [
-                                    0,
-                                    0
-                                ],
-                                [
-                                    16.275,
-                                    0.226
-                                ],
-                                [
-                                    19.933,
-                                    0.226
-                                ],
-                                [
-                                    30.906,
-                                    1.14
-                                ],
-                                [
-                                    45.536,
-                                    1.75
-                                ],
-                                [
-                                    82.106,
-                                    1.75
-                                ],
-                                [
-                                    89.46,
-                                    2.363
-                                ]
-                            ],
                             "body_preset": "Fluid",
                             "facility": "Hinsdale Large Wave Flume (OSU LWF)",
                             "facility_dimensions": [
@@ -132,7 +102,8 @@
                             "standing_water_level": 2,
                             "track_particle_id": [
                                 0
-                            ]
+                            ],
+                            "use_custom_bathymetry": false
                         }
                     ],
                     "gpu": 0,
@@ -170,7 +141,7 @@
                             "gpu": 1,
                             "model": 0,
                             "partition_end": [
-                                61.9,
+                                91.9,
                                 2.9,
                                 3.6
                             ],
@@ -184,12 +155,12 @@
                             "gpu": 2,
                             "model": 0,
                             "partition_end": [
-                                91.9,
+                                121.9,
                                 2.9,
                                 3.6
                             ],
                             "partition_start": [
-                                61.9,
+                                91.9,
                                 0,
                                 0
                             ]
@@ -248,7 +219,7 @@
                             "facility": "Hinsdale Large Wave Flume (OSU LWF)",
                             "facility_dimensions": [
                                 84,
-                                4.6,
+                                4.5,
                                 3.6
                             ],
                             "fulcrum": [
@@ -260,7 +231,7 @@
                             "offset": [
                                 40.3,
                                 2,
-                                0.325
+                                0.3
                             ],
                             "operation": "add",
                             "rotate": [
@@ -351,7 +322,7 @@
                         "ASFLIP_beta_max": 0,
                         "ASFLIP_beta_min": 0,
                         "FBAR_fused_kernel": true,
-                        "FBAR_psi": 0.95,
+                        "FBAR_psi": 0.9,
                         "ppc": 8,
                         "type": "particles",
                         "use_ASFLIP": false,
@@ -361,36 +332,6 @@
                         {
                             "apply_array": false,
                             "apply_rotation": false,
-                            "bathymetryXZ": [
-                                [
-                                    0,
-                                    0
-                                ],
-                                [
-                                    16.275,
-                                    0.226
-                                ],
-                                [
-                                    19.933,
-                                    0.226
-                                ],
-                                [
-                                    30.906,
-                                    1.14
-                                ],
-                                [
-                                    45.536,
-                                    1.75
-                                ],
-                                [
-                                    82.106,
-                                    1.75
-                                ],
-                                [
-                                    89.46,
-                                    2.363
-                                ]
-                            ],
                             "body_preset": "Fluid",
                             "facility": "Hinsdale Large Wave Flume (OSU LWF)",
                             "facility_dimensions": [
@@ -414,7 +355,8 @@
                             "standing_water_level": 2,
                             "track_particle_id": [
                                 0
-                            ]
+                            ],
+                            "use_custom_bathymetry": false
                         }
                     ],
                     "gpu": 1,
@@ -452,7 +394,7 @@
                             "gpu": 1,
                             "model": 0,
                             "partition_end": [
-                                61.9,
+                                91.9,
                                 2.9,
                                 3.6
                             ],
@@ -466,19 +408,19 @@
                             "gpu": 2,
                             "model": 0,
                             "partition_end": [
-                                91.9,
+                                121.9,
                                 2.9,
                                 3.6
                             ],
                             "partition_start": [
-                                61.9,
+                                91.9,
                                 0,
                                 0
                             ]
                         }
                     ],
                     "partition_end": [
-                        61.9,
+                        91.9,
                         2.9,
                         3.6
                     ],
@@ -511,7 +453,7 @@
                         "ASFLIP_beta_max": 0,
                         "ASFLIP_beta_min": 0,
                         "FBAR_fused_kernel": true,
-                        "FBAR_psi": 0.95,
+                        "FBAR_psi": 0.9,
                         "ppc": 8,
                         "type": "particles",
                         "use_ASFLIP": false,
@@ -521,36 +463,6 @@
                         {
                             "apply_array": false,
                             "apply_rotation": false,
-                            "bathymetryXZ": [
-                                [
-                                    0,
-                                    0
-                                ],
-                                [
-                                    16.275,
-                                    0.226
-                                ],
-                                [
-                                    19.933,
-                                    0.226
-                                ],
-                                [
-                                    30.906,
-                                    1.14
-                                ],
-                                [
-                                    45.536,
-                                    1.75
-                                ],
-                                [
-                                    82.106,
-                                    1.75
-                                ],
-                                [
-                                    89.46,
-                                    2.363
-                                ]
-                            ],
                             "body_preset": "Fluid",
                             "facility": "Hinsdale Large Wave Flume (OSU LWF)",
                             "facility_dimensions": [
@@ -574,7 +486,8 @@
                             "standing_water_level": 2,
                             "track_particle_id": [
                                 0
-                            ]
+                            ],
+                            "use_custom_bathymetry": false
                         }
                     ],
                     "gpu": 2,
@@ -612,7 +525,7 @@
                             "gpu": 1,
                             "model": 0,
                             "partition_end": [
-                                61.9,
+                                91.9,
                                 2.9,
                                 3.6
                             ],
@@ -626,24 +539,24 @@
                             "gpu": 2,
                             "model": 0,
                             "partition_end": [
-                                91.9,
+                                121.9,
                                 2.9,
                                 3.6
                             ],
                             "partition_start": [
-                                61.9,
+                                91.9,
                                 0,
                                 0
                             ]
                         }
                     ],
                     "partition_end": [
-                        91.9,
+                        121.9,
                         2.9,
                         3.6
                     ],
                     "partition_start": [
-                        61.9,
+                        91.9,
                         0,
                         0
                     ],
@@ -681,7 +594,8 @@
                     ],
                     "friction_dynamic": 0,
                     "friction_static": 0,
-                    "object": "OSU LWF"
+                    "object": "OSU LWF",
+                    "use_custom_bathymetry": false
                 },
                 {
                     "contact": "Separable",
@@ -695,7 +609,7 @@
                         -0.1,
                         -0.1
                     ],
-                    "file": "..//wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv",
+                    "file": "./Examples/WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv",
                     "friction_dynamic": 0,
                     "friction_static": 0,
                     "object": "OSU Paddle",
@@ -710,13 +624,13 @@
                     "contact": "Separable",
                     "domain_end": [
                         46.8,
-                        2.625,
-                        2.325
+                        2.725,
+                        2.3
                     ],
                     "domain_start": [
                         45.8,
-                        2,
-                        1.325
+                        2.1,
+                        1.3
                     ],
                     "friction_dynamic": 0,
                     "friction_static": 0,
@@ -761,23 +675,44 @@
                     "direction": "X+",
                     "domain_end": [
                         45.824,
-                        2.6500000000000004,
+                        2.4,
                         2.3
                     ],
                     "domain_start": [
                         45.799,
-                        2.075,
-                        1.35
+                        2.1,
+                        1.3
                     ],
                     "name": "LoadCell1",
                     "operation": "Sum",
                     "output_frequency": 120,
+                    "preset": "Load-Cells",
+                    "toggle": true,
+                    "type": "grid"
+                },
+                {
+                    "attribute": "Force",
+                    "direction": "X+",
+                    "domain_end": [
+                        45.824,
+                        2.6999999999999997,
+                        2.3
+                    ],
+                    "domain_start": [
+                        45.799,
+                        2.4,
+                        1.3
+                    ],
+                    "name": "LoadCell2",
+                    "operation": "Sum",
+                    "output_frequency": 120,
+                    "preset": "Load-Cells",
                     "toggle": true,
                     "type": "grid"
                 }
             ],
             "outputs": {
-                "bodies_output_freq": 10,
+                "bodies_output_freq": 2,
                 "bodies_save_suffix": "BGEO",
                 "boundaries_output_freq": 30,
                 "boundaries_save_suffix": "OBJ",
@@ -816,18 +751,19 @@
                     "attribute": "Elevation",
                     "direction": "N/A",
                     "domain_end": [
-                        16.05,
-                        2.75,
-                        0.45
+                        16.1,
+                        4,
+                        0.5
                     ],
                     "domain_start": [
                         16,
-                        1.75,
+                        1.5,
                         0.4
                     ],
                     "name": "WaveGauge1",
                     "operation": "Max",
                     "output_frequency": 30,
+                    "preset": "Wave-Gauges",
                     "toggle": true,
                     "type": "particles"
                 },
@@ -835,18 +771,19 @@
                     "attribute": "Elevation",
                     "direction": "N/A",
                     "domain_end": [
-                        26.05,
-                        2.75,
-                        0.45
+                        34.369,
+                        4,
+                        0.5
                     ],
                     "domain_start": [
-                        26,
-                        1.75,
+                        34.269,
+                        1.5,
                         0.4
                     ],
                     "name": "WaveGauge2",
                     "operation": "Max",
                     "output_frequency": 30,
+                    "preset": "Wave-Gauges",
                     "toggle": true,
                     "type": "particles"
                 },
@@ -854,18 +791,19 @@
                     "attribute": "Elevation",
                     "direction": "N/A",
                     "domain_end": [
-                        38.05,
-                        2.75,
-                        0.45
+                        38.214,
+                        4,
+                        0.5
                     ],
                     "domain_start": [
-                        38,
-                        1.75,
+                        38.114,
+                        1.5,
                         0.4
                     ],
                     "name": "WaveGauge3",
                     "operation": "Max",
                     "output_frequency": 30,
+                    "preset": "Wave-Gauges",
                     "toggle": true,
                     "type": "particles"
                 }
@@ -880,16 +818,16 @@
             "simulation": {
                 "cauchy_bulk_ratio": 1,
                 "cfl": 0.5,
-                "default_dt": 0.0001,
+                "default_dt": 0.001,
                 "default_dx": 0.1,
                 "domain": [
                     90,
                     4.5,
                     3.6
                 ],
-                "duration": 5,
-                "fps": 10,
-                "frames": 50,
+                "duration": 1,
+                "fps": 2,
+                "frames": 2,
                 "froude_scaling": 1,
                 "froude_time_ratio": 1,
                 "gravity": [
@@ -916,25 +854,25 @@
     ],
     "GeneralInformation": {
         "NumberOfStories": 1,
-        "PlanArea": 129600,
-        "StructureType": "RM1",
-        "YearBuilt": 1990,
-        "depth": 360,
-        "height": 144,
+        "PlanArea": 1.030225,
+        "StructureType": "S2",
+        "YearBuilt": 2016,
+        "depth": 1.015,
+        "height": 0.615,
         "location": {
-            "latitude": 37.8715,
-            "longitude": -122.273
+            "latitude": 44.5638955,
+            "longitude": -123.2915415
         },
-        "name": "The Orange Box",
-        "planArea": 129600,
+        "name": "Raised Structural Box @ Oregon State University's Large Wave Flume",
+        "planArea": 1.030225,
         "stories": 1,
         "units": {
-            "force": "kips",
-            "length": "in",
+            "force": "N",
+            "length": "m",
             "temperature": "C",
             "time": "sec"
         },
-        "width": 360
+        "width": 1.015
     },
     "Modeling": {
         "Bx": 0.1,
@@ -954,7 +892,7 @@
                 "height": 144,
                 "kx": 100,
                 "ky": 100,
-                "weight": 100
+                "weight": "RV.w"
             }
         ],
         "dampingRatio": 0.02,
@@ -967,7 +905,7 @@
         "responseX": 0,
         "responseY": 0,
         "type": "MDOF_BuildingModel",
-        "weight": 100
+        "weight": "RV.w"
     },
     "Simulation": {
         "Application": "OpenSees-Simulation",
@@ -987,7 +925,7 @@
         "parallelExecution": true,
         "samplingMethodData": {
             "method": "LHS",
-            "samples": 2,
+            "samples": 20,
             "seed": 1
         },
         "saveWorkDir": true,
@@ -998,18 +936,295 @@
         {
             "distribution": "Normal",
             "inputType": "Parameters",
-            "mean": 0,
-            "name": "dummy",
-            "refCount": 0,
-            "stdDev": 1,
-            "value": "RV.dummy",
+            "mean": 144,
+            "name": "w",
+            "refCount": 1,
+            "stdDev": 12,
+            "value": "RV.w",
             "variableClass": "Uncertain"
         }
     ],
     "remoteAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
     "resultType": "SimCenterUQResultsSampling",
     "runType": "runningLocal",
+    "spreadsheet": {
+        "data": [
+            1,
+            128.6117515,
+            0.00388829,
+            0,
+            0.00111096,
+            0,
+            5.43192e-06,
+            0,
+            3.77217e-08,
+            0,
+            2,
+            144.1388782,
+            0.0034605,
+            0,
+            0.000956933,
+            0,
+            5.13692e-06,
+            0,
+            3.56731e-08,
+            0,
+            3,
+            133.9007901,
+            0.00370384,
+            0,
+            0.0010505,
+            0,
+            5.3265e-06,
+            0,
+            3.69896e-08,
+            0,
+            4,
+            146.111267,
+            0.00345109,
+            0,
+            0.000941658,
+            0,
+            5.10412e-06,
+            0,
+            3.54453e-08,
+            0,
+            5,
+            149.258936,
+            0.00334116,
+            0,
+            0.000917876,
+            0,
+            5.04902e-06,
+            0,
+            3.50627e-08,
+            0,
+            6,
+            142.8493345,
+            0.00348563,
+            0,
+            0.000967186,
+            0,
+            5.15914e-06,
+            0,
+            3.58273e-08,
+            0,
+            7,
+            140.9583447,
+            0.00357113,
+            0,
+            0.000983426,
+            0,
+            5.19588e-06,
+            0,
+            3.60825e-08,
+            0,
+            8,
+            153.4083012,
+            0.00325312,
+            0,
+            0.000889362,
+            0,
+            4.98383e-06,
+            0,
+            3.46099e-08,
+            0,
+            9,
+            154.9769919,
+            0.00322062,
+            0,
+            0.000878716,
+            0,
+            4.96003e-06,
+            0,
+            3.44446e-08,
+            0,
+            10,
+            150.8972919,
+            0.00333385,
+            0,
+            0.000906788,
+            0,
+            5.02584e-06,
+            0,
+            3.49017e-08,
+            0,
+            11,
+            161.4405578,
+            0.00309876,
+            0,
+            0.000835724,
+            0,
+            4.86075e-06,
+            0,
+            3.37552e-08,
+            0,
+            12,
+            119.5622379,
+            0.0041708,
+            0,
+            0.00123468,
+            0,
+            5.62827e-06,
+            0,
+            3.90852e-08,
+            0,
+            13,
+            130.819271,
+            0.00381607,
+            0,
+            0.00108434,
+            0,
+            5.38604e-06,
+            0,
+            3.74031e-08,
+            0,
+            14,
+            159.1607791,
+            0.00314233,
+            0,
+            0.000850563,
+            0,
+            4.89411e-06,
+            0,
+            3.39868e-08,
+            0,
+            15,
+            138.2232173,
+            0.00359435,
+            0,
+            0.0010078,
+            0,
+            5.24497e-06,
+            0,
+            3.64234e-08,
+            0,
+            16,
+            133.7552642,
+            0.00371064,
+            0,
+            0.00105202,
+            0,
+            5.32912e-06,
+            0,
+            3.70078e-08,
+            0,
+            17,
+            173.0828112,
+            0.0028835,
+            0,
+            0.000761907,
+            0,
+            4.6965e-06,
+            0,
+            3.26146e-08,
+            0,
+            18,
+            147.3303473,
+            0.00339947,
+            0,
+            0.000932286,
+            0,
+            5.08299e-06,
+            0,
+            3.52986e-08,
+            0,
+            19,
+            136.1464234,
+            0.00369128,
+            0,
+            0.00102734,
+            0,
+            5.28236e-06,
+            0,
+            3.66831e-08,
+            0,
+            20,
+            141.1872175,
+            0.00356995,
+            0,
+            0.000981811,
+            0,
+            5.19223e-06,
+            0,
+            3.60572e-08,
+            0
+        ],
+        "headings": [
+            "Run #",
+            "w",
+            "1-PFA-1-1",
+            "1-PFA-1-2",
+            "1-RMSA-1-1",
+            "1-RMSA-1-2",
+            "1-PFD-1-1",
+            "1-PFD-1-2",
+            "1-PID-1-1",
+            "1-PID-1-2",
+            ""
+        ],
+        "isSurrogate": false,
+        "nrv": 1,
+        "numCol": 10,
+        "numRow": 20
+    },
     "summary": [
+        {
+            "kurtosis": 3.3693713770466243,
+            "mean": 0.0034893190000000003,
+            "name": "1-PFA-1-1",
+            "skewness": 0.17680159786525307,
+            "stdDev": 0.00030042254878753685
+        },
+        {
+            "kurtosis": null,
+            "mean": 0,
+            "name": "1-PFA-1-2",
+            "skewness": null,
+            "stdDev": 0
+        },
+        {
+            "kurtosis": 3.8327863239899194,
+            "mean": 0.0009685938,
+            "name": "1-RMSA-1-1",
+            "skewness": 0.4760907181647112,
+            "stdDev": 0.0001077896236796962
+        },
+        {
+            "kurtosis": null,
+            "mean": 0,
+            "name": "1-RMSA-1-2",
+            "skewness": null,
+            "stdDev": 0
+        },
+        {
+            "kurtosis": 3.259319365291982,
+            "mean": 5.148527000000001e-06,
+            "name": "1-PFD-1-1",
+            "skewness": 0.08140336872836712,
+            "stdDev": 2.1867144176402626e-07
+        },
+        {
+            "kurtosis": null,
+            "mean": 0,
+            "name": "1-PFD-1-2",
+            "skewness": null,
+            "stdDev": 0
+        },
+        {
+            "kurtosis": 3.2592302575010574,
+            "mean": 3.575367e-08,
+            "name": "1-PID-1-1",
+            "skewness": 0.08138380197638177,
+            "stdDev": 1.5185621516837287e-09
+        },
+        {
+            "kurtosis": null,
+            "mean": 0,
+            "name": "1-PID-1-2",
+            "skewness": null,
+            "stdDev": 0
+        }
     ],
     "workingDir": "/home/justinbonus/Documents/HydroUQ/LocalWorkDir"
 }
