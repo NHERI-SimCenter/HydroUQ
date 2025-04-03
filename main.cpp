@@ -27,6 +27,8 @@
 
 #include <QStatusBar>
 #include <QWebEngineView>
+#include <Utils/FileOperations.h>
+
 // #include <QtWebEngine>
 // #include <QWebEngineView>
 // #include <QWebEngineSettings>

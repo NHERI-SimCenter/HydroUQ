@@ -52,6 +52,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QToolButton>
 #include <QStackedWidget>
 #include "slidingstackedwidget.h"
+#include <Utils/FileOperations.h>
 
 #include <SC_DoubleLineEdit.h>
 #include <SettingsMPM.h>
