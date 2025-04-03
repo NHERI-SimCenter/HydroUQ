@@ -106,7 +106,8 @@ int main(int argc, char *argv[])
 // Extensive documentation on how to set up OpenGL on Windows, macOS, and Linux can be found at:
 // https://doc.qt.io/qt-5/windows-requirements.html
 #ifdef Q_OS_WIN
-    QApplication::setAttribute(Qt::AA_UseOpenGLES); // Use ANGLE on Windows
+  //QApplication::setAttribute(Qt::AA_UseOpenGLES); // Use ANGLE on Windows
+  QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 #else
 #ifdef Q_OS_MACOS
     QApplication::setAttribute(Qt::AA_UseDesktopOpenGL); // Use Desktop OpenGL on macOS
