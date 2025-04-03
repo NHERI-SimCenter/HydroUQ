@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("4.0.5");
+    QCoreApplication::setApplicationVersion("4.0.6");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     Q_INIT_RESOURCE(images);
@@ -134,26 +134,8 @@ int main(int argc, char *argv[])
     // Set up logging of output messages for user debugging
     //
 
-    logFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
-      + QDir::separator() + QCoreApplication::applicationName();
-
-    // make sure tool dir exists in Documents folder
-    QDir dirWork(logFilePath);
-    if (!dirWork.exists())
-      if (!dirWork.mkpath(logFilePath)) {
-	qDebug() << QString("Could not create Working Dir: ") << logFilePath;
-	QMessageBox msgBox;
-	msgBox.setIcon(QMessageBox::Critical);
-	msgBox.setText("FATAL: You do not have permissions to write to your Documents folder. You need this access to run this application.");
-	//  msg = msg + text + QString("\n Please report this as a bug to SimCenter.");
-	//msgBox.setInformativeText(text);
-	msgBox.setWindowTitle("Fatal Error");
-	QPushButton *exitButton = msgBox.addButton(QMessageBox::Ok);
-	QObject::connect(exitButton, &QPushButton::clicked, qApp, &QApplication::quit);
-	msgBox.exec();	    
-      }
-
-    // full path to debug.log file
+    // full path to debug.log file    
+    QString logFilePath = SCUtils::getAppWorkDir();
     logFilePath = logFilePath + QDir::separator() + QString("debug.log");
 
     // remove old log file
