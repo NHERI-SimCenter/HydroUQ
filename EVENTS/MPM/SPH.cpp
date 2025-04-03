@@ -52,6 +52,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QToolButton>
 #include <QStackedWidget>
 #include "slidingstackedwidget.h"
+#include <Utils/FileOperations.h>
 
 #include <SC_DoubleLineEdit.h>
 #include <SettingsMPM.h>
@@ -1093,10 +1094,9 @@ bool SPH::copyFiles(QString &destDir) {
 
     if (result == false) {
         QString errorMessage; errorMessage = "SPH - failed to copy file: " + caseDir() + " to: " + destDir;
+        qDebug() << errorMessage;	
         fatalMessage(errorMessage);
-        qDebug() << errorMessage;
     }
-
 
   // if (mpmSettings->copyFiles(destDir) == false)
   //   return false;
@@ -1270,11 +1270,10 @@ bool SPH::initialize()
     caseDirectoryPathWidget = new QLineEdit();
     QString currentAppDir = QCoreApplication::applicationDirPath();
 
-    QDir workingDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-    if (!workingDir.exists())
-        workingDir.mkpath(".");
+    QString workDirPath = SCUtils::getAppWorkDir();      
+    QDir workingDir(workDirPath);
 
-    QString workingDirPath = workingDir.filePath(QCoreApplication::applicationName() + QDir::separator()
+    QString workingDirPath = workingDir.filePath(workDirPath +
                                                  + "LocalWorkDir" + QDir::separator()
                                                  + "SPH");
 
