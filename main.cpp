@@ -71,16 +71,6 @@ void customMessageOutput(QtMsgType type, const QMessageLogContext &context, cons
     QByteArray formattedTimeMsg = formattedTime.toLocal8Bit();
     QString logLevelName = msgLevelHash[type];
     QByteArray logLevelMsg = logLevelName.toLocal8Bit();
-
-    // TODO: Better way to check if the app is run in Qt Creator than QTDIR, as its not guaranteed to only belong to Qt Creator
-    static bool logToFile; // Compiler should default static bool init to 0. Changes to true if the app is run in Qt Creator, using QTDIR env variable as proxy
-    static bool logToStdErr; // If true, output to  stderr
-    QByteArray envVar = qgetenv("QTDIR"); // check if the app is run in Qt Creator
-    if (envVar.isEmpty()) {
-        logToFile = true;
-    } else {
-        logToFile = false;
-    }
     
     if (logToFile) {
         QString txt = QString("%1 %2: %3 (%4)").arg(formattedTime, logLevelName, msg,  context.file);
@@ -89,11 +79,9 @@ void customMessageOutput(QtMsgType type, const QMessageLogContext &context, cons
         QTextStream ts(&outFile);
         ts << txt << Qt::endl;
         outFile.close();
-    } 
-    
-    if (logToStdErr || (!logToFile && !logToStdErr)) {
-        fprintf(stderr, "%s %s: %s (%s:%u, %s)\n", formattedTimeMsg.constData(), logLevelMsg.constData(), localMsg.constData(), context.file, context.line, context.function);
-        fflush(stderr);
+    } else {
+      fprintf(stderr, "%s %s: %s (%s:%u, %s)\n", formattedTimeMsg.constData(), logLevelMsg.constData(), localMsg.constData(), context.file, context.line, context.function);
+      fflush(stderr);
     }
 
 
@@ -137,7 +125,7 @@ int main(int argc, char *argv[])
     //
 
     // full path to debug.log file    
-    QString logFilePath = SCUtils::getAppWorkDir();
+    logFilePath = SCUtils::getAppWorkDir();
     logFilePath = logFilePath + QDir::separator() + QString("debug.log");
 
     // remove old log file
