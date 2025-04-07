@@ -1214,6 +1214,7 @@ bool MPM::isInitialize()
     return caseInitialized;
 }
 
+constexpr bool USE_RESULTS_WIDGET = true;
 bool MPM::initialize()
 {
     const int windowWidth = 850;
@@ -1313,7 +1314,7 @@ bool MPM::initialize()
 
     caseInitialized = true;
     // ==================== Results-View Set-Up ====================
-    if constexpr (0) {
+    if constexpr (USE_RESULTS_WIDGET) {
       QWidget* resultsWidget = new QWidget();
       QVBoxLayout* resultsLayout  = new QVBoxLayout();
       resultsWidget->setLayout(resultsLayout);
@@ -1613,7 +1614,8 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
   QJsonArray boundariesArray;
   QJsonArray sensorsArray;
   QJsonObject outputsObject;
-  if constexpr (1) {
+  constexpr bool USE_RESULTS_WIDGET_JSONOBJECT = true; // mostly pointless but for consistency
+  if constexpr (USE_RESULTS_WIDGET_JSONOBJECT) {
     QJsonObject resultsObject;
   }
   // Pass in the objects or array object wrappers to the outputToJSON functions
@@ -2119,34 +2121,36 @@ QString MPM::simulationType()
     return QString("MPM");
 }
 
-// SC_ResultsWidget* MPM::getResultsWidget(QWidget *parent)
-// {
-//   // theTabWidget.setCurrentIndex(theTabWidget.indexOf("Results"));
-//   // Set theTabWidget to show the "Results" tab using its text
-//   if (mpmResults)
-//   {
-//     theTabWidget->setCurrentIndex(theTabWidget->count() - 1);
-//   }
-//   else 
-//   {
-//     if constexpr (0) {
-//       QWidget* resultsWidget = new QWidget();
-//       QVBoxLayout* resultsLayout  = new QVBoxLayout();
-//       resultsWidget->setLayout(resultsLayout);
-//       mpmResults = new ResultsMPM(this); // this
+#ifdef USE_MPM_RESULTS_WIDGET_FUNCTIONS
+SC_ResultsWidget* MPM::getResultsWidget(QWidget *parent)
+{
+  // theTabWidget.setCurrentIndex(theTabWidget.indexOf("Results"));
+  // Set theTabWidget to show the "Results" tab using its text
+  if (mpmResults)
+  {
+    theTabWidget->setCurrentIndex(theTabWidget->count() - 1);
+  }
+  else 
+  {
+    if constexpr (USE_RESULTS_WIDGET) {
+      QWidget* resultsWidget = new QWidget();
+      QVBoxLayout* resultsLayout  = new QVBoxLayout();
+      resultsWidget->setLayout(resultsLayout);
+      mpmResults = new ResultsMPM(this); // this
       
 
-//       resultsLayout->addWidget(mpmResults);
-//       resultsLayout->addStretch();
-//       theTabWidget->addTab(resultsWidget, QIcon(QString(":/icons/flag-black.svg")), "Results");
-//       theTabWidget->setCurrentIndex(theTabWidget->count() - 1);
-//     }
+      resultsLayout->addWidget(mpmResults);
+      resultsLayout->addStretch();
+      theTabWidget->addTab(resultsWidget, QIcon(QString(":/icons/flag-black.svg")), "Results");
+      theTabWidget->setCurrentIndex(theTabWidget->count() - 1);
+    }
 
-//   }  
+  }  
 
-//   statusMessage("HydroUQ EVENTS MPM - Get results widget for the EVT to allow us to post-process the downloaded results (or locally saved results) for visualization.");
-//   return mpmResults;
-// }
+  statusMessage("HydroUQ EVENTS MPM - Get results widget for the EVT to allow us to post-process the downloaded results (or locally saved results) for visualization.");
+  return mpmResults;
+}
+#endif
 
 void MPM::importMainDomainJsonFile(QJsonObject &jsonObject)
 {

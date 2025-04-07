@@ -118,8 +118,10 @@ public:
    QString simulationType();
    //  QString foamDictsPath(); // For OpenFOAM from WE-UQ, not MPM
 
-   // SC_ResultsWidget* getResultsWidget(QWidget *parent); // For vis of output data results 
-
+#define USE_MPM_RESULTS_WIDGET_FUNCTIONS true
+#ifdef USE_MPM_RESULTS_WIDGET_FUNCTIONS
+   SC_ResultsWidget* getResultsWidget(QWidget *parent); // For vis of output data results 
+#endif
    void hideVisualization(void);
    void showVisualization(void);
 signals:
