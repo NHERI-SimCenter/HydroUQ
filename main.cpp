@@ -27,6 +27,8 @@
 
 #include <QStatusBar>
 #include <QWebEngineView>
+#include <Utils/FileOperations.h>
+
 // #include <QtWebEngine>
 // #include <QWebEngineView>
 // #include <QWebEngineSettings>
@@ -69,16 +71,6 @@ void customMessageOutput(QtMsgType type, const QMessageLogContext &context, cons
     QByteArray formattedTimeMsg = formattedTime.toLocal8Bit();
     QString logLevelName = msgLevelHash[type];
     QByteArray logLevelMsg = logLevelName.toLocal8Bit();
-
-    // TODO: Better way to check if the app is run in Qt Creator than QTDIR, as its not guaranteed to only belong to Qt Creator
-    static bool logToFile; // Compiler should default static bool init to 0. Changes to true if the app is run in Qt Creator, using QTDIR env variable as proxy
-    static bool logToStdErr; // If true, output to  stderr
-    QByteArray envVar = qgetenv("QTDIR"); // check if the app is run in Qt Creator
-    if (envVar.isEmpty()) {
-        logToFile = true;
-    } else {
-        logToFile = false;
-    }
     
     if (logToFile) {
         QString txt = QString("%1 %2: %3 (%4)").arg(formattedTime, logLevelName, msg,  context.file);
@@ -87,11 +79,9 @@ void customMessageOutput(QtMsgType type, const QMessageLogContext &context, cons
         QTextStream ts(&outFile);
         ts << txt << Qt::endl;
         outFile.close();
-    } 
-    
-    if (logToStdErr || (!logToFile && !logToStdErr)) {
-        fprintf(stderr, "%s %s: %s (%s:%u, %s)\n", formattedTimeMsg.constData(), logLevelMsg.constData(), localMsg.constData(), context.file, context.line, context.function);
-        fflush(stderr);
+    } else {
+      fprintf(stderr, "%s %s: %s (%s:%u, %s)\n", formattedTimeMsg.constData(), logLevelMsg.constData(), localMsg.constData(), context.file, context.line, context.function);
+      fflush(stderr);
     }
 
 
@@ -122,7 +112,7 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("4.0.5");
+    QCoreApplication::setApplicationVersion("4.0.6");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     Q_INIT_RESOURCE(images);
@@ -134,26 +124,8 @@ int main(int argc, char *argv[])
     // Set up logging of output messages for user debugging
     //
 
-    logFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
-      + QDir::separator() + QCoreApplication::applicationName();
-
-    // make sure tool dir exists in Documents folder
-    QDir dirWork(logFilePath);
-    if (!dirWork.exists())
-      if (!dirWork.mkpath(logFilePath)) {
-	qDebug() << QString("Could not create Working Dir: ") << logFilePath;
-	QMessageBox msgBox;
-	msgBox.setIcon(QMessageBox::Critical);
-	msgBox.setText("FATAL: You do not have permissions to write to your Documents folder. You need this access to run this application.");
-	//  msg = msg + text + QString("\n Please report this as a bug to SimCenter.");
-	//msgBox.setInformativeText(text);
-	msgBox.setWindowTitle("Fatal Error");
-	QPushButton *exitButton = msgBox.addButton(QMessageBox::Ok);
-	QObject::connect(exitButton, &QPushButton::clicked, qApp, &QApplication::quit);
-	msgBox.exec();	    
-      }
-
-    // full path to debug.log file
+    // full path to debug.log file    
+    logFilePath = SCUtils::getAppWorkDir();
     logFilePath = logFilePath + QDir::separator() + QString("debug.log");
 
     // remove old log file

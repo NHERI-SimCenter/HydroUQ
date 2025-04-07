@@ -92,7 +92,7 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   ASFLIPLayout->setColumnStretch(1,1);
   ASFLIPGroupBox->setLayout(ASFLIPLayout);
 
-  ASFLIPGroupBox->setVisible(true);
+  //ASFLIPGroupBox->setVisible(true);
 
   ASFLIP_alpha = new SC_DoubleLineEdit("ASFLIP_alpha", 0.0);
   ASFLIPLayout->addWidget(new QLabel("Velocity Ratio, A"),numBodyRow, 0, 1, 1, Qt::AlignRight);
@@ -126,7 +126,7 @@ AlgorithmMPM::AlgorithmMPM(QWidget *parent)
   QGroupBox *FBARGroupBox = new QGroupBox("FBAR Antilocking");
   QGridLayout *FBARLayout = new QGridLayout();
   FBARGroupBox->setLayout(FBARLayout);
-  FBARGroupBox->setVisible(true);
+  //FBARGroupBox->setVisible(true);
 
 
   FBAR_psi = new SC_DoubleLineEdit("FBAR_psi", 0.0);
