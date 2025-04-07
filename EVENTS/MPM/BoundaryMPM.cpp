@@ -99,6 +99,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   stackedWidget->addWidget(theStructures);
   stackedWidget->addWidget(theWalls);
 
+  
   connect(boundaryType, QOverload<int>::of(&QComboBox::activated),
     stackedWidget, &QStackedWidget::setCurrentIndex);
 
@@ -194,6 +195,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   //
 
 
+
   numRow = 0;
   // QStringList facilityList; facilityList << "Hinsdale Large Wave Flume - Oregon State University (OSU LWF)" << "Hinsdale Directional Wave Basin (OSU DWB)" <<  "Wind-Air-Sea Interaction Facility (UW WASIRF)" << "Waseda University's Tsunami Wave Basin (WU TWB)" << "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)" << "CLOSED" << "INLETOUTLET";
   QStringList facilityList; facilityList << "Hinsdale Large Wave Flume (OSU LWF)" << "Hinsdale Directional Wave Basin (OSU DWB)" <<  "Wind-Air-Sea Interaction Facility (UW WASIRF)" << "Waseda University's Tsunami Wave Basin (WU TWB)" << "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)";
@@ -210,6 +212,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   waveFlumeLayout->addWidget(bathymetryComboBox,numRow++,1);
   waveFlumeLayout->addWidget(bathStack,numRow++,0,1,2);
   waveFlumeLayout->setRowStretch(numRow,1);
+
 
   // connext bathymetry to show correct widget
   connect(bathymetryComboBox, QOverload<int>::of(&QComboBox::activated),
@@ -314,7 +317,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   paddleLayout->addWidget(paddleWidth,numRow, 3);
   paddleLayout->addWidget(new QLabel("m"),numRow++, 4);
 
-
+ 
   paddleOriginX = new SC_DoubleLineEdit("paddleOriginX", 1.7);
   paddleOriginY = new SC_DoubleLineEdit("paddleOriginY", -0.1);
   paddleOriginZ = new SC_DoubleLineEdit("paddleOriginZ", -0.1);
@@ -324,12 +327,15 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   paddleLayout->addWidget(paddleOriginY,numRow,2);
   paddleLayout->addWidget(paddleOriginZ,numRow,3);
   paddleLayout->addWidget(new QLabel("m"),numRow++, 4);
-  
+ 
+
+
   paddleDisplacementFile = new SC_FileEdit("paddleDisplacementFile");
   QString paddleName = QString("Examples/WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv");
   paddleDisplacementFile->setFilename(paddleName);
   // paddleDisplacementFile->setFilter("CSV Files (*.csv)");
   
+
 
   // QString paddleDisplacementFilename = QString::fromAscii"WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv";
   paddleLayout->addWidget(new QLabel("Paddle Motion File"), numRow, 0);
@@ -341,8 +347,9 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   paddleLayout->addWidget(paddleDisplacementFile, numRow++, 1, 1, 4);
   paddleDisplacementFile->setEnabled(true);
   paddleDisplacementFile->setToolTip("Wave-maker piston file in CSV format.");
-  paddleDisplacementFile->show();
-  
+//  paddleDisplacementFile->show();
+
+
   int paddleNumRow = numRow;
   numRow++;
   paddleLayout->setRowStretch(numRow,1);  
@@ -355,6 +362,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   plotWidget->setLayout(plotLayout);
   // **/
 
+ 
   // Periodic Waves
   waveMag = new SC_DoubleLineEdit("waveMag",0.5);
   waveCelerity = new SC_DoubleLineEdit("waveCelerity",4.0);
