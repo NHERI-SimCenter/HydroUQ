@@ -1241,22 +1241,22 @@ bool MPM::initialize()
     //                                              + "MPM");
 
     auto prefs = SimCenterPreferences::getInstance();
-    QString localWorkDirectoryString = prefs->getLocalWorkDir();
-    QDir localWorkDir(localWorkDirectoryString);
-    if (!localWorkDir.exists()) {
-        localWorkDir.mkpath(".");
+    QString remoteWorkDirectoryString = prefs->getRemoteWorkDir();
+    QDir remoteWorkDir(remoteWorkDirectoryString);
+    if (!remoteWorkDir.exists()) {
+        remoteWorkDir.mkpath(".");
     }
 
     QString tmpDirName = "tmp.SimCenter";
-    localWorkDir.mkdir(tmpDirName);
-    QDir tmpDir = QDir(localWorkDir.absoluteFilePath(tmpDirName));
+    remoteWorkDir.mkdir(tmpDirName);
+    QDir tmpDir = QDir(remoteWorkDir.absoluteFilePath(tmpDirName));
     if (!tmpDir.exists()) {
         tmpDir.mkpath(".");
     }
 
-    QString subDirName = "MPM"; // "tmp.SimCenter"; "templatedir";
-    localWorkDir.mkdir(subDirName);
-    workingDirPath = localWorkDir.absoluteFilePath(subDirName);
+    QString subDirName = ""; // "tmp.SimCenter"; "templatedir";
+    remoteWorkDir.mkdir(subDirName);
+    workingDirPath = remoteWorkDir.absoluteFilePath(subDirName);
 
     QDir workingDir = QDir(workingDirPath);
     if (!workingDir.exists()) {
