@@ -691,7 +691,7 @@ ResultsMPM::plotSensors(void) //MPM* host)
         scriptName = processSensorsName->currentText(); // Must be initialized to a valid QString.
     }
     QString scriptPath  = mainModel->pyScriptsPath() + QDir::separator() + scriptName; 
-    QString sensorsPath = mainModel->caseDir() + QDir::separator() + "templatedir";
+    QString sensorsPath = mainModel->caseDir() + QDir::separator() + "results";
     QString outputPath  = mainModel->caseDir() + QDir::separator() + "results";
     // Find all the sensors in the sensorsPath folder if it exists, make them into one QString that is comma separated.
     qDebug() << "ResultsMPM::plotSensors - sensorsPath: " << sensorsPath;
