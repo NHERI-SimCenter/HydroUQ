@@ -258,7 +258,13 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 
 
     ProgramOutputDialog *theDialog=ProgramOutputDialog::getInstance();
-    theDialog->appendInfoMessage("Welcome to HydroUQ");    
+    theDialog->appendInfoMessage("Welcome to HydroUQ");
+
+    // load example
+    QString pathToExample = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "hdro-0002" + QDir::separator() + "src" + QDir::separator() + "input.json";
+    if (QFile::exists(pathToExample))
+      this->loadFile(pathToExample);
+    
 }
 
 // Development mode for tools
