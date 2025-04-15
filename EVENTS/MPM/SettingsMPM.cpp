@@ -151,7 +151,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
 
   numRow = 0;
 
-  timeStep = new SC_DoubleLineEdit("default_dt", 1e-4);
+  timeStep = new SC_DoubleLineEdit("default_dt", 1e-3);
   timeBoxLayout->addWidget(new QLabel("Max Time Step (dt)"), numRow, 0, 1, 1, Qt::AlignRight);
   timeBoxLayout->addWidget(timeStep, numRow, 1, 1, 3);
   timeBoxLayout->setColumnStretch(1, 1); // Add this line to make the middle column expand
@@ -173,7 +173,7 @@ SettingsMPM::SettingsMPM(QWidget *parent)
   timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
   timeBoxLayout->addWidget(new QLabel("sec."), numRow++, 4, 1, 1);
 
-  duration = new SC_DoubleLineEdit("duration", 5.0);
+  duration = new SC_DoubleLineEdit("duration", 1.0);
   timeBoxLayout->addWidget(new QLabel("Duration (tf-t0)"), numRow, 0, 1, 1, Qt::AlignRight);
   timeBoxLayout->addWidget(duration, numRow, 1, 1, 3);  
   timeBoxLayout->itemAt(timeBoxLayout->count()-1)->widget()->setMaximumWidth(maxWidth);
