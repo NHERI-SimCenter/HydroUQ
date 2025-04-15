@@ -263,9 +263,15 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     // load example
     QString pathToExample = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "hdro-0002" + QDir::separator() + "src" + QDir::separator() + "input.json";
     if (QFile::exists(pathToExample))
-      this->loadFile(pathToExample);
-    
+    this->loadFile(pathToExample);
+    //loadExample(pathToExample); // - jb
 }
+
+// JB - Update franks way to a function later
+// void WorkflowAppHydroUQ::loadExample(QString path) {
+//     if (QFile::exists(path))
+//     this->loadFile(path);
+// }
 
 // Development mode for tools
 constexpr bool DEV_MODE = false; // Set to true for development mode, false for production mode

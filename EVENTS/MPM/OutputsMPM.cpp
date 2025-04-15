@@ -77,7 +77,7 @@ OutputsMPM::OutputsMPM(QWidget *parent)
   vtkSensors_Output = new SC_ComboBox("sensors_save_suffix", sensorExt);
   vtkEnergies_Output = new SC_ComboBox("energies_save_suffix", energiesExt);
 
-  outputBodies_Dt  = new SC_DoubleLineEdit("bodies_output_freq", 10);
+  outputBodies_Dt  = new SC_DoubleLineEdit("bodies_output_freq", 2);
   outputBoundaries_Dt  = new SC_DoubleLineEdit("boundaries_output_freq", 30);
   // outputSensors_Dt  = new SC_DoubleLineEdit("sensors_output_freq", 30);
   outputCheckpoints_Dt  = new SC_DoubleLineEdit("checkpoints_output_freq", 1);
