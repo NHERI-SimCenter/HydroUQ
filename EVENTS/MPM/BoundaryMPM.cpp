@@ -50,13 +50,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QLineEdit>
+#include <QCoreApplication>
 #include <SC_ComboBox.h>
 #include <SC_DoubleLineEdit.h>
 #include <SC_IntLineEdit.h>
 #include <SC_TableEdit.h>
 #include <SC_FileEdit.h>
 #include <SC_CheckBox.h>
-
 #include <stdexcept>
 #include <QPixmap>
 
@@ -169,7 +169,8 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   int bathXZPairs = 7;
   bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, bathXZPairs, dataBathXZ);
   bathSTL = new SC_FileEdit("bathSTL");
-  QString bathFilename = QString("Examples/hdro-0001/src/flumeFloor.stl");
+  // QString bathFilename = QString("Examples/hdro-0001/src/flumeFloor.stl");
+  QString bathFilename = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "hdro-0001" + QDir::separator() + "src" + QDir::separator() + "flumeFloor.stl";
   bathSTL->setFilename(bathFilename);
   // bathSTL->setFilter("STL Files (*.stl)");
 
@@ -331,7 +332,8 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
 
   paddleDisplacementFile = new SC_FileEdit("paddleDisplacementFile");
-  QString paddleName = QString("Examples/WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv");
+  QString paddleName = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv";
+  // QString paddleName = QString("Examples/WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv");
   paddleDisplacementFile->setFilename(paddleName);
   // paddleDisplacementFile->setFilter("CSV Files (*.csv)");
   
@@ -340,10 +342,12 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   // QString paddleDisplacementFilename = QString::fromAscii"WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv";
   paddleLayout->addWidget(new QLabel("Paddle Motion File"), numRow, 0);
   paddleLayout->itemAt(paddleLayout->count()-1)->setAlignment(Qt::AlignRight);
+  
   char str[] = "wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv"; // 4m amplitude, scale-factor 500, from Mascarenas 2022
   // paddleName(str);
   QString renderPaddleName = QString(str);
-  paddleDisplacementFile->setFilename(renderPaddleName);
+  // paddleDisplacementFile->setFilename(renderPaddleName);
+  paddleDisplacementFile->setFilename(paddleName);
   paddleLayout->addWidget(paddleDisplacementFile, numRow++, 1, 1, 4);
   paddleDisplacementFile->setEnabled(true);
   paddleDisplacementFile->setToolTip("Wave-maker piston file in CSV format.");
@@ -1761,9 +1765,11 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         // return false;
     }
     if (jsonObject.contains("file")) {
-        QString theDataDir = jsonObject["file"].toString();
-        dataDir->setText(theDataDir);
-        paddleDisplacementFile->setFilename(theDataDir);
+        QString relativeWaveMakerPath = jsonObject["file"].toString();
+        QFileInfo fileInfoWaveMaker(relativeWaveMakerPath);
+        QString absoluteWaveMakerPath = fileInfoWaveMaker.absoluteFilePath();
+        dataDir->setText(absoluteWaveMakerPath);
+        paddleDisplacementFile->setFilename(absoluteWaveMakerPath);
     } else {
         this->errorMessage("ERROR: Paddle Motion - no \"file\" entry");
         // return false;
