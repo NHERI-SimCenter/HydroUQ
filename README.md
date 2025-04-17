@@ -79,7 +79,7 @@ If you use ``HydroUQ`` [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10902
 }
 ```
 
-and include the NHERI SimCenter's workflow architecture [![DOI](https://img.shields.io/badge/10.3389--fbuil.2020.558706-blue?label=DOI)](https://www.frontiersin.org/articles/10.3389/fbuil.2020.558706) using:
+include the NHERI SimCenter's workflow architecture [![DOI](https://img.shields.io/badge/10.3389--fbuil.2020.558706-blue?label=DOI)](https://www.frontiersin.org/articles/10.3389/fbuil.2020.558706) using:
 
 ```bibtex
 @Article{Deierlein2020,
@@ -91,6 +91,28 @@ and include the NHERI SimCenter's workflow architecture [![DOI](https://img.shie
   url={https://www.frontiersin.org/articles/10.3389/fbuil.2020.558706},       
   doi={10.3389/fbuil.2020.558706},      
   issn={2297-3362},   
+}
+```
+
+and cite the underlying multi-physics engine, ``ClaymoreUW`` [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15128705.svg)](https://doi.org/10.5281/zenodo.15128706), as:
+
+```bibtex
+@software{bonus_2025_15128706,
+  author       = {Bonus, Justin and
+                  Arduino, Pedro},
+  title        = {ClaymoreUW},
+  month        = apr,
+  year         = 2025,
+  publisher    = {Zenodo},
+  version      = {1.0.0},
+  doi          = {10.5281/zenodo.15128706},
+  url          = {https://doi.org/10.5281/zenodo.15128706},
+  swhid        = {swh:1:dir:9cbe98d28ea95b5758a235e84b601ce1214c6192
+                   ;origin=https://doi.org/10.5281/zenodo.15128705;vi
+                   sit=swh:1:snp:a6c72ffcb71d94a657a09c1263c1765090f4
+                   6ae5;anchor=swh:1:rel:0ae156dadd4f4ba1268431ec7205
+                   4b9d8b6cc328;path=claymore-master
+                  },
 }
 ```
 
