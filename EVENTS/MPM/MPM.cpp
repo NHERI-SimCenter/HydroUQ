@@ -424,13 +424,13 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Qt3DExtras::QCuboidMesh *cubeMesh = new Qt3DExtras::QCuboidMesh();
     // Qt3DExtras::QCuboidMesh *cubeMesh[16][2][16];
     QVector < QVector < QVector < Qt3DExtras::QCuboidMesh* > > > cubeMesh(16,
-              QVector < QVector < Qt3DExtras::QCuboidMesh* > > (2,
+              QVector < QVector < Qt3DExtras::QCuboidMesh* > > (16,
                         QVector < Qt3DExtras::QCuboidMesh* > (16, nullptr)));
     QVector < QVector < QVector < Qt3DExtras::QCuboidMesh* > > > debrisMesh(16,
-              QVector < QVector < Qt3DExtras::QCuboidMesh* > > (2,
+              QVector < QVector < Qt3DExtras::QCuboidMesh* > > (16,
                         QVector < Qt3DExtras::QCuboidMesh* > (16, nullptr)));
     for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < 16; j++) {
             for (int k = 0; k < 16; k++) {
                 cubeMesh[i][j][k] = new Qt3DExtras::QCuboidMesh();
                 debrisMesh[i][j][k] = new Qt3DExtras::QCuboidMesh();
@@ -455,10 +455,10 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // auto cubeTransform = new Qt3DCore::QTransform();
     // Qt3DCore::QTransform *cubeTransform[16][2][16];
     QVector < QVector < QVector < Qt3DCore::QTransform* > > > cubeTransform(16,
-              QVector < QVector < Qt3DCore::QTransform* > > (2,
+              QVector < QVector < Qt3DCore::QTransform* > > (16,
                         QVector < Qt3DCore::QTransform* > (16, nullptr)));
     QVector < QVector < QVector < Qt3DCore::QTransform* > > > debrisTransform(16,
-              QVector < QVector < Qt3DCore::QTransform* > > (2,
+              QVector < QVector < Qt3DCore::QTransform* > > (16,
                         QVector < Qt3DCore::QTransform* > (16, nullptr)));                        
     auto fluidTransform = new Qt3DCore::QTransform();
     auto pistonTransform = new Qt3DCore::QTransform();
@@ -468,27 +468,27 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto harborTransform = new Qt3DCore::QTransform();
     auto floorTransform = new Qt3DCore::QTransform();
     // auto gateTransform = new Qt3DCore::QTransform();
-
+    
     for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 2; j++) {
-            for (int k = 0; k < 16; k++) {
-                cubeTransform[i][j][k] = new Qt3DCore::QTransform();
-                cubeMesh[i][j][k]->setXExtent(1.016f);
-                cubeMesh[i][j][k]->setYExtent(0.615f);
-                cubeMesh[i][j][k]->setZExtent(1.016f);
-                cubeTransform[i][j][k]->setScale(1.f);
-                cubeTransform[i][j][k]->setTranslation(QVector3D(45.8f+1.016f/2.f, 2.0f+0.615f/2.f, 1.825f)); 
-                cubeTransform[i][j][k]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
-
-                debrisTransform[i][j][k] = new Qt3DCore::QTransform();
-                debrisMesh[i][j][k]->setXExtent(0.5f);
-                debrisMesh[i][j][k]->setYExtent(0.05f);
-                debrisMesh[i][j][k]->setZExtent(0.1f);
-                debrisTransform[i][j][k]->setScale(1.f);
-                debrisTransform[i][j][k]->setTranslation(QVector3D((42.8f + 0.5f/2.f - 0.5f*4 - 0.1f*3) + i*(0.5f + 0.1f), 2.0f+0.05f/2.f + (0.05f + 0.1f)*j, (3.65f - 0.1f*(8) - 0.1f*(7))/2 + (0.1f+.1f)*(k))); 
-                debrisTransform[i][j][k]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
-            }
+      for (int j = 0; j < 16; j++) {
+        for (int k = 0; k < 16; k++) {
+          cubeTransform[i][j][k] = new Qt3DCore::QTransform();
+          cubeMesh[i][j][k]->setXExtent(1.0f);
+          cubeMesh[i][j][k]->setYExtent(0.615f);
+          cubeMesh[i][j][k]->setZExtent(1.0f);
+          cubeTransform[i][j][k]->setScale(1.f);
+          cubeTransform[i][j][k]->setTranslation(QVector3D(45.8f+1.0f/2.f, 2.0f+0.615f/2.f, 1.825f)); 
+          cubeTransform[i][j][k]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+          
+          debrisTransform[i][j][k] = new Qt3DCore::QTransform();
+          debrisMesh[i][j][k]->setXExtent(0.5f);
+          debrisMesh[i][j][k]->setYExtent(0.05f);
+          debrisMesh[i][j][k]->setZExtent(0.1f);
+          debrisTransform[i][j][k]->setScale(1.f);
+          debrisTransform[i][j][k]->setTranslation(QVector3D((42.8f + 0.5f/2.f - 0.5f*4 - 0.1f*3) + i*(0.5f + 0.1f), 2.0f+0.05f/2.f + (0.05f + 0.1f)*j, (3.65f - 0.1f*(8) - 0.1f*(7))/2 + (0.1f+.1f)*(k))); 
+          debrisTransform[i][j][k]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
         }
+      }
     }
     // cubeMesh->setXExtent(1.016f);
     // cubeMesh->setYExtent(0.615f);
@@ -556,11 +556,11 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // auto cubeMaterial = new Qt3DExtras::QPhongMaterial();
     // Qt3DExtras::QPhongMaterial *cubeMaterial[16][2][16];
     QVector < QVector < QVector < Qt3DExtras::QPhongMaterial* > > > cubeMaterial(16,
-              QVector < QVector < Qt3DExtras::QPhongMaterial* > > (2,
+              QVector < QVector < Qt3DExtras::QPhongMaterial* > > (16,
                         QVector < Qt3DExtras::QPhongMaterial* > (16, nullptr)));
 
     QVector < QVector < QVector < Qt3DExtras::QPhongMaterial* > > > debrisMaterial(16,
-              QVector < QVector < Qt3DExtras::QPhongMaterial* > > (2,
+              QVector < QVector < Qt3DExtras::QPhongMaterial* > > (16,
                         QVector < Qt3DExtras::QPhongMaterial* > (16, nullptr)));
                         
     auto fluidMaterial = new Qt3DExtras::QPhongAlphaMaterial();
@@ -573,7 +573,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
 
     for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < 16; j++) {
             for (int k = 0; k < 16; k++) {
                 cubeMaterial[i][j][k] = new Qt3DExtras::QPhongMaterial();
                 cubeMaterial[i][j][k]->setDiffuse(QColor(QRgb(0xCC5500))); // orange
@@ -616,10 +616,10 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto twinEntity = new Qt3DCore::QEntity(rootEntity);
 
     QVector < QVector < QVector < Qt3DCore::QEntity* > > > cubeEntity(16,
-              QVector < QVector < Qt3DCore::QEntity* > > (2,
+              QVector < QVector < Qt3DCore::QEntity* > > (16,
                         QVector < Qt3DCore::QEntity* > (16, nullptr)));
     QVector < QVector < QVector < Qt3DCore::QEntity* > > > debrisEntity(16,
-              QVector < QVector < Qt3DCore::QEntity* > > (2,
+              QVector < QVector < Qt3DCore::QEntity* > > (16,
                         QVector < Qt3DCore::QEntity* > (16, nullptr)));    
     auto fluidEntity = new Qt3DCore::QEntity(rootEntity);
     auto reservoirEntity = new Qt3DCore::QEntity(rootEntity);
@@ -631,7 +631,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // hydroEntity->setEnabled(false);
 
     for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < 16; j++) {
             for (int k = 0; k < 16; k++) {
                 cubeEntity[i][j][k] = new Qt3DCore::QEntity(rootEntity);
                 cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
@@ -648,7 +648,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     }
     cubeEntity[0][0][0]->setEnabled(true);
     for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < 16; j++) {
             for (int k = 0; k < 16; k++) {
                 if (i < 4 && j < 1 && k < 8) {
                     cubeEntity[i][j][k]->setEnabled(true);
@@ -724,7 +724,6 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       fluidTransform->setTranslation(QVector3D(originX, originY, originZ));
     };
 
-
     auto updateBoundaryStructureSize = [=]() {
       double lengthX = mpmBoundaries->getDimensionX(mpmBoundaries->getStructureBoundary());
       double lengthY = mpmBoundaries->getDimensionY(mpmBoundaries->getStructureBoundary());
@@ -733,10 +732,10 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
       arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 2  ? arrayY : 2 ) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 16 ? arrayY : 16) : 1;
       arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
       for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < 16; j++) {
           for (int k = 0; k < 16; k++) {
             if (i < arrayX && j < arrayY && k < arrayZ) {
               cubeMesh[i][j][k]->setXExtent(lengthX);
@@ -754,6 +753,82 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       // cubeMesh->setYExtent(lengthY);
       // cubeMesh->setZExtent(lengthZ);
     };
+
+  // Make lambda function to update the position of debris set
+  auto updateDebris = [=]() {
+    QJsonObject bodiesObjectJSON; 
+    QJsonArray bodiesArrayJSON;
+    bodiesObjectJSON["bodies"] = bodiesArrayJSON;
+    mpmBodies->outputToJSON(bodiesObjectJSON);
+    int debrisBodyID = 1;
+    int debrisGeometryID = 0;
+    // double swl = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["standing_water_level"].toDouble();
+    double originX = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["offset"].toArray()[0].toDouble();
+    double originY = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["offset"].toArray()[1].toDouble();
+    double originZ = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["offset"].toArray()[2].toDouble();
+    double lengthX = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["span"].toArray()[0].toDouble();
+    double lengthY = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["span"].toArray()[1].toDouble();
+    double lengthZ = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["span"].toArray()[2].toDouble();
+    int arrayX = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["array"].toArray()[0].toInt();
+    int arrayY = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["array"].toArray()[1].toInt();
+    int arrayZ = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["array"].toArray()[2].toInt();
+    double spacingX = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["spacing"].toArray()[0].toDouble();
+    double spacingY = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["spacing"].toArray()[1].toDouble();
+    double spacingZ = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["spacing"].toArray()[2].toDouble();
+    arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
+    arrayY = arrayY > 0 ? (arrayY < 16 ? arrayY : 16) : 1;
+    arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
+    originX = lengthX/2.f + originX;  
+    originY = lengthY/2.f + originY;
+    originZ = lengthZ/2.f + originZ;
+    for (int i = 0; i < 16; i++) {
+      for (int j = 0; j < 16; j++) {
+        for (int k = 0; k < 16; k++) {
+          if (i < arrayX && j < arrayY && k < arrayZ) {
+            debrisMesh[i][j][k]->setXExtent(lengthX);
+            debrisMesh[i][j][k]->setYExtent(lengthY);
+            debrisMesh[i][j][k]->setZExtent(lengthZ);
+            debrisTransform[i][j][k]->setTranslation(QVector3D(originX + spacingX*i, originY + spacingY * j, originZ + spacingZ * k));
+            if (debrisEntity[i][j][k]) debrisEntity[i][j][k]->setEnabled(true);
+          } else {
+            if (debrisEntity[i][j][k]) debrisEntity[i][j][k]->setEnabled(false);
+          }
+        }
+      }
+    }
+    // double wave_maker_neutral = 1.915f;
+  };
+
+
+  auto updateBodyDebrisSize = [=]() {
+    double lengthX = mpmBoundaries->getDimensionX(mpmBoundaries->getStructureBoundary());
+    double lengthY = mpmBoundaries->getDimensionY(mpmBoundaries->getStructureBoundary());
+    double lengthZ = mpmBoundaries->getDimensionZ(mpmBoundaries->getStructureBoundary());
+    int arrayX = mpmBoundaries->getArrayX(mpmBoundaries->getStructureBoundary());
+    int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
+    int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
+    arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
+    arrayY = arrayY > 0 ? (arrayY < 16 ? arrayY : 16) : 1;
+    arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
+    for (int i = 0; i < 16; i++) {
+      for (int j = 0; j < 16; j++) {
+        for (int k = 0; k < 16; k++) {
+          if (i < arrayX && j < arrayY && k < arrayZ) {
+            cubeMesh[i][j][k]->setXExtent(lengthX);
+            cubeMesh[i][j][k]->setYExtent(lengthY);
+            cubeMesh[i][j][k]->setZExtent(lengthZ);
+            if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(true);
+          } else {
+            if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(false);
+          }
+        }
+      }
+    }
+
+    // cubeMesh->setXExtent(lengthX);
+    // cubeMesh->setYExtent(lengthY);
+    // cubeMesh->setZExtent(lengthZ);
+  };
 
     // Make lambda function to update the position of cuboid design structure
     auto updateBoundaryStructurePosition = [=]() {
@@ -773,14 +848,14 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
       arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 2  ? arrayY : 2 ) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 16 ? arrayY : 16) : 1;
       arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
 
       double spacingX = mpmBoundaries->getSpacingX(mpmBoundaries->getStructureBoundary());
       double spacingY = mpmBoundaries->getSpacingY(mpmBoundaries->getStructureBoundary());
       double spacingZ = mpmBoundaries->getSpacingZ(mpmBoundaries->getStructureBoundary());
       for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < 16; j++) {
           for (int k = 0; k < 16; k++) {
             if (i < arrayX && j < arrayY && k < arrayZ) {
               cubeTransform[i][j][k]->setTranslation(QVector3D(originX + spacingX*i, originY + spacingY * j, originZ + spacingZ * k));
@@ -815,12 +890,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
       arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 2  ? arrayY : 2 ) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 16 ? arrayY : 16) : 1;
       arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
       // cubeMesh is now a 3d array of cubeMesh
       // Since arrayX, arrayY, and arrayZ updated, we need to update the size of the array
       for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < 16; j++) {
           for (int k = 0; k < 16; k++) {
             cubeMesh[i][j][k]->setXExtent(lengthX);
             cubeMesh[i][j][k]->setYExtent(lengthY);
@@ -868,12 +943,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       // cubeMesh is now a 3d array of cubeMesh
       // Since arrayX, arrayY, and arrayZ updated, we need to update the size of the array
       arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 2 ? arrayY : 2) : 1;
+      arrayY = arrayY > 0 ? (arrayY < 16 ? arrayY : 16) : 1;
       arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
       
       for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 2; j++) {
-          for (int k = 0; k <  16; k++) {
+        for (int j = 0; j < 16; j++) {
+          for (int k = 0; k < 16; k++) {
             cubeMesh[i][j][k]->setXExtent(lengthX);
             cubeMesh[i][j][k]->setYExtent(lengthY);
             cubeMesh[i][j][k]->setZExtent(lengthZ);
@@ -923,15 +998,15 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       if (index == 0) {
         twinEntity->setEnabled(true);
         for (int i = 0; i < 16; i++) {
-          for (int j = 0; j < 2; j++) {
+          for (int j = 0; j < 16; j++) {
             for (int k = 0; k < 16; k++) {
-              if (i < 16 && j < 2 && k < 16)
+              if (i < 16 && j < 16 && k < 16)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
 
-                debrisEntity[i][j][k]->setEnabled(false);
-                if (i < 4 && j < 1 && k < 8) debrisEntity[i][j][k]->setEnabled(true);
+                // debrisEntity[i][j][k]->setEnabled(false);
+                // if (i < 4 && j < 1 && k < 4) debrisEntity[i][j][k]->setEnabled(true);
               }
             }
           }
@@ -946,14 +1021,14 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         floorEntity->setEnabled(false);
       } else if (index == 1) {
         twinEntity->setEnabled(true);
-        for (int i = 0; i < 1; i++) {
-          for (int j = 0; j < 1; j++) {
-            for (int k = 0; k < 1; k++) {
-              if (i < 16-1 && j < 2-1 && k < 16-1)
+        for (int i = 0; i < 16; i++) {
+          for (int j = 0; j < 16; j++) {
+            for (int k = 0; k < 16; k++) {
+              if (i < 16-1 && j < 16-1 && k < 16-1)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i == 0 && j == 0 && k < 2) cubeEntity[i][j][k]->setEnabled(true);
-                debrisEntity[i][j][k]->setEnabled(false);
+                // debrisEntity[i][j][k]->setEnabled(false);
               }
             }
           }
@@ -968,13 +1043,13 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       } else if (index == 2) {
         twinEntity->setEnabled(false);
         for (int i = 0; i < 16; i++) {
-          for (int j = 0; j < 2; j++) {
+          for (int j = 0; j < 16; j++) {
             for (int k = 0; k < 16; k++) {
-              if (i < 16 && j < 2 && k < 16)
+              if (i < 16 && j < 16 && k < 16)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
-                debrisEntity[i][j][k]->setEnabled(false);
+                // debrisEntity[i][j][k]->setEnabled(false);
               }
             }
           }
@@ -992,13 +1067,13 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       } else if (index == 3) {
         twinEntity->setEnabled(false);
         for (int i = 0; i < 16; i++) {
-          for (int j = 0; j < 2; j++) {
+          for (int j = 0; j < 16; j++) {
             for (int k = 0; k < 16; k++) {
-              if (i < 16 && j < 2 && k < 16)
+              if (i < 16 && j < 16 && k < 16)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i < 2 && j == 0 && k < 5) cubeEntity[i][j][k]->setEnabled(true);
-                debrisEntity[i][j][k]->setEnabled(false);
+                // debrisEntity[i][j][k]->setEnabled(false);
               }
             }
           }
@@ -1016,12 +1091,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       } else if (index == 4) {
         twinEntity->setEnabled(false);
         for (int i = 0; i < 16; i++) {
-          for (int j = 0; j < 2; j++) {
+          for (int j = 0; j < 16; j++) {
             for (int k = 0; k < 16; k++) {
-              if (i < 16 && j < 2 && k < 16)
+              if (i < 16 && j < 16 && k < 16)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
-                debrisEntity[i][j][k]->setEnabled(false);
+                // debrisEntity[i][j][k]->setEnabled(false);
               }
             }
           }
@@ -1044,8 +1119,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Add a push button that will redraw the bodies
     QPushButton *updateBodiesButton = new QPushButton("Redraw Bodies");
     connect(updateBodiesButton, &QPushButton::clicked, [=](void){
-      updateFluid();
       updateDigitalTwin(stackedWidget->currentIndex());
+      updateFluid();
+      updateDebris();
     });
 
     // TODO: Refactor so that we just pass a reference to a container/rootEntity to each of the classes/subclasses. Using widget getters is tedious
@@ -1132,6 +1208,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       updateBoundaryPaddlePosition();
       updateBoundaryPaddleSize();
     });
+
+
 
     mainLayout->addWidget(updateBodiesButton, 3, 0);    
 
