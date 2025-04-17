@@ -58,6 +58,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QPixmap>
 #include <QToolButton>
 #include <QStackedWidget>
+#include <QCoreApplication>
 #include "slidingstackedwidget.h"
 
 #include <SC_DoubleLineEdit.h>
@@ -440,7 +441,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     Qt3DExtras::QCuboidMesh *fluidMesh = new Qt3DExtras::QCuboidMesh();
     Qt3DExtras::QCuboidMesh *pistonMesh = new Qt3DExtras::QCuboidMesh();
     Qt3DRender::QMesh *twinMesh = new Qt3DRender::QMesh();
-    twinMesh->setSource(QUrl(QStringLiteral("qrc:/OSU_LWF_Bathymetry.obj")));
+    QString bathymetryMesh = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "OSU_LWF_Bathymetry.obj";
+    twinMesh->setSource(QUrl::fromLocalFile(bathymetryMesh));
+    // twinMesh->setSource(QUrl(QStringLiteral("qrc:/OSU_LWF_Bathymetry.obj")));
     // Qt3DRender::QMesh *hydroMesh = new Qt3DRender::QMesh();
     // hydroMesh->setSource(QUrl(QStringLiteral("qrc:/HydroUQ_Icon_Color.obj")));
 
