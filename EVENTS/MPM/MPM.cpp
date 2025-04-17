@@ -423,20 +423,44 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Create a cube mesh
     // Qt3DExtras::QCuboidMesh *cubeMesh = new Qt3DExtras::QCuboidMesh();
     // Qt3DExtras::QCuboidMesh *cubeMesh[16][2][16];
-    QVector < QVector < QVector < Qt3DExtras::QCuboidMesh* > > > cubeMesh(16,
-              QVector < QVector < Qt3DExtras::QCuboidMesh* > > (16,
-                        QVector < Qt3DExtras::QCuboidMesh* > (16, nullptr)));
-    QVector < QVector < QVector < Qt3DExtras::QCuboidMesh* > > > debrisMesh(16,
-              QVector < QVector < Qt3DExtras::QCuboidMesh* > > (16,
-                        QVector < Qt3DExtras::QCuboidMesh* > (16, nullptr)));
-    for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 16; j++) {
-            for (int k = 0; k < 16; k++) {
-                cubeMesh[i][j][k] = new Qt3DExtras::QCuboidMesh();
-                debrisMesh[i][j][k] = new Qt3DExtras::QCuboidMesh();
+    constexpr int maxCubeX = 16;
+    constexpr int maxCubeY = 16;
+    constexpr int maxCubeZ = 16;
+    constexpr int maxDebrisX = 16;
+    constexpr int maxDebrisY = 16;
+    constexpr int maxDebrisZ = 16;
+    constexpr int maxSensors = 32;
+
+    QVector < QVector < QVector < Qt3DExtras::QCuboidMesh* > > > cubeMesh(maxDebrisX,
+              QVector < QVector < Qt3DExtras::QCuboidMesh* > > (maxDebrisY,
+                        QVector < Qt3DExtras::QCuboidMesh* > (maxDebrisZ, nullptr)));
+    QVector < QVector < QVector < Qt3DExtras::QCuboidMesh* > > > debrisMesh(maxCubeX,
+              QVector < QVector < Qt3DExtras::QCuboidMesh* > > (maxCubeY,
+                        QVector < Qt3DExtras::QCuboidMesh* > (maxCubeZ, nullptr)));
+    QVector < Qt3DExtras::QCuboidMesh* > sensorMesh(maxSensors, nullptr);
+
+    for (int i = 0; i < maxDebrisX; i++) {
+        for (int j = 0; j < maxDebrisY; j++) {
+            for (int k = 0; k < maxDebrisZ; k++) {
+              debrisMesh[i][j][k] = new Qt3DExtras::QCuboidMesh();
             }
         }
     }
+
+    for (int i = 0; i < maxCubeX; i++) {
+        for (int j = 0; j < maxCubeY; j++) {
+            for (int k = 0; k < maxCubeZ; k++) {
+              cubeMesh[i][j][k] = new Qt3DExtras::QCuboidMesh();
+            }
+        }
+    }
+        
+    for (int i = 0; i < maxSensors; i++) {
+        sensorMesh[i] = new Qt3DExtras::QCuboidMesh();
+    }
+
+    
+
 
     Qt3DExtras::QCuboidMesh *fluidMesh = new Qt3DExtras::QCuboidMesh();
     Qt3DExtras::QCuboidMesh *pistonMesh = new Qt3DExtras::QCuboidMesh();
@@ -459,7 +483,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
                         QVector < Qt3DCore::QTransform* > (16, nullptr)));
     QVector < QVector < QVector < Qt3DCore::QTransform* > > > debrisTransform(16,
               QVector < QVector < Qt3DCore::QTransform* > > (16,
-                        QVector < Qt3DCore::QTransform* > (16, nullptr)));                        
+                        QVector < Qt3DCore::QTransform* > (16, nullptr)));    
+    QVector < Qt3DCore::QTransform* > sensorTransform(maxSensors, nullptr);
+    // Qt3DCore::QTransform *sensorTransform[32];
     auto fluidTransform = new Qt3DCore::QTransform();
     auto pistonTransform = new Qt3DCore::QTransform();
     auto twinTransform = new Qt3DCore::QTransform();
@@ -490,6 +516,16 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         }
       }
     }
+    for (int i = 0; i < maxSensors; i++) {
+        sensorTransform[i] = new Qt3DCore::QTransform();
+        sensorMesh[i]->setXExtent(0.1f);
+        sensorMesh[i]->setYExtent(1.0f);
+        sensorMesh[i]->setZExtent(0.1f);
+        sensorTransform[i]->setScale(1.f);
+        sensorTransform[i]->setTranslation(QVector3D(1.0f * i, 0.0f, 0.0f)); // Set the translation of each sensor mesh
+        sensorTransform[i]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+        // sensorTransform[i]->setRotation(QQuaternion::fromEulerAngles(90.f, 0.f, 0.f));
+    }                    
     // cubeMesh->setXExtent(1.016f);
     // cubeMesh->setYExtent(0.615f);
     // cubeMesh->setZExtent(1.016f);
@@ -562,7 +598,10 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     QVector < QVector < QVector < Qt3DExtras::QPhongMaterial* > > > debrisMaterial(16,
               QVector < QVector < Qt3DExtras::QPhongMaterial* > > (16,
                         QVector < Qt3DExtras::QPhongMaterial* > (16, nullptr)));
-                        
+    
+    QVector < Qt3DExtras::QPhongAlphaMaterial* > sensorMaterial(maxSensors, nullptr);
+
+
     auto fluidMaterial = new Qt3DExtras::QPhongAlphaMaterial();
     auto pistonMaterial = new Qt3DExtras::QPhongMaterial();
     auto twinMaterial = new Qt3DExtras::QPhongMaterial();
@@ -583,6 +622,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
             }
         }
     }
+    for (int i = 0; i < maxSensors; i++) {
+        sensorMaterial[i] = new Qt3DExtras::QPhongAlphaMaterial();
+        sensorMaterial[i]->setDiffuse(QColor(QRgb(0xD40000))); // red
+        // sensorMaterial[i]->setDiffuse(QColor(QRgb(0xBFBF2A))); // dark-yellow
+        sensorMaterial[i]->setAlpha(0.4f); // set transparency
+    }
     // cubeMaterial->setDiffuse(QColor(QRgb(0xCC5500)));
     // twinMaterial->setDiffuse(QColor(QRgb(0xFFFFFF)));
 
@@ -599,8 +644,6 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     // hydroMaterial->setDiffuse(QColor(QRgb(0x005FFF)));
     // hydroMaterial->setAmbient(QColor(QRgb(0x005FFF)));
-    
-
 
     reservoirMaterial->setDiffuse(QColor(QRgb(0x0000FF)));
     reservoirMaterial->setAlpha(0.6f);
@@ -621,6 +664,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     QVector < QVector < QVector < Qt3DCore::QEntity* > > > debrisEntity(16,
               QVector < QVector < Qt3DCore::QEntity* > > (16,
                         QVector < Qt3DCore::QEntity* > (16, nullptr)));    
+    QVector < Qt3DCore::QEntity* > sensorEntity(maxSensors, nullptr);
     auto fluidEntity = new Qt3DCore::QEntity(rootEntity);
     auto reservoirEntity = new Qt3DCore::QEntity(rootEntity);
     auto pistonEntity = new Qt3DCore::QEntity(rootEntity);
@@ -646,6 +690,15 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
             }
         }
     }
+    for (int i = 0; i < maxSensors; i++) {
+        sensorEntity[i] = new Qt3DCore::QEntity(rootEntity);
+        sensorEntity[i]->addComponent(sensorMesh[i]);
+        sensorEntity[i]->addComponent(sensorMaterial[i]);
+        sensorEntity[i]->addComponent(sensorTransform[i]);
+        sensorEntity[i]->setEnabled(false);
+    }
+
+    // Not so sure about needing this...
     cubeEntity[0][0][0]->setEnabled(true);
     for (int i = 0; i < 16; i++) {
         for (int j = 0; j < 16; j++) {
@@ -796,39 +849,94 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         }
       }
     }
-    // double wave_maker_neutral = 1.915f;
   };
 
 
-  auto updateBodyDebrisSize = [=]() {
-    double lengthX = mpmBoundaries->getDimensionX(mpmBoundaries->getStructureBoundary());
-    double lengthY = mpmBoundaries->getDimensionY(mpmBoundaries->getStructureBoundary());
-    double lengthZ = mpmBoundaries->getDimensionZ(mpmBoundaries->getStructureBoundary());
-    int arrayX = mpmBoundaries->getArrayX(mpmBoundaries->getStructureBoundary());
-    int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
-    int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
-    arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-    arrayY = arrayY > 0 ? (arrayY < 16 ? arrayY : 16) : 1;
-    arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
-    for (int i = 0; i < 16; i++) {
-      for (int j = 0; j < 16; j++) {
-        for (int k = 0; k < 16; k++) {
-          if (i < arrayX && j < arrayY && k < arrayZ) {
-            cubeMesh[i][j][k]->setXExtent(lengthX);
-            cubeMesh[i][j][k]->setYExtent(lengthY);
-            cubeMesh[i][j][k]->setZExtent(lengthZ);
-            if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(true);
-          } else {
-            if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(false);
-          }
-        }
+  // Make lambda function to update the position of sensor set
+  auto updateSensors = [=]() {
+    QJsonObject sensorsObjectJSON;
+    QJsonArray sensorsArrayJSON;
+    sensorsObjectJSON["particle-sensors"] = sensorsArrayJSON;
+    mpmSensors->outputToJSON(sensorsObjectJSON);
+    int sensorID = 0;
+    // Number of sensors
+    int numParticleSensors = sensorsObjectJSON["particle-sensors"].toArray().size();
+    int numGridSensors = sensorsObjectJSON["grid-sensors"].toArray().size();
+    int numSensors = numParticleSensors + numGridSensors;
+    if (numSensors > maxSensors) {
+      numSensors = maxSensors; // Limit to maxSensors that we mem reserved
+      if (numParticleSensors > maxSensors) {
+        numParticleSensors = maxSensors; // Limit to maxSensors that we mem reserved
+      }
+      if (numGridSensors > maxSensors) {
+        numGridSensors = maxSensors; // Limit to maxSensors that we mem reserved
+      }
+      if (numParticleSensors + numGridSensors > maxSensors) {
+        numParticleSensors = maxSensors - numGridSensors; // Limit to maxSensors that we mem reserved
+      }
+      if (numGridSensors + numParticleSensors > maxSensors) {
+        numGridSensors = maxSensors - numParticleSensors; // Limit to maxSensors that we mem reserved
       }
     }
+    // if (numSensors > maxSensors) {
+    //   sensorEntity.resize(numSensors);
+    //   sensorMesh.resize(numSensors);
+    //   sensorTransform.resize(numSensors);
+    //   sensorMaterial.resize(numSensors);
+    // }
+    // sensorEntity.resize(numSensors);
+    // Reset all sensors to disabled, re-enable only the ones that are in the JSON object
+    for (int i = 0; i < maxSensors; i++) {
+        sensorEntity[i]->setEnabled(false);
+    }
+    // Loop through each sensor and update its position
+    int j = 0;
+    for (int i = 0; i < numParticleSensors; i++) {
+      // Get the sensor position from the JSON object  
+      double originX = sensorsObjectJSON["particle-sensors"].toArray()[i].toObject()["domain_start"].toArray()[0].toDouble();
+      double originY = sensorsObjectJSON["particle-sensors"].toArray()[i].toObject()["domain_start"].toArray()[1].toDouble();
+      double originZ = sensorsObjectJSON["particle-sensors"].toArray()[i].toObject()["domain_start"].toArray()[2].toDouble();
+      double lengthX = sensorsObjectJSON["particle-sensors"].toArray()[i].toObject()["domain_end"].toArray()[0].toDouble() - originX;
+      double lengthY = sensorsObjectJSON["particle-sensors"].toArray()[i].toObject()["domain_end"].toArray()[1].toDouble() - originY;
+      double lengthZ = sensorsObjectJSON["particle-sensors"].toArray()[i].toObject()["domain_end"].toArray()[2].toDouble() - originZ;
+
+
+      // Update the sensor transform with the new position
+      sensorTransform[i]->setTranslation(QVector3D(originX + lengthX/2.f, originY + lengthY/2.f, originZ + lengthZ/2.f));
+      sensorTransform[i]->setScale(1.f);
+      sensorTransform[i]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+      sensorMesh[i]->setXExtent(lengthX);
+      sensorMesh[i]->setYExtent(lengthY);
+      sensorMesh[i]->setZExtent(lengthZ);
+      sensorEntity[i]->setEnabled(true);
+      j = i + 1;
+    }
+    // Loop through each sensor and update its position
+    for (int i = 0; i < numGridSensors; i++) {
+      // Get the sensor position from the JSON object  
+      double originX = sensorsObjectJSON["grid-sensors"].toArray()[i].toObject()["domain_start"].toArray()[0].toDouble();
+      double originY = sensorsObjectJSON["grid-sensors"].toArray()[i].toObject()["domain_start"].toArray()[1].toDouble();
+      double originZ = sensorsObjectJSON["grid-sensors"].toArray()[i].toObject()["domain_start"].toArray()[2].toDouble();
+      double lengthX = sensorsObjectJSON["grid-sensors"].toArray()[i].toObject()["domain_end"].toArray()[0].toDouble() - originX;
+      double lengthY = sensorsObjectJSON["grid-sensors"].toArray()[i].toObject()["domain_end"].toArray()[1].toDouble() - originY;
+      double lengthZ = sensorsObjectJSON["grid-sensors"].toArray()[i].toObject()["domain_end"].toArray()[2].toDouble() - originZ;
+
+
+      // Update the sensor transform with the new position
+      sensorTransform[j]->setTranslation(QVector3D(originX + lengthX/2.f, originY + lengthY/2.f, originZ + lengthZ/2.f));
+      sensorTransform[j]->setScale(1.f);
+      sensorTransform[j]->setRotation(QQuaternion::fromAxisAndAngle(1.f, 1.f, 1.f, 0.f));
+      sensorMesh[j]->setXExtent(lengthX);
+      sensorMesh[j]->setYExtent(lengthY);
+      sensorMesh[j]->setZExtent(lengthZ);
+      sensorEntity[j]->setEnabled(true);
+      j += 1;
+    }
+  };
 
     // cubeMesh->setXExtent(lengthX);
     // cubeMesh->setYExtent(lengthY);
     // cubeMesh->setZExtent(lengthZ);
-  };
 
     // Make lambda function to update the position of cuboid design structure
     auto updateBoundaryStructurePosition = [=]() {
@@ -1122,6 +1230,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       updateDigitalTwin(stackedWidget->currentIndex());
       updateFluid();
       updateDebris();
+      updateSensors();
     });
 
     // TODO: Refactor so that we just pass a reference to a container/rootEntity to each of the classes/subclasses. Using widget getters is tedious
