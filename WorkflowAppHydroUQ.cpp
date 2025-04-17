@@ -101,6 +101,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_ToolDialog.h>
 #include <SC_RemoteAppTool.h>
 #include <SC_LocalAppTool.h>
+#include <RemoteOpenSeesApp.h>
 #include <SimCenterPreferences.h>
 #include <RemoteAppTest.h>
 // #include <DakotaResultsSampling.h>
@@ -279,11 +280,11 @@ constexpr bool DEV_MODE = false; // Set to true for development mode, false for 
 // Quickly enable/disable tools here for compile-time
 constexpr bool USE_CLAYMORE_TOOL = true;
 constexpr bool USE_MPM_EVENT_TOOL = true;
+constexpr bool USE_NOAA_TOOL = DEV_MODE; 
 constexpr bool USE_TAICHI_TOOL = false;
-constexpr bool USE_NOAA_TOOL = true; 
 constexpr bool USE_CELERIS_TOOL = false;
 constexpr bool USE_WEBGPU_TOOL = false;
-
+constexpr bool USE_OPENSEES_TOOL = true;
 
 void
 WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
@@ -365,6 +366,31 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         });
     }
 
+    if constexpr (USE_OPENSEES_TOOL) {
+        // opensees@designsafe  
+        RemoteOpenSeesApp *theOpenSeesApp = new RemoteOpenSeesApp();
+        QString testAppName = "simcenter-opensees-frontera";
+        QString testAppVersion = "1.0.0";
+        TapisMachine *theMachine = new Stampede3Machine();
+        SC_RemoteAppTool *theOpenSeesTool = new SC_RemoteAppTool(testAppName,
+                                    testAppVersion,
+                                    theMachine,
+                                    theRemoteService,
+                                    theOpenSeesApp,
+                                    theToolDialog);
+        QStringList filesToDownload; filesToDownload << "results.zip";
+        theOpenSeesTool->setFilesToDownload(filesToDownload, false);
+        theOpenSeesTool->setAppNameReport(QString("OpenSeesAtDesignSafe"));
+        
+                        
+        
+        theToolDialog->addTool(theOpenSeesTool, "OpenSees@DesignSafe");
+        QAction *showOpenSees = toolsMenu->addAction("&OpenSees@DesignSafe");
+        connect(showOpenSees, &QAction::triggered, this,[this, theDialog=theToolDialog, theEmp = theOpenSeesApp] {
+            theDialog->showTool("OpenSees@DesignSafe");
+        });
+
+    }
     // if constexpr (USE_CELERIS_TOOL) {
     //     Celeris *miniCeleris = new Celeris();
     //     QString appNameCeleris =  "simcenter-celeris-frontera"; // Frontera
