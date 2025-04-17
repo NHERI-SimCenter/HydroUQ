@@ -134,8 +134,8 @@ SensorMPM::SensorMPM(QWidget *parent)
   velociMetersTable  = new SC_TableEdit("velociMeterLocs", listVM, 2, dataVM);
   
   QStringList  listLC; listLC << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
-  QStringList  dataLC; dataLC << "LoadCell1" << "45.799" << "2.0" << "1.35" << "0.025" << "0.3" << "1.0" 
-                              << "LoadCell2" << "45.799" << "2.3" << "1.35" << "0.025" << "0.3" << "1.0" ;    
+  QStringList  dataLC; dataLC << "LoadCell1" << "45.799" << "2.0" << "1.3" << "0.025" << "0.3" << "1.0" 
+                              << "LoadCell2" << "45.799" << "2.3" << "1.3" << "0.025" << "0.3" << "1.0" ;    
   loadCellsTable  = new SC_TableEdit("loadCellLocs", listLC, 2, dataLC);
 
   QStringList  listPM; listPM << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
