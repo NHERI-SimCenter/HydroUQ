@@ -465,6 +465,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     Qt3DExtras::QCuboidMesh *fluidMesh = new Qt3DExtras::QCuboidMesh();
     Qt3DExtras::QCuboidMesh *pistonMesh = new Qt3DExtras::QCuboidMesh();
     Qt3DRender::QMesh *twinMesh = new Qt3DRender::QMesh();
+
     QString bathymetryMesh = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "OSU_LWF_Bathymetry.obj";
     twinMesh->setSource(QUrl::fromLocalFile(bathymetryMesh));
     // twinMesh->setSource(QUrl(QStringLiteral("qrc:/OSU_LWF_Bathymetry.obj")));
@@ -1224,6 +1225,128 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     };
 
 
+    // Add check boxes to toggle the visibility of objects
+    QCheckBox *twinCheckBox = new QCheckBox("Flume");
+    twinCheckBox->setChecked(true);
+    connect(twinCheckBox, &QCheckBox::stateChanged, [=](int state){
+      if (state == Qt::Checked) {
+        twinEntity->setEnabled(true);
+      } else {
+        twinEntity->setEnabled(false);
+      }
+    });
+    QCheckBox *fluidCheckBox = new QCheckBox("Fluid");
+    fluidCheckBox->setChecked(true);
+    connect(fluidCheckBox, &QCheckBox::stateChanged, [=](int state){
+      if (state == Qt::Checked) {
+        updateFluid();
+        fluidEntity->setEnabled(true);
+      } else {
+        fluidEntity->setEnabled(false);
+      }
+    });
+    QCheckBox *paddleCheckBox = new QCheckBox("Paddle");  
+    paddleCheckBox->setChecked(true);
+    connect(paddleCheckBox, &QCheckBox::stateChanged, [=](int state){
+      if (state == Qt::Checked) {
+        pistonEntity->setEnabled(true);
+      } else {
+        pistonEntity->setEnabled(false);
+      }
+    });
+    QCheckBox *debrisCheckBox = new QCheckBox("Debris");
+    debrisCheckBox->setChecked(true);
+    connect(debrisCheckBox, &QCheckBox::stateChanged, [=](int state){
+      if (state == Qt::Checked) {
+        updateDebris();
+      } else {
+        for (int i = 0; i < 16; i++) {
+          for (int j = 0; j < 16; j++) {
+            for (int k = 0; k < 16; k++) {
+              debrisEntity[i][j][k]->setEnabled(false);
+            }
+          }
+        }
+      }
+    });
+    QCheckBox *sensorCheckBox = new QCheckBox("Sensors");
+    sensorCheckBox->setChecked(true);
+    connect(sensorCheckBox, &QCheckBox::stateChanged, [=](int state){
+      if (state == Qt::Checked) {
+        updateSensors();
+      } else {
+        for (int i = 0; i < maxSensors; i++) {
+          sensorEntity[i]->setEnabled(false);
+        }
+      }
+    });
+    QCheckBox *cubeCheckBox = new QCheckBox("Rigid Structure");
+    cubeCheckBox->setChecked(true);
+    connect(cubeCheckBox, &QCheckBox::stateChanged, [=](int state){
+      if (state == Qt::Checked) {
+        updateBoundaryStructureArray();
+        updateBoundaryStructurePosition();
+        updateBoundaryStructureSize();
+      } else {
+        for (int i = 0; i < 16; i++) {
+          for (int j = 0; j < 16; j++) {
+            for (int k = 0; k < 16; k++) {
+              cubeEntity[i][j][k]->setEnabled(false);
+            }
+          }
+        }
+      }
+    });
+
+    // QCheckBox *harborCheckBox = new QCheckBox("Harbor Boundary");
+    // harborCheckBox->setChecked(true);
+    // connect(harborCheckBox, &QCheckBox::stateChanged, [=](int state){
+    //   if (state == Qt::Checked) {
+    //     harborEntity->setEnabled(true);
+    //   } else {
+    //     harborEntity->setEnabled(false);
+    //   }
+    // });
+    // QCheckBox *reservoirCheckBox = new QCheckBox("Reservoir Boundary");
+    // reservoirCheckBox->setChecked(true);
+    // connect(reservoirCheckBox, &QCheckBox::stateChanged, [=](int state){
+    //   if (state == Qt::Checked) {
+    //     reservoirEntity->setEnabled(true);
+    //   } else {
+    //     reservoirEntity->setEnabled(false);
+    //   }
+    // });
+    // QCheckBox *floorCheckBox = new QCheckBox("Floor Boundary");
+    // floorCheckBox->setChecked(true);
+    // connect(floorCheckBox, &QCheckBox::stateChanged, [=](int state){
+    //   if (state == Qt::Checked) {
+    //     floorEntity->setEnabled(true);
+    //   } else {
+    //     floorEntity->setEnabled(false);
+    //   }
+    // });
+    
+    // Place check boxes in a group box layout with name "Toggle Visibility" in 3 columns
+
+    // QGroupBox *checkBoxLayout = new QGroupBox("Toggle Visibility");
+    // QGridLayout *checkBoxLayout = new QGridLayout();
+    // checkBoxLayout->addWidget(twinCheckBox,   0, 0);
+    // checkBoxLayout->addWidget(fluidCheckBox,  0, 1);
+    // checkBoxLayout->addWidget(paddleCheckBox, 0, 2);
+    // checkBoxLayout->addWidget(cubeCheckBox,   1, 0);
+    // checkBoxLayout->addWidget(debrisCheckBox, 1, 1);
+    // checkBoxLayout->addWidget(sensorCheckBox, 1, 2);
+    // checkBoxLayout->addWidget(harborCheckBox, 2, 0);
+    // checkBoxLayout->addWidget(reservoirCheckBox, 2, 1);
+    // checkBoxLayout->addWidget(floorCheckBox, 2, 2);
+    // checkBoxLayout->setLayout(checkBoxLayout);
+
+    QGroupBox *checkBoxGroup = new QGroupBox("Visibility Options");
+    QGridLayout *checkBoxLayout = new QGridLayout();
+    checkBoxGroup->setLayout(checkBoxLayout);
+    
+    
+    
     // Add a push button that will redraw the bodies
     QPushButton *updateBodiesButton = new QPushButton("Redraw Bodies");
     connect(updateBodiesButton, &QPushButton::clicked, [=](void){
@@ -1232,6 +1355,14 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       updateDebris();
       updateSensors();
     });
+
+    checkBoxLayout->addWidget(updateBodiesButton, 0, 0, 1, 3);
+    checkBoxLayout->addWidget(twinCheckBox,   1, 0);
+    checkBoxLayout->addWidget(fluidCheckBox,  1, 1);
+    checkBoxLayout->addWidget(paddleCheckBox, 1, 2);
+    checkBoxLayout->addWidget(cubeCheckBox,   2, 0);
+    checkBoxLayout->addWidget(debrisCheckBox, 2, 1);
+    checkBoxLayout->addWidget(sensorCheckBox, 2, 2);
 
     // TODO: Refactor so that we just pass a reference to a container/rootEntity to each of the classes/subclasses. Using widget getters is tedious
     // Could template this to avoid repeating code
@@ -1320,7 +1451,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
 
 
-    mainLayout->addWidget(updateBodiesButton, 3, 0);    
+    // mainLayout->addWidget(updateBodiesButton, 3, 0);    
+    mainLayout->addWidget(checkBoxGroup, 3, 0);
 
 #endif
 
