@@ -60,6 +60,7 @@ class SC_TableEdit;
 class SC_FileEdit;
 class SC_CheckBox;
 class SC_ComboBox;
+class QGridLayout;
 
 class SensorMPM : public SimCenterWidget
 {
@@ -128,6 +129,11 @@ private:
   QWidget *theVelocityMeters; 
   QWidget *theLoadCells; 
   QWidget *thePiezoMeters;
+  QGridLayout *customLayout;
+  QGridLayout *wgLayout;
+  QGridLayout *vmLayout;
+  QGridLayout *lcLayout;
+  QGridLayout *pmLayout;
 };
 
 #endif // SENSOR_MPM_H
