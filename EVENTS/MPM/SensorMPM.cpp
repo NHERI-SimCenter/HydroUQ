@@ -203,7 +203,7 @@ SensorMPM::SensorMPM(QWidget *parent)
   toggleVM  = new SC_ComboBox("toggle", yesNo); // velocity meter (velocity on grid)
   typeVM  = new SC_ComboBox("type", typeGridParticleList); // velocity meter (velocity on grid)
   attributeVM = new SC_ComboBox("attribute", QStringList() << "Velocity" << "Velocity_X" << "Velocity_Y" << "Velocity_Z" << "Velocity_Magnitude");
-  operationVM = new SC_ComboBox("operation", QStringList() << "Max" << "Average");
+  operationVM = new SC_ComboBox("operation", QStringList() << "Average");
   directionVM = new SC_ComboBox("direction", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
   directionVM->setCurrentIndex(0); // X
   output_frequencyVM = new SC_DoubleLineEdit("output_frequency", 30.0);
@@ -211,7 +211,7 @@ SensorMPM::SensorMPM(QWidget *parent)
   toggleLC  = new SC_ComboBox("toggle", yesNo); // load cell (force on grid)
   typeLC  = new SC_ComboBox("type", typeGridList); // load cell (force on grid)
   attributeLC = new SC_ComboBox("attribute", QStringList() << "Force" << "Force_X" << "Force_Y" << "Force_Z" << "Force_Magnitude");
-  operationLC = new SC_ComboBox("operation", QStringList() << "Sum" << "Max" << "Average");
+  operationLC = new SC_ComboBox("operation", QStringList() << "Sum" << "Average");
   directionLC = new SC_ComboBox("direction", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
   directionLC->setCurrentIndex(3); // X+
   output_frequencyLC = new SC_DoubleLineEdit("output_frequency", 120.0);
