@@ -84,11 +84,11 @@ SensorMPM::SensorMPM(QWidget *parent)
   theVelocityMeters = new QWidget();
   theLoadCells = new QWidget();
   thePiezoMeters = new QWidget();
-  QGridLayout *customLayout = new QGridLayout();
-  QGridLayout *wgLayout = new QGridLayout();
-  QGridLayout *vmLayout = new QGridLayout();
-  QGridLayout *lcLayout = new QGridLayout();
-  QGridLayout *pmLayout = new QGridLayout();
+  customLayout = new QGridLayout();
+  wgLayout = new QGridLayout();
+  vmLayout = new QGridLayout();
+  lcLayout = new QGridLayout();
+  pmLayout = new QGridLayout();
   theCustom->setLayout(customLayout);
   theWaveGauges->setLayout(wgLayout);
   theVelocityMeters->setLayout(vmLayout);
@@ -119,29 +119,29 @@ SensorMPM::SensorMPM(QWidget *parent)
   // ===========================================================================
   QStringList  list; list << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
   QStringList  data; data << "CustomSensor1" << "0.0" << "0.0" << "0.0" << "0.0" << "0.0" << "0.0" ;
-  customTable = new SC_TableEdit("customLocs", list, 1, data);
+  customTable = new SC_TableEdit("summarys", list, 1, data);
 
 
   QStringList  listWG; listWG << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
   QStringList  dataWG; dataWG << "WaveGauge1" << "16.0" << "1.5" << "0.4" << "0.1" << "2.50" << "0.1" 
 				                      << "WaveGauge2" << "34.269" << "1.5" << "0.4" << "0.1" << "2.50" << "0.1" 
 				                      << "WaveGauge3" << "38.114" << "1.5" << "0.4" << "0.1" << "2.50" << "0.1" ;
-  waveGaugesTable = new SC_TableEdit("waveGaugeLocs",  listWG, 3, dataWG);
+  waveGaugesTable = new SC_TableEdit("summary",  listWG, 3, dataWG);
   
   QStringList  listVM; listVM << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
   QStringList  dataVM; dataVM << "VelocityMeter1" << "16.0" << "0.00" << "0.4" << "0.05" << "2.75" << "0.05" 
 				                      << "VelocityMeter2" << "43.8" << "1.75" << "0.4" << "0.05" << "1.00" << "0.05" ;
-  velociMetersTable  = new SC_TableEdit("velociMeterLocs", listVM, 2, dataVM);
+  velociMetersTable  = new SC_TableEdit("summary", listVM, 2, dataVM);
   
   QStringList  listLC; listLC << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
   QStringList  dataLC; dataLC << "LoadCell1" << "45.799" << "2.0" << "1.3" << "0.025" << "0.3" << "1.0" 
                               << "LoadCell2" << "45.799" << "2.3" << "1.3" << "0.025" << "0.3" << "1.0" ;    
-  loadCellsTable  = new SC_TableEdit("loadCellLocs", listLC, 2, dataLC);
+  loadCellsTable  = new SC_TableEdit("summary", listLC, 2, dataLC);
 
   QStringList  listPM; listPM << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
   QStringList  dataPM; dataPM << "PiezoMeter1" << "16.0" << "1.00" << "0.4" << "0.05" << "0.05" << "0.05" 
 				                      << "PiezoMeter2" << "43.8" << "1.80" << "0.4" << "0.05" << "0.05" << "0.05" ;
-  piezoMetersTable  = new SC_TableEdit("piezoMeterLocs", listPM, 2, dataPM);
+  piezoMetersTable  = new SC_TableEdit("summary", listPM, 2, dataPM);
 
 
 
@@ -203,7 +203,7 @@ SensorMPM::SensorMPM(QWidget *parent)
   toggleVM  = new SC_ComboBox("toggle", yesNo); // velocity meter (velocity on grid)
   typeVM  = new SC_ComboBox("type", typeGridParticleList); // velocity meter (velocity on grid)
   attributeVM = new SC_ComboBox("attribute", QStringList() << "Velocity" << "Velocity_X" << "Velocity_Y" << "Velocity_Z" << "Velocity_Magnitude");
-  operationVM = new SC_ComboBox("operation", QStringList() << "Max" << "Average");
+  operationVM = new SC_ComboBox("operation", QStringList() << "Average");
   directionVM = new SC_ComboBox("direction", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
   directionVM->setCurrentIndex(0); // X
   output_frequencyVM = new SC_DoubleLineEdit("output_frequency", 30.0);
@@ -211,7 +211,7 @@ SensorMPM::SensorMPM(QWidget *parent)
   toggleLC  = new SC_ComboBox("toggle", yesNo); // load cell (force on grid)
   typeLC  = new SC_ComboBox("type", typeGridList); // load cell (force on grid)
   attributeLC = new SC_ComboBox("attribute", QStringList() << "Force" << "Force_X" << "Force_Y" << "Force_Z" << "Force_Magnitude");
-  operationLC = new SC_ComboBox("operation", QStringList() << "Sum" << "Max" << "Average");
+  operationLC = new SC_ComboBox("operation", QStringList() << "Sum" << "Average");
   directionLC = new SC_ComboBox("direction", QStringList() << "X" << "Y" << "Z" << "X+" << "Y+" << "Z+" << "X-" << "Y-" << "Z-" << "N/A");
   directionLC->setCurrentIndex(3); // X+
   output_frequencyLC = new SC_DoubleLineEdit("output_frequency", 120.0);
@@ -505,9 +505,9 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
 
   // Wave-gauges (WG), Velocimeters (VM), and Load-cells (LC)
   if (stackIndexToEnum == sensorEnum::CUSTOM) {
-    for (int i = 0; i < tableArraysCustom["customLocs"].toArray().size(); ++i) {
+    for (int i = 0; i < tableArraysCustom["summarys"].toArray().size(); ++i) {
       QJsonObject customObject;
-      QJsonArray customArray = tableArraysCustom["customLocs"].toArray()[i].toArray();
+      QJsonArray customArray = tableArraysCustom["summarys"].toArray()[i].toArray();
       // customObject["toggle"] = QJsonValue(toggle->currentText()).toString();
       customObject["preset"] = QJsonValue(sensorType->currentText()).toString();
       customObject["toggle"] = (QJsonValue(toggle->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
@@ -517,6 +517,8 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
       customObject["output_frequency"] = output_frequency->text().toDouble();
       customObject["direction"] = direction->itemText(direction->currentIndex());
       customObject["name"] = customArray[0].toString();
+      // customObject["summarys"] = tableArraysCustom["summarys"].toArray()[i].toArray();
+      customObject["summary"] = tableArraysCustom["summarys"];
 
       // Future schema
       QJsonArray origin;
@@ -555,18 +557,23 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
     }
     return true;
   } else if (stackIndexToEnum == sensorEnum::WAVE_GAUGE) {
-    for (int i = 0; i < tableArraysWG["waveGaugeLocs"].toArray().size(); ++i) {
+    for (int i = 0; i < tableArraysWG["summary"].toArray().size(); ++i) {
       QJsonObject waveGaugesObject;
-      QJsonArray waveGaugeArray = tableArraysWG["waveGaugeLocs"].toArray()[i].toArray();
+      QJsonArray waveGaugeArray = tableArraysWG["summary"].toArray()[i].toArray();
       // waveGaugesObject["toggle"] = QJsonValue(toggleWG->currentText()).toString();
       waveGaugesObject["preset"] = QJsonValue(sensorType->currentText()).toString();
       waveGaugesObject["toggle"] = (QJsonValue(toggleWG->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
+      
       waveGaugesObject["type"] = QJsonValue(typeWG->currentText()).toString();
       waveGaugesObject["attribute"] = QJsonValue(attributeWG->currentText()).toString();
       waveGaugesObject["operation"] = operationWG->itemText(operationWG->currentIndex());
       waveGaugesObject["output_frequency"] = output_frequencyWG->text().toDouble();
       waveGaugesObject["direction"] = directionWG->itemText(directionWG->currentIndex());
       waveGaugesObject["name"] = waveGaugeArray[0].toString();
+      // waveGaugesObject["summary"] = tableArraysWG["summary"].toArray()[i].toArray();
+      waveGaugesObject["summary"] = tableArraysWG["summary"];
+
+
 
       // Future schema
       QJsonArray origin;
@@ -605,9 +612,9 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
     }
     return true;
   } else if (stackIndexToEnum == sensorEnum::VELOCITY_METER) {
-    for (int i = 0; i < tableArraysVM["velociMeterLocs"].toArray().size(); ++i) {
+    for (int i = 0; i < tableArraysVM["summary"].toArray().size(); ++i) {
       QJsonObject velociMetersObject;
-      QJsonArray velociMeterArray = tableArraysVM["velociMeterLocs"].toArray()[i].toArray();
+      QJsonArray velociMeterArray = tableArraysVM["summary"].toArray()[i].toArray();
       // velociMetersObject["toggle"] = QJsonValue(toggleVM->currentText()).toString();
       velociMetersObject["preset"] = QJsonValue(sensorType->currentText()).toString();
       velociMetersObject["toggle"] = (QJsonValue(toggleVM->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
@@ -617,6 +624,8 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
       velociMetersObject["output_frequency"] = output_frequencyVM->text().toDouble();
       velociMetersObject["direction"] = directionVM->itemText(directionVM->currentIndex());
       velociMetersObject["name"] = velociMeterArray[0].toString();
+      // velociMetersObject["summary"] = tableArraysVM["summary"].to Array()[i].toArray();
+      velociMetersObject["summary"] = tableArraysVM["summary"];
 
       // Future schema
       QJsonArray origin;
@@ -657,9 +666,9 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
     }
     return true;
   } else if (stackIndexToEnum == sensorEnum::LOAD_CELL) {
-    for (int i = 0; i < tableArraysLC["loadCellLocs"].toArray().size(); ++i) {
+    for (int i = 0; i < tableArraysLC["summary"].toArray().size(); ++i) {
       QJsonObject loadCellsObject;
-      QJsonArray loadCellArray = tableArraysLC["loadCellLocs"].toArray()[i].toArray();
+      QJsonArray loadCellArray = tableArraysLC["summary"].toArray()[i].toArray();
       // loadCellsObject["toggle"] = QJsonValue(toggleLC->currentText()).toString();
       loadCellsObject["preset"] = QJsonValue(sensorType->currentText()).toString();
       loadCellsObject["toggle"] = (QJsonValue(toggleLC->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
@@ -669,7 +678,10 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
       loadCellsObject["output_frequency"] = output_frequencyLC->text().toDouble();
       loadCellsObject["direction"] = directionLC->itemText(directionLC->currentIndex());
       loadCellsObject["name"] = loadCellArray[0].toString();
-
+      // loadCellsObject["summary"] = tableArraysLC["summary"].toArray()[i].toArray();
+      loadCellsObject["summary"] = tableArraysLC["summary"];
+      // loadCellsObject["summary"].append(loadCellArray[0].toString());
+      // loadCellsObject["summary"].append(loadCellArray[1].toString());
       // Future schema
       QJsonArray origin;
       for (int j=1; j<4; ++j) origin.append(loadCellArray[j].toDouble());
@@ -708,9 +720,9 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
     }
     return true;
   } else if (stackIndexToEnum == sensorEnum::PIEZO_METER) {
-    for (int i = 0; i < tableArraysWG["piezoMeterLocs"].toArray().size(); ++i) {
+    for (int i = 0; i < tableArraysWG["summary"].toArray().size(); ++i) {
       QJsonObject piezoMetersObject;
-      QJsonArray piezoMeterArray = tableArraysPM["piezoMeterLocs"].toArray()[i].toArray();
+      QJsonArray piezoMeterArray = tableArraysPM["summary"].toArray()[i].toArray();
       piezoMetersObject["preset"] = QJsonValue(sensorType->currentText()).toString();
       piezoMetersObject["toggle"] = (QJsonValue(togglePM->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
       piezoMetersObject["type"] = QJsonValue(typePM->currentText()).toString();
@@ -719,7 +731,8 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
       piezoMetersObject["output_frequency"] = output_frequencyPM->text().toDouble();
       piezoMetersObject["direction"] = directionPM->itemText(directionPM->currentIndex());
       piezoMetersObject["name"] = piezoMeterArray[0].toString();
-
+      // piezoMetersObject["summary"] = tableArraysPM["summary"].toArray()[i].toArray();
+      piezoMetersObject["summary"] = tableArraysPM["summary"];
       // Future schema
       QJsonArray origin;
       for (int j=1; j<4; ++j) origin.append(piezoMeterArray[j].toDouble());
@@ -770,94 +783,171 @@ bool
 SensorMPM::inputFromJSON(QJsonObject &jsonObject)
 {
   // Exit early for now while debugging
-  return true;
+  // return true;
 
   // ----
   // sensorType->setCurrentIndex(0); // Custom default
-  if (jsonObject.contains("preset")) {
-    QString sensorPreset = jsonObject["preset"].toString();
-    if (sensorPreset == "Custom") {
-      setSensorType(0);
-    } else if (sensorPreset == "Wave-Gauges") {
-      setSensorType(1);
-    } else if (sensorPreset == "Velocimeters") {
-      setSensorType(2);
-    } else if (sensorPreset == "Load-Cells") {
-      setSensorType(3);
-    } else if (sensorPreset == "Piezometers") {
-      setSensorType(4);
-    }
-  }
-  else {
-    if (jsonObject.contains("attribute")) {
+
+
+
+  // if (jsonObject.contains("preset")) {
+  //   QString sensorPreset = jsonObject["preset"].toString();
+  //   if (sensorPreset == "Custom") {
+  //     setSensorType(0);
+  //   } else if (sensorPreset == "Wave-Gauges") {
+  //     setSensorType(1);
+  //   } else if (sensorPreset == "Velocimeters") {
+  //     setSensorType(2);
+  //   } else if (sensorPreset == "Load-Cells") {
+  //     setSensorType(3);
+  //   } else if (sensorPreset == "Piezometers") {
+  //     setSensorType(4);
+  //   }
+  // }
+  // else {
+  //   if (jsonObject.contains("attribute")) {
+  //     QString sensorAttribute = jsonObject["attribute"].toString();
+  //     if (sensorAttribute == "Elevation" || sensorAttribute == "Position_Y") {
+  //       setSensorType(1);
+  //     } else if (sensorAttribute == "Velocity" || sensorAttribute == "Velocity_X" || sensorAttribute == "Velocity_Y" || sensorAttribute == "Velocity_Z" || sensorAttribute == "Velocity_Magnitude") {
+  //       setSensorType(2);
+  //     } else if (sensorAttribute == "Force" || sensorAttribute == "Force_X" || sensorAttribute == "Force_Y" || sensorAttribute == "Force_Z" || sensorAttribute == "Force_Magnitude") {
+  //       setSensorType(3);
+  //     } else if (sensorAttribute == "Pressure") {
+  //       setSensorType(4);
+  //     }
+  //     else {
+  //       setSensorType(0);
+  //     }
+  //   }  else {
+  //     setSensorType(0);
+  //   }
+  // }
+  if (jsonObject.contains("attribute")) {
       QString sensorAttribute = jsonObject["attribute"].toString();
       if (sensorAttribute == "Elevation" || sensorAttribute == "Position_Y") {
-        setSensorType(1);
-      } else if (sensorAttribute == "Velocity" || sensorAttribute == "Velocity_X" || sensorAttribute == "Velocity_Y" || sensorAttribute == "Velocity_Z" || sensorAttribute == "Velocity_Magnitude") {
-        setSensorType(2);
-      } else if (sensorAttribute == "Force" || sensorAttribute == "Force_X" || sensorAttribute == "Force_Y" || sensorAttribute == "Force_Z" || sensorAttribute == "Force_Magnitude") {
-        setSensorType(3);
-      } else if (sensorAttribute == "Pressure") {
-        setSensorType(4);
+        toggleWG->inputFromJSON(jsonObject);
+        typeWG->inputFromJSON(jsonObject);
+        attributeWG->inputFromJSON(jsonObject);
+        operationWG->inputFromJSON(jsonObject);
+        directionWG->inputFromJSON(jsonObject);
+        output_frequencyWG->inputFromJSON(jsonObject);  
+        waveGaugesTable->inputFromJSON(jsonObject);
+        // fille in using jsonObject["summary"] for ["summary"]
+        // qDebug() << "SensorMPM::inputFromJSON() - delete waveGaugesTable";
+        // if (jsonObject.contains("summary")) {
+        //   delete waveGaugesTable;
+        //   QStringList  listWG; listWG << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+        //   QStringList dataWG; 
+        //   for (int i =0; i<jsonObject["summary"].toArray().size(); ++i) {
+        //     QJsonArray wgArray = jsonObject["summary"].toArray()[i].toArray();
+        //     dataWG << wgArray[0].toString() << QString::number(wgArray[1].toDouble()) << QString::number(wgArray[2].toDouble()) << QString::number(wgArray[3].toDouble()) << QString::number(wgArray[4].toDouble()) << QString::number(wgArray[5].toDouble()) << QString::number(wgArray[6].toDouble());
+        //   }
+        //   qDebug() << "SensorMPM::inputFromJSON() - create waveGaugesTable";
+        //   qDebug() << "SensorMPM::inputFromJSON() - listWG: " << listWG;
+        //   qDebug() << "SensorMPM::inputFromJSON() - dataWG: " << dataWG;
+        //   waveGaugesTable = new SC_TableEdit("summary",  listWG, jsonObject["summary"].toArray().size(), dataWG);
+        //   qDebug() << "SensorMPM::inputFromJSON() - created waveGaugesTable";
+          
+        //   // Find appropriate layout from this
+        //   // can't use wgLayout directly
+
+        //   // Get layout, then get the third widget which is a stacked widget, then get the first tab, then get the layout
+        //   // this->layout()->widgetAt(2)->layout()->widgetAt(0)->layout()->widgetAt(0)->layout()->addWidget(waveGaugesTable,7,0,1,4);
+
+
+        //   // wgLayout->addWidget(waveGaugesTable,7,0,1,4);
+        // }
       }
-    }  else {
-      setSensorType(0);
+      else if (sensorAttribute == "Velocity" || sensorAttribute == "Velocity_X" || sensorAttribute == "Velocity_Y" || sensorAttribute == "Velocity_Z" || sensorAttribute == "Velocity_Magnitude") {
+        toggleVM->inputFromJSON(jsonObject);
+        typeVM->inputFromJSON(jsonObject);
+        attributeVM->inputFromJSON(jsonObject);
+        operationVM->inputFromJSON(jsonObject);
+        directionVM->inputFromJSON(jsonObject);
+        output_frequencyVM->inputFromJSON(jsonObject);
+        velociMetersTable->inputFromJSON(jsonObject);
+        // if (jsonObject.contains("summary")) {
+        //   delete velociMetersTable;
+        //   QStringList  listVM; listVM << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+        //   QStringList dataVM; 
+        //   for (int i =0; i<jsonObject["summary"].toArray().size(); ++i) {
+        //     QJsonArray vmArray = jsonObject["summary"].toArray()[i].toArray();
+        //     dataVM << vmArray[0].toString() << QString::number(vmArray[1].toDouble()) << QString::number(vmArray[2].toDouble()) << QString::number(vmArray[3].toDouble()) << QString::number(vmArray[4].toDouble()) << QString::number(vmArray[5].toDouble()) << QString::number(vmArray[6].toDouble());
+        //   }
+        //   velociMetersTable = new SC_TableEdit("summary",  listVM, jsonObject["summary"].toArray().size(), dataVM);
+        // }
+        // velociMetersTable->inputFromJSON(jsonObject);
+      }
+      else if (sensorAttribute == "Force" || sensorAttribute == "Force_X" || sensorAttribute == "Force_Y" || sensorAttribute == "Force_Z" || sensorAttribute == "Force_Magnitude") {
+        toggleLC->inputFromJSON(jsonObject);
+        typeLC->inputFromJSON(jsonObject);
+        attributeLC->inputFromJSON(jsonObject);
+        operationLC->inputFromJSON(jsonObject);
+        directionLC->inputFromJSON(jsonObject);
+        output_frequencyLC->inputFromJSON(jsonObject);
+        loadCellsTable->inputFromJSON(jsonObject);
+        // if (jsonObject.contains("summary")) {
+        //   delete loadCellsTable;
+        //   QStringList  listLC; listLC << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+        //   QStringList dataLC; 
+        //   for (int i =0; i<jsonObject["summary"].toArray().size(); ++i) {
+        //     QJsonArray lcArray = jsonObject["summary"].toArray()[i].toArray();
+        //     dataLC << lcArray[0].toString() << QString::number(lcArray[1].toDouble()) << QString::number(lcArray[2].toDouble()) << QString::number(lcArray[3].toDouble()) << QString::number(lcArray[4].toDouble()) << QString::number(lcArray[5].toDouble()) << QString::number(lcArray[6].toDouble());
+        //   }
+        //   loadCellsTable = new SC_TableEdit("summary",  listLC, jsonObject["summary"].toArray().size(), dataLC);
+        // }
+        // loadCellsTable->inputFromJSON(jsonObject);
+      }
+      else if (sensorAttribute == "Pressure") {
+        togglePM->inputFromJSON(jsonObject);
+        typePM->inputFromJSON(jsonObject);
+        attributePM->inputFromJSON(jsonObject);
+        operationPM->inputFromJSON(jsonObject);
+        directionPM->inputFromJSON(jsonObject);
+        output_frequencyPM->inputFromJSON(jsonObject);
+        piezoMetersTable->inputFromJSON(jsonObject);
+        // if (jsonObject.contains("summary")) {
+        //   delete piezoMetersTable;
+        //   QStringList  listPM; listPM << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+        //   QStringList dataPM; 
+        //   for (int i =0; i<jsonObject["summary"].toArray().size(); ++i) {
+        //     QJsonArray pmArray = jsonObject["summary"].toArray()[i].toArray();
+        //     dataPM << pmArray[0].toString() << QString::number(pmArray[1].toDouble()) << QString::number(pmArray[2].toDouble()) << QString::number(pmArray[3].toDouble()) << QString::number(pmArray[4].toDouble()) << QString::number(pmArray[5].toDouble()) << QString::number(pmArray[6].toDouble());
+        //   }
+        //   piezoMetersTable = new SC_TableEdit("summary",  listPM, jsonObject["summary"].toArray().size(), dataPM);
+        // }
+        // Make sure to append to the table, it may have multiple sensors
+        // piezoMetersTable->inputFromJSON(jsonObject);
+      } 
+      else {
+        toggle->inputFromJSON(jsonObject);
+        type->inputFromJSON(jsonObject);
+        attribute->inputFromJSON(jsonObject);
+        operation->inputFromJSON(jsonObject);
+        direction->inputFromJSON(jsonObject);
+        output_frequency->inputFromJSON(jsonObject);
+        customTable->inputFromJSON(jsonObject);
+        // if (jsonObject.contains("summary")) {
+        //   delete customTable;
+        //   QStringList  list; list << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+        //   QStringList data; 
+        //   for (int i =0; i<jsonObject["summary"].toArray().size(); ++i) {
+        //     QJsonArray cArray = jsonObject["summary"].toArray()[i].toArray();
+        //     data << cArray[0].toString() << QString::number(cArray[1].toDouble()) << QString::number(cArray[2].toDouble()) << QString::number(cArray[3].toDouble()) << QString::number(cArray[4].toDouble()) << QString::number(cArray[5].toDouble()) << QString::number(cArray[6].toDouble());
+        //   }
+        //   customTable = new SC_TableEdit("summarys",  list, jsonObject["summary"].toArray().size(), data);
+        // }
+        // customTable->inputFromJSON(jsonObject);
+      }
     }
+    
+    return true;
   }
-
-  if (sensorType->currentIndex() == 0) {
-    toggle->inputFromJSON(jsonObject);
-    type->inputFromJSON(jsonObject);
-    attribute->inputFromJSON(jsonObject);
-    operation->inputFromJSON(jsonObject);
-    direction->inputFromJSON(jsonObject);
-    output_frequency->inputFromJSON(jsonObject);
-    customTable->inputFromJSON(jsonObject);
-  }
-  else if (sensorType->currentIndex() == 1) {
-    toggleWG->inputFromJSON(jsonObject);
-    typeWG->inputFromJSON(jsonObject);
-    attributeWG->inputFromJSON(jsonObject);
-    operationWG->inputFromJSON(jsonObject);
-    directionWG->inputFromJSON(jsonObject);
-    output_frequencyWG->inputFromJSON(jsonObject);  
-    waveGaugesTable->inputFromJSON(jsonObject);
-  }
-  else if (sensorType->currentIndex() == 2) {
-    toggleVM->inputFromJSON(jsonObject);
-    typeVM->inputFromJSON(jsonObject);
-    attributeVM->inputFromJSON(jsonObject);
-    operationVM->inputFromJSON(jsonObject);
-    directionVM->inputFromJSON(jsonObject);
-    output_frequencyVM->inputFromJSON(jsonObject);
-    velociMetersTable->inputFromJSON(jsonObject);
-  }
-  else if (sensorType->currentIndex() == 3) {
-    toggleLC->inputFromJSON(jsonObject);
-    typeLC->inputFromJSON(jsonObject);
-    attributeLC->inputFromJSON(jsonObject);
-    operationLC->inputFromJSON(jsonObject);
-    directionLC->inputFromJSON(jsonObject);
-    output_frequencyLC->inputFromJSON(jsonObject);
-    loadCellsTable->inputFromJSON(jsonObject);
-  }
-  else if (sensorType->currentIndex() == 4) {
-    togglePM->inputFromJSON(jsonObject);
-    typePM->inputFromJSON(jsonObject);
-    attributePM->inputFromJSON(jsonObject);
-    operationPM->inputFromJSON(jsonObject);
-    directionPM->inputFromJSON(jsonObject);
-    output_frequencyPM->inputFromJSON(jsonObject);
-    // Make sure to append to the table, it may have multiple sensors
-    piezoMetersTable->inputFromJSON(jsonObject);
-  }
-
-  return true;
-}
-
-bool
-SensorMPM::copyFiles(QString &destDir)
-{
+  
+  bool
+  SensorMPM::copyFiles(QString &destDir)
+  {
   Q_UNUSED(destDir);
   return true;
 }
