@@ -287,15 +287,16 @@ SensorsMPM::inputFromJSON(QJsonObject &jsonObject)
   // for (int i=0; i<theGridSensorArray.size(); i++) {
   //   if (theGridSensorArray[i].isObject() == false) {
   //     qDebug() << "SensorsMPM::inputFromJSON grid-sensors is not an object in JSON";
-  //     // return false;
   //     continue
   //   }
+  //   addedSensor[i]->inputFromJSON(theGridSensorArray[i].toObject());
+
+
   //   // if (addedSensor[i] == nullptr) addedSensor[i] = new SensorMPM();
   //   // QJsonObject theObject = theGridSensorArray[i].toObject();
   //   // addedSensor[i]->inputFromJSON(theObject);
   // }
-
-
+  
   if (jsonObject.contains("particle-sensors") == false) {
     qDebug() << "SensorsMPM::inputFromJSON particle-sensors not found in JSON";
     // return false;
@@ -309,6 +310,7 @@ SensorsMPM::inputFromJSON(QJsonObject &jsonObject)
         // return false;
       } else {
         QJsonArray theParticleSensorArray = jsonObject["particle-sensors"].toArray();
+        int i = 0;
         for (auto theSensorObject : theParticleSensorArray) {
           if (theSensorObject.isObject() == false) {
             qDebug() << "SensorsMPM::inputFromJSON particle-sensors is not an object in JSON";
@@ -316,7 +318,26 @@ SensorsMPM::inputFromJSON(QJsonObject &jsonObject)
             continue;
           }
           qDebug() << "SensorsMPM::inputFromJSON particle-sensors is an object in JSON";
-        // For now, the mapping to the sensor tabs is messy so we won't inputFromJSON
+          QJsonObject theObject = theParticleSensorArray[i].toObject();
+          int j = 0;
+          if (theObject["attribute"].toString() == "Elevation" || theObject["attribute"].toString() == "Position_Y") {
+            j = 0;
+          } else if (theObject["attribute"].toString() == "Velocity" || theObject["attribute"].toString() == "Velocity_X" || theObject["attribute"].toString() == "Velocity_Y" || theObject["attribute"].toString() == "Velocity_Z" || theObject["attribute"].toString() == "Velocity_Magnitude") {
+            j = 1;
+          } else if (theObject["attribute"].toString() == "Force" || theObject["attribute"].toString() == "Force_X" || theObject["attribute"].toString() == "Force_Y" || theObject["attribute"].toString() == "Force_Z" || theObject["attribute"].toString() == "Force_Magnitude") {
+            j = 2;
+          } else if (theObject["attribute"].toString() == "Pressure") {
+            j = 3;
+          } else {
+            j = 4;
+          }
+          if (addedSensor[j]->inputFromJSON(theObject)) {
+            qDebug() << "SensorsMPM::inputFromJSON particle-sensors returned true for input from JSON";
+          } else {
+            qDebug() << "SensorsMPM::inputFromJSON particle-sensors returned false for input from JSON";
+          }
+          i += 1;
+          // For now, the mapping to the sensor tabs is messy so we won't inputFromJSON
         }
       }
     }
@@ -327,35 +348,56 @@ SensorsMPM::inputFromJSON(QJsonObject &jsonObject)
     // return false;
   } else {
     if (jsonObject["grid-sensors"].isArray() == false) {
-    qDebug() << "SensorsMPM::inputFromJSON grid-sensors is not an array in JSON";
-    // return false;
+      qDebug() << "SensorsMPM::inputFromJSON grid-sensors is not an array in JSON";
+      // return false;
     } else {
       if (jsonObject["grid-sensors"].toArray().size() == 0) {
         qDebug() << "SensorsMPM::inputFromJSON grid-sensors is empty in JSON";
         // return false;
       } else {
         QJsonArray theGridSensorArray = jsonObject["grid-sensors"].toArray();
+        int i = 0;
         for (auto theSensorObject : theGridSensorArray) {
           if (theSensorObject.isObject() == false) {
             qDebug() << "SensorsMPM::inputFromJSON grid-sensors is not an object in JSON";
             // return false;
             continue;
           }
+          QJsonObject theObject = theGridSensorArray[i].toObject();
+          int j = 0;
+          if (theObject["attribute"].toString() == "Elevation" || theObject["attribute"].toString() == "Position_Y") {
+            j = 0;
+          } else if (theObject["attribute"].toString() == "Velocity" || theObject["attribute"].toString() == "Velocity_X" || theObject["attribute"].toString() == "Velocity_Y" || theObject["attribute"].toString() == "Velocity_Z" || theObject["attribute"].toString() == "Velocity_Magnitude") {
+            j = 1;
+          } else if (theObject["attribute"].toString() == "Force" || theObject["attribute"].toString() == "Force_X" || theObject["attribute"].toString() == "Force_Y" || theObject["attribute"].toString() == "Force_Z" || theObject["attribute"].toString() == "Force_Magnitude") {
+            j = 2;
+          } else if (theObject["attribute"].toString() == "Pressure") {
+            j = 3;
+          } else {
+            j = 4;
+          }
           qDebug() << "SensorsMPM::inputFromJSON grid-sensors is an object in JSON";
+          if (addedSensor[j]->inputFromJSON(theObject)) {
+            qDebug() << "SensorsMPM::inputFromJSON grid-sensors returned true for input from JSON";
+          } else {
+            qDebug() << "SensorsMPM::inputFromJSON grid-sensors returned false for input from JSON";
+          }
+          i += 1;
           // For now, the mapping to the sensor tabs is messy so we won't inputFromJSON
         }
       }
     }
   }
-
-
+  
+  
+  
   // for (int i=0; i<theParticleSensorArray.size(); i++) {
-  //   if (theParticleSensorArray[i].isObject() == false) {
-  //     qDebug() << "SensorsMPM::inputFromJSON particle-sensors is not an object in JSON";
-  //     // return false;
-  //     continue
-  //   }
-  //   // if (addedSensor[i] == nullptr) addedSensor[i] = new SensorMPM();
+    //   if (theParticleSensorArray[i].isObject() == false) {
+      //     qDebug() << "SensorsMPM::inputFromJSON particle-sensors is not an object in JSON";
+      //     // return false;
+      //     continue
+      //   }
+      //   // if (addedSensor[i] == nullptr) addedSensor[i] = new SensorMPM();
   //   // QJsonObject theObject = theParticleSensorArray[i].toObject();
   //   // addedSensor[i]->inputFromJSON(theObject);
   // }
