@@ -58,9 +58,9 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
   QString sourceDir = "celeris";
   QString defaultWorkflowScript = pyScriptsPath() + QDir::separator() + defaultWorkflowFilename;
   QString defaultSimulationScript = pyScriptsPath() + QDir::separator() + defaultSimulationFilename;
-  QString defaultConfigurationFile = examplesDirPath() + QDir::separator() + QString("OSU_Seaside") + QDir::separator() + defaultConfigurationFilename;
-  QString defaultBathymetryFile = examplesDirPath() + QDir::separator() + QString("OSU_Seaside") + QDir::separator() + defaultBathymetryFilename;
-  QString defaultWaveFile = examplesDirPath() + QDir::separator() + QString("OSU_Seaside") + QDir::separator() + defaultWaveFilename;
+  QString defaultConfigurationFile = examplesDirPath() + QDir::separator() + QString("hdro-0020/src") + QDir::separator() + defaultConfigurationFilename;
+  QString defaultBathymetryFile = examplesDirPath() + QDir::separator() + QString("hdro-0020/src") + QDir::separator() + defaultBathymetryFilename;
+  QString defaultWaveFile = examplesDirPath() + QDir::separator() + QString("hdro-0020/src") + QDir::separator() + defaultWaveFilename;
   QString defaultSensorFile = pyScriptsPath() + QDir::separator() + defaultSensorFilename;
 
   theCelerisPyScript = new SC_FileEdit("backendScript");
@@ -178,9 +178,9 @@ CelerisTaichi::copyFiles(QString &destDir)
   QString sourceDir = "celeris";
   QString defaultWorkflowScript = pyScriptsPath() + QDir::separator() + defaultWorkflowFilename;
   QString defaultSimulationScript = pyScriptsPath() + QDir::separator() + defaultSimulationFilename;
-  QString defaultConfigurationFile = examplesDirPath() + QDir::separator() + QString("OSU_Seaside") + QDir::separator() + defaultConfigurationFilename;
-  QString defaultBathymetryFile = examplesDirPath() + QDir::separator() + QString("OSU_Seaside") + QDir::separator() + defaultBathymetryFilename;
-  QString defaultWaveFile = examplesDirPath() + QDir::separator() + QString("OSU_Seaside") + QDir::separator() + defaultWaveFilename;
+  QString defaultConfigurationFile = examplesDirPath() + QDir::separator() + QString("hdro-0020/src") + QDir::separator() + defaultConfigurationFilename;
+  QString defaultBathymetryFile = examplesDirPath() + QDir::separator() + QString("hdro-0020/src") + QDir::separator() + defaultBathymetryFilename;
+  QString defaultWaveFile = examplesDirPath() + QDir::separator() + QString("hdro-0020/src") + QDir::separator() + defaultWaveFilename;
   QString defaultSensorFile = pyScriptsPath() + QDir::separator() + defaultSensorFilename;
   // if (theCelerisPyScript->copyFile(destDir) != true) {
   //   qDebug() << "CelerisTaichi::copyFiles: failed to copy backend workflow script: " << theCelerisPyScript->getFilename();
