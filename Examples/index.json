@@ -40,7 +40,7 @@
     },
     "hdro-0010":{
       "id": "hdro-0010",
-      "title": "Forward Sampling (LHS) - Simple Wave Maker - Taichi Event",
+      "title": "Real-Time Event- Simple Wave Maker - Taichi Lang",
       "base": "hdro-0010",
       "doc": [
         "hdro-0010/src/input.json",
@@ -58,6 +58,31 @@
       "entry_point": "hdro-0010/./input.json",
       "summary": "Forward sample a linear wave maker piston's generated wave implemented in the high-performance Taichi Lang.",
       "logo": "figures/hdro-0010_EVT_Single.png",
+      "categories": {
+        "Difficulty": "0"
+      }
+    },
+    "hdro-0020":{
+      "id": "hdro-0020",
+      "title": "Near-Real Time Wave-Solver - Seaside, OR Experimental Replication - CelerisAi",
+      "base": "hdro-0020",
+      "doc": [
+        "hdro-0020/src/input.json",
+        "hdro-0020/src/Frame.tcl",
+        "hdro-0020/src/postprocess.py",
+        "hdro-0020/src/recorder.tcl",
+        "hdro-0020/figures/hdro-0010_UQ.png",
+        "hdro-0020/figures/hdro-0010_GI.png",
+        "hdro-0020/figures/hdro-0010_SIM.png",
+        "hdro-0020/figures/hdro-0010_EDP.png",
+        "hdro-0020/figures/hdro-0010_EVT.png",
+        "hdro-0020/figures/hdro-0010_EVT_Single.png",
+        "hdro-0020/figures/hdro-0020_DEM.jpg",
+        "hdro-0020/README.rst"
+      ],
+      "entry_point": "hdro-0020/./input.json",
+      "summary": "Forward sample a near-real time CelerisAi wave simulator. Replicates experiments on Seaside, Oregon, by Cox et al. 2008. Performed in Oregon State University's Directional Wave Basin.",
+      "logo": "figures/hdro-0020_DEM.jpg",
       "categories": {
         "Difficulty": "0"
       }
