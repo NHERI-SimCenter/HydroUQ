@@ -130,8 +130,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     SlidingStackedWidget *stackedWidget = new SlidingStackedWidget(parentStackedWidget);
     stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-    stackedWidget->setMinimumWidth(windowWidthMin);
-    stackedWidget->setMaximumWidth(windowWidth);
+    //stackedWidget->setMinimumWidth(windowWidthMin);
+    //stackedWidget->setMaximumWidth(windowWidth);
     stackedWidget->setStyleSheet("QStackedWidget {background-color:  rgb(79, 83, 89); color: #000000; border: 1px solid #000000; border-radius: 0px;}"
                                  "QStackedWidget:disabled {background-color:  rgb(79, 83, 89); color: #000000; border: 1px solid #000000; border-radius: 0px;}");
     QWidget *page1 = new QWidget();
@@ -391,7 +391,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     theTabWidget->setIconSize(QSize(sizePrimaryTabs,sizePrimaryTabs));
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
-// #define NO_MPM_QT3D true
+    // #define NO_MPM_QT3D true
 #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
 // #ifdef _WIN32
     // Only allow 3D visualization on Windows and Linux for now, Mac had issues with Qt3D 
@@ -1136,8 +1136,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     mainLayout->addWidget(theTabWidget, 4, 0);
     mainGroup->setLayout(mainLayout);
-    mainGroup->setMinimumWidth(windowWidthMin);
-    mainGroup->setMaximumWidth(windowWidth);
+    //mainGroup->setMinimumWidth(windowWidthMin);
+    //mainGroup->setMaximumWidth(windowWidth);
 
     
     QScrollArea *theScrollArea = new QScrollArea();
@@ -1145,8 +1145,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     theScrollArea->setWidgetResizable(true);
     theScrollArea->setLineWidth(1);
     theScrollArea->setFrameShape(QFrame::NoFrame);
-    theScrollArea->setMinimumWidth(windowWidthMin + 25);
-    theScrollArea->setMaximumWidth(windowWidth + 25);
+    //theScrollArea->setMinimumWidth(windowWidthMin + 25);
+    //theScrollArea->setMaximumWidth(windowWidth + 25);
 
 
     // Add digital twin + scene builder on left. Add 3D visualizer on right
