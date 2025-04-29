@@ -337,7 +337,7 @@ ResultsMPM::processResults(QString &dirName)
 {
     QDir resultsDir(dirName);
     QString resultsPath = resultsDir.absolutePath(); // + QDir::separator() + "results";
-    QString inputFileName = "MPM.json"; // "ResultsMPM.json"
+    QString inputFileName = "scInput.json"; // "ResultsMPM.json"
     QString inputFilePath = resultsPath + QDir::separator() + inputFileName;
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
@@ -363,7 +363,7 @@ ResultsMPM::processResults(QString &inputFile, QString &dirName)
     qDebug() << "ResultsMPM::processResults - dirName: " << dirName;
     QDir resultsDir(dirName);
     QString resultsPath = resultsDir.absolutePath(); // + QDir::separator() + "results";
-    QString inputFileName = "MPM.json"; // "ResultsMPM.json"
+    QString inputFileName = "scInput.json"; // "ResultsMPM.json"
     QString inputFilePath = resultsPath + QDir::separator() + inputFileName;
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
@@ -389,7 +389,7 @@ ResultsMPM::processResults(QString &inputFile, QString &dirName, QString &assetT
     qDebug() << "ResultsMPM::processResults - dirName: " << dirName;
     QDir resultsDir(dirName);
     QString resultsPath = resultsDir.absolutePath(); // + QDir::separator() + "results";
-    QString inputFileName = "MPM.json"; // "ResultsMPM.json"
+    QString inputFileName = "scInput.json"; // "ResultsMPM.json"
     QString inputFilePath = resultsPath + QDir::separator() + inputFileName;
     QFile jsonFile(inputFilePath);
     if (!jsonFile.open(QFile::ReadOnly | QFile::Text))
@@ -709,8 +709,8 @@ ResultsMPM::plotSensors(void) //MPM* host)
     {
         if (j == 0) intermediateFolder = "results"; // RemoteWorkDir
         if (j == 1) intermediateFolder = ""; // RemoteWorkDir
-        if (j == 2) intermediateFolder = "sensors"; // LocalWorkDir
-        if (j == 3) intermediateFolder = "output"; // LocalWorkDir
+        if (j == 2) intermediateFolder = "templatedir"; // LocalWorkDir
+        if (j == 3) intermediateFolder = "Results"; // LocalWorkDir
         
         QDir processDir = QDir(sensorsPath);
         QString unzipDirString = processDir.absoluteFilePath(intermediateFolder); // + intermediateFolder + QDir::separator(); // Save the extracted files to the sensors directory.
