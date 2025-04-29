@@ -28,3 +28,6 @@ build.old
 *.vtk
 *.out
 *.old
+Examples/plots
+*.npy
+Examples/templatedir_SIM
