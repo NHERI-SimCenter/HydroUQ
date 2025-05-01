@@ -1657,15 +1657,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
          next->setEnabled(false);
       }
   });
-  connect(stackedWidget,&SlidingStackedWidget::animationFinished,[this, prev, next, &updateFluid, &updateDebris, &updateSensors]{
+  connect(stackedWidget,&SlidingStackedWidget::animationFinished,[this, prev, next]{
       prev->setEnabled(true);
       next->setEnabled(true);
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
-      // updateDigitalTwin(stackedWidget->currentIndex());
-      // updateFluid();
-      // updateDebris();
-      // updateSensors();
-#endif
   });
 
 
