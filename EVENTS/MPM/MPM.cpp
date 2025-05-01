@@ -336,22 +336,6 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     
     stackedWidget->setAnimation(QEasingCurve::Type::OutQuart);
     stackedWidget->setSpeed(500);
-    connect(prev,&QAbstractButton::clicked,[this, stackedWidget, prev, next]{
-        if(stackedWidget->slideInPrev()){
-            prev->setEnabled(false);
-            next->setEnabled(false);
-        }
-    });
-    connect(next,&QAbstractButton::clicked,[this, stackedWidget, prev, next]{
-        if(stackedWidget->slideInNext()){
-            prev->setEnabled(false);
-           next->setEnabled(false);
-        }
-    });
-    connect(stackedWidget,&SlidingStackedWidget::animationFinished,[this, prev, next]{
-        prev->setEnabled(true);
-        next->setEnabled(true);
-    });
 
     QLabel *aboveTabs = new QLabel("\nSelect a NHERI SimCenter Digital Twin Above To Begin\n");
     aboveTabs->setAlignment(Qt::AlignCenter);
@@ -1661,6 +1645,24 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     });
     
 
+  connect(prev,&QAbstractButton::clicked,[this, stackedWidget, prev, next]{
+      if(stackedWidget->slideInPrev()){
+          prev->setEnabled(false);
+          next->setEnabled(false);
+      }
+  });
+  connect(next,&QAbstractButton::clicked,[this, stackedWidget, prev, next]{
+      if(stackedWidget->slideInNext()){
+          prev->setEnabled(false);
+         next->setEnabled(false);
+      }
+  });
+  connect(stackedWidget,&SlidingStackedWidget::animationFinished,[this, prev, next]{
+      prev->setEnabled(true);
+      next->setEnabled(true);
+  });
+
+
     // QVBoxLayout *layout = new QVBoxLayout();
     // mainWindowLayout->addWidget(theScrollArea);
     // mainWindowLayout->addWidget(updateBodiesButton);
@@ -1668,11 +1670,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     mainWindowLayout->addWidget(horizontalPanels);
     this->setLayout(mainWindowLayout);
 
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
     updateDigitalTwin(stackedWidget->currentIndex());
     updateFluid();
     updateDebris();
     updateSensors();
-
+#endif
 }
 
 MPM::~MPM()
@@ -2040,6 +2043,38 @@ bool MPM::inputFromJSON(QJsonObject &jsonObject)
     eventObject = jsonObject;
   }
 
+  // if (eventObject["facility"].isString()) {
+  //   qDebug() << "MPM::inputFromJSON: eventObject contains 'facility' string";
+  //   QString facility = eventObject["facility"].toString();
+  //   if (facility == "OSU LWF") {
+  //     qDebug() << "MPM::inputFromJSON: eventObject facility is OSU LWF";
+  //     // stackedWidget->setCurrentIndex(0);
+  //     // mpmBodies->setDigitalTwin(0);
+  //     // mpmBoundaries->setDigitalTwin(0);
+  //     // mpmBodies->setFluid(0);
+  //     // mpmBoundaries->setFluid(0);
+  //     // mpmBodies->setFluid(1);
+  //     // mpmBoundaries->setFluid(1);
+
+  //   } else if (facility == "OSU DWB") {
+  //     qDebug() << "MPM::inputFromJSON: eventObject facility is not OSU DWB";
+  //     stackedWidget->setCurrentIndex(1);
+  //   } else if (facility == "UW WASIRF") {
+  //     qDebug() << "MPM::inputFromJSON: eventObject facility is not UW WASIRF";
+  //     stackedWidget->setCurrentIndex(2);
+  //   } else if (facility == "WU TWB") {
+  //     qDebug() << "MPM::inputFromJSON: eventObject facility is WU TWB";
+  //     stackedWidget->setCurrentIndex(3);
+  //   } else if (facility == "USGS DFF") {
+  //     qDebug() << "MPM::inputFromJSON: eventObject facility is USGS DFF";
+  //     stackedWidget->setCurrentIndex(4);
+  //   } else {
+  //     qDebug() << "MPM::inputFromJSON: eventObject facility is not present, do not change slider.";
+  //   }
+  // } else {
+  //   qDebug() << "MPM::inputFromJSON: eventObject does not contain 'facility' string";
+  // }
+
   if (mpmSettings) {
     qDebug() << "MPM::inputFromJSON: mpmSettings exists";
     if (mpmSettings->inputFromJSON(eventObject) == false) {
@@ -2094,6 +2129,21 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
 
   jsonObject["Application"] = "MPM"; // For accessing SimCenterBackendApplications/applications/createEVENTS/{Application}/*.py ?
   jsonObject["subtype"] = "MPM";
+
+  // Just so that when read back in inputFromJSON we can set the slider to the correct facility
+  // if (stackedWidget->currentIndex() == 0) {
+  //   jsonObject["facility"] = "OSU LWF"; // TODO: Add to the settings tab
+  // } else if (stackedWidget->currentIndex() == 1) {
+  //   jsonObject["facility"] = "OSU DWB"; // TODO: Add to the settings tab
+  // } else if (stackedWidget->currentIndex() == 2) {
+  //   jsonObject["facility"] = "UW WASIRF"; // TODO: Add to the settings tab
+  // } else if (stackedWidget->currentIndex() == 3) {
+  //   jsonObject["facility"] = "WU TWB"; // TODO: Add to the settings tab
+  // } else if (stackedWidget->currentIndex() == 4) {
+  //   jsonObject["facility"] = "USGS DFF"; // TODO: Add to the settings tab
+  // } else {
+  //   // jsonObject["facility"] = "Unknown Facility"; // TODO: Add to the settings tab
+  // } 
 
   // The JSON object-or-array that defines each main tab (i.e. Settings, Bodies, Boundaries, Sensors, Outputs)
   QJsonObject settingsObject;  

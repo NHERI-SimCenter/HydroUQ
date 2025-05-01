@@ -74,6 +74,9 @@ class QCheckBox;
 class QFormLayout;
 class QLabel;
 class QScrollArea;
+class QStackedWidget;
+class SlidingStackedWidget;
+
 
 namespace Qt3DExtras {
    class Qt3DWindow;
@@ -159,6 +162,8 @@ private:
    Qt3DExtras::Qt3DWindow* view;
    QWidget* container;
 #endif
+   // QStackedWidget *parentStackedWidget;
+   // SlidingStackedWidget *stackedWidget;
    // QWebEngineView* m_pWebView;
 };
 
