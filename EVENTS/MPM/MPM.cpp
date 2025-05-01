@@ -1676,8 +1676,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     mainWindowLayout->addWidget(horizontalPanels);
     this->setLayout(mainWindowLayout);
 
-    updateDigitalTwin(stackedWidget->currentIndex());
 #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
+    updateDigitalTwin(stackedWidget->currentIndex());
     updateFluid();
     updateDebris();
     updateSensors();
