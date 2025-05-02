@@ -121,8 +121,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 // MPM::MPM(QWidget *parent)
 //     :  SimCenterAppWidget(parent)
 // {
-    int windowWidth = 800;
-    int windowWidthMin = 250;
+    //int windowWidth = 800;
+   // int windowWidthMin = 250;
     QWidget     *mainGroup = new QWidget();
     mainLayout = new QGridLayout();
 
@@ -393,6 +393,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // auto view = new Qt3DExtras::Qt3DWindow();
     view = new Qt3DExtras::Qt3DWindow();
     container = QWidget::createWindowContainer(view);
+
+ 
     this->hideVisualization();
     
 
@@ -1490,7 +1492,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     
     
     
-    // Add a push button that will redraw the bodies
+    // Add a push button that will  the bodies
     QPushButton *updateBodiesButton = new QPushButton("Redraw Bodies");
     connect(updateBodiesButton, &QPushButton::clicked, [=](void){
       updateDigitalTwin(stackedWidget->currentIndex());
@@ -1607,6 +1609,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     //mainGroup->setMaximumWidth(windowWidth);
 
     
+/* FMK
     QScrollArea *theScrollArea = new QScrollArea();
     theScrollArea->setWidget(mainGroup);
     theScrollArea->setWidgetResizable(true);
@@ -1614,13 +1617,17 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     theScrollArea->setFrameShape(QFrame::NoFrame);
     //theScrollArea->setMinimumWidth(windowWidthMin + 25);
     //theScrollArea->setMaximumWidth(windowWidth + 25);
+*/
 
 
     // Add digital twin + scene builder on left. Add 3D visualizer on right
     QHBoxLayout *horizontalPanelLayout = new QHBoxLayout();
     QWidget *horizontalPanels = new QWidget();
     horizontalPanels->setLayout(horizontalPanelLayout);
-    horizontalPanelLayout->addWidget(theScrollArea);
+    //horizontalPanelLayout->addWidget(theScrollArea);
+
+    horizontalPanelLayout->addWidget(mainGroup); //FMK
+    
 
     // horizontalPanelLayout->addWidget(visualizationGroup);
 // #ifdef _WIN32
@@ -1668,6 +1675,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // mainWindowLayout->addWidget(updateBodiesButton);
     // mainWindowLayout->addWidget(container);
     mainWindowLayout->addWidget(horizontalPanels);
+    mainWindowLayout->addStretch(); // FMK
     this->setLayout(mainWindowLayout);
 
 #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
