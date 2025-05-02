@@ -84,6 +84,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <Qt3DRender/QBuffer>
 #include <Qt3DRender/QGeometry>
 #include <Qt3DRender/QGeometryRenderer>
+// #include <Qt3DWindow>
 
 
 // #include <QOpenGLWidget>
@@ -110,7 +111,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QDir>
 #include <QTextEdit>
 #include <QFormLayout>
-
 #include <QUrl> 
 
 
@@ -121,8 +121,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 // MPM::MPM(QWidget *parent)
 //     :  SimCenterAppWidget(parent)
 // {
-    //int windowWidth = 800;
-   // int windowWidthMin = 250;
+    int windowWidth = 800;
+    int windowWidthMin = 250;
     QWidget     *mainGroup = new QWidget();
     mainLayout = new QGridLayout();
 
@@ -134,8 +134,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     SlidingStackedWidget *stackedWidget = new SlidingStackedWidget(parentStackedWidget);
     stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-    //stackedWidget->setMinimumWidth(windowWidthMin);
-    //stackedWidget->setMaximumWidth(windowWidth);
+    stackedWidget->setMinimumWidth(windowWidthMin);
+    stackedWidget->setMaximumWidth(windowWidth);
     stackedWidget->setStyleSheet("QStackedWidget {background-color:  rgb(79, 83, 89); color: #000000; border: 1px solid #000000; border-radius: 0px;}"
                                  "QStackedWidget:disabled {background-color:  rgb(79, 83, 89); color: #000000; border: 1px solid #000000; border-radius: 0px;}");
     QWidget *page1 = new QWidget();
@@ -380,7 +380,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
     // #define NO_MPM_QT3D true
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
 // #ifdef _WIN32
     // Only allow 3D visualization on Windows and Linux for now, Mac had issues with Qt3D 
     // Try to check the most reliable set of preprocessor definitions to detect the OS on common OS
@@ -1605,33 +1605,33 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     mainLayout->addWidget(theTabWidget, 4, 0);
     mainGroup->setLayout(mainLayout);
-    //mainGroup->setMinimumWidth(windowWidthMin);
-    //mainGroup->setMaximumWidth(windowWidth);
+    mainGroup->setMinimumWidth(windowWidthMin);
+    mainGroup->setMaximumWidth(windowWidth);
 
     
-/* FMK
+// /* FMK
     QScrollArea *theScrollArea = new QScrollArea();
     theScrollArea->setWidget(mainGroup);
     theScrollArea->setWidgetResizable(true);
     theScrollArea->setLineWidth(1);
     theScrollArea->setFrameShape(QFrame::NoFrame);
-    //theScrollArea->setMinimumWidth(windowWidthMin + 25);
-    //theScrollArea->setMaximumWidth(windowWidth + 25);
-*/
+    theScrollArea->setMinimumWidth(windowWidthMin + 25);
+    theScrollArea->setMaximumWidth(windowWidth + 25);
+// */
 
 
     // Add digital twin + scene builder on left. Add 3D visualizer on right
     QHBoxLayout *horizontalPanelLayout = new QHBoxLayout();
     QWidget *horizontalPanels = new QWidget();
     horizontalPanels->setLayout(horizontalPanelLayout);
-    //horizontalPanelLayout->addWidget(theScrollArea);
 
-    horizontalPanelLayout->addWidget(mainGroup); //FMK
+    // horizontalPanelLayout->addWidget(mainGroup); //FMK
+    horizontalPanelLayout->addWidget(theScrollArea);
     
 
     // horizontalPanelLayout->addWidget(visualizationGroup);
 // #ifdef _WIN32
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
     horizontalPanelLayout->addWidget(container);
 #endif
     // QVBoxLayout *layout = new QVBoxLayout();
@@ -1646,8 +1646,11 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       mpmBodies->setDigitalTwin(index);
       mpmBoundaries->setDigitalTwin(index);
 // #ifdef _WIN32
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
       updateDigitalTwin(index);
+      updateFluid();
+      updateDebris();
+      updateSensors();
 #endif
     });
     
@@ -1675,15 +1678,23 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // mainWindowLayout->addWidget(updateBodiesButton);
     // mainWindowLayout->addWidget(container);
     mainWindowLayout->addWidget(horizontalPanels);
-    mainWindowLayout->addStretch(); // FMK
+    // mainWindowLayout->addStretch(); // FMK
     this->setLayout(mainWindowLayout);
 
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
-    updateDigitalTwin(stackedWidget->currentIndex());
-    updateFluid();
-    updateDebris();
-    updateSensors();
-#endif
+    // if exposedChanged then update the view
+    // connect(view, &Qt3DWindow::exposedChanged, [=](bool exposed) {
+    //   if (exposed) {
+    //     view->setRootEntity(rootEntity);
+    //     view->show();
+    //   }
+    // });
+
+// #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+//     updateDigitalTwin(stackedWidget->currentIndex());
+//     updateFluid();
+//     updateDebris();
+//     updateSensors();
+// #endif
 }
 
 MPM::~MPM()
@@ -1693,7 +1704,7 @@ MPM::~MPM()
 
 void MPM::showVisualization(void)
 {
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
     // container->show();
     view->show();
 #endif
@@ -1701,7 +1712,7 @@ void MPM::showVisualization(void)
 
 void MPM::hideVisualization(void)
 {
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
     // container->hide();
     view->hide();
 #endif
@@ -1719,7 +1730,7 @@ bool MPM::initialize()
     // mainWindowLayout = new QHBoxLayout();
 
     // ---------------------------------------------------
-    hideVisualization();
+    this->hideVisualization();
     // ---------------------------------------------------
 
     QString currentAppDir = QCoreApplication::applicationDirPath();
