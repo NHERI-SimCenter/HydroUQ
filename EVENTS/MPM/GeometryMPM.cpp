@@ -1464,7 +1464,7 @@ GeometryMPM::setDigitalTwin(int twinIdx)
       width->setText(QString::number(0.10));
       originX->setText(QString::number(31.29));
       originY->setText(QString::number(1.0));
-      originZ->setText(QString::number(0.4));
+      originZ->setText(QString::number(10.0));
       applyArray->setChecked(true);
       spacingX->setText(QString::number(0.15));
       spacingY->setText(QString::number(0.0));
@@ -1481,7 +1481,7 @@ GeometryMPM::setDigitalTwin(int twinIdx)
       // TODO: Recheck specs of the debris from Nikkis work (4x1x1"?)
       originX->setText(QString::number(4.0)); 
       originY->setText(QString::number(0.2)); // Recheck the height
-      originZ->setText(QString::number(0.5873));
+      originZ->setText(QString::number(0.5));
       applyArray->setChecked(false);
       spacingX->setText(QString::number(0.10));
       spacingY->setText(QString::number(0.025));
@@ -1495,7 +1495,7 @@ GeometryMPM::setDigitalTwin(int twinIdx)
       length->setText(QString::number(0.06));
       height->setText(QString::number(0.06));
       width->setText(QString::number(0.15));
-      originX->setText(QString::number(5.05)); //Recheck
+      originX->setText(QString::number(4.65)); //Recheck
       originY->setText(QString::number(0.255)); // Recheck the height
       originZ->setText(QString::number(1.725));
       applyArray->setChecked(true);
