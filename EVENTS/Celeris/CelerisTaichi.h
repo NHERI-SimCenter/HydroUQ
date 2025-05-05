@@ -86,7 +86,7 @@ private:
   SC_FileEdit *theConfigurationFile;
   SC_FileEdit *theBathymetryFile;
   SC_FileEdit *theWaveFile;
-  SC_FileEdit *theSensorScript;
+  // SC_FileEdit *theSensorScript;
 };
 
 #endif // CELERIS_TAICHI_H
