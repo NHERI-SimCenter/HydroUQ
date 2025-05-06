@@ -61,8 +61,7 @@ CelerisTaichiEvent::CelerisTaichiEvent(QWidget *parent)
                                                  "\n 2. Choose the Celeris wave-solver's main script."
                                                  "\n 3. Specify the Celeris configuration file."
                                                  "\n 4. Define a bathymetry input file."
-                                                 "\n 5. Set a sea-state input file."
-                                                 "\n 6. Select a sensor script.");
+                                                 "\n 5. Set a sea-state input file.");
 
 
 

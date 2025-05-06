@@ -40,6 +40,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QGridLayout>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QJsonDocument>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -54,34 +55,34 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
   QString defaultConfigurationFilename = "config.json";
   QString defaultBathymetryFilename = "bathy.txt";
   QString defaultWaveFilename = "waves.txt";
-  QString defaultSensorFilename = "euler.py";
+  // QString defaultSensorFilename = "euler.py";
   QString sourceDir = "celeris";
   QString defaultWorkflowScript = pyScriptsPath() + QDir::separator() + defaultWorkflowFilename;
   QString defaultSimulationScript = pyScriptsPath() + QDir::separator() + defaultSimulationFilename;
   QString defaultConfigurationFile = examplesDirPath() + QDir::separator() + QString("hdro-0020/src") + QDir::separator() + defaultConfigurationFilename;
   QString defaultBathymetryFile = examplesDirPath() + QDir::separator() + QString("hdro-0020/src") + QDir::separator() + defaultBathymetryFilename;
   QString defaultWaveFile = examplesDirPath() + QDir::separator() + QString("hdro-0020/src") + QDir::separator() + defaultWaveFilename;
-  QString defaultSensorFile = pyScriptsPath() + QDir::separator() + defaultSensorFilename;
+  // QString defaultSensorFile = pyScriptsPath() + QDir::separator() + defaultSensorFilename;
 
   theCelerisPyScript = new SC_FileEdit("backendScript");
   theSimulationScript = new SC_FileEdit("simulationScript");
   theConfigurationFile = new SC_FileEdit("configFile");
   theBathymetryFile = new SC_FileEdit("bathymetryFile");
   theWaveFile = new SC_FileEdit("waveFile");
-  theSensorScript = new SC_FileEdit("sensorPyScript");
+  // theSensorScript = new SC_FileEdit("sensorPyScript");
   theCelerisPyScript->setToolTip("Workflow backend script (*.py) which launches the Celeris simulation script. Handles the inputs and outputs for coupling Celeris Taichi Lang to the SimCenter workflow.");
-  theSensorScript->setToolTip("Simulation script (*.py) which defines the Celeris numerical simulation program. This script is launched from the workflow backend script in the SimCenter workflow.");
+  // theSensorScript->setToolTip("Simulation script (*.py) which defines the Celeris numerical simulation program. This script is launched from the workflow backend script in the SimCenter workflow.");
   theConfigurationFile->setToolTip("Configuration file (*.json) which defines the Celeris simulation parameters.");
   theBathymetryFile->setToolTip("Bathymetry file (*.xyz, *.txt) which defines the Celeris bathymetry.");
   theWaveFile->setToolTip("Wave input file (*.txt) which defines the Celeris wave input.");
-  theSensorScript->setToolTip("Sensor script (*.py) which defines the Celeris sensor output.");
+  // theSensorScript->setToolTip("Sensor script (*.py) which defines the Celeris sensor output.");
 
   theCelerisPyScript->setFilename(defaultWorkflowScript);
   theSimulationScript->setFilename(defaultSimulationScript);
   theConfigurationFile->setFilename(defaultConfigurationFile);
   theBathymetryFile->setFilename(defaultBathymetryFile);
   theWaveFile->setFilename(defaultWaveFile);
-  theSensorScript->setFilename(defaultSensorFile);
+  // theSensorScript->setFilename(defaultSensorFile);
 
   QGridLayout *theLayout = new QGridLayout();
   theLayout->addWidget(new QLabel("Workflow Backend Script (*.py)"),0,0);
@@ -94,9 +95,9 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
   theLayout->addWidget(theBathymetryFile, 3,1);
   theLayout->addWidget(new QLabel("Wave Input File (*.txt)"),4,0);
   theLayout->addWidget(theWaveFile, 4,1);
-  theLayout->addWidget(new QLabel("Sensor Script (*.py)"),5,0);
-  theLayout->addWidget(theSensorScript, 5,1);
-  theLayout->setRowStretch(6,1);
+  // theLayout->addWidget(new QLabel("Sensor Script (*.py)"),5,0);
+  // theLayout->addWidget(theSensorScript, 5,1);
+  theLayout->setRowStretch(5,1);
   this->setLayout(theLayout);
 }
 
@@ -132,10 +133,23 @@ CelerisTaichi::outputToJSON(QJsonObject &jsonObject)
     qDebug() << "CelerisTaichi::outputToJSON: failed to output wave file";
     // return false;
   }
-  if (theSensorScript->outputToJSON(jsonObject) == false) {
-    qDebug() << "CelerisTaichi::outputToJSON: failed to output sensor script";
-    // return false;
-  }
+  // if (theSensorScript->outputToJSON(jsonObject) == false) {
+  //   qDebug() << "CelerisTaichi::outputToJSON: failed to output sensor script";
+  //   // return false;
+  // }
+
+  // Add contents of config.json to the JSON object
+  QString val;
+  QFile file;
+  file.setFileName(theConfigurationFile->getFilename());
+  file.open(QIODevice::ReadOnly | QIODevice::Text);
+  val = file.readAll();
+  file.close();
+  // qWarning() << val;
+  QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+  QJsonObject configObj = d.object();
+  jsonObject["config"] = configObj;
+
   return true;
 }
 
@@ -147,7 +161,7 @@ CelerisTaichi::inputFromJSON(QJsonObject &jsonObject)
   theConfigurationFile->inputFromJSON(jsonObject);
   theBathymetryFile->inputFromJSON(jsonObject);
   theWaveFile->inputFromJSON(jsonObject);
-  theSensorScript->inputFromJSON(jsonObject);
+  // theSensorScript->inputFromJSON(jsonObject);
   return true;
 }
 
@@ -174,14 +188,14 @@ CelerisTaichi::copyFiles(QString &destDir)
   QString defaultConfigurationFilename = "config.json";
   QString defaultBathymetryFilename = "bathy.txt";
   QString defaultWaveFilename = "waves.txt";
-  QString defaultSensorFilename = "euler.py";
+  // QString defaultSensorFilename = "euler.py";
   QString sourceDir = "celeris";
   QString defaultWorkflowScript = pyScriptsPath() + QDir::separator() + defaultWorkflowFilename;
   QString defaultSimulationScript = pyScriptsPath() + QDir::separator() + defaultSimulationFilename;
-  QString defaultConfigurationFile = examplesDirPath() + QDir::separator() + QString("hdro-0020/src") + QDir::separator() + defaultConfigurationFilename;
-  QString defaultBathymetryFile = examplesDirPath() + QDir::separator() + QString("hdro-0020/src") + QDir::separator() + defaultBathymetryFilename;
-  QString defaultWaveFile = examplesDirPath() + QDir::separator() + QString("hdro-0020/src") + QDir::separator() + defaultWaveFilename;
-  QString defaultSensorFile = pyScriptsPath() + QDir::separator() + defaultSensorFilename;
+  QString defaultConfigurationFile = examplesDirPath() + QDir::separator() + QString("hdro-0020") + QDir::separator() + QString("src") + QDir::separator() + defaultConfigurationFilename;
+  QString defaultBathymetryFile = examplesDirPath() + QDir::separator() + QString("hdro-0020") + QDir::separator() + QString("src") + QDir::separator() + defaultBathymetryFilename;
+  QString defaultWaveFile = examplesDirPath() + QDir::separator() + QString("hdro-0020") + QDir::separator() + QString("src") + QDir::separator() + defaultWaveFilename;
+  // QString defaultSensorFile = pyScriptsPath() + QDir::separator() + defaultSensorFilename;
   // if (theCelerisPyScript->copyFile(destDir) != true) {
   //   qDebug() << "CelerisTaichi::copyFiles: failed to copy backend workflow script: " << theCelerisPyScript->getFilename();
   //   qDebug() << "CelerisTaichi::copyFiles: try defaultWorkflowScript: " << defaultWorkflowScript;
@@ -227,15 +241,15 @@ CelerisTaichi::copyFiles(QString &destDir)
       // return false;
     }
   }
-  if (theSensorScript->copyFile(destDir) != true) {
-    qDebug() << "CelerisTaichi::copyFiles: failed to copy sensor script: " << theSensorScript->getFilename();
-    qDebug() << "CelerisTaichi::copyFiles: try defaultSensorFile: " << defaultSensorFile;
-    theSensorScript->setFilename(defaultSimulationScript);
-    if (theSensorScript->copyFile(destDir) != true) {
-      qDebug() << "CelerisTaichi::copyFiles: failed to copy sensor script";
-      // return false;
-    }
-  }
+  // if (theSensorScript->copyFile(destDir) != true) {
+  //   qDebug() << "CelerisTaichi::copyFiles: failed to copy sensor script: " << theSensorScript->getFilename();
+  //   qDebug() << "CelerisTaichi::copyFiles: try defaultSensorFile: " << defaultSensorFile;
+  //   theSensorScript->setFilename(defaultSimulationScript);
+  //   if (theSensorScript->copyFile(destDir) != true) {
+  //     qDebug() << "CelerisTaichi::copyFiles: failed to copy sensor script";
+  //     // return false;
+  //   }
+  // }
   return true;
 }
 
