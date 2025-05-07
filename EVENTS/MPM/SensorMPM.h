@@ -73,7 +73,7 @@ public:
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
-
+    bool setDigitalTwin(int twinIdx);
     bool setSensorType(int type);
   
 signals:

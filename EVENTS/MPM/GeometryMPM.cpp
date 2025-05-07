@@ -677,7 +677,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       // radius->hide();
       // longAxis->hide();
       if (bodyPreset->currentText() == "Fluid") {
-        length->setText("90.0");
+        length->setText("7.0");
         height->setText("2.0");
         width->setText("2.0");
         originX->setText("0.0");
@@ -1438,7 +1438,13 @@ GeometryMPM::setDigitalTwin(int twinIdx)
       standingWaterLevel->setText("0.23");
     } else if (twinIdx == 4) { // USGS DFF
       fillFlumeUptoSWL->setChecked(false);
-      standingWaterLevel->setText("0.0");
+      standingWaterLevel->setText("2.0");
+      length->setText("7.0");
+      height->setText("2.0");
+      width->setText("2.0");
+      originX->setText("0.0");
+      originY->setText("0.0");
+      originZ->setText("0.0");
     } 
   } else if (bodyPreset->currentText() == "Debris") {
     if (twinIdx == 0) { // OSU LWF
@@ -1479,14 +1485,14 @@ GeometryMPM::setDigitalTwin(int twinIdx)
       height->setText(QString::number(0.025));
       width->setText(QString::number(0.025));
       // TODO: Recheck specs of the debris from Nikkis work (4x1x1"?)
-      originX->setText(QString::number(4.0)); 
+      originX->setText(QString::number(3.0)); 
       originY->setText(QString::number(0.2)); // Recheck the height
       originZ->setText(QString::number(0.5));
-      applyArray->setChecked(false);
-      spacingX->setText(QString::number(0.10));
+      applyArray->setChecked(true);
+      spacingX->setText(QString::number(1.10));
       spacingY->setText(QString::number(0.025));
       spacingZ->setText(QString::number(0.025));
-      arrayX->setText(QString::number(1));
+      arrayX->setText(QString::number(3));
       arrayY->setText(QString::number(1));
       arrayZ->setText(QString::number(1));
     }

@@ -426,3 +426,12 @@ SensorsMPM::copyFiles(QString &destDir)
   return true;    
 }
 
+bool
+SensorsMPM::setDigitalTwin(int twinIdx)
+{
+  for (int i=0; i<numAddedTabs; i++) {
+    if (i >= numReserveTabs) break;
+    addedSensor[i]->setDigitalTwin(twinIdx);
+  }
+  return true;
+}
