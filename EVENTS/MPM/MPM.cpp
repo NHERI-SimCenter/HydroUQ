@@ -716,7 +716,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Give twin an ambient conrete color
     twinMaterial->setAmbient(QColor(QRgb(0xCCCCCC)));
 
-    // Give fluid material transparecny and blue color
+    // Give fluid material transparency and blue color
     fluidMaterial->setDiffuse(QColor(QRgb(0x0000FF)));
     fluidMaterial->setAlpha(0.65f);
     fluidMaterial->setAmbient(QColor(QRgb(0x0000FF)));
@@ -1235,6 +1235,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         }
         // cubeEntity[i][j][k]->setEnabled(true);
         fluidEntity->setEnabled(true);
+        fluidMaterial->setDiffuse(QColor(QRgb(0x0000FF)));
+        fluidMaterial->setAlpha(0.65f);
+        fluidMaterial->setAmbient(QColor(QRgb(0x0000FF)));    
         pistonEntity->setEnabled(true);
         twinTransform->setScale3D(QVector3D(1.f,1.f,1.f));
         // hydroEntity->setEnabled(false);
@@ -1256,6 +1259,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
           }
         }
         fluidEntity->setEnabled(true);
+        fluidMaterial->setDiffuse(QColor(QRgb(0x0000FF)));
+        fluidMaterial->setAlpha(0.65f);
+        fluidMaterial->setAmbient(QColor(QRgb(0x0000FF)));    
         pistonEntity->setEnabled(true);
         twinTransform->setScale3D(QVector3D(0.6f,7.25f,1.f/1.75f));
         // hydroEntity->setEnabled(false);
@@ -1277,15 +1283,18 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
           }
         }
         fluidEntity->setEnabled(true);
+        fluidMaterial->setDiffuse(QColor(QRgb(0x0000FF)));
+        fluidMaterial->setAlpha(0.65f);
+        fluidMaterial->setAmbient(QColor(QRgb(0x0000FF)));    
         pistonEntity->setEnabled(false);
         // hydroEntity->setEnabled(false);
         reservoirEntity->setEnabled(false);
         harborEntity->setEnabled(false);
         floorEntity->setEnabled(true);
-        floorTransform->setTranslation(QVector3D(12.0f/2, -0.125f/2, 1.0f/2)); 
-        floorMesh->setXExtent(12.f);
+        floorTransform->setTranslation(QVector3D(12.25f/2, -0.125f/2, 0.9f/2)); 
+        floorMesh->setXExtent(12.25f);
         floorMesh->setYExtent(0.125f);
-        floorMesh->setZExtent(1.f);
+        floorMesh->setZExtent(0.9f);
       } else if (index == 3) {
         twinEntity->setEnabled(false);
         for (int i = 0; i < 16; i++) {
@@ -1300,6 +1309,10 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
             }
           }
         }
+        fluidEntity->setEnabled(true);
+        fluidMaterial->setDiffuse(QColor(QRgb(0x0000FF)));
+        fluidMaterial->setAlpha(0.65f);
+        fluidMaterial->setAmbient(QColor(QRgb(0x0000FF)));
         // hydroEntity->setEnabled(false);
         floorEntity->setEnabled(true);
         floorTransform->setTranslation(QVector3D(9.0f/2, -0.125f/2, 4.0f/2)); 
@@ -1307,7 +1320,6 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         floorMesh->setYExtent(0.125f);
         floorMesh->setZExtent(4.f);
         harborEntity->setEnabled(true);
-        fluidEntity->setEnabled(true);
         pistonEntity->setEnabled(true);
         reservoirEntity->setEnabled(true);
       } else if (index == 4) {
@@ -1323,12 +1335,20 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
             }
           }
         }
-        fluidEntity->setEnabled(false);
+        fluidEntity->setEnabled(true);
+        fluidMaterial->setDiffuse(QColor(QRgb(0xC2B280)));
+        fluidMaterial->setAlpha(1.0f);
+        fluidMaterial->setAmbient(QColor(QRgb(0xC2B280)));    
+    
         pistonEntity->setEnabled(true);
         // hydroEntity->setEnabled(false);
         reservoirEntity->setEnabled(false);
         harborEntity->setEnabled(false);
-        floorEntity->setEnabled(false);
+        floorEntity->setEnabled(true);
+        floorTransform->setTranslation(QVector3D(80.0f/2, -0.125f/2, 2.0f/2)); 
+        floorMesh->setXExtent(80.f);
+        floorMesh->setYExtent(0.125f);
+        floorMesh->setZExtent(2.0f);
       }
       updateFluid();
       updateBoundaryStructureSize();
@@ -1339,7 +1359,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
 
     // Add check boxes to toggle the visibility of objects
-    QCheckBox *twinCheckBox = new QCheckBox("Flume");
+    QCheckBox *twinCheckBox = new QCheckBox("Flume Bathymetry");
     twinCheckBox->setChecked(true);
     connect(twinCheckBox, &QCheckBox::stateChanged, [=](int state){
       if (state == Qt::Checked) {
@@ -1361,7 +1381,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         // }
       }
     });
-    QCheckBox *paddleCheckBox = new QCheckBox("Paddle");  
+    QCheckBox *paddleCheckBox = new QCheckBox("Wave Generator");  
     paddleCheckBox->setChecked(true);
     connect(paddleCheckBox, &QCheckBox::stateChanged, [=](int state){
       if (state == Qt::Checked) {
@@ -1645,6 +1665,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       int index = stackedWidget->currentIndex();
       mpmBodies->setDigitalTwin(index);
       mpmBoundaries->setDigitalTwin(index);
+      mpmSensors->setDigitalTwin(index);
 // #ifdef _WIN32
 #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
       updateDigitalTwin(index);

@@ -67,6 +67,7 @@ public:
     bool inputFromJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
     void clear(void);
+    bool setDigitalTwin(int twinIdx);
 signals:
 
 private:
