@@ -2264,14 +2264,14 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
       structWidth->setText(QString::number(0.4));
       structOriginLength->setText(QString::number(35.29));
       structOriginHeight->setText(QString::number(1.0));
-      structOriginWidth->setText(QString::number(8.2));
+      structOriginWidth->setText(QString::number(9.8));
       applyArray->setChecked(true);
       structSpacingX->setText(QString::number(0.8));
       structSpacingY->setText(QString::number(0.8));
       structSpacingZ->setText(QString::number(0.8));
       structArrayX->setText(QString::number(1));
       structArrayY->setText(QString::number(1));
-      structArrayZ->setText(QString::number(12));
+      structArrayZ->setText(QString::number(2));
     }
     else if (twinIdx == 2) { // UW WASIRF
       structContactType->setCurrentIndex(0); // Separable
@@ -2281,8 +2281,8 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
       structWidth->setText(QString::number(0.254));
       // TODO: Recheck specs of the grey box from Nikkis work (10x6x10"?, 1:4 Froude of OSU-LWF)
       structOriginLength->setText(QString::number(8.0));
-      structOriginHeight->setText(QString::number(0.1)); // Recheck the height
-      structOriginWidth->setText(QString::number(0.473));
+      structOriginHeight->setText(QString::number(0.15)); // Recheck the height
+      structOriginWidth->setText(QString::number(0.323));
       applyArray->setChecked(false);
       structSpacingX->setText(QString::number(0.3));
       structSpacingY->setText(QString::number(0.2));
@@ -2313,16 +2313,16 @@ BoundaryMPM::setDigitalTwin(int twinIdx)
     else if (twinIdx == 4) { // USGS DFF
       structContactType->setCurrentIndex(0); // Separable
       // Placeholder structure 
-      structLength->setText(QString::number(0.25));
-      structHeight->setText(QString::number(0.25));
-      structWidth->setText(QString::number(0.25));
+      structLength->setText(QString::number(1.0));
+      structHeight->setText(QString::number(1.0));
+      structWidth->setText(QString::number(1.0));
       structOriginLength->setText(QString::number(80.0));
       structOriginHeight->setText(QString::number(0.0));
-      structOriginWidth->setText(QString::number(0.75));
+      structOriginWidth->setText(QString::number(0.5));
       applyArray->setChecked(false);
-      structSpacingX->setText(QString::number(0.3));
-      structSpacingY->setText(QString::number(0.3));
-      structSpacingZ->setText(QString::number(0.3));
+      structSpacingX->setText(QString::number(2.0));
+      structSpacingY->setText(QString::number(0.0));
+      structSpacingZ->setText(QString::number(0.0));
       structArrayX->setText(QString::number(1));
       structArrayY->setText(QString::number(1));
       structArrayZ->setText(QString::number(1));

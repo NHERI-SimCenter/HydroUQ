@@ -411,7 +411,7 @@ void SensorMPM::clear(void)
   attributeLC->setCurrentText("Force");
   operationLC->setCurrentText("Sum");
   directionLC->setCurrentText("X+");
-  output_frequencyLC->setText("30.0");
+  output_frequencyLC->setText("120.0");
 
   togglePM->setCurrentText("No");
   typePM->setCurrentText("particles");
@@ -952,3 +952,148 @@ SensorMPM::inputFromJSON(QJsonObject &jsonObject)
   return true;
 }
 
+
+bool
+SensorMPM::setDigitalTwin(int twinIdx)
+{
+  if (twinIdx == 0) { // OSU LWF
+    
+    toggleWG->setCurrentText("Yes");
+    typeWG->setCurrentText("particles");
+    attributeWG->setCurrentText("Elevation");
+    operationWG->setCurrentText("Max");
+    directionWG->setCurrentText("N/A");
+    output_frequencyWG->setText("30.0");
+    delete waveGaugesTable;
+    QStringList  listWG; listWG << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+    QStringList  dataWG; dataWG << "WaveGauge1" << "16.0" << "1.5" << "0.4" << "0.1" << "2.50" << "0.1" 
+                                << "WaveGauge2" << "34.269" << "1.5" << "0.4" << "0.1" << "2.50" << "0.1" 
+                                << "WaveGauge3" << "38.114" << "1.5" << "0.4" << "0.1" << "2.50" << "0.1" ;
+    waveGaugesTable = new SC_TableEdit("summary",  listWG, 3, dataWG);
+
+    toggleLC->setCurrentText("Yes");
+    typeLC->setCurrentText("grid");
+    attributeLC->setCurrentText("Force");
+    operationLC->setCurrentText("Sum");
+    directionLC->setCurrentText("X+");
+    output_frequencyLC->setText("120.0");
+    delete loadCellsTable;
+    QStringList  listLC; listLC << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+    QStringList  dataLC; dataLC << "LoadCell1" << "45.799" << "2.0" << "1.3" << "0.025" << "0.3" << "1.0" 
+                                << "LoadCell2" << "45.799" << "2.3" << "1.3" << "0.025" << "0.3" << "1.0" ;    
+    loadCellsTable = new SC_TableEdit("summary",  listLC, 2, dataLC);
+
+  } else if (twinIdx == 1) { // OSU DWB
+      
+    toggleWG->setCurrentText("Yes");
+    typeWG->setCurrentText("particles");
+    attributeWG->setCurrentText("Elevation");
+    operationWG->setCurrentText("Max");
+    directionWG->setCurrentText("N/A");
+    output_frequencyWG->setText("30.0");
+    delete waveGaugesTable;
+    QStringList  listWG; listWG << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+    QStringList  dataWG; dataWG << "WaveGauge1" << "10.0" << "0.0" << "10.0" << "0.1" << "2.50" << "0.1" 
+                                << "WaveGauge2" << "20.0" << "0.0" << "10.0" << "0.1" << "2.50" << "0.1" 
+                                << "WaveGauge3" << "30.0" << "0.0" << "10.0" << "0.1" << "2.50" << "0.1" ;
+    waveGaugesTable = new SC_TableEdit("summary",  listWG, 3, dataWG);
+    
+    toggleLC->setCurrentText("Yes");
+    typeLC->setCurrentText("grid");
+    attributeLC->setCurrentText("Force");
+    operationLC->setCurrentText("Sum");
+    directionLC->setCurrentText("X+");
+    output_frequencyLC->setText("120.0");
+    delete loadCellsTable;
+    QStringList  listLC; listLC << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+    QStringList  dataLC; dataLC << "LoadCell1" << "35.29" << "1.0" << "9.8" << "0.05" << "0.15" << "0.4"
+                                << "LoadCell2" << "35.29" << "1.15" << "9.8" << "0.05" << "0.15" << "0.4";
+    loadCellsTable = new SC_TableEdit("summary",  listLC, 2, dataLC);
+
+  } else if (twinIdx == 2) { // UW WASIRF
+
+    toggleWG->setCurrentText("Yes");
+    typeWG->setCurrentText("particles");
+    attributeWG->setCurrentText("Elevation");
+    operationWG->setCurrentText("Max");
+    directionWG->setCurrentText("N/A");
+    output_frequencyWG->setText("30.0");
+    delete waveGaugesTable;
+    QStringList  listWG; listWG << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+    QStringList  dataWG; dataWG << "WaveGauge1" << "4.0" << "0.0" << "0.225" << "0.025" << "0.60" << "0.025" 
+                                << "WaveGauge2" << "6.0" << "0.0" << "0.225" << "0.025" << "0.60" << "0.025" 
+                                << "WaveGauge3" << "8.0" << "0.0" << "0.225" << "0.025" << "0.60" << "0.025" ;
+    waveGaugesTable = new SC_TableEdit("summary",  listWG, 3, dataWG);
+
+    toggleLC->setCurrentText("Yes");
+    typeLC->setCurrentText("grid");
+    attributeLC->setCurrentText("Force");
+    operationLC->setCurrentText("Sum");
+    directionLC->setCurrentText("X+");
+    output_frequencyLC->setText("120.0");
+    delete loadCellsTable;
+    QStringList  listLC; listLC << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+    QStringList  dataLC; dataLC << "LoadCell1" << "8.0" << "0.15" << "0.323" << "0.01" << "0.0762" << "0.254"
+                                << "LoadCell2" << "8.0" << "0.2262" << "0.323" << "0.01" << "0.0762" << "0.254";
+    loadCellsTable = new SC_TableEdit("summary",  listLC, 2, dataLC);
+
+  } else if (twinIdx == 3) { // WU TWB
+    
+    toggleWG->setCurrentText("Yes");
+    typeWG->setCurrentText("particles");
+    attributeWG->setCurrentText("Elevation");
+    operationWG->setCurrentText("Max");
+    directionWG->setCurrentText("N/A");
+    output_frequencyWG->setText("30.0");
+    delete waveGaugesTable;
+    QStringList  listWG; listWG << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+    QStringList  dataWG; dataWG << "WaveGauge1" << "2.0" << "0.0" << "0.225" << "0.025" << "1.00" << "0.025" 
+                                << "WaveGauge2" << "4.0" << "0.0" << "0.225" << "0.025" << "1.00" << "0.025" 
+                                << "WaveGauge3" << "4.5" << "0.0" << "0.225" << "0.025" << "1.00" << "0.025" 
+                                << "WaveGauge3" << "5.5" << "0.0" << "0.225" << "0.025" << "1.00" << "0.025" ;
+    waveGaugesTable = new SC_TableEdit("summary",  listWG, 4, dataWG);
+
+    toggleLC->setCurrentText("Yes");
+    typeLC->setCurrentText("grid");
+    attributeLC->setCurrentText("Force");
+    operationLC->setCurrentText("Sum");
+    directionLC->setCurrentText("X+");
+    output_frequencyLC->setText("120.0");
+    delete loadCellsTable;
+    QStringList  listLC; listLC << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+    QStringList  dataLC; dataLC << "LoadCell1" << "5.11" << "0.255" << "1.95" << "0.01" << "0.15" << "0.1"
+                                << "LoadCell2" << "5.11" << "0.405" << "1.95" << "0.01" << "0.15" << "0.1";
+    loadCellsTable = new SC_TableEdit("summary",  listLC, 2, dataLC);
+
+  } else if (twinIdx == 4) { // USGS DFF
+    
+    toggleWG->setCurrentText("Yes");
+    typeWG->setCurrentText("particles");
+    attributeWG->setCurrentText("Elevation");
+    operationWG->setCurrentText("Max");
+    directionWG->setCurrentText("N/A");
+    output_frequencyWG->setText("30.0");
+    delete waveGaugesTable;
+    QStringList  listWG; listWG << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+    QStringList  dataWG; dataWG << "WaveGauge1" << "20.0" << "0.0" << "0.95" << "0.1" << "2.50" << "0.1" 
+    << "WaveGauge2" << "40.0" << "0.0" << "0.95" << "0.1" << "2.50" << "0.1" 
+    << "WaveGauge3" << "60.0" << "0.0" << "0.95" << "0.1" << "2.50" << "0.1" 
+    << "WaveGauge3" << "79.95" << "0.0" << "0.95" << "0.1" << "2.50" << "0.1";
+    waveGaugesTable = new SC_TableEdit("summary",  listWG, 3, dataWG);
+
+    toggleLC->setCurrentText("Yes");
+    typeLC->setCurrentText("grid");
+    attributeLC->setCurrentText("Force");
+    operationLC->setCurrentText("Sum");
+    directionLC->setCurrentText("X+");
+    output_frequencyLC->setText("120.0");
+    delete loadCellsTable;
+    QStringList  listLC; listLC << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
+    QStringList  dataLC; dataLC << "LoadCell1" << "80.0" << "0.0" << "0.5" << "1.0" << "0.5" << "1.0"
+                                << "LoadCell2" << "80.0" << "0.5" << "0.5" << "1.0" << "0.5" << "1.0";
+    loadCellsTable = new SC_TableEdit("summary",  listLC, 2, dataLC);
+
+  } 
+
+  return true;
+}
