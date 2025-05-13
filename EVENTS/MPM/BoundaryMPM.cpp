@@ -182,6 +182,8 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   ptLayout->setRowStretch(3,1);
   ptWidget->setLayout(ptLayout);
 
+  // Add a 
+
   QWidget *stlWidget = new QWidget();
   QGridLayout *stlLayout = new QGridLayout();
   stlLayout->addWidget(new QLabel("Surface File (stl)"),0,0);
@@ -237,6 +239,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
       delete bathXZData;
       bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 7, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
+      customBathymetryToggle->setChecked(true);
     } else if (val == "Hinsdale Directional Wave Basin (OSU DWB)") {
       flumeLength->setText("48.8");
       flumeHeight->setText("2.1");
@@ -250,6 +253,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
       delete bathXZData;
       bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 6, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
+      customBathymetryToggle->setChecked(true);
     } else if (val == "Wind-Air-Sea Interaction Facility (UW WASIRF)") {
       flumeLength->setText("12.19");
       flumeHeight->setText("1.22");
@@ -259,6 +263,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
       delete bathXZData;
       bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 2, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
+      customBathymetryToggle->setChecked(false);
     } else if (val == "Waseda University's Tsunami Wave Basin (WU TWB)") {
       flumeLength->setText("9.0");
       flumeHeight->setText("1.0");
@@ -270,6 +275,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
       delete bathXZData;
       bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 4, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
+      customBathymetryToggle->setChecked(false);
     } else if (val == "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)") {
       flumeLength->setText("90.0");
       flumeHeight->setText("2.0");
@@ -283,6 +289,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
       delete bathXZData;
       bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 6, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
+      customBathymetryToggle->setChecked(tr);
     } 
   });
 

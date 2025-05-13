@@ -1002,9 +1002,9 @@ SensorMPM::setDigitalTwin(int twinIdx)
     output_frequencyWG->setText("30.0");
     // delete waveGaugesTable;
     QStringList  listWG; listWG << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
-    QStringList  dataWG; dataWG << "WaveGauge1" << "10.0" << "0.0" << "10.0" << "0.1" << "2.50" << "0.1" 
-                                << "WaveGauge2" << "20.0" << "0.0" << "10.0" << "0.1" << "2.50" << "0.1" 
-                                << "WaveGauge3" << "30.0" << "0.0" << "10.0" << "0.1" << "2.50" << "0.1" ;
+    QStringList  dataWG; dataWG << "WaveGauge1" << "10.0" << "0.0" << "8.0" << "0.1" << "2.50" << "0.1" 
+                                << "WaveGauge2" << "20.0" << "0.0" << "8.0" << "0.1" << "2.50" << "0.1" 
+                                << "WaveGauge3" << "30.0" << "0.0" << "8.0" << "0.1" << "2.50" << "0.1" ;
     // waveGaugesTable = new SC_TableEdit("summary",  listWG, 3, dataWG);
     
     SC_TableEdit *tempTable = new SC_TableEdit("summary", listWG, 3, dataWG);
