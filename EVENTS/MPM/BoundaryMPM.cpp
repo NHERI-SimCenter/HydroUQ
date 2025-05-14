@@ -340,7 +340,6 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   paddleDisplacementFile = new SC_FileEdit("paddleDisplacementFile");
   QString paddleName = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv";
-  // QString paddleName = QString("Examples/WaveMaker/wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv");
   paddleDisplacementFile->setFilename(paddleName);
   // paddleDisplacementFile->setFilter("CSV Files (*.csv)");
   
@@ -403,8 +402,8 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   // /**
   dataDir = nullptr;
   
-
   thePlot = new SimCenterGraphPlot(QString("Time [s]"),QString("Displacement [m]"), 500, 500);
+  thePlot->hide();
   if (inpty==QString("Periodic Waves")) {
       alpha = this->createTextEntry(tr("Height"), periodicLayout, 0);
       beta  = this->createTextEntry(tr("Celerity"), periodicLayout, 1);
