@@ -866,6 +866,73 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     view->setRootEntity(rootEntity);
 
 
+    auto updateBathymetry = [=]() {
+      QJsonObject boundariesObjectJSON;
+      QJsonArray boundariesArrayJSON;
+      boundariesObjectJSON["boundaries"] = boundariesArrayJSON;
+      mpmBoundaries->outputToJSON(boundariesObjectJSON);
+      int bathymetryID = 0;
+      bool use_custom_bathymetry = boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["use_custom_bathymetry"].toBool();
+      if (use_custom_bathymetry == false) {
+        qDebug() << "MPM::updateBathymetry - No custom bathymetry is selected.";
+        return;
+      }
+      twinMesh->setEnabled(false);
+      QJsonArray bathymetryArrayJSON = boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["bathymetry"].toArray();
+      QJsonDocument doc;
+      doc.setArray(bathymetryArrayJSON);
+      QString pythonScriptName = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "bathymetry.py";
+      QString bathymetryCoordinateString = doc.toJson(QJsonDocument::Compact);
+      double extrude_length = boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["domain_end"].toArray()[2].toDouble() - boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["domain_start"].toArray()[2].toDouble(); 
+      QString outputPath = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "custom_bathymetry.obj";
+      qDebug() << "Python script: " << pythonScriptName;
+      qDebug() << "Bathymetry coordinates: " << bathymetryCoordinateString;
+      qDebug() << "Extrude length: " << extrude_length;
+      qDebug() << "Output path: " << outputPath;
+      // Launch python script to generate the bathymetry mesh
+      QString program = SimCenterPreferences::getInstance()->getPython();
+      QStringList args;
+      args << pythonScriptName << bathymetryCoordinateString << QString::number(extrude_length) << outputPath;
+      QProcess *process = new QProcess();
+
+      // Catch python print statements and errors and display them in through the qDebug() stream.
+      QObject::connect(process, &QProcess::readyRead, [process] () {
+          QByteArray a = process->readAll();
+          qDebug() << a;
+      });
+
+      // Delete process instance / thread when done (later), and get the exit status to handle errors.
+      QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                      [=](int exitCode, QProcess::ExitStatus /*exitStatus*/){
+          qDebug()<< "process exited with code " << exitCode;
+          process->deleteLater();
+      });
+
+      process->start(program, args);
+      process->waitForStarted();
+      process->waitForFinished(-1);
+      if (process->exitStatus() == QProcess::CrashExit)
+      {
+          qDebug() << "MPM::updateBathymetry - The script has crashed.";
+      } 
+      else if (process->exitStatus() == QProcess::NormalExit)
+      {
+          qDebug() << "MPM::updateBathymetry - The script has finished running.";
+      }
+      else 
+      {
+          qDebug() << "MPM::updateBathymetry - The script has finished running with an unknown exit status.";
+      }
+    
+      // Set the source of the twin mesh to the generated bathymetry mesh
+      QString tempBathymetryMesh = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "custom_bathymetry.obj";
+      QString dummyBathymetryMesh = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "OSU_LWF_Bathymetry.obj";
+      twinMesh->setSource(QUrl::fromLocalFile(dummyBathymetryMesh));
+      twinMesh->setSource(QUrl::fromLocalFile(tempBathymetryMesh));
+      twinTransform->setRotation(QQuaternion::fromEulerAngles(0.f, 0.f, 0.f));
+      twinMesh->setEnabled(true);
+    };
+
     // Make lambda function to update the position of cuboid design structure
     auto updateFluid = [=]() {
       QJsonObject bodiesObjectJSON; 
@@ -1263,8 +1330,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         fluidMaterial->setAlpha(0.65f);
         fluidMaterial->setAmbient(QColor(QRgb(0x0000FF)));    
         pistonEntity->setEnabled(true);
-        twinTransform->setScale3D(QVector3D(0.6f,7.25f,1.f/1.75f));
-        // hydroEntity->setEnabled(false);
+        // twinTransform->setScale3D(QVector3D(0.6f,7.25f,1.f/1.75f));
         reservoirEntity->setEnabled(false);
         harborEntity->setEnabled(false);
         floorEntity->setEnabled(false);
@@ -1323,7 +1389,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         pistonEntity->setEnabled(true);
         reservoirEntity->setEnabled(true);
       } else if (index == 4) {
-        twinEntity->setEnabled(false);
+        twinEntity->setEnabled(true);
         for (int i = 0; i < 16; i++) {
           for (int j = 0; j < 16; j++) {
             for (int k = 0; k < 16; k++) {
@@ -1364,6 +1430,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     connect(twinCheckBox, &QCheckBox::stateChanged, [=](int state){
       if (state == Qt::Checked) {
         twinEntity->setEnabled(true);
+        updateBathymetry();
       } else {
         twinEntity->setEnabled(false);
       }
@@ -1516,6 +1583,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     QPushButton *updateBodiesButton = new QPushButton("Redraw Bodies");
     connect(updateBodiesButton, &QPushButton::clicked, [=](void){
       updateDigitalTwin(stackedWidget->currentIndex());
+      updateBathymetry();
       updateFluid();
       updateDebris();
       updateSensors();
@@ -1669,6 +1737,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 // #ifdef _WIN32
 #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
       updateDigitalTwin(index);
+      updateBathymetry();
       updateFluid();
       updateDebris();
       updateSensors();

@@ -22,6 +22,8 @@
     "WaveType": 3,
     "amplitude": "RV.amplitude",
     "period": "RV.period",
+    "force_sensor_begin": [668, 207],
+    "force_sensor_end": [668, 221],
     "direction": 0,
     "rand_phase": 0,
     "numberOfWaves": 2961,
