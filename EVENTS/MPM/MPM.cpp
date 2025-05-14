@@ -867,7 +867,6 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
 
     auto updateBathymetry = [=]() {
-      twinMesh->setEnabled(false);
       QJsonObject boundariesObjectJSON;
       QJsonArray boundariesArrayJSON;
       boundariesObjectJSON["boundaries"] = boundariesArrayJSON;
@@ -878,6 +877,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         qDebug() << "MPM::updateBathymetry - No custom bathymetry is selected.";
         return;
       }
+      twinMesh->setEnabled(false);
       QJsonArray bathymetryArrayJSON = boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["bathymetry"].toArray();
       QJsonDocument doc;
       doc.setArray(bathymetryArrayJSON);
@@ -895,19 +895,18 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       args << pythonScriptName << bathymetryCoordinateString << QString::number(extrude_length) << outputPath;
       QProcess *process = new QProcess();
 
+      // Catch python print statements and errors and display them in through the qDebug() stream.
+      QObject::connect(process, &QProcess::readyRead, [process] () {
+          QByteArray a = process->readAll();
+          qDebug() << a;
+      });
 
-        // Catch python print statements and errors and display them in through the qDebug() stream.
-        QObject::connect(process, &QProcess::readyRead, [process] () {
-            QByteArray a = process->readAll();
-            qDebug() << a;
-        });
-
-        // Delete process instance / thread when done (later), and get the exit status to handle errors.
-        QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-                        [=](int exitCode, QProcess::ExitStatus /*exitStatus*/){
-            qDebug()<< "process exited with code " << exitCode;
-            process->deleteLater();
-        });
+      // Delete process instance / thread when done (later), and get the exit status to handle errors.
+      QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                      [=](int exitCode, QProcess::ExitStatus /*exitStatus*/){
+          qDebug()<< "process exited with code " << exitCode;
+          process->deleteLater();
+      });
 
       process->start(program, args);
       process->waitForStarted();
@@ -930,8 +929,8 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       QString dummyBathymetryMesh = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "OSU_LWF_Bathymetry.obj";
       twinMesh->setSource(QUrl::fromLocalFile(dummyBathymetryMesh));
       twinMesh->setSource(QUrl::fromLocalFile(tempBathymetryMesh));
-      twinMesh->setEnabled(true);
       twinTransform->setRotation(QQuaternion::fromEulerAngles(0.f, 0.f, 0.f));
+      twinMesh->setEnabled(true);
     };
 
     // Make lambda function to update the position of cuboid design structure
