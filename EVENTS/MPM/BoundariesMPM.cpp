@@ -526,3 +526,20 @@ BoundariesMPM::setDigitalTwin(int twinIdx)
   }
   return true;
 }
+
+// bool
+// BoundariesMPM::setToolStatus(bool isToolMode)
+// {
+//   isTool = isToolMode;
+//   for (int i=0; i<numAddedTabs; i++) {
+//     if (i >= numReserveTabs) break;
+//     addedBoundary[i]->setToolStatus(isToolMode);
+//   }
+//   return true;
+// }
+
+// bool
+// BoundariesMPM::getToolStatus()
+// {
+//   return isTool;
+// }

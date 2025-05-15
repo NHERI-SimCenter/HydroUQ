@@ -63,6 +63,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 class QJsonObject;
 class SC_FileEdit;
+class SC_DoubleLineEdit;
 class QString;
 class QLabel;
 class SimCenterPreferences;
@@ -86,6 +87,10 @@ private:
   SC_FileEdit *theConfigurationFile;
   SC_FileEdit *theBathymetryFile;
   SC_FileEdit *theWaveFile;
+  SC_DoubleLineEdit *theForceSensorBeginX;
+  SC_DoubleLineEdit *theForceSensorBeginY;
+  SC_DoubleLineEdit *theForceSensorEndX;
+  SC_DoubleLineEdit *theForceSensorEndY;
   // SC_FileEdit *theSensorScript;
 };
 

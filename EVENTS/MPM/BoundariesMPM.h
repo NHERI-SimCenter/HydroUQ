@@ -113,6 +113,9 @@ public:
     SC_DoubleLineEdit* getSpacingYWidget(BoundaryMPM* theBoundary);
     SC_DoubleLineEdit* getSpacingZWidget(BoundaryMPM* theBoundary);
 
+    // bool setToolStatus(bool isTool);
+    // bool getToolStatus();
+
 
     // bool addBoundary(BoundaryMPM* theBoundary);
     // bool removeBoundary(int index);
@@ -152,6 +155,7 @@ private:
   int paddleID = 1;   
   int structureID = 2; // The specified design structure, 2 for default (3rd tab), -1 if the design structure is not specified / not a boundary (i.e. it is a body instead)
   QVector<BoundaryMPM*> addedBoundary {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+//   bool isTool = false;
 };
 
 #endif // BOUNDARIES_MPM_H

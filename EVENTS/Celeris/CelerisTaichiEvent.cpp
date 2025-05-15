@@ -51,7 +51,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 CelerisTaichiEvent::CelerisTaichiEvent(QWidget *parent)
     : SimCenterAppWidget(parent)
 {
-    int windowWidth = 800;
+    int windowWidth = 1200;
 
     QWidget     *mainGroup = new QWidget();
     QGridLayout *mainLayout = new QGridLayout();
