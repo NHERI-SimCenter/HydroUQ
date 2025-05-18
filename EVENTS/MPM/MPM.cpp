@@ -84,6 +84,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <Qt3DRender/QBuffer>
 #include <Qt3DRender/QGeometry>
 #include <Qt3DRender/QGeometryRenderer>
+#include <Qt3DExtras/QText2DEntity>
 // #include <Qt3DWindow>
 
 
@@ -490,6 +491,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto coneXTransform = new Qt3DCore::QTransform();
     auto coneYTransform = new Qt3DCore::QTransform();
     auto coneZTransform = new Qt3DCore::QTransform();
+    auto textXTransform = new Qt3DCore::QTransform();
+    auto textYTransform = new Qt3DCore::QTransform();
+    auto textZTransform = new Qt3DCore::QTransform();
 
     auto fluidTransform = new Qt3DCore::QTransform();
     auto pistonTransform = new Qt3DCore::QTransform();
@@ -557,7 +561,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     coneXTransform->setTranslation(QVector3D(1.125f, 0.0f, 0.0f));
     coneXTransform->setRotation(QQuaternion::fromAxisAndAngle(0.f, 0.f, 1.f, 270.f));
     // coneXTransform->setRotation(QQuaternion::fromEulerAngles(90.f, 0.f, 0.f));
-
+    textXTransform->setScale(0.05f);
+    textXTransform->setTranslation(QVector3D(1.5f, -0.5f, 0.0f));
+    textXTransform->setRotation(QQuaternion::fromAxisAndAngle(0.f, 0.f, 1.f, 0.f));
 
     cylinderYMesh->setRadius(0.05f);
     cylinderYMesh->setLength(1.0f);
@@ -573,6 +579,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     coneYTransform->setRotation(QQuaternion::fromAxisAndAngle(0.f, 1.f, 0.f, 90.f));
     coneYTransform->setTranslation(QVector3D(0.0f, 1.125f, 0.0f));
     // coneYTransform->setRotation(QQuaternion::fromEulerAngles(0.f, 90.f, 0.f));
+    textYTransform->setScale(0.05f);
+    textYTransform->setTranslation(QVector3D(-0.25f, 1.25f, 0.0f));
+    textYTransform->setRotation(QQuaternion::fromAxisAndAngle(0.f, 1.f, 0.f, 0.f));
 
     cylinderZMesh->setRadius(0.05f);
     cylinderZMesh->setLength(1.0f);
@@ -588,6 +597,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     coneZTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 0.f, 0.f, 90.f));
     coneZTransform->setTranslation(QVector3D(0.0f, 0.0f, 1.125f));
     // coneZTransform->setRotation(QQuaternion::fromEulerAngles(0.f, 0.f, 90.f));
+    textZTransform->setScale(0.05f);
+    textZTransform->setTranslation(QVector3D(0.0f, -0.5f, 1.75f));
+    textZTransform->setRotation(QQuaternion::fromAxisAndAngle(0.f, 1.f, 0.f, 90.f));
 
     fluidMesh->setXExtent(84.0f);
     fluidMesh->setYExtent(2.0f);
@@ -665,6 +677,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto coneXMaterial = new Qt3DExtras::QPhongAlphaMaterial();
     auto coneYMaterial = new Qt3DExtras::QPhongAlphaMaterial();
     auto coneZMaterial = new Qt3DExtras::QPhongAlphaMaterial();
+    // auto textXMaterial = new Qt3DExtras::QPhongAlphaMaterial();
+    // auto textYMaterial = new Qt3DExtras::QPhongAlphaMaterial();
+    // auto textZMaterial = new Qt3DExtras::QPhongAlphaMaterial();
 
 
     auto fluidMaterial = new Qt3DExtras::QPhongAlphaMaterial();
@@ -711,7 +726,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     coneYMaterial->setAlpha(0.8f); // set transparency
     coneZMaterial->setDiffuse(QColor(QRgb(0x0000FF))); // blue
     coneZMaterial->setAlpha(0.8f); // set transparency
-    
+    // textXMaterial->setDiffuse(QColor(QRgb(0xFF0000))); // red
+    // textXMaterial->setAlpha(0.8f); // set transparency
+    // textYMaterial->setDiffuse(QColor(QRgb(0x00FF00))); // green
+    // textYMaterial->setAlpha(0.8f); // set transparency
+    // textZMaterial->setDiffuse(QColor(QRgb(0x0000FF))); // blue
+    // textZMaterial->setAlpha(0.8f); // set transparency
 
     // Give twin an ambient conrete color
     twinMaterial->setAmbient(QColor(QRgb(0xCCCCCC)));
@@ -742,7 +762,26 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto coneXEntity = new Qt3DCore::QEntity(rootEntity);
     auto coneYEntity = new Qt3DCore::QEntity(rootEntity);
     auto coneZEntity = new Qt3DCore::QEntity(rootEntity);
-    
+    auto textXEntity = new Qt3DExtras::QText2DEntity(rootEntity);
+    auto textYEntity = new Qt3DExtras::QText2DEntity(rootEntity);
+    auto textZEntity = new Qt3DExtras::QText2DEntity(rootEntity);
+    textXEntity->setFont(QFont("monospace"));
+    textYEntity->setFont(QFont("monospace"));
+    textZEntity->setFont(QFont("monospace"));
+    textXEntity->setText("X");
+    textYEntity->setText("Y");
+    textZEntity->setText("Z");
+    textXEntity->setColor(QColor(QRgb(0xFF0000))); // red
+    textYEntity->setColor(QColor(QRgb(0x00FF00))); // green
+    textZEntity->setColor(QColor(QRgb(0x0000FF))); // blue
+    textXEntity->setHeight(20);
+    textYEntity->setHeight(20);
+    textZEntity->setHeight(20);
+    textXEntity->setWidth(20);
+    textYEntity->setWidth(20);
+    textZEntity->setWidth(20);
+
+
     auto floorEntity = new Qt3DCore::QEntity(rootEntity);
     auto harborEntity = new Qt3DCore::QEntity(rootEntity);
     // auto gateEntity = new Qt3DCore::QEntity(rootEntity);
@@ -839,6 +878,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     coneZEntity->addComponent(coneZMesh);
     coneZEntity->addComponent(coneZMaterial);
     coneZEntity->addComponent(coneZTransform);
+    // textXEntity->addComponent(textXMaterial);
+    textXEntity->addComponent(textXTransform);
+    // textYEntity->addComponent(textYMaterial);
+    textYEntity->addComponent(textYTransform);
+    // textZEntity->addComponent(textZMaterial);
+    textZEntity->addComponent(textZTransform);
 
 
     // hydroEntity->addComponent(hydroMesh);
@@ -1520,6 +1565,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         coneXEntity->setEnabled(true);
         coneYEntity->setEnabled(true);
         coneZEntity->setEnabled(true);
+        textXEntity->setEnabled(true);
+        textYEntity->setEnabled(true);
+        textZEntity->setEnabled(true);
       } else {
         cylinderXEntity->setEnabled(false);
         cylinderYEntity->setEnabled(false);
@@ -1527,6 +1575,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         coneXEntity->setEnabled(false);
         coneYEntity->setEnabled(false);
         coneZEntity->setEnabled(false);
+        textXEntity->setEnabled(false);
+        textYEntity->setEnabled(false);
+        textZEntity->setEnabled(false);
       }
     });
 
