@@ -76,18 +76,16 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
   QGridLayout *theFileLayout = new QGridLayout();
   theFileGroupBox->setLayout(theFileLayout);
 
-  theCelerisPyScript = new SC_FileEdit("backendScript");
-  theSimulationScript = new SC_FileEdit("simulationScript");
   theConfigurationFile = new SC_FileEdit("configFile");
   theBathymetryFile = new SC_FileEdit("bathymetryFile");
   theWaveFile = new SC_FileEdit("waveFile");
-  theCelerisPyScript->setToolTip("Workflow backend script (*.py) which launches the Celeris simulation script. Handles the inputs and outputs for coupling Celeris Taichi Lang to the SimCenter workflow.");
+  // theCelerisPyScript->setToolTip("Workflow backend script (*.py) which launches the Celeris simulation script. Handles the inputs and outputs for coupling Celeris Taichi Lang to the SimCenter workflow.");
   theConfigurationFile->setToolTip("Configuration file (*.json) which defines the Celeris simulation parameters.");
   theBathymetryFile->setToolTip("Bathymetry file (*.xyz, *.txt) which defines the Celeris bathymetry.");
   theWaveFile->setToolTip("Wave input file (*.txt) which defines the Celeris wave input.");
 
-  theCelerisPyScript->setFilename(defaultWorkflowScript);
-  theSimulationScript->setFilename(defaultSimulationScript);
+  // theCelerisPyScript->setFilename(defaultWorkflowScript);
+  // theSimulationScript->setFilename(defaultSimulationScript);
   theConfigurationFile->setFilename(defaultConfigurationFile);
   theBathymetryFile->setFilename(defaultBathymetryFile);
   theWaveFile->setFilename(defaultWaveFile);
@@ -95,12 +93,7 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
   int numRow = 0;
   int numRowFiles = 0;
   QGridLayout *theLayout = new QGridLayout();
-  // theFileLayout->addWidget(new QLabel("Workflow Backend Script (*.py)"),numRowFiles,0,1,2);
-  // theFileLayout->addWidget(theCelerisPyScript, numRowFiles,2,1,3);
-  // numRowFiles++;
-  // theFileLayout->addWidget(new QLabel("Simulation Script (*.py)"),numRowFiles,0,1,2);
-  // theFileLayout->addWidget(theSimulationScript, numRowFiles,2,1,3);
-  // numRowFiles++;
+
   theFileLayout->addWidget(new QLabel("Configuration File (*.json)"),numRowFiles,0,1,2);
   theFileLayout->addWidget(theConfigurationFile, numRowFiles,2,1,3);
   numRowFiles++;
@@ -166,8 +159,10 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
   theLayout->addWidget(theVisualGroupBox, numRow,0,1,5);
   numRow++;
 
-  connect(theButton, &QPushButton::released, this, [=]() {
-    
+  // lambda
+
+  
+    auto drawBathymetry = [=](void) {
       QString pythonScriptName = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "celeris_draw_bathy.py";
       QJsonArray forceSensorBeginArray;
       // Append the integer values to the JSON array
@@ -241,15 +236,22 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
       }
     
     
-    QString bathyFilename = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "custom_bathy.jpg";
-    QFileInfo fileInfo(bathyFilename);
-    if (fileInfo.exists()) {
-      qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file already exists: " << bathFilename;
-    } else {
-      qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file does not exist: " << bathFilename;
-    }
-    pix->load(bathyFilename);
-    theImageLabel->setPixmap(*pix);
+      QString bathyFilename = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "custom_bathy.jpg";
+      QFileInfo fileInfo(bathyFilename);
+      if (fileInfo.exists()) {
+        qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file already exists: " << bathFilename;
+      } else {
+        qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file does not exist: " << bathFilename;
+      }
+      pix->load(bathyFilename);
+      theImageLabel->setPixmap(*pix);
+
+    };
+
+
+
+  connect(theButton, &QPushButton::released, this, [=]() {
+    drawBathymetry();
   });
   
   QStringList theWaveGaugeLocs; theWaveGaugeLocs = QStringList() << "0.0" << "0.5" << "1.0" << "1.5" << "2.0" << "2.5" << "3.0" << "3.5" << "4.0" << "4.5" << "5.0";
@@ -281,6 +283,17 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
     }
   });
 
+  connect(theBathymetryFile, &SC_FileEdit::fileNameChanged, this, [=](void) {
+    // Only emit if the file exists and is readable
+    QFileInfo fileInfo(theBathymetryFile->getFilename());
+    if (fileInfo.exists() && fileInfo.isReadable()) {
+      qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file exists and is readable: " << theBathymetryFile->getFilename();
+      drawBathymetry();
+    } else {
+      qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file does not exist or is not readable: " << theBathymetryFile->getFilename();
+    }
+  });
+
 }
 
 CelerisTaichi::~CelerisTaichi()
@@ -291,17 +304,6 @@ CelerisTaichi::~CelerisTaichi()
 bool
 CelerisTaichi::outputToJSON(QJsonObject &jsonObject)
 {
-
-  // if (theCelerisPyScript->outputToJSON(jsonObject) == false) {
-  //   qDebug() << "CelerisTaichi::outputToJSON: failed to output celeris py script";
-  //   // return false;
-  // }
-
-  // if (theSimulationScript->outputToJSON(jsonObject) == false) {
-  //   qDebug() << "CelerisTaichi::outputToJSON: failed to output simulation script";
-  //   // return false;
-  // }
-  
   if (theConfigurationFile->outputToJSON(jsonObject) == false) {
     qDebug() << "CelerisTaichi::outputToJSON: failed to output configuration file";
     // return false;
@@ -362,19 +364,6 @@ CelerisTaichi::outputToJSON(QJsonObject &jsonObject)
 bool
 CelerisTaichi::inputFromJSON(QJsonObject &jsonObject)
 {
-  // theCelerisPyScript->inputFromJSON(jsonObject);
-  // theSimulationScript->inputFromJSON(jsonObject);
-  // theConfigurationFile->inputFromJSON(jsonObject);
-  // theBathymetryFile->inputFromJSON(jsonObject);
-  // theWaveFile->inputFromJSON(jsonObject);
-  // if (theCelerisPyScript->inputFromJSON(jsonObject) == false) {
-  //   qDebug() << "CelerisTaichi::inputFromJSON: failed to input celeris py script";
-  //   // return false;
-  // }
-  // if (theSimulationScript->inputFromJSON(jsonObject) == false) {
-  //   qDebug() << "CelerisTaichi::inputFromJSON: failed to input simulation script";
-  //   // return false;
-  // }
   if (theConfigurationFile->inputFromJSON(jsonObject) == false) {
     qDebug() << "CelerisTaichi::inputFromJSON: failed to input configuration file";
     // return false;
@@ -388,40 +377,30 @@ CelerisTaichi::inputFromJSON(QJsonObject &jsonObject)
     // return false;
   }
 
-  // QString defaultConfigurationFile = examplesDirPath() + QDir::separator() + QString("hdro-0021") + QDir::separator() + ("src") + QDir::separator() + QString("config.json");
-  // theConfigurationFile->setFilename(defaultConfigurationFile);
-  // QString configFile = jsonObject["configFile"].toString();
-  // QString configFilePath = jsonObject["configFilePath"].toString();
-  // if (configFilePath.isEmpty() == false) {
-  //   configFile = configFilePath + QDir::separator() + configFile;
-  // }
-  // if (configFile.isEmpty() == false) {
-  //   theConfigurationFile->setFilename(configFile);
-  // } else {
-  //   qDebug() << "CelerisTaichi::inputFromJSON: no config file in JSON";
-  //   // return false;
-  // }
-  
   
   // We read in the 'config.json' file and add it to the main scInput.json JSON on an object called "config" in the Event
   // It will overwrite the existing config object in the JSON file if we are loading an example, e.g., 'input.json'
-
-  // Check if file exists and is readable
+  QJsonObject configObj;
+  if (theConfigurationFile->getFilename().isEmpty()) {
+    qDebug() << "CelerisTaichi::inputFromConfigJSON: config file is empty";
+    // return false;
+  }
+  // readable
   QFileInfo fileInfo(theConfigurationFile->getFilename());
   if (!fileInfo.exists()) {
-    qDebug() << "CelerisTaichi::inputFromJSON: Configuration file does not exist: " << theConfigurationFile->getFilename();
+    qDebug() << "CelerisTaichi ::inputFromConfigJSON: Configuration file does not exist: " << theConfigurationFile->getFilename();
     // return false;
   }
-
-  // Check if file is readable
   if (!fileInfo.isReadable()) {
-    qDebug() << "CelerisTaichi::inputFromJSON: Configuration file is not readable: " << theConfigurationFile->getFilename();
+    qDebug() << "CelerisTaichi::inputFromConfigJSON: Configuration file is not readable: " << theConfigurationFile->getFilename();
     // return false;
   }
-
-  QJsonDocument d = QJsonDocument::fromJson(theConfigurationFile->getFilename().toUtf8());
-  QJsonObject configObj;
-  configObj = d.object();
+  QFile file(theConfigurationFile->getFilename());
+  file.open(QIODevice::ReadOnly | QIODevice::Text);
+  QByteArray rawData = file.readAll();
+  file.close();
+  QJsonDocument doc(QJsonDocument::fromJson(rawData));
+  configObj = doc.object();
 
   if (configObj.contains("force_sensor_begin")) {
     QJsonValue theValue = configObj["force_sensor_begin"];
@@ -471,7 +450,6 @@ CelerisTaichi::inputFromJSON(QJsonObject &jsonObject)
       tableRowArray.append(xts);
       tableRowArray.append(yts);
       waveGaugesTableArray.append(tableRowArray);
-    
     }
     waveGaugesTableObject["locationOfTimeSeries"] = waveGaugesTableArray;
     theWaveGaugesTable->inputFromJSON(waveGaugesTableObject);
