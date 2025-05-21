@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 from shapely.affinity import translate
 
 # === Parameters ===
-csv_file = "Loiza_Inventory.csv"  # Change this to your actual CSV path
-pixel_size = 0.0000125  # Degrees per pixel (adjust based on data resolution)
+csv_file = "Cube_Inventory.csv"  # Change this to your actual CSV path
+pixel_size = 0.000009000009/1.99999999  # Degrees per pixel (adjust based on data resolution)
 
 # === Step 1: Load data ===
 df = pd.read_csv(csv_file)

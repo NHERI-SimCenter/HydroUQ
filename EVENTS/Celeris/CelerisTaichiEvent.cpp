@@ -47,9 +47,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QString>
 #include <CelerisTaichiEvent.h>
 #include <CelerisTaichi.h>
+#include <CelerisSolver.h>
+#include <CelerisDomain.h>
+#include <RandomVariablesContainer.h>
 
-CelerisTaichiEvent::CelerisTaichiEvent(QWidget *parent)
-    : SimCenterAppWidget(parent)
+CelerisTaichiEvent::CelerisTaichiEvent(RandomVariablesContainer* random_variables, QWidget *parent)
+    : SimCenterAppWidget(parent), rvInputWidget(random_variables)
 {
     int windowWidth = 1200;
 
@@ -70,9 +73,18 @@ CelerisTaichiEvent::CelerisTaichiEvent(QWidget *parent)
     QTabWidget *theTabWidget = new QTabWidget();
     inputCeleris = new CelerisTaichi();
     theTabWidget->addTab(inputCeleris, "Celeris");
+
+    theCelerisSolver = new CelerisSolver(rvInputWidget);
+    theCelerisSolver->setObjectName("Solver");
+    theCelerisSolver->setToolTip("Celeris Solver Parameters");
+    theTabWidget->addTab(theCelerisSolver, "Solver");
+
+    theCelerisDomain = new CelerisDomain(rvInputWidget);
+    theCelerisDomain->setObjectName("Domain");
+    theCelerisDomain->setToolTip("Celeris Domain Parameters");
+    theTabWidget->addTab(theCelerisDomain, "Domain");
+
     mainLayout->addWidget(theTabWidget, 1, 0);
-    
-    
     mainGroup->setLayout(mainLayout);
     mainGroup->setMaximumWidth(windowWidth);
     
@@ -86,6 +98,14 @@ CelerisTaichiEvent::CelerisTaichiEvent(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(scrollArea);
     this->setLayout(layout);
+
+    // Listen for any signals from the CelerisTaichi widget called configFileChanged
+    // If the config file changes, inputFromJSON
+    connect(inputCeleris, &CelerisTaichi::configFileChanged, this, [=]() {
+        qDebug() << "CelerisTaichiEvent::CelerisTaichiEvent: config file changed";
+        QJsonObject jsonObject;
+        this->inputFromConfigJSON(jsonObject);
+    });
 }
 
 
@@ -106,17 +126,29 @@ bool CelerisTaichiEvent::inputFromJSON(QJsonObject &jsonObject)
   this->clear();
   
   inputCeleris->inputFromJSON(jsonObject);
+  theCelerisSolver->inputFromJSON(jsonObject);
+  theCelerisDomain->inputFromJSON(jsonObject);
+  return true;
+}
 
+bool CelerisTaichiEvent::inputFromConfigJSON(QJsonObject &jsonObject)
+{
+  this->clear();
+  inputCeleris->inputFromConfigJSON(jsonObject);
+  theCelerisSolver->inputFromJSON(jsonObject);
+  theCelerisDomain->inputFromJSON(jsonObject);
   return true;
 }
 
 bool CelerisTaichiEvent::outputToJSON(QJsonObject &jsonObject)
 {
   jsonObject["EventClassification"] = "Hydro";
+  jsonObject["type"] = "Celeris";
+  jsonObject["subtype"] = "Celeris";
   jsonObject["Application"] = "Celeris";
-
   inputCeleris->outputToJSON(jsonObject);
-  
+  theCelerisSolver->outputToJSON(jsonObject);
+  theCelerisDomain->outputToJSON(jsonObject);
   return true;
 }
 
