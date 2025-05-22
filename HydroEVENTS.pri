@@ -70,6 +70,8 @@ SOURCES += \
     $$PWD/EVENTS/MPMEvent/BasicMPMEvent.cpp \
     $$PWD/EVENTS/TaichiEvent/TaichiEvent.cpp \
     $$PWD/EVENTS/TaichiEvent/BasicTaichiEvent.cpp \
+    $$PWD/EVENTS/Celeris/CelerisDomain.cpp \
+    $$PWD/EVENTS/Celeris/CelerisSolver.cpp \
     $$PWD/EVENTS/Celeris/CelerisTaichi.cpp \
     $$PWD/EVENTS/Celeris/CelerisTaichiEvent.cpp \
     $$PWD/EVENTS/CelerisWebGPU/Celeris.cpp \
@@ -134,6 +136,8 @@ HEADERS += \
     $$PWD/EVENTS/MPMEvent/BasicMPMEvent.h \
     $$PWD/EVENTS/TaichiEvent/TaichiEvent.h \
     $$PWD/EVENTS/TaichiEvent/BasicTaichiEvent.h \
+    $$PWD/EVENTS/Celeris/CelerisDomain.h \
+    $$PWD/EVENTS/Celeris/CelerisSolver.h \
     $$PWD/EVENTS/Celeris/CelerisTaichi.h \
     $$PWD/EVENTS/Celeris/CelerisTaichiEvent.h \
     $$PWD/EVENTS/CelerisWebGPU/Celeris.h \

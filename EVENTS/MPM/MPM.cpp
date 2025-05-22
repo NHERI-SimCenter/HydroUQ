@@ -84,6 +84,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <Qt3DRender/QBuffer>
 #include <Qt3DRender/QGeometry>
 #include <Qt3DRender/QGeometryRenderer>
+#include <Qt3DExtras/QText2DEntity>
 // #include <Qt3DWindow>
 
 
@@ -490,6 +491,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto coneXTransform = new Qt3DCore::QTransform();
     auto coneYTransform = new Qt3DCore::QTransform();
     auto coneZTransform = new Qt3DCore::QTransform();
+    auto textXTransform = new Qt3DCore::QTransform();
+    auto textYTransform = new Qt3DCore::QTransform();
+    auto textZTransform = new Qt3DCore::QTransform();
 
     auto fluidTransform = new Qt3DCore::QTransform();
     auto pistonTransform = new Qt3DCore::QTransform();
@@ -557,7 +561,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     coneXTransform->setTranslation(QVector3D(1.125f, 0.0f, 0.0f));
     coneXTransform->setRotation(QQuaternion::fromAxisAndAngle(0.f, 0.f, 1.f, 270.f));
     // coneXTransform->setRotation(QQuaternion::fromEulerAngles(90.f, 0.f, 0.f));
-
+    textXTransform->setScale(0.05f);
+    textXTransform->setTranslation(QVector3D(1.5f, -0.5f, 0.0f));
+    textXTransform->setRotation(QQuaternion::fromAxisAndAngle(0.f, 0.f, 1.f, 0.f));
 
     cylinderYMesh->setRadius(0.05f);
     cylinderYMesh->setLength(1.0f);
@@ -573,6 +579,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     coneYTransform->setRotation(QQuaternion::fromAxisAndAngle(0.f, 1.f, 0.f, 90.f));
     coneYTransform->setTranslation(QVector3D(0.0f, 1.125f, 0.0f));
     // coneYTransform->setRotation(QQuaternion::fromEulerAngles(0.f, 90.f, 0.f));
+    textYTransform->setScale(0.05f);
+    textYTransform->setTranslation(QVector3D(-0.25f, 1.25f, 0.0f));
+    textYTransform->setRotation(QQuaternion::fromAxisAndAngle(0.f, 1.f, 0.f, 0.f));
 
     cylinderZMesh->setRadius(0.05f);
     cylinderZMesh->setLength(1.0f);
@@ -588,6 +597,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     coneZTransform->setRotation(QQuaternion::fromAxisAndAngle(1.f, 0.f, 0.f, 90.f));
     coneZTransform->setTranslation(QVector3D(0.0f, 0.0f, 1.125f));
     // coneZTransform->setRotation(QQuaternion::fromEulerAngles(0.f, 0.f, 90.f));
+    textZTransform->setScale(0.05f);
+    textZTransform->setTranslation(QVector3D(0.0f, -0.5f, 1.75f));
+    textZTransform->setRotation(QQuaternion::fromAxisAndAngle(0.f, 1.f, 0.f, 90.f));
 
     fluidMesh->setXExtent(84.0f);
     fluidMesh->setYExtent(2.0f);
@@ -665,6 +677,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto coneXMaterial = new Qt3DExtras::QPhongAlphaMaterial();
     auto coneYMaterial = new Qt3DExtras::QPhongAlphaMaterial();
     auto coneZMaterial = new Qt3DExtras::QPhongAlphaMaterial();
+    // auto textXMaterial = new Qt3DExtras::QPhongAlphaMaterial();
+    // auto textYMaterial = new Qt3DExtras::QPhongAlphaMaterial();
+    // auto textZMaterial = new Qt3DExtras::QPhongAlphaMaterial();
 
 
     auto fluidMaterial = new Qt3DExtras::QPhongAlphaMaterial();
@@ -711,7 +726,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     coneYMaterial->setAlpha(0.8f); // set transparency
     coneZMaterial->setDiffuse(QColor(QRgb(0x0000FF))); // blue
     coneZMaterial->setAlpha(0.8f); // set transparency
-    
+    // textXMaterial->setDiffuse(QColor(QRgb(0xFF0000))); // red
+    // textXMaterial->setAlpha(0.8f); // set transparency
+    // textYMaterial->setDiffuse(QColor(QRgb(0x00FF00))); // green
+    // textYMaterial->setAlpha(0.8f); // set transparency
+    // textZMaterial->setDiffuse(QColor(QRgb(0x0000FF))); // blue
+    // textZMaterial->setAlpha(0.8f); // set transparency
 
     // Give twin an ambient conrete color
     twinMaterial->setAmbient(QColor(QRgb(0xCCCCCC)));
@@ -742,7 +762,26 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto coneXEntity = new Qt3DCore::QEntity(rootEntity);
     auto coneYEntity = new Qt3DCore::QEntity(rootEntity);
     auto coneZEntity = new Qt3DCore::QEntity(rootEntity);
-    
+    auto textXEntity = new Qt3DExtras::QText2DEntity(rootEntity);
+    auto textYEntity = new Qt3DExtras::QText2DEntity(rootEntity);
+    auto textZEntity = new Qt3DExtras::QText2DEntity(rootEntity);
+    textXEntity->setFont(QFont("monospace"));
+    textYEntity->setFont(QFont("monospace"));
+    textZEntity->setFont(QFont("monospace"));
+    textXEntity->setText("X");
+    textYEntity->setText("Y");
+    textZEntity->setText("Z");
+    textXEntity->setColor(QColor(QRgb(0xFF0000))); // red
+    textYEntity->setColor(QColor(QRgb(0x00FF00))); // green
+    textZEntity->setColor(QColor(QRgb(0x0000FF))); // blue
+    textXEntity->setHeight(20);
+    textYEntity->setHeight(20);
+    textZEntity->setHeight(20);
+    textXEntity->setWidth(20);
+    textYEntity->setWidth(20);
+    textZEntity->setWidth(20);
+
+
     auto floorEntity = new Qt3DCore::QEntity(rootEntity);
     auto harborEntity = new Qt3DCore::QEntity(rootEntity);
     // auto gateEntity = new Qt3DCore::QEntity(rootEntity);
@@ -839,6 +878,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     coneZEntity->addComponent(coneZMesh);
     coneZEntity->addComponent(coneZMaterial);
     coneZEntity->addComponent(coneZTransform);
+    // textXEntity->addComponent(textXMaterial);
+    textXEntity->addComponent(textXTransform);
+    // textYEntity->addComponent(textYMaterial);
+    textYEntity->addComponent(textYTransform);
+    // textZEntity->addComponent(textZMaterial);
+    textZEntity->addComponent(textZTransform);
 
 
     // hydroEntity->addComponent(hydroMesh);
@@ -865,6 +910,73 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Set the root entity of the 3D window
     view->setRootEntity(rootEntity);
 
+
+    auto updateBathymetry = [=]() {
+      QJsonObject boundariesObjectJSON;
+      QJsonArray boundariesArrayJSON;
+      boundariesObjectJSON["boundaries"] = boundariesArrayJSON;
+      mpmBoundaries->outputToJSON(boundariesObjectJSON);
+      int bathymetryID = 0;
+      bool use_custom_bathymetry = boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["use_custom_bathymetry"].toBool();
+      if (use_custom_bathymetry == false) {
+        qDebug() << "MPM::updateBathymetry - No custom bathymetry is selected.";
+        return;
+      }
+      twinMesh->setEnabled(false);
+      QJsonArray bathymetryArrayJSON = boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["bathymetry"].toArray();
+      QJsonDocument doc;
+      doc.setArray(bathymetryArrayJSON);
+      QString pythonScriptName = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "bathymetry.py";
+      QString bathymetryCoordinateString = doc.toJson(QJsonDocument::Compact);
+      double extrude_length = boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["domain_end"].toArray()[2].toDouble() - boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["domain_start"].toArray()[2].toDouble(); 
+      QString outputPath = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "custom_bathymetry.obj";
+      qDebug() << "Python script: " << pythonScriptName;
+      qDebug() << "Bathymetry coordinates: " << bathymetryCoordinateString;
+      qDebug() << "Extrude length: " << extrude_length;
+      qDebug() << "Output path: " << outputPath;
+      // Launch python script to generate the bathymetry mesh
+      QString program = SimCenterPreferences::getInstance()->getPython();
+      QStringList args;
+      args << pythonScriptName << bathymetryCoordinateString << QString::number(extrude_length) << outputPath;
+      QProcess *process = new QProcess();
+
+      // Catch python print statements and errors and display them in through the qDebug() stream.
+      QObject::connect(process, &QProcess::readyRead, [process] () {
+          QByteArray a = process->readAll();
+          qDebug() << a;
+      });
+
+      // Delete process instance / thread when done (later), and get the exit status to handle errors.
+      QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                      [=](int exitCode, QProcess::ExitStatus /*exitStatus*/){
+          qDebug()<< "process exited with code " << exitCode;
+          process->deleteLater();
+      });
+
+      process->start(program, args);
+      process->waitForStarted();
+      process->waitForFinished(-1);
+      if (process->exitStatus() == QProcess::CrashExit)
+      {
+          qDebug() << "MPM::updateBathymetry - The script has crashed.";
+      } 
+      else if (process->exitStatus() == QProcess::NormalExit)
+      {
+          qDebug() << "MPM::updateBathymetry - The script has finished running.";
+      }
+      else 
+      {
+          qDebug() << "MPM::updateBathymetry - The script has finished running with an unknown exit status.";
+      }
+    
+      // Set the source of the twin mesh to the generated bathymetry mesh
+      QString tempBathymetryMesh = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "custom_bathymetry.obj";
+      QString dummyBathymetryMesh = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "OSU_LWF_Bathymetry.obj";
+      twinMesh->setSource(QUrl::fromLocalFile(dummyBathymetryMesh));
+      twinMesh->setSource(QUrl::fromLocalFile(tempBathymetryMesh));
+      twinTransform->setRotation(QQuaternion::fromEulerAngles(0.f, 0.f, 0.f));
+      twinMesh->setEnabled(true);
+    };
 
     // Make lambda function to update the position of cuboid design structure
     auto updateFluid = [=]() {
@@ -1263,8 +1375,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         fluidMaterial->setAlpha(0.65f);
         fluidMaterial->setAmbient(QColor(QRgb(0x0000FF)));    
         pistonEntity->setEnabled(true);
-        twinTransform->setScale3D(QVector3D(0.6f,7.25f,1.f/1.75f));
-        // hydroEntity->setEnabled(false);
+        // twinTransform->setScale3D(QVector3D(0.6f,7.25f,1.f/1.75f));
         reservoirEntity->setEnabled(false);
         harborEntity->setEnabled(false);
         floorEntity->setEnabled(false);
@@ -1323,7 +1434,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         pistonEntity->setEnabled(true);
         reservoirEntity->setEnabled(true);
       } else if (index == 4) {
-        twinEntity->setEnabled(false);
+        twinEntity->setEnabled(true);
         for (int i = 0; i < 16; i++) {
           for (int j = 0; j < 16; j++) {
             for (int k = 0; k < 16; k++) {
@@ -1364,6 +1475,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     connect(twinCheckBox, &QCheckBox::stateChanged, [=](int state){
       if (state == Qt::Checked) {
         twinEntity->setEnabled(true);
+        updateBathymetry();
       } else {
         twinEntity->setEnabled(false);
       }
@@ -1453,6 +1565,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         coneXEntity->setEnabled(true);
         coneYEntity->setEnabled(true);
         coneZEntity->setEnabled(true);
+        textXEntity->setEnabled(true);
+        textYEntity->setEnabled(true);
+        textZEntity->setEnabled(true);
       } else {
         cylinderXEntity->setEnabled(false);
         cylinderYEntity->setEnabled(false);
@@ -1460,6 +1575,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         coneXEntity->setEnabled(false);
         coneYEntity->setEnabled(false);
         coneZEntity->setEnabled(false);
+        textXEntity->setEnabled(false);
+        textYEntity->setEnabled(false);
+        textZEntity->setEnabled(false);
       }
     });
 
@@ -1516,6 +1634,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     QPushButton *updateBodiesButton = new QPushButton("Redraw Bodies");
     connect(updateBodiesButton, &QPushButton::clicked, [=](void){
       updateDigitalTwin(stackedWidget->currentIndex());
+      updateBathymetry();
       updateFluid();
       updateDebris();
       updateSensors();
@@ -1669,6 +1788,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 // #ifdef _WIN32
 #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
       updateDigitalTwin(index);
+      updateBathymetry();
       updateFluid();
       updateDebris();
       updateSensors();

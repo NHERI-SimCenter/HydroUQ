@@ -63,22 +63,26 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 class QJsonObject;
 class SC_FileEdit;
+class SC_DoubleLineEdit;
+class SC_TableEdit;
 class QString;
 class QLabel;
 class SimCenterPreferences;
 
 class CelerisTaichi : public SimCenterWidget
 {
-    // Q_OBJECT
+    Q_OBJECT
 public:
     CelerisTaichi(QWidget *parent = 0);
     virtual ~CelerisTaichi();
     bool outputToJSON(QJsonObject &jsonObject);
     bool inputFromJSON(QJsonObject &jsonObject);
+    bool inputFromConfigJSON(QJsonObject &jsonObject);
     bool copyFiles(QString &dirName);
     QString pyScriptsPath(void);
     QString examplesDirPath(void);
 signals:
+    void configFileChanged(void);
 
 private:
   SC_FileEdit *theCelerisPyScript;
@@ -86,7 +90,13 @@ private:
   SC_FileEdit *theConfigurationFile;
   SC_FileEdit *theBathymetryFile;
   SC_FileEdit *theWaveFile;
-  // SC_FileEdit *theSensorScript;
+  SC_TableEdit *theWaveGaugesTable;
+  SC_DoubleLineEdit *theForceSensorBeginX;
+  SC_DoubleLineEdit *theForceSensorBeginY;
+  SC_DoubleLineEdit *theForceSensorEndX;
+  SC_DoubleLineEdit *theForceSensorEndY;
+  SC_DoubleLineEdit *theDx;
+  SC_DoubleLineEdit *theDy;
 };
 
 #endif // CELERIS_TAICHI_H

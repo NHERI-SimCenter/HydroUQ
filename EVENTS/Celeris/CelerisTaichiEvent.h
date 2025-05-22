@@ -40,18 +40,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // Written: JustinBonus (2024)
 
 #include <SimCenterAppWidget.h>
-
+#include <RandomVariablesContainer.h>
+class RandomVariablesContainer;
 class CelerisTaichi;
-
+class CelerisSolver;
+class CelerisDomain;
 class CelerisTaichiEvent : public SimCenterAppWidget
 {
    Q_OBJECT
 public:
-   CelerisTaichiEvent(QWidget *parent = 0);
+   CelerisTaichiEvent(RandomVariablesContainer* random_variables, QWidget *parent = 0);
    ~CelerisTaichiEvent();
 
    bool inputFromJSON(QJsonObject &rvObject);
-   bool outputToJSON(QJsonObject &rvObject);  
+   bool outputToJSON(QJsonObject &rvObject);
+   bool inputFromConfigJSON(QJsonObject &rvObject);  
    bool outputAppDataToJSON(QJsonObject &rvObject);
    bool inputAppDataFromJSON(QJsonObject &rvObject);
    bool copyFiles(QString &dirName);
@@ -64,7 +67,11 @@ public slots:
    void clear(void);
 
 private:
+  RandomVariablesContainer* rvInputWidget; /**< Widget for inputting random
+						  variables */
    CelerisTaichi  *inputCeleris;
+   CelerisSolver  *theCelerisSolver;
+   CelerisDomain  *theCelerisDomain;
 };
 
 #endif // CELERIS_TAICHI_EVENT_H

@@ -120,6 +120,9 @@ public:
                    int minL=100,
                    int maxL=100);
 
+    // bool setToolStatus(bool isToolMode) { isTool = isToolMode; return true; }
+    // bool getToolStatus(void) { return isTool; }
+
 // Need to let parent know if a dimension or origin has changed
 signals:
     // void structDimensionsChanged(void);
@@ -251,6 +254,8 @@ private:
   QWidget *theWaveGeneration; 
   QWidget *theStructures; 
   QWidget *theWalls;
+
+  // bool isTool = false;
 
 };
 

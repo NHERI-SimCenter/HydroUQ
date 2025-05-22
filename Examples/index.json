@@ -86,6 +86,25 @@
         "Difficulty": "0"
       }
     },
+    "hdro-0021":{
+      "id": "hdro-0021",
+      "title": "Near-Real Time Wave-Solver - Oregon State University's Large Wave Flume - CelerisAi",
+      "base": "hdro-0021",
+      "doc": [
+        "hdro-0021/src/input.json",
+        "hdro-0021/src/Frame.tcl",
+        "hdro-0021/src/postprocess.py",
+        "hdro-0021/src/recorder.tcl",
+        "hdro-0021/figures/bathy_osu_lwf_plus_cube_5cm.png",
+        "hdro-0021/README.rst"
+      ],
+      "entry_point": "hdro-0021/./input.json",
+      "summary": "Forward sample a near-real time CelerisAi wave simulator. Replicates experiments in Oregon State University's Large Wave Flume, by Winter 2019 and Mascarenas 2022.",
+      "logo": "figures/bathy_osu_lwf_plus_cube_5cm.png",
+      "categories": {
+        "Difficulty": "0"
+      }
+    },
     "hdro-0002": {
       "id": "hdro-0002",
       "title": "Debris Impacts on a Structure - OSU LWF Digital Twin - MPM",
