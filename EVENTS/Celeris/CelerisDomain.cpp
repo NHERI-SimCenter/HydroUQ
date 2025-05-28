@@ -351,7 +351,7 @@ CelerisDomain::inputFromJSON(QJsonObject &jsonObject)
     WaveType->setCurrentIndex(0);
     amplitude->inputFromJSON(configObj, QString("amplitude"));
     period->inputFromJSON(configObj, QString("period"));
-  } else if (configObj["WaveType"].toInt() == 2 or configObj["WaveType"].toInt() == 1) {
+  } else if (configObj["WaveType"].toInt() == 2 || configObj["WaveType"].toInt() == 1) {
     WaveType->setCurrentIndex(1);
     QJsonArray sineWaveArray = configObj["sine_wave"].toArray();
     if (sineWaveArray.size() > 0) {
