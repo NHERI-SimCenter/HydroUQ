@@ -105,6 +105,25 @@
         "Difficulty": "0"
       }
     },
+    "hdro-0022":{
+      "id": "hdro-0022",
+      "title": "Near-Real Time Wave-Solver - Tsunami Vulnerability of a School in Loiza, Puerto Rico - CelerisAi",
+      "base": "hdro-0022",
+      "doc": [
+        "hdro-0022/src/input.json",
+        "hdro-0022/src/Frame.tcl",
+        "hdro-0022/src/postprocess.py",
+        "hdro-0022/src/recorder.tcl",
+        "hdro-0022/figures/bathy.txt",
+        "hdro-0022/README.rst"
+      ],
+      "entry_point": "hdro-0022/./input.json",
+      "summary": "Forward sample a near-real time CelerisAi wave simulator. Studies the tsunami vulnerability of a school in Loiza, Puerto Rico, due to local bathymetry.",
+      "logo": "figures/bathy.png",
+      "categories": {
+        "Difficulty": "1"
+      }
+    },
     "hdro-0002": {
       "id": "hdro-0002",
       "title": "Debris Impacts on a Structure - OSU LWF Digital Twin - MPM",

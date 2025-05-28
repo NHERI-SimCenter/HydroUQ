@@ -74,6 +74,7 @@
     "colorVal_min": -1,
     "colorMap_choice": 0,
     "surfaceToPlot": 0,
+    "useBreakingModel": 0,
     "showBreaking": 0,
     "dissipation_threshold": 0.3,
     "whiteWaterDecayRate": 0.9,

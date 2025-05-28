@@ -71,6 +71,9 @@ class SC_TableEdit;
 class QString;
 class QLabel;
 class SimCenterPreferences;
+class SC_ComboBox;
+class SC_CheckBox;
+
 class CelerisDomain : public SimCenterWidget
 {
     Q_OBJECT
@@ -90,21 +93,23 @@ private:
     LineEditRV *Courant_num;
     LineEditRV *base_depth;
     LineEditRV *friction;
-    SC_IntLineEdit *isManning;
+    SC_CheckBox *isManning;
     SC_IntLineEdit *boundary_shift;
     LineEditRV *seaLevel;
     LineEditRV *north_seaLevel;
     LineEditRV *south_seaLevel;
     LineEditRV *east_seaLevel;
     LineEditRV *west_seaLevel;
-    SC_IntLineEdit *WaveType;
+    SC_ComboBox *WaveType;
     LineEditRV *amplitude;
     LineEditRV *period;
+    LineEditRV *direction;
+    LineEditRV *phase;
     SC_IntLineEdit *BoundaryWidth;
-    SC_IntLineEdit *north_boundary_type;
-    SC_IntLineEdit *south_boundary_type;
-    SC_IntLineEdit *east_boundary_type;
-    SC_IntLineEdit *west_boundary_type;
+    SC_ComboBox *north_boundary_type;
+    SC_ComboBox *south_boundary_type;
+    SC_ComboBox *east_boundary_type;
+    SC_ComboBox *west_boundary_type;
 };
 
 #endif // CELERIS_TAICHI_H
