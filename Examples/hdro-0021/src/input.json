@@ -17,7 +17,7 @@
             "Application": "OpenSeesInput",
             "ApplicationData": {
                 "fileName": "Frame.tcl",
-                "filePath": "/home/justinbonus/SimCenter/HydroUQ/build/Examples/hdro-0010/src"
+                "filePath": "{Current_Dir}/."
             }
         },
         "Simulation": {
@@ -263,7 +263,8 @@
                 "ship_posx": -100,
                 "ship_posy": 450,
                 "ship_width": 10,
-                "showBreaking": 1,
+                "useBreakingModel": 0,
+                "showBreaking": 0,
                 "significant_wave_height": 1,
                 "simPause": -1,
                 "south_boundary_type": 0,
@@ -286,8 +287,6 @@
             },
             "configFile": "config.json",
             "configFilePath": "{Current_Dir}/.",
-            "simulationScript": "setrun.py",
-            "simulationScriptPath": "/home/justinbonus/SimCenter/HydroUQ/build/applications/createEVENT/Celeris",
             "waveFile": "waves.txt",
             "waveFilePath": "{Current_Dir}/."
         }

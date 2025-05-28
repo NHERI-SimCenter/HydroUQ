@@ -1,0 +1,388 @@
+{
+    "Applications": {
+        "EDP": {
+            "Application": "StandardEDP",
+            "ApplicationData": {
+            }
+        },
+        "Events": [
+            {
+                "Application": "Celeris",
+                "ApplicationData": {
+                },
+                "EventClassification": "Hydro"
+            }
+        ],
+        "Modeling": {
+            "Application": "OpenSeesInput",
+            "ApplicationData": {
+                "fileName": "Frame.tcl",
+                "filePath": "/home/justinbonus/SimCenter/HydroUQ/build/Examples/hdro-0022/src"
+            }
+        },
+        "Simulation": {
+            "Application": "OpenSees-Simulation",
+            "ApplicationData": {
+            }
+        },
+        "UQ": {
+            "Application": "Dakota-UQ",
+            "ApplicationData": {
+            }
+        }
+    },
+    "DefaultValues": {
+        "driverFile": "driver",
+        "edpFiles": [
+            "EDP.json"
+        ],
+        "filenameAIM": "AIM.json",
+        "filenameDL": "BIM.json",
+        "filenameEDP": "EDP.json",
+        "filenameEVENT": "EVENT.json",
+        "filenameSAM": "SAM.json",
+        "filenameSIM": "SIM.json",
+        "rvFiles": [
+            "AIM.json",
+            "SAM.json",
+            "EVENT.json",
+            "SIM.json"
+        ],
+        "workflowInput": "scInput.json",
+        "workflowOutput": "EDP.json"
+    },
+    "EDP": {
+        "type": "StandardEDP"
+    },
+    "Events": [
+        {
+            "Application": "Celeris",
+            "EventClassification": "Hydro",
+            "bathymetryFile": "bathy.txt",
+            "bathymetryFilePath": "/home/justinbonus/SimCenter/HydroUQ/build/Examples/hdro-0022/src",
+            "config": {
+                "Bcoef": 0.0666667,
+                "BoundaryWidth": 20,
+                "Courant_num": 0.1,
+                "HEIGHT": 750,
+                "NLSW_or_Bous": 1,
+                "NumberOfTimeSeries": 6,
+                "T_star_coef": 5,
+                "Theta": 2,
+                "WIDTH": 750,
+                "WaveType": -1,
+                "base_depth": 3,
+                "boundary_shift": 4,
+                "delta_breaking": 2,
+                "dissipation_threshold": 0.3,
+                "duration": 1250,
+                "dx": 3,
+                "dy": 3,
+                "dzdt_F_coef": 0.15,
+                "dzdt_I_coef": 0.5,
+                "east_boundary_type": 0,
+                "east_seaLevel": 0,
+                "force_sensor_begin": [
+                    1239,
+                    1785
+                ],
+                "force_sensor_end": [
+                    1281,
+                    1806
+                ],
+                "friction": 0.001,
+                "g": 9.80665,
+                "infiltrationRate": 0.001,
+                "isManning": 0,
+                "lat": 18.4323008,
+                "locationOfTimeSeries": [
+                    {
+                        "xts": 0,
+                        "yts": 0
+                    },
+                    {
+                        "xts": 500,
+                        "yts": 500
+                    },
+                    {
+                        "xts": 1000,
+                        "yts": 1000
+                    },
+                    {
+                        "xts": 1500,
+                        "yts": 1400
+                    },
+                    {
+                        "xts": 1236,
+                        "yts": 1677
+                    },
+                    {
+                        "xts": 1281,
+                        "yts": 1797
+                    }
+                ],
+                "lon": -65.8780065,
+                "north_boundary_type": 1,
+                "north_seaLevel": 0,
+                "seaLevel": "RV.seaLevel",
+                "sedC1_criticalshields": 0.045,
+                "sedC1_d50": 0.2,
+                "sedC1_denrat": 2.65,
+                "sedC1_n": 0.4,
+                "sedC1_psi": 5e-05,
+                "showBreaking": 1,
+                "significant_wave_height": 4,
+                "south_boundary_type": 2,
+                "south_seaLevel": 0,
+                "timeScheme": 2,
+                "tridiag_solve": 2,
+                "useBreakingModel": 1,
+                "useSedTransModel": 0,
+                "west_boundary_type": 2,
+                "west_seaLevel": 0,
+                "whiteWaterDecayRate": 0.1,
+                "whiteWaterDispersion": 0.1
+            },
+            "configFile": "config.json",
+            "configFilePath": "/home/justinbonus/SimCenter/HydroUQ/build/Examples/hdro-0022/src",
+            "subtype": "Celeris",
+            "type": "Celeris",
+            "waveFile": "waves.txt",
+            "waveFilePath": "/home/justinbonus/SimCenter/HydroUQ/build/Examples/hdro-0022/src"
+        }
+    ],
+    "GeneralInformation": {
+        "NumberOfStories": 1,
+        "PlanArea": 129600,
+        "StructureType": "RM1",
+        "YearBuilt": 1990,
+        "depth": 360,
+        "height": 576,
+        "location": {
+            "latitude": 37.8715,
+            "longitude": -122.273
+        },
+        "name": "",
+        "planArea": 129600,
+        "stories": 1,
+        "units": {
+            "force": "kips",
+            "length": "in",
+            "temperature": "C",
+            "time": "sec"
+        },
+        "width": 360
+    },
+    "Modeling": {
+        "centroidNodes": [
+            1,
+            3
+        ],
+        "dampingRatio": 0.02,
+        "ndf": 3,
+        "ndm": 2,
+        "randomVar": [
+            {
+                "name": "fc",
+                "value": "RV.fc"
+            },
+            {
+                "name": "fy",
+                "value": "RV.fy"
+            },
+            {
+                "name": "E",
+                "value": "RV.E"
+            }
+        ],
+        "responseNodes": [
+            1,
+            3
+        ],
+        "type": "OpenSeesInput"
+    },
+    "Simulation": {
+        "Application": "OpenSees-Simulation",
+        "algorithm": "Newton",
+        "analysis": "Transient -numSubLevels 2 -numSubSteps 10",
+        "convergenceTest": "NormUnbalance 1.0e-2 10",
+        "dampingModel": "Rayleigh Damping",
+        "firstMode": 1,
+        "integration": "Newmark 0.5 0.25",
+        "modalRayleighTangentRatio": 0,
+        "numModesModal": -1,
+        "rayleighTangent": "Initial",
+        "secondMode": -1,
+        "solver": "Umfpack"
+    },
+    "UQ": {
+        "parallelExecution": false,
+        "samplingMethodData": {
+            "method": "LHS",
+            "samples": 1,
+            "seed": 1
+        },
+        "saveWorkDir": true,
+        "uqType": "Forward Propagation"
+    },
+    "correlationMatrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+    ],
+    "localAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "randomVariables": [
+        {
+            "distribution": "Normal",
+            "inputType": "Parameters",
+            "mean": 6,
+            "name": "fc",
+            "refCount": 1,
+            "stdDev": 0.06,
+            "value": "RV.fc",
+            "variableClass": "Uncertain"
+        },
+        {
+            "distribution": "Normal",
+            "inputType": "Parameters",
+            "mean": 60,
+            "name": "fy",
+            "refCount": 1,
+            "stdDev": 0.6,
+            "value": "RV.fy",
+            "variableClass": "Uncertain"
+        },
+        {
+            "distribution": "Normal",
+            "inputType": "Parameters",
+            "mean": 30000,
+            "name": "E",
+            "refCount": 1,
+            "stdDev": 300,
+            "value": "RV.E",
+            "variableClass": "Uncertain"
+        },
+        {
+            "distribution": "Normal",
+            "inputType": "Parameters",
+            "mean": 0,
+            "name": "seaLevel",
+            "refCount": 1,
+            "stdDev": 0.25,
+            "value": "RV.seaLevel",
+            "variableClass": "Uncertain"
+        }
+    ],
+    "remoteAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "resultType": "SimCenterUQResultsSampling",
+    "runType": "runningLocal",
+    "spreadsheet": {
+        "data": [
+            1,
+            5.987428929,
+            61.66113893,
+            30175.14172,
+            0.3737779393,
+            13.9508,
+            6.53392,
+            0.409945,
+            0.0438376,
+            0.258779,
+            0.0188354,
+            0.00179707,
+            0
+        ],
+        "headings": [
+            "Run #",
+            "fc",
+            "fy",
+            "E",
+            "seaLevel",
+            "1-PFA-1-1",
+            "1-PFA-1-2",
+            "1-RMSA-1-1",
+            "1-RMSA-1-2",
+            "1-PFD-1-1",
+            "1-PFD-1-2",
+            "1-PID-1-1",
+            "1-PID-1-2",
+            ""
+        ],
+        "isSurrogate": false,
+        "nrv": 4,
+        "numCol": 13,
+        "numRow": 1
+    },
+    "summary": [
+        {
+            "kurtosis": null,
+            "mean": 13.9508,
+            "name": "1-PFA-1-1",
+            "skewness": null,
+            "stdDev": 0
+        },
+        {
+            "kurtosis": null,
+            "mean": 6.53392,
+            "name": "1-PFA-1-2",
+            "skewness": null,
+            "stdDev": 0
+        },
+        {
+            "kurtosis": null,
+            "mean": 0.409945,
+            "name": "1-RMSA-1-1",
+            "skewness": null,
+            "stdDev": 0
+        },
+        {
+            "kurtosis": null,
+            "mean": 0.0438376,
+            "name": "1-RMSA-1-2",
+            "skewness": null,
+            "stdDev": 0
+        },
+        {
+            "kurtosis": null,
+            "mean": 0.258779,
+            "name": "1-PFD-1-1",
+            "skewness": null,
+            "stdDev": 0
+        },
+        {
+            "kurtosis": null,
+            "mean": 0.0188354,
+            "name": "1-PFD-1-2",
+            "skewness": null,
+            "stdDev": 0
+        },
+        {
+            "kurtosis": null,
+            "mean": 0.00179707,
+            "name": "1-PID-1-1",
+            "skewness": null,
+            "stdDev": 0
+        },
+        {
+            "kurtosis": null,
+            "mean": 0,
+            "name": "1-PID-1-2",
+            "skewness": null,
+            "stdDev": 0
+        }
+    ],
+    "workingDir": "/home/justinbonus/Documents/HydroUQ/LocalWorkDir"
+}

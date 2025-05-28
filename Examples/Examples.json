@@ -36,6 +36,11 @@
       "inputFile": "hdro-0021/src/input.json"
     },
     {
+      "name": "Near-Real Time Wave-Solver - Tsunami Vulnerability of a School in Loiza, Puerto Rico - CelerisAi",
+      "description": "Forward sample a near-real time CelerisAi wave simulator. Studies the tsunami vulnerability of a school in Loiza, Puerto Rico, due to local bathymetry.",
+      "inputFile": "hdro-0022/src/input.json"
+    },
+    {
       "name": "Digital Flume (Oregon State Univ. LWF) - Debris Impacts in a Tsunami-Like Wave - ClaymoreUW MPM",
       "description": "This example takes a brief look at uncertainty quantification in a three story shear frame subjected to earthquake loading.",
       "inputFile": "hdro-0002/src/input.json"
