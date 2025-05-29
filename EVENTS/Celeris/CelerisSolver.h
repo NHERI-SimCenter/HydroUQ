@@ -70,6 +70,8 @@ class SC_TableEdit;
 class QString;
 class QLabel;
 class SimCenterPreferences;
+class SC_ComboBox;
+class SC_CheckBox;
 
 class CelerisSolver : public SimCenterWidget
 {
@@ -83,7 +85,7 @@ public:
 signals:
 
 private:
-    SC_IntLineEdit *NLSW_or_Bous;
+    SC_ComboBox *NLSW_or_Bous;
     LineEditRV *duration;
     LineEditRV *Courant_num;
     LineEditRV *whiteWaterDecayRate; // Turbulence decay rate for foam (visualization).
@@ -92,25 +94,25 @@ private:
     LineEditRV *delta_breaking; // Eddy viscosity coefficient in breaking zones.
     LineEditRV *Theta; // Midmod limiter parameter (1.0 more dissipative, 2.0 less dissipative). (1.0 upwind, 2.0 centered). 
     LineEditRV *Bcoef; // Dispersion parameter for Boussinesq model; default 1/15.
-    SC_IntLineEdit *timeScheme; // Time integration scheme: 0 -> Euler, 1 -> 3rd-order predictor, 2 -> 4th-order  predictor/corrector
+    SC_ComboBox *timeScheme; // Time integration scheme: 0 -> Euler, 1 -> 3rd-order predictor, 2 -> 4th-order  predictor/corrector
     LineEditRV *delta;
     LineEditRV *epsilon;
     SC_IntLineEdit *Px;
     SC_IntLineEdit *Py;
     LineEditRV *friction;
-    SC_IntLineEdit *useBreakingModel; // True if wave-breaking model is included.
-    SC_IntLineEdit *showBreaking; // If > 0, show wave breaking areas as foam. Defaults to 0.
+    SC_CheckBox *useBreakingModel; // True if wave-breaking model is included.
+    SC_CheckBox *showBreaking; // If > 0, show wave breaking areas as foam. Defaults to 0.
     LineEditRV *T_star_coef; // Timescale factor until breaking fully develops. Defaults to 5.0.
     LineEditRV *dzdt_I_coef; // Start-breaking threshold. Defaults to 0.50.
     LineEditRV *dzdt_F_coef; // End-breaking threshold. Defaults to 0.15.
-    SC_IntLineEdit *useSedTransModel; // True if sediment transport is included.
+    SC_CheckBox *useSedTransModel; // True if sediment transport is included.
     LineEditRV *sedC1_d50;
     LineEditRV *sedC1_n;
     LineEditRV *sedC1_psi;
     LineEditRV *sedC1_criticalshields;
     LineEditRV *sedC1_denrat;
     LineEditRV *infiltrationRate; // Dry-beach infiltration rate. Defaults to 0.001.
-    SC_IntLineEdit *clearCon; // Clears concentration channel if 1. Defaults to 1.
+    SC_CheckBox *clearCon; // Clears concentration channel if 1. Defaults to 1.
 
 };
 
