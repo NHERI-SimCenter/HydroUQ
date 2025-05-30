@@ -366,12 +366,14 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   paddleWidget = new QWidget();
   paddleWidget->setLayout(paddleLayout);
+
+  // #ifndef MPM_WAVEGENERATION_NO_PLOT
   // /**
   QHBoxLayout * plotLayout = new QHBoxLayout();
   QWidget *plotWidget = new QWidget();
   plotWidget->setLayout(plotLayout);
   // **/
-
+  // #endif
  
   // Periodic Waves
   waveMag = new SC_DoubleLineEdit("waveMag",0.5);
@@ -399,7 +401,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   waveGenStack->addWidget(periodicWidget); 
 
 
-  // /**
+  // #ifndef MPM_WAVEGENERATION_NO_PLOT
   dataDir = nullptr;
   
   thePlot = new SimCenterGraphPlot(QString("Time [s]"),QString("Displacement [m]"), 500, 500);
@@ -429,7 +431,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
     a = this->createTextEntry(tr("Min(t)"), plotLayout, 2);
     b = this->createTextEntry(tr("Max(t)"), plotLayout, 3);
     a->setText("0.0");
-    b->setText("1.0");
+    b->setText("40.0");
     showPlotButton = new QPushButton("Show Plot");
     plotLayout->addWidget(showPlotButton, 4);
 
@@ -455,13 +457,8 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
           }
       });
   }
-  // **/
-
 
   // Place the plot in the layout
-
-
-  // /**
   if (inpty==QString("Periodic Waves"))
   {
       connect(alpha,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
@@ -485,6 +482,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
       });
   }
   // **/
+  // #endif
 
   connect(generationMethod, QOverload<int>::of(&QComboBox::activated),
     waveGenStack, &QStackedWidget::setCurrentIndex);
@@ -876,13 +874,17 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   //     inletOutletBox->setVisible(false);
   //   }
   // });
-
-
+  // #ifndef MPM_WAVEGENERATION_NO_PLOT
+  updateDistributionPlot();
+  thePlot->show();
+  // #endif
 }
 
 BoundaryMPM::~BoundaryMPM()
 {
+  // #ifndef MPM_WAVEGENERATION_NO_PLOT
   delete thePlot;
+  // #endif
 }
 
 void BoundaryMPM::clear(void)
@@ -2091,6 +2093,7 @@ bool readCSVRow (QTextStream &in, QStringList *row) {
 
 void
 BoundaryMPM::updateDistributionPlot() {
+    thePlot->hide();
     double alp=0, bet=0, aa=0, bb=0, me=0, st=0;
     int numSteps = 100;
     // if ((this->inpty)==QString("Periodic Waves")) {
@@ -2190,6 +2193,7 @@ BoundaryMPM::updateDistributionPlot() {
 //            thePlot->drawPDF(x,y);
 //            thePlot->drawPDF(x1,y1);
 //        }
+    thePlot->show();
 }
 
 bool
