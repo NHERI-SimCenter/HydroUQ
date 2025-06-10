@@ -308,7 +308,7 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
 
 
     if constexpr (USE_CLAYMORE_TOOL) {
-        // #define MPM_WAVEGENERATION_NO_PLOT // Define this to disable the plot in the MPM Wave Generation tool
+        // #define MPM_WAVEGENERATION_NO_PLOT true
         MPM *miniMPM = new MPM(theRVs);
         if (!miniMPM->isInitialize()) {
             miniMPM->initialize();
