@@ -81,6 +81,9 @@ public:
     bool copyFiles(QString &dirName);
     QString pyScriptsPath(void);
     QString examplesDirPath(void);
+    void setConfigFile(QString &filename);
+    void setWavesFile(QString &filename);
+    void setBathymetryFile(QString &filename);
 signals:
     void configFileChanged(void);
 
