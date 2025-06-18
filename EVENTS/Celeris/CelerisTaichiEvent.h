@@ -62,6 +62,7 @@ public:
    bool supportsLocalRun() override;
 
 signals:
+   void runFinished(void);
 
 public slots:
    void clear(void);

@@ -623,3 +623,18 @@ CelerisTaichi::copyFiles(QString &destDir)
   return true;
 }
 
+void CelerisTaichi::setConfigFile(QString &filename)
+{
+  theConfigurationFile->setFilename(filename);
+  emit this->configFileChanged();
+}
+
+void CelerisTaichi::setBathymetryFile(QString &filename)
+{
+  theBathymetryFile->setFilename(filename);
+}
+
+void CelerisTaichi::setWavesFile(QString &filename)
+{
+  theWaveFile->setFilename(filename);
+}

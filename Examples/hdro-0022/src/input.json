@@ -17,7 +17,7 @@
             "Application": "OpenSeesInput",
             "ApplicationData": {
                 "fileName": "Frame.tcl",
-                "filePath": "/home/justinbonus/SimCenter/HydroUQ/build/Examples/hdro-0022/src"
+                "filePath": "{Current_Dir}/."
             }
         },
         "Simulation": {
@@ -59,7 +59,7 @@
             "Application": "Celeris",
             "EventClassification": "Hydro",
             "bathymetryFile": "bathy.txt",
-            "bathymetryFilePath": "/home/justinbonus/SimCenter/HydroUQ/build/Examples/hdro-0022/src",
+            "bathymetryFilePath": "{Current_Dir}/.",
             "config": {
                 "Bcoef": 0.0666667,
                 "BoundaryWidth": 20,
@@ -144,11 +144,11 @@
                 "whiteWaterDispersion": 0.1
             },
             "configFile": "config.json",
-            "configFilePath": "/home/justinbonus/SimCenter/HydroUQ/build/Examples/hdro-0022/src",
+            "configFilePath": "{Current_Dir}/.",
             "subtype": "Celeris",
             "type": "Celeris",
             "waveFile": "waves.txt",
-            "waveFilePath": "/home/justinbonus/SimCenter/HydroUQ/build/Examples/hdro-0022/src"
+            "waveFilePath": "{Current_Dir}/."
         }
     ],
     "GeneralInformation": {

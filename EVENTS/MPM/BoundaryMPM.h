@@ -133,7 +133,7 @@ signals:
     void structSpacingChanged(QString val);
 
 public slots:
-    void updateDistributionPlot(); 
+    // void updateDistributionPlot(); 
 
 private:
 
@@ -256,6 +256,20 @@ private:
   QWidget *theWalls;
 
   // bool isTool = false;
+  static int numInstances; // static variable to keep track of instances
+  static int getNumInstances() {
+      return numInstances;
+  }
+    
+  static void incrementNumInstances() {
+    numInstances++;
+  }
+  static void decrementNumInstances() {
+    if (numInstances > 0) {
+        numInstances--;
+    }
+  }
+
 
 };
 

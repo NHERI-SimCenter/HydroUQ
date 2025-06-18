@@ -59,8 +59,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_CheckBox.h>
 #include <stdexcept>
 #include <QPixmap>
-
-
+#include <QProcess>
+#include <SimCenterPreferences.h>
 
 // For 2d graphing like in RV distributions 
 #include <QLineEdit>
@@ -69,6 +69,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <math.h>
 #include <QPushButton>
 #include <QFileDialog>
+
+int BoundaryMPM::numInstances = 0;
+// SimCenterGraphPlot* BoundaryMPM::thePlot = nullptr;
 
 BoundaryMPM::BoundaryMPM(QWidget *parent)
   :SimCenterWidget(parent)
@@ -366,13 +369,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   paddleWidget = new QWidget();
   paddleWidget->setLayout(paddleLayout);
-  // /**
-  QHBoxLayout * plotLayout = new QHBoxLayout();
-  QWidget *plotWidget = new QWidget();
-  plotWidget->setLayout(plotLayout);
-  // **/
-
- 
+  
   // Periodic Waves
   waveMag = new SC_DoubleLineEdit("waveMag",0.5);
   waveCelerity = new SC_DoubleLineEdit("waveCelerity",4.0);
@@ -393,32 +390,32 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   periodicLayout->addWidget(new QLabel("m/s"),1,2);
   periodicLayout->addWidget(new QLabel("s"),2,2);
   periodicLayout->setRowStretch(3,1);
-
+  
   QStackedWidget *waveGenStack = new QStackedWidget();
   waveGenStack->addWidget(paddleWidget);
   waveGenStack->addWidget(periodicWidget); 
-
-
-  // /**
-  dataDir = nullptr;
   
-  thePlot = new SimCenterGraphPlot(QString("Time [s]"),QString("Displacement [m]"), 500, 500);
-  thePlot->hide();
-  if (inpty==QString("Periodic Waves")) {
-      alpha = this->createTextEntry(tr("Height"), periodicLayout, 0);
-      beta  = this->createTextEntry(tr("Celerity"), periodicLayout, 1);
-      a = this->createTextEntry(tr("Period"), periodicLayout, 2);
-      b  = this->createTextEntry(tr("Duration"), periodicLayout, 3);
-      alpha->setText("0.5");
-      beta->setText("4.0");
-      a->setText("1.0");
-      b->setText("2.0");
-      showPlotButton = new QPushButton("Show Plot");
-      periodicLayout->addWidget(showPlotButton, 1,4);
+  // if (getNumInstances() < 2) {
+    // #ifndef MPM_WAVEGENERATION_NO_PLOT
 
-      periodicLayout->setColumnStretch(5,1);
+    // #endif
+    // }
+    
+    // if (getNumInstances() < 2) {
+      #ifndef MPM_WAVEGENERATION_NO_PLOT
+    QHBoxLayout * plotLayout = new QHBoxLayout();
+    QWidget *plotWidget = new QWidget();
+    plotWidget->setLayout(plotLayout);
+    QString motionName = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "wavemaker.png";
+    QPixmap *pix = new QPixmap(motionName);
+    QLabel *theImageLabel = new QLabel();
+    theImageLabel->setPixmap(*pix);
+    theImageLabel->setScaledContents(true);
 
-  } else  {
+    // thePlot = new SimCenterGraphPlot(QString("Time [s]"),QString("Displacement [m]"), 500, 500);
+    // thePlot->hide();
+    
+    dataDir = nullptr;
     dataDir = this->createTextEntry(tr("Paddle Motion (*.csv)"), plotLayout, 0);
     dataDir->setText(paddleName);
     dataDir->setMinimumWidth(200);
@@ -429,7 +426,7 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
     a = this->createTextEntry(tr("Min(t)"), plotLayout, 2);
     b = this->createTextEntry(tr("Max(t)"), plotLayout, 3);
     a->setText("0.0");
-    b->setText("1.0");
+    b->setText("40.0");
     showPlotButton = new QPushButton("Show Plot");
     plotLayout->addWidget(showPlotButton, 4);
 
@@ -444,48 +441,99 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
     paddleLayout->addWidget(paddleFrequency, paddleNumRow, 1, 1, 3);    
     paddleLayout->addWidget(new QLabel("Hz"), paddleNumRow++, 4, 1, 1);
     
-    paddleLayout->addWidget(thePlot, paddleNumRow++, 0, 1, 5);
-    thePlot->hide();
+    paddleLayout->addWidget(theImageLabel, paddleNumRow++, 0, 1, 5);
+    // paddleLayout->addWidget(thePlot, paddleNumRow++, 0, 1, 5);
+    paddleLayout->setRowStretch(paddleNumRow,1);
+    // thePlot->hide();
     // mainLayout->setColumnStretch(4,1);
 
-    connect(chooseFileButton, &QPushButton::clicked, this, [=](){
-          QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"),"", "CSV File (*.csv)");
-          if (!fileName.isEmpty()) {
-              dataDir->setText(fileName);
-          }
+    auto drawMotion = [=]() {
+      QString pythonScriptName = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "plot_motion.py";
+      QString inputPath = paddleDisplacementFile->getFilename();
+      qDebug() << "Python script: " << pythonScriptName;
+      qDebug() << "Wave-maker motion file: " << inputPath;
+
+      // Launch python script to generate the bathymetry mesh
+      QString program = SimCenterPreferences::getInstance()->getPython();
+      QStringList args;
+      args << pythonScriptName << QString("--input") << inputPath;
+      QProcess *process = new QProcess();
+
+      // Catch python print statements and errors and display them in through the qDebug() stream.
+      QObject::connect(process, &QProcess::readyRead, [process] () {
+          QByteArray aByte = process->readAll();
+          qDebug() << aByte;
       });
-  }
-  // **/
 
-
-  // Place the plot in the layout
-
-
-  // /**
-  if (inpty==QString("Periodic Waves"))
-  {
-      connect(alpha,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
-      connect(beta,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
-      connect(a,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
-      connect(b,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
-      connect(showPlotButton, &QPushButton::clicked, this, [=](){ thePlot->hide(); thePlot->show();});
-  } else {
-      connect(dataDir,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
-      connect(a,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
-      connect(b,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
-      connect(showPlotButton, &QPushButton::clicked, this, [=](){ thePlot->hide(); thePlot->show();});
-      // connect (paddleDisplacementFile, &SC_FileEdit::fileChanged, this, [=](){
-      //     QString fileName = paddleDisplacementFile->getFilename();
-      //     dataDir->setText(fileName);
-      // });
-      // Show the plot when the
-      connect(dataDir, &QLineEdit::editingFinished, this, [=](){
-          thePlot->hide();
-          thePlot->show();
+      // Delete process instance / thread when done (later), and get the exit status to handle errors.
+      QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                      [=](int exitCode, QProcess::ExitStatus /*exitStatus*/){
+          qDebug()<< "process exited with code " << exitCode;
+          process->deleteLater();
       });
-  }
-  // **/
 
+      process->start(program, args);
+      process->waitForStarted();
+      process->waitForFinished(-1);
+      if (process->exitStatus() == QProcess::CrashExit)
+      {
+          qDebug() << "BoundaryMPM::drawMotion - The script has crashed.";
+      } 
+      else if (process->exitStatus() == QProcess::NormalExit)
+      {
+          qDebug() << "BoundaryMPM::drawMotion - The script has finished running.";
+      }
+      else 
+      {
+          qDebug() << "BoundaryMPM::drawMotion - The script has finished running with an unknown exit status.";
+      }
+    
+    
+      QString motionFilename = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "custom_wavemaker.png";
+      QFileInfo fileInfo(motionFilename);
+      if (fileInfo.exists()) {
+        qDebug() << "BoundaryMPM::drawMotion: file exists: " << motionFilename;
+      } else {
+        qDebug() << "BoundaryMPM::drawMotion: file does not exist: " << motionFilename;
+      }
+      pix->load(motionFilename);
+      theImageLabel->setPixmap(*pix);
+      };
+    
+
+    // Place the plot in the layout
+ 
+    // connect(dataDir,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+    // connect(a,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+    // connect(b,SIGNAL(textEdited(QString)), this, SLOT(updateDistributionPlot()));
+    connect(showPlotButton, &QPushButton::clicked, this, [=](){drawMotion();});
+    // connect (paddleDisplacementFile, &SC_FileEdit::fileChanged, this, [=](){
+    //     QString fileName = paddleDisplacementFile->getFilename();
+    //     dataDir->setText(fileName);
+    // });
+    // Show the plot when the
+
+    // dataDir is edited
+    
+    connect(dataDir, &QLineEdit::editingFinished, this, [=](){
+        // thePlot->hide();
+        // updateDistributionPlot();
+        drawMotion();
+        // thePlot->show();
+    });
+  
+    connect(paddleDisplacementFile, &SC_FileEdit::fileNameChanged, this, [=](){
+        QString fileName = paddleDisplacementFile->getFilename();
+        dataDir->setText(fileName);
+        // thePlot->hide();
+        // updateDistributionPlot();
+        drawMotion();
+        // thePlot->show();
+    });
+      // #endif
+    // **/
+    #endif
+  // }
   connect(generationMethod, QOverload<int>::of(&QComboBox::activated),
     waveGenStack, &QStackedWidget::setCurrentIndex);
 
@@ -876,13 +924,27 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   //     inletOutletBox->setVisible(false);
   //   }
   // });
-
-
+  // if (getNumInstances() < 2) {
+    #ifndef MPM_WAVEGENERATION_NO_PLOT
+    // thePlot->hide();  
+    // updateDistributionPlot();
+    // thePlot->show();
+    drawMotion();
+    #endif
+  // }
+  incrementNumInstances();
 }
 
 BoundaryMPM::~BoundaryMPM()
 {
-  delete thePlot;
+  decrementNumInstances();
+  // if (getNumInstances() < 2) {
+    #ifndef MPM_WAVEGENERATION_NO_PLOT
+    // thePlot->hide();
+    // delete thePlot;
+    // thePlot = nullptr;
+    #endif
+  // }
 }
 
 void BoundaryMPM::clear(void)
@@ -2089,108 +2151,110 @@ bool readCSVRow (QTextStream &in, QStringList *row) {
 
 }
 
-void
-BoundaryMPM::updateDistributionPlot() {
-    double alp=0, bet=0, aa=0, bb=0, me=0, st=0;
-    int numSteps = 100;
-    // if ((this->inpty)==QString("Periodic Waves")) {
-    //     alp=alpha->text().toDouble();
-    //     bet=beta->text().toDouble();
-    //     aa=a->text().toDouble();
-    //     bb=b->text().toDouble();
-    //     me = (aa*bet+bb*alp)/(alp+bet);
-    //     st = sqrt( alp*bet*(bb-aa)/pow(alp+bet,2)/(alp+bet+1)  );
-    //  } 
-     if (((this->inpty)==QString("Preset Paddle - OSU LWF")) || (this->inpty==QString("Preset Paddle - OSU DWB")) || (this->inpty==QString("Paddle"))) {
-        if (dataDir->text().isEmpty()) {
-            this->errorMessage("ERROR: Paddle Motion - data has not been set");
-            return;
-        }
-        QString csvFileName = dataDir->text();
-        QFile csv(csvFileName);
-        csv.open(QFile::ReadOnly | QFile::Text);
+// void
+// BoundaryMPM::updateDistributionPlot() {
+//     // thePlot->hide();
+//     double alp=0, bet=0, aa=0, bb=0, me=0, st=0;
+//     int numSteps = 100;
+//     // if ((this->inpty)==QString("Periodic Waves")) {
+//     //     alp=alpha->text().toDouble();
+//     //     bet=beta->text().toDouble();
+//     //     aa=a->text().toDouble();
+//     //     bb=b->text().toDouble();
+//     //     me = (aa*bet+bb*alp)/(alp+bet);
+//     //     st = sqrt( alp*bet*(bb-aa)/pow(alp+bet,2)/(alp+bet+1)  );
+//     //  } 
+//      if (((this->inpty)==QString("Preset Paddle - OSU LWF")) || (this->inpty==QString("Preset Paddle - OSU DWB")) || (this->inpty==QString("Paddle"))) {
+//         if (dataDir->text().isEmpty()) {
+//             this->errorMessage("ERROR: Paddle Motion - data has not been set");
+//             return;
+//         }
+//         QString csvFileName = dataDir->text();
+//         QFile csv(csvFileName);
+//         csv.open(QFile::ReadOnly | QFile::Text);
 
-        QTextStream in(&csv);
-        QStringList row;
-        QStringList firstColumn;
-        QStringList secondColumn;
-        QStringList thirdColumn;
+//         QTextStream in(&csv);
+//         QStringList row;
+//         QStringList firstColumn;
+//         QStringList secondColumn;
+//         QStringList thirdColumn;
         
-        numSteps = 0; // reset
+//         numSteps = 0; // reset
 
-        // Assume no header lines
-        while (readCSVRow(in, &row)) {
-            firstColumn.append(row[0]);
-            secondColumn.append(row[1]);
-            thirdColumn.append(row[2]);
-            numSteps++;
-        }
+//         // Assume no header lines
+//         while (readCSVRow(in, &row)) {
+//             firstColumn.append(row[0]);
+//             secondColumn.append(row[1]);
+//             thirdColumn.append(row[2]);
+//             numSteps++;
+//         }
 
-        csv.close();
+//         csv.close();
 
-        QVector<double> x(numSteps); // time
-        QVector<double> y(numSteps); // displacement
-        for (int i=0; i<numSteps; i++) {
-            x[i] = firstColumn[i].toDouble();
-            y[i] = secondColumn[i].toDouble();
-        }
+//         QVector<double> x(numSteps); // time
+//         QVector<double> y(numSteps); // displacement
+//         for (int i=0; i<numSteps; i++) {
+//             x[i] = firstColumn[i].toDouble();
+//             y[i] = secondColumn[i].toDouble();
+//         }
 
-        me = 2.0;
-        alp = 1.0;
-        bet = 1.0;
+//         me = 2.0;
+//         alp = 1.0;
+//         bet = 1.0;
 
-        aa = 0.0;
-        bb=b->text().toDouble();
+//         aa = 0.0;
+//         bb=b->text().toDouble();
 
-        // plot
-        thePlot->clear();
-        thePlot->drawPDF(x,y);
-        return;
+//         // plot
+//         // thePlot->clear();
+//         // thePlot->drawPDF(x,y);
+//         return;
 
-    }
-
-
-    if (aa>bb) {
-        thePlot->clear();
-        return;
-    }
-
-    // if (this->inpty==QString("Periodic Waves")) {
-    //   if (alp >= 0.0 && bet > 0.0 && me != aa) {
-    //       double min = aa; // defined in x>0
-    //       double max = bb;
-    //       QVector<double> x(100);
-    //       QVector<double> y(100);
-    //       for (int i=0; i<100; i++) {
-    //           double xi = min + i*(max-min)/99;
-    //           x[i] = xi;
-    //           double betai=tgamma(alp)*tgamma(bet)/tgamma(alp+bet);
-    //           y[i] = pow(xi-aa,alp-1)*pow(bb-xi,bet-1)/betai/pow(bb-aa,alp+bet-1);
-    //       }
-    //       thePlot->clear();
-    //       thePlot->drawPDF(x,y);
-    //   } else {
-    //       thePlot->clear();
-    //   }
-    // }
+//     }
 
 
-//        else {
-//            QVector<double> x(100);
-//            QVector<double> y(100);
-//            QVector<double> x1(100);
-//            QVector<double> y1(100);
-//            for (int i=0; i<100; i++) {
-//                x[i] =  aa+1;
-//                y[i] =  bb+10;
-//                x1[i] =  me+1;
-//                y1[i] =  st+10;
-//            }
-//            thePlot->clear();
-//            thePlot->drawPDF(x,y);
-//            thePlot->drawPDF(x1,y1);
-//        }
-}
+//     if (aa>bb) {
+//         // thePlot->clear();
+//         return;
+//     }
+
+//     // if (this->inpty==QString("Periodic Waves")) {
+//     //   if (alp >= 0.0 && bet > 0.0 && me != aa) {
+//     //       double min = aa; // defined in x>0
+//     //       double max = bb;
+//     //       QVector<double> x(100);
+//     //       QVector<double> y(100);
+//     //       for (int i=0; i<100; i++) {
+//     //           double xi = min + i*(max-min)/99;
+//     //           x[i] = xi;
+//     //           double betai=tgamma(alp)*tgamma(bet)/tgamma(alp+bet);
+//     //           y[i] = pow(xi-aa,alp-1)*pow(bb-xi,bet-1)/betai/pow(bb-aa,alp+bet-1);
+//     //       }
+//     //       thePlot->clear();
+//     //       thePlot->drawPDF(x,y);
+//     //   } else {
+//     //       thePlot->clear();
+//     //   }
+//     // }
+
+
+// //        else {
+// //            QVector<double> x(100);
+// //            QVector<double> y(100);
+// //            QVector<double> x1(100);
+// //            QVector<double> y1(100);
+// //            for (int i=0; i<100; i++) {
+// //                x[i] =  aa+1;
+// //                y[i] =  bb+10;
+// //                x1[i] =  me+1;
+// //                y1[i] =  st+10;
+// //            }
+// //            thePlot->clear();
+// //            thePlot->drawPDF(x,y);
+// //            thePlot->drawPDF(x1,y1);
+// //        }
+//     // thePlot->show();
+// }
 
 bool
 BoundaryMPM::setDigitalTwin(int twinIdx)
