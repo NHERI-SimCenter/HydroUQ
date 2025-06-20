@@ -63,6 +63,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 class QJsonObject;
 class SC_FileEdit;
+class QCheckBox;
 class SC_DoubleLineEdit;
 class SC_TableEdit;
 class QString;
@@ -100,6 +101,12 @@ private:
   SC_DoubleLineEdit *theForceSensorEndY;
   SC_DoubleLineEdit *theDx;
   SC_DoubleLineEdit *theDy;
+  SC_DoubleLineEdit *long1Edit; /**< Longitude Lower-Left */
+  SC_DoubleLineEdit *lat1Edit;  /**< Latitude Lower-Left */
+  SC_DoubleLineEdit *long2Edit; /**< Longitude Upper-Right */
+  SC_DoubleLineEdit *lat2Edit;  /**< Latitude Upper-Right */
+  QCheckBox *theLatLongFSCheckBox; /**< Use Lat/Long for Force Sensor */
+  QCheckBox *theLatLongWGCheckBox; /**< Use Lat/Long for Force Sensor and Bounding Box */
 };
 
 #endif // CELERIS_TAICHI_H
