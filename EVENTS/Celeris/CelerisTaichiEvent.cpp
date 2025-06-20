@@ -128,21 +128,21 @@ CelerisTaichiEvent::CelerisTaichiEvent(RandomVariablesContainer* random_variable
     theCelerisBrailsAddressVLayout->addWidget(theCelerisBrailsAddressHWidget);
     theCelerisBrailsAddressVLayout->addWidget(theCelerisBrailsAddressBufferWidget);
 
-    theCelerisBrailsBboxLayout->addWidget(new QLabel("long1:"));
-    SC_DoubleLineEdit *long1Edit = new SC_DoubleLineEdit("long1", -122.34053007546347);
-    long1Edit->setToolTip("Longitude 1");
+    theCelerisBrailsBboxLayout->addWidget(new QLabel("lon_LL"));
+    long1Edit = new SC_DoubleLineEdit("lon_LL", -122.34053007546347);
+    long1Edit->setToolTip("Longitude Lower-Left");
     theCelerisBrailsBboxLayout->addWidget(long1Edit);
-    theCelerisBrailsBboxLayout->addWidget(new QLabel("lat1:"));
-    SC_DoubleLineEdit *lat1Edit = new SC_DoubleLineEdit("lat1", 37.8992412074125);
-    lat1Edit->setToolTip("Latitude 1");
+    theCelerisBrailsBboxLayout->addWidget(new QLabel("lat_LL:"));
+    lat1Edit = new SC_DoubleLineEdit("lat_LL", 37.8992412074125);
+    lat1Edit->setToolTip("Latitude Lower-Left");
     theCelerisBrailsBboxLayout->addWidget(lat1Edit);
-    theCelerisBrailsBboxLayout->addWidget(new QLabel("long2:"));
-    SC_DoubleLineEdit *long2Edit = new SC_DoubleLineEdit("long2", -122.32314730065123);
-    long2Edit->setToolTip("Longitude 2");
+    theCelerisBrailsBboxLayout->addWidget(new QLabel("lon_UR"));
+    long2Edit = new SC_DoubleLineEdit("lon_UR", -122.32314730065123);
+    long2Edit->setToolTip("Longitude Upper-Right");
     theCelerisBrailsBboxLayout->addWidget(long2Edit);
-    theCelerisBrailsBboxLayout->addWidget(new QLabel("lat2:"));
-    SC_DoubleLineEdit *lat2Edit = new SC_DoubleLineEdit("lat2", 37.91514928711621);
-    lat2Edit->setToolTip("Latitude 2");
+    theCelerisBrailsBboxLayout->addWidget(new QLabel("lat_UR"));
+    lat2Edit = new SC_DoubleLineEdit("lat_UR", 37.91514928711621);
+    lat2Edit->setToolTip("Latitude Upper-Right");
     theCelerisBrailsBboxLayout->addWidget(lat2Edit);
 
     theCelerisBrailsStack->addWidget(theCelerisBrailsBbox);
@@ -155,7 +155,7 @@ CelerisTaichiEvent::CelerisTaichiEvent(RandomVariablesContainer* random_variable
     SC_DoubleLineEdit *bufferEdit = new SC_DoubleLineEdit("buffer_radius", 0.01);
     SC_DoubleLineEdit *offsetLatitudeEdit = new SC_DoubleLineEdit("offset_latitude", 0.0);
     SC_DoubleLineEdit *offsetLongitudeEdit = new SC_DoubleLineEdit("offset_longitude", 0.0);
-    bufferEdit->setToolTip("Buffer radius in degrees for the geocoded location.");
+    bufferEdit->setToolTip("Buffer radius in degrees for the geocoded location. Bounding box will be created around the geocoded location with this radius.");
 
     
 
@@ -375,6 +375,11 @@ bool CelerisTaichiEvent::inputFromJSON(QJsonObject &jsonObject)
   inputCeleris->inputFromJSON(jsonObject);
   theCelerisSolver->inputFromJSON(jsonObject);
   theCelerisDomain->inputFromJSON(jsonObject);
+
+  long1Edit->inputFromJSON(jsonObject);
+  lat1Edit->inputFromJSON(jsonObject);  
+  long2Edit->inputFromJSON(jsonObject);
+  lat2Edit->inputFromJSON(jsonObject);
   return true;
 }
 
@@ -384,6 +389,11 @@ bool CelerisTaichiEvent::inputFromConfigJSON(QJsonObject &jsonObject)
   inputCeleris->inputFromConfigJSON(jsonObject);
   theCelerisSolver->inputFromJSON(jsonObject);
   theCelerisDomain->inputFromJSON(jsonObject);
+
+  long1Edit->inputFromJSON(jsonObject);
+  lat1Edit->inputFromJSON(jsonObject);  
+  long2Edit->inputFromJSON(jsonObject);
+  lat2Edit->inputFromJSON(jsonObject);
   return true;
 }
 
@@ -396,6 +406,11 @@ bool CelerisTaichiEvent::outputToJSON(QJsonObject &jsonObject)
   inputCeleris->outputToJSON(jsonObject);
   theCelerisSolver->outputToJSON(jsonObject);
   theCelerisDomain->outputToJSON(jsonObject);
+
+  long1Edit->outputToJSON(jsonObject);
+  lat1Edit->outputToJSON(jsonObject);
+  long2Edit->outputToJSON(jsonObject);
+  lat2Edit->outputToJSON(jsonObject);
   return true;
 }
 

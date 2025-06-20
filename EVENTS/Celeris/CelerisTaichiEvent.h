@@ -42,6 +42,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SimCenterAppWidget.h>
 #include <RandomVariablesContainer.h>
 class RandomVariablesContainer;
+class SC_DoubleLineEdit;
 class CelerisTaichi;
 class CelerisSolver;
 class CelerisDomain;
@@ -73,6 +74,11 @@ private:
    CelerisTaichi  *inputCeleris;
    CelerisSolver  *theCelerisSolver;
    CelerisDomain  *theCelerisDomain;
+
+   SC_DoubleLineEdit *long1Edit; /**< Longitude Lower-Left */
+   SC_DoubleLineEdit *lat1Edit;  /**< Latitude Lower-Left */
+   SC_DoubleLineEdit *long2Edit; /**< Longitude Upper-Right */
+   SC_DoubleLineEdit *lat2Edit;  /**< Latitude Upper-Right */
 };
 
 #endif // CELERIS_TAICHI_EVENT_H

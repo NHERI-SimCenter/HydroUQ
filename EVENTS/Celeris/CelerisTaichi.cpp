@@ -36,6 +36,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #include <CelerisTaichi.h>
 #include <QLabel>
+#include <QtMath>
 #include <QString>
 #include <QGridLayout>
 #include <QJsonObject>
@@ -117,6 +118,11 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
   theForceSensorEndY = new SC_DoubleLineEdit("force_sensor_end_y", 11.05);
   theForceSensorLayout->addWidget(new QLabel("Define a line to record forces on. Typically, it is on a structure's perimeter."), numRowForces,0,1,5);
   numRowForces++;
+  theLatLongFSCheckBox = new QCheckBox("Use Lon/Lat");
+  theLatLongFSCheckBox->setChecked(false);
+  theLatLongFSCheckBox->setToolTip("Use Lon/Lat coordinates for the force sensor. If unchecked, the coordinates will be in the local coordinate system defined by the bathymetry grid.");
+  theForceSensorLayout->addWidget(theLatLongFSCheckBox, numRowForces,0,1,5);
+  numRowForces++;
   theForceSensorLayout->addWidget(new QLabel("Force Sensor Begin (X,Y)"),numRowForces,0,1,2);
   theForceSensorLayout->addWidget(theForceSensorBeginX, numRowForces,2,1,1);
   theForceSensorLayout->addWidget(theForceSensorBeginY, numRowForces,3,1,1);
@@ -145,6 +151,25 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
   theVisualLayout->addWidget(new QLabel("length unit"), numRowVisual, 4, 1, 1);
   numRowVisual++;
 
+
+  theVisualLayout->addWidget(new QLabel("lon_LL"), numRowVisual, 0, 1, 1);
+  long1Edit = new SC_DoubleLineEdit("lon_LL", -122.34053007546347);
+  long1Edit->setToolTip("Longitude Lower-Left");
+  theVisualLayout->addWidget(long1Edit, numRowVisual, 1, 1, 1);
+  theVisualLayout->addWidget(new QLabel("lat_LL:"), numRowVisual, 2, 1, 1);
+  lat1Edit = new SC_DoubleLineEdit("lat_LL", 37.8992412074125);
+  lat1Edit->setToolTip("Latitude Lower-Left");
+  theVisualLayout->addWidget(lat1Edit, numRowVisual, 3, 1, 1);
+  theVisualLayout->addWidget(new QLabel("lon_UR"), numRowVisual, 4, 1, 1);
+  long2Edit = new SC_DoubleLineEdit("lon_UR", -122.32314730065123);
+  long2Edit->setToolTip("Longitude Upper-Right");
+  theVisualLayout->addWidget(long2Edit, numRowVisual, 5, 1, 1);
+  theVisualLayout->addWidget(new QLabel("lat_UR"), numRowVisual, 6, 1, 1);
+  lat2Edit = new SC_DoubleLineEdit("lat_UR", 37.91514928711621);
+  lat2Edit->setToolTip("Latitude Upper-Right");
+  theVisualLayout->addWidget(lat2Edit, numRowVisual, 7, 1, 1);
+  numRowVisual++;
+
   QPushButton *theButton = new QPushButton("Draw Bathymetry");
   theButton->setToolTip("Draw the bathymetry in the image above.");
   theButton->setIcon(QIcon(":/icons/pencil-plus-white.svg"));
@@ -166,12 +191,26 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
       QString pythonScriptName = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "celeris_draw_bathy.py";
       QJsonArray forceSensorBeginArray;
       // Append the integer values to the JSON array
-      forceSensorBeginArray.append(int(theForceSensorBeginX->text().toDouble() / theDx->text().toDouble()));
-      forceSensorBeginArray.append(int(theForceSensorBeginY->text().toDouble() / theDy->text().toDouble()));
       QJsonArray forceSensorEndArray;
-      forceSensorEndArray.append(int(theForceSensorEndX->text().toDouble() / theDx->text().toDouble()));
-      forceSensorEndArray.append(int(theForceSensorEndY->text().toDouble() / theDy->text().toDouble()));
-
+      if (theLatLongFSCheckBox->isChecked()) {
+        qDebug() << "dx, dy: " << theDx->text() << theDy->text();
+        qDebug() << "long1, lat1: " << long1Edit->text() << lat1Edit->text();
+        qDebug() << "Force sensor coordinates in lat/long";
+        qDebug() << "force sensor begin: " << theForceSensorBeginX->text() << theForceSensorBeginY->text();
+        qDebug() << "force sensor end: " << theForceSensorEndX->text() << theForceSensorEndY->text();
+        qDebug() << "Convert to meters";
+        forceSensorBeginArray.append(((theForceSensorBeginX->text().toDouble() - long1Edit->text().toDouble()) * qCos(lat1Edit->text().toDouble() * 3.14159265359 / 180.0) * 111111.0) / theDx->text().toDouble());
+        forceSensorBeginArray.append(((theForceSensorBeginY->text().toDouble() - lat1Edit->text().toDouble()) * 111111.0) / theDy->text().toDouble());
+        forceSensorEndArray.append(((theForceSensorEndX->text().toDouble() - long1Edit->text().toDouble()) * qCos(lat1Edit->text().toDouble() * 3.14159265359 / 180.0) * 111111.0) / theDx->text().toDouble());
+        forceSensorEndArray.append(((theForceSensorEndY->text().toDouble() - lat1Edit->text().toDouble()) * 111111.0) / theDy->text().toDouble());
+        qDebug() << "force sensor begin: " << forceSensorBeginArray[0].toDouble() << forceSensorBeginArray[1].toDouble();
+        qDebug() << "force sensor end: " << forceSensorEndArray[0].toDouble() << forceSensorEndArray[1].toDouble();
+      } else {
+        forceSensorBeginArray.append(int(theForceSensorBeginX->text().toDouble() / theDx->text().toDouble()));
+        forceSensorBeginArray.append(int(theForceSensorBeginY->text().toDouble() / theDy->text().toDouble()));
+        forceSensorEndArray.append(int(theForceSensorEndX->text().toDouble() / theDx->text().toDouble()));
+        forceSensorEndArray.append(int(theForceSensorEndY->text().toDouble() / theDy->text().toDouble()));
+      }
       // QJsonArray bathymetryArrayJSON = boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["bathymetry"].toArray();
       QJsonDocument forceSensorBeginDoc;
       forceSensorBeginDoc.setArray(forceSensorBeginArray);
@@ -185,6 +224,32 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
       theWaveGaugesTable->outputToJSON(waveGaugesObjectTemp);
       QJsonValue theValue = waveGaugesObjectTemp["locationOfTimeSeries"];
       waveGaugesArrayTemp = theValue.toArray();
+      // go through all elements and convert degrees lat long to meters
+      if (theLatLongWGCheckBox->isChecked()) {
+        for (int i = 0; i < waveGaugesArrayTemp.size(); i++) {
+          QJsonArray gaugeArray = waveGaugesArrayTemp[i].toArray();
+          // foreach(const QString& key, gauge.keys())
+          // {
+          //   QJsonValue value = gauge.value(key);
+          //   qDebug() << "CelerisTaichi gauge: key: " << key << " value: " << value.toString();
+          // }
+          // // print all key names in the object
+          // qDebug() << "CelerisTaichi::updateBathymetry: gauge object: " << gauge;
+          // qDebug() << "CelerisTaichi::updateBathymetry: gauge object keys: " << gauge.keys();
+          // QJsonArray gaugeArray; 
+          // gaugeArray.append(gauge["Origin X"].toDouble());
+          // gaugeArray.append(gauge["Origin Y"].toDouble());
+          qDebug() << "gaugeArray: " << gaugeArray[0].toDouble() << gaugeArray[1].toDouble();
+          qDebug() << "long1, lat1: " << long1Edit->text() << lat1Edit->text();
+          if (theLatLongWGCheckBox->isChecked()) {
+            gaugeArray[0] = ((gaugeArray[0].toDouble() - long1Edit->text().toDouble()) * qCos(lat1Edit->text().toDouble() * 3.14159265359 / 180.000000000) * 111111.000000000);
+            gaugeArray[1] = ((gaugeArray[1].toDouble() - lat1Edit->text().toDouble()) * 111111.0000000000);
+          }
+          qDebug() << "gaugeArray: " << gaugeArray[0].toDouble() << gaugeArray[1].toDouble();
+          qDebug() << "";
+          waveGaugesArrayTemp[i] = gaugeArray;
+        }
+      }
       waveGaugesDoc.setArray(waveGaugesArrayTemp);
       QString waveGaugesString = waveGaugesDoc.toJson(QJsonDocument::Compact);
       QString dx = theDx->text();
@@ -254,20 +319,25 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
     drawBathymetry();
   });
   
+  
+  
   QStringList theWaveGaugeLocs; theWaveGaugeLocs = QStringList() << "0.0" << "0.5" << "1.0" << "1.5" << "2.0" << "2.5" << "3.0" << "3.5" << "4.0" << "4.5" << "5.0";
   
-
+  
   QStringList  listWG; listWG << "Origin X" << "Origin Y" ;
   QStringList  dataWG; dataWG << "16.0" << "1.5"
-				                      << "34.269" << "1.5"                 
-				                      << "38.114" << "1.5" ;
+  << "34.269" << "1.5"                 
+  << "38.114" << "1.5" ;
   theWaveGaugesTable = new SC_TableEdit("locationOfTimeSeries",  listWG, 3, dataWG);
   // theLayout->addWidget(new QLabel("Wave Gauge Locations"), 0,5,1,3);
   QGroupBox *theWaveGaugesGroupBox = new QGroupBox("Wave Gauge Locations");
   QGridLayout *theWaveGaugesLayout = new QGridLayout();
   theWaveGaugesGroupBox->setLayout(theWaveGaugesLayout);
+  
+  theLatLongWGCheckBox = new QCheckBox("Use Lon/Lat");
+  theWaveGaugesLayout->addWidget(theLatLongWGCheckBox, 0,5,1,4);
 
-  theWaveGaugesLayout->addWidget(theWaveGaugesTable, 0,5,6,4);
+  theWaveGaugesLayout->addWidget(theWaveGaugesTable, 1,5,5,4);
   theWaveGaugesLayout->setRowStretch(6,0);
   theLayout->addWidget(theWaveGaugesGroupBox, 0,5,2,4);
   this->setLayout(theLayout);
@@ -356,6 +426,7 @@ CelerisTaichi::outputToJSON(QJsonObject &jsonObject)
 
   configObj["locationOfTimeSeries"] = waveGaugesArray;
   configObj["NumberOfTimeSeries"] = numRows;
+
   jsonObject["config"] = configObj;
 
   return true;
@@ -458,6 +529,23 @@ CelerisTaichi::inputFromJSON(QJsonObject &jsonObject)
     // return false;
   }
 
+  if (configObj.contains("lon_LL")) { 
+    QJsonValue theValue = configObj["lon_LL"];
+    long1Edit->setText(QString::number(theValue.toDouble()));
+  }
+  if (configObj.contains("lat_LL")) {
+    QJsonValue theValue = configObj["lat_LL"];
+    lat1Edit->setText(QString::number(theValue.toDouble()));
+  }
+  if (configObj.contains("lon_UR")) {
+    QJsonValue theValue = configObj["lon_UR"];
+    long2Edit->setText(QString::number(theValue.toDouble()));
+  }
+  if (configObj.contains("lat_UR")) {
+    QJsonValue theValue = configObj["lat_UR"];
+    lat2Edit->setText(QString::number(theValue.toDouble()));
+  }
+
   return true;
 }
 
@@ -548,6 +636,24 @@ bool CelerisTaichi::inputFromConfigJSON(QJsonObject &jsonObject)
     qDebug() << "CelerisTaichi::inputFromConfigJSON: no locationOfTimeSeries object in JSON";
     // return false;
   }
+
+  if (configObj.contains("lon_LL")) { 
+    QJsonValue theValue = configObj["lon_LL"];
+    long1Edit->setText(QString::number(theValue.toDouble()));
+  }
+  if (configObj.contains("lat_LL")) {
+    QJsonValue theValue = configObj["lat_LL"];
+    lat1Edit->setText(QString::number(theValue.toDouble()));
+  }
+  if (configObj.contains("lon_UR")) {
+    QJsonValue theValue = configObj["lon_UR"];
+    long2Edit->setText(QString::number(theValue.toDouble()));
+  }
+  if (configObj.contains("lat_UR")) {
+    QJsonValue theValue = configObj["lat_UR"];
+    lat2Edit->setText(QString::number(theValue.toDouble()));
+  }
+
   // Add contents of config.json to the JSON object
   jsonObject["config"] = configObj;
   return true;

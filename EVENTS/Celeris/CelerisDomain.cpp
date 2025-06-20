@@ -61,6 +61,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SC_ComboBox.h>
 #include <SC_CheckBox.h>
 #include <QGroupBox>
+#include <QStackedWidget>
 
 CelerisDomain::CelerisDomain(RandomVariablesContainer* randomVariables, QWidget *parent)
   :SimCenterWidget(parent)
@@ -124,6 +125,10 @@ CelerisDomain::CelerisDomain(RandomVariablesContainer* randomVariables, QWidget 
   direction->setText("0.0");
   phase = new LineEditRV(randomVariables);
   phase->setText("0.0");
+  amplitude_solitary = new LineEditRV(randomVariables);
+  amplitude_solitary->setText("0.5");
+  period_solitary = new LineEditRV(randomVariables);
+  period_solitary->setText("20.0");
   BoundaryWidth = new SC_IntLineEdit("BoundaryWidth", 20);
   north_boundary_type = new SC_ComboBox("north_boundary_type", QStringList() << "Solid Wall" << "Sponge Layer" << "Incoming Waves");
   north_boundary_type->setCurrentIndex(1);
@@ -185,24 +190,61 @@ CelerisDomain::CelerisDomain(RandomVariablesContainer* randomVariables, QWidget 
   int numRowWave = 0;
   QGroupBox *theWaveTypeGroupBox = new QGroupBox("Wave Type");
   QGridLayout *theWaveTypeLayout = new QGridLayout();
+  QStackedWidget *theWaveTypeStack = new QStackedWidget();
+  QGridLayout *theWaveFileLayout = new QGridLayout();
+  QGridLayout *theWaveSineLayout = new QGridLayout();
+  QGridLayout *theWaveSolitaryLayout = new QGridLayout();
+  QWidget *theWaveFile = new QWidget();
+  QWidget *theWaveSine = new QWidget();
+  QWidget *theWaveSolitary = new QWidget();
+  theWaveFile->setLayout(theWaveFileLayout);
+  theWaveSine->setLayout(theWaveSineLayout);
+  theWaveSolitary->setLayout(theWaveSolitaryLayout);
+  theWaveTypeStack->addWidget(theWaveFile);
+  theWaveTypeStack->addWidget(theWaveSine);
+  theWaveTypeStack->addWidget(theWaveSolitary);
   theWaveTypeGroupBox->setLayout(theWaveTypeLayout);
   theWaveTypeLayout->addWidget(new QLabel("Wave Type"), numRowWave, 0, 1, 2);
   theWaveTypeLayout->addWidget(WaveType, numRowWave, 2, 1, 3);
   numRowWave++;
-  theWaveTypeLayout->addWidget(new QLabel("amplitude"), numRowWave, 0, 1, 2);
-  theWaveTypeLayout->addWidget(amplitude, numRowWave, 2, 1, 3);
+  theWaveTypeLayout->addWidget(theWaveTypeStack, numRowWave, 0, 1, 5);
   numRowWave++;
-  theWaveTypeLayout->addWidget(new QLabel("period"), numRowWave, 0, 1, 2);
-  theWaveTypeLayout->addWidget(period, numRowWave, 2, 1, 3);
-  numRowWave++;
-  theWaveTypeLayout->addWidget(new QLabel("direction"), numRowWave, 0, 1, 2);
-  theWaveTypeLayout->addWidget(direction, numRowWave, 2, 1, 3);
-  numRowWave++;
-  theWaveTypeLayout->addWidget(new QLabel("phase"), numRowWave, 0, 1, 2);
-  theWaveTypeLayout->addWidget(phase, numRowWave, 2, 1, 3);
-  numRowWave++;
+
+  
+
+  theWaveSineLayout->addWidget(new QLabel("amplitude"), 0, 0, 1, 2);
+  theWaveSineLayout->addWidget(amplitude, 0, 2, 1, 3);
+  theWaveSineLayout->addWidget(new QLabel("period"), 1, 0, 1, 2);
+  theWaveSineLayout->addWidget(period, 1, 2, 1, 3);
+  theWaveSineLayout->addWidget(new QLabel("direction"), 2, 0, 1, 2);
+  theWaveSineLayout->addWidget(direction, 2, 2, 1, 3);
+  theWaveSineLayout->addWidget(new QLabel("phase"), 3, 0, 1, 2);
+  theWaveSineLayout->addWidget(phase, 3, 2, 1, 3);
+
+  theWaveSolitaryLayout->addWidget(new QLabel("amplitude"), 0, 0, 1, 2);
+  theWaveSolitaryLayout->addWidget(amplitude_solitary, 0, 2, 1, 3);
+  theWaveSolitaryLayout->addWidget(new QLabel("period"), 1, 0, 1, 2);
+  theWaveSolitaryLayout->addWidget(period_solitary, 1, 2, 1, 3);
+
+  theWaveFileLayout->addWidget(new QLabel("Define file in 'Celeris' tab."), numRowWave, 0, 1, 2);
+  // theWaveFileLayout->addWidget(theWaveFileEdit, numRowWave,2,1,3);
+
+
   theLayout->addWidget(theWaveTypeGroupBox, numRow, 0, 1, 5);
   numRow++;
+
+
+  connect(WaveType, &QComboBox::currentTextChanged, [=](QString val) {
+      if (val == "File") {
+          theWaveTypeStack->setCurrentIndex(0);
+      }
+      else if (val == "Sine") {
+          theWaveTypeStack->setCurrentIndex(1);
+      } 
+      else if (val == "Solitary") {
+          theWaveTypeStack->setCurrentIndex(2);
+      }
+  });
 
   int numRowSea = 0;
   QGroupBox *theSeaLevelGroupBox = new QGroupBox("Sea Level");
@@ -309,8 +351,8 @@ CelerisDomain::outputToJSON(QJsonObject &jsonObject)
 
   } else if (WaveType->currentText() == "Solitary") {
     configObj["WaveType"] = int(3);
-    amplitude->outputToJSON(configObj, QString("amplitude"));
-    period->outputToJSON(configObj, QString("period"));
+    amplitude_solitary->outputToJSON(configObj, QString("amplitude"));
+    period_solitary->outputToJSON(configObj, QString("period"));
   }
   BoundaryWidth->outputToJSON(configObj);
   // north_boundary_type->outputToJSON(configObj);
@@ -384,8 +426,8 @@ CelerisDomain::inputFromJSON(QJsonObject &jsonObject)
     }
   } else if (configObj["WaveType"].toInt() == 3) {
     WaveType->setCurrentIndex(2);
-    amplitude->inputFromJSON(configObj, QString("amplitude"));
-    period->inputFromJSON(configObj, QString("period"));
+    amplitude_solitary->inputFromJSON(configObj, QString("amplitude"));
+    period_solitary->inputFromJSON(configObj, QString("period"));
   }
 
   BoundaryWidth->inputFromJSON(configObj);
