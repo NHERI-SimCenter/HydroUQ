@@ -228,25 +228,10 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
       if (theLatLongWGCheckBox->isChecked()) {
         for (int i = 0; i < waveGaugesArrayTemp.size(); i++) {
           QJsonArray gaugeArray = waveGaugesArrayTemp[i].toArray();
-          // foreach(const QString& key, gauge.keys())
-          // {
-          //   QJsonValue value = gauge.value(key);
-          //   qDebug() << "CelerisTaichi gauge: key: " << key << " value: " << value.toString();
-          // }
-          // // print all key names in the object
-          // qDebug() << "CelerisTaichi::updateBathymetry: gauge object: " << gauge;
-          // qDebug() << "CelerisTaichi::updateBathymetry: gauge object keys: " << gauge.keys();
-          // QJsonArray gaugeArray; 
-          // gaugeArray.append(gauge["Origin X"].toDouble());
-          // gaugeArray.append(gauge["Origin Y"].toDouble());
-          qDebug() << "gaugeArray: " << gaugeArray[0].toDouble() << gaugeArray[1].toDouble();
-          qDebug() << "long1, lat1: " << long1Edit->text() << lat1Edit->text();
           if (theLatLongWGCheckBox->isChecked()) {
             gaugeArray[0] = ((gaugeArray[0].toDouble() - long1Edit->text().toDouble()) * qCos(lat1Edit->text().toDouble() * 3.14159265359 / 180.000000000) * 111111.000000000);
             gaugeArray[1] = ((gaugeArray[1].toDouble() - lat1Edit->text().toDouble()) * 111111.0000000000);
           }
-          qDebug() << "gaugeArray: " << gaugeArray[0].toDouble() << gaugeArray[1].toDouble();
-          qDebug() << "";
           waveGaugesArrayTemp[i] = gaugeArray;
         }
       }
