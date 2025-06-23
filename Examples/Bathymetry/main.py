@@ -1,20 +1,41 @@
 import pip
+import subprocess
+import sys
 
+def install_brailsplusplus():
+    try:
+        import brails
+        print("BrailsPlusPlus is already installed.")
+    except:
+        try:
+            subprocess.check_call([
+                sys.executable, "-m", "pip", "install",
+                "git+https://github.com/JustinBonus/BrailsPlusPlus"
+            ])
+            print("BrailsPlusPlus installed successfully.")
+        except subprocess.CalledProcessError as e:
+            print("Installation failed:", e)
+        
 def import_or_install(package):
     try:
         __import__(package)
     except ImportError:
-        try:
-            print(f"Installing {package} using pip without --user flag...")
-            pip.main(['install', package])  
-        except:
+        if (package == 'brails'):
+            install_brailsplusplus()
+        else:
             try:
-                print(f"Installing {package} using pip with --user flag...")
-                pip.main(['install', '--user', package])  # Try user install if system install fails
+                print(f"Installing {package} using pip without --user flag...")
+                pip.main(['install', package])  
             except:
-                print(f"Installing {package} using subprocess...")
-                import subprocess
-                subprocess.check_call(['pip', 'install', package]) 
+                try:
+                    print(f"Installing {package} using pip with --user flag...")
+                    pip.main(['install', '--user', package])  # Try user install if system install fails
+                except:
+                    print(f"Installing {package} using subprocess...")
+                    import subprocess
+                    subprocess.check_call(['pip', 'install', package]) 
+
+# pip.main(['uninstall', 'brails'])
 
 import_or_install('PIL')
 import_or_install('numpy')
@@ -23,7 +44,7 @@ import_or_install('scipy')
 import_or_install('requests')
 import_or_install('geographiclib')
 import_or_install('geopy')
-import_or_install('brails')
+install_brailsplusplus()
 import_or_install('netCDF4')
 import argparse
 from multiprocessing import Process
@@ -33,6 +54,7 @@ import math
 
 from PIL import Image, ImageDraw, ImageOps
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.colors as clr
 from scipy.spatial import KDTree
@@ -42,7 +64,8 @@ from geopy.geocoders import Nominatim
 from geographiclib.geodesic import Geodesic # using Karney's root-finding reformulation of Vincenty's formula to leverage newton's method and greater stability at antipodal points.
 from netCDF4 import Dataset # for getting sea level anomaly data 
 
-from brails import Importer
+import brails
+from brails.utils import Importer
 from config_init import create_config
 from wavemaker import create_waves
 
@@ -490,7 +513,7 @@ def visualize(bathy_array=None, building_mask=None, filename="./CelerisInit/over
     # Save the plot to a file
     plt.savefig(filename, format='png', transparent=True, bbox_inches='tight', pad_inches=0)
     print(f"Plot saved to {filename}")
-    plt.show()
+    # plt.show()
     plt.close(fig)
     # plt.show()
     
@@ -615,14 +638,14 @@ def main():
     # date = (2025, 6, 11) # TODO sea anomaly data was problematic
 
     output_directory = args.output_directory
-    if not os.path.exists(output_directory):
-        os.makedirs(output_directory)
-        print(f"Output directory: {output_directory}")
+    if not os.path.exists(os.path.join(__location__, output_directory)):
+        os.makedirs(os.path.join(__location__, output_directory))
+        print(f"Output directory: {os.path.join(__location__, output_directory)}")
         
     USE_PROCESSES = True # Set to True to use processes, False to execute sequentially in the main thread
 
-    if not os.path.exists("./ArcGIS_outputs"):
-        os.makedirs("./ArcGIS_outputs")
+    if not os.path.exists(os.path.join(__location__, "./ArcGIS_outputs")):
+        os.makedirs(os.path.join(__location__, './ArcGIS_outputs'))
     if USE_PROCESSES:
         dem_p = Process(target=get_dem, kwargs={
             "bbox": bbox,
@@ -645,8 +668,8 @@ def main():
 
     if not args.disable_brails:
         print("Retrieving building inventory using BRAILS...")
-        if not os.path.exists("./mergebuffer"):
-            os.makedirs("./mergebuffer")
+        if not os.path.exists(os.path.join(__location__, './mergebuffer')):
+            os.makedirs(os.path.join(__location__, './mergebuffer'))
         inventory_filename = os.path.join(__location__, "mergebuffer", "building_inventory.geojson")
         inventory = get_brails((bbox[0], bbox[1], bbox[2], bbox[1], bbox[2], bbox[3], bbox[0], bbox[3]), inventory_filename)
     else:
