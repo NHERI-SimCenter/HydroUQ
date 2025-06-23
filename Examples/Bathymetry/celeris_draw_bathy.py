@@ -13,7 +13,7 @@ if __name__ == "__main__":
     # Intake output filename from command line
     import sys
     import ast
-    if len(sys.argv) != 8:
+    if len(sys.argv) < 8:
         print("Usage: python celeris_draw_bathy.py '<input_file>' '<begin coordinate>' '<end coordinate>' '<output_file>'")
         sys.exit(1)
     try:
@@ -49,6 +49,12 @@ if __name__ == "__main__":
     except ValueError:
         print("Invalid, not a filename string. Please provide an OBJ filename")
         sys.exit(1)
+    try:
+        bbox = ast.literal_eval(sys.argv[8])
+    except:
+        bbox = None
+        print("No bounding box provided, defaulting to meters as length unit. Bbox providable as a list of 4 floats, e.g., '[lon_LL, lat_LL, lon_UR, lat_UR]'")
+        
     # Read the bathymetry data from the file
     with open(input_file, 'r') as f:
         lines = f.readlines()
@@ -67,21 +73,35 @@ if __name__ == "__main__":
     
     # quickly plot imshow
     import matplotlib.pyplot as plt
-    im = plt.imshow(bathy, cmap='inferno', interpolation='nearest')
-    plt.plot([begin[0],end[0]], [begin[1],end[1]], color='#39FF14', label='Force Sensor')
+    im = plt.imshow(bathy, cmap='terrain', interpolation='None', origin='lower')
+    plt.plot([begin[0],end[0]], [begin[1],end[1]], color='black', label='Force Sensor')
     plt.text(begin[0], begin[1], "FS", fontsize=7, ha='right', va='bottom', color='#39FF14')
     
     # plot wave gauges
     i = 0
     for gauge in wave_gauges:
-        plt.plot(gauge[0]/dx, gauge[1]/dy, 'o', color='cyan', label='Wave Gauge', markersize=2)
+        plt.plot(gauge[0]/dx, gauge[1]/dy, 'o', color='black', label='Wave Gauge', markersize=2)
         plt.text(gauge[0]/dx, gauge[1]/dy, "WG"+str(i), fontsize=7, ha='right', va='bottom', color='cyan')
         i += 1
         
     xticks = plt.gca().get_xticks()
     yticks = plt.gca().get_yticks()
-    plt.gca().set_xticklabels([f"{x*dx:.2f}" for x in xticks])
-    plt.gca().set_yticklabels([f"{y*dy:.2f}" for y in yticks])
+    if bbox is not None:
+        plt.gca().set_ylim(0, bathy.shape[0])
+        plt.gca().set_xlim(0, bathy.shape[1])
+        plt.gca().set_yticks([0, 0.25 * bathy.shape[0], 0.5 * bathy.shape[0], 0.75 * bathy.shape[0], bathy.shape[0]])
+        plt.gca().set_xticks([0, 0.25 * bathy.shape[1], 0.5 * bathy.shape[1], 0.75 * bathy.shape[1], bathy.shape[1]])
+        plt.gca().set_xticklabels([f"{x:.4f}" for x in [bbox[0], (bbox[0] + (bbox[2] - bbox[0]) / 4), (bbox[0] + (bbox[2] - bbox[0]) / 2), (bbox[0] + 3 * (bbox[2] - bbox[0]) / 4), (bbox[2])]], rotation=30)
+        plt.gca().set_yticklabels([f"{y:.4f}" for y in [bbox[1], (bbox[1] + (bbox[3] - bbox[1]) / 4), (bbox[1] + (bbox[3] - bbox[1]) / 2), (bbox[1] + 3 * (bbox[3] - bbox[1]) / 4), (bbox[3])]], rotation=30)
+        plt.gca().tick_params(axis='both', direction='out', length=4, width=1, colors='black', labelsize=8)
+        plt.gca().set_xlabel('Longitude (degrees)', fontsize=8)
+        plt.gca().set_ylabel('Latitude (degrees)', fontsize=8)
+    else:
+        plt.gca().set_xticklabels([f"{x*dx:.2f}" for x in xticks], rotation=30)
+        plt.gca().set_yticklabels([f"{y*dy:.2f}" for y in yticks], rotation=30)
+        plt.gca().tick_params(axis='both', direction='out', length=4, width=1, colors='black', labelsize=8)
+        plt.gca().set_xlabel('X (m)', fontsize=8)
+        plt.gca().set_ylabel('Y (m)', fontsize=8)
     plt.colorbar(im, label='Elevation', shrink=0.5)
     # plt.show()
     

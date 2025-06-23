@@ -143,6 +143,11 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
 
   // theVisualLayout->addWidget(new QLabel("Ensure (dx, dy) matches the domain tab."), numRowVisual,0,1,5);
   // numRowVisual++;
+  theLatLongPlotCheckBox = new QCheckBox("Use Lon/Lat");
+  theLatLongPlotCheckBox->setChecked(false);
+  theLatLongPlotCheckBox->setToolTip("Use Lon/Lat coordinates for the visualization.");
+  theVisualLayout->addWidget(theLatLongPlotCheckBox, numRowVisual,0,1,5);
+  numRowVisual++;
   theDx = new SC_DoubleLineEdit("dx", 0.05);
   theDy = new SC_DoubleLineEdit("dy", 0.05);
   theVisualLayout->addWidget(new QLabel("Bathymetry grid spacing (dx, dy)"), numRowVisual, 0, 1, 2);
@@ -239,6 +244,17 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
       QString waveGaugesString = waveGaugesDoc.toJson(QJsonDocument::Compact);
       QString dx = theDx->text();
       QString dy = theDy->text();
+
+      QString bboxString = "";
+      QJsonArray bboxArray;
+      bboxArray.append(long1Edit->text().toDouble());
+      bboxArray.append(lat1Edit->text().toDouble());
+      bboxArray.append(long2Edit->text().toDouble());
+      bboxArray.append(lat2Edit->text().toDouble());
+      QJsonDocument bboxDoc;
+      bboxDoc.setArray(bboxArray);
+      bboxString = bboxDoc.toJson(QJsonDocument::Compact);
+      
       // double extrude_length = boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["domain_end"].toArray()[2].toDouble() - boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["domain_start"].toArray()[2].toDouble(); 
       QString inputPath = theBathymetryFile->getFilename();
       QString outputPath = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "custom_bathy.jpg";
@@ -250,10 +266,18 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
       qDebug() << "Grid-spacing dx: " << dx;
       qDebug() << "Grid-spacing dy: " << dy;
       qDebug() << "Output path: " << outputPath;
+      qDebug() << "Bounding box coordinates: " << bboxString;
       // Launch python script to generate the bathymetry mesh
       QString program = SimCenterPreferences::getInstance()->getPython();
       QStringList args;
       args << pythonScriptName << inputPath << forceSensorBeginString << forceSensorEndString << waveGaugesString << dx << dy << outputPath;
+      if (theLatLongPlotCheckBox->isChecked()) {
+        qDebug() << "CelerisTaichi::drawBathymetry - Using Lon/Lat coordinates for the bathymetry visualization.";
+        args << bboxString;
+      } else {
+        qDebug() << "CelerisTaichi::drawBathymetry - Using local coordinates for the bathymetry visualization.";
+      }
+      
       QProcess *process = new QProcess();
 
       // Catch python print statements and errors and display them in through the qDebug() stream.
@@ -343,11 +367,19 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
     QFileInfo fileInfo(theBathymetryFile->getFilename());
     if (fileInfo.exists() && fileInfo.isReadable()) {
       qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file exists and is readable: " << theBathymetryFile->getFilename();
-      drawBathymetry();
+      emitBathymetryFileChanged();
     } else {
       qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file does not exist or is not readable: " << theBathymetryFile->getFilename();
     }
   });
+
+  connect(this, &CelerisTaichi::bathymetryFileChanged, this, [=]() {
+    // When the bathymetry file is changed, we need to update the bathymetry image
+    qDebug() << "CelerisTaichi::CelerisTaichi: bathymetryFileChanged signal received";
+    drawBathymetry();
+  });
+
+  emitBathymetryFileChanged(); // emit the signal to draw the bathymetry image
 
 }
 
@@ -531,6 +563,8 @@ CelerisTaichi::inputFromJSON(QJsonObject &jsonObject)
     lat2Edit->setText(QString::number(theValue.toDouble()));
   }
 
+  emitBathymetryFileChanged(); // emit the signal to draw the bathymetry image
+
   return true;
 }
 
@@ -641,6 +675,9 @@ bool CelerisTaichi::inputFromConfigJSON(QJsonObject &jsonObject)
 
   // Add contents of config.json to the JSON object
   jsonObject["config"] = configObj;
+
+  emitBathymetryFileChanged(); // emit the signal to draw the bathymetry image
+
   return true;
 }
 
@@ -723,6 +760,13 @@ void CelerisTaichi::setConfigFile(QString &filename)
 void CelerisTaichi::setBathymetryFile(QString &filename)
 {
   theBathymetryFile->setFilename(filename);
+  emit this->bathymetryFileChanged();
+}
+
+void CelerisTaichi::emitBathymetryFileChanged()
+{
+  emit this->bathymetryFileChanged();
+  qDebug() << "CelerisTaichi::emitBathymetryFileChanged: emitted bathymetryFileChanged signal";
 }
 
 void CelerisTaichi::setWavesFile(QString &filename)
