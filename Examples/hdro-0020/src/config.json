@@ -74,6 +74,7 @@
     "colorVal_min": -1,
     "colorMap_choice": 0,
     "surfaceToPlot": 0,
+    "useBreakingModel": 1,
     "showBreaking": 1,
     "dissipation_threshold": 0.3,
     "whiteWaterDecayRate": 0.9,
@@ -87,8 +88,11 @@
     "GMoffsetY": 0,
     "lat_LL": 0,
     "lon_LL": 0,
-    "lat_UR": 0,
-    "lon_UR": 0,
+    "lat_UR": 0.00019665019,
+    "lon_UR": 0.00039285039,
+    "address": "Seaside, OR",
+    "offset_latitude": 0.0,
+    "offset_longitude": -0.01,
     "render_step": 4,
     "simPause": -1,
     "html_update": -1,
@@ -99,7 +103,7 @@
     "durationTimeSeries": 0,
     "maxdurationTimeSeries": 30,
     "maxNumberOfTimeSeries": 16,
-    "NumberOfTimeSeries": 5,
+    "NumberOfTimeSeries": 6,
     "changethisTimeSeries": 5,
     "changeXTimeSeries": 0,
     "changeYTimeSeries": 0,
@@ -129,46 +133,6 @@
         {
             "xts": 36.81061169380088,
             "yts": 13.076553510530289
-        },
-        {
-            "xts": 0,
-            "yts": 0
-        },
-        {
-            "xts": 0,
-            "yts": 0
-        },
-        {
-            "xts": 0,
-            "yts": 0
-        },
-        {
-            "xts": 0,
-            "yts": 0
-        },
-        {
-            "xts": 0,
-            "yts": 0
-        },
-        {
-            "xts": 0,
-            "yts": 0
-        },
-        {
-            "xts": 0,
-            "yts": 0
-        },
-        {
-            "xts": 0,
-            "yts": 0
-        },
-        {
-            "xts": 0,
-            "yts": 0
-        },
-        {
-            "xts": 0,
-            "yts": 0
         }
     ],
     "xClick": 0,

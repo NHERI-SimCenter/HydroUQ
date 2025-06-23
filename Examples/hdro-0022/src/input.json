@@ -94,6 +94,11 @@
                 "g": 9.80665,
                 "infiltrationRate": 0.001,
                 "isManning": 0,
+                "address": "Loiza, Puerto Rico",
+                "lat_LL": 18.4323008,
+                "lon_LL": -65.8780065,
+                "lat_UR": 18.4423008,
+                "lon_UR": -65.8680065,
                 "lat": 18.4323008,
                 "locationOfTimeSeries": [
                     {

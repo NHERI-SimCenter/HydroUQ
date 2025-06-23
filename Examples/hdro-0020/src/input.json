@@ -179,7 +179,12 @@
                 "infiltrationRate": 0.001,
                 "isManning": 0,
                 "lat_LL": 0,
-                "lat_UR": 0,
+                "lon_LL": 0,
+                "lat_UR": 0.00019665019,
+                "lon_UR": 0.00039285039,
+                "address": "Seaside, OR",
+                "offset_latitude": 0.0,
+                "offset_longitude": -0.01,
                 "locationOfTimeSeries": [
                     {
                         "xts": 0,
@@ -206,8 +211,6 @@
                         "yts": 13.0766
                     }
                 ],
-                "lon_LL": 0,
-                "lon_UR": 0,
                 "maxNumberOfTimeSeries": 16,
                 "maxdurationTimeSeries": 30,
                 "mouse_current_canvas_indX": 219,
@@ -258,7 +261,7 @@
                 "ship_posx": -100,
                 "ship_posy": 450,
                 "ship_width": 10,
-                "showBreaking": 0,
+                "showBreaking": 1,
                 "significant_wave_height": 1,
                 "simPause": -1,
                 "south_boundary_type": 0,

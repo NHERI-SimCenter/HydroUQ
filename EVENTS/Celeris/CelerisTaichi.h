@@ -85,9 +85,10 @@ public:
     void setConfigFile(QString &filename);
     void setWavesFile(QString &filename);
     void setBathymetryFile(QString &filename);
+    void emitBathymetryFileChanged(void);
 signals:
     void configFileChanged(void);
-
+    void bathymetryFileChanged(void); /**< Signal to redraw the bathymetry */
 private:
   SC_FileEdit *theCelerisPyScript;
   SC_FileEdit *theSimulationScript;
@@ -107,6 +108,7 @@ private:
   SC_DoubleLineEdit *lat2Edit;  /**< Latitude Upper-Right */
   QCheckBox *theLatLongFSCheckBox; /**< Use Lat/Long for Force Sensor */
   QCheckBox *theLatLongWGCheckBox; /**< Use Lat/Long for Force Sensor and Bounding Box */
+  QCheckBox *theLatLongPlotCheckBox; /**< Use Lat/Long for Bounding Box */
 };
 
 #endif // CELERIS_TAICHI_H
