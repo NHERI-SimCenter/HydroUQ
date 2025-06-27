@@ -42,6 +42,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SimCenterAppWidget.h>
 #include <RandomVariablesContainer.h>
 class RandomVariablesContainer;
+class SC_DoubleLineEdit;
+class SC_IntLineEdit;
+class SC_StringLineEdit;
+class SC_ComboBox;
+class QCheckBox;
 class CelerisTaichi;
 class CelerisSolver;
 class CelerisDomain;
@@ -63,7 +68,7 @@ public:
 
 signals:
    void runFinished(void);
-
+   void redrawBathymetry(void); /**< Signal to redraw the bathymetry */
 public slots:
    void clear(void);
 
@@ -73,6 +78,21 @@ private:
    CelerisTaichi  *inputCeleris;
    CelerisSolver  *theCelerisSolver;
    CelerisDomain  *theCelerisDomain;
+   
+   SC_ComboBox *mode;
+   
+   SC_DoubleLineEdit *long1Edit; /**< Longitude Lower-Left */
+   SC_DoubleLineEdit *lat1Edit;  /**< Latitude Lower-Left */
+   SC_DoubleLineEdit *long2Edit; /**< Longitude Upper-Right */
+   SC_DoubleLineEdit *lat2Edit;  /**< Latitude Upper-Right */
+   
+   SC_StringLineEdit *addressEdit;
+   SC_DoubleLineEdit *bufferEdit;
+   SC_DoubleLineEdit *offsetLatitudeEdit;
+   SC_DoubleLineEdit *offsetLongitudeEdit;
+   
+   SC_IntLineEdit *resolutionFactorEdit;
+   SC_DoubleLineEdit *scaleFactorEdit;
+   QCheckBox *enableBrailsCheckBox;
 };
-
 #endif // CELERIS_TAICHI_EVENT_H

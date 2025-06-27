@@ -128,34 +128,34 @@ CelerisTaichiEvent::CelerisTaichiEvent(RandomVariablesContainer* random_variable
     theCelerisBrailsAddressVLayout->addWidget(theCelerisBrailsAddressHWidget);
     theCelerisBrailsAddressVLayout->addWidget(theCelerisBrailsAddressBufferWidget);
 
-    theCelerisBrailsBboxLayout->addWidget(new QLabel("long1:"));
-    SC_DoubleLineEdit *long1Edit = new SC_DoubleLineEdit("long1", -122.34053007546347);
-    long1Edit->setToolTip("Longitude 1");
+    theCelerisBrailsBboxLayout->addWidget(new QLabel("lon_LL"));
+    long1Edit = new SC_DoubleLineEdit("lon_LL", -122.34053007546347);
+    long1Edit->setToolTip("Longitude Lower-Left");
     theCelerisBrailsBboxLayout->addWidget(long1Edit);
-    theCelerisBrailsBboxLayout->addWidget(new QLabel("lat1:"));
-    SC_DoubleLineEdit *lat1Edit = new SC_DoubleLineEdit("lat1", 37.8992412074125);
-    lat1Edit->setToolTip("Latitude 1");
+    theCelerisBrailsBboxLayout->addWidget(new QLabel("lat_LL:"));
+    lat1Edit = new SC_DoubleLineEdit("lat_LL", 37.8992412074125);
+    lat1Edit->setToolTip("Latitude Lower-Left");
     theCelerisBrailsBboxLayout->addWidget(lat1Edit);
-    theCelerisBrailsBboxLayout->addWidget(new QLabel("long2:"));
-    SC_DoubleLineEdit *long2Edit = new SC_DoubleLineEdit("long2", -122.32314730065123);
-    long2Edit->setToolTip("Longitude 2");
+    theCelerisBrailsBboxLayout->addWidget(new QLabel("lon_UR"));
+    long2Edit = new SC_DoubleLineEdit("lon_UR", -122.32314730065123);
+    long2Edit->setToolTip("Longitude Upper-Right");
     theCelerisBrailsBboxLayout->addWidget(long2Edit);
-    theCelerisBrailsBboxLayout->addWidget(new QLabel("lat2:"));
-    SC_DoubleLineEdit *lat2Edit = new SC_DoubleLineEdit("lat2", 37.91514928711621);
-    lat2Edit->setToolTip("Latitude 2");
+    theCelerisBrailsBboxLayout->addWidget(new QLabel("lat_UR"));
+    lat2Edit = new SC_DoubleLineEdit("lat_UR", 37.91514928711621);
+    lat2Edit->setToolTip("Latitude Upper-Right");
     theCelerisBrailsBboxLayout->addWidget(lat2Edit);
 
     theCelerisBrailsStack->addWidget(theCelerisBrailsBbox);
 
 
-    SC_StringLineEdit *addressEdit = new SC_StringLineEdit("address", "Richmond Field Station, Richmond, CA");
+    addressEdit = new SC_StringLineEdit("address", "Richmond Field Station, Richmond, CA");
     addressEdit->setToolTip("Address for the geocoded location.");
     theCelerisBrailsAddressHLayout->addWidget(new QLabel("Address:"));
     theCelerisBrailsAddressHLayout->addWidget(addressEdit);
-    SC_DoubleLineEdit *bufferEdit = new SC_DoubleLineEdit("buffer_radius", 0.01);
-    SC_DoubleLineEdit *offsetLatitudeEdit = new SC_DoubleLineEdit("offset_latitude", 0.0);
-    SC_DoubleLineEdit *offsetLongitudeEdit = new SC_DoubleLineEdit("offset_longitude", 0.0);
-    bufferEdit->setToolTip("Buffer radius in degrees for the geocoded location.");
+    bufferEdit = new SC_DoubleLineEdit("buffer_radius", 0.01);
+    offsetLatitudeEdit = new SC_DoubleLineEdit("offset_latitude", -0.005);
+    offsetLongitudeEdit = new SC_DoubleLineEdit("offset_longitude", 0.0);
+    bufferEdit->setToolTip("Buffer radius in degrees for the geocoded location. Bounding box will be created around the geocoded location with this radius.");
 
     
 
@@ -170,7 +170,7 @@ CelerisTaichiEvent::CelerisTaichiEvent(RandomVariablesContainer* random_variable
 
     theCelerisBrailsStack->setCurrentIndex(1); // Default to Address mode
     
-    SC_ComboBox *mode = new SC_ComboBox("Mode", QStringList() << "Bounding Box" << "Address");
+    mode = new SC_ComboBox("Mode", QStringList() << "Bounding Box" << "Address");
     mode->setCurrentIndex(1);
     mode->setToolTip("Select the location selection mode for the Celeris-BRAILS coupling tool.");
     theCelerisBrailsLayout->addWidget(mode);
@@ -207,8 +207,8 @@ CelerisTaichiEvent::CelerisTaichiEvent(RandomVariablesContainer* random_variable
     QGroupBox *theCelerisBrailsSettings = new QGroupBox("Settings");
     QHBoxLayout *theCelerisBrailsSettingsLayout = new QHBoxLayout();
     theCelerisBrailsSettings->setLayout(theCelerisBrailsSettingsLayout);
-    SC_IntLineEdit *resolutionFactorEdit = new SC_IntLineEdit("Resolution", 3.0);
-    SC_DoubleLineEdit *scaleFactorEdit = new SC_DoubleLineEdit("Scale", 1.0);
+    resolutionFactorEdit = new SC_IntLineEdit("Resolution", 3.0);
+    scaleFactorEdit = new SC_DoubleLineEdit("Scale", 1.0);
     resolutionFactorEdit->setToolTip("Approximate size of a bathymetry grid-cell that you want to request from the NOAA API. There will be some discrepancy (especially for longitudinal direction) due to the globe's coordinate space. This is used to determine the conversion of latitude degrees to meters.");
     scaleFactorEdit->setToolTip("Upsampling scale factor. This is used to upsample the bathymetry data. E.g., a scale factor of 2 will double the resolution of the bathymetry data retrieved from the NOAA API, while a scale factor of 1 will keep the original resolution.");
     theCelerisBrailsSettingsLayout->addWidget(new QLabel("Approx. Grid-Cell Size (m):"));
@@ -217,7 +217,7 @@ CelerisTaichiEvent::CelerisTaichiEvent(RandomVariablesContainer* random_variable
     theCelerisBrailsSettingsLayout->addWidget(scaleFactorEdit);
     // Move to right side of the layout
     theCelerisBrailsSettingsLayout->addWidget(new QLabel("Include Buildings?"), Qt::AlignRight);
-    QCheckBox *enableBrailsCheckBox = new QCheckBox("");
+    enableBrailsCheckBox = new QCheckBox("");
     enableBrailsCheckBox->setChecked(true);
     enableBrailsCheckBox->setToolTip("Enable or disable the coupling with BRAILS inventories. If disabled, the Celeris-BRAILS coupling tool will not retrieve or process BRAILS data.");
     theCelerisBrailsSettingsLayout->addWidget(enableBrailsCheckBox);
@@ -327,6 +327,8 @@ CelerisTaichiEvent::CelerisTaichiEvent(RandomVariablesContainer* random_variable
       inputCeleris->setConfigFile(configFile);
       inputCeleris->setBathymetryFile(bathyFile);
       inputCeleris->setWavesFile(wavesFile);
+      theTabWidget->setCurrentIndex(0);
+      emit this->redrawBathymetry(); // Trigger a redraw of the widget to update the inputCeleris widget with the new files.
     };
 
     connect(runButton, &QPushButton::clicked, this, runWorkflow);
@@ -375,6 +377,42 @@ bool CelerisTaichiEvent::inputFromJSON(QJsonObject &jsonObject)
   inputCeleris->inputFromJSON(jsonObject);
   theCelerisSolver->inputFromJSON(jsonObject);
   theCelerisDomain->inputFromJSON(jsonObject);
+
+  mode->inputFromJSON(jsonObject);
+  long1Edit->inputFromJSON(jsonObject);
+  lat1Edit->inputFromJSON(jsonObject);  
+  long2Edit->inputFromJSON(jsonObject);
+  lat2Edit->inputFromJSON(jsonObject);
+  if (jsonObject.contains("address")) {
+    QJsonValue addressValue = jsonObject["address"];
+    if (addressValue.isString()) {
+      addressEdit->setText(addressValue.toString());
+    } else {
+      qDebug() << "CelerisTaichiEvent::inputFromConfigJSON: address is not a string";
+      // return false;
+    }
+  } else {
+    qDebug() << "CelerisTaichiEvent::inputFromConfigJSON: no address object in JSON";
+    // return false;
+  }
+  offsetLongitudeEdit->inputFromJSON(jsonObject);
+  offsetLatitudeEdit->inputFromJSON(jsonObject);
+  bufferEdit->inputFromJSON(jsonObject);
+  resolutionFactorEdit->inputFromJSON(jsonObject);
+  scaleFactorEdit->inputFromJSON(jsonObject);
+  if (jsonObject.contains("enableBrails")) {
+    QJsonValue enableBrailsValue = jsonObject["enableBrails"];
+    if (enableBrailsValue.isBool()) {
+      enableBrailsCheckBox->setChecked(enableBrailsValue.toBool());
+    } else {
+      qDebug() << "CelerisTaichiEvent::inputFromConfigJSON: enableBrails is not a boolean value";
+      // return false;
+    }
+  } else {
+    qDebug() << "CelerisTaichiEvent::inputFromConfigJSON: no enableBrails object in JSON";
+    // return false;
+  }
+
   return true;
 }
 
@@ -384,6 +422,42 @@ bool CelerisTaichiEvent::inputFromConfigJSON(QJsonObject &jsonObject)
   inputCeleris->inputFromConfigJSON(jsonObject);
   theCelerisSolver->inputFromJSON(jsonObject);
   theCelerisDomain->inputFromJSON(jsonObject);
+
+  mode->inputFromJSON(jsonObject);
+  long1Edit->inputFromJSON(jsonObject);
+  lat1Edit->inputFromJSON(jsonObject);  
+  long2Edit->inputFromJSON(jsonObject);
+  lat2Edit->inputFromJSON(jsonObject);
+  if (jsonObject.contains("address")) {
+    QJsonValue addressValue = jsonObject["address"];
+    if (addressValue.isString()) {
+      addressEdit->setText(addressValue.toString());
+    } else {
+      qDebug() << "CelerisTaichiEvent::inputFromConfigJSON: address is not a string";
+      // return false;
+    }
+  } else {
+    qDebug() << "CelerisTaichiEvent::inputFromConfigJSON: no address object in JSON";
+    // return false;
+  }
+  offsetLongitudeEdit->inputFromJSON(jsonObject);
+  offsetLatitudeEdit->inputFromJSON(jsonObject);
+  bufferEdit->inputFromJSON(jsonObject);
+  resolutionFactorEdit->inputFromJSON(jsonObject);
+  scaleFactorEdit->inputFromJSON(jsonObject);
+  if (jsonObject.contains("enableBrails")) {
+    QJsonValue enableBrailsValue = jsonObject["enableBrails"];
+    if (enableBrailsValue.isBool()) {
+      enableBrailsCheckBox->setChecked(enableBrailsValue.toBool());
+    } else {
+      qDebug() << "CelerisTaichiEvent::inputFromConfigJSON: enableBrails is not a boolean value";
+      // return false;
+    }
+  } else {
+    qDebug() << "CelerisTaichiEvent::inputFromConfigJSON: no enableBrails object in JSON";
+    // return false;
+  }
+
   return true;
 }
 
@@ -396,6 +470,28 @@ bool CelerisTaichiEvent::outputToJSON(QJsonObject &jsonObject)
   inputCeleris->outputToJSON(jsonObject);
   theCelerisSolver->outputToJSON(jsonObject);
   theCelerisDomain->outputToJSON(jsonObject);
+
+  mode->outputToJSON(jsonObject);
+  long1Edit->outputToJSON(jsonObject);
+  lat1Edit->outputToJSON(jsonObject);
+  long2Edit->outputToJSON(jsonObject);
+  lat2Edit->outputToJSON(jsonObject);
+  if (addressEdit->text().isEmpty()) {
+    qDebug() << "CelerisTaichiEvent::outputToJSON: address is empty, not outputting to JSON";
+  } else {
+    jsonObject["address"] = addressEdit->text();
+  }
+  offsetLongitudeEdit->outputToJSON(jsonObject);
+  offsetLatitudeEdit->outputToJSON(jsonObject);
+  bufferEdit->outputToJSON(jsonObject);
+  resolutionFactorEdit->outputToJSON(jsonObject);
+  scaleFactorEdit->outputToJSON(jsonObject);
+  if (enableBrailsCheckBox->isChecked()) {
+    jsonObject["enableBrails"] = true;
+  } else {
+    jsonObject["enableBrails"] = false;
+  }
+
   return true;
 }
 

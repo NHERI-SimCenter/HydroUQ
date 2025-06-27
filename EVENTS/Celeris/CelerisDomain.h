@@ -105,6 +105,8 @@ private:
     LineEditRV *period;
     LineEditRV *direction;
     LineEditRV *phase;
+    LineEditRV *amplitude_solitary;
+    LineEditRV *period_solitary;
     SC_IntLineEdit *BoundaryWidth;
     SC_ComboBox *north_boundary_type;
     SC_ComboBox *south_boundary_type;
