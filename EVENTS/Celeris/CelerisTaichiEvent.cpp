@@ -333,6 +333,114 @@ CelerisTaichiEvent::CelerisTaichiEvent(RandomVariablesContainer* random_variable
 
     connect(runButton, &QPushButton::clicked, this, runWorkflow);
 
+
+    QWidget * theCelerisVisualize = new QWidget();
+    QVBoxLayout *theCelerisVisualizeLayout = new QVBoxLayout();
+    theCelerisVisualize->setLayout(theCelerisVisualizeLayout);
+    QLabel *visualizeLabel = new QLabel("Visualize the wave-gauges, velocimeters, and force sensors.");
+    theCelerisVisualizeLayout->addWidget(visualizeLabel);
+    
+    SC_ComboBox *runType = new SC_ComboBox("Run Type", QStringList() << "Local" << "Remote");
+    runType->setToolTip("Select the run type for the Celeris simulation. Local runs will use the local working directory, while remote runs will use the remote working directory.");
+    runType->setCurrentIndex(0);
+    QHBoxLayout *runTypeLayout = new QHBoxLayout();
+    QWidget *runTypeWidget = new QWidget();
+    runTypeWidget->setLayout(runTypeLayout);
+    runTypeLayout->addWidget(new QLabel("Run Type:"));
+    runTypeLayout->addWidget(runType);
+    theCelerisVisualizeLayout->addWidget(runTypeWidget);
+
+    SC_IntLineEdit *workingDirectory = new SC_IntLineEdit("workdir", 1);
+    workingDirectory->setToolTip("Simulation number to visualize. I.e., if you had 20 samples in the UQ tab, then this can be 1 - 20.");
+    QHBoxLayout *workingDirectoryLayout = new QHBoxLayout();
+    QWidget *workingDirectoryWidget = new QWidget();
+    workingDirectoryWidget->setLayout(workingDirectoryLayout);
+    workingDirectoryLayout->addWidget(new QLabel("Simulation Number:"));
+    workingDirectoryLayout->addWidget(workingDirectory);
+    theCelerisVisualizeLayout->addWidget(workingDirectoryWidget);
+
+
+    QPushButton *visualizeButton = new QPushButton("Visualize Results");
+    visualizeButton->setToolTip("Visualize the wave-gauges, velocimeters, and force sensors.");
+    theCelerisVisualizeLayout->addWidget(visualizeButton);
+
+    QString plotFilename = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + QDir::separator() + "results.png";
+    QPixmap *pix = new QPixmap(plotFilename);
+    QLabel *theImageLabel = new QLabel();
+    theImageLabel->setPixmap(*pix);
+    theImageLabel->setAlignment(Qt::AlignCenter);
+    theCelerisVisualizeLayout->addWidget(theImageLabel);
+    theCelerisVisualizeLayout->addStretch(1);
+
+    theTabWidget->addTab(theCelerisVisualize, "Results");
+
+    auto preferences = SimCenterPreferences::getInstance();
+
+    auto visualizeResults = [=]() {
+      QString pythonScriptName = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "postprocess.py";
+      QString localWorkingDirectory = preferences->getLocalWorkDir();
+      QString remoteWorkingDirectory = preferences->getRemoteWorkDir();
+      QString workingDirectoryString;
+      if (runType->currentText() == "Remote") {
+        workingDirectoryString = remoteWorkingDirectory + QDir::separator() + "tmp.SimCenter" + QDir::separator() + "workdir." + QString::number(workingDirectory->text().toInt());
+      } else {
+        workingDirectoryString = localWorkingDirectory + QDir::separator() + "tmp.SimCenter" + QDir::separator() + "workdir." + QString::number(workingDirectory->text().toInt());
+      }
+      qDebug() << "Python: " << SimCenterPreferences::getInstance()->getPython();
+      qDebug() << "Python script: " << pythonScriptName;
+      qDebug() << "Working Directory: " << workingDirectoryString;
+
+      // Launch python script to visualize the results
+      QString program = SimCenterPreferences::getInstance()->getPython();
+      QStringList args;
+      args << pythonScriptName << "--directory" << workingDirectoryString;
+      qDebug() << "Celeris::visualizeResults - Running Python script with args: " << args;
+      QProcess *process = new QProcess();
+      
+      // Catch python print statements and errors and display them in through the qDebug() stream.
+      QObject::connect(process, &QProcess::readyRead, [process] () {
+          QByteArray aByte = process->readAll();
+          qDebug() << aByte;
+      });
+
+      // Delete process instance / thread when done (later), and get the exit status to handle errors.
+      QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                      [=](int exitCode, QProcess::ExitStatus /*exitStatus*/){
+          qDebug()<< "process exited with code " << exitCode;
+          process->deleteLater();
+      });
+
+      process->start(program, args);
+      process->waitForStarted();
+      process->waitForFinished(-1);
+      if (process->exitStatus() == QProcess::CrashExit)
+      {
+          qDebug() << "Celeris::visualizeResults - The script has crashed.";
+      } 
+      else if (process->exitStatus() == QProcess::NormalExit)
+      {
+          qDebug() << "Celeris::visualizeResults - The script has finished running.";
+      }
+      else 
+      {
+          qDebug() << "Celeris::visualizeResults - The script has finished running with an unknown exit status.";
+      }
+    
+    
+      QString resultsFilename = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "results.png";
+      QFileInfo fileInfo(resultsFilename);
+      if (fileInfo.exists()) {
+        qDebug() << "Celeris::visualizeResults - file already exists: " << resultsFilename;
+      } else {
+        qDebug() << "Celeris::visualizeResults - file does not exist: " << resultsFilename;
+      }
+      pix->load(resultsFilename);
+      theImageLabel->setPixmap(*pix);
+
+    };
+
+    connect(visualizeButton, &QPushButton::clicked, this, visualizeResults);
+
     mainLayout->addWidget(theTabWidget, 1, 0);
     mainGroup->setLayout(mainLayout);
     mainGroup->setMaximumWidth(windowWidth);
