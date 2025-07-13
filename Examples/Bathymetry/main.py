@@ -459,7 +459,7 @@ def get_sea_anomaly(bbox, date):
         return 0
     return sum(sealevels)/len(sealevels)
 
-def visualize(bathy_array=None, building_mask=None, filename="./CelerisInit/overlay.png", dx=1, dy=1, bbox=None, visualize_buildings=True):
+def visualize(bathy_array=None, building_mask=None, filename="./CelerisInit/overlay.png", dx=1, dy=1, bbox=None, visualize_buildings=False):
     """
     Plot resulting topobathy for manual visual analysis, save overlay image for Celeris
     Parameters:
