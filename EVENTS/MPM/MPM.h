@@ -103,6 +103,7 @@ public:
 
    bool initialize();
    bool isInitialize();
+   void emitInitializeVisualization(void);
 
    bool setupCase();
    bool cleanCase();
@@ -127,8 +128,10 @@ public:
 #endif
    void hideVisualization(void);
    void showVisualization(void);
+   int emitSetSliderIndex(int index);
 signals:
-
+   void initializeVisualization(void);
+   int setSliderIndex(int index);
 public slots:
    void clear(void);
    void onBrowseCaseDirectoryButtonClicked(void);

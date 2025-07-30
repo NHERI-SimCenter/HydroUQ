@@ -75,7 +75,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   // numRow = 0;
 
   // -----------------------------------------------------------------------------------
-  QList <QString> objectList; objectList << "Box" << "Sphere" << "Cylinder" << "File" << "Checkpoint" << "OSU LWF" << "OSU DWB" << "UW WASIRF" << "WU TWB" << "USGS DFF" << "NICHE" << "Custom" << "Generative AI"; //  "Cone" << "Ring"
+  QList <QString> objectList; objectList << "Box" << "Sphere" << "Cylinder" << "File" << "Checkpoint" << "OSU LWF" << "OSU TWB" << "UW WASIRF" << "WU TWB" << "USGS DFF" << "NICHE" << "Custom" << "Generative AI"; //  "Cone" << "Ring"
   objectType = new SC_ComboBox("object", objectList);
   layout->addWidget(new QLabel("Object Type"), numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(objectType,numRow++, 1, 1, 3);
@@ -411,7 +411,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       facilityHeight->setText("2.1");
       facilityWidth->setText("26.5");
       if (bodyPreset->currentText() == "Fluid") {
-        objectType->setCurrentText("OSU DWB");
+        objectType->setCurrentText("OSU TWB");
       }
       QStringList newDataBathXZ; newDataBathXZ << "0.00" << "0.0" 
                  << "11.0" << "0.0" 
@@ -596,7 +596,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
         originY->setText("0.0");
         originZ->setText("0.0");
       }
-    } else if (val == "OSU DWB" || val == "OSU DWB Ramp") {
+    } else if (val == "OSU DWB" || val == "OSU DWB Ramp" || val == "OSU TWB") {
       facility->setCurrentText("Hinsdale Directional Wave Basin (OSU DWB)");
       length->setEnabled(true);
       length->show();

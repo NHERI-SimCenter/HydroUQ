@@ -304,11 +304,24 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
 
   // wave generator
   numRow = 0;
-  QStringList listWaveGeneration; listWaveGeneration << "Preset Paddle - OSU LWF" << "Preset Paddle - OSU DWB"; // "Periodic Waves"
+  QStringList listWaveGeneration; listWaveGeneration << "Preset Paddle - OSU LWF" << "Periodic Waves" << "Velocity"; // "Periodic Waves"
   generationMethod = new SC_ComboBox("generationMethod",listWaveGeneration);
-  generationMethod->setEnabled(false);
+  // generationMethod->setEnabled(false);
+  QWidget *velocityWidget = new QWidget();
+  QGridLayout *velocityLayout = new QGridLayout();
+  inflowVelocityX = new SC_DoubleLineEdit("velocityX", 0.0);
+  inflowVelocityY = new SC_DoubleLineEdit("velocityY", 0.0);
+  inflowVelocityZ = new SC_DoubleLineEdit("velocityZ", 0.0);
+  velocityLayout->addWidget(new QLabel("Inflow Velocity (X,Y,Z)"),numRow,0);
+  velocityLayout->itemAt(velocityLayout->count()-1)->setAlignment(Qt::AlignRight);
+  velocityLayout->addWidget(inflowVelocityX,numRow,1);
+  velocityLayout->addWidget(inflowVelocityY,numRow,2);
+  velocityLayout->addWidget(inflowVelocityZ,numRow,3);
+  velocityLayout->addWidget(new QLabel("m/s"),numRow++,4);
+  velocityLayout->setRowStretch(numRow,1);
+  velocityWidget->setLayout(velocityLayout);
 
-
+  numRow = 0;
   QStringList paddleContactTypeList; paddleContactTypeList <<  "Separable" << "Slip" << "Sticky";  
   paddleContactType = new SC_ComboBox("paddleContactType", paddleContactTypeList);
 
@@ -391,9 +404,10 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   periodicLayout->addWidget(new QLabel("s"),2,2);
   periodicLayout->setRowStretch(3,1);
   
-  QStackedWidget *waveGenStack = new QStackedWidget();
+  waveGenStack = new QStackedWidget();
   waveGenStack->addWidget(paddleWidget);
   waveGenStack->addWidget(periodicWidget); 
+  waveGenStack->addWidget(velocityWidget);
   
   // if (getNumInstances() < 2) {
     // #ifndef MPM_WAVEGENERATION_NO_PLOT
@@ -1412,7 +1426,19 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
       boundariesObject["output_frequency"] = paddleFrequency->text().toDouble();
       boundariesObject["friction_static"] = 0.0;
       boundariesObject["friction_dynamic"] = 0.0;
-    } 
+    }
+    else if (generationMethod->currentIndex() == 1) {
+      // periodic waves, not implemented
+    }
+    
+    else if (generationMethod->currentIndex() == 2) {
+      boundariesObject["object"] = QString("Velocity");
+      QJsonArray inflowVelocityArray;
+      inflowVelocityArray.append(inflowVelocityX->text().toDouble());
+      inflowVelocityArray.append(inflowVelocityY->text().toDouble());
+      inflowVelocityArray.append(inflowVelocityZ->text().toDouble());
+      boundariesObject["velocity"] = inflowVelocityArray;
+    }
 
     if (inpty==QString("Periodic Waves")) {
         // check for error condition, an entry had no value
@@ -1631,7 +1657,7 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
 
   if (inpty==QString("OSU LWF") || inpty==QString("OSU LWF Ramp") ||
       inpty==QString("OSU DWB") || inpty==QString("OSU DWB Ramp") ||
-      inpty==QString("OSU TWB Ramp") || inpty==QString("OSU TWB Ramp") ||
+      inpty==QString("OSU TWB") || inpty==QString("OSU TWB Ramp") ||
       inpty==QString("UW WASIRF") || inpty==QString("Flume Facility") ||
       inpty==QString("WU TWB") || inpty==QString("WU TWB Harbor") ||
       inpty==QString("TOKYO Flume") || inpty==QString("TOKYO Harbor") ||
@@ -1722,10 +1748,39 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
               inpty==QString("OSU TWB Paddle") || 
               inpty==QString("OSU DWB Paddle") || 
               inpty==QString("Paddle") || 
-              inpty==QString("Wave Generator")
+              inpty==QString("Wave Generator") ||
+              inpty==QString("Velocity") ||
+              inpty==QString("velocity") ||
+              inpty==QString("UW WASIRF Pump") ||
+              inpty==QString("WASIRF Pump") ||
+              inpty==QString("WASIRF_PUMP") ||
+              inpty==QString("USGS Gate") ||
+              inpty==QString("USGS DFF Gate") ||
+              inpty==QString("USGS_GATE") 
               ) {
     boundaryType->setCurrentText("Wave Generator");
     stackedWidget->setCurrentIndex(2);
+
+    if (inpty == QString("OSU Paddle") || 
+        inpty == QString("OSU LWF Paddle") || 
+        inpty == QString("Preset Paddle - OSU LWF") || 
+        inpty == QString("Preset Paddle - OSU DWB") ||
+        inpty == QString("Preset Paddle - OSU TWB") || 
+        inpty == QString("OSU TWB Paddle") || 
+        inpty == QString("OSU DWB Paddle")) {
+        generationMethod->setCurrentIndex(0);
+        waveGenStack->setCurrentIndex(0);
+    }
+
+    if (inpty == QString("Velocity") || 
+              inpty == QString("velocity") || 
+              inpty == QString("UW WASIRF Pump") ||
+              inpty == QString("WASIRF Pump") ||
+              inpty == QString("WASIRF_PUMP")) {
+        generationMethod->setCurrentIndex(2);
+        waveGenStack->setCurrentIndex(2);
+    }
+
     if (jsonObject.contains("contact")) {
         paddleContactType->setCurrentText(jsonObject["contact"].toString());
     } else {
@@ -1779,6 +1834,16 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         paddleFrequency->setText(QString::number(theFrequencyValue));
     } else {
         this->errorMessage("ERROR: Wave Generator - no \"output_frequency\" entry");
+        // return false;
+    }
+
+    if (jsonObject.contains("velocity")) {
+        QJsonArray theVelocityArray = jsonObject["velocity"].toArray();
+        inflowVelocityX->setText(QString::number(theVelocityArray[0].toDouble()));
+        inflowVelocityY->setText(QString::number(theVelocityArray[1].toDouble()));
+        inflowVelocityZ->setText(QString::number(theVelocityArray[2].toDouble()));
+    } else {
+        this->errorMessage("ERROR: Wave Generator - no \"velocity\" entry");
         // return false;
     }
 

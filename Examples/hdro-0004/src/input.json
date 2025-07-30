@@ -7,10 +7,16 @@
         },
         "Events": [
             {
-                "Application": "CoupledDigitalTwin",
+                "Application": "MPM",
                 "ApplicationData": {
                 },
-                "EventClassification": "Hydro"
+                "EventClassification": "Hydro",
+                "defaultMaxRunTime": "1440",
+                "driverFile": "sc_driver",
+                "inputFile": "scInput.json",
+                "maxRunTime": "120",
+                "programFile": "osu_lwf",
+                "publicDirectory": "./"
             }
         ],
         "Modeling": {
@@ -54,185 +60,1032 @@
     },
     "Events": [
         {
-            "AdjustTimeStep": "No",
-            "Application": "CoupledDigitalTwin",
-            "ApplyGravity": "No",
-            "CouplingScheme": "Implicit",
+            "Application": "MPM",
             "EventClassification": "Hydro",
-            "SeesVTKOUT": "Yes",
-            "SeesVTKOUTRate": 0.1,
-            "SimDuration": 10,
-            "SolutionDT": 0.005,
-            "Turbulence": "Yes",
-            "bathSTL": ".",
-            "bathSTLPath": ".",
-            "bathType": "Point List",
-            "bathXZData": [
-                [
-                    100,
+            "example": "WU TWB",
+            "bodies": [
+                {
+                    "algorithm": {
+                        "ASFLIP_alpha": 0,
+                        "ASFLIP_beta_max": 0,
+                        "ASFLIP_beta_min": 0,
+                        "FBAR_fused_kernel": true,
+                        "FBAR_psi": 0.9,
+                        "ppc": 8,
+                        "type": "particles",
+                        "use_ASFLIP": false,
+                        "use_FBAR": true
+                    },
+                    "geometry": [
+                        {
+                            "apply_array": false,
+                            "apply_rotation": false,
+                            "body_preset": "Fluid",
+                            "facility": "Waseda University's Tsunami Wave Basin (WU TWB)",
+                            "facility_dimensions": [
+                                9,
+                                1,
+                                4
+                            ],
+                            "fill_flume_upto_SWL": true,
+                            "object": "WU TWB",
+                            "offset": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "operation": "add",
+                            "span": [
+                                9,
+                                0.23,
+                                4
+                            ],
+                            "standing_water_level": 0.23,
+                            "track_particle_id": [
+                                "0"
+                            ],
+                            "use_custom_bathymetry": false
+                        }
+                    ],
+                    "gpu": 0,
+                    "material": {
+                        "CFL": 0.5,
+                        "bulk_modulus": 210000000,
+                        "constitutive": "JFluid",
+                        "gamma": 7.15,
+                        "material_preset": "Water (Fresh)",
+                        "rho": 1000,
+                        "viscosity": 0.001
+                    },
+                    "model": 0,
+                    "name": "fluid",
+                    "output_attribs": [
+                        "ID",
+                        "Pressure"
+                    ],
+                    "partition": [
+                        {
+                            "gpu": 0,
+                            "model": 0,
+                            "partition_end": [
+                                31.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                1.9,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "gpu": 1,
+                            "model": 0,
+                            "partition_end": [
+                                91.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                31.9,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "gpu": 2,
+                            "model": 0,
+                            "partition_end": [
+                                121.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                91.9,
+                                0,
+                                0
+                            ]
+                        }
+                    ],
+                    "partition_end": [
+                        31.9,
+                        2.9,
+                        3.6
+                    ],
+                    "partition_start": [
+                        1.9,
+                        0,
+                        0
+                    ],
+                    "target_attribs": [
+                        "Position_Y"
+                    ],
+                    "track_attribs": [
+                        "Position_X",
+                        "Position_Z",
+                        "Pressure"
+                    ],
+                    "track_particle_id": [
+                        0
+                    ],
+                    "type": "particles",
+                    "velocity": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "algorithm": {
+                        "ASFLIP_alpha": 0,
+                        "ASFLIP_beta_max": 0,
+                        "ASFLIP_beta_min": 0,
+                        "FBAR_fused_kernel": true,
+                        "FBAR_psi": 0,
+                        "ppc": 8,
+                        "type": "particles",
+                        "use_ASFLIP": true,
+                        "use_FBAR": false
+                    },
+                    "geometry": [
+                        {
+                            "apply_array": true,
+                            "apply_rotation": true,
+                            "array": [
+                                1,
+                                2,
+                                3
+                            ],
+                            "body_preset": "Debris",
+                            "facility": "Waseda University's Tsunami Wave Basin (WU TWB)",
+                            "facility_dimensions": [
+                                9,
+                                1,
+                                4
+                            ],
+                            "fulcrum": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "object": "Box",
+                            "offset": [
+                                4.65,
+                                0.255,
+                                1.725
+                            ],
+                            "operation": "add",
+                            "rotate": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "spacing": [
+                                0.09,
+                                0.09,
+                                0.18
+                            ],
+                            "span": [
+                                0.06,
+                                0.06,
+                                0.15
+                            ],
+                            "track_particle_id": [
+                                "0"
+                            ]
+                        }
+                    ],
+                    "gpu": 0,
+                    "material": {
+                        "CFL": 0.5,
+                        "constitutive": "FixedCorotated",
+                        "material_preset": "Plastic",
+                        "poisson_ratio": 0.3,
+                        "rho": 981,
+                        "youngs_modulus": 100000000
+                    },
+                    "model": 1,
+                    "name": "debris",
+                    "output_attribs": [
+                        "ID",
+                        "Pressure",
+                        "Velocity_X",
+                        "Velocity_Y",
+                        "Velocity_Z"
+                    ],
+                    "partition": [
+                        {
+                            "gpu": 0,
+                            "model": 1,
+                            "partition_end": [
+                                91.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                1.9,
+                                0,
+                                0
+                            ]
+                        }
+                    ],
+                    "partition_end": [
+                        91.9,
+                        2.9,
+                        3.6
+                    ],
+                    "partition_start": [
+                        1.9,
+                        0,
+                        0
+                    ],
+                    "target_attribs": [
+                        "Position_Y"
+                    ],
+                    "track_attribs": [
+                        "Position_X",
+                        "Position_Z",
+                        "Pressure"
+                    ],
+                    "track_particle_id": [
+                        0
+                    ],
+                    "type": "particles",
+                    "velocity": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "algorithm": {
+                        "ASFLIP_alpha": 0,
+                        "ASFLIP_beta_max": 0,
+                        "ASFLIP_beta_min": 0,
+                        "FBAR_fused_kernel": true,
+                        "FBAR_psi": 0.9,
+                        "ppc": 8,
+                        "type": "particles",
+                        "use_ASFLIP": false,
+                        "use_FBAR": true
+                    },
+                    "geometry": [
+                        {
+                            "apply_array": false,
+                            "apply_rotation": false,
+                            "body_preset": "Fluid",
+                            "facility": "Waseda University's Tsunami Wave Basin (WU TWB)",
+                            "facility_dimensions": [
+                                9,
+                                1,
+                                4
+                            ],
+                            "fill_flume_upto_SWL": true,
+                            "object": "WU TWB",
+                            "offset": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "operation": "add",
+                            "span": [
+                                9,
+                                0.23,
+                                4
+                            ],
+                            "standing_water_level": 0.23,
+                            "track_particle_id": [
+                                "0"
+                            ],
+                            "use_custom_bathymetry": false
+                        }
+                    ],
+                    "gpu": 1,
+                    "material": {
+                        "CFL": 0.5,
+                        "bulk_modulus": 210000000,
+                        "constitutive": "JFluid",
+                        "gamma": 7.15,
+                        "material_preset": "Water (Fresh)",
+                        "rho": 1000,
+                        "viscosity": 0.001
+                    },
+                    "model": 0,
+                    "name": "fluid",
+                    "output_attribs": [
+                        "ID",
+                        "Pressure"
+                    ],
+                    "partition": [
+                        {
+                            "gpu": 0,
+                            "model": 0,
+                            "partition_end": [
+                                31.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                1.9,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "gpu": 1,
+                            "model": 0,
+                            "partition_end": [
+                                91.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                31.9,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "gpu": 2,
+                            "model": 0,
+                            "partition_end": [
+                                121.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                91.9,
+                                0,
+                                0
+                            ]
+                        }
+                    ],
+                    "partition_end": [
+                        91.9,
+                        2.9,
+                        3.6
+                    ],
+                    "partition_start": [
+                        31.9,
+                        0,
+                        0
+                    ],
+                    "target_attribs": [
+                        "Position_Y"
+                    ],
+                    "track_attribs": [
+                        "Position_X",
+                        "Position_Z",
+                        "Pressure"
+                    ],
+                    "track_particle_id": [
+                        0
+                    ],
+                    "type": "particles",
+                    "velocity": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "algorithm": {
+                        "ASFLIP_alpha": 0,
+                        "ASFLIP_beta_max": 0,
+                        "ASFLIP_beta_min": 0,
+                        "FBAR_fused_kernel": true,
+                        "FBAR_psi": 0.9,
+                        "ppc": 8,
+                        "type": "particles",
+                        "use_ASFLIP": false,
+                        "use_FBAR": true
+                    },
+                    "geometry": [
+                        {
+                            "apply_array": false,
+                            "apply_rotation": false,
+                            "body_preset": "Fluid",
+                            "facility": "Waseda University's Tsunami Wave Basin (WU TWB)",
+                            "facility_dimensions": [
+                                9,
+                                1,
+                                4
+                            ],
+                            "fill_flume_upto_SWL": true,
+                            "object": "WU TWB",
+                            "offset": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "operation": "add",
+                            "span": [
+                                9,
+                                0.23,
+                                4
+                            ],
+                            "standing_water_level": 0.23,
+                            "track_particle_id": [
+                                "0"
+                            ],
+                            "use_custom_bathymetry": false
+                        }
+                    ],
+                    "gpu": 2,
+                    "material": {
+                        "CFL": 0.5,
+                        "bulk_modulus": 210000000,
+                        "constitutive": "JFluid",
+                        "gamma": 7.15,
+                        "material_preset": "Water (Fresh)",
+                        "rho": 1000,
+                        "viscosity": 0.001
+                    },
+                    "model": 0,
+                    "name": "fluid",
+                    "output_attribs": [
+                        "ID",
+                        "Pressure"
+                    ],
+                    "partition": [
+                        {
+                            "gpu": 0,
+                            "model": 0,
+                            "partition_end": [
+                                31.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                1.9,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "gpu": 1,
+                            "model": 0,
+                            "partition_end": [
+                                91.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                31.9,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "gpu": 2,
+                            "model": 0,
+                            "partition_end": [
+                                121.9,
+                                2.9,
+                                3.6
+                            ],
+                            "partition_start": [
+                                91.9,
+                                0,
+                                0
+                            ]
+                        }
+                    ],
+                    "partition_end": [
+                        121.9,
+                        2.9,
+                        3.6
+                    ],
+                    "partition_start": [
+                        91.9,
+                        0,
+                        0
+                    ],
+                    "target_attribs": [
+                        "Position_Y"
+                    ],
+                    "track_attribs": [
+                        "Position_X",
+                        "Position_Z",
+                        "Pressure"
+                    ],
+                    "track_particle_id": [
+                        0
+                    ],
+                    "type": "particles",
+                    "velocity": [
+                        0,
+                        0,
+                        0
+                    ]
+                }
+            ],
+            "boundaries": [
+                {
+                    "contact": "Separable",
+                    "domain_end": [
+                        9,
+                        1,
+                        4
+                    ],
+                    "domain_start": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "friction_dynamic": 0,
+                    "friction_static": 0,
+                    "object": "OSU LWF",
+                    "use_custom_bathymetry": false
+                },
+                {
+                    "contact": "Separable",
+                    "domain_end": [
+                        0.55,
+                        1,
+                        4
+                    ],
+                    "domain_start": [
+                        0.5,
+                        0.1,
+                        0
+                    ],
+                    "file": "..//wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv",
+                    "friction_dynamic": 0,
+                    "friction_static": 0,
+                    "object": "OSU Paddle",
+                    "output_frequency": 1200
+                },
+                {
+                    "array": [
+                        2,
+                        1,
+                        5
+                    ],
+                    "contact": "Separable",
+                    "domain_end": [
+                        5.21,
+                        0.5549999999999999,
+                        1.4000000000000001
+                    ],
+                    "domain_start": [
+                        5.11,
+                        0.255,
+                        1.3
+                    ],
+                    "friction_dynamic": 0,
+                    "friction_static": 0,
+                    "object": "Box",
+                    "spacing": [
+                        0.45,
+                        0.4,
+                        0.325
+                    ]
+                },
+                {
+                    "contact": "Separable",
+                    "domain_end": [
+                        9,
+                        1,
+                        4
+                    ],
+                    "domain_start": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "friction_dynamic": 0,
+                    "friction_static": 0,
+                    "object": "Walls"
+                }
+            ],
+            "computer": {
+                "hpc": "TACC - UT Austin - Lonestar6",
+                "hpc_card_architecture": "Ampere",
+                "hpc_card_brand": "NVIDIA",
+                "hpc_card_compute_capability": 80,
+                "hpc_card_global_memory": 40,
+                "hpc_card_name": "A100",
+                "hpc_queue": "gpu-a100",
+                "models_per_gpu": 3,
+                "num_gpus": 3
+            },
+            "grid-sensors": [
+                {
+                    "attribute": "Force",
+                    "direction": "X+",
+                    "domain_end": [
+                        5.12,
+                        0.405,
+                        2.05
+                    ],
+                    "domain_start": [
+                        5.11,
+                        0.255,
+                        1.95
+                    ],
+                    "name": "LoadCell1",
+                    "operation": "Sum",
+                    "output_frequency": 120,
+                    "preset": "Load-Cells",
+                    "summary": [
+                        [
+                            "LoadCell1",
+                            5.11,
+                            0.255,
+                            1.95,
+                            0.01,
+                            0.15,
+                            0.1
+                        ],
+                        [
+                            "LoadCell2",
+                            5.11,
+                            0.405,
+                            1.95,
+                            0.01,
+                            0.15,
+                            0.1
+                        ]
+                    ],
+                    "toggle": true,
+                    "type": "grid"
+                },
+                {
+                    "attribute": "Force",
+                    "direction": "X+",
+                    "domain_end": [
+                        5.12,
+                        0.555,
+                        2.05
+                    ],
+                    "domain_start": [
+                        5.11,
+                        0.405,
+                        1.95
+                    ],
+                    "name": "LoadCell2",
+                    "operation": "Sum",
+                    "output_frequency": 120,
+                    "preset": "Load-Cells",
+                    "summary": [
+                        [
+                            "LoadCell1",
+                            5.11,
+                            0.255,
+                            1.95,
+                            0.01,
+                            0.15,
+                            0.1
+                        ],
+                        [
+                            "LoadCell2",
+                            5.11,
+                            0.405,
+                            1.95,
+                            0.01,
+                            0.15,
+                            0.1
+                        ]
+                    ],
+                    "toggle": true,
+                    "type": "grid"
+                }
+            ],
+            "outputs": {
+                "bodies_output_freq": 2,
+                "bodies_save_suffix": "BGEO",
+                "boundaries_output_freq": 30,
+                "boundaries_save_suffix": "OBJ",
+                "checkpoints_output_freq": 1,
+                "checkpoints_save_suffix": "BGEO",
+                "energies_output_freq": 30,
+                "energies_save_suffix": "CSV",
+                "output_attribs": [
+                    [
+                        "ID",
+                        "Pressure"
+                    ],
+                    [
+                        "ID",
+                        "Pressure",
+                        "Velocity_X",
+                        "Velocity_Y",
+                        "Velocity_Z"
+                    ],
+                    [
+                        "ID",
+                        "Pressure",
+                        "VonMisesStress",
+                        "DefGrad_Invariant2",
+                        "DefGrad_Invariant3"
+                    ]
+                ],
+                "particles_output_exterior_only": false,
+                "sensors_save_suffix": "CSV",
+                "useKineticEnergy": false,
+                "usePotentialEnergy": false,
+                "useStrainEnergy": false
+            },
+            "particle-sensors": [
+                {
+                    "attribute": "Elevation",
+                    "direction": "N/A",
+                    "domain_end": [
+                        2.025,
+                        1,
+                        0.25
+                    ],
+                    "domain_start": [
+                        2,
+                        0,
+                        0.225
+                    ],
+                    "name": "WaveGauge1",
+                    "operation": "Max",
+                    "output_frequency": 30,
+                    "preset": "Wave-Gauges",
+                    "summary": [
+                        [
+                            "WaveGauge1",
+                            2,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ],
+                        [
+                            "WaveGauge2",
+                            4,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ],
+                        [
+                            "WaveGauge3",
+                            4.5,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ],
+                        [
+                            "WaveGauge4",
+                            5.5,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ]
+                    ],
+                    "toggle": true,
+                    "type": "particles"
+                },
+                {
+                    "attribute": "Elevation",
+                    "direction": "N/A",
+                    "domain_end": [
+                        4.025,
+                        1,
+                        0.25
+                    ],
+                    "domain_start": [
+                        4,
+                        0,
+                        0.225
+                    ],
+                    "name": "WaveGauge2",
+                    "operation": "Max",
+                    "output_frequency": 30,
+                    "preset": "Wave-Gauges",
+                    "summary": [
+                        [
+                            "WaveGauge1",
+                            2,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ],
+                        [
+                            "WaveGauge2",
+                            4,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ],
+                        [
+                            "WaveGauge3",
+                            4.5,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ],
+                        [
+                            "WaveGauge4",
+                            5.5,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ]
+                    ],
+                    "toggle": true,
+                    "type": "particles"
+                },
+                {
+                    "attribute": "Elevation",
+                    "direction": "N/A",
+                    "domain_end": [
+                        4.525,
+                        1,
+                        0.25
+                    ],
+                    "domain_start": [
+                        4.5,
+                        0,
+                        0.225
+                    ],
+                    "name": "WaveGauge3",
+                    "operation": "Max",
+                    "output_frequency": 30,
+                    "preset": "Wave-Gauges",
+                    "summary": [
+                        [
+                            "WaveGauge1",
+                            2,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ],
+                        [
+                            "WaveGauge2",
+                            4,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ],
+                        [
+                            "WaveGauge3",
+                            4.5,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ],
+                        [
+                            "WaveGauge4",
+                            5.5,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ]
+                    ],
+                    "toggle": true,
+                    "type": "particles"
+                },
+                {
+                    "attribute": "Elevation",
+                    "direction": "N/A",
+                    "domain_end": [
+                        5.525,
+                        1,
+                        0.25
+                    ],
+                    "domain_start": [
+                        5.5,
+                        0,
+                        0.225
+                    ],
+                    "name": "WaveGauge4",
+                    "operation": "Max",
+                    "output_frequency": 30,
+                    "preset": "Wave-Gauges",
+                    "summary": [
+                        [
+                            "WaveGauge1",
+                            2,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ],
+                        [
+                            "WaveGauge2",
+                            4,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ],
+                        [
+                            "WaveGauge3",
+                            4.5,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ],
+                        [
+                            "WaveGauge4",
+                            5.5,
+                            0,
+                            0.225,
+                            0.025,
+                            1,
+                            0.025
+                        ]
+                    ],
+                    "toggle": true,
+                    "type": "particles"
+                }
+            ],
+            "scaling": {
+                "cauchy_bulk_ratio": 1,
+                "froude_length_ratio": 1,
+                "froude_time_ratio": 1,
+                "use_cauchy_scaling": false,
+                "use_froude_scaling": false
+            },
+            "simulation": {
+                "cauchy_bulk_ratio": 1,
+                "cfl": 0.5,
+                "default_dt": 0.001,
+                "default_dx": 0.1,
+                "domain": [
+                    90,
+                    4.5,
+                    3.6
+                ],
+                "duration": 1,
+                "fps": 2,
+                "frames": 2,
+                "froude_scaling": 1,
+                "froude_time_ratio": 1,
+                "gravity": [
+                    0,
+                    -9.80665,
                     0
                 ],
-                [
-                    105,
-                    0
-                ]
-            ],
-            "cellSize": 0.025,
-            "couplingConvergenceTol": 0.005,
-            "couplingDataAccelerationMethod": "IQN-IMVJ",
-            "couplingIterationOutputDataFrequency": 100,
-            "cutSurfaceLocsDirsFields": [
-                [
-                    0,
-                    0,
-                    0.25,
-                    0,
-                    1,
-                    0,
-                    "XSec1",
-                    "p,U,alpha.water"
-                ]
-            ],
-            "cutSurfaceOutput": "Yes",
-            "domainSubType": "INLETOUTLET",
-            "fieldProbeLocs": [
-                [
-                    1.4485,
-                    0,
-                    0.01,
-                    "PressureProbe1",
-                    "p"
+                "initial_time": 0,
+                "mirror_domain": [
+                    false,
+                    false,
+                    false
                 ],
-                [
-                    1.4485,
-                    0,
-                    0.1,
-                    "PressureProbe2",
-                    "p"
-                ],
-                [
-                    1.4485,
-                    0,
-                    0.2,
-                    "PressureProbe3",
-                    "p"
-                ],
-                [
-                    1.4485,
-                    0,
-                    0.3,
-                    "PressureProbe4",
-                    "p"
-                ],
-                [
-                    0.05,
-                    0,
-                    0.1,
-                    "VelocityProbe1",
-                    "u"
-                ]
-            ],
-            "fieldProbes": "Yes",
-            "flumeHeight": 1,
-            "flumeLength": 4,
-            "flumeWidth": 1,
-            "freeSurfOut": "Yes",
-            "freeSurfProbeLocs": [
-                [
-                    0.05,
-                    0,
-                    0.5,
-                    "WaveGauge1"
-                ],
-                [
-                    0.9,
-                    0,
-                    0.5,
-                    "WaveGauge2"
-                ],
-                [
-                    1.1,
-                    0,
-                    0.5,
-                    "WaveGauge3"
-                ],
-                [
-                    1.4485,
-                    0,
-                    0.5,
-                    "WaveGauge4front"
-                ],
-                [
-                    1.5515,
-                    0,
-                    0.5,
-                    "WaveGauge5back"
-                ],
-                [
-                    1.5,
-                    -0.0515,
-                    0.5,
-                    "WaveGauge6left"
-                ],
-                [
-                    1.5,
-                    0.0515,
-                    0.5,
-                    "WaveGauge7right"
-                ]
-            ],
-            "freeSurfProbes": "Yes",
-            "g": -9.81,
-            "initVelocity": 0,
-            "initialRelaxationFactor": 0.9,
-            "interfaceSurface": "interface.stl",
-            "interfaceSurfaceOutput": "Yes",
-            "interfaceSurfacePath": "{Current_Dir}/.",
-            "mapType": "Nearest Neighbor",
-            "maximumCouplingIterations": 100,
-            "numProcessors": 56,
-            "openSeesPyScript": "OpenSeesModel.py",
-            "openSeesPyScriptPath": "{Current_Dir}/.",
-            "outputDataFromCouplingIterations": "No",
-            "paddleDispFile": ".",
-            "paddleDispFilePath": ".",
-            "periodicWaveCelerity": 1,
-            "periodicWaveMagnitude": 1,
-            "periodicWaveRepeatPeriod": 1,
-            "refPressure": 0,
-            "runPrelim": "No",
-            "start": 0,
-            "stillWaterLevel": 0.25,
-            "turbIntensity": 0.25,
-            "turbRefLength": 0.1,
-            "turbReferenceVel": 1,
-            "velocityFile": "velTime.csv",
-            "velocityFilePath": "{Current_Dir}/.",
-            "waveType": "No Waves",
-            "writeDT": 0.1
+                "particles_output_exterior_only": false,
+                "save_suffix": ".bgeo",
+                "time": 0,
+                "time_integration": "Explicit",
+                "use_cauchy_scaling": false,
+                "use_froude_scaling": false
+            },
+            "subtype": "MPM",
+            "type": "MPM"
         }
     ],
     "GeneralInformation": {
-        "NumberOfStories": 3,
-        "PlanArea": 129600,
-        "StructureType": "RM1",
+        "NumberOfStories": 1,
+        "PlanArea": 1.03022,
+        "StructureType": "S2",
         "YearBuilt": 1990,
-        "depth": 360,
-        "height": 0.3,
+        "depth": 1.015,
+        "height": 0.615,
         "location": {
-            "latitude": 37.8715,
-            "longitude": -122.273
+            "latitude": 44.5639,
+            "longitude": -123.292
         },
-        "name": "",
-        "planArea": 129600,
-        "stories": 3,
+        "name": "Raised Structural Box @ Oregon State University's Large Wave Flume",
+        "planArea": 1.03022,
+        "stories": 1,
         "units": {
-            "force": "kips",
-            "length": "in",
+            "force": "N",
+            "length": "m",
             "temperature": "C",
             "time": "sec"
         },
-        "width": 360
+        "width": 1.015
     },
     "Modeling": {
         "Bx": 0.1,
@@ -249,45 +1102,23 @@
                 "Ktheta": 10000000000,
                 "bx": 0.1,
                 "by": 0.1,
-                "height": 0.1,
+                "height": 144,
                 "kx": 100,
                 "ky": 100,
-                "weight": 144
-            },
-            {
-                "Fyx": 1000000,
-                "Fyy": 1000000,
-                "Ktheta": 10000000000,
-                "bx": 0.1,
-                "by": 0.1,
-                "height": 0.1,
-                "kx": 100,
-                "ky": 100,
-                "weight": 144
-            },
-            {
-                "Fyx": 1000000,
-                "Fyy": 1000000,
-                "Ktheta": 10000000000,
-                "bx": 0.1,
-                "by": 0.1,
-                "height": 0.1,
-                "kx": 100,
-                "ky": 100,
-                "weight": 144
+                "weight": "RV.w"
             }
         ],
         "dampingRatio": 0.02,
-        "height": 0.1,
+        "height": 0.615,
         "massX": 0,
         "massY": 0,
-        "numStories": 3,
+        "numStories": 1,
         "randomVar": [
         ],
         "responseX": 0,
         "responseY": 0,
         "type": "MDOF_BuildingModel",
-        "weight": 144
+        "weight": "RV.w"
     },
     "Simulation": {
         "Application": "OpenSees-Simulation",
@@ -307,22 +1138,32 @@
         "parallelExecution": true,
         "samplingMethodData": {
             "method": "LHS",
-            "samples": 500,
-            "seed": 547
+            "samples": 20,
+            "seed": 1
         },
         "saveWorkDir": true,
         "uqType": "Forward Propagation"
     },
-    "localAppDir": "C:/Users/nsaoirse/Desktop/HydroUQ_Windows_Download",
-    "nodeCount": 1,
-    "numP": 56,
-    "processorsOnEachNode": 56,
-    "randomVariables": [
+    "correlationMatrix": [
+        1
     ],
-    "remoteAppDir": "/work2/00477/tg457427/frontera/SimCenterBackendApplications/v4.2.0",
+    "localAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "randomVariables": [
+        {
+            "distribution": "Normal",
+            "inputType": "Parameters",
+            "mean": 144,
+            "name": "w",
+            "refCount": 1,
+            "stdDev": 12,
+            "value": "RV.w",
+            "variableClass": "Uncertain"
+        }
+    ],
+    "remoteAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
     "resultType": "SimCenterUQResultsSampling",
-    "runType": "runningRemote",
+    "runType": "runningLocal",
     "summary": [
     ],
-    "workingDir": "C:/Users/nsaoirse/Documents/HydroUQ/RemoteWorkDir"
+    "workingDir": "/home/justinbonus/Documents/HydroUQ/LocalWorkDir"
 }

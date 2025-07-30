@@ -164,6 +164,7 @@ private:
   SC_TableEdit      *bathXZData;  
 
   // wave generation
+  QStackedWidget *waveGenStack;
   SC_ComboBox         *generationMethod;    
   SC_DoubleLineEdit   *paddleLength;    
   SC_DoubleLineEdit   *paddleHeight;
@@ -179,6 +180,9 @@ private:
   SC_ComboBox         *paddleContactType;      
   SC_FileEdit         *paddleDisplacementFile;    
 
+  SC_DoubleLineEdit   *inflowVelocityX; // For velocity wave generation
+  SC_DoubleLineEdit   *inflowVelocityY;
+  SC_DoubleLineEdit   *inflowVelocityZ;
 
   // structures
   SC_ComboBox       *structPreset;

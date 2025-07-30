@@ -414,10 +414,10 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Qt3DExtras::QCuboidMesh *cubeMesh = new Qt3DExtras::QCuboidMesh();
     // Qt3DExtras::QCuboidMesh *cubeMesh[16][2][16];
     constexpr int maxCubeX = 16;
-    constexpr int maxCubeY = 16;
+    constexpr int maxCubeY = 4;
     constexpr int maxCubeZ = 16;
     constexpr int maxDebrisX = 16;
-    constexpr int maxDebrisY = 16;
+    constexpr int maxDebrisY = 4;
     constexpr int maxDebrisZ = 16;
     constexpr int maxSensors = 32;
 
@@ -475,12 +475,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Create a transform and set its scale
     // auto cubeTransform = new Qt3DCore::QTransform();
     // Qt3DCore::QTransform *cubeTransform[16][2][16];
-    QVector < QVector < QVector < Qt3DCore::QTransform* > > > cubeTransform(16,
-              QVector < QVector < Qt3DCore::QTransform* > > (16,
-                        QVector < Qt3DCore::QTransform* > (16, nullptr)));
-    QVector < QVector < QVector < Qt3DCore::QTransform* > > > debrisTransform(16,
-              QVector < QVector < Qt3DCore::QTransform* > > (16,
-                        QVector < Qt3DCore::QTransform* > (16, nullptr)));    
+    QVector < QVector < QVector < Qt3DCore::QTransform* > > > cubeTransform(maxCubeX,
+              QVector < QVector < Qt3DCore::QTransform* > > (maxCubeY,
+                        QVector < Qt3DCore::QTransform* > (maxCubeZ, nullptr)));
+    QVector < QVector < QVector < Qt3DCore::QTransform* > > > debrisTransform(maxDebrisX,
+              QVector < QVector < Qt3DCore::QTransform* > > (maxDebrisY,
+                        QVector < Qt3DCore::QTransform* > (maxDebrisZ, nullptr)));    
     QVector < Qt3DCore::QTransform* > sensorTransform(maxSensors, nullptr);
     // Qt3DCore::QTransform *sensorTransform[32];
     
@@ -504,9 +504,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto floorTransform = new Qt3DCore::QTransform();
     // auto gateTransform = new Qt3DCore::QTransform();
     
-    for (int i = 0; i < 16; i++) {
-      for (int j = 0; j < 16; j++) {
-        for (int k = 0; k < 16; k++) {
+    for (int i = 0; i < maxCubeX; i++) {
+      for (int j = 0; j < maxCubeY; j++) {
+        for (int k = 0; k < maxCubeZ; k++) {
           cubeTransform[i][j][k] = new Qt3DCore::QTransform();
           cubeMesh[i][j][k]->setXExtent(1.0f);
           cubeMesh[i][j][k]->setYExtent(0.615f);
@@ -659,13 +659,13 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Create a material and set its color
     // auto cubeMaterial = new Qt3DExtras::QPhongMaterial();
     // Qt3DExtras::QPhongMaterial *cubeMaterial[16][2][16];
-    QVector < QVector < QVector < Qt3DExtras::QPhongMaterial* > > > cubeMaterial(16,
-              QVector < QVector < Qt3DExtras::QPhongMaterial* > > (16,
-                        QVector < Qt3DExtras::QPhongMaterial* > (16, nullptr)));
+    QVector < QVector < QVector < Qt3DExtras::QPhongMaterial* > > > cubeMaterial(maxCubeX,
+              QVector < QVector < Qt3DExtras::QPhongMaterial* > > (maxCubeY,
+                        QVector < Qt3DExtras::QPhongMaterial* > (maxCubeZ, nullptr)));
 
-    QVector < QVector < QVector < Qt3DExtras::QPhongMaterial* > > > debrisMaterial(16,
-              QVector < QVector < Qt3DExtras::QPhongMaterial* > > (16,
-                        QVector < Qt3DExtras::QPhongMaterial* > (16, nullptr)));
+    QVector < QVector < QVector < Qt3DExtras::QPhongMaterial* > > > debrisMaterial(maxDebrisX,
+              QVector < QVector < Qt3DExtras::QPhongMaterial* > > (maxDebrisY,
+                        QVector < Qt3DExtras::QPhongMaterial* > (maxDebrisZ, nullptr)));
     
     QVector < Qt3DExtras::QPhongAlphaMaterial* > sensorMaterial(maxSensors, nullptr);
 
@@ -691,9 +691,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto floorMaterial = new Qt3DExtras::QPhongMaterial();
 
 
-    for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 16; j++) {
-            for (int k = 0; k < 16; k++) {
+    for (int i = 0; i < maxCubeX; i++) {
+        for (int j = 0; j < maxCubeY; j++) {
+            for (int k = 0; k < maxCubeZ; k++) {
                 cubeMaterial[i][j][k] = new Qt3DExtras::QPhongMaterial();
                 cubeMaterial[i][j][k]->setDiffuse(QColor(QRgb(0xCC5500))); // orange
 
@@ -789,12 +789,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Create a cube entity and add the mesh, transform and material components
     auto twinEntity = new Qt3DCore::QEntity(rootEntity);
 
-    QVector < QVector < QVector < Qt3DCore::QEntity* > > > cubeEntity(16,
-              QVector < QVector < Qt3DCore::QEntity* > > (16,
-                        QVector < Qt3DCore::QEntity* > (16, nullptr)));
-    QVector < QVector < QVector < Qt3DCore::QEntity* > > > debrisEntity(16,
-              QVector < QVector < Qt3DCore::QEntity* > > (16,
-                        QVector < Qt3DCore::QEntity* > (16, nullptr)));    
+    QVector < QVector < QVector < Qt3DCore::QEntity* > > > cubeEntity(maxCubeX,
+              QVector < QVector < Qt3DCore::QEntity* > > (maxCubeY,
+                        QVector < Qt3DCore::QEntity* > (maxCubeZ, nullptr)));
+    QVector < QVector < QVector < Qt3DCore::QEntity* > > > debrisEntity(maxDebrisX,
+              QVector < QVector < Qt3DCore::QEntity* > > (maxDebrisY,
+                        QVector < Qt3DCore::QEntity* > (maxDebrisZ, nullptr)));    
     QVector < Qt3DCore::QEntity* > sensorEntity(maxSensors, nullptr);
     auto fluidEntity = new Qt3DCore::QEntity(rootEntity);
     auto reservoirEntity = new Qt3DCore::QEntity(rootEntity);
@@ -805,9 +805,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // Now disable the HydroUQ logo until its cleaned up
     // hydroEntity->setEnabled(false);
 
-    for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 16; j++) {
-            for (int k = 0; k < 16; k++) {
+    for (int i = 0; i < maxCubeX; i++) {
+        for (int j = 0; j < maxCubeY; j++) {
+            for (int k = 0; k < maxCubeZ; k++) {
                 cubeEntity[i][j][k] = new Qt3DCore::QEntity(rootEntity);
                 cubeEntity[i][j][k]->addComponent(cubeMesh[i][j][k]);
                 cubeEntity[i][j][k]->addComponent(cubeMaterial[i][j][k]);
@@ -831,9 +831,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     // Not so sure about needing this...
     cubeEntity[0][0][0]->setEnabled(true);
-    for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 16; j++) {
-            for (int k = 0; k < 16; k++) {
+    for (int i = 0; i < maxCubeX; i++) {
+        for (int j = 0; j < maxCubeY; j++) {
+            for (int k = 0; k < maxCubeZ; k++) {
                 if (i < 4 && j < 1 && k < 8) {
                     cubeEntity[i][j][k]->setEnabled(true);
                 }
@@ -980,6 +980,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     // Make lambda function to update the position of cuboid design structure
     auto updateFluid = [=]() {
+      qDebug() << "MPM::updateFluid - Updating fluid mesh position and size.";
       QJsonObject bodiesObjectJSON; 
       QJsonArray bodiesArrayJSON;
       bodiesObjectJSON["bodies"] = bodiesArrayJSON;
@@ -1010,12 +1011,12 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       int arrayX = mpmBoundaries->getArrayX(mpmBoundaries->getStructureBoundary());
       int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
-      arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 16 ? arrayY : 16) : 1;
-      arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
-      for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 16; j++) {
-          for (int k = 0; k < 16; k++) {
+      arrayX = arrayX > 0 ? (arrayX < maxCubeX ? arrayX : maxCubeX) : 1;
+      arrayY = arrayY > 0 ? (arrayY < maxCubeY ? arrayY : maxCubeY) : 1;
+      arrayZ = arrayZ > 0 ? (arrayZ < maxCubeZ ? arrayZ : maxCubeZ) : 1;
+      for (int i = 0; i < maxCubeX; i++) {
+        for (int j = 0; j < maxCubeY; j++) {
+          for (int k = 0; k < maxCubeZ; k++) {
             if (i < arrayX && j < arrayY && k < arrayZ) {
               cubeMesh[i][j][k]->setXExtent(lengthX);
               cubeMesh[i][j][k]->setYExtent(lengthY);
@@ -1035,6 +1036,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
   // Make lambda function to update the position of debris set
   auto updateDebris = [=]() {
+    qDebug() << "MPM::updateDebris - Updating debris mesh position and size.";
     QJsonObject bodiesObjectJSON; 
     QJsonArray bodiesArrayJSON;
     bodiesObjectJSON["bodies"] = bodiesArrayJSON;
@@ -1054,15 +1056,15 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     double spacingX = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["spacing"].toArray()[0].toDouble();
     double spacingY = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["spacing"].toArray()[1].toDouble();
     double spacingZ = bodiesObjectJSON["bodies"].toArray()[debrisBodyID].toObject()["geometry"].toArray()[debrisGeometryID].toObject()["spacing"].toArray()[2].toDouble();
-    arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-    arrayY = arrayY > 0 ? (arrayY < 16 ? arrayY : 16) : 1;
-    arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
+    arrayX = arrayX > 0 ? (arrayX < maxDebrisX ? arrayX : maxDebrisX) : 1;
+    arrayY = arrayY > 0 ? (arrayY < maxDebrisY ? arrayY : maxDebrisY) : 1;
+    arrayZ = arrayZ > 0 ? (arrayZ < maxDebrisZ ? arrayZ : maxDebrisZ) : 1;
     originX = lengthX/2.f + originX;  
     originY = lengthY/2.f + originY;
     originZ = lengthZ/2.f + originZ;
-    for (int i = 0; i < 16; i++) {
-      for (int j = 0; j < 16; j++) {
-        for (int k = 0; k < 16; k++) {
+    for (int i = 0; i < maxDebrisX; i++) {
+      for (int j = 0; j < maxDebrisY; j++) {
+        for (int k = 0; k < maxDebrisZ; k++) {
           if (i < arrayX && j < arrayY && k < arrayZ) {
             debrisMesh[i][j][k]->setXExtent(lengthX);
             debrisMesh[i][j][k]->setYExtent(lengthY);
@@ -1080,6 +1082,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
   // Make lambda function to update the position of sensor set
   auto updateSensors = [=]() {
+    qDebug() << "MPM::updateSensors - Updating sensor mesh position and size.";
     QJsonObject sensorsObjectJSON;
     QJsonArray sensorsArrayJSON;
     sensorsObjectJSON["particle-sensors"] = sensorsArrayJSON;
@@ -1181,16 +1184,16 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       int arrayX = mpmBoundaries->getArrayX(mpmBoundaries->getStructureBoundary());
       int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
-      arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 16 ? arrayY : 16) : 1;
-      arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
+      arrayX = arrayX > 0 ? (arrayX < maxCubeX ? arrayX : maxCubeX) : 1;
+      arrayY = arrayY > 0 ? (arrayY < maxCubeY ? arrayY : maxCubeY) : 1;
+      arrayZ = arrayZ > 0 ? (arrayZ < maxCubeZ ? arrayZ : maxCubeZ) : 1;
 
       double spacingX = mpmBoundaries->getSpacingX(mpmBoundaries->getStructureBoundary());
       double spacingY = mpmBoundaries->getSpacingY(mpmBoundaries->getStructureBoundary());
       double spacingZ = mpmBoundaries->getSpacingZ(mpmBoundaries->getStructureBoundary());
-      for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 16; j++) {
-          for (int k = 0; k < 16; k++) {
+      for (int i = 0; i < maxCubeX; i++) {
+        for (int j = 0; j < maxCubeY; j++) {
+          for (int k = 0; k < maxCubeZ; k++) {
             if (i < arrayX && j < arrayY && k < arrayZ) {
               cubeTransform[i][j][k]->setTranslation(QVector3D(originX + spacingX*i, originY + spacingY * j, originZ + spacingZ * k));
               if (cubeEntity[i][j][k]) cubeEntity[i][j][k]->setEnabled(true);
@@ -1223,14 +1226,14 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       int arrayX = mpmBoundaries->getArrayX(mpmBoundaries->getStructureBoundary());
       int arrayY = mpmBoundaries->getArrayY(mpmBoundaries->getStructureBoundary());
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
-      arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 16 ? arrayY : 16) : 1;
-      arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
+      arrayX = arrayX > 0 ? (arrayX < maxCubeX ? arrayX : maxCubeX) : 1;
+      arrayY = arrayY > 0 ? (arrayY < maxCubeY ? arrayY : maxCubeY) : 1;
+      arrayZ = arrayZ > 0 ? (arrayZ < maxCubeZ ? arrayZ : maxCubeZ) : 1;
       // cubeMesh is now a 3d array of cubeMesh
       // Since arrayX, arrayY, and arrayZ updated, we need to update the size of the array
-      for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 16; j++) {
-          for (int k = 0; k < 16; k++) {
+      for (int i = 0; i < maxCubeX; i++) {
+        for (int j = 0; j < maxCubeY; j++) {
+          for (int k = 0; k < maxCubeZ; k++) {
             cubeMesh[i][j][k]->setXExtent(lengthX);
             cubeMesh[i][j][k]->setYExtent(lengthY);
             cubeMesh[i][j][k]->setZExtent(lengthZ);
@@ -1276,13 +1279,13 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       int arrayZ = mpmBoundaries->getArrayZ(mpmBoundaries->getStructureBoundary());
       // cubeMesh is now a 3d array of cubeMesh
       // Since arrayX, arrayY, and arrayZ updated, we need to update the size of the array
-      arrayX = arrayX > 0 ? (arrayX < 16 ? arrayX : 16) : 1;
-      arrayY = arrayY > 0 ? (arrayY < 16 ? arrayY : 16) : 1;
-      arrayZ = arrayZ > 0 ? (arrayZ < 16 ? arrayZ : 16) : 1;
+      arrayX = arrayX > 0 ? (arrayX < maxCubeX ? arrayX : maxCubeX) : 1;
+      arrayY = arrayY > 0 ? (arrayY < maxCubeY ? arrayY : maxCubeY) : 1;
+      arrayZ = arrayZ > 0 ? (arrayZ < maxCubeZ ? arrayZ : maxCubeZ) : 1;
       
-      for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 16; j++) {
-          for (int k = 0; k < 16; k++) {
+      for (int i = 0; i < maxCubeX; i++) {
+        for (int j = 0; j < maxCubeY; j++) {
+          for (int k = 0; k < maxCubeZ; k++) {
             cubeMesh[i][j][k]->setXExtent(lengthX);
             cubeMesh[i][j][k]->setYExtent(lengthY);
             cubeMesh[i][j][k]->setZExtent(lengthZ);
@@ -1331,10 +1334,10 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto updateDigitalTwin = [=](int index) {
       if (index == 0) {
         twinEntity->setEnabled(true);
-        for (int i = 0; i < 16; i++) {
-          for (int j = 0; j < 16; j++) {
-            for (int k = 0; k < 16; k++) {
-              if (i < 16 && j < 16 && k < 16)
+        for (int i = 0; i < maxCubeX; i++) {
+          for (int j = 0; j < maxCubeY; j++) {
+            for (int k = 0; k < maxCubeZ; k++) {
+              if (i < maxCubeX && j < maxCubeY && k < maxCubeZ)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
@@ -1356,12 +1359,17 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         reservoirEntity->setEnabled(false);
         harborEntity->setEnabled(false);
         floorEntity->setEnabled(false);
+
+        auto cameraEntity = view->camera();
+        cameraEntity->setUpVector(QVector3D(0, 1.f, 0));
+        cameraEntity->setPosition(QVector3D(-55.0f, 25.0f, 30.0f));
+        cameraEntity->setViewCenter(QVector3D(25.0f, 2.0f, 2.0f));
       } else if (index == 1) {
         twinEntity->setEnabled(true);
-        for (int i = 0; i < 16; i++) {
-          for (int j = 0; j < 16; j++) {
-            for (int k = 0; k < 16; k++) {
-              if (i < 16-1 && j < 16-1 && k < 16-1)
+        for (int i = 0; i < maxCubeX; i++) {
+          for (int j = 0; j < maxCubeY; j++) {
+            for (int k = 0; k < maxCubeZ; k++) {
+              if (i < maxCubeX && j < maxCubeY && k < maxCubeZ)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i == 0 && j == 0 && k < 2) cubeEntity[i][j][k]->setEnabled(true);
@@ -1379,12 +1387,17 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         reservoirEntity->setEnabled(false);
         harborEntity->setEnabled(false);
         floorEntity->setEnabled(false);
+
+        auto cameraEntity = view->camera();
+        cameraEntity->setUpVector(QVector3D(0, 1.f, 0));
+        cameraEntity->setPosition(QVector3D(-55.0f, 25.0f, 30.0f));
+        cameraEntity->setViewCenter(QVector3D(20.0f, 2.0f, 8.0f));
       } else if (index == 2) {
         twinEntity->setEnabled(false);
-        for (int i = 0; i < 16; i++) {
-          for (int j = 0; j < 16; j++) {
-            for (int k = 0; k < 16; k++) {
-              if (i < 16 && j < 16 && k < 16)
+        for (int i = 0; i < maxCubeX; i++) {
+          for (int j = 0; j < maxCubeY; j++) {
+            for (int k = 0; k < maxCubeZ; k++) {
+              if (i < maxCubeX && j < maxCubeY && k < maxCubeZ)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i == 0 && j == 0 && k == 0) cubeEntity[i][j][k]->setEnabled(true);
@@ -1406,12 +1419,17 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         floorMesh->setXExtent(12.25f);
         floorMesh->setYExtent(0.125f);
         floorMesh->setZExtent(0.9f);
+
+        auto cameraEntity = view->camera();
+        cameraEntity->setUpVector(QVector3D(0, 1.f, 0));
+        cameraEntity->setPosition(QVector3D(-12.0f, 5.0f, 15.0f));
+        cameraEntity->setViewCenter(QVector3D(5.0f, 1.0f, 1.0f));
       } else if (index == 3) {
         twinEntity->setEnabled(false);
-        for (int i = 0; i < 16; i++) {
-          for (int j = 0; j < 16; j++) {
-            for (int k = 0; k < 16; k++) {
-              if (i < 16 && j < 16 && k < 16)
+        for (int i = 0; i < maxCubeX; i++) {
+          for (int j = 0; j < maxCubeY; j++) {
+            for (int k = 0; k < maxCubeZ; k++) {
+              if (i < maxCubeX && j < maxCubeY && k < maxCubeZ)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 if (i < 2 && j == 0 && k < 5) cubeEntity[i][j][k]->setEnabled(true);
@@ -1433,12 +1451,17 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         harborEntity->setEnabled(true);
         pistonEntity->setEnabled(true);
         reservoirEntity->setEnabled(true);
+
+        auto cameraEntity = view->camera();
+        cameraEntity->setUpVector(QVector3D(0, 1.f, 0));
+        cameraEntity->setPosition(QVector3D(-12.0f, 5.0f, 15.0f));
+        cameraEntity->setViewCenter(QVector3D(5.0f, 1.0f, 1.0f));
       } else if (index == 4) {
         twinEntity->setEnabled(true);
-        for (int i = 0; i < 16; i++) {
-          for (int j = 0; j < 16; j++) {
-            for (int k = 0; k < 16; k++) {
-              if (i < 16 && j < 16 && k < 16)
+        for (int i = 0; i < maxCubeX; i++) {
+          for (int j = 0; j < maxCubeY; j++) {
+            for (int k = 0; k < maxCubeZ; k++) {
+              if (i < maxCubeX && j < maxCubeY && k < maxCubeZ)
               {
                 cubeEntity[i][j][k]->setEnabled(false);
                 // debrisEntity[i][j][k]->setEnabled(false);
@@ -1460,6 +1483,11 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         floorMesh->setXExtent(80.f);
         floorMesh->setYExtent(0.125f);
         floorMesh->setZExtent(2.0f);
+
+        auto cameraEntity = view->camera();
+        cameraEntity->setUpVector(QVector3D(0, 1.f, 0));
+        cameraEntity->setPosition(QVector3D(-50.0f, 25.0f, 35.0f));
+        cameraEntity->setViewCenter(QVector3D(36.0f, 2.0f, 2.0f));
       }
       updateFluid();
       updateBoundaryStructureSize();
@@ -1508,9 +1536,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       if (state == Qt::Checked) {
         updateDebris();
       } else {
-        for (int i = 0; i < 16; i++) {
-          for (int j = 0; j < 16; j++) {
-            for (int k = 0; k < 16; k++) {
+        for (int i = 0; i < maxDebrisX; i++) {
+          for (int j = 0; j < maxDebrisY; j++) {
+            for (int k = 0; k < maxDebrisZ; k++) {
               debrisEntity[i][j][k]->setEnabled(false);
             }
           }
@@ -1536,9 +1564,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         updateBoundaryStructurePosition();
         updateBoundaryStructureSize();
       } else {
-        for (int i = 0; i < 16; i++) {
-          for (int j = 0; j < 16; j++) {
-            for (int k = 0; k < 16; k++) {
+        for (int i = 0; i < maxCubeX; i++) {
+          for (int j = 0; j < maxCubeY; j++) {
+            for (int k = 0; k < maxCubeZ; k++) {
               cubeEntity[i][j][k]->setEnabled(false);
             }
           }
@@ -1782,6 +1810,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     connect(stackedWidget, &SlidingStackedWidget::animationFinished, [=](void) {
       int index = stackedWidget->currentIndex();
+      mpmSettings->setDigitalTwin(index);
       mpmBodies->setDigitalTwin(index);
       mpmBoundaries->setDigitalTwin(index);
       mpmSensors->setDigitalTwin(index);
@@ -1813,7 +1842,34 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       next->setEnabled(true);
   });
 
+  connect(this, &MPM::setSliderIndex, this, [=](int index) {
+      // When the bathymetry file is changed, we need to update the bathymetry image
+      qDebug() << "MPM::setSliderIndex signal received with index: " << index;
+      // stackedWidget->setCurrentIndex(index);
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+      hideVisualization();
+#endif
+      stackedWidget->setCurrentIndex(index);
+      mpmSettings->setDigitalTwin(index);
+      mpmBodies->setDigitalTwin(index);
+      mpmBoundaries->setDigitalTwin(index);
+      mpmSensors->setDigitalTwin(index);
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+      showVisualization();
+#endif
+  });
 
+  connect(this, &MPM::initializeVisualization, this, [=]() {
+      // When the bathymetry file is changed, we need to update the bathymetry image
+      qDebug() << "MPM:: initializeVisualization signal received";
+#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+      updateDigitalTwin(stackedWidget->currentIndex());
+      updateBathymetry();
+      updateFluid();
+      updateDebris();
+      updateSensors();
+#endif
+  });
     // QVBoxLayout *layout = new QVBoxLayout();
     // mainWindowLayout->addWidget(theScrollArea);
     // mainWindowLayout->addWidget(updateBodiesButton);
@@ -1843,10 +1899,24 @@ MPM::~MPM()
 
 }
 
+int MPM::emitSetSliderIndex(int index)
+{
+  qDebug() << "MPM::emitSetSliderIndex() called with index: " << index;
+  emit setSliderIndex(index);
+  return index;
+}
+
+void MPM::emitInitializeVisualization(void)
+{
+  qDebug() << "MPM::emitInitializeVisualization() called";
+  this->initializeVisualization();
+}
+
 void MPM::showVisualization(void)
 {
 #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
     // container->show();
+    this->emitInitializeVisualization();
     view->show();
 #endif
 }
@@ -2203,37 +2273,32 @@ bool MPM::inputFromJSON(QJsonObject &jsonObject)
     eventObject = jsonObject;
   }
 
-  // if (eventObject["facility"].isString()) {
-  //   qDebug() << "MPM::inputFromJSON: eventObject contains 'facility' string";
-  //   QString facility = eventObject["facility"].toString();
-  //   if (facility == "OSU LWF") {
-  //     qDebug() << "MPM::inputFromJSON: eventObject facility is OSU LWF";
-  //     // stackedWidget->setCurrentIndex(0);
-  //     // mpmBodies->setDigitalTwin(0);
-  //     // mpmBoundaries->setDigitalTwin(0);
-  //     // mpmBodies->setFluid(0);
-  //     // mpmBoundaries->setFluid(0);
-  //     // mpmBodies->setFluid(1);
-  //     // mpmBoundaries->setFluid(1);
-
-  //   } else if (facility == "OSU DWB") {
-  //     qDebug() << "MPM::inputFromJSON: eventObject facility is not OSU DWB";
-  //     stackedWidget->setCurrentIndex(1);
-  //   } else if (facility == "UW WASIRF") {
-  //     qDebug() << "MPM::inputFromJSON: eventObject facility is not UW WASIRF";
-  //     stackedWidget->setCurrentIndex(2);
-  //   } else if (facility == "WU TWB") {
-  //     qDebug() << "MPM::inputFromJSON: eventObject facility is WU TWB";
-  //     stackedWidget->setCurrentIndex(3);
-  //   } else if (facility == "USGS DFF") {
-  //     qDebug() << "MPM::inputFromJSON: eventObject facility is USGS DFF";
-  //     stackedWidget->setCurrentIndex(4);
-  //   } else {
-  //     qDebug() << "MPM::inputFromJSON: eventObject facility is not present, do not change slider.";
-  //   }
-  // } else {
-  //   qDebug() << "MPM::inputFromJSON: eventObject does not contain 'facility' string";
-  // }
+  if (eventObject["example"].isString()) {
+    qDebug() << "MPM::inputFromJSON: eventObject contains 'example' string";
+    QString facility = eventObject["example"].toString();
+    int sliderIndex = -1;
+    if (facility == "OSU LWF") {
+      qDebug() << "MPM::inputFromJSON: eventObject facility is OSU LWF";
+      sliderIndex = this->emitSetSliderIndex(0);
+    } else if (facility == "OSU DWB") {
+      qDebug() << "MPM::inputFromJSON: eventObject facility is not OSU DWB";
+      sliderIndex = this->emitSetSliderIndex(1);
+    } else if (facility == "UW WASIRF") {
+      qDebug() << "MPM::inputFromJSON: eventObject facility is not UW WASIRF";
+      sliderIndex = this->emitSetSliderIndex(2);
+    } else if (facility == "WU TWB") {
+      qDebug() << "MPM::inputFromJSON: eventObject facility is WU TWB";
+      sliderIndex = this->emitSetSliderIndex(3);
+    } else if (facility == "USGS DFF") {
+      qDebug() << "MPM::inputFromJSON: eventObject facility is USGS DFF";
+      sliderIndex = this->emitSetSliderIndex(4);
+    } else {
+      qDebug() << "MPM::inputFromJSON: eventObject facility is not present, do not change slider.";
+    }
+    qDebug() << "MPM::inputFromJSON: sliderIndex was set to: " << sliderIndex;
+  } else {
+    qDebug() << "MPM::inputFromJSON: eventObject does not contain 'example' string";
+  }
 
   if (mpmSettings) {
     qDebug() << "MPM::inputFromJSON: mpmSettings exists";
@@ -2289,7 +2354,7 @@ bool MPM::outputToJSON(QJsonObject &jsonObject)
 
   jsonObject["Application"] = "MPM"; // For accessing SimCenterBackendApplications/applications/createEVENTS/{Application}/*.py ?
   jsonObject["subtype"] = "MPM";
-
+  
   // Just so that when read back in inputFromJSON we can set the slider to the correct facility
   // if (stackedWidget->currentIndex() == 0) {
   //   jsonObject["facility"] = "OSU LWF"; // TODO: Add to the settings tab

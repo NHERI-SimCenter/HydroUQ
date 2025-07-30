@@ -62,6 +62,7 @@
         {
             "Application": "MPM",
             "EventClassification": "Hydro",
+            "example": "OSU LWF",
             "bodies": [
                 {
                     "algorithm": {
