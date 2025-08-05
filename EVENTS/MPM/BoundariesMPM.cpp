@@ -35,6 +35,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 #include "BoundariesMPM.h"
+
 #include <QLabel>
 #include <QComboBox>
 #include <QGroupBox>
@@ -43,7 +44,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QTabWidget>
 #include <QStackedWidget>
 #include <QDebug>
-#include <QSvgWidget>
 #include <QVector>
 #include <QJsonObject>
 #include <QJsonArray>

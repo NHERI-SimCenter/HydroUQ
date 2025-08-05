@@ -224,7 +224,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //
 
     QHBoxLayout *horizontalLayout = new QHBoxLayout();
-    horizontalLayout->setMargin(0);
+    //horizontalLayout->setMargin(0);
     this->setLayout(horizontalLayout);
 
     //

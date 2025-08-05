@@ -36,6 +36,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // Written: fmk, JustinBonus
 
+//#include <QSvgRenderer>
+//#include <QSvgWidget>
+
 #include "MPM.h"
 #include <SettingsMPM.h>
 #include <BodiesMPM.h>
@@ -52,7 +55,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QPushButton>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QSvgWidget>
+
 #include <QString>
 #include <QIcon>
 #include <QPixmap>
@@ -73,6 +76,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <Qt3DExtras/QPhongMaterial>
 #include <Qt3DExtras/QPhongAlphaMaterial>
 #include <Qt3DExtras/Qt3DWindow>
+
+
 #include <Qt3DRender/QMesh>
 #include <Qt3DExtras/QForwardRenderer>
 #include <Qt3DRender/QCamera>
@@ -80,10 +85,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <Qt3DCore/QEntity>
 #include <QQuaternion>
 #include <Qt3DExtras/QOrbitCameraController>
-#include <Qt3DRender/QAttribute>
-#include <Qt3DRender/QBuffer>
-#include <Qt3DRender/QGeometry>
-#include <Qt3DRender/QGeometryRenderer>
+//#include <Qt3DRender/QAttribute>
+//#include <Qt3DRender/QBuffer>
+//#include <Qt3DRender/QGeometry>
+//#include <Qt3DRender/QGeometryRenderer>
 #include <Qt3DExtras/QText2DEntity>
 // #include <Qt3DWindow>
 
@@ -381,7 +386,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
     // #define NO_MPM_QT3D true
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+    //FMK #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
 // #ifdef _WIN32
     // Only allow 3D visualization on Windows and Linux for now, Mac had issues with Qt3D 
     // Try to check the most reliable set of preprocessor definitions to detect the OS on common OS
@@ -1740,7 +1745,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // mainLayout->addWidget(updateBodiesButton, 3, 0);    
     mainLayout->addWidget(checkBoxGroup, 3, 0);
 
-#endif
+    // FMK #endif
 
     mainLayout->addWidget(theTabWidget, 4, 0);
     mainGroup->setLayout(mainLayout);
@@ -1770,9 +1775,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     // horizontalPanelLayout->addWidget(visualizationGroup);
 // #ifdef _WIN32
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+//FMK #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
     horizontalPanelLayout->addWidget(container);
-#endif
+    //FMK#endif
     // QVBoxLayout *layout = new QVBoxLayout();
     // mainWindowLayout->addWidget(theScrollArea);
     // mainWindowLayout->addWidget(updateBodiesButton);
@@ -1786,13 +1791,13 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       mpmBoundaries->setDigitalTwin(index);
       mpmSensors->setDigitalTwin(index);
 // #ifdef _WIN32
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+//FMK#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
       updateDigitalTwin(index);
       updateBathymetry();
       updateFluid();
       updateDebris();
       updateSensors();
-#endif
+      //FMK#endif
     });
     
 

@@ -43,7 +43,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QTabWidget>
 #include <QStackedWidget>
 #include <QDebug>
-#include <QSvgWidget>
+//#include <QSvgWidget>
 #include <QVector>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -245,6 +245,7 @@ SensorsMPM::outputToJSON(QJsonObject &jsonObject)
   QJsonArray theGridArray;// = jsonObject["grid-sensors"].toArray(); // Holds array of sensor objects
   QJsonArray theParticleArray;// = jsonObject["particle-sensors"].toArray(); // Holds array of sensor objects
   QJsonObject theObject; // Passed to individual sensor objects to fill
+  
   for (int i=0; i<numAddedTabs; i++) {
     if (i >= numReserveTabs) break;
     addedSensor[i]->outputToJSON(theObject);
@@ -255,6 +256,7 @@ SensorsMPM::outputToJSON(QJsonObject &jsonObject)
       theParticleArray.append(theObject["particle-sensors"].toArray());
     }
   }
+  
   if (0) {
     theArray = theObject["sensors"].toArray();
     jsonObject["sensors"] = theArray; // Add array of sensor objects to the body object
@@ -264,6 +266,7 @@ SensorsMPM::outputToJSON(QJsonObject &jsonObject)
     jsonObject["grid-sensors"] = theGridArray; // Add array of sensor objects to the body object
     jsonObject["particle-sensors"] = theParticleArray; // Add array of sensor objects to the body object
   }
+  
   return true;
 }
 

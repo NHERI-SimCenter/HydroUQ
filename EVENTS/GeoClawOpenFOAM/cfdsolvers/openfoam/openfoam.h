@@ -9,7 +9,7 @@
 #include <QMap>
 #include <QString>
 #include <QUrl>
-#include <Eigen>
+#include <Eigen/Eigen>
 
 class openfoam
 {
