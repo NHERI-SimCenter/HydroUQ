@@ -43,7 +43,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QStackedWidget>
 #include <QDebug>
 #include <QIcon>
-#include <QSvgWidget>
+// #include <QSvgWidget>
 #include <QString> 
 #include <QJsonObject>
 #include <QJsonArray>
@@ -483,7 +483,7 @@ SensorMPM::setSensorType(int type)
 bool
 SensorMPM::outputToJSON(QJsonObject &jsonObject)
 {
-  QJsonArray sensorsArray = jsonObject["sensors"].toArray();
+  QJsonArray sensorsArray = jsonObject["particle-sensors"].toArray();
   QJsonArray particleSensorsArray = jsonObject["particle-sensors"].toArray();
   QJsonArray gridSensorsArray = jsonObject["grid-sensors"].toArray();
 

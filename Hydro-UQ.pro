@@ -87,7 +87,7 @@ win32 {
     }
 }
 
-QMAKE_APPLE_DEVICE_ARCHS="x86_64"
+# QMAKE_APPLE_DEVICE_ARCHS="x86_64"
 
 # Some tools use web-apps with WebGPU, flags are often needed to make Qt properly use your GPU in a Chromium process
 # They can be OS dependent, and GPU manufacture dependent (e.g. NVIDIA)

@@ -10,8 +10,8 @@ INCLUDEPATH += $$PWD/EVENTS/MPM
 INCLUDEPATH += $$PWD/EVENTS/MPMEvent
 INCLUDEPATH += $$PWD/EVENTS/TaichiEvent
 INCLUDEPATH += $$PWD/EVENTS/Celeris
-INCLUDEPATH += $$PWD/EVENTS/CelerisWebGPU
-INCLUDEPATH += $$PWD/EVENTS/CelerisWebGPU/js
+# INCLUDEPATH += $$PWD/EVENTS/CelerisWebGPU
+# INCLUDEPATH += $$PWD/EVENTS/CelerisWebGPU/js
 INCLUDEPATH += $$PWD/EVENTS/NOAA
 INCLUDEPATH += $$PWD/EVENTS/StochasticWaveModel
 INCLUDEPATH += $$PWD/EVENTS/StochasticWaveModel/include
@@ -74,9 +74,9 @@ SOURCES += \
     $$PWD/EVENTS/Celeris/CelerisSolver.cpp \
     $$PWD/EVENTS/Celeris/CelerisTaichi.cpp \
     $$PWD/EVENTS/Celeris/CelerisTaichiEvent.cpp \
-    $$PWD/EVENTS/CelerisWebGPU/Celeris.cpp \
-    $$PWD/EVENTS/CelerisWebGPU/WebGPU.cpp \
-    $$PWD/EVENTS/CelerisWebGPU/volumetric.cpp \
+    # $$PWD/EVENTS/CelerisWebGPU/Celeris.cpp \
+    # $$PWD/EVENTS/CelerisWebGPU/WebGPU.cpp \
+    # $$PWD/EVENTS/CelerisWebGPU/volumetric.cpp \
     $$PWD/EVENTS/NOAA/DigitalCoast.cpp \
     $$PWD/EVENTS/StochasticWaveModel/src/StochasticWaveInput.cpp \
     $$PWD/EVENTS/StochasticWaveModel/src/Jonswap.cpp \
@@ -140,9 +140,9 @@ HEADERS += \
     $$PWD/EVENTS/Celeris/CelerisSolver.h \
     $$PWD/EVENTS/Celeris/CelerisTaichi.h \
     $$PWD/EVENTS/Celeris/CelerisTaichiEvent.h \
-    $$PWD/EVENTS/CelerisWebGPU/Celeris.h \
-    $$PWD/EVENTS/CelerisWebGPU/WebGPU.h \
-    $$PWD/EVENTS/CelerisWebGPU/volumetric.h \
+    # $$PWD/EVENTS/CelerisWebGPU/Celeris.h \
+    # $$PWD/EVENTS/CelerisWebGPU/WebGPU.h \
+    # $$PWD/EVENTS/CelerisWebGPU/volumetric.h \
     $$PWD/EVENTS/NOAA/DigitalCoast.h \
     $$PWD/EVENTS/StochasticWaveModel/include/StochasticWaveInput.h \
     $$PWD/EVENTS/StochasticWaveModel/include/Jonswap.h \
