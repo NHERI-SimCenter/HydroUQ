@@ -112,6 +112,33 @@ GeometriesMPM::GeometriesMPM(QWidget *parent)
   theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
   theAddedLayout[numAddedTabs]->addWidget(addedGeometry[numAddedTabs]);
   numAddedTabs += 1;
+
+  // Add extra geometry at signal
+  connect(this, &GeometriesMPM::addGeometry, this, [=]() {
+    if (numAddedTabs >= numReserveTabs) {
+      qDebug() << "Maximum number of geometries reached. Cannot add more.";
+      return;
+    }
+    tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Custom " + QString::number(numAddedTabs + 1));
+    tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
+    theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
+    theAddedLayout[numAddedTabs]->addWidget(addedGeometry[numAddedTabs]);
+    addedGeometry[numAddedTabs]->setBodyPreset(3); // TODO: Use enum for body presets
+    numAddedTabs += 1;
+  });
+
+  // Remove geometry at signal
+  connect(this, &GeometriesMPM::removeGeometry, this, [=]() {
+    auto widget = tabWidget->widget(tabWidget->count()-1);
+    if (widget) {
+      // widget.deleteLater() // Delete the widget itself
+    }
+    tabWidget->setCurrentIndex(tabWidget->count()-2);
+    tabWidget->removeTab(tabWidget->count()-1);
+    // clean up
+    numAddedTabs -= 1;
+  });
+
   // Init. all extra geometry at user request (click create)
   connect(addB, &QPushButton::released, this, [=]() {
     // Concatenate string to say "Custom Body 1", "Custom Body 2", etc.
@@ -215,14 +242,20 @@ GeometriesMPM::inputFromJSON(QJsonObject &jsonObject)
     // return false;
   }
   QJsonArray geometryArray = jsonObject["geometry"].toArray();
+  while (geometryArray.size() < numAddedTabs) {
+    qDebug() << "GeometriesMPM::inputFromJSON removing an excess geometry from interface";
+    emitRemoveGeometry();
+  }
+
   for (int i=0; i<geometryArray.size(); i++) {
     if (i >= numReserveTabs) {
       qDebug() << "GeometriesMPM::inputFromJSON too many geometries in JSON, exceeded reserved tabs";
       break;
     }
     if (i >= numAddedTabs){
-      qDebug() << "GeometriesMPM::inputFromJSON too many geometries in JSON, exceeded current tabs";
-      break;
+      emitAddGeometry();
+      // qDebug() << "GeometriesMPM::inputFromJSON too many geometries in JSON, exceeded current tabs";
+      // break;
     }
     QJsonObject geometryObject = geometryArray[i].toObject();
     addedGeometry[i]->inputFromJSON(geometryObject);

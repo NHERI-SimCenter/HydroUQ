@@ -113,6 +113,13 @@ public:
     SC_DoubleLineEdit* getSpacingYWidget(BoundaryMPM* theBoundary);
     SC_DoubleLineEdit* getSpacingZWidget(BoundaryMPM* theBoundary);
 
+    void emitAddBoundary(void) {
+        emit addBoundary();
+    }
+    void emitRemoveBoundary(void) {
+        emit removeBoundary();
+    }
+
     // bool setToolStatus(bool isTool);
     // bool getToolStatus();
 
@@ -128,6 +135,8 @@ public:
 // https://stackoverflow.com/questions/3322153/what-is-the-difference-between-a-slot-and-a-signal
 
 signals:
+    void addBoundary();
+    void removeBoundary();
     // void structDimensionsChanged(void);
     // void structOriginChanged(void);
     // void structDimensionsChanged(QString val);
