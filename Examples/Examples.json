@@ -1,64 +1,69 @@
 {
   "Examples": [
     {
-      "name": "Forward Sampling - Stochastic Wave Loads on a Frame Structure - JONSWAP Spectra",
+      "name": "JONSWAP Spectra - Forward Sampling - Stochastic Wave Loads on a Frame Structure",
       "description": "Generate a stochastic wave loading on a simple structure using a stochastic wave spectra in a local UQ workflow. The structure is a simple 1-story OpenSees structure. Engineering Demand Parameters are PFA, RMSA, PFD, and PID. The wave loading is generated using a stochastic wave spectra (JONSWAP). The wave loading is applied to the floors as lateral forces.",
       "inputFile": "hdro-0005/src/input.json"
     },
     {
-      "name": "Sensitivity Analysis - Stochastic Wave Loading on a Frame Structure - JONSWAP Spectra",
+      "name": "JONSWAP Spectra - Sensitivity Analysis - Stochastic Wave Loading on a Frame Structure",
       "description": "Generate a Gaussian Process (GP) surrogate model for stochastic wave loading on a simple frame structure using a stochastic wave spectra in a local UQ workflow. The structure is a simple 1-story OpenSees frame structure. Engineering Demand Parameters are PFA, RMSA, PFD, and PID. The wave loading is generated using a stochastic wave spectra (JONSWAP). The wave loading is applied to the floors as lateral forces.",
       "inputFile": "hdro-0005/src/input_Sensitivity.json"
     },
     {
-      "name": "Reliability Analysis - Stochastic Wave Loading on a Frame Structure - JONSWAP Spectra",
+      "name": "JONSWAP Spectra - Reliability Analysis - Stochastic Wave Loading on a Frame Structure",
       "description": "Generate a Gaussian Process (GP) surrogate model for stochastic wave loading on a simple frame structure using a stochastic wave spectra in a local UQ workflow. The structure is a simple 1-story OpenSees frame structure. Engineering Demand Parameters are PFA, RMSA, PFD, and PID. The wave loading is generated using a stochastic wave spectra (JONSWAP). The wave loading is applied to the floors as lateral forces.",
       "inputFile": "hdro-0005/src/input_Reliability.json"
     },
     {
-      "name": "Surrogate Model - Stochastic Wave Loading on a Frame Structure - JONSWAP Spectra",
+      "name": "JONSWAP Spectra - Surrogate Model - Stochastic Wave Loading on a Frame Structure",
       "description": "Generate a Gaussian Process (GP) surrogate model for stochastic wave loading on a simple frame structure using a stochastic wave spectra in a local UQ workflow. The structure is a simple 1-story OpenSees frame structure. Engineering Demand Parameters are PFA, RMSA, PFD, and PID. The wave loading is generated using a stochastic wave spectra (JONSWAP). The wave loading is applied to the floors as lateral forces.",
       "inputFile": "hdro-0005/src/input_GP.json"
     },
     {
-      "name": "Real-Time Event - Simple Piston Generated Wave - Taichi Lang",
+      "name": "Taichi Lang - Real-Time Event - Simple Piston Generated Wave",
       "description": "Forward sample a 2D wave maker piston's generated wave implemented in the high-performance Taichi Lang.",
       "inputFile": "hdro-0010/src/input.json"
     },
     {
-      "name": "Near-Real Time Wave-Solver - Seaside, OR Experimental Replication - CelerisAi",
+      "name": "Celeris - Near-Real Time Wave-Solver - Seaside, OR Experimental Replication",
       "description": "Forward sample a near-real time CelerisAi wave simulator. Replicates experiments on Seaside, Oregon, by Cox et al. 2008. Performed in Oregon State University's Directional Wave Basin.",
       "inputFile": "hdro-0020/src/input.json"
     },
     {
-      "name": "Near-Real Time Wave-Solver - Oregon State University's Large Wave Flume - CelerisAi",
+      "name": "Celeris - Near-Real Time Wave-Solver - Oregon State University's Large Wave Flume",
       "description": "Forward sample a near-real time CelerisAi wave simulator. Replicates experiments in Oregon State University's Large Wave Flume, by Winter 2019 and Mascarenas 2022.",
       "inputFile": "hdro-0021/src/input.json"
     },
     {
-      "name": "Near-Real Time Wave-Solver - Tsunami Vulnerability of a School in Loiza, Puerto Rico - CelerisAi",
+      "name": "Celeris - Near-Real Time Wave-Solver - Tsunami Vulnerability of a School in Loiza, Puerto Rico",
       "description": "Forward sample a near-real time CelerisAi wave simulator. Studies the tsunami vulnerability of a school in Loiza, Puerto Rico, due to local bathymetry.",
       "inputFile": "hdro-0022/src/input.json"
     },
     {
-      "name": "Digital Flume (Oregon State Univ. LWF) - Debris Impacts in a Tsunami-Like Wave - ClaymoreUW MPM",
+      "name": "ClaymoreUW MPM - Digital Flume (Oregon State Univ. LWF) - Debris Impacts in a Tsunami-Like Wave",
       "description": "This example takes a brief look at uncertainty quantification in a three story shear frame subjected to earthquake loading.",
       "inputFile": "hdro-0002/src/input.json"
     },
     {
-      "name": "Digital Flume (Waseda Univ. TWB) - Debris Motion and Loads in a Scaled Port Setting - ClaymoreUW MPM",
+      "name": "ClaymoreUW MPM - Digital Flume (Waseda Univ. TWB) - Debris Motion and Loads in a Scaled Port Setting",
       "description": "Simulating experiments by Nils Goseberg et al. (2016) regarding debris motion through varied arrays of square column obstacles. Debris represent 1:40 Froude scaled shipping containers in a port setting. An elongated solitary wave is generated by the vacuum chamber of Waseda University's Tsunami Wave Basin. Debris spreading angle, longtiudinal displacement, and impact loads on obstacles are measured.",
       "inputFile": "hdro-0004/src/input.json"
     },
     {
-      "name": "Digital Flume (Oregon State Univ. LWF) - Multi-Story Structure Wave Loading - FOAMySees",
-      "description": "This example takes a brief look at uncertainty quantification in a three story shear frame subjected to earthquake loading.",
-      "inputFile": "hdro-0001/src/input.json"
+      "name": "ClaymoreUW MPM - Digital Flume (Oregon State Univ. DWB) - Debris Group Motion Over a Frictional Bed",
+      "description": "Simulating experiments by Park et al. 2021. An array of debris is positioned on a dry, frictional bed and then a solitary wave generated by a piston breaks onto the bed and mobilizes debris.",
+      "inputFile": "hdro-0006/src/input.json"
     },
     {
-      "name": "Digital Flume (Univ. Washington WASIRF) - Cylinder Half-Submerged in Crossflow - FOAMySees",
-      "description": "This example takes a brief look at uncertainty quantification in a three story shear frame subjected to earthquake loading.",
-      "inputFile": "hdro-0003/src/input.json"
+      "name": "ClaymoreUW MPM - Digital Flume (Univ. of Washington WASIRF) - Debris in Steady-State Flow",
+      "description": "Simulating experiments by Lewis 2023. A set of debris are placed into a steady-state flow in a flume. Impacts against a raised structural box are measured.",
+      "inputFile": "hdro-0007/src/input.json"
+    },
+    {
+      "name": "ClaymoreUW MPM - Digital Flume (USGS Debris-Flow Flume) - Debris-Flow Down a Hill-Slope",
+      "description": "Simulating experiments by Iverson 2016. A mass of dry sand is positioned atop a hill-slope and then suddenly released. The mass flows down the highly frictional slope and impacts a raised structural box at the bottom. The mass is measured at the end of the flume. Runout across a near-horizontal plane is then measured.",
+      "inputFile": "hdro-0008/src/input.json"
     }
   ]
 }
