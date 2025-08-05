@@ -141,6 +141,13 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
   dimensionsBoxLayout->addWidget(flumeOriginY, numRow, 2);
   dimensionsBoxLayout->addWidget(flumeOriginZ, numRow, 3);
   dimensionsBoxLayout->addWidget(new QLabel("m"), numRow++, 4);  
+
+  frictionStatic = new SC_DoubleLineEdit("friction_static", 0.0);
+  frictionDynamic = new SC_DoubleLineEdit("friction_dynamic", 0.0);
+  dimensionsBoxLayout->addWidget(new QLabel("Friction (Static)"), numRow, 0);
+  dimensionsBoxLayout->addWidget(frictionStatic, numRow, 1);
+  dimensionsBoxLayout->addWidget(new QLabel("Friction (Dynamic)"), numRow, 2);
+  dimensionsBoxLayout->addWidget(frictionDynamic, numRow++, 3);
   dimensionsBoxLayout->setRowStretch(numRow,1);
   dimensionsBox->setLayout(dimensionsBoxLayout);
 
@@ -257,16 +264,18 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
       bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 6, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
       customBathymetryToggle->setChecked(true);
+      frictionStatic->setText("0.4");
+      frictionDynamic->setText("0.4");
     } else if (val == "Wind-Air-Sea Interaction Facility (UW WASIRF)") {
-      flumeLength->setText("12.19");
-      flumeHeight->setText("1.22");
-      flumeWidth->setText("0.914");
+      flumeLength->setText("16.0");
+      flumeHeight->setText("1.3");
+      flumeWidth->setText("1.0");
       QStringList newDataBathXZ; newDataBathXZ << "0.00" << "0.0" 
-                 << "12.0" << "0.0";
+                 << "16.0" << "0.0";
       delete bathXZData;
       bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 2, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
-      customBathymetryToggle->setChecked(false);
+      customBathymetryToggle->setChecked(true);
     } else if (val == "Waseda University's Tsunami Wave Basin (WU TWB)") {
       flumeLength->setText("9.0");
       flumeHeight->setText("1.0");
@@ -278,7 +287,9 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
       delete bathXZData;
       bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 4, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
-      customBathymetryToggle->setChecked(false);
+      customBathymetryToggle->setChecked(true);
+      frictionStatic->setText("0.4");
+      frictionDynamic->setText("0.4");
     } else if (val == "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)") {
       flumeLength->setText("90.0");
       flumeHeight->setText("2.0");
@@ -292,7 +303,9 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
       delete bathXZData;
       bathXZData = new SC_TableEdit("bathymetry",bathXZHeadings, 6, newDataBathXZ);
       ptLayout->addWidget(bathXZData, 0, 0);
-      customBathymetryToggle->setChecked(tr);
+      customBathymetryToggle->setChecked(true);
+      frictionStatic->setText("20.0");
+      frictionDynamic->setText("20.0");
     } 
   });
 
@@ -1335,7 +1348,20 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
     QJsonObject boundariesObject;
 
     // TODO: Add wave flume facility names to JSON to link to the name in ClaymoreUW enumerators
-    boundariesObject["object"] = QString("OSU LWF");
+    if (facility->currentIndex() == 0) {
+      boundariesObject["object"] = QString("OSU LWF");
+    } else if (facility->currentIndex() == 1) {
+      boundariesObject["object"] = QString("OSU TWB");
+    } else if (facility->currentIndex() == 2) {
+      boundariesObject["object"] = QString("Bathymetry");
+    } else if (facility->currentIndex() == 3) {
+      boundariesObject["object"] = QString("TOKYO Harbor");
+    } else if (facility->currentIndex() == 4) {
+      boundariesObject["object"] = QString("USGS Ramp");
+    } else {
+      this->errorMessage("ERROR: Wave Flume Facility - unknown type");
+      return false;
+    }
     boundariesObject["contact"] = QString("Separable");
     // boundariesObject["contact"] = QJsonValue(waveFlumeContactType->currentText()).toString();
 
@@ -1357,12 +1383,12 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
     if (0) boundariesObject["dimensions"] = dimensionsArray; // future schema
     else boundariesObject["domain_end"] = dimensionsEndArray; // ClaymoreUW artifact, TODO: deprecate
 
-    boundariesObject["friction_static"] = 0.0;
-    boundariesObject["friction_dynamic"] = 0.0;
+    frictionStatic->outputToJSON(boundariesObject);
+    frictionDynamic->outputToJSON(boundariesObject);
 
     // User point-list input bathymetry
     boundariesObject["use_custom_bathymetry"] = customBathymetryToggle->isChecked();
-    if (customBathymetryToggle->isChecked()) {
+    // if (customBathymetryToggle->isChecked()) {
       QJsonObject tableBath;
       bathXZData->outputToJSON(tableBath);
       QJsonArray bathArray;
@@ -1370,7 +1396,7 @@ BoundaryMPM::outputToJSON(QJsonObject &jsonObject)
         bathArray.append(tableBath["bathymetry"].toArray()[i].toArray());
       }
       boundariesObject["bathymetry"] = bathArray;
-    }
+    // }
 
     // Maybe add SWL, bools, wave-maker neutral, etc. here
     boundariesArray.append(boundariesObject);
@@ -1714,12 +1740,22 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         // return false;
     }
 
+    if (jsonObject.contains("friction_static")) {
+        frictionStatic->setText(QString::number(jsonObject["friction_static"].toDouble()));
+    } else {
+        frictionStatic->setText(QString::number(0.0));
+    }
+
+    if (jsonObject.contains("friction_dynamic")) {
+        frictionDynamic->setText(QString::number(jsonObject["friction_dynamic"].toDouble()));
+    } else {
+        frictionDynamic->setText(QString::number(0.0));
+    }
+
     if (jsonObject.contains("use_custom_bathymetry")) {
         customBathymetryToggle->setChecked(jsonObject["use_custom_bathymetry"].toBool());
     } else {
-        // this->errorMessage("ERROR: Wave Flume Facility - no \"use_custom_bathymetry\" entry");
         customBathymetryToggle->setChecked(false);
-        // return false;
     }
     if (jsonObject.contains("bathymetry")) {
         if (!customBathymetryToggle->isChecked()) {
@@ -1833,7 +1869,7 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         double theFrequencyValue = jsonObject["output_frequency"].toDouble();
         paddleFrequency->setText(QString::number(theFrequencyValue));
     } else {
-        this->errorMessage("ERROR: Wave Generator - no \"output_frequency\" entry");
+        // this->errorMessage("ERROR: Wave Generator - no \"output_frequency\" entry");
         // return false;
     }
 
@@ -1843,7 +1879,6 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         inflowVelocityY->setText(QString::number(theVelocityArray[1].toDouble()));
         inflowVelocityZ->setText(QString::number(theVelocityArray[2].toDouble()));
     } else {
-        this->errorMessage("ERROR: Wave Generator - no \"velocity\" entry");
         // return false;
     }
 
@@ -1904,7 +1939,7 @@ BoundaryMPM::inputFromJSON(QJsonObject &jsonObject)
         dataDir->setText(absoluteWaveMakerPath);
         paddleDisplacementFile->setFilename(absoluteWaveMakerPath);
     } else {
-        this->errorMessage("ERROR: Paddle Motion - no \"file\" entry");
+        // this->errorMessage("ERROR: Paddle Motion - no \"file\" entry");
         // return false;
     }
   }

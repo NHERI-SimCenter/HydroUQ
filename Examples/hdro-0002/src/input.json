@@ -826,9 +826,9 @@
                     4.5,
                     3.6
                 ],
-                "duration": 1,
+                "duration": 30.0,
                 "fps": 2,
-                "frames": 2,
+                "frames": 60,
                 "froude_scaling": 1,
                 "froude_time_ratio": 1,
                 "gravity": [

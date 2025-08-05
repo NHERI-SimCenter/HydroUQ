@@ -218,6 +218,28 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
     else if (i == 3) addedBoundary[i]->setBoundaryType(RIGID_WALLS);
     else addedBoundary[i]->setBoundaryType(CUSTOM);
   }
+
+  connect(this, &BoundariesMPM::addBoundary, this, [=]() {
+    if (numAddedTabs >= numReserveTabs) return;
+    tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Custom " + QString::number(numAddedTabs + 1));
+    tabWidget->setIconSize(QSize(sizeBodyTabs, sizeBodyTabs));
+    theAdded[numAddedTabs]->setLayout(theAddedLayout[numAddedTabs]);
+    theAddedLayout[numAddedTabs]->addWidget(addedBoundary[numAddedTabs]);
+    addedBoundary[numAddedTabs]->setBoundaryType(RIGID_STRUCTURE); // TODO: Use enum for boundary types
+    numAddedTabs += 1;
+  });
+
+  connect(this, &BoundariesMPM::removeBoundary, this, [=]() {
+    auto widget = tabWidget->widget(tabWidget->currentIndex());
+    if (widget) {
+          // widget.deleteLater() // Delete the widget itself
+    }
+    tabWidget->setCurrentIndex(tabWidget->currentIndex()-1);
+    tabWidget->removeTab(tabWidget->currentIndex()+1);
+    // clean up
+    numAddedTabs -= 1;
+  });
+
 }
 
 BoundariesMPM::~BoundariesMPM()
@@ -461,6 +483,10 @@ BoundariesMPM::inputFromJSON(QJsonObject &jsonObject)
   // paddleDisplacementFile->inputFromJSON(jsonObject);
   QJsonArray boundariesArray  = jsonObject["boundaries"].toArray();
   int numBoundaries = boundariesArray.size();
+  while (numBoundaries < numAddedTabs) {
+    qDebug() << "BoundariesMPM::inputFromJSON removing an excess boundary from interface";
+    emitRemoveBoundary();
+  }
   for (int i=0; i<numBoundaries; i++) {
     if (i >= numReserveTabs) {
       qDebug() << "Exceeded number of reserved boundary tabs" << numReserveTabs << "for boundary" << i;
@@ -469,6 +495,7 @@ BoundariesMPM::inputFromJSON(QJsonObject &jsonObject)
     if (i >= numAddedTabs) {
       // Add a new tab if there are more boundaries than tabs
       qDebug() << "Exceeded number of added boundary tabs" << numAddedTabs << "for boundary" << i;
+      emitAddBoundary(); // Emit signal to add a new boundary tab
       // TODO: Add a new tab for the boundary
 
       // tabWidget->addTab(theAdded[numAddedTabs], QIcon(QString(":/icons/user-black.svg")), "Custom " + QString::number(numAddedTabs + 1));

@@ -88,7 +88,7 @@
                                 4
                             ],
                             "fill_flume_upto_SWL": true,
-                            "object": "WU TWB",
+                            "object": "Box",
                             "offset": [
                                 0,
                                 0,
@@ -96,7 +96,7 @@
                             ],
                             "operation": "add",
                             "span": [
-                                9,
+                                4.45,
                                 0.23,
                                 4
                             ],
@@ -105,12 +105,61 @@
                                 "0"
                             ],
                             "use_custom_bathymetry": false
+                        },
+                        {
+                            "operation": "add",
+                            "object": "Box",
+                            "apply_array": false,
+                            "apply_rotation": false,
+                            "body_preset": "Fluid",
+                            "facility": "Waseda University's Tsunami Wave Basin (WU TWB)",
+                            "facility_dimensions": [
+                                9,
+                                1,
+                                4
+                            ],
+                            "offset": [
+                                0,
+                                0.23,
+                                0
+                            ],
+                            "span": [
+                                0.5,
+                                0.67,
+                                4.0
+                            ],
+                            "spacing": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "array": [
+                                1,
+                                1,
+                                1
+                            ],
+                            "rotate": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "fulcrum": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "track_particle_id": [
+                                "0"
+                            ],
+                            "fill_flume_upto_SWL": false,
+                            "use_custom_bathymetry": false,
+                            "standing_water_level": 0.9
                         }
                     ],
                     "gpu": 0,
                     "material": {
                         "CFL": 0.5,
-                        "bulk_modulus": 210000000,
+                        "bulk_modulus": 21000000,
                         "constitutive": "JFluid",
                         "gamma": 7.15,
                         "material_preset": "Water (Fresh)",
@@ -128,12 +177,12 @@
                             "gpu": 0,
                             "model": 0,
                             "partition_end": [
-                                31.9,
-                                2.9,
-                                3.6
+                                9,
+                                0.23,
+                                4
                             ],
                             "partition_start": [
-                                1.9,
+                                0,
                                 0,
                                 0
                             ]
@@ -142,13 +191,13 @@
                             "gpu": 1,
                             "model": 0,
                             "partition_end": [
-                                91.9,
-                                2.9,
-                                3.6
+                                0.5,
+                                0.9,
+                                4
                             ],
                             "partition_start": [
-                                31.9,
                                 0,
+                                0.23,
                                 0
                             ]
                         },
@@ -156,24 +205,24 @@
                             "gpu": 2,
                             "model": 0,
                             "partition_end": [
-                                121.9,
-                                2.9,
-                                3.6
+                                9,
+                                0.23,
+                                8
                             ],
                             "partition_start": [
-                                91.9,
                                 0,
-                                0
+                                0,
+                                4
                             ]
                         }
                     ],
                     "partition_end": [
-                        31.9,
-                        2.9,
-                        3.6
+                        9,
+                        0.23,
+                        4
                     ],
                     "partition_start": [
-                        1.9,
+                        0,
                         0,
                         0
                     ],
@@ -210,7 +259,7 @@
                     "geometry": [
                         {
                             "apply_array": true,
-                            "apply_rotation": true,
+                            "apply_rotation": false,
                             "array": [
                                 1,
                                 2,
@@ -232,7 +281,7 @@
                             "offset": [
                                 4.65,
                                 0.255,
-                                1.725
+                                1.715
                             ],
                             "operation": "add",
                             "rotate": [
@@ -241,9 +290,9 @@
                                 0
                             ],
                             "spacing": [
-                                0.09,
-                                0.09,
-                                0.18
+                                0.12,
+                                0.12,
+                                0.21
                             ],
                             "span": [
                                 0.06,
@@ -262,7 +311,7 @@
                         "material_preset": "Plastic",
                         "poisson_ratio": 0.3,
                         "rho": 981,
-                        "youngs_modulus": 100000000
+                        "youngs_modulus": 10000000
                     },
                     "model": 1,
                     "name": "debris",
@@ -278,24 +327,24 @@
                             "gpu": 0,
                             "model": 1,
                             "partition_end": [
-                                91.9,
-                                2.9,
-                                3.6
+                                9,
+                                1,
+                                4
                             ],
                             "partition_start": [
-                                1.9,
+                                0,
                                 0,
                                 0
                             ]
                         }
                     ],
                     "partition_end": [
-                        91.9,
-                        2.9,
-                        3.6
+                        9,
+                        1,
+                        4
                     ],
                     "partition_start": [
-                        1.9,
+                        0,
                         0,
                         0
                     ],
@@ -341,7 +390,7 @@
                                 4
                             ],
                             "fill_flume_upto_SWL": true,
-                            "object": "WU TWB",
+                            "object": "Box",
                             "offset": [
                                 0,
                                 0,
@@ -349,7 +398,7 @@
                             ],
                             "operation": "add",
                             "span": [
-                                9,
+                                4.45,
                                 0.23,
                                 4
                             ],
@@ -358,12 +407,61 @@
                                 "0"
                             ],
                             "use_custom_bathymetry": false
+                        },
+                        {
+                            "operation": "add",
+                            "object": "Box",
+                            "apply_array": false,
+                            "apply_rotation": false,
+                            "body_preset": "Fluid",
+                            "facility": "Waseda University's Tsunami Wave Basin (WU TWB)",
+                            "facility_dimensions": [
+                                9,
+                                1,
+                                4
+                            ],
+                            "offset": [
+                                0,
+                                0.23,
+                                0
+                            ],
+                            "span": [
+                                0.5,
+                                0.67,
+                                4.0
+                            ],
+                            "spacing": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "array": [
+                                1,
+                                1,
+                                1
+                            ],
+                            "rotate": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "fulcrum": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "track_particle_id": [
+                                "0"
+                            ],
+                            "fill_flume_upto_SWL": false,
+                            "use_custom_bathymetry": false,
+                            "standing_water_level": 0.9
                         }
                     ],
                     "gpu": 1,
                     "material": {
                         "CFL": 0.5,
-                        "bulk_modulus": 210000000,
+                        "bulk_modulus": 21000000,
                         "constitutive": "JFluid",
                         "gamma": 7.15,
                         "material_preset": "Water (Fresh)",
@@ -381,12 +479,12 @@
                             "gpu": 0,
                             "model": 0,
                             "partition_end": [
-                                31.9,
-                                2.9,
-                                3.6
+                                9,
+                                0.23,
+                                4
                             ],
                             "partition_start": [
-                                1.9,
+                                0,
                                 0,
                                 0
                             ]
@@ -395,13 +493,13 @@
                             "gpu": 1,
                             "model": 0,
                             "partition_end": [
-                                91.9,
-                                2.9,
-                                3.6
+                                0.5,
+                                0.9,
+                                4
                             ],
                             "partition_start": [
-                                31.9,
                                 0,
+                                0.23,
                                 0
                             ]
                         },
@@ -409,24 +507,24 @@
                             "gpu": 2,
                             "model": 0,
                             "partition_end": [
-                                121.9,
-                                2.9,
-                                3.6
+                                9,
+                                0.23,
+                                8
                             ],
                             "partition_start": [
-                                91.9,
                                 0,
-                                0
+                                0,
+                                4
                             ]
                         }
                     ],
                     "partition_end": [
-                        91.9,
-                        2.9,
-                        3.6
+                        0.5,
+                        0.9,
+                        4.0
                     ],
                     "partition_start": [
-                        31.9,
+                        0,
                         0,
                         0
                     ],
@@ -472,7 +570,7 @@
                                 4
                             ],
                             "fill_flume_upto_SWL": true,
-                            "object": "WU TWB",
+                            "object": "Box",
                             "offset": [
                                 0,
                                 0,
@@ -480,7 +578,7 @@
                             ],
                             "operation": "add",
                             "span": [
-                                9,
+                                4.45,
                                 0.23,
                                 4
                             ],
@@ -489,12 +587,61 @@
                                 "0"
                             ],
                             "use_custom_bathymetry": false
+                        },
+                        {
+                            "operation": "add",
+                            "object": "Box",
+                            "apply_array": false,
+                            "apply_rotation": false,
+                            "body_preset": "Fluid",
+                            "facility": "Waseda University's Tsunami Wave Basin (WU TWB)",
+                            "facility_dimensions": [
+                                9,
+                                1,
+                                4
+                            ],
+                            "offset": [
+                                0,
+                                0.23,
+                                0
+                            ],
+                            "span": [
+                                0.5,
+                                0.67,
+                                4.0
+                            ],
+                            "spacing": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "array": [
+                                1,
+                                1,
+                                1
+                            ],
+                            "rotate": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "fulcrum": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "track_particle_id": [
+                                "0"
+                            ],
+                            "fill_flume_upto_SWL": false,
+                            "use_custom_bathymetry": false,
+                            "standing_water_level": 0.9
                         }
                     ],
                     "gpu": 2,
                     "material": {
                         "CFL": 0.5,
-                        "bulk_modulus": 210000000,
+                        "bulk_modulus": 21000000,
                         "constitutive": "JFluid",
                         "gamma": 7.15,
                         "material_preset": "Water (Fresh)",
@@ -512,12 +659,12 @@
                             "gpu": 0,
                             "model": 0,
                             "partition_end": [
-                                31.9,
-                                2.9,
-                                3.6
+                                9,
+                                0.23,
+                                4
                             ],
                             "partition_start": [
-                                1.9,
+                                0,
                                 0,
                                 0
                             ]
@@ -526,13 +673,13 @@
                             "gpu": 1,
                             "model": 0,
                             "partition_end": [
-                                91.9,
-                                2.9,
-                                3.6
+                                0.5,
+                                0.9,
+                                4
                             ],
                             "partition_start": [
-                                31.9,
                                 0,
+                                0.23,
                                 0
                             ]
                         },
@@ -540,26 +687,26 @@
                             "gpu": 2,
                             "model": 0,
                             "partition_end": [
-                                121.9,
-                                2.9,
-                                3.6
+                                9,
+                                0.23,
+                                8
                             ],
                             "partition_start": [
-                                91.9,
                                 0,
-                                0
+                                0,
+                                4
                             ]
                         }
                     ],
                     "partition_end": [
-                        121.9,
-                        2.9,
-                        3.6
+                        9.0,
+                        0.23,
+                        8
                     ],
                     "partition_start": [
-                        91.9,
                         0,
-                        0
+                        0,
+                        4
                     ],
                     "target_attribs": [
                         "Position_Y"
@@ -593,28 +740,26 @@
                         0,
                         0
                     ],
-                    "friction_dynamic": 0,
-                    "friction_static": 0,
-                    "object": "OSU LWF",
+                    "friction_dynamic": 0.4,
+                    "friction_static": 0.4,
+                    "object": "TOKYO Harbor",
                     "use_custom_bathymetry": false
                 },
                 {
                     "contact": "Separable",
                     "domain_end": [
-                        0.55,
+                        0.56,
                         1,
                         4
                     ],
                     "domain_start": [
                         0.5,
-                        0.1,
+                        0.15,
                         0
                     ],
-                    "file": "..//wmdisp_LWF_Unbroken_Amp4_SF500_twm10sec_1200hz_14032023.csv",
                     "friction_dynamic": 0,
                     "friction_static": 0,
-                    "object": "OSU Paddle",
-                    "output_frequency": 1200
+                    "object": "Box"
                 },
                 {
                     "array": [
@@ -675,13 +820,13 @@
                     "attribute": "Force",
                     "direction": "X+",
                     "domain_end": [
-                        5.12,
+                        5.14,
                         0.405,
                         2.05
                     ],
                     "domain_start": [
                         5.11,
-                        0.255,
+                        0.24,
                         1.95
                     ],
                     "name": "LoadCell1",
@@ -692,10 +837,10 @@
                         [
                             "LoadCell1",
                             5.11,
-                            0.255,
+                            0.24,
                             1.95,
-                            0.01,
-                            0.15,
+                            0.03,
+                            0.165,
                             0.1
                         ],
                         [
@@ -703,7 +848,7 @@
                             5.11,
                             0.405,
                             1.95,
-                            0.01,
+                            0.03,
                             0.15,
                             0.1
                         ]
@@ -715,7 +860,7 @@
                     "attribute": "Force",
                     "direction": "X+",
                     "domain_end": [
-                        5.12,
+                        5.14,
                         0.555,
                         2.05
                     ],
@@ -732,10 +877,10 @@
                         [
                             "LoadCell1",
                             5.11,
-                            0.255,
+                            0.24,
                             1.95,
-                            0.01,
-                            0.15,
+                            0.03,
+                            0.165,
                             0.1
                         ],
                         [
@@ -743,7 +888,7 @@
                             5.11,
                             0.405,
                             1.95,
-                            0.01,
+                            0.03,
                             0.15,
                             0.1
                         ]
@@ -1032,15 +1177,15 @@
                 "cauchy_bulk_ratio": 1,
                 "cfl": 0.5,
                 "default_dt": 0.001,
-                "default_dx": 0.1,
+                "default_dx": 0.03,
                 "domain": [
-                    90,
-                    4.5,
-                    3.6
+                    9.0,
+                    1.0,
+                    4.0
                 ],
-                "duration": 1,
+                "duration": 15.0,
                 "fps": 2,
-                "frames": 2,
+                "frames": 30,
                 "froude_scaling": 1,
                 "froude_time_ratio": 1,
                 "gravity": [

@@ -75,8 +75,8 @@ class QFormLayout;
 class QLabel;
 class QScrollArea;
 class QStackedWidget;
+class QTimer;
 class SlidingStackedWidget;
-
 
 namespace Qt3DExtras {
    class Qt3DWindow;
@@ -154,12 +154,14 @@ private:
    QGroupBox                    *caseDirectoryGroup;
    QGridLayout                  *caseDirectoryLayout;
    QTabWidget                   *theTabWidget;
+   QTimer                       *m_timer;
    // QScrollArea                  *theScrollArea;
    // QVBoxLayout                  *visWindowLayout;
    // QGroupBox                    *visWindowGroup;
    // QVBoxLayout                  *inputWindowLayout;
    // QGroupBox                    *inputWindowGroup;
    bool caseInitialized = false; 
+   QString exampleString = "OSU LWF";
 
 #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
    Qt3DExtras::Qt3DWindow* view;

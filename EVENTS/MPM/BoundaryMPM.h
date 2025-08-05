@@ -162,6 +162,8 @@ private:
   SC_CheckBox       *customBathymetryToggle;
   SC_FileEdit       *bathSTL;
   SC_TableEdit      *bathXZData;  
+  SC_DoubleLineEdit *frictionStatic;
+  SC_DoubleLineEdit *frictionDynamic;
 
   // wave generation
   QStackedWidget *waveGenStack;

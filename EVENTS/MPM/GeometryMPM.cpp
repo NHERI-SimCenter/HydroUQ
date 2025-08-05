@@ -75,7 +75,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
   // numRow = 0;
 
   // -----------------------------------------------------------------------------------
-  QList <QString> objectList; objectList << "Box" << "Sphere" << "Cylinder" << "File" << "Checkpoint" << "OSU LWF" << "OSU TWB" << "UW WASIRF" << "WU TWB" << "USGS DFF" << "NICHE" << "Custom" << "Generative AI"; //  "Cone" << "Ring"
+  QList <QString> objectList; objectList << "Box" << "Sphere" << "Cylinder" << "Cone" << "Ring" << "Bathymetry" << "File" << "Checkpoint" << "OSU LWF" << "OSU TWB" << "UW WASIRF" << "WU TWB" << "USGS DFF" << "NICHE" << "Custom" << "Generative AI" << ""; //  "Cone" << "Ring"
   objectType = new SC_ComboBox("object", objectList);
   layout->addWidget(new QLabel("Object Type"), numRow, 0, 1, 1, Qt::AlignRight);
   layout->addWidget(objectType,numRow++, 1, 1, 3);
@@ -426,7 +426,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       facilityHeight->setText("1.22");
       facilityWidth->setText("0.914");
       if (bodyPreset->currentText() == "Fluid") {
-        objectType->setCurrentText("UW WASIRF");
+        objectType->setCurrentText("Box");
       }
       QStringList newDataBathXZ; newDataBathXZ << "0.00" << "0.0" 
                  << "12.0" << "0.0";
@@ -437,7 +437,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       facilityHeight->setText("1.0");
       facilityWidth->setText("4.0");
       if (bodyPreset->currentText() == "Fluid") {
-        objectType->setCurrentText("WU TWB");
+        objectType->setCurrentText("Box");
       }
       QStringList newDataBathXZ; newDataBathXZ << "0.00" << "0" 
                  << "4.45" << "0" 
@@ -450,7 +450,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       facilityHeight->setText("2.0");
       facilityWidth->setText("2.0");
       if (bodyPreset->currentText() == "Fluid") {
-        objectType->setCurrentText("USGS DFF");
+        objectType->setCurrentText("Box");
       }
       QStringList newDataBathXZ; newDataBathXZ << "0.00"  << "0.0" // Top of flume, or soil mass ?
                  << "7.00"  << "0.0" // Gate ?
@@ -574,7 +574,30 @@ GeometryMPM::GeometryMPM(QWidget *parent)
       longAxis->setDisabled(true);
       // radius->hide();
       // longAxis->hide();
-    } else if (val == "OSU LWF" || val == "OSU LWF Ramp") {
+    } else if (val == "Bathymetry") {
+      length->setEnabled(true);
+      length->show();
+      height->setEnabled(true);
+      height->show();
+      width->setEnabled(true);
+      width->show();
+      radius->setDisabled(true);
+      radius->clear();
+      longAxis->setDisabled(true);
+      longAxis->setCurrentText("");
+      // radius->hide();
+      // longAxis->hide();
+      if (bodyPreset->currentText() == "Fluid") {
+        originX->setText("0.0");
+        originY->setText("0.0");
+        originZ->setText("0.0");
+        length->setText(QString::number(facilityLength->text().toDouble()));
+        height->setText(QString::number(standingWaterLevel->text().toDouble()));
+        width->setText(QString::number(facilityWidth->text().toDouble()));
+      }
+    }
+    
+    if (val == "OSU LWF" || val == "OSU LWF Ramp" || ((val == "Box" || val == "Bathymetry") && facility->currentText() == "Hinsdale Large Wave Flume (OSU LWF)")) {
       facility->setCurrentText("Hinsdale Large Wave Flume (OSU LWF)");
       length->setEnabled(true);
       length->show();
@@ -596,7 +619,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
         originY->setText("0.0");
         originZ->setText("0.0");
       }
-    } else if (val == "OSU DWB" || val == "OSU DWB Ramp" || val == "OSU TWB") {
+    } else if (val == "OSU DWB" || val == "OSU DWB Ramp" || val == "OSU TWB" || ((val == "Box" || val == "Bathymetry") && facility->currentText() == "Hinsdale Directional Wave Basin (OSU DWB)")) {
       facility->setCurrentText("Hinsdale Directional Wave Basin (OSU DWB)");
       length->setEnabled(true);
       length->show();
@@ -618,7 +641,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
         originY->setText("0.0");
         originZ->setText("0.0");
       }
-    } else if (val == "UW WASIRF") {
+    } else if (val == "UW WASIRF" || ((val == "Box" || val == "Bathymetry") && facility->currentText() == "Wind-Air-Sea Interaction Facility (UW WASIRF)")) {
       facility->setCurrentText("Wind-Air-Sea Interaction Facility (UW WASIRF)");
       length->setEnabled(true);
       length->show();
@@ -640,7 +663,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
         originY->setText("0.0");
         originZ->setText("0.0");
       }
-    } else if (val == "WU TWB" || val == "TOKYO Harbor") {
+    } else if (val == "WU TWB" || val == "TOKYO Harbor" || ((val == "Box" || val == "Bathymetry") && facility->currentText() == "Waseda University's Tsunami Wave Basin (WU TWB)")) {
       facility->setCurrentText("Waseda University's Tsunami Wave Basin (WU TWB)");
       length->setEnabled(true);
       length->show();
@@ -662,7 +685,7 @@ GeometryMPM::GeometryMPM(QWidget *parent)
         originY->setText("0.0");
         originZ->setText("0.0");
       }
-    } else if (val == "USGS DFF" || val == "USGS Ramp") {
+    } else if (val == "USGS DFF" || val == "USGS Ramp" || ((val == "Box" || val == "Bathymetry") && facility->currentText() == "U.S. Geo. Survey's Debris Flow Flume (USGS DFF)")) {
       facility->setCurrentText("U.S. Geo. Survey's Debris Flow Flume (USGS DFF)");
       length->setEnabled(true);
       length->show();
@@ -1168,9 +1191,9 @@ GeometryMPM::inputFromJSON(QJsonObject &jsonObject)
   if (jsonObject.contains("object")) {
     // TODO: Add Bathymetry object in qstringlist and qcombobox
     qDebug() << "inputFromJSON(): INFO: Object Type: " << jsonObject["object"].toString();
-    if (jsonObject["object"].toString() == "Bathymetry" || jsonObject["object"].toString() == "bathymetry") {
-      objectType->setCurrentText("OSU LWF");
-    }
+    // if (jsonObject["object"].toString() == "Bathymetry" || jsonObject["object"].toString() == "bathymetry") {
+    //   objectType->setCurrentText("OSU LWF");
+    // }
 
     objectType->setCurrentText(jsonObject["object"].toString());
     // Trigger the object type change event
@@ -1421,8 +1444,12 @@ GeometryMPM::setDigitalTwin(int twinIdx)
     return false;
   }
   facility->setCurrentIndex(twinIdx);
+  // set last object then back to the first object
+  int objectIndex = objectType->currentIndex();
+  objectType->setCurrentIndex(objectType->count() - 1);
+  objectType->setCurrentIndex(objectIndex);
+  
   // Default Fluid template to OSU LWF water object
-
   if (bodyPreset->currentText() == "Fluid") {
     if (twinIdx == 0) { // OSU LWF
       fillFlumeUptoSWL->setChecked(true);
@@ -1439,12 +1466,6 @@ GeometryMPM::setDigitalTwin(int twinIdx)
     } else if (twinIdx == 4) { // USGS DFF
       fillFlumeUptoSWL->setChecked(false);
       standingWaterLevel->setText("2.0");
-      length->setText("7.0");
-      height->setText("2.0");
-      width->setText("2.0");
-      originX->setText("0.0");
-      originY->setText("0.0");
-      originZ->setText("0.0");
     } 
   } else if (bodyPreset->currentText() == "Debris") {
     if (twinIdx == 0) { // OSU LWF
