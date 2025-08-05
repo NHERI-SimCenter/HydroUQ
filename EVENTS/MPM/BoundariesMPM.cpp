@@ -230,12 +230,12 @@ BoundariesMPM::BoundariesMPM(QWidget *parent)
   });
 
   connect(this, &BoundariesMPM::removeBoundary, this, [=]() {
-    auto widget = tabWidget->widget(tabWidget->currentIndex());
+    auto widget = tabWidget->widget(tabWidget->count()-1);
     if (widget) {
           // widget.deleteLater() // Delete the widget itself
     }
-    tabWidget->setCurrentIndex(tabWidget->currentIndex()-1);
-    tabWidget->removeTab(tabWidget->currentIndex()+1);
+    tabWidget->setCurrentIndex(tabWidget->count()-2);
+    tabWidget->removeTab(tabWidget->count()-1);
     // clean up
     numAddedTabs -= 1;
   });
