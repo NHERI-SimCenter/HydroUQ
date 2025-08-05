@@ -8,6 +8,13 @@ DMG_METHOD="NEW"
 
 release=${1:-"NO_RELEASE"}
 
+if [ -n "$release" ] && [ "$release" = "quick" ]; then
+    echo "QUICK EXIT"
+else
+    echo "NOT QUICK"
+fi
+    
+
 #
 # Paramaters
 #
@@ -19,12 +26,11 @@ DMG_FILENAME="Hydro-UQ_Mac_Download.dmg"
 # remove & rebuild app and macdeploy it
 
 QTDIR="/Users/fmckenna/Qt/5.15.2/clang_64/"
-#QTDIR="/Users/fmckenna/Qt/6.6.0/macos/"
+
 pathToBackendApps="/Users/fmckenna/NHERI/SimCenterBackendApplications"
 pathToOpenSees="/Users/fmckenna/bin/OpenSees3.6.0"
 pathToDakota="/Users/fmckenna/dakota/dakota-6.16.0"
 
-#pathToPython="/Users/fmckenna/PythonEnvR2D"
 #
 # source userID file containig stuff dor signing, ok if not there
 #
@@ -53,20 +59,18 @@ fi
 
 macdeployqt ./Hydro_UQ.app 
 
+if [ -n "$release" ] && [ "$release" = "quick" ]; then
+    exit 0
+fi
+
 # copy applications folderm opensees and dakota
 
 #echo "cp -fR $pathToBackendApps/applications ./$APP_FILE/Contents/MacOS"
 mkdir  ./$APP_FILE/Contents/MacOS/applications
 cp -fR $pathToBackendApps/applications ./$APP_FILE/Contents/MacOS/
-mkdir  ./$APP_FILE/Contents/MacOS/applications/opensees
-#mkdir  ./$APP_FILE/Contents/MacOS/applications/opensees/bin
-#mkdir  ./$APP_FILE/Contents/Resources/opensees
-mkdir  ./$APP_FILE/Contents/MacOS/applications/dakota
 
 #cp -fr $pathToOpenSees/bin/* ./$APP_FILE/Contents/MacOS/applications/opensees/bin
 #cp -fr $pathToOpenSees/lib/* ./$APP_FILE/Contents/Resources/opensees
-cp -fr $pathToOpenSees/* ./$APP_FILE/Contents/MacOS/applications/opensees
-cp -fr $pathToDakota/*  ./$APP_FILE/Contents/MacOS/applications/dakota
 
 # clean up
 declare -a notWantedApp=("createBIM" 
@@ -97,14 +101,27 @@ declare -a notWantedApp=("createBIM"
 for app in "${notWantedApp[@]}"
 do
    echo "removing $app"
-#   rm -fr ./$APP_FILE/Contents/MacOS/applications/$app
+   rm -fr ./$APP_FILE/Contents/MacOS/applications/$app
 done
 
-#find ./$APP_FILE -name __pycache__ -exec rm -rf {} +;
+
+mkdir  ./$APP_FILE/Contents/MacOS/applications/opensees
+mkdir  ./$APP_FILE/Contents/MacOS/applications/dakota
+cp -fr $pathToOpenSees/* ./$APP_FILE/Contents/MacOS/applications/opensees
+cp -fr $pathToDakota/*  ./$APP_FILE/Contents/MacOS/applications/dakota
+
+#
+# clean up
+#
+
+find ./$APP_FILE -name __pycache__ -exec rm -rf {} +;
+find ./$APP_FILE -name results -exec rm -rf {} +;
+
 
 #
 # load my credential file
 #
+
 
 userID="../userID.sh"
 
@@ -121,6 +138,8 @@ fi
 source $userID
 echo $appleID    
 
+
+
 if [ "${DMG_METHOD}" = "NEW" ]; then
 
     #
@@ -130,8 +149,10 @@ if [ "${DMG_METHOD}" = "NEW" ]; then
 
     echo "codesign --deep --force --verbose --options runtime --timestamp  --sign "$appleCredential" $APP_FILE"
 
-    codesign --deep --force --verbose --options runtime --timestamp  --sign "$appleCredential" $APP_FILE    
+    codesign --verbose=4 --deep --force --verbose --options=runtime --timestamp  --sign "$appleCredential" $APP_FILE    
 
+
+    
     mkdir app
     mv $APP_FILE app
     
@@ -174,17 +195,30 @@ else
 	echo "xcrun altool --notarization-info ID  -u $appleID  -p $appleAppPassword"
 	echo "xcrun stapler staple \"$APP_NAME\" $DMG_FILENAME"
     fi
-
+    
     #codesign dmg
     echo "codesign --force --sign "$appleCredential" $DMG_FILENAME"
     codesign --force --sign "$appleCredential" $DMG_FILENAME
+    
+
 fi
 
-echo "Issue the following: "
-echo ""
-echo "xcrun notarytool submit ./$DMG_FILENAME --apple-id $appleID --password $appleAppPassword --team-id $appleCredential"
-echo "xcrun notarytool log ID --apple-id $appleID --team-id $appleCredential  --password $appleAppPAssword"
-echo ""
-echo "Finally staple the dmg"
-echo "xcrun stapler staple \"$APP_NAME\" $DMG_FILENAME"
+#
+# submit to apple store
+#
+
+if [ -n "$release" ] && [ "$release" = "release" ]; then
+
+
+    echo "xcrun notarytool submit ./$DMG_FILENAME --apple-id $appleID --password $appleAppPassword --team-id $appleCredential"
+    
+    xcrun notarytool submit ./$DMG_FILENAME --apple-id $appleID --password $appleAppPassword --team-id $appleCredential
+    echo ""    
+    echo "xcrun notarytool log ID --apple-id $appleID --team-id $appleCredential  --password $appleAppPassword"
+
+    
+    echo ""
+    echo "Finally staple the dmg"
+    echo "xcrun stapler staple \"$APP_NAME\" $DMG_FILENAME"
+fi
 
