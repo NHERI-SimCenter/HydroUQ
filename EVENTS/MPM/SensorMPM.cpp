@@ -720,7 +720,7 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
     }
     return true;
   } else if (stackIndexToEnum == sensorEnum::PIEZO_METER) {
-    for (int i = 0; i < tableArraysWG["summary"].toArray().size(); ++i) {
+    for (int i = 0; i < tableArraysPM["summary"].toArray().size(); ++i) {
       QJsonObject piezoMetersObject;
       QJsonArray piezoMeterArray = tableArraysPM["summary"].toArray()[i].toArray();
       piezoMetersObject["preset"] = QJsonValue(sensorType->currentText()).toString();
