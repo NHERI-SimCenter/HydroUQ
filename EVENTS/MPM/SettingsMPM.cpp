@@ -687,3 +687,54 @@ SettingsMPM::copyFiles(QString& destDir)
   return true;
 }
 
+void 
+SettingsMPM::setDigitalTwin(int index)
+{
+  if (index == 0) {
+    domainSizeX->setText("90.0");
+    domainSizeY->setText("4.5");
+    domainSizeZ->setText("3.6");
+    gridCellSize->setText("0.1");
+    gravityX->setText("0.0");
+    gravityY->setText("-9.80665");
+    gravityZ->setText("0.0");
+  }
+  else if (index == 1) {
+    domainSizeX->setText("48.8");
+    domainSizeY->setText("2.1");
+    domainSizeZ->setText("26.5");
+    gridCellSize->setText("0.1");
+    gravityX->setText("0.0");
+    gravityY->setText("-9.80665");
+    gravityZ->setText("0.0");
+  }
+  else if (index == 2) {
+    domainSizeX->setText("12.2");
+    domainSizeY->setText("1.3");
+    domainSizeZ->setText("1.0");
+    gridCellSize->setText("0.05");
+    gravityX->setText("0.0");
+    gravityY->setText("-9.80665");
+    gravityZ->setText("0.0");
+  }
+  else if (index == 3) {
+    domainSizeX->setText("9.0");
+    domainSizeY->setText("1.0");
+    domainSizeZ->setText("4.0");
+    gridCellSize->setText("0.05");
+    gravityX->setText("0.0");
+    gravityY->setText("-9.80665");
+    gravityZ->setText("0.0");
+  }
+  else if (index == 4) {
+    domainSizeX->setText("90.0");
+    domainSizeY->setText("10.0");
+    domainSizeZ->setText("2.0");
+    gridCellSize->setText("0.1");
+    gravityX->setText("4.90332");
+    gravityY->setText("-8.49281");
+    gravityZ->setText("0.0");
+  }
+  
+}
+

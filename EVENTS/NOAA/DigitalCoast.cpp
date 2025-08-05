@@ -47,7 +47,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QPushButton>
 #include <QJsonObject>
 #include <QJsonArray>
-//#include <QSvgWidget>
 #include <QString>
 #include <QIcon>
 #include <QPixmap>

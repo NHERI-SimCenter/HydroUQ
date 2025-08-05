@@ -72,7 +72,15 @@ public:
     void clear(void);
     bool setBodyPreset(int index);
     bool setDigitalTwin(int twinIdx);
+    void emitAddGeometry(void) {
+        emit addGeometry();
+    }
+    void emitRemoveGeometry(void) {
+        emit removeGeometry();
+    }
 signals:
+    void addGeometry();
+    void removeGeometry();
 
 private:
   int numReserveTabs = 8;
