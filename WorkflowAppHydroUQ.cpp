@@ -157,7 +157,26 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     //
     // Set workflow scripts
     //
-    TapisMachine *theMachine = new FronteraMachine();
+    
+    // Enum for TACC HPC machines
+    enum class TapisMachineType {
+        FRONTERA,
+        STAMPEDE3,
+        VISTA
+    };
+    TapisMachineType tapisMachineType = TapisMachineType::STAMPEDE3; // Default to STAMPEDE3
+    
+    TapisMachine *theMachine = nullptr;
+    if (tapisMachineType == TapisMachineType::FRONTERA) {
+        theMachine = new FronteraMachine();
+    } else if (tapisMachineType == TapisMachineType::STAMPEDE3) {
+        theMachine = new Stampede3Machine();
+    } else if (tapisMachineType == TapisMachineType::VISTA) {
+        // theMachine = new VistaMachine(); // not yet implemented, will cause null pointer exception
+    } else {
+        theMachine = new Stampede3Machine(); // Default to STAMPEDE3
+    }
+
     localApp = new LocalApplication("sWHALE.py");
     remoteApp = new RemoteApplication("sWHALE.py", theService, theMachine, nullptr);
 
