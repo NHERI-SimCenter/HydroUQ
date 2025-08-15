@@ -8,7 +8,7 @@
     <p>
       <h3 class="subtitle"><b>HydroUQ - Desktop App</b></h3>
       <h3>Water-borne Hazards Engineering with Uncertainty Quantification</h3>
-      <h5><i>Frank McKenna, Justin Bonus, Ajay Harish, Nicolette Lewis, Pedro Arduino</i></h5>
+      <h5><i>Justin Bonus, Frank McKenna, Ajay Harish, Nicolette Lewis, Pedro Arduino</i></h5>
       <h5>NHERI SimCenter, 2020-2025</h5>
       <br>
     </p>
