@@ -8,15 +8,15 @@
     <p>
       <h3 class="subtitle"><b>HydroUQ - Desktop App</b></h3>
       <h3>Water-borne Hazards Engineering with Uncertainty Quantification</h3>
-      <h5><i>Frank McKenna, Justin Bonus, Ajay Harish, Nicolette Lewis, Pedro Arduino</i></h5>
+      <h5><i>Justin Bonus, Frank McKenna, Pedro Arduino, Ajay Harish, Nicolette Lewis</i></h5>
       <h5>NHERI SimCenter, 2020-2025</h5>
       <br>
     </p>
   </div>
 </div>
 
----
 
+---
 [![Latest Release](https://img.shields.io/github/v/release/NHERI-SimCenter/HydroUQ?color=blue&label=Latest%20Release)](https://github.com/NHERI-SimCenter/HydroUQ/releases/latest)   <span style="display:inline-block; width: 20px;"></span> [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10902090.svg)](https://doi.org/10.5281/zenodo.10902090)   <span style="display:inline-block; width: 20px;"></span> [![Build status](https://ci.appveyor.com/api/projects/status/k1cfrfmjsq14akso?svg=true)](https://ci.appveyor.com/project/fmckenna/hydrouq)  <span style="display:inline-block; width: 20px;"></span> [![License](https://img.shields.io/badge/License-BSD%202--Clause-blue)](https://raw.githubusercontent.com/NHERI-SimCenter/HydroUQ/master/LICENSE)  <span style="display:inline-block; width: 20px;"></span> [![GitHub](https://img.shields.io/badge/NHERI--SimCenter-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NHERI-SimCenter)  <span style="display:inline-block; width: 20px;"></span>  [![LinkedIn Follow](https://img.shields.io/badge/nheri--simcenter-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/nheri-simcenter) <span style="display:inline-block; width: 20px;"></span>  [![YouTube Subscribe](https://img.shields.io/badge/DesignSafe-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)](https://www.youtube.com/@DesignSafe) <span style="display:inline-block; width: 20px;"></span>  
 
 ---
