@@ -282,7 +282,7 @@ int main(int argc, char *argv[])
     QSplashScreen *splash = createSplashWithShadow(pixmap, 24); // Create splash with shadow and padding
     
     QFont f = splash->font();
-    f.setPointSize(18);  // make it bigger
+    f.setPointSize(22);  // make it bigger
     f.setBold(true);     // optional
     splash->setFont(f);
 
@@ -292,7 +292,7 @@ int main(int argc, char *argv[])
 
 
     // Show first message
-    splash->showMessage("Launching HydroUQ...", Qt::AlignLeft | Qt::AlignBottom, Qt::black);
+    splash->showMessage("Launching HydroUQ...", Qt::AlignLeft | Qt::AlignBottom, Qt::gray);
 
     // Optional: wait cursor during startup
     // QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -301,7 +301,7 @@ int main(int argc, char *argv[])
     // QApplication a(argc, argv);
 
     QTimer::singleShot(250, splash, [=]() {
-        splash->showMessage("Configuring remote services...", Qt::AlignLeft | Qt::AlignBottom, Qt::black);
+        splash->showMessage("Configuring remote services...", Qt::AlignLeft | Qt::AlignBottom, Qt::gray);
     });
 
     // create a remote interface
@@ -311,7 +311,7 @@ int main(int argc, char *argv[])
     TapisV3 *theRemoteService = new TapisV3(tenant, storage, &dirName);        
 
     QTimer::singleShot(250, splash, [=]() {
-        splash->showMessage("Initializing application components...", Qt::AlignLeft | Qt::AlignBottom, Qt::black);
+        splash->showMessage("Initializing application components...", Qt::AlignLeft | Qt::AlignBottom, Qt::gray);
     });
 
     // create the main window
@@ -319,7 +319,7 @@ int main(int argc, char *argv[])
     MainWindowWorkflowApp w(QString("HydroUQ: Water-borne Hazards Engineering with Uncertainty Quantification"), theInputApp, theRemoteService);
 
     QTimer::singleShot(250, splash, [=]() {
-        splash->showMessage("Linking components into workflow...", Qt::AlignLeft | Qt::AlignBottom, Qt::black);
+        splash->showMessage("Linking components into workflow...", Qt::AlignLeft | Qt::AlignBottom, Qt::gray);
     });
 
     // About the application
@@ -371,7 +371,7 @@ int main(int argc, char *argv[])
     // w.statusBar()->showMessage("Ready", startupDelay);
     
     QTimer::singleShot(250, splash, [=]() {
-        splash->showMessage("Setting up user interface...", Qt::AlignLeft | Qt::AlignBottom, Qt::black);
+        splash->showMessage("Setting up user interface...", Qt::AlignLeft | Qt::AlignBottom, Qt::gray);
     });
     
 #ifdef Q_OS_WIN
