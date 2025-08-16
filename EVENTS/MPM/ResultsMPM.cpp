@@ -727,7 +727,7 @@ ResultsMPM::plotSensors(void) //MPM* host)
         }
 
         QString zipDirString;
-        zipDirString = mainModel->caseDir() + QDir::separator() + intermediateFolder;
+        zipDirString = mainModel->caseDir() + QString("tmp.SimCenter") + QDir::separator() + intermediateFolder;
         // if (j < 2)
         // {
         //     zipDirString = SimCenterPreferences::getInstance()->getRemoteWorkDir() + QDir::separator() + intermediateFolder;
