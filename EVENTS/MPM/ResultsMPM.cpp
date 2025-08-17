@@ -414,7 +414,7 @@ void
 ResultsMPM::onProcessSensorsClicked(void)
 {
     plotSensors(); //mainModel);
-    QString caseDirStr = mainModel->caseDir();
+    QString caseDirStr = mainModel->caseDir() + QDir::separator() + QString("tmp.SimCenter");
     processResults(caseDirStr);
     int dialogHeight = 800;
     int dialogWidth  = 800;
@@ -435,7 +435,7 @@ ResultsMPM::onProcessSensorsClicked(void)
     {
         bodyLabelIfApplicable = bodyLabel + "[" + QString::number(bodyNumS->currentIndex()) + "]_";   
     }
-    QString plotPath = mainModel->caseDir() + QDir::separator() 
+    QString plotPath = mainModel->caseDir() + QDir::separator() + "tmp.SimCenter" + QDir::separator()
                         + "results" + QDir::separator()
                         + profileNameS->currentText()
                         + pre + "[" + QString::number(sensorNumS->currentIndex()) + "]_" 
@@ -480,7 +480,7 @@ ResultsMPM::onPlotSpectraClicked(void)
     {
         bodyLabelIfApplicable = bodyLabel + "[" + QString::number(bodyNumS->currentIndex()) + "]_";   
     }
-    QString plotPath = mainModel->caseDir() + QDir::separator() 
+    QString plotPath = mainModel->caseDir() + QDir::separator() + QString("tmp.SimCenter") + QDir::separator()
                         + "results" + QDir::separator()
                         + profileNameS->currentText()
                         + pre + "[" + QString::number(sensorNumS->currentIndex()) + "]_" 
@@ -691,8 +691,8 @@ ResultsMPM::plotSensors(void) //MPM* host)
         scriptName = processSensorsName->currentText(); // Must be initialized to a valid QString.
     }
     QString scriptPath  = mainModel->pyScriptsPath() + QDir::separator() + scriptName; 
-    QString sensorsPath = mainModel->caseDir() + QDir::separator() + "results";
-    QString outputPath  = mainModel->caseDir() + QDir::separator() + "results";
+    QString sensorsPath = mainModel->caseDir() + QDir::separator() + QString("tmp.SimCenter") + QDir::separator() + QString("results");
+    QString outputPath  = mainModel->caseDir() + QDir::separator() + QString("tmp.SimCenter") + QDir::separator() + QString("results");
     // Find all the sensors in the sensorsPath folder if it exists, make them into one QString that is comma separated.
     qDebug() << "ResultsMPM::plotSensors - sensorsPath: " << sensorsPath;
     qDebug() << "ResultsMPM::plotSensors - outputPath: "  << outputPath;
@@ -707,11 +707,11 @@ ResultsMPM::plotSensors(void) //MPM* host)
     QString intermediateFolder = "";
     for (int j=0; j<4; ++j)
     {
-        if (j == 0) intermediateFolder = "results"; // RemoteWorkDir
-        if (j == 1) intermediateFolder = ""; // RemoteWorkDir
-        if (j == 2) intermediateFolder = "templatedir"; // LocalWorkDir
-        if (j == 3) intermediateFolder = "Results"; // LocalWorkDir
-        
+        if (j == 0) intermediateFolder = QString("tmp.SimCenter") + QDir::separator() + QString("results"); // RemoteWorkDir
+        if (j == 1) intermediateFolder = QString("tmp.SimCenter") + QDir::separator() + QString(""); // RemoteWorkDir
+        if (j == 2) intermediateFolder = QString("tmp.SimCenter") + QDir::separator() + QString("templatedir"); // LocalWorkDir
+        if (j == 3) intermediateFolder = QString("tmp.SimCenter") + QDir::separator() + QString("Results"); // LocalWorkDir
+
         QDir processDir = QDir(sensorsPath);
         QString unzipDirString = processDir.absoluteFilePath(intermediateFolder); // + intermediateFolder + QDir::separator(); // Save the extracted files to the sensors directory.
         QDir unzipDir(unzipDirString);
@@ -727,7 +727,7 @@ ResultsMPM::plotSensors(void) //MPM* host)
         }
 
         QString zipDirString;
-        zipDirString = mainModel->caseDir() + QString("tmp.SimCenter") + QDir::separator() + intermediateFolder;
+        zipDirString = mainModel->caseDir() + QDir::separator() + QString("tmp.SimCenter") + QDir::separator() + intermediateFolder;
         // if (j < 2)
         // {
         //     zipDirString = SimCenterPreferences::getInstance()->getRemoteWorkDir() + QDir::separator() + intermediateFolder;
