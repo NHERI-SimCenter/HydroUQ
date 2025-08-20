@@ -113,6 +113,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QFormLayout>
 #include <QUrl> 
 #include <QTimer>
+#include "RunPythonInThread.h"
+#include <Utils/ProgramOutputDialog.h>
 
 MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     :  SimCenterAppWidget(parent), theRandomVariablesContainer(theRandomVariableIW)
@@ -981,6 +983,14 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       qDebug() << "Bathymetry coordinates: " << bathymetryCoordinateString;
       qDebug() << "Extrude length: " << extrude_length;
       qDebug() << "Output path: " << outputPath;
+
+      // QStringList arguments; 
+      // arguments << bathymetryCoordinateString << QString::number(extrude_length) << outputPath;
+      // QString workingDir = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry";
+      // RunPythonInThread* pythonThread = new RunPythonInThread(pythonScriptName, arguments, workingDir);
+      // pythonThread->runProcess();
+
+
       // Launch python script to generate the bathymetry mesh
       QString program = SimCenterPreferences::getInstance()->getPython();
       QStringList args;
@@ -2374,7 +2384,7 @@ bool MPM::initialize()
 
     this->adjustSize();
 
-    this->showVisualization();
+    // this->showVisualization();
 
     return true;
 }
