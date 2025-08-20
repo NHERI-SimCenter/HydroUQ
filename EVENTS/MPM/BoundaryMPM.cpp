@@ -69,6 +69,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <math.h>
 #include <QPushButton>
 #include <QFileDialog>
+#include "RunPythonInThread.h"
+#include <Utils/ProgramOutputDialog.h>
 
 int BoundaryMPM::numInstances = 0;
 // SimCenterGraphPlot* BoundaryMPM::thePlot = nullptr;
@@ -480,51 +482,72 @@ BoundaryMPM::BoundaryMPM(QWidget *parent)
       qDebug() << "Python script: " << pythonScriptName;
       qDebug() << "Wave-maker motion file: " << inputPath;
 
-      // Launch python script to generate the bathymetry mesh
-      QString program = SimCenterPreferences::getInstance()->getPython();
-      QStringList args;
-      args << pythonScriptName << QString("--input") << inputPath;
-      QProcess *process = new QProcess();
+      QStringList arguments;
+      arguments << QString("--input") << inputPath;
+      QString workingDir = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker";
 
-      // Catch python print statements and errors and display them in through the qDebug() stream.
-      QObject::connect(process, &QProcess::readyRead, [process] () {
-          QByteArray aByte = process->readAll();
-          qDebug() << aByte;
+      RunPythonInThread *pythonThread = new RunPythonInThread(pythonScriptName, arguments, workingDir);
+      pythonThread->runProcess();
+      connect(pythonThread, &RunPythonInThread::processFinished, this, [=](int exitCode) {
+        qDebug() << "BoundaryMPM::drawMotion: Finished running python script with exit code: " << exitCode;
+        QString motionFilename = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "custom_wavemaker.png";
+        QFileInfo fileInfo(motionFilename);
+        if (fileInfo.exists()) {
+          qDebug() << "BoundaryMPM::drawMotion: file exists: " << motionFilename;
+        } else {
+          qDebug() << "BoundaryMPM::drawMotion: file does not exist: " << motionFilename;
+        }
+        pix->load(motionFilename);
+        theImageLabel->setPixmap(*pix);
+        // ProgramOutputDialog *progressDialog = ProgramOutputDialog::getInstance();
+        // progressDialog->appendText("Finished generating wave-maker motion plot.");
       });
 
-      // Delete process instance / thread when done (later), and get the exit status to handle errors.
-      QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-                      [=](int exitCode, QProcess::ExitStatus /*exitStatus*/){
-          qDebug()<< "process exited with code " << exitCode;
-          process->deleteLater();
-      });
+      // // Launch python script to generate the bathymetry mesh
+      // QString program = SimCenterPreferences::getInstance()->getPython();
+      // QStringList args;
+      // args << pythonScriptName << QString("--input") << inputPath;
+      // QProcess *process = new QProcess();
 
-      process->start(program, args);
-      process->waitForStarted();
-      process->waitForFinished(-1);
-      if (process->exitStatus() == QProcess::CrashExit)
-      {
-          qDebug() << "BoundaryMPM::drawMotion - The script has crashed.";
-      } 
-      else if (process->exitStatus() == QProcess::NormalExit)
-      {
-          qDebug() << "BoundaryMPM::drawMotion - The script has finished running.";
-      }
-      else 
-      {
-          qDebug() << "BoundaryMPM::drawMotion - The script has finished running with an unknown exit status.";
-      }
+      // // Catch python print statements and errors and display them in through the qDebug() stream.
+      // QObject::connect(process, &QProcess::readyRead, [process] () {
+      //     QByteArray aByte = process->readAll();
+      //     qDebug() << aByte;
+      // });
+
+      // // Delete process instance / thread when done (later), and get the exit status to handle errors.
+      // QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+      //                 [=](int exitCode, QProcess::ExitStatus /*exitStatus*/){
+      //     qDebug()<< "process exited with code " << exitCode;
+      //     process->deleteLater();
+      // });
+
+      // process->start(program, args);
+      // process->waitForStarted();
+      // process->waitForFinished(-1);
+      // if (process->exitStatus() == QProcess::CrashExit)
+      // {
+      //     qDebug() << "BoundaryMPM::drawMotion - The script has crashed.";
+      // } 
+      // else if (process->exitStatus() == QProcess::NormalExit)
+      // {
+      //     qDebug() << "BoundaryMPM::drawMotion - The script has finished running.";
+      // }
+      // else 
+      // {
+      //     qDebug() << "BoundaryMPM::drawMotion - The script has finished running with an unknown exit status.";
+      // }
     
     
-      QString motionFilename = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "custom_wavemaker.png";
-      QFileInfo fileInfo(motionFilename);
-      if (fileInfo.exists()) {
-        qDebug() << "BoundaryMPM::drawMotion: file exists: " << motionFilename;
-      } else {
-        qDebug() << "BoundaryMPM::drawMotion: file does not exist: " << motionFilename;
-      }
-      pix->load(motionFilename);
-      theImageLabel->setPixmap(*pix);
+      // QString motionFilename = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "custom_wavemaker.png";
+      // QFileInfo fileInfo(motionFilename);
+      // if (fileInfo.exists()) {
+      //   qDebug() << "BoundaryMPM::drawMotion: file exists: " << motionFilename;
+      // } else {
+      //   qDebug() << "BoundaryMPM::drawMotion: file does not exist: " << motionFilename;
+      // }
+      // pix->load(motionFilename);
+      // theImageLabel->setPixmap(*pix);
       };
     
 

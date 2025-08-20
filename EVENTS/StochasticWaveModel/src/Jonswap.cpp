@@ -81,6 +81,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <math.h>
 
 #include <StochasticWaveModel/include/Jonswap.h>
+#include "RunPythonInThread.h"
 
 Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
                                    QWidget* parent)
@@ -580,16 +581,25 @@ void Jonswap::computeSpectra() {
     qDebug() << "Running the script: " << scriptPath << " with input file: " << inputFilePath << " and output path: " << outputPath;
     QString program = SimCenterPreferences::getInstance()->getPython();
     
-    
+    QStringList arguments;
+    arguments << inputFilePath << outputPath;
+    QString workingDir = localWorkDir.absoluteFilePath(tmpDirName);
+    RunPythonInThread *pythonThread = new RunPythonInThread(program, arguments, workingDir);
+    pythonThread->runProcess();
+    connect(pythonThread, &RunPythonInThread::processFinished, this, [=](int exitCode) {
+        qDebug() << "Python script finished with exit code: " << exitCode;
+    });
 
-    QStringList arguments; arguments << scriptPath << inputFilePath << outputPath;
-    QProcess *process = new QProcess();
+    // QStringList arguments; arguments << scriptPath << inputFilePath << outputPath;
+    // QProcess *process = new QProcess();
 
-    // process->setWorkingDirectory(workingDirPath);
-    process->start(program, arguments);
+    // // process->setWorkingDirectory(workingDirPath);
+    // process->start(program, arguments);
     
-    process->waitForFinished(-1);
-    process->close();
+    // process->waitForFinished(-1);
+    // process->close();
+
+
     // process->deleteLater();
 
   } 

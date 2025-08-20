@@ -57,6 +57,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QProcess>
 #include <QStringList>
 #include <QGroupBox>
+#include "RunPythonInThread.h"
 
 CelerisTaichi::CelerisTaichi(QWidget *parent)
   :SimCenterWidget(parent)
@@ -257,6 +258,7 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
       
       // double extrude_length = boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["domain_end"].toArray()[2].toDouble() - boundariesObjectJSON["boundaries"].toArray()[bathymetryID].toObject()["domain_start"].toArray()[2].toDouble(); 
       QString inputPath = theBathymetryFile->getFilename();
+      inputPath = QDir::toNativeSeparators(inputPath); // make sure its posix path
       QString outputPath = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "custom_bathy.jpg";
       qDebug() << "Python script: " << pythonScriptName;
       qDebug() << "Bathymetry file: " << inputPath;
@@ -267,58 +269,84 @@ CelerisTaichi::CelerisTaichi(QWidget *parent)
       qDebug() << "Grid-spacing dy: " << dy;
       qDebug() << "Output path: " << outputPath;
       qDebug() << "Bounding box coordinates: " << bboxString;
-      // Launch python script to generate the bathymetry mesh
-      QString program = SimCenterPreferences::getInstance()->getPython();
-      QStringList args;
-      args << pythonScriptName << inputPath << forceSensorBeginString << forceSensorEndString << waveGaugesString << dx << dy << outputPath;
+
+      QStringList arguments;
+      arguments << inputPath << forceSensorBeginString << forceSensorEndString << waveGaugesString << dx << dy << outputPath;
       if (theLatLongPlotCheckBox->isChecked()) {
         qDebug() << "CelerisTaichi::drawBathymetry - Using Lon/Lat coordinates for the bathymetry visualization.";
-        args << bboxString;
+        arguments << bboxString;
       } else {
         qDebug() << "CelerisTaichi::drawBathymetry - Using local coordinates for the bathymetry visualization.";
       }
+      QString workingDir = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry";
+      RunPythonInThread* pythonThread = new RunPythonInThread(pythonScriptName, arguments, workingDir);
+      pythonThread->runProcess();
+      connect(pythonThread, &RunPythonInThread::processFinished, this, [=](int exitCode) {
+          qDebug() << "CelerisTaichi::drawBathymetry: Finished running python script with exit code: " << exitCode;
+          QString bathyFilename = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "custom_bathy.jpg";
+          QFileInfo fileInfo(bathyFilename);
+          if (fileInfo.exists()) {
+            qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file already exists: " << bathFilename;
+          } else {
+            qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file does not exist: " << bathFilename;
+          }
+          pix->load(bathyFilename);
+          theImageLabel->setPixmap(*pix);
+      });
+
+
+      // // Launch python script to generate the bathymetry mesh
+      // QString program = SimCenterPreferences::getInstance()->getPython();
+      // QStringList args;
+      // args << pythonScriptName << inputPath << forceSensorBeginString << forceSensorEndString << waveGaugesString << dx << dy << outputPath;
+      // if (theLatLongPlotCheckBox->isChecked()) {
+      //   qDebug() << "CelerisTaichi::drawBathymetry - Using Lon/Lat coordinates for the bathymetry visualization.";
+      //   args << bboxString;
+      // } else {
+      //   qDebug() << "CelerisTaichi::drawBathymetry - Using local coordinates for the bathymetry visualization.";
+      // }
       
-      QProcess *process = new QProcess();
+      // QProcess *process = new QProcess();
 
-      // Catch python print statements and errors and display them in through the qDebug() stream.
-      QObject::connect(process, &QProcess::readyRead, [process] () {
-          QByteArray a = process->readAll();
-          qDebug() << a;
-      });
+      // // Catch python print statements and errors and display them in through the qDebug() stream.
+      // QObject::connect(process, &QProcess::readyRead, [process] () {
+      //     QByteArray a = process->readAll();
+      //     qDebug() << a;
+      // });
 
-      // Delete process instance / thread when done (later), and get the exit status to handle errors.
-      QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-                      [=](int exitCode, QProcess::ExitStatus /*exitStatus*/){
-          qDebug()<< "process exited with code " << exitCode;
-          process->deleteLater();
-      });
+      // // Delete process instance / thread when done (later), and get the exit status to handle errors.
+      // QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+      //                 [=](int exitCode, QProcess::ExitStatus /*exitStatus*/){
+      //     qDebug()<< "process exited with code " << exitCode;
+      //     process->deleteLater();
+      // });
 
-      process->start(program, args);
-      process->waitForStarted();
-      process->waitForFinished(-1);
-      if (process->exitStatus() == QProcess::CrashExit)
-      {
-          qDebug() << "MPM::updateBathymetry - The script has crashed.";
-      } 
-      else if (process->exitStatus() == QProcess::NormalExit)
-      {
-          qDebug() << "MPM::updateBathymetry - The script has finished running.";
-      }
-      else 
-      {
-          qDebug() << "MPM::updateBathymetry - The script has finished running with an unknown exit status.";
-      }
+      // process->start(program, args);
+      // process->waitForStarted();
+      // process->waitForFinished(-1);
+      // if (process->exitStatus() == QProcess::CrashExit)
+      // {
+      //     qDebug() << "MPM::updateBathymetry - The script has crashed.";
+      // } 
+      // else if (process->exitStatus() == QProcess::NormalExit)
+      // {
+      //     qDebug() << "MPM::updateBathymetry - The script has finished running.";
+      // }
+      // else 
+      // {
+      //     qDebug() << "MPM::updateBathymetry - The script has finished running with an unknown exit status.";
+      // }
     
     
-      QString bathyFilename = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "custom_bathy.jpg";
-      QFileInfo fileInfo(bathyFilename);
-      if (fileInfo.exists()) {
-        qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file already exists: " << bathFilename;
-      } else {
-        qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file does not exist: " << bathFilename;
-      }
-      pix->load(bathyFilename);
-      theImageLabel->setPixmap(*pix);
+      // QString bathyFilename = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "custom_bathy.jpg";
+      // QFileInfo fileInfo(bathyFilename);
+      // if (fileInfo.exists()) {
+      //   qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file already exists: " << bathFilename;
+      // } else {
+      //   qDebug() << "CelerisTaichi::CelerisTaichi: Bathymetry file does not exist: " << bathFilename;
+      // }
+      // pix->load(bathyFilename);
+      // theImageLabel->setPixmap(*pix);
 
     };
 

@@ -118,7 +118,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <WaveDigitalFlume/WaveDigitalFlume.h>
 #include <coupledDigitalTwin/CoupledDigitalTwin.h>
 #include <MPM/MPM.h>
-#include <MPM/SPH.h>
+// #include <MPM/SPH.h>
 #include <StochasticWaveModel/include/StochasticWaveInput.h>
 #include <TaichiEvent/TaichiEvent.h>
 #include <CelerisWebGPU/Celeris.h>
@@ -261,7 +261,7 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
     theComponentSelection->addComponent(QString("EDP"), theEDP_Selection); // Using EDP_HydroSelection
     theComponentSelection->addComponent(QString("RV"),  theRVs);
     theComponentSelection->addComponent(QString("RES"), theResults);
-    
+    theComponentSelection->makeChildrenTransparent(); // so we can see the wave decal background
     theComponentSelection->displayComponent("EVT"); // Initial page on startup
     
     //
@@ -297,8 +297,8 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 constexpr bool DEV_MODE = false; // Set to true for development mode, false for production mode
 
 // Quickly enable/disable tools here for compile-time
-constexpr bool USE_CLAYMORE_TOOL = true;
-constexpr bool USE_MPM_EVENT_TOOL = true;
+constexpr bool USE_CLAYMORE_TOOL = false;
+constexpr bool USE_MPM_EVENT_TOOL = false;
 constexpr bool USE_NOAA_TOOL = DEV_MODE; 
 constexpr bool USE_TAICHI_TOOL = false;
 constexpr bool USE_CELERIS_TOOL = false;
@@ -749,8 +749,8 @@ WorkflowAppHydroUQ::processResults(QString &dirName)
     // connect signals for results widget
     //
 
-    //   connect(theResults,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
-    //   connect(theResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
+    connect(theResults,SIGNAL(sendStatusMessage(QString)), this,SLOT(statusMessage(QString)));
+    connect(theResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
     
     
     //
@@ -760,12 +760,12 @@ WorkflowAppHydroUQ::processResults(QString &dirName)
     QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults);
     if (oldResults != NULL) {
         this->statusMessage("WorkflowAppHydroUQ::processResults() - Deleting oldResults");
+        disconnect(oldResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
+        disconnect(oldResults,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));  
         delete oldResults;
     }
     // if (oldResults != NULL && oldResults != theResults) {;
     //     this->errorMessage("WorkflowAppHydroUQ::processResults() - Deleting oldResults");
-    //     // disconnect(oldResults,SIGNAL(sendErrorMessage(QString)), this,SLOT(errorMessage(QString)));
-    //     // disconnect(oldResults,SIGNAL(sendFatalMessage(QString)), this,SLOT(fatalMessage(QString)));  
     //     delete oldResults;
     // }
 
@@ -792,22 +792,22 @@ WorkflowAppHydroUQ::clear(void)
     theEventSelection->clear();
     theAnalysisSelection->clear();
 
-    // Function theUQ_Selection->getResults returns UQ simulation results to the theResults from a "Workflow" perspective. I.e., it will host the results after retrieving the data from a completed workflow simulation on a remote HPC system (or local if that is implemented). It won't contain the results from an "individual" app/tool perspective, i.e. if just EVT is ran to perform a normal CFD simulation, the results will be in the EVT app in its own results widget. Depending on the EVT implementation, this widget can be theResults if it is "passed" to it. (JB)
-    theResults=theUQ_Selection->getResults();
-    if (theResults == NULL) {
-        this->errorMessage("FATAL - UQ option selected not returning results widget");
-        return; 
-    }
+    // // Function theUQ_Selection->getResults returns UQ simulation results to the theResults from a "Workflow" perspective. I.e., it will host the results after retrieving the data from a completed workflow simulation on a remote HPC system (or local if that is implemented). It won't contain the results from an "individual" app/tool perspective, i.e. if just EVT is ran to perform a normal CFD simulation, the results will be in the EVT app in its own results widget. Depending on the EVT implementation, this widget can be theResults if it is "passed" to it. (JB)
+    // theResults=theUQ_Selection->getResults();
+    // if (theResults == NULL) {
+    //     this->errorMessage("FATAL - UQ option selected not returning results widget");
+    //     return; 
+    // }
 
-    //
-    // swap current results with existing one in selection & disconnect signals
-    //
+    // //
+    // // swap current results with existing one in selection & disconnect signals
+    // //
 
-    QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults); // The "swap" takes care of deleting the oldResults widget that was swapped out from theComponentSelection. theResults is the new widget that was swapped in and is now owned by theComponentSelection. oldResults is the old widget that was swapped out and is now owned by this function so it needs to be deleted, though smart pointers could take care of this if we refactor the code to use them.
-    if (oldResults != NULL && oldResults != theResults) {
-        this->statusMessage("WorkflowAppHydroUQ::clear() - Deleting oldResults");
-        delete oldResults;
-    }
+    // QWidget *oldResults = theComponentSelection->swapComponent(QString("RES"), theResults); // The "swap" takes care of deleting the oldResults widget that was swapped out from theComponentSelection. theResults is the new widget that was swapped in and is now owned by theComponentSelection. oldResults is the old widget that was swapped out and is now owned by this function so it needs to be deleted, though smart pointers could take care of this if we refactor the code to use them.
+    // if (oldResults != NULL && oldResults != theResults) {
+    //     this->statusMessage("WorkflowAppHydroUQ::clear() - Deleting oldResults");
+    //     delete oldResults;
+    // }
 
     //
     // ready to process results
