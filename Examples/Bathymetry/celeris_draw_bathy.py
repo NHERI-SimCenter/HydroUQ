@@ -95,8 +95,8 @@ if __name__ == "__main__":
         plt.gca().set_xlabel('Longitude (degrees)', fontsize=8)
         plt.gca().set_ylabel('Latitude (degrees)', fontsize=8)
     else:
-        xticks = plt.gca().get_xticks()
-        yticks = plt.gca().get_yticks()
+        xticks = [0, 0.125 * bathy.shape[1], 0.25 * bathy.shape[1], 0.375 * bathy.shape[1], 0.5 * bathy.shape[1], 0.625 * bathy.shape[1], 0.75 * bathy.shape[1], 0.875 * bathy.shape[1], bathy.shape[1]]
+        yticks = [0, 0.125 * bathy.shape[0], 0.25 * bathy.shape[0], 0.375 * bathy.shape[0], 0.5 * bathy.shape[0], 0.625 * bathy.shape[0], 0.75 * bathy.shape[0], 0.875 * bathy.shape[0], bathy.shape[0]]
         plt.gca().set_xticks(xticks)
         plt.gca().set_yticks(yticks)
         plt.gca().set_xticklabels([f"{x*dx:.2f}" for x in xticks], rotation=30)
