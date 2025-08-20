@@ -5,13 +5,13 @@ import numpy as np
 import os
 
 def parse_csv(file_path):
-    print(f"Parsing CSV file: {file_path}")
+    # print(f"Parsing CSV file: {file_path}")
     """Parse the CSV file and return time, displacement, and velocity as numpy arrays."""
     if not file_path.endswith('.csv'):
         raise ValueError("Input file must be a CSV file.")
     if not file_path:
         raise ValueError("Input file path is required.")
-    print("Reading CSV data...")
+    # print("Reading CSV data...")
     # Initialize lists to store data
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"File not found: {file_path}")
@@ -27,7 +27,7 @@ def parse_csv(file_path):
     return np.array(time), np.array(displacement), np.array(velocity)
 
 def plot_data(time, displacement, velocity):
-    print("Plotting data...")
+    # print("Plotting data...")
     
     # --- Matplotlib PNG Output ---
     fig, ax1 = plt.subplots(figsize=(10, 6))
@@ -46,12 +46,12 @@ def plot_data(time, displacement, velocity):
 
     # fig.tight_layout()
     # plt.title('Custom Wavemaker Time Series')
-    print("Saving plot as PNG...")
+    # print("Saving plot as PNG...")
     # save the plot as a png file located adjacent to the script
     fn = os.path.join(os.path.dirname(__file__), 'custom_wavemaker.png')
     
     plt.savefig(fn, format='png', bbox_inches='tight')
-    print(f"Plot saved as {fn}")
+    # print(f"Plot saved as {fn}")
     # plt.savefig('custom_wavemaker.html', format='svg')  # Save as SVG for HTML compatibility
     plt.close()
 
@@ -60,10 +60,10 @@ def main():
     parser.add_argument('--input', '-i', type=str, required=True, help='Path to input CSV file')
     args = parser.parse_args()
     
-    print(f"Reading data from {args.input}")
+    # print(f"Reading data from {args.input}")
     if not args.input.endswith('.csv'):
         raise ValueError("Input file must be a CSV file.")
-    print("Parsing CSV data...")
+    # print("Parsing CSV data...")
     if not args.input:
         raise ValueError("Input file path is required.")
 
