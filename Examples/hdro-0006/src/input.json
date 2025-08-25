@@ -105,8 +105,8 @@
                                 "0"
                             ],
                             "use_custom_bathymetry": false,
-                            "friction_static": 0.4,
-                            "friction_dynamic": 0.4
+                            "friction_static": 0.2,
+                            "friction_dynamic": 0.2
                         }
                     ],
                     "gpu": 0,
@@ -621,8 +621,8 @@
                         0,
                         0
                     ],
-                    "friction_dynamic": 0.4,
-                    "friction_static": 0.4,
+                    "friction_dynamic": 0.2,
+                    "friction_static": 0.2,
                     "object": "Bathymetry",
                     "use_custom_bathymetry": true
                 },

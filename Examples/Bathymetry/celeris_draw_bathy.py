@@ -53,7 +53,7 @@ if __name__ == "__main__":
         bbox = ast.literal_eval(sys.argv[8])
     except:
         bbox = None
-        print("No bounding box provided, defaulting to meters as length unit. Bbox providable as a list of 4 floats, e.g., '[lon_LL, lat_LL, lon_UR, lat_UR]'")
+        # print("No bounding box provided, defaulting to meters as length unit. Bbox providable as a list of 4 floats, e.g., '[lon_LL, lat_LL, lon_UR, lat_UR]'")
         
     # Read the bathymetry data from the file
     with open(input_file, 'r') as f:
@@ -84,8 +84,6 @@ if __name__ == "__main__":
         plt.text(gauge[0]/dx, gauge[1]/dy, "WG"+str(i), fontsize=7, ha='right', va='bottom', color='cyan')
         i += 1
         
-    xticks = plt.gca().get_xticks()
-    yticks = plt.gca().get_yticks()
     if bbox is not None:
         plt.gca().set_ylim(0, bathy.shape[0])
         plt.gca().set_xlim(0, bathy.shape[1])
@@ -97,6 +95,10 @@ if __name__ == "__main__":
         plt.gca().set_xlabel('Longitude (degrees)', fontsize=8)
         plt.gca().set_ylabel('Latitude (degrees)', fontsize=8)
     else:
+        xticks = [0, 0.125 * bathy.shape[1], 0.25 * bathy.shape[1], 0.375 * bathy.shape[1], 0.5 * bathy.shape[1], 0.625 * bathy.shape[1], 0.75 * bathy.shape[1], 0.875 * bathy.shape[1], bathy.shape[1]]
+        yticks = [0, 0.125 * bathy.shape[0], 0.25 * bathy.shape[0], 0.375 * bathy.shape[0], 0.5 * bathy.shape[0], 0.625 * bathy.shape[0], 0.75 * bathy.shape[0], 0.875 * bathy.shape[0], bathy.shape[0]]
+        plt.gca().set_xticks(xticks)
+        plt.gca().set_yticks(yticks)
         plt.gca().set_xticklabels([f"{x*dx:.2f}" for x in xticks], rotation=30)
         plt.gca().set_yticklabels([f"{y*dy:.2f}" for y in yticks], rotation=30)
         plt.gca().tick_params(axis='both', direction='out', length=4, width=1, colors='black', labelsize=8)
