@@ -119,7 +119,7 @@ SensorMPM::SensorMPM(QWidget *parent)
   // ===========================================================================
   QStringList  list; list << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
   QStringList  data; data << "CustomSensor1" << "0.0" << "0.0" << "0.0" << "0.0" << "0.0" << "0.0" ;
-  customTable = new SC_TableEdit("summarys", list, 1, data);
+  customTable = new SC_TableEdit("summary", list, 1, data);
 
 
   QStringList  listWG; listWG << "Name" << "Origin X" << "Origin Y" << "Origin Z" << "Dimension X" << "Dimension Y" << "Dimension Z" ;
@@ -505,9 +505,9 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
 
   // Wave-gauges (WG), Velocimeters (VM), and Load-cells (LC)
   if (stackIndexToEnum == sensorEnum::CUSTOM) {
-    for (int i = 0; i < tableArraysCustom["summarys"].toArray().size(); ++i) {
+    for (int i = 0; i < tableArraysCustom["summary"].toArray().size(); ++i) {
       QJsonObject customObject;
-      QJsonArray customArray = tableArraysCustom["summarys"].toArray()[i].toArray();
+      QJsonArray customArray = tableArraysCustom["summary"].toArray()[i].toArray();
       // customObject["toggle"] = QJsonValue(toggle->currentText()).toString();
       customObject["preset"] = QJsonValue(sensorType->currentText()).toString();
       customObject["toggle"] = (QJsonValue(toggle->currentText()).toString() == "Yes") ? QJsonValue(true) : QJsonValue(false);
@@ -518,7 +518,7 @@ SensorMPM::outputToJSON(QJsonObject &jsonObject)
       customObject["direction"] = direction->itemText(direction->currentIndex());
       customObject["name"] = customArray[0].toString();
       // customObject["summarys"] = tableArraysCustom["summarys"].toArray()[i].toArray();
-      customObject["summary"] = tableArraysCustom["summarys"];
+      customObject["summary"] = tableArraysCustom["summary"];
 
       // Future schema
       QJsonArray origin;

@@ -113,6 +113,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QFormLayout>
 #include <QUrl> 
 #include <QTimer>
+#include "RunPythonInThread.h"
+#include <Utils/ProgramOutputDialog.h>
 
 MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     :  SimCenterAppWidget(parent), theRandomVariablesContainer(theRandomVariableIW)
@@ -380,7 +382,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // theTabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
     // #define NO_MPM_QT3D true
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+// #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
 // #ifdef _WIN32
     // Only allow 3D visualization on Windows and Linux for now, Mac had issues with Qt3D 
     // Try to check the most reliable set of preprocessor definitions to detect the OS on common OS
@@ -981,6 +983,14 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       qDebug() << "Bathymetry coordinates: " << bathymetryCoordinateString;
       qDebug() << "Extrude length: " << extrude_length;
       qDebug() << "Output path: " << outputPath;
+
+      // QStringList arguments; 
+      // arguments << bathymetryCoordinateString << QString::number(extrude_length) << outputPath;
+      // QString workingDir = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry";
+      // RunPythonInThread* pythonThread = new RunPythonInThread(pythonScriptName, arguments, workingDir);
+      // pythonThread->runProcess();
+
+
       // Launch python script to generate the bathymetry mesh
       QString program = SimCenterPreferences::getInstance()->getPython();
       QStringList args;
@@ -1027,7 +1037,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     // Make lambda function to update the position of cuboid design structure
     auto updateFluid = [=]() {
-      qDebug() << "MPM::updateFluid - Updating fluid mesh position and size.";
+      // qDebug() << "MPM::updateFluid - Updating fluid mesh position and size.";
       QJsonObject bodiesObjectJSON; 
       QJsonArray bodiesArrayJSON;
       bodiesObjectJSON["bodies"] = bodiesArrayJSON;
@@ -1119,7 +1129,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
   // Make lambda function to update the position of debris set
   auto updateDebris = [=]() {
-    qDebug() << "MPM::updateDebris - Updating debris mesh position and size.";
+    // qDebug() << "MPM::updateDebris - Updating debris mesh position and size.";
     QJsonObject bodiesObjectJSON; 
     QJsonArray bodiesArrayJSON;
     bodiesObjectJSON["bodies"] = bodiesArrayJSON;
@@ -1196,7 +1206,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
   // Make lambda function to update the position of sensor set
   auto updateSensors = [=]() {
-    qDebug() << "MPM::updateSensors - Updating sensor mesh position and size.";
+    // qDebug() << "MPM::updateSensors - Updating sensor mesh position and size.";
     QJsonObject sensorsObjectJSON;
     QJsonArray sensorsArrayJSON;
     sensorsObjectJSON["particle-sensors"] = sensorsArrayJSON;
@@ -1814,9 +1824,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         floorMesh->setZExtent(0.9f);
 
         auto cameraEntity = view->camera();
-        cameraEntity->setUpVector(QVector3D(0, 1.f, 0));
-        cameraEntity->setPosition(QVector3D(-12.0f, 5.0f, 15.0f));
-        cameraEntity->setViewCenter(QVector3D(5.0f, 1.0f, 1.0f));
+        cameraEntity->setUpVector(QVector3D(-0.253229, 0.953683, -0.162368));
+        cameraEntity->setPosition(QVector3D(26.7027, 7.04932, 11.4016));
+        cameraEntity->setViewCenter(QVector3D(7.12731, -0.285439, -1.14994));
       } else if (index == 3) {
         exampleString = "WU TWB";
         if (twinCheckBox->isChecked()) {
@@ -1900,9 +1910,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         floorMesh->setZExtent(2.0f);
 
         auto cameraEntity = view->camera();
-        cameraEntity->setUpVector(QVector3D(0, 1.f, 0));
-        cameraEntity->setPosition(QVector3D(-50.0f, 25.0f, 35.0f));
-        cameraEntity->setViewCenter(QVector3D(36.0f, 2.0f, 2.0f));
+        cameraEntity->setUpVector(QVector3D(-0.500809, 0.854511, -0.137849));
+        cameraEntity->setPosition(QVector3D(163.889, 62.9142, 28.1775));
+        cameraEntity->setViewCenter(QVector3D(46.1233, -11.3346, -4.238));
       }
       updateFluid();
       updateBoundaryStructureSize();
@@ -1980,6 +1990,10 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       updateDebris();
       updateSensors();
       checkCheckBoxes();
+      // qDebug() << "position" << cameraEntity->position();
+      // qDebug() << "viewCenter" << cameraEntity->viewCenter();
+      // qDebug() << "upVector" << cameraEntity->upVector();
+      // qDebug() << "rotation (x,y,z)" << cameraEntity->rotation(0, QVector3D(1,0,0)).toEulerAngles() << cameraEntity->rotation(0, QVector3D(0,1,0)).toEulerAngles() << cameraEntity->rotation(0, QVector3D(0,0,1)).toEulerAngles();
     });
     m_timer->start();
 
@@ -2083,7 +2097,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     // mainLayout->addWidget(updateBodiesButton, 3, 0);    
     mainLayout->addWidget(checkBoxGroup, 3, 0);
 
-#endif
+// #endif
 
     mainLayout->addWidget(theTabWidget, 4, 0);
     mainGroup->setLayout(mainLayout);
@@ -2113,9 +2127,9 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
 
     // horizontalPanelLayout->addWidget(visualizationGroup);
 // #ifdef _WIN32
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+// #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
     horizontalPanelLayout->addWidget(container);
-#endif
+// #endif
     // QVBoxLayout *layout = new QVBoxLayout();
     // mainWindowLayout->addWidget(theScrollArea);
     // mainWindowLayout->addWidget(updateBodiesButton);
@@ -2130,13 +2144,13 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       mpmBoundaries->setDigitalTwin(index);
       mpmSensors->setDigitalTwin(index);
 // #ifdef _WIN32
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+// #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
       updateDigitalTwin(index);
       updateBathymetry();
       updateFluid();
       updateDebris();
       updateSensors();
-#endif
+// #endif
       readJson(index);
     });
     
@@ -2162,29 +2176,29 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       // When the bathymetry file is changed, we need to update the bathymetry image
       qDebug() << "MPM::setSliderIndex signal received with index: " << index;
       // stackedWidget->setCurrentIndex(index);
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+// #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
       hideVisualization();
-#endif
+// #endif
       stackedWidget->setCurrentIndex(index);
       mpmSettings->setDigitalTwin(index);
       mpmBodies->setDigitalTwin(index);
       mpmBoundaries->setDigitalTwin(index);
       mpmSensors->setDigitalTwin(index);
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+// #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
       showVisualization();
-#endif
+// #endif
   });
 
   connect(this, &MPM::initializeVisualization, this, [=]() {
       // When the bathymetry file is changed, we need to update the bathymetry image
       qDebug() << "MPM:: initializeVisualization signal received";
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+// #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
       updateDigitalTwin(stackedWidget->currentIndex());
       updateBathymetry();
       updateFluid();
       updateDebris();
       updateSensors();
-#endif
+// #endif
   });
     // QVBoxLayout *layout = new QVBoxLayout();
     // mainWindowLayout->addWidget(theScrollArea);
@@ -2230,19 +2244,19 @@ void MPM::emitInitializeVisualization(void)
 
 void MPM::showVisualization(void)
 {
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+// #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
     // container->show();
     this->emitInitializeVisualization();
     view->show();
-#endif
+// #endif
 }
 
 void MPM::hideVisualization(void)
 {
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
+// #if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) )  ) && !defined(NO_MPM_QT3D)
     // container->hide();
     view->hide();
-#endif
+// #endif
 }
 
 bool MPM::isInitialize()
@@ -2370,7 +2384,7 @@ bool MPM::initialize()
 
     this->adjustSize();
 
-    this->showVisualization();
+    // this->showVisualization();
 
     return true;
 }

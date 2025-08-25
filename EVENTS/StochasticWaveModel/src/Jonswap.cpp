@@ -81,6 +81,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <math.h>
 
 #include <StochasticWaveModel/include/Jonswap.h>
+#include "RunPythonInThread.h"
+#include <QCoreApplication>
+#include <QTimer>
 
 Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
                                    QWidget* parent)
@@ -362,8 +365,10 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
     });
 
   // QString spectraFileString = "Examples/hdro-0005/data/WaveSpectra.csv";
-  dataDir->setText("Examples/hdro-0005/data/WaveSpectra.csv");
-  timeSeriesDir->setText("Examples/hdro-0005/data/WaveTimeSeries.csv");
+  QString defaultSpectraFile = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "WaveSpectra.csv";
+  QString defaultTimeSeriesFile = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "WaveTimeSeries.csv";
+  dataDir->setText(defaultSpectraFile);
+  timeSeriesDir->setText(defaultTimeSeriesFile);
 
 
 
@@ -404,13 +409,13 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
   connect(showPlotButton, &QPushButton::clicked, this, [=](){
         thePlot->hide();
         this->computeSpectra();
-        thePlot->show();
+        // thePlot->show();
     });
 
   connect(showPlotButtonTimeSeries, &QPushButton::clicked, this, [=](){
         thePlotTimeSeries->hide();
         this->computeSpectra();
-        thePlotTimeSeries->show();
+        // thePlotTimeSeries->show();
     });
   connect(showPlotButton, &QPushButton::clicked, this, [=](){ thePlot->hide(); this->updateDistributionPlot(); thePlot->show();});
   connect(showPlotButtonTimeSeries, &QPushButton::clicked, this, [=](){ thePlotTimeSeries->hide(); this->updateDistributionPlot(); thePlotTimeSeries->show();});
@@ -424,12 +429,15 @@ Jonswap::Jonswap(RandomVariablesContainer* randomVariables,
       thePlot->hide();
       this->updateDistributionPlot();
       thePlot->show();
+      // connect pythonProcessFinished
+      // QTimer::singleShot(100, this, [=](){ thePlot->show(); });
   });
 
   connect(timeSeriesDir, &QLineEdit::editingFinished, this, [=](){
       thePlotTimeSeries->hide();
       this->updateDistributionPlot();
       thePlotTimeSeries->show();
+      // QTimer::singleShot(100, this, [=](){ thePlotTimeSeries->show(); });
   });
 
 
@@ -569,7 +577,7 @@ void Jonswap::computeSpectra() {
             + QString("stochasticWave") + QDir::separator() + scriptName; 
 
 
-  QString outputPath = localWorkDir.absoluteFilePath(tmpDirName);
+  QString outputPath = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker";
 
   qDebug() << "scriptPath: " << scriptPath;
   qDebug() << "inputFilePath: " << inputFilePath;
@@ -580,16 +588,28 @@ void Jonswap::computeSpectra() {
     qDebug() << "Running the script: " << scriptPath << " with input file: " << inputFilePath << " and output path: " << outputPath;
     QString program = SimCenterPreferences::getInstance()->getPython();
     
-    
+    QStringList arguments;
+    arguments << inputFilePath << outputPath;
+    QString workingDir = QCoreApplication::applicationDirPath() + QDir::separator() + QString("Examples") + QDir::separator() + QString("WaveMaker");
+    RunPythonInThread *pythonThread = new RunPythonInThread(scriptPath, arguments, workingDir);
+    pythonThread->runProcess();
+    connect(pythonThread, &RunPythonInThread::processFinished, this, [=](int exitCode) {
+        qDebug() << "Python script finished with exit code: " << exitCode;
+        this->updateDistributionPlot();
+        thePlot->show();
+        thePlotTimeSeries->show();
+    });
 
-    QStringList arguments; arguments << scriptPath << inputFilePath << outputPath;
-    QProcess *process = new QProcess();
+    // QStringList arguments; arguments << scriptPath << inputFilePath << outputPath;
+    // QProcess *process = new QProcess();
 
-    // process->setWorkingDirectory(workingDirPath);
-    process->start(program, arguments);
+    // // process->setWorkingDirectory(workingDirPath);
+    // process->start(program, arguments);
     
-    process->waitForFinished(-1);
-    process->close();
+    // process->waitForFinished(-1);
+    // process->close();
+
+
     // process->deleteLater();
 
   } 
@@ -710,7 +730,8 @@ bool
 Jonswap::copyFiles(QString &destDir)
 {
   if (dataDir->text().isEmpty()) {
-    dataDir->setText(":Examples/hdro-0005/data/WaveSpectra.csv");
+    QString defaultFile = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "WaveSpectra.csv";
+    dataDir->setText(defaultFile);
     this->errorMessage("WARNING: StochasticWave - spectra ideal filename had not been set when trying to call copyFiles(), using default file: " + dataDir->text());
     QFile::copy(dataDir->text(), destDir);
     return true;
@@ -730,7 +751,8 @@ Jonswap::copyFiles(QString &destDir)
   // }
 
   if (timeSeriesDir->text().isEmpty()) {
-    timeSeriesDir->setText(":Examples/hdro-0005/data/WaveTimeSeries.csv");
+    QString defaultFile = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "WaveTimeSeries.csv";
+    timeSeriesDir->setText(defaultFile);
     this->errorMessage("WARNING: StochasticWave - time series filename had not been set when trying to call copyFiles(), using default file: " + timeSeriesDir->text());
     QFile::copy(timeSeriesDir->text(), destDir);
     return true;
@@ -839,12 +861,14 @@ Jonswap::updateDistributionPlot() {
     int numSteps = 100;
     int numStepsTimeSeries = 100;
     if (dataDir->text().isEmpty()) {
-        dataDir->setText(":Examples/hdro-0005/data/WaveSpectra.csv"); // hardcoded for quick fix
+        QString defaultFile = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "WaveSpectra.csv";
+        dataDir->setText(defaultFile);
         this->errorMessage("ERROR: StochasticWave - wave-spectra data has not been set, using default");
         // return;
     }
     if (timeSeriesDir->text().isEmpty()) {
-        timeSeriesDir->setText(":Examples/hdro-0005/data/WaveTimeSeries.csv"); // hardcoded for quick fix
+        QString defaultFile = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "WaveMaker" + QDir::separator() + "WaveTimeSeries.csv";
+        timeSeriesDir->setText(defaultFile);
         this->errorMessage("ERROR: StochasticWave - time-series data has not been set, using default");
         // return;
     }

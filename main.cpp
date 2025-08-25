@@ -15,7 +15,18 @@
 #include <QCoreApplication>
 #include <QMessageBox>
 #include <QString>
+#include <QScreen>
+#include <QSplashScreen>
+#include <QGraphicsDropShadowEffect>
+#include <QColor>
+#include <QPixmap>
+#include <QTimer>
 #include <QTime>
+#include <QPropertyAnimation>
+#include <QGuiApplication>
+#include <QCursor>
+#include <QFont>
+#include <QPainter>
 #include <QTextStream>
 #include <QOpenGLWidget>
 #include <QStandardPaths>
@@ -90,6 +101,91 @@ void customMessageOutput(QtMsgType type, const QMessageLogContext &context, cons
 }
 
 
+static QPixmap withTransparentBorder(const QPixmap& src, int padding)
+{
+    // Create a larger transparent pixmap and draw the original centered
+    QPixmap padded(src.size() + QSize(padding * 2, padding * 2));
+    padded.fill(Qt::transparent);
+    QPainter p(&padded);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    p.drawPixmap(padding, padding, src);
+    p.end();
+    return padded;
+}
+
+
+static QSplashScreen* createSplashWithShadow(const QPixmap& src, int padding = 24)
+{
+    QPixmap pm = withTransparentBorder(src, padding);
+
+    auto *splash = new QSplashScreen(pm);
+    splash->setWindowFlag(Qt::FramelessWindowHint, true);
+    splash->setWindowFlag(Qt::WindowStaysOnTopHint, true);
+    splash->setAttribute(Qt::WA_TranslucentBackground, true);
+    splash->setStyleSheet("QSplashScreen { background: transparent; }");
+
+    // Shadow
+    auto *shadow = new QGraphicsDropShadowEffect(splash);
+    shadow->setBlurRadius(30); // softness
+    shadow->setOffset(8, 8);
+    shadow->setColor(QColor(0, 0, 0, 140)); // semi-transparent black
+    splash->setGraphicsEffect(shadow);
+
+    // Center on the active screen
+    QScreen *screen = QGuiApplication::screenAt(QCursor::pos());
+    if (!screen) screen = QGuiApplication::primaryScreen();
+    QRect sr = screen->geometry();
+    splash->move(sr.center() - splash->rect().center());
+
+    return splash;
+}
+
+
+static void fadeOutSplashAndShowMain(QSplashScreen* splash, QWidget* mainWin) {
+    // Keep the splash above everything during the fade
+    splash->setWindowFlag(Qt::WindowStaysOnTopHint, true);
+    splash->raise();
+
+    // Some platforms (e.g., Wayland) ignore QWidget::setWindowOpacity.
+    // Detect support by trying one step; if it doesn't stick, use opacity effect.
+    auto supportsWindowOpacity = [&]() -> bool {
+        const qreal orig = splash->windowOpacity();
+        splash->setWindowOpacity(0.99);
+        const bool ok = qFuzzyCompare(splash->windowOpacity(), 0.99);
+        splash->setWindowOpacity(orig);
+        return ok;
+    };
+
+    auto showMainAndCloseSplash = [=]() {
+        // Now bring up the main window
+        mainWin->show();
+        // Close/remove splash AFTER main window is visible
+        splash->close();
+        splash->deleteLater();
+    };
+
+    if (supportsWindowOpacity()) {
+        // Fade the actual window
+        auto *fade = new QPropertyAnimation(splash, "windowOpacity", splash);
+        fade->setDuration(500);
+        fade->setStartValue(1.0);
+        fade->setEndValue(0.0);
+        QObject::connect(fade, &QPropertyAnimation::finished, splash, showMainAndCloseSplash);
+        fade->start(QAbstractAnimation::DeleteWhenStopped);
+    } else {
+        // Fallback: fade the content with a graphics effect (works on Wayland)
+        auto *eff = new QGraphicsOpacityEffect(splash);
+        splash->setGraphicsEffect(eff);
+        auto *fade = new QPropertyAnimation(eff, "opacity", splash);
+        fade->setDuration(500);
+        fade->setStartValue(1.0);
+        fade->setEndValue(0.0);
+        QObject::connect(fade, &QPropertyAnimation::finished, splash, showMainAndCloseSplash);
+        fade->start(QAbstractAnimation::DeleteWhenStopped);
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
 
@@ -113,7 +209,7 @@ int main(int argc, char *argv[])
     //Setting Core Application Name, Organization, and Version
     QCoreApplication::setApplicationName("HydroUQ");
     QCoreApplication::setOrganizationName("SimCenter");
-    QCoreApplication::setApplicationVersion("4.1.0");
+    QCoreApplication::setApplicationVersion("4.2.0");
 
     //Init resources from static libraries (e.g. SimCenterCommonQt or s3hark)
     Q_INIT_RESOURCE(images);
@@ -181,10 +277,32 @@ int main(int argc, char *argv[])
     // QQmlApplicationEngine engine; // This one only for qt quick applications
     // engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
+    // Splash screen to show when opening app (i.e., shows the app logo to look professional)
+    QPixmap pixmap(":/icons/NHERI-HydroUQ-Splash.png"); // Replace with your image path
+    QSplashScreen *splash = createSplashWithShadow(pixmap, 24); // Create splash with shadow and padding
+    
+    QFont f = splash->font();
+    f.setPointSize(22);  // make it bigger
+    f.setBold(true);     // optional
+    splash->setFont(f);
 
+    splash->show();
+    a.processEvents(); // ensure it paints immediately
+    
+
+
+    // Show first message
+    splash->showMessage("Launching HydroUQ...", Qt::AlignLeft | Qt::AlignBottom, Qt::gray);
+
+    // Optional: wait cursor during startup
+    // QApplication::setOverrideCursor(Qt::WaitCursor);
 
     // regular Qt startup
     // QApplication a(argc, argv);
+
+    QTimer::singleShot(250, splash, [=]() {
+        splash->showMessage("Configuring remote services...", Qt::AlignLeft | Qt::AlignBottom, Qt::gray);
+    });
 
     // create a remote interface
     QString tenant("designsafe");
@@ -192,10 +310,17 @@ int main(int argc, char *argv[])
     QString dirName("HydroUQ"); // this is the default directory for the application
     TapisV3 *theRemoteService = new TapisV3(tenant, storage, &dirName);        
 
+    QTimer::singleShot(250, splash, [=]() {
+        splash->showMessage("Initializing application components...", Qt::AlignLeft | Qt::AlignBottom, Qt::gray);
+    });
 
     // create the main window
     WorkflowAppWidget *theInputApp = new WorkflowAppHydroUQ(theRemoteService);
     MainWindowWorkflowApp w(QString("HydroUQ: Water-borne Hazards Engineering with Uncertainty Quantification"), theInputApp, theRemoteService);
+
+    QTimer::singleShot(250, splash, [=]() {
+        splash->showMessage("Linking components into workflow...", Qt::AlignLeft | Qt::AlignBottom, Qt::gray);
+    });
 
     // About the application
     QString aboutTitle = "About the SimCenter HydroUQ Application"; // this is the title displayed in the on About dialog
@@ -207,7 +332,7 @@ int main(int argc, char *argv[])
     w.setVersion(version);
 
     // Citation
-    QString citeText("1) Justin Bonus, Frank McKenna, Nicolette Lewis, Ajay B Harish, & Pedro, A. (2025). NHERI-SimCenter/HydroUQ: Version 4.1.0 (v4.1.0). Zenodo. https://doi.org/10.5281/zenodo.15319477  \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
+    QString citeText("1) Justin Bonus, Frank McKenna, Pedro Arduino, Ajay B Harish, & Nicolette Lewis (2025). NHERI-SimCenter/HydroUQ: Version 4.2.0 (v4.2.0). Zenodo. https://doi.org/10.5281/zenodo.15319477  \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
     w.setCite(citeText);
 
     // Link to repository
@@ -234,6 +359,7 @@ int main(int argc, char *argv[])
     QObject::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();
 
+    
     //
     // Show the main window, set styles & start the event loop
     //
@@ -243,7 +369,10 @@ int main(int argc, char *argv[])
 	// but may produce really weird results on Mac OS X when styling combobox drop-down area.
     // w.show();
     // w.statusBar()->showMessage("Ready", startupDelay);
-
+    
+    QTimer::singleShot(250, splash, [=]() {
+        splash->showMessage("Setting up user interface...", Qt::AlignLeft | Qt::AlignBottom, Qt::gray);
+    });
     
 #ifdef Q_OS_WIN
     QFile file(":/styleCommon/stylesheetWIN.qss");
@@ -265,8 +394,15 @@ int main(int argc, char *argv[])
         qDebug() << "Could not open stylesheet: " << file.fileName();
     }
 
-    w.show();
-    constexpr int startupDelay = 6000; // milliseconds
+    // QApplication::restoreOverrideCursor();
+
+
+    auto windowPointer = &w; // Capture the main window pointer for later use
+    fadeOutSplashAndShowMain(splash, windowPointer);
+    QTimer::singleShot(750, &w, &QWidget::show); // Show main window after x milliseconds
+    // w.show();
+
+    constexpr int startupDelay = 5000; // milliseconds
     w.statusBar()->showMessage("Ready", startupDelay);
 
 
