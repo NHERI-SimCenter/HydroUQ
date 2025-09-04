@@ -1,2 +1,2 @@
-summary: This example uses the Material Point Method (MPM) running on GPUs to simulate the WU TWB in 3D with debris.
+summary: Simulating experiments by Lewis 2023 in the Material Point Method (MPM). A set of debris are placed into a steady-state flow in a flume. Impacts against a raised structural box are measured.
 difficulty: 2

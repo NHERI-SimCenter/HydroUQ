@@ -1,2 +1,2 @@
-summary: This local workflow example loads a simple OpenSees structure using waves from a generated, stochastic spectra (JONSWAP). 
+summary: Generate a stochastic wave loading on a simple frame structure using a stochastic wave spectra in a local UQ workflow. The wave loading is generated using a stochastic wave spectra (JONSWAP).
 difficulty: 0

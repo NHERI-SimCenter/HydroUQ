@@ -1,2 +1,2 @@
-summary: This example uses the Material Point Method (MPM) running on GPUs to simulate the WU TWB in 3D with debris.
+summary: Simulating experiments by Iverson 2016 in the Material Point Method (MPM). A mass of dry sand is positioned atop a hill-slope and then suddenly released. The mass flows down the highly frictional slope and impacts a raised structural box at the bottom.
 difficulty: 2
