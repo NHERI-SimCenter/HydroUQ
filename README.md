@@ -37,11 +37,14 @@ The ``HydroUQ`` desktop application is a user-facing portal for cutting-edge eng
 
 - Drop-in uncertainty quantification (UQ) methods like forward propagation, sensitivity, and reliability analysis onto previously deterministic computational fluid dynamics (CFD) models using ``SimCenter UQ`` and/or ``Dakota`` backends
 - Model experiments from validated wave flume digital twin
-    - [Oregon State University's Large Wave Flume](https://oregonstate.designsafe-ci.org) ``OSU LWF`` ` 
-    - [Waseda University Tsunami's Wave Basin](https://shibayama.w.waseda.jp/lab_en.html) ``WU TWB`` 
+    - [Oregon State University's Large Wave Flume](https://oregonstate.designsafe-ci.org) ``OSU LWF`` 
+    - [Oregon State University's Directional Wave Basin](https://oregonstate.designsafe-ci.org) ``OSU DWB`` 
+    - [University of Washington's Washington Air-Sea Interaction Facility](https://www.pmec.us/testing/harris-hydraulics-lab#wasirf) ``UW WASIRF`` 
+    - [Waseda University Tsunami's Wave Basin](https://shibayama.w.waseda.jp/lab_en.html) ``WU TWB``
+    - [United State's Geological Survey's Debris-Flow Flume](https://www.usgs.gov/media/images/usgs-debris-flow-flume-near-blue-river-or-used-conduct-debris-flow-and-landslide) ``USGS DFF`` 
 - Bathymetry/topography of the ocean floor and land surface for accurate wave propagation
 - Shallow-water solutions (e.g., ``GeoClaw``) as boundary conditions to 3D CFD (e.g., ``OpenFOAM``)
-- Capture high-fiedlity wave-driven debris motion, impacts, damming, and deposition.
+- Capture high-fidelity wave-driven debris motion, impacts, damming, and deposition.
 - User-defined buildings for wave loading input and structural response output
 - Design structures including Multi-degree-of-freedom (``MDOF``) model, steel building model, ``OpenSees`` models, and ``OpenSeesPy`` models
 - Output probabilistic building responses, velocities and pressure at any point in the fluid domain
@@ -65,17 +68,17 @@ Comparison data of ClaymoreUW MPM to DualSPHysics SPH and STAR-CCM+ CFD against 
 
 ## Citing HydroUQ
 
-If you use ``HydroUQ`` [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10902090.svg)](https://doi.org/10.5281/zenodo.10902090) in your research, please cite our software as:
+If you use ``HydroUQ`` [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15319477.svg)](https://doi.org/10.5281/zenodo.15319477) in your research, please cite our software as:
 
 ```bibtex
-@software{McKennaBonusHarishLewis2024,
-  author = {Frank McKenna and Justin Bonus and Ajay Harish and Nicolette Lewis},
+@software{BonusMcKennaArduinoHarishLewis2025,
+  author = {Justin Bonus and Frank McKenna and Pedro Arduino and Ajay Harish and Nicolette Lewis},
   title = {HydroUQ},
-  year = {2024},
-  month = {4},
-  note = {NHERI-SimCenter/HydroUQ: Version 3.1.0 (v3.1.0). Zenodo.},
-  url = {https://zenodo.org/records/10902090},
-  doi = {10.5281/zenodo.10902090}
+  year = {2025},
+  month = {8},
+  note = {NHERI-SimCenter/HydroUQ: Version 4.1.0 (v4.1.0). Zenodo.},
+  url = {https://zenodo.org/records/15319477},
+  doi = {10.5281/zenodo.15319477}
 }
 ```
 
@@ -229,8 +232,8 @@ Message us on the [SimCenter Message Board](http://simcenter-messageboard.design
 | Developer | Email | Role |
 |:----|:-----|:----|
 | Justin Bonus | bonus@berkeley.edu | [![Email](https://img.shields.io/badge/Main%20Dev-blue)](mailto:bonus@berkeley.edu) | 
-| Frank McKenna | fmckenna@berkeley.edu | [![Email](https://img.shields.io/badge/Senior%20Dev-blue)](mailto:fmckenna@berkeley.edu) | 
-| Ajay Harish | ajay.harish@manchester.ac.uk | [![Email](https://img.shields.io/badge/Former%20Dev-blue)](mailto:ajay.harish@manchester.ac.uk) |
+| Frank McKenna | fmckenna@berkeley.edu | [![Email](https://img.shields.io/badge/Developer-blue)](mailto:fmckenna@berkeley.edu) | 
+| Pedro Arduino | parduino@uw.edu | [![Email](https://img.shields.io/badge/Developer-blue)](mailto:parduino@uw.edu) |
 | NHERI SimCenter | nheri-simcenter@berkeley.edu | [![Email](https://img.shields.io/badge/SimCenter-blue)](mailto:nheri-simcenter@berkeley.edu) |
 
 

@@ -625,12 +625,12 @@
                     "contact": "Separable",
                     "domain_end": [
                         46.8,
-                        2.625,
+                        2.825,
                         2.3
                     ],
                     "domain_start": [
                         45.8,
-                        2.0,
+                        2.2,
                         1.3
                     ],
                     "friction_dynamic": 0,
@@ -676,12 +676,12 @@
                     "direction": "X+",
                     "domain_end": [
                         45.824,
-                        2.4,
+                        2.5,
                         2.3
                     ],
                     "domain_start": [
                         45.799,
-                        2.1,
+                        2.2,
                         1.3
                     ],
                     "name": "LoadCell1",
@@ -696,12 +696,12 @@
                     "direction": "X+",
                     "domain_end": [
                         45.824,
-                        2.6999999999999997,
+                        2.8,
                         2.3
                     ],
                     "domain_start": [
                         45.799,
-                        2.4,
+                        2.5,
                         1.3
                     ],
                     "name": "LoadCell2",
