@@ -1,2 +1,2 @@
-summary: This example uses the Material Point Method (MPM) running on GPUs to simulate the OSU LWF in 3D with debris.
-difficulty: 1
+summary: Simulating experiments by Dakota Mascarenas (2022) in the Oregon State University's Large Wave Flume (OSU LWF) using the Material Point Method (MPM). Impact loads of debris are quantified on a raised structure at a Froude scale of 1:10. The Material Point Method (MPM) is applied.
+difficulty: 2

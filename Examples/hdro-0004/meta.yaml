@@ -1,2 +1,2 @@
-summary: This example uses the Material Point Method (MPM) running on GPUs to simulate the WU TWB in 3D with debris.
+summary: Simulating experiments by Nils Goseberg et al. (2016) in the Material Point Method (MPM) regarding debris motion through varied arrays of square column obstacles. Debris represent 1:40 Froude scaled shipping containers in a port setting.
 difficulty: 2

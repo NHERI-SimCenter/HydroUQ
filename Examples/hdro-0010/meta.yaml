@@ -1,2 +1,2 @@
-summary: Forward sample a 2D wave maker piston's generated wave implemented in the high-performance Taichi Lang. The structure is a simple 1-story OpenSees frame structure. Engineering Demand Parameters are PFA, RMSA, PFD, and PID. The wave loading is generated using a stochastic wave spectra (JONSWAP). The wave loading is applied to the floors as lateral forces.
+summary: Forward sample an uncertain structure loaded by a wave maker piston's generated wave, all implemented in the high-performance Taichi Lang.
 difficulty: 0

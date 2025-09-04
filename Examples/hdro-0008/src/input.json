@@ -1104,17 +1104,17 @@
     ],
     "GeneralInformation": {
         "NumberOfStories": 1,
-        "PlanArea": 1.03022,
-        "StructureType": "S2",
-        "YearBuilt": 1990,
-        "depth": 1.015,
-        "height": 0.615,
+        "PlanArea": 1.0,
+        "StructureType": "C2",
+        "YearBuilt": 2016,
+        "depth": 1.0,
+        "height": 1.0,
         "location": {
-            "latitude": 44.5639,
-            "longitude": -123.292
+            "latitude": 44.1734,
+            "longitude": -122.1968
         },
-        "name": "Raised Structural Box @ Oregon State University's Large Wave Flume",
-        "planArea": 1.03022,
+        "name": "Concrete Box @ USGS Debris-Flow Flume",
+        "planArea": 1.0,
         "stories": 1,
         "units": {
             "force": "N",
@@ -1122,7 +1122,7 @@
             "temperature": "C",
             "time": "sec"
         },
-        "width": 1.015
+        "width": 1.0
     },
     "Modeling": {
         "Bx": 0.1,

@@ -1,8 +1,9 @@
 # Macklin, M. and Müller, M., 2013. Position based fluids. ACM Transactions on Graphics (TOG), 32(4), p.104.
 # Taichi implementation by Ye Kuang (k-ye)
+# Modifications for HydroUQ by Justin Bonus
 
 import math
-
+import os
 import numpy as np
 
 import taichi as ti
@@ -26,6 +27,7 @@ def round_up(f, s):
 grid_size = (round_up(boundary[0], 1), round_up(boundary[1], 1))
 
 dim = 2
+max_frames = 1800
 bg_color = 0x112F41
 particle_color = 0x068587
 boundary_color = 0xEBACA2
@@ -64,6 +66,7 @@ lambdas = ti.field(float)
 position_deltas = ti.Vector.field(dim, float)
 # 0: x-pos, 1: timestep in sin()
 board_states = ti.Vector.field(2, float)
+wall_force = ti.Vector.field(dim, float, shape=())
 
 ti.root.dense(ti.i, num_particles).place(old_positions, positions, velocities)
 grid_snode = ti.root.dense(ti.ij, grid_size)
@@ -122,8 +125,10 @@ def confine_position_to_boundary(p):
     bmin = particle_radius_in_world
     bmax = ti.Vector([board_states[None][0], boundary[1]]) - particle_radius_in_world
     for i in ti.static(range(dim)):
-        # Use randomness to prevent particles from sticking into each other after clamping
         if p[i] <= bmin:
+            diff = bmin - p[i]
+            if i == 0:
+                ti.atomic_add(wall_force[None][i], 1000.0 * diff / time_delta)
             p[i] = bmin + epsilon * ti.random()
         elif bmax[i] <= p[i]:
             p[i] = bmax[i] - epsilon * ti.random()
@@ -145,6 +150,7 @@ def move_board():
 
 @ti.kernel
 def prologue():
+    wall_force[None] = ti.Vector([0.0, 0.0])  # ← Clear previous step force
     # save old positions
     for i in positions:
         old_positions[i] = positions[i]
@@ -294,13 +300,36 @@ def main():
     init_particles()
     print(f"boundary={boundary} grid={grid_size} cell_size={cell_size}")
     gui = ti.GUI("PBF2D", screen_res)
-    while gui.running and not gui.get_event(gui.ESCAPE):
+
+    # Prepare force tracking
+    force_values = []
+    time_values = []
+
+    # Output file
+    force_filename = "forces.evt"
+    if os.path.exists(force_filename):
+        os.remove(force_filename)  # clean if it exists
+
+    while gui.running and gui.frame < max_frames and not gui.get_event(gui.ESCAPE):
         move_board()
         run_pbf()
+
+        # Record time and force
+        current_time = gui.frame * time_delta
+        time_values.append(current_time)
+        fx = wall_force.to_numpy()[None][0].item(0) # x-component of the wall force
+        force_values.append(fx)
+
         if gui.frame % 20 == 1:
             print_stats()
+            print("Left wall force:", fx)
+
         render(gui)
 
+    # Write to file at end
+    with open(force_filename, "w") as f:
+        f.write(" ".join("0.0" for _ in force_values) + "\n")
+        f.write(" ".join(f"{fval:.5f}" for fval in force_values) + "\n")
 
 if __name__ == "__main__":
     main()
