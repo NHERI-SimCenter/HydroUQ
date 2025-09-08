@@ -122,6 +122,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <StochasticWaveModel/include/StochasticWaveInput.h>
 #include <TaichiEvent/TaichiEvent.h>
 #include <CelerisWebGPU/Celeris.h>
+#include <Celeris/CelerisTaichiEvent.h>
 // #include <Celeris/WebGPU.h>
 #include <NOAA/DigitalCoast.h>
 #include <Utils/FileOperations.h>
@@ -297,11 +298,11 @@ WorkflowAppHydroUQ::WorkflowAppHydroUQ(RemoteService *theService, QWidget *paren
 constexpr bool DEV_MODE = false; // Set to true for development mode, false for production mode
 
 // Quickly enable/disable tools here for compile-time
-constexpr bool USE_CLAYMORE_TOOL = false;
+constexpr bool USE_CLAYMORE_TOOL = true;
 constexpr bool USE_MPM_EVENT_TOOL = false;
 constexpr bool USE_NOAA_TOOL = DEV_MODE; 
 constexpr bool USE_TAICHI_TOOL = false;
-constexpr bool USE_CELERIS_TOOL = false;
+constexpr bool USE_CELERIS_TOOL = true;
 constexpr bool USE_WEBGPU_TOOL = false;
 constexpr bool USE_OPENSEES_TOOL = true;
 
@@ -411,20 +412,21 @@ WorkflowAppHydroUQ::setMainWindow(MainWindowWorkflowApp* window) {
         });
 
     }
-    // if constexpr (USE_CELERIS_TOOL) {
-    //     Celeris *miniCeleris = new Celeris();
-    //     QString appNameCeleris =  "simcenter-celeris-frontera"; // Frontera
-    //     QString systemNameCeleris = "frontera";
-    //     QString appVersion = "1.0.0";
-    //     QString machine = "frontera";      
-    //     QList<QString> queuesCeleris; queuesCeleris << "rtx" << "rtx-dev"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
-    //     SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appNameCeleris, appVersion, machine, queuesCeleris, theRemoteService, miniCeleris, theToolDialog);
-    //     theToolDialog->addTool(miniCelerisTool, "Boussinesq Waves (Celeris)");
-    //     QAction *showCeleris = toolsMenu->addAction("Boussinesq Waves (&Celeris)");
-    //     connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
-    //         theDialog->showTool("Boussinesq Waves (Celeris)");
-    //     });
-    // }
+    if constexpr (USE_CELERIS_TOOL) {
+        RandomVariablesContainer *rvContainer = RandomVariablesContainer::getInstance();
+        CelerisTaichiEvent *miniCeleris = new CelerisTaichiEvent(rvContainer);
+        QString appNameCeleris =  "simcenter-celeris-stampede3"; // Frontera
+        QString systemNameCeleris = "stampede3";
+        QString appVersion = "1.0.0";
+        QString machine = "stampede3";      
+        QList<QString> queuesCeleris; queuesCeleris << "h100"; // These are later changed to "normal" and "fast" in the tool based on number of cores/processors? Should fix this
+        SC_RemoteAppTool *miniCelerisTool = new SC_RemoteAppTool(appNameCeleris, appVersion, machine, queuesCeleris, theRemoteService, miniCeleris, theToolDialog);
+        theToolDialog->addTool(miniCelerisTool, "Wave Solver (Celeris)");
+        QAction *showCeleris = toolsMenu->addAction("Wave Solver (&Celeris)");
+        connect(showCeleris, &QAction::triggered, this,[this, theDialog=theToolDialog, miniC = miniCelerisTool] {
+            theDialog->showTool("Wave Solver (Celeris)");
+        });
+    }
 
     // if constexpr (USE_WEBGPU_TOOL) {
     //     WebGPU *miniWebGPU = new WebGPU();
