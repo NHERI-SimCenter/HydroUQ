@@ -1359,6 +1359,12 @@ WorkflowAppHydroUQ::loadFile(QString &fileName){
     // open file
     //
 
+    QFileInfo fileInfo(fileName);
+    if (!fileInfo.exists() || !fileInfo.isFile()) {
+        emit errorMessage(QString("ERROR: WorkflowAppHydroUQ::loadFile() File doe not exist: ") + fileName);
+        return -1; 
+    }
+  
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
         emit errorMessage(QString("ERROR: WorkflowAppHydroUQ::loadFile() Could Not Open File: ") + fileName);
@@ -1378,7 +1384,9 @@ WorkflowAppHydroUQ::loadFile(QString &fileName){
     file.close();
 
     //Resolve absolute paths from relative ones
-    QFileInfo fileInfo(fileName);
+    QString dirPath = fileInfo.absolutePath();
+    SCUtils::setInputFileDir(dirPath);
+    
     SCUtils::ResolveAbsolutePaths(jsonObj, fileInfo.dir());
     
     //
