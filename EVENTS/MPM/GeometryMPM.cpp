@@ -44,7 +44,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QDebug>
 #include <QJsonObject>
 #include <QJsonArray>
-// #include <QSvgWidget>
 #include <QString>
 #include <QIcon>
 

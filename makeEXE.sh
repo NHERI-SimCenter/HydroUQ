@@ -16,7 +16,7 @@ rm -fr Hydro_UQ.app
 #
 
 # conan install
-conan install .. --build missing
+conan install .. --output-folder=. --build missing
 cmd_status=$?
 if [[ $cmd_status != 0 ]]; then echo "Hydro-UQ: conan install failed"; exit $cmd_status; fi
 

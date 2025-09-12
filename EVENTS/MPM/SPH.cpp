@@ -45,7 +45,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <QPushButton>
 #include <QJsonObject>
 #include <QJsonArray>
-// #include <QSvgWidget>
 #include <QString>
 #include <QIcon>
 #include <QPixmap>
@@ -75,10 +74,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <Qt3DCore/QEntity>
 #include <QQuaternion>
 #include <Qt3DExtras/QOrbitCameraController>
-// #include <Qt3DRender/QAttribute>
-// #include <Qt3DRender/QBuffer>
-// #include <Qt3DRender/QGeometry>
-// #include <Qt3DRender/QGeometryRenderer>
 
 
 #include "QVector3D"

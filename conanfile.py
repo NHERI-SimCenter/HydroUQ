@@ -1,19 +1,54 @@
-from conans import ConanFile
+from conan import ConanFile
+from conan.tools.files import copy
+import os
 
 class HYDROUQ(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     version = "4.2.0"
+    name = "HydroUQ"
     license = "BSD"
     author = "NHERI SimCenter"
     url = "https://github.com/NHERI-SimCenter/HydroUQ"
     description = "NHERI SimCenter Water-Borne Hazard Engineering with Uncertainty Quantification Tool"
-    settings = "os", "compiler", "build_type", "arch"
-    generators = "qmake"
-    requires = "jansson/2.13.1", \
-               "libcurl/8.1.1", \
-               "zlib/1.2.12", \
-               "openssl/3.2.2"
 
+    settings = "os", "compiler", "build_type", "arch"    
+
+    requires = ( "jansson/2.14", \
+               "libcurl/7.88.1", \
+               "zlib/1.3.1", \
+               "eigen/3.4.0"
+    )
+
+    def layout(self):
+        self.folders.build = "build"
+        self.folders.generators = "conan"
+        
+    def generate(self):
+        # Generate a .pri file that contains include and lib paths for each dependency.
+        pri_dir = self.generators_folder  # Already equals "build/conan"
+        os.makedirs(pri_dir, exist_ok=True)
+        pri_path = os.path.join(pri_dir, "conan_generated.pri")
+        libs_found = set()
+        with open(pri_path, "w") as f:
+            for dep in self.dependencies.host.values():
+                self.output.info(f"DEPENDENCY {dep.cpp_info}")
+                for inc in dep.cpp_info.includedirs:
+                    f.write(f"INCLUDEPATH += {inc}\n")
+                for libdir in dep.cpp_info.libdirs:
+                    f.write(f"LIBS += -L{libdir}\n")
+                for lib in dep.cpp_info.libs:
+                    f.write(f"LIBS += -l{lib}\n")
+                    libs_found.add(lib)
+
+        # If libcurl is missing, add it manually!!!!
+        if "curl" not in libs_found:
+            with open(pri_path, "a") as f:
+                f.write("LIBS += /Users/fmckenna/.conan2/p/b/libcub62433f05fbb2/p/lib/libcurl.a \n")
+                self.output.info("Manually added -lcurl to PRI file")
+                    
+        self.output.info(f"Generated .pri at: {pri_path}")
+        
+    #generators = "CMakeDeps", "CMakeToolchain"
     # maybe go back to zlib 1.2.11
 
     build_policy = "missing"

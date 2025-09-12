@@ -30,8 +30,8 @@
 #ifndef VOLUMETRIC_MODIFIER_H
 #define VOLUMETRIC_MODIFIER_H
 
-#include <QtDataVisualization/q3dscatter.h>
-#include <QtDataVisualization/qcustom3dvolume.h>
+//#include <QtDataVisualization/q3dscatter.h>
+//#include <QtDataVisualization/qcustom3dvolume.h>
 #include <QtCore/QTimer>
 #include <QtGui/QRgb>
 #include <QtWidgets/QLabel>

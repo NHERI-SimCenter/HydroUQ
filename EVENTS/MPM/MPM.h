@@ -163,10 +163,10 @@ private:
    bool caseInitialized = false; 
    QString exampleString = "OSU LWF";
 
-#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
+  //FMK#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
    Qt3DExtras::Qt3DWindow* view;
    QWidget* container;
-#endif
+  //FMK#endif
    // QStackedWidget *parentStackedWidget;
    // SlidingStackedWidget *stackedWidget;
    // QWebEngineView* m_pWebView;

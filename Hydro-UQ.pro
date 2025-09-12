@@ -6,8 +6,12 @@
 
 win32 {
     # QTDIR = 
-} else {
+    } else {
+
     mac {
+      LIBS += -framework CoreFoundation
+      LIBS += -framework SystemConfiguration
+      LIBS += -framework Security    
         # QtDir =    
     } else {
         # Presumably Ubuntu 18.04 LTS
@@ -23,12 +27,13 @@ win32 {
 }
 
 # Note: ConanHelper.pri will call conan_basic_setup and include the conanbuildinfo.pri file 
-include($$PWD/ConanHelper.pri)
+#include($$PWD/ConanHelper.pri)
 # CONFIG += conan_basic_setup
 # include($$OUT_PWD/conanbuildinfo.pri)
+include(build/conan/conan_generated.pri)   
 
-QT += core gui charts concurrent network sql qml 3dcore 3drender 3dextras printsupport quick opengl
-QT += webengine webenginewidgets 
+QT += core gui charts concurrent network sql qml 3dcore 3drender 3dextras printsupport quick opengl 
+QT += webenginewidgets 
 QT += webenginecore
 QT += webchannel 
 QT += svg 
@@ -36,7 +41,6 @@ QT += 3dinput
 QT += 3dlogic 
 QT += 3dquick 
 QT += 3dquickextras 
-QT += datavisualization 
 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets 
@@ -87,7 +91,7 @@ win32 {
     }
 }
 
-# QMAKE_APPLE_DEVICE_ARCHS="x86_64"
+#QMAKE_APPLE_DEVICE_ARCHS="x86_64"
 
 # Some tools use web-apps with WebGPU, flags are often needed to make Qt properly use your GPU in a Chromium process
 # They can be OS dependent, and GPU manufacture dependent (e.g. NVIDIA)
