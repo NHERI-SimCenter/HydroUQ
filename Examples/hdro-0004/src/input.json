@@ -1212,17 +1212,17 @@
     ],
     "GeneralInformation": {
         "NumberOfStories": 1,
-        "PlanArea": 1.03022,
+        "PlanArea": 0.01,
         "StructureType": "S2",
-        "YearBuilt": 1990,
-        "depth": 1.015,
-        "height": 0.615,
+        "YearBuilt": 2013,
+        "depth": 0.1,
+        "height": 0.3,
         "location": {
-            "latitude": 44.5639,
-            "longitude": -123.292
+            "latitude": 35.7087,
+            "longitude": 139.7196
         },
-        "name": "Raised Structural Box @ Oregon State University's Large Wave Flume",
-        "planArea": 1.03022,
+        "name": "Wooden Column @ WU's Tsunami Wave Basin",
+        "planArea": 0.01,
         "stories": 1,
         "units": {
             "force": "N",
@@ -1230,7 +1230,7 @@
             "temperature": "C",
             "time": "sec"
         },
-        "width": 1.015
+        "width": 0.1
     },
     "Modeling": {
         "Bx": 0.1,

@@ -332,7 +332,7 @@ int main(int argc, char *argv[])
     w.setVersion(version);
 
     // Citation
-    QString citeText("1) Justin Bonus, Frank McKenna, Pedro Arduino, Ajay B Harish, & Nicolette Lewis (2025). NHERI-SimCenter/HydroUQ: Version 4.2.0 (v4.2.0). Zenodo. https://doi.org/10.5281/zenodo.15319477  \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
+    QString citeText("1) Justin Bonus, Frank McKenna, Pedro Arduino, Ajay B Harish, & Nicolette Lewis (2025). NHERI-SimCenter/HydroUQ: Version 4.2.0 (v4.2.0). Zenodo. https://doi.org/10.5281/zenodo.17080211  \n\n2) Gregory G. Deierlein, Frank McKenna, Adam Zsarnóczay, Tracy Kijewski-Correa, Ahsan Kareem, Wael Elhaddad, Laura Lowes, Matthew J. Schoettler, and Sanjay Govindjee (2020) A Cloud-Enabled Application Framework for Simulating Regional-Scale Impacts of Natural Hazards on the Built Environment. Frontiers in the Built Environment. 6:558706. doi: 10.3389/fbuil.2020.558706");
     w.setCite(citeText);
 
     // Link to repository
