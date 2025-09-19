@@ -3,7 +3,7 @@
 echo In folder $PWD
    
 # Clone the examples
-git clone --branch master https://github.com/NHERI-SimCenter/HydroUQ.git
+git clone --branch master https://github.com/JustinBonus/HydroUQ.git
 
 # make sure all packages are installed
 python3 -m pip install --upgrade pip
