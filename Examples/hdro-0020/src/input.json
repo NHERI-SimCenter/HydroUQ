@@ -58,8 +58,13 @@
         {
             "Application": "Celeris",
             "EventClassification": "Hydro",
+            "Mode": "Address",
+            "Resolution": 3,
+            "Scale": 1,
+            "address": "Seaside, Oregon",
             "bathymetryFile": "bathy.txt",
             "bathymetryFilePath": "{Current_Dir}/.",
+            "buffer_radius": 0.01,
             "config": {
                 "Bcoef": 0.0666667,
                 "Bcoef_g": 0.6540000327,
@@ -96,8 +101,9 @@
                 "WIDTH": 873,
                 "WaveType": 3,
                 "add_Disturbance": -1,
+                "address": "Seaside, OR",
                 "amplitude": "RV.amplitude",
-                "base_depth": 0.75202286,
+                "base_depth": 0.752023,
                 "boundary_epsilon": 5.6553838196257955e-09,
                 "boundary_g": 9.81,
                 "boundary_nx": 872,
@@ -112,7 +118,6 @@
                 "changeYTimeSeries": 0,
                 "changethisTimeSeries": 5,
                 "chartDataUpdate": 0,
-                "clearCon": 1,
                 "clearConc": 0,
                 "click_update": -1,
                 "colorMap_choice": 0,
@@ -139,6 +144,7 @@
                 "dzdt_F_coef": 0.15,
                 "dzdt_I_coef": 0.5,
                 "east_boundary_type": 0,
+                "east_seaLevel": 0,
                 "elapsedTime": 204.542,
                 "elapsedTime_update": 45.224,
                 "exampleDirs": [
@@ -179,12 +185,7 @@
                 "infiltrationRate": 0.001,
                 "isManning": 0,
                 "lat_LL": 0,
-                "lon_LL": 0,
                 "lat_UR": 0.00019665019,
-                "lon_UR": 0.00039285039,
-                "address": "Seaside, OR",
-                "offset_latitude": 0.0,
-                "offset_longitude": -0.01,
                 "locationOfTimeSeries": [
                     {
                         "xts": 0,
@@ -211,6 +212,8 @@
                         "yts": 13.0766
                     }
                 ],
+                "lon_LL": 0,
+                "lon_UR": 0.00039285039,
                 "maxNumberOfTimeSeries": 16,
                 "maxdurationTimeSeries": 30,
                 "mouse_current_canvas_indX": 219,
@@ -222,7 +225,10 @@
                 "n_write_interval": null,
                 "n_writes": null,
                 "north_boundary_type": 0,
+                "north_seaLevel": 0,
                 "numberOfWaves": 2961,
+                "offset_latitude": 0,
+                "offset_longitude": -0.01,
                 "one_over_d2x": 400,
                 "one_over_d2y": 400,
                 "one_over_d3x": 8000,
@@ -265,6 +271,7 @@
                 "significant_wave_height": 1,
                 "simPause": -1,
                 "south_boundary_type": 0,
+                "south_seaLevel": 0,
                 "surfaceToChange": 1,
                 "surfaceToPlot": 0,
                 "timeScheme": 2,
@@ -278,6 +285,7 @@
                 "useSedTransModel": 0,
                 "viewType": 1,
                 "west_boundary_type": 2,
+                "west_seaLevel": 0,
                 "whiteWaterDecayRate": 0.9,
                 "whiteWaterDispersion": 0.1,
                 "write_dt": null,
@@ -286,6 +294,13 @@
             },
             "configFile": "config.json",
             "configFilePath": "{Current_Dir}/.",
+            "enableBrails": true,
+            "lat_LL": 37.8992,
+            "lat_UR": 37.9151,
+            "lon_LL": -122.341,
+            "lon_UR": -122.323,
+            "offset_latitude": 0,
+            "offset_longitude": -0.0125,
             "subtype": "Celeris",
             "type": "Celeris",
             "waveFile": "waves.txt",
@@ -294,25 +309,25 @@
     ],
     "GeneralInformation": {
         "NumberOfStories": 1,
-        "PlanArea": 129600,
-        "StructureType": "RM1",
-        "YearBuilt": 1990,
-        "depth": 360,
-        "height": 576,
+        "PlanArea": 0.16,
+        "StructureType": "C2",
+        "YearBuilt": 2008,
+        "depth": 0.4,
+        "height": 0.3,
         "location": {
-            "latitude": 37.8715,
-            "longitude": -122.273
+            "latitude": 44.5639,
+            "longitude": -123.292
         },
-        "name": "",
-        "planArea": 129600,
+        "name": "Concrete Obstacles @ OSU Directional Wave Basin",
+        "planArea": 0.16,
         "stories": 1,
         "units": {
-            "force": "kips",
-            "length": "in",
+            "force": "N",
+            "length": "m",
             "temperature": "C",
             "time": "sec"
         },
-        "width": 360
+        "width": 0.4
     },
     "Modeling": {
         "centroidNodes": [
@@ -366,6 +381,7 @@
         "saveWorkDir": true,
         "uqType": "Forward Propagation"
     },
+    "coresPerNode": 1,
     "correlationMatrix": [
         1,
         0,
@@ -393,7 +409,13 @@
         0,
         1
     ],
+    "execSystemId": "stampede3",
+    "execSystemLogicalQueue": "h100",
     "localAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "maxMinutes": 25,
+    "memoryMB": 128000,
+    "nodeCount": 1,
+    "numP": 1,
     "randomVariables": [
         {
             "distribution": "Normal",
@@ -446,10 +468,147 @@
             "variableClass": "Uncertain"
         }
     ],
-    "remoteAppDir": "/home/justinbonus/SimCenter/HydroUQ/build",
+    "remoteAppDir": "/work2/00477/tg457427/stampede3/SimCenterBackendApplications/v25.05.16",
     "resultType": "SimCenterUQResultsSampling",
-    "runType": "runningLocal",
+    "runType": "runningRemote",
+    "spreadsheet": {
+        "data": [
+            1,
+            5.924539779,
+            59.65390904,
+            29462.85806,
+            0.4409760465,
+            21.3773545,
+            0.516941,
+            0.0641534,
+            0.0879381,
+            0.00258755,
+            0.00227156,
+            0.0185407,
+            1.57747e-05,
+            0,
+            2,
+            5.99989415,
+            60.11436404,
+            30309.83223,
+            0.7082049586,
+            14.85531993,
+            1.23111,
+            0.169752,
+            0.216532,
+            0.00737501,
+            0.00559138,
+            0.0183697,
+            3.8829e-05,
+            0,
+            3,
+            6.028075539,
+            57.58553221,
+            29850.41289,
+            0.248133056,
+            19.83837645,
+            0.129877,
+            0.00562034,
+            0.023174,
+            0.000282689,
+            0.00061141,
+            0.018339,
+            4.2459e-06,
+            0,
+            4,
+            6.127403326,
+            62.09509192,
+            30017.36909,
+            0.532740328,
+            27.07718432,
+            1.08039,
+            0.132932,
+            0.183376,
+            0.00476667,
+            0.00495434,
+            0.0181802,
+            3.44051e-05,
+            0
+        ],
+        "headings": [
+            "Run #",
+            "fc",
+            "fy",
+            "E",
+            "amplitude",
+            "period",
+            "1-PFA-1-1",
+            "1-PFA-1-2",
+            "1-RMSA-1-1",
+            "1-RMSA-1-2",
+            "1-PFD-1-1",
+            "1-PFD-1-2",
+            "1-PID-1-1",
+            "1-PID-1-2",
+            ""
+        ],
+        "isSurrogate": false,
+        "nrv": 5,
+        "numCol": 14,
+        "numRow": 4
+    },
     "summary": [
+        {
+            "kurtosis": 0.004042974569470559,
+            "mean": 0.7395795,
+            "name": "1-PFA-1-1",
+            "skewness": -0.3997146363566372,
+            "stdDev": 0.509594305805772
+        },
+        {
+            "kurtosis": 0.8539606139727942,
+            "mean": 0.093114435,
+            "name": "1-PFA-1-2",
+            "skewness": -0.31089543673725895,
+            "stdDev": 0.07292167729785773
+        },
+        {
+            "kurtosis": 0.031179051147633086,
+            "mean": 0.127755025,
+            "name": "1-RMSA-1-1",
+            "skewness": -0.3223645453349233,
+            "stdDev": 0.08850164302920689
+        },
+        {
+            "kurtosis": 2.151901983834776,
+            "mean": 0.0037529797499999996,
+            "name": "1-RMSA-1-2",
+            "skewness": 0.12420284913735334,
+            "stdDev": 0.0030302813646360055
+        },
+        {
+            "kurtosis": -0.3275960595591556,
+            "mean": 0.0033571725,
+            "name": "1-PFD-1-1",
+            "skewness": -0.35680359535059014,
+            "stdDev": 0.002328117507248793
+        },
+        {
+            "kurtosis": 4.294316612780075,
+            "mean": 0.0183574,
+            "name": "1-PFD-1-2",
+            "skewness": 0.12200646900687812,
+            "stdDev": 0.00014774818667809975
+        },
+        {
+            "kurtosis": -0.32759785661956675,
+            "mean": 2.3313675e-05,
+            "name": "1-PID-1-1",
+            "skewness": -0.3568024712115824,
+            "stdDev": 1.6167469456571324e-05
+        },
+        {
+            "kurtosis": null,
+            "mean": 0,
+            "name": "1-PID-1-2",
+            "skewness": null,
+            "stdDev": 0
+        }
     ],
-    "workingDir": "/home/justinbonus/Documents/HydroUQ/LocalWorkDir"
+    "workingDir": "/home/justinbonus/Documents/HydroUQ/RemoteWorkDir"
 }
