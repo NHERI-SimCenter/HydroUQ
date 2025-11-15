@@ -58,24 +58,24 @@
         {
             "Application": "TaichiEvent",
             "EventClassification": "Hydro",
-            "basicPyScript": "TaichiEvent.py",
-            "basicPyScriptPath": "{Current_Dir}/.",
-            "interfaceSurface": "pbf2d.py",
-            "interfaceSurfacePath": "{Current_Dir}/."
+            "backendScript": "TaichiEvent.py",
+            "backendScriptPath": "{Current_Dir}/.",
+            "simulationScript": "pbf2d.py",
+            "simulationScriptPath": "{Current_Dir}/."
         }
     ],
     "GeneralInformation": {
         "NumberOfStories": 1,
         "PlanArea": 129600,
-        "StructureType": "RM1",
-        "YearBuilt": 1990,
+        "StructureType": "C2",
+        "YearBuilt": 2025,
         "depth": 360,
         "height": 576,
         "location": {
-            "latitude": 37.8715,
-            "longitude": -122.273
+            "latitude": 44.5639,
+            "longitude": -123.292
         },
-        "name": "",
+        "name": "Wave-Loaded Wall @ OSU Flume",
         "planArea": 129600,
         "stories": 1,
         "units": {

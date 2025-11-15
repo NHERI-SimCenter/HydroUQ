@@ -689,7 +689,27 @@
                     "output_frequency": 120,
                     "preset": "Load-Cells",
                     "toggle": true,
-                    "type": "grid"
+                    "type": "grid",
+                    "summary": [
+                        [
+                            "LoadCell1",
+                            45.799,
+                            2.2,
+                            1.3,    
+                            0.025,
+                            0.3,
+                            1.0
+                        ],
+                        [
+                            "LoadCell2",
+                            45.799,
+                            2.5,
+                            1.3,
+                            0.025,
+                            0.3,
+                            1.0
+                        ]
+                    ]
                 },
                 {
                     "attribute": "Force",
@@ -709,7 +729,27 @@
                     "output_frequency": 120,
                     "preset": "Load-Cells",
                     "toggle": true,
-                    "type": "grid"
+                    "type": "grid",
+                    "summary": [
+                        [
+                            "LoadCell1",
+                            45.799,
+                            2.2,
+                            1.3,    
+                            0.025,
+                            0.3,
+                            1.0
+                        ],
+                        [
+                            "LoadCell2",
+                            45.799,
+                            2.5,
+                            1.3,
+                            0.025,
+                            0.3,
+                            1.0
+                        ]
+                    ]
                 }
             ],
             "outputs": {

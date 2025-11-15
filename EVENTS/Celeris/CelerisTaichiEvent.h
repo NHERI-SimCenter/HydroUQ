@@ -94,5 +94,6 @@ private:
    SC_IntLineEdit *resolutionFactorEdit;
    SC_DoubleLineEdit *scaleFactorEdit;
    QCheckBox *enableBrailsCheckBox;
+   SC_ComboBox *runType;
 };
 #endif // CELERIS_TAICHI_EVENT_H

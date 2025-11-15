@@ -340,7 +340,7 @@ CelerisTaichiEvent::CelerisTaichiEvent(RandomVariablesContainer* random_variable
     QLabel *visualizeLabel = new QLabel("Visualize the wave-gauges, velocimeters, and force sensors.");
     theCelerisVisualizeLayout->addWidget(visualizeLabel);
     
-    SC_ComboBox *runType = new SC_ComboBox("Run Type", QStringList() << "Local" << "Remote");
+    runType = new SC_ComboBox("Run Type", QStringList() << "Local" << "Remote");
     runType->setToolTip("Select the run type for the Celeris simulation. Local runs will use the local working directory, while remote runs will use the remote working directory.");
     runType->setCurrentIndex(0);
     QHBoxLayout *runTypeLayout = new QHBoxLayout();
@@ -382,7 +382,7 @@ CelerisTaichiEvent::CelerisTaichiEvent(RandomVariablesContainer* random_variable
       QString remoteWorkingDirectory = preferences->getRemoteWorkDir();
       QString workingDirectoryString;
       if (runType->currentText() == "Remote") {
-        workingDirectoryString = remoteWorkingDirectory + QDir::separator() + "tmp.SimCenter" + QDir::separator() + "workdir." + QString::number(workingDirectory->text().toInt());
+        workingDirectoryString = remoteWorkingDirectory + QDir::separator() + "tmp.SimCenter" + QDir::separator() + "results" + QDir::separator() + "workdir." + QString::number(workingDirectory->text().toInt());
       } else {
         workingDirectoryString = localWorkingDirectory + QDir::separator() + "tmp.SimCenter" + QDir::separator() + "workdir." + QString::number(workingDirectory->text().toInt());
       }
@@ -521,6 +521,18 @@ bool CelerisTaichiEvent::inputFromJSON(QJsonObject &jsonObject)
     // return false;
   }
 
+  if (jsonObject.contains("runType")) {
+    QJsonValue runTypeValue = jsonObject["runType"];
+    if (runTypeValue.isString()) {
+      QString runTypeString = runTypeValue.toString();
+      if (runTypeString == "runningRemote" || runTypeString == "Remote") {
+        runType->setCurrentIndex(1);
+      } else {
+        runType->setCurrentIndex(0);
+      }
+    }
+  }
+  
   return true;
 }
 
