@@ -31,3 +31,4 @@ build.old
 Examples/plots
 *.npy
 Examples/templatedir_SIM
+CMakeUSerPresets.json
