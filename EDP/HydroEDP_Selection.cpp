@@ -153,7 +153,7 @@ HydroEDP_Selection::HydroEDP_Selection(QWidget *parent)
     theStackedWidget->setCurrentIndex(0);
     theCurrentEDP=theStandardEDPs;
 
-    connect(edpSelection, SIGNAL(currentIndexChanged(QString)), this,
+    connect(edpSelection, SIGNAL(currentTextChanged(QString)), this,
             SLOT(edpSelectionChanged(QString)));
 }
 
