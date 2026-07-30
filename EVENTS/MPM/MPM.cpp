@@ -78,6 +78,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
 #include <Qt3DRender/QMesh>
+#include <Qt3DRender/QRenderSettings>
 #include <Qt3DExtras/QForwardRenderer>
 #include <Qt3DRender/QCamera>
 #include <Qt3DCore/QTransform>
@@ -396,6 +397,11 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
     auto rootEntity = new Qt3DCore::QEntity();
     // auto view = new Qt3DExtras::Qt3DWindow();
     view = new Qt3DExtras::Qt3DWindow();
+    
+    // following fixes unsustainable APp memory usage on a mac .. reduces overhead as well
+    // OnDemand only renders when something in the scene actually changed
+    view->renderSettings()->setRenderPolicy(Qt3DRender::QRenderSettings::OnDemand);
+    
     container = QWidget::createWindowContainer(view);
 
  
@@ -475,7 +481,7 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
         fluidMesh[i]->setZExtent(3.65f);
     }
     Qt3DExtras::QCuboidMesh *pistonMesh = new Qt3DExtras::QCuboidMesh();
-    Qt3DRender::QMesh *twinMesh = new Qt3DRender::QMesh();
+    twinMesh = new Qt3DRender::QMesh();
 
     QString bathymetryMesh = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "OSU_LWF_Bathymetry.obj";
     twinMesh->setSource(QUrl::fromLocalFile(bathymetryMesh));
@@ -1031,8 +1037,16 @@ MPM::MPM(RandomVariablesContainer *theRandomVariableIW, QWidget *parent)
       // Set the source of the twin mesh to the generated bathymetry mesh
       QString tempBathymetryMesh = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "custom_bathymetry.obj";
       QString dummyBathymetryMesh = QCoreApplication::applicationDirPath() + QDir::separator() + "Examples" + QDir::separator() + "Bathymetry" + QDir::separator() + "OSU_LWF_Bathymetry.obj";
+
+      // Recreate the mesh component instead of reloading the same persistent QMesh: Qt3D's
+      // previous geometry not geing released on a mac causing memory leak when switch between flumes
+      // putiing in a fresh mesh is fixing the issue
+      twinEntity->removeComponent(twinMesh);
+      twinMesh->deleteLater();
+      twinMesh = new Qt3DRender::QMesh();
       twinMesh->setSource(QUrl::fromLocalFile(dummyBathymetryMesh));
       twinMesh->setSource(QUrl::fromLocalFile(tempBathymetryMesh));
+      twinEntity->addComponent(twinMesh);
       twinTransform->setRotation(QQuaternion::fromEulerAngles(0.f, 0.f, 0.f));
       twinMesh->setEnabled(true);
     };

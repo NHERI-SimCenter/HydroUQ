@@ -82,6 +82,10 @@ namespace Qt3DExtras {
    class Qt3DWindow;
 }
 
+namespace Qt3DRender {
+   class QMesh;
+}
+
 class MPM : public SimCenterAppWidget
 {
    // friend class ResultsMPM; // Allow ResultsMPM to access private members. TODO: use a better vis architecture
@@ -166,6 +170,7 @@ private:
   //FMK#if ( ( defined(_WIN32) || defined(__linux__) || defined(linux) || defined(WIN32) ) && !defined(__APPLE__) ) && !defined(NO_MPM_QT3D)
    Qt3DExtras::Qt3DWindow* view;
    QWidget* container;
+   Qt3DRender::QMesh* twinMesh;
   //FMK#endif
    // QStackedWidget *parentStackedWidget;
    // SlidingStackedWidget *stackedWidget;
