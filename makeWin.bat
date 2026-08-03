@@ -22,6 +22,7 @@ setlocal enabledelayedexpansion
 set "QT=C:\Qt6\6.10.2\msvc2022_64"
 set "SEVENZIP=C:\Program Files\7-Zip\7z.exe"
 set "VCVARS=C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+set "NINJA=C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja\ninja.exe"
 set "pathToOpenSees=%USERPROFILE%\bin\OpenSees3.8.0"
 set "pathToDakota=%USERPROFILE%\dakota\dakota6.24"
 set "pathToPython=%USERPROFILE%\python_releases\python3.12.zip"
@@ -136,7 +137,7 @@ if exist conanfile2.py (
     set "CONAN_FILE_SWAPPED=YES"
 )
 
-conan install . --build missing -s build_type=Release -pr "%CONAN_PROFILE%" -c tools.cmake.cmaketoolchain:generator=Ninja
+conan install . --build missing --output-folder="%BUILD_DIR%" -s build_type=Release -pr "%CONAN_PROFILE%" -c tools.cmake.cmaketoolchain:generator=Ninja
 if errorlevel 1 (
     if "%CONAN_FILE_SWAPPED%"=="YES" if exist conanfile.old move /y conanfile.old conanfile.py >nul
     echo.
@@ -144,6 +145,8 @@ if errorlevel 1 (
     echo.
     exit /b 1
 )
+
+
 
 if "%CONAN_FILE_SWAPPED%"=="YES" if exist conanfile.old move /y conanfile.old conanfile.py >nul
 
@@ -161,11 +164,14 @@ if exist CMakeUserPresets.json ren CMakeUserPresets.json CMakeUserPresets.json.b
 
 cmake -B "%BUILD_DIR%" -S . ^
     -G Ninja ^
-    -DCMAKE_TOOLCHAIN_FILE="%BUILD_DIR%\Release\generators\conan_toolchain.cmake" ^
+    -DCMAKE_MAKE_PROGRAM="%NINJA%" ^
+    -DCMAKE_TOOLCHAIN_FILE="%BUILD_DIR%\generators\conan_toolchain.cmake" ^
     -DCMAKE_PREFIX_PATH="%QT%" ^
     -DCMAKE_CXX_FLAGS="%RELEASE_FLAG%" ^
     -DCMAKE_DAKOTA_VERSION=624 ^
     -DCMAKE_BUILD_TYPE=Release
+
+exit /b 1
 
 if exist CMakePresets.json.bak     ren CMakePresets.json.bak     CMakePresets.json
 if exist CMakeUserPresets.json.bak ren CMakeUserPresets.json.bak CMakeUserPresets.json
