@@ -149,7 +149,7 @@ elseif(APPLE)
     )
     # Add icon to bundle
     set(MACOSX_BUNDLE_ICON_FILE NHERI-HydroUQ-Icon.icns)
-    set_source_files_properties(icons/NHERI-HydroUQ-Icon.icns PROPERTIES MACOSX_BUNDLE_LOCATION "Resources")
+    set_source_files_properties(icons/NHERI-HydroUQ-Icon.icns PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
     target_sources(Hydro_UQ PRIVATE icons/NHERI-HydroUQ-Icon.icns)
 
 else() # Linux / Ubuntu
